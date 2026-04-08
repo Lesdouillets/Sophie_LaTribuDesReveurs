@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La tribu des rêveurs – Consultation Sommeil</title>
+  <style>
+    /* ── VARIABLES (THÈME VERT) ─────────────────────── */
+    :root {
+      --primary: #2d9948;
+      --primary-light: #52b788;
+      --primary-dark: #1b4332;
+      --accent: #74c69d;
+      --accent-light: #b7e4c7;
+      --bg: #f0fff4;
+      --sidebar-bg: #1b4332;
+      --sidebar-hover: #2d6a4f;
+      --sidebar-active: #40916c;
+      --card-bg: #ffffff;
+      --border: #c3e6cb;
+      --text: #1a2e1f;
+      --text-light: #52796f;
+      --question-bg: #e8f5e9;
+      --question-border: #4caf50;
+      --question-text: #1b4332;
+      --option-bg: #fff9e6;
+      --option-border: #f0ad4e;
+      --important-bg: #fff3cd;
+      --important-border: #e07b39;
+      --conseil-bg: #d8f3dc;
+      --conseil-border: #52b788;
+      --empathie-bg: #fce4ec;
+      --empathie-border: #e91e63;
+      --separator-bg: #d8f3dc;
+      --radius: 12px;
+      --shadow: 0 4px 20px rgba(45,153,72,0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── SETUP SCREEN ───────────────────────────────── */
+    #setup-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #1b4332 0%, #2d9948 50%, #74c69d 100%);
+      padding: 20px;
+    }
+
+    .setup-card {
+      background: white;
+      border-radius: 24px;
+      padding: 48px;
+      width: 100%;
+      max-width: 960px;
+      box-shadow: 0 20px 60px rgba(27,67,50,0.35);
+      max-height: 95vh;
+      overflow-y: auto;
+    }
+    .setup-card::-webkit-scrollbar { width: 5px; }
+    .setup-card::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .setup-logo {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .setup-logo .brand {
+      font-size: 30px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.5px;
+    }
+    .setup-logo .subtitle {
+      font-size: 14px;
+      color: var(--text-light);
+      margin-top: 6px;
+    }
+
+    .setup-section { margin-bottom: 32px; }
+    .setup-section h3 {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--primary);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-grid .full { grid-column: 1 / -1; }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 13px; font-weight: 600; color: var(--text-light); }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 10px 14px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px;
+      color: var(--text);
+      background: white;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { outline: none; border-color: var(--primary-light); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+
+    /* Problématiques checkboxes */
+    .problematiques-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+    .pb-category { margin-bottom: 16px; }
+    .pb-category-title {
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.8px; color: var(--text-light);
+      margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+    }
+    .pb-items { display: flex; flex-direction: column; gap: 4px; }
+    .pb-item {
+      display: flex; align-items: center; gap: 8px; cursor: pointer;
+      padding: 7px 10px; border-radius: 8px; border: 1.5px solid transparent;
+      transition: all 0.15s; user-select: none;
+    }
+    .pb-item:hover { background: #f0fff4; border-color: var(--border); }
+    .pb-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
+    .pb-item.checked { background: #d8f3dc; border-color: var(--primary-light); }
+    .pb-item label { font-size: 13.5px; cursor: pointer; }
+
+    .btn-start {
+      display: block; width: 100%; padding: 16px;
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: white; border: none; border-radius: 12px;
+      font-size: 17px; font-weight: 700; cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s; margin-top: 24px;
+    }
+    .btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(45,153,72,0.4); }
+
+    /* ── APP SCREEN ──────────────────────────────────── */
+    #app-screen { display: none; height: 100vh; flex-direction: column; }
+
+    /* HEADER */
+    .app-header {
+      background: var(--sidebar-bg);
+      color: white;
+      padding: 0 20px;
+      height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+      z-index: 10;
+    }
+    .header-brand { font-size: 15px; font-weight: 800; color: var(--accent); white-space: nowrap; }
+    .header-client {
+      display: flex; align-items: center; gap: 16px;
+      flex: 1; justify-content: center; overflow: hidden;
+    }
+    .client-badge {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.1); padding: 5px 14px; border-radius: 30px;
+      white-space: nowrap;
+    }
+    .client-badge .icon { font-size: 16px; }
+    .client-badge .info { font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; }
+    .client-badge .sub { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 1px; }
+    .header-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .btn-icon {
+      background: rgba(255,255,255,0.1); border: none; color: white;
+      width: 34px; height: 34px; border-radius: 8px; cursor: pointer;
+      font-size: 15px; display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+    }
+    .btn-icon:hover { background: rgba(255,255,255,0.22); }
+
+    /* BANDEAU PROBLÉMATIQUE / OBJECTIF */
+    .pb-objectif-bar {
+      background: #d8f3dc;
+      border-bottom: 2px solid var(--primary-light);
+      display: flex;
+      align-items: stretch;
+      flex-shrink: 0;
+      overflow: hidden;
+      max-height: 72px;
+      transition: max-height 0.3s;
+    }
+    .pb-objectif-bar.collapsed { max-height: 34px; }
+    .pob-item {
+      flex: 1; padding: 6px 16px;
+      border-right: 1px solid rgba(82,183,136,0.3);
+      font-size: 13px;
+      display: flex; gap: 6px; align-items: flex-start; overflow: hidden;
+    }
+    .pob-item:last-child { border-right: none; }
+    .pob-label { font-weight: 700; color: var(--primary-dark); white-space: nowrap; flex-shrink: 0; }
+    .pob-text {
+      color: #2d5016;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden; font-style: italic;
+    }
+    .pob-toggle-btn {
+      background: none; border: none; cursor: pointer;
+      color: var(--primary); font-size: 11px; flex-shrink: 0;
+      padding: 2px 6px; border-radius: 4px; margin-left: auto;
+      white-space: nowrap;
+    }
+    .pob-toggle-btn:hover { background: rgba(45,153,72,0.1); }
+
+    /* PROGRESS BAR */
+    .progress-bar { height: 3px; background: rgba(0,0,0,0.08); flex-shrink: 0; }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-light), var(--accent));
+      transition: width 0.4s ease;
+    }
+
+    /* BODY */
+    .app-body { display: flex; flex: 1; overflow: hidden; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 252px; background: var(--sidebar-bg); color: white;
+      overflow-y: auto; flex-shrink: 0; padding: 14px 0;
+    }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+
+    .sidebar-section-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.2px; color: rgba(255,255,255,0.35);
+      padding: 12px 18px 5px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 9px 18px; cursor: pointer;
+      border-left: 3px solid transparent;
+      font-size: 13px; transition: background 0.15s;
+    }
+    .nav-item:hover { background: var(--sidebar-hover); }
+    .nav-item.active { background: rgba(82,183,136,0.2); border-left-color: var(--accent); color: white; }
+    .nav-item.completed { color: rgba(255,255,255,0.5); }
+    .nav-emoji { font-size: 15px; flex-shrink: 0; }
+    .nav-title { flex: 1; font-weight: 500; line-height: 1.3; }
+    .nav-check { font-size: 11px; color: #74c69d; flex-shrink: 0; }
+
+    /* Sidebar pb toggle */
+    .sidebar-pb-toggle {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 18px; cursor: pointer;
+      font-size: 11px; color: rgba(255,255,255,0.45);
+      transition: color 0.15s; margin-top: 8px;
+    }
+    .sidebar-pb-toggle:hover { color: rgba(255,255,255,0.75); }
+    .sidebar-pb-panel { display: none; padding: 8px 14px 12px; background: rgba(0,0,0,0.2); }
+    .sidebar-pb-panel.open { display: block; }
+    .sidebar-pb-item {
+      display: flex; align-items: center; gap: 7px; padding: 5px 4px;
+      cursor: pointer; font-size: 12px; color: rgba(255,255,255,0.7);
+    }
+    .sidebar-pb-item input { accent-color: var(--accent); }
+
+    /* CONTENT AREA */
+    .content-area {
+      flex: 1; overflow-y: auto; padding: 28px 36px;
+      background: var(--bg);
+    }
+    .content-area::-webkit-scrollbar { width: 6px; }
+    .content-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+    .section-emoji { font-size: 30px; }
+    .section-title { font-size: 24px; font-weight: 800; color: var(--primary-dark); }
+
+    /* ── BLOCKS ──────────────────────────────────────── */
+    .block {
+      margin-bottom: 14px; border-radius: var(--radius);
+      padding: 16px 20px; line-height: 1.75; font-size: 15px;
+    }
+
+    .block-normal {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .block-question {
+      background: var(--question-bg);
+      border-left: 4px solid var(--question-border);
+      color: var(--question-text); font-weight: 500;
+    }
+    .block-question::before { content: "❓ "; }
+    .block-important {
+      background: var(--important-bg);
+      border-left: 4px solid var(--important-border);
+    }
+    .block-conseil {
+      background: var(--conseil-bg);
+      border-left: 4px solid var(--conseil-border);
+    }
+    .block-empathie {
+      background: var(--empathie-bg);
+      border-left: 4px solid var(--empathie-border);
+      font-style: italic;
+    }
+    .block-separator {
+      background: var(--separator-bg); border: 1px solid var(--border);
+      text-align: center; font-weight: 700; font-size: 13.5px;
+      color: var(--primary-dark); padding: 11px 18px; letter-spacing: 0.3px;
+    }
+
+    /* OPTION BLOCKS */
+    .block-option {
+      background: var(--option-bg);
+      border: 1.5px solid var(--option-border);
+      border-radius: var(--radius); overflow: hidden; margin-bottom: 10px;
+    }
+    .option-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px; cursor: pointer; user-select: none;
+      transition: background 0.15s;
+    }
+    .option-header:hover { background: rgba(240,173,78,0.18); }
+
+    /* ──► FIX : arrow dans son propre span, label dans un autre ◄── */
+    .option-arrow { font-size: 13px; color: #9c6400; margin-right: 6px; transition: transform 0.2s; }
+    .option-label-text { font-weight: 600; font-size: 14px; color: #7c5200; }
+    .option-toggle { font-size: 11px; color: var(--text-light); white-space: nowrap; }
+
+    .option-content { padding: 0 16px 14px; display: none; }
+    .option-content.open { display: block; }
+    .option-content .block { margin-bottom: 10px; }
+
+    /* TABLEAU BESOINS SOMMEIL */
+    .besoins-table {
+      width: 100%; border-collapse: collapse; font-size: 13.5px;
+      border-radius: var(--radius); overflow: hidden;
+      box-shadow: var(--shadow); margin-bottom: 16px;
+    }
+    .besoins-table th {
+      background: var(--primary); color: white; padding: 10px 13px;
+      text-align: left; font-weight: 600;
+    }
+    .besoins-table td {
+      padding: 9px 13px; border-bottom: 1px solid var(--border);
+      background: white; vertical-align: top;
+    }
+    .besoins-table tr:last-child td { border-bottom: none; }
+    .besoins-table tr:hover td { background: #f0fff4; }
+    .age-highlight { font-weight: 700; color: var(--primary-dark); }
+    .age-active td { background: #d8f3dc !important; font-weight: 600; }
+    .age-active td:first-child::before { content: "▶ "; color: var(--primary); }
+
+    /* NAV BUTTONS */
+    .nav-buttons {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--border);
+    }
+    .btn-nav {
+      display: flex; align-items: center; gap: 7px;
+      padding: 11px 22px; border: none; border-radius: 10px;
+      font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-prev { background: white; color: var(--text); border: 2px solid var(--border); }
+    .btn-prev:hover { border-color: var(--primary-light); color: var(--primary); }
+    .btn-next { background: var(--primary); color: white; }
+    .btn-next:hover { background: var(--primary-dark); transform: translateX(2px); }
+    .btn-nav:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+    .section-progress { font-size: 13px; color: var(--text-light); font-weight: 500; }
+    .btn-done {
+      display: flex; align-items: center; gap: 5px;
+      padding: 8px 14px; background: var(--conseil-bg);
+      border: 1.5px solid var(--conseil-border); border-radius: 8px;
+      font-size: 13px; font-weight: 600; color: #1b4332; cursor: pointer; transition: all 0.15s;
+    }
+    .btn-done:hover { background: #b7e4c7; }
+    .btn-done.done { background: var(--primary); color: white; border-color: var(--primary); }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45); z-index: 1000;
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: white; border-radius: 20px; padding: 32px;
+      width: 500px; max-height: 82vh; overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    .modal-box h3 { font-size: 18px; font-weight: 700; margin-bottom: 18px; color: var(--primary-dark); }
+    .modal-close { float: right; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-light); }
+
+    /* SAVED CLIENTS */
+    .saved-client-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 10px;
+      margin-bottom: 8px; cursor: pointer; transition: all 0.15s;
+    }
+    .saved-client-item:hover { border-color: var(--primary-light); background: #f0fff4; }
+    .saved-client-name { font-weight: 600; font-size: 15px; }
+    .saved-client-info { font-size: 12px; color: var(--text-light); }
+    .btn-delete-client {
+      background: none; border: none; color: #ff7675;
+      cursor: pointer; font-size: 16px; padding: 4px;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    /* COUNTDOWN */
+    #countdown-badge { transition: all 0.3s; }
+    #countdown-badge.urgent .info { color: #ff6b6b !important; font-weight: 800; }
+    #countdown-badge.urgent .sub { color: #ff6b6b !important; }
+
+    /* OPTION DANGER (orange vif) */
+    .block-option.danger {
+      background: #fff3e0;
+      border-color: #e07b39;
+    }
+    .block-option.danger .option-header:hover { background: rgba(224,123,57,0.15); }
+    .block-option.danger .option-arrow { color: #a04000; }
+    .block-option.danger .option-label-text { color: #7c3200; font-size: 15px; }
+
+    /* CHECKLIST */
+    .block-checklist {
+      background: white; border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 16px 20px; margin-bottom: 14px;
+    }
+    .checklist-title { font-weight: 700; margin-bottom: 10px; color: var(--primary-dark); font-size: 14px; }
+    .checklist-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 7px 0; border-bottom: 1px solid #f0f0f0;
+      cursor: pointer; font-size: 14px; line-height: 1.5; user-select: none;
+    }
+    .checklist-item:last-child { border-bottom: none; }
+    .checklist-item input[type="checkbox"] { margin-top: 3px; accent-color: var(--primary); flex-shrink: 0; width: 15px; height: 15px; cursor: pointer; }
+    .checklist-item.checked span { text-decoration: line-through; color: #aaa; }
+
+    /* LEVIERS */
+    .leviers-list { list-style: none; padding: 0; margin: 8px 0 0; }
+    .levier-item { display: flex; align-items: center; gap: 8px; padding: 5px 0; font-size: 14px; color: var(--primary-dark); }
+    .levier-item::before { content: "✅"; }
+
+    /* SIDEBAR SEARCH */
+    .sidebar-search-wrap { padding: 10px 12px 6px; }
+    .sidebar-search-wrap input {
+      width: 100%; padding: 7px 10px; border-radius: 8px;
+      border: none; background: rgba(255,255,255,0.13);
+      color: white; font-size: 12.5px; outline: none;
+    }
+    .sidebar-search-wrap input::placeholder { color: rgba(255,255,255,0.4); }
+    .sidebar-search-wrap input:focus { background: rgba(255,255,255,0.2); }
+  </style>
+</head>
+<body>
+
+<!-- ════ SETUP SCREEN ════ -->
+<div id="setup-screen">
+  <div class="setup-card">
+    <div class="setup-logo">
+      <div class="brand">🌿 La tribu des rêveurs</div>
+      <div class="subtitle">Outil de consultation — Sophie Douesneau, consultante du sommeil</div>
+    </div>
+
+    <!-- CLIENTS SAUVEGARDÉS -->
+    <div class="setup-section" id="saved-clients-section">
+      <h3>📁 Clients récents</h3>
+      <div id="saved-clients-list"></div>
+      <div style="font-size:13px;color:#aaa;text-align:center;margin-top:4px" id="no-saved">Aucun client sauvegardé</div>
+    </div>
+
+    <!-- ENFANT -->
+    <div class="setup-section">
+      <h3>👶 Informations de l'enfant</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Prénom de l'enfant *</label>
+          <input type="text" id="prenom-enfant" placeholder="ex. Emma" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label>Âge *</label>
+          <input type="text" id="age-enfant" placeholder="ex. 8 mois" autocomplete="off">
+        </div>
+        <div class="form-group full">
+          <label>Rituel actuel</label>
+          <input type="text" id="rituel-enfant" placeholder="ex. sein + bercement dans les bras" autocomplete="off">
+        </div>
+      </div>
+    </div>
+
+    <!-- CONSULTATION -->
+    <div class="setup-section">
+      <h3>📅 Consultation</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="consult-date">
+        </div>
+        <div class="form-group">
+          <label>Heure de début</label>
+          <input type="time" id="consult-heure" step="300">
+        </div>
+        <div class="form-group full">
+          <label>Durée prévue</label>
+          <select id="consult-duree">
+            <option value="75">1h15 (par défaut)</option>
+            <option value="40">40 minutes</option>
+            <option value="20">20 minutes</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARENTS -->
+    <div class="setup-section">
+      <h3>👨‍👩‍👧 Informations des parents</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Prénom Parent 1 *</label>
+          <input type="text" id="prenom-parent1" placeholder="ex. Marie" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label>Prénom Parent 2 (optionnel)</label>
+          <input type="text" id="prenom-parent2" placeholder="ex. Thomas" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label>Nom de famille</label>
+          <input type="text" id="nom-famille" placeholder="ex. Dupont" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label>Participant(s) aujourd'hui</label>
+          <select id="role-parents">
+            <option value="les deux parents">Les deux parents</option>
+            <option value="la maman">La maman</option>
+            <option value="le papa">Le papa</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROBLÉMATIQUE & OBJECTIFS -->
+    <div class="setup-section">
+      <h3>🔥 Problématique & Objectifs (ce que les parents ont écrit)</h3>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Problématique décrite par les parents</label>
+          <textarea id="problematique-text" placeholder="ex. Il ne s'endort pas sans sein, se réveille 5 fois par nuit..."></textarea>
+        </div>
+        <div class="form-group full">
+          <label>Objectifs des parents</label>
+          <textarea id="objectifs-text" placeholder="ex. Qu'il s'endorme seul dans son lit, pas plus d'1 réveil la nuit..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROBLÉMATIQUES -->
+    <div class="setup-section">
+      <h3>⚙️ Problématiques identifiées</h3>
+      <p style="font-size:13px;color:#999;margin-bottom:16px">Cochez tout ce qui correspond. Vous pourrez ajuster pendant la consultation.</p>
+      <div class="problematiques-grid">
+        <div>
+          <div class="pb-category">
+            <div class="pb-category-title">🩺 Confort physique</div>
+            <div class="pb-items">
+              <label class="pb-item"><input type="checkbox" name="pb" value="rgo_allergie"> <span>RGO + Suspicion allergie (APLV)</span></label>
+              <label class="pb-item"><input type="checkbox" name="pb" value="allergie_seule"> <span>Suspicion allergie seule</span></label>
+              <label class="pb-item"><input type="checkbox" name="pb" value="rgo_seul"> <span>RGO seul</span></label>
+            </div>
+          </div>
+          <div class="pb-category">
+            <div class="pb-category-title">🍽️ Nutrition</div>
+            <div class="pb-items">
+              <label class="pb-item"><input type="checkbox" name="pb" value="nutrition_courbe"> <span>Courbe de poids déclinante (faim)</span></label>
+              <label class="pb-item"><input type="checkbox" name="pb" value="nutrition_espacement_long"> <span>Espacement trop long</span></label>
+              <label class="pb-item"><input type="checkbox" name="pb" value="nutrition_espacement_court"> <span>Espacement trop court (inconfort)</span></label>
+              <label class="pb-item"><input type="checkbox" name="pb" value="nutrition_inversion_jour_nuit"> <span>Inversion jour/nuit</span></label>
+              <label class="pb-item"><input type="checkbox" name="pb" value="nutrition_jus_vegetaux"> <span>Jus végétaux / lait animal inadapté</span></label>
+            </div>
+          </div>
+          <div class="pb-category">
+            <div class="pb-category-title">⏰ Rythme de la journée</div>
+            <div class="pb-items">
+              <label class="pb-item"><input type="checkbox" name="pb" value="rythme_dette_sommeil"> <span>Dette de sommeil</span></label>
+              <label class="pb-item"><input type="checkbox" name="pb" value="rythme_reveil_matinal"> <span>Réveil matinal précoce</span></label>
+              <label class="pb-item"><input type="checkbox" name="pb" value="rythme_activite_physique"> <span>Manque d'activité physique</span></label>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="pb-category">
+            <div class="pb-category-title">😴 Stratégie d'endormissement</div>
+            <div class="pb-items">
+              <label class="pb-item"><input type="checkbox" name="pb" value="strategie_presence"> <span>Présence parentale indispensable</span></label>
+              <label class="pb-item"><input type="checkbox" name="pb" value="strategie_tetine"> <span>Tétine (cause de réveils)</span></label>
+              <label class="pb-item"><input type="checkbox" name="pb" value="strategie_biberon_sein"> <span>Biberon / sein pour s'endormir</span></label>
+            </div>
+          </div>
+          <div class="pb-category">
+            <div class="pb-category-title">🏠 Environnement de sommeil</div>
+            <div class="pb-items">
+              <label class="pb-item"><input type="checkbox" name="pb" value="env_obscurite"> <span>Obscurité insuffisante</span></label>
+              <label class="pb-item"><input type="checkbox" name="pb" value="env_temperature"> <span>Température trop élevée</span></label>
+              <label class="pb-item"><input type="checkbox" name="pb" value="env_lit_ouvert"> <span>Lit ouvert trop tôt (avant 2,5 ans)</span></label>
+              <label class="pb-item"><input type="checkbox" name="pb" value="env_rituel"> <span>Rituel absent ou trop court</span></label>
+              <label class="pb-item"><input type="checkbox" name="pb" value="env_cadre"> <span>Cadre non clair / incohérent</span></label>
+              <label class="pb-item"><input type="checkbox" name="pb" value="env_stimulations"> <span>Stimulations visuelles dans la chambre</span></label>
+            </div>
+          </div>
+          <div class="pb-category">
+            <div class="pb-category-title">💬 Enjeux relationnels</div>
+            <div class="pb-items">
+              <label class="pb-item"><input type="checkbox" name="pb" value="relationnel_conflit"> <span>Conflit / vient dans le lit parental</span></label>
+              <label class="pb-item"><input type="checkbox" name="pb" value="relationnel_rappels"> <span>Rappels multiples après le coucher</span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-start" onclick="startConsultation()">🚀 Démarrer la consultation</button>
+  </div>
+</div>
+
+<!-- ════ APP SCREEN ════ -->
+<div id="app-screen">
+
+  <!-- HEADER -->
+  <div class="app-header">
+    <div class="header-brand">🌿 La tribu des rêveurs</div>
+    <div class="header-client">
+      <div class="client-badge">
+        <span class="icon">👶</span>
+        <div>
+          <div class="info" id="header-enfant">–</div>
+          <div class="sub" id="header-age-rituel">–</div>
+        </div>
+      </div>
+      <div class="client-badge">
+        <span class="icon">👨‍👩‍👧</span>
+        <div>
+          <div class="info" id="header-parents">–</div>
+          <div class="sub" id="header-nom">–</div>
+        </div>
+      </div>
+      <div class="client-badge" id="countdown-badge" style="display:none">
+        <span class="icon">⏱</span>
+        <div>
+          <div class="info" id="header-heure-fin">–</div>
+          <div class="sub" id="header-countdown">–</div>
+        </div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" title="Ajuster les problématiques" onclick="togglePbModal()">⚙️</button>
+      <button class="btn-icon" title="Nouvelle consultation" onclick="newConsultation()">🔄</button>
+      <button class="btn-icon" title="Plein écran" onclick="toggleFullscreen()">⛶</button>
+    </div>
+  </div>
+
+  <!-- BANDEAU PROBLÉMATIQUE + OBJECTIF (toujours visible) -->
+  <div class="pb-objectif-bar" id="pob-bar">
+    <div class="pob-item">
+      <span class="pob-label">🔥 Problématique :</span>
+      <span class="pob-text" id="pob-problematique">–</span>
+    </div>
+    <div class="pob-item">
+      <span class="pob-label">🎯 Objectif :</span>
+      <span class="pob-text" id="pob-objectif">–</span>
+      <button class="pob-toggle-btn" onclick="togglePobBar()" id="pob-toggle-btn">▲ Réduire</button>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+
+  <!-- BODY -->
+  <div class="app-body">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-section-label">Sections obligatoires</div>
+      <div id="nav-required"></div>
+      <div class="sidebar-section-label" style="margin-top:10px">Par problématique</div>
+      <div id="nav-conditional"></div>
+      <div class="sidebar-section-label" style="margin-top:10px">Plan d'action</div>
+      <div id="nav-plan"></div>
+      <div class="sidebar-search-wrap">
+        <input type="text" id="sidebar-search" placeholder="🔍 Rechercher une section…" oninput="filterSidebar(this.value)">
+      </div>
+      <div class="sidebar-pb-toggle" onclick="toggleSidebarPb()">⚙️ Modifier les problématiques</div>
+      <div class="sidebar-pb-panel" id="sidebar-pb-panel"></div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content-area" id="content-area"></div>
+
+  </div>
+</div>
+
+<!-- MODAL PROBLÉMATIQUES -->
+<div class="modal-overlay" id="pb-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="togglePbModal()">✕</button>
+    <h3>⚙️ Ajuster les problématiques</h3>
+    <p style="font-size:13px;color:#999;margin-bottom:16px">Les sections s'adaptent immédiatement.</p>
+    <div id="modal-pb-list"></div>
+    <button class="btn-start" style="margin-top:16px;font-size:14px;padding:12px" onclick="applyPbChanges()">✅ Appliquer</button>
+  </div>
+</div>
+
+<script src="script-data.js"></script>
+<script>
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+let state = {
+  client: { prenomEnfant:'', ageEnfant:'', rituel:'', prenomParent1:'', prenomParent2:'', nomFamille:'', roleParents:'les deux parents', problematique:'', objectifs:'' },
+  selectedPbs: new Set(),
+  sections: [],
+  currentIdx: 0,
+  completedSet: new Set(),
+  heureFin: null,
+  heureFinStr: '',
+  timerInterval: null,
+};
+
+// ═══════════════════════════════════════════════════
+// SAVED CLIENTS
+// ═══════════════════════════════════════════════════
+function loadSavedClients() {
+  const saved = JSON.parse(localStorage.getItem('tdr_clients') || '[]');
+  const list = document.getElementById('saved-clients-list');
+  const noSaved = document.getElementById('no-saved');
+  list.innerHTML = '';
+  if (!saved.length) { noSaved.style.display = 'block'; return; }
+  noSaved.style.display = 'none';
+  saved.slice().reverse().slice(0, 5).forEach((c, i) => {
+    const realIdx = saved.length - 1 - i;
+    const div = document.createElement('div');
+    div.className = 'saved-client-item';
+    div.innerHTML = `
+      <div onclick="loadClient(${realIdx})" style="flex:1;cursor:pointer">
+        <div class="saved-client-name">👶 ${c.prenomEnfant || ''} ${c.nomFamille || ''}</div>
+        <div class="saved-client-info">${c.ageEnfant || ''} — ${c.prenomParent1 || ''}${c.prenomParent2 ? ' & '+c.prenomParent2 : ''} — ${new Date(c.savedAt).toLocaleDateString('fr-FR')}</div>
+      </div>
+      <button class="btn-delete-client" onclick="deleteClient(event,${realIdx})">🗑</button>`;
+    list.appendChild(div);
+  });
+}
+
+function loadClient(idx) {
+  const saved = JSON.parse(localStorage.getItem('tdr_clients') || '[]');
+  const c = saved[idx]; if (!c) return;
+  ['prenom-enfant','age-enfant','rituel-enfant','prenom-parent1','prenom-parent2','nom-famille'].forEach(id => {
+    const key = id.replace(/-([a-z])/g, (_,l) => l.toUpperCase()).replace('Enfant','Enfant').replace('Parent','Parent');
+    // manual mapping
+  });
+  document.getElementById('prenom-enfant').value = c.prenomEnfant||'';
+  document.getElementById('age-enfant').value = c.ageEnfant||'';
+  document.getElementById('rituel-enfant').value = c.rituel||'';
+  document.getElementById('prenom-parent1').value = c.prenomParent1||'';
+  document.getElementById('prenom-parent2').value = c.prenomParent2||'';
+  document.getElementById('nom-famille').value = c.nomFamille||'';
+  document.getElementById('role-parents').value = c.roleParents||'les deux parents';
+  document.getElementById('problematique-text').value = c.problematique||'';
+  document.getElementById('objectifs-text').value = c.objectifs||'';
+  document.querySelectorAll('input[name="pb"]').forEach(cb => cb.checked = false);
+  (c.pbs||[]).forEach(pb => { const el = document.querySelector(`input[name="pb"][value="${pb}"]`); if(el) el.checked=true; });
+  document.querySelectorAll('.pb-item').forEach(el => el.classList.toggle('checked', el.querySelector('input')?.checked));
+}
+
+function deleteClient(e, idx) {
+  e.stopPropagation();
+  const saved = JSON.parse(localStorage.getItem('tdr_clients') || '[]');
+  saved.splice(idx, 1);
+  localStorage.setItem('tdr_clients', JSON.stringify(saved));
+  loadSavedClients();
+}
+
+function saveClient() {
+  const c = { prenomEnfant: document.getElementById('prenom-enfant').value.trim(), ageEnfant: document.getElementById('age-enfant').value.trim(), rituel: document.getElementById('rituel-enfant').value.trim(), prenomParent1: document.getElementById('prenom-parent1').value.trim(), prenomParent2: document.getElementById('prenom-parent2').value.trim(), nomFamille: document.getElementById('nom-famille').value.trim(), roleParents: document.getElementById('role-parents').value, problematique: document.getElementById('problematique-text').value.trim(), objectifs: document.getElementById('objectifs-text').value.trim(), pbs: [...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value), savedAt: new Date().toISOString() };
+  const saved = JSON.parse(localStorage.getItem('tdr_clients') || '[]');
+  const idx = saved.findIndex(s => s.prenomEnfant===c.prenomEnfant && s.nomFamille===c.nomFamille);
+  if (idx>=0) saved[idx]=c; else saved.push(c);
+  localStorage.setItem('tdr_clients', JSON.stringify(saved));
+}
+
+document.querySelectorAll('input[name="pb"]').forEach(cb => {
+  cb.addEventListener('change', function() { this.closest('.pb-item').classList.toggle('checked', this.checked); });
+});
+
+// ═══════════════════════════════════════════════════
+// START
+// ═══════════════════════════════════════════════════
+function startConsultation() {
+  const prenomEnfant = document.getElementById('prenom-enfant').value.trim();
+  const prenomParent1 = document.getElementById('prenom-parent1').value.trim();
+  if (!prenomEnfant || !prenomParent1) { alert('Merci de renseigner le prénom de l\'enfant et du parent 1.'); return; }
+  state.client = { prenomEnfant, ageEnfant: document.getElementById('age-enfant').value.trim(), rituel: document.getElementById('rituel-enfant').value.trim(), prenomParent1, prenomParent2: document.getElementById('prenom-parent2').value.trim(), nomFamille: document.getElementById('nom-famille').value.trim(), roleParents: document.getElementById('role-parents').value, problematique: document.getElementById('problematique-text').value.trim(), objectifs: document.getElementById('objectifs-text').value.trim() };
+  state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
+  state.completedSet = new Set();
+  state.currentIdx = 0;
+
+  // Calcul heure de fin
+  const consultHeure = document.getElementById('consult-heure').value;
+  const consultDate  = document.getElementById('consult-date').value;
+  const consultDuree = parseInt(document.getElementById('consult-duree').value) || 75;
+  if (consultHeure) {
+    const [h, m] = consultHeure.split(':').map(Number);
+    const base = consultDate ? new Date(consultDate) : new Date();
+    base.setHours(h, m, 0, 0);
+    const fin = new Date(base.getTime() + consultDuree * 60000);
+    state.heureFin = fin;
+    state.heureFinStr = fin.getHours().toString().padStart(2,'0') + 'h' + fin.getMinutes().toString().padStart(2,'0');
+  } else {
+    state.heureFin = null;
+    state.heureFinStr = '';
+  }
+
+  saveClient();
+  buildSections();
+  initUI();
+  document.getElementById('setup-screen').style.display = 'none';
+  document.getElementById('app-screen').style.display = 'flex';
+}
+
+// ═══════════════════════════════════════════════════
+// BUILD SECTIONS
+// ═══════════════════════════════════════════════════
+function buildSections() {
+  state.sections = [];
+  SCRIPT_DATA.required.forEach(s => state.sections.push({...s, sectionType:'required'}));
+  SCRIPT_DATA.conditional.filter(s => !s.problematiqueId || state.selectedPbs.has(s.problematiqueId))
+    .forEach(s => state.sections.push({...s, sectionType:'conditional'}));
+  SCRIPT_DATA.planAction.forEach(s => {
+    if (!s.problematiqueId || state.selectedPbs.has(s.problematiqueId))
+      state.sections.push({...s, sectionType:'plan'});
+  });
+  const alwaysShown = ['plan_rythme','plan_environnement','plan_strategie_accompagnement'];
+  alwaysShown.forEach(id => {
+    if (!state.sections.find(s=>s.id===id)) {
+      const s = SCRIPT_DATA.planAction.find(p=>p.id===id);
+      if (s) state.sections.push({...s, sectionType:'plan'});
+    }
+  });
+  state.sections.push({...SCRIPT_DATA.conclusion, sectionType:'conclusion'});
+}
+
+// ═══════════════════════════════════════════════════
+// UI
+// ═══════════════════════════════════════════════════
+function initUI() {
+  updateHeader();
+  updatePobBar();
+  buildSidebar();
+  buildSidebarPbPanel();
+  renderCurrentSection();
+  startTimer();
+}
+
+function startTimer() {
+  if (state.timerInterval) clearInterval(state.timerInterval);
+  const badge = document.getElementById('countdown-badge');
+  if (!state.heureFin) { badge.style.display = 'none'; return; }
+  badge.style.display = 'flex';
+  function update() {
+    const diff = state.heureFin - new Date();
+    document.getElementById('header-heure-fin').textContent = 'Fin : ' + state.heureFinStr;
+    if (diff <= 0) {
+      document.getElementById('header-countdown').textContent = '⏰ Temps écoulé !';
+      badge.classList.add('urgent');
+      clearInterval(state.timerInterval);
+      return;
+    }
+    const mins = Math.floor(diff / 60000);
+    const secs = Math.floor((diff % 60000) / 1000);
+    document.getElementById('header-countdown').textContent = `${mins}min ${secs.toString().padStart(2,'0')}s restantes`;
+    badge.classList.toggle('urgent', mins < 10);
+  }
+  update();
+  state.timerInterval = setInterval(update, 1000);
+}
+
+function updateHeader() {
+  const c = state.client;
+  document.getElementById('header-enfant').textContent = c.prenomEnfant;
+  document.getElementById('header-age-rituel').textContent = [c.ageEnfant, c.rituel ? 'Rituel : '+c.rituel : ''].filter(Boolean).join(' • ');
+  document.getElementById('header-parents').textContent = [c.prenomParent1, c.prenomParent2].filter(Boolean).join(' & ');
+  document.getElementById('header-nom').textContent = c.nomFamille||'';
+}
+
+function updatePobBar() {
+  const c = state.client;
+  document.getElementById('pob-problematique').textContent = c.problematique || '(non renseignée)';
+  document.getElementById('pob-objectif').textContent = c.objectifs || '(non renseigné)';
+}
+
+let pobCollapsed = false;
+function togglePobBar() {
+  pobCollapsed = !pobCollapsed;
+  const bar = document.getElementById('pob-bar');
+  const btn = document.getElementById('pob-toggle-btn');
+  bar.classList.toggle('collapsed', pobCollapsed);
+  btn.textContent = pobCollapsed ? '▼ Afficher' : '▲ Réduire';
+}
+
+function buildSidebar() {
+  ['nav-required','nav-conditional','nav-plan'].forEach(id => document.getElementById(id).innerHTML='');
+  state.sections.forEach((s, idx) => {
+    const div = document.createElement('div');
+    div.className = 'nav-item' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'');
+    div.innerHTML = `<span class="nav-emoji">${s.emoji||'📄'}</span><span class="nav-title">${s.title}</span>${state.completedSet.has(idx)?'<span class="nav-check">✓</span>':''}`;
+    div.onclick = () => navigateTo(idx);
+    const target = s.sectionType==='required' ? 'nav-required' : s.sectionType==='conditional' ? 'nav-conditional' : 'nav-plan';
+    document.getElementById(target).appendChild(div);
+  });
+  const pct = state.sections.length>1 ? Math.round((state.currentIdx/(state.sections.length-1))*100) : 0;
+  document.getElementById('progress-fill').style.width = pct+'%';
+}
+
+function buildSidebarPbPanel() {
+  const ALL_PBS = [
+    {value:'rgo_allergie',label:'🩺 RGO + Allergie'},{value:'allergie_seule',label:'🌿 Allergie seule'},{value:'rgo_seul',label:'😣 RGO seul'},
+    {value:'nutrition_courbe',label:'📉 Courbe déclinante'},{value:'nutrition_espacement_long',label:'⏱️ Espacement long'},{value:'nutrition_espacement_court',label:'🔄 Espacement court'},{value:'nutrition_inversion_jour_nuit',label:'🌛 Inversion J/N'},{value:'nutrition_jus_vegetaux',label:'🐄 Jus végétaux'},
+    {value:'rythme_dette_sommeil',label:'😴 Dette sommeil'},{value:'rythme_reveil_matinal',label:'🌅 Réveil matinal'},{value:'rythme_activite_physique',label:'🏃 Manque activité'},
+    {value:'strategie_presence',label:'👐 Présence parentale'},{value:'strategie_tetine',label:'🍭 Tétine'},{value:'strategie_biberon_sein',label:'🍼 Biberon/sein'},
+    {value:'env_obscurite',label:'🌑 Obscurité'},{value:'env_temperature',label:'🌡️ Température'},{value:'env_lit_ouvert',label:'🛏️ Lit ouvert'},{value:'env_rituel',label:'🌙 Rituel'},{value:'env_cadre',label:'🗺️ Cadre clair'},{value:'env_stimulations',label:'👀 Stimulations'},
+    {value:'relationnel_conflit',label:'💬 Conflit/lit parental'},{value:'relationnel_rappels',label:'📢 Rappels multiples'},
+  ];
+  document.getElementById('sidebar-pb-panel').innerHTML = ALL_PBS.map(pb => `
+    <label class="sidebar-pb-item">
+      <input type="checkbox" id="spb-${pb.value}" ${state.selectedPbs.has(pb.value)?'checked':''}
+        onchange="togglePb('${pb.value}',this.checked)">
+      ${pb.label}
+    </label>`).join('');
+}
+
+function toggleSidebarPb() { document.getElementById('sidebar-pb-panel').classList.toggle('open'); }
+
+function filterSidebar(query) {
+  const q = query.toLowerCase().trim();
+  document.querySelectorAll('#sidebar .nav-item').forEach(item => {
+    const title = item.querySelector('.nav-title')?.textContent.toLowerCase() || '';
+    item.style.display = (!q || title.includes(q)) ? '' : 'none';
+  });
+  // Show/hide section labels based on whether any children visible
+  document.querySelectorAll('#sidebar .sidebar-section-label').forEach(label => {
+    let next = label.nextElementSibling;
+    let hasVisible = false;
+    while (next && !next.classList.contains('sidebar-section-label')) {
+      if (next.classList.contains('nav-item') && next.style.display !== 'none') hasVisible = true;
+      next = next.nextElementSibling;
+    }
+    label.style.display = hasVisible ? '' : 'none';
+  });
+}
+
+function togglePb(value, checked) {
+  if (checked) state.selectedPbs.add(value); else state.selectedPbs.delete(value);
+  const savedId = state.sections[state.currentIdx]?.id;
+  buildSections();
+  const newIdx = state.sections.findIndex(s=>s.id===savedId);
+  state.currentIdx = newIdx>=0 ? newIdx : Math.min(state.currentIdx, state.sections.length-1);
+  buildSidebar();
+}
+
+// ═══════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════
+function navigateTo(idx) {
+  state.currentIdx = Math.max(0, Math.min(idx, state.sections.length-1));
+  buildSidebar();
+  renderCurrentSection();
+  document.getElementById('content-area').scrollTop = 0;
+}
+function prevSection() { if (state.currentIdx>0) navigateTo(state.currentIdx-1); }
+function nextSection() {
+  if (state.currentIdx < state.sections.length-1) {
+    state.completedSet.add(state.currentIdx);
+    navigateTo(state.currentIdx+1);
+  }
+}
+function markDone() {
+  state.completedSet.add(state.currentIdx);
+  buildSidebar();
+  const btn = document.getElementById('btn-done');
+  if (btn) { btn.classList.add('done'); btn.textContent = '✅ Section validée'; }
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════
+function renderCurrentSection() {
+  const section = state.sections[state.currentIdx]; if (!section) return;
+  const area = document.getElementById('content-area');
+  let html = `<div class="section-header">
+    <span class="section-emoji">${section.emoji||'📄'}</span>
+    <h1 class="section-title">${section.title}</h1>
+  </div>`;
+  html += renderBlocks(section.blocks||[]);
+  html += `<div class="nav-buttons">
+    <button class="btn-nav btn-prev" onclick="prevSection()" ${state.currentIdx===0?'disabled':''}>← Précédent</button>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="section-progress">${state.currentIdx+1} / ${state.sections.length}</span>
+      <button class="btn-done ${state.completedSet.has(state.currentIdx)?'done':''}" id="btn-done" onclick="markDone()">
+        ${state.completedSet.has(state.currentIdx)?'✅ Validée':'☑️ Marquer comme vue'}
+      </button>
+    </div>
+    <button class="btn-nav btn-next" onclick="nextSection()" ${state.currentIdx===state.sections.length-1?'disabled':''}>Suivant →</button>
+  </div>`;
+  area.innerHTML = html;
+}
+
+function renderBlocks(blocks) {
+  return (blocks||[]).map((b,i) => renderBlock(b,i)).join('');
+}
+
+function renderBlock(b, i) {
+  const text = substituteVars(b.text||'');
+
+  if (b.type === 'option') {
+    const dangerClass = b.style === 'danger' ? ' danger' : '';
+    return `<div class="block-option${dangerClass}">
+      <div class="option-header" onclick="toggleOption(this)">
+        <span style="display:flex;align-items:center;gap:0">
+          <span class="option-arrow">▸</span>
+          <span class="option-label-text">${b.label}</span>
+        </span>
+        <span class="option-toggle">Dérouler</span>
+      </div>
+      <div class="option-content">${renderBlocks(b.blocks||[])}</div>
+    </div>`;
+  }
+
+  if (b.type === 'checklist') {
+    const uid = 'cl_' + Math.random().toString(36).slice(2,8);
+    return `<div class="block-checklist">
+      ${b.title ? `<div class="checklist-title">${substituteVars(b.title)}</div>` : ''}
+      ${(b.items||[]).map((item,j) => `
+        <label class="checklist-item" id="${uid}_${j}">
+          <input type="checkbox" onchange="this.closest('.checklist-item').classList.toggle('checked',this.checked)">
+          <span>${substituteVars(item)}</span>
+        </label>`).join('')}
+    </div>`;
+  }
+
+  if (b.type === 'leviers_dynamiques') {
+    const leviersMap = {
+      'rgo_allergie':'🩺 Confort digestif — RGO + Allergie (APLV)',
+      'allergie_seule':'🌿 Confort digestif — Suspicion allergie',
+      'rgo_seul':'😣 Confort digestif — RGO',
+      'nutrition_courbe':'📉 Nutrition — Courbe de poids déclinante (faim)',
+      'nutrition_espacement_long':'⏱ Nutrition — Espacements trop longs',
+      'nutrition_espacement_court':'🔄 Nutrition — Espacements trop courts (inconfort)',
+      'nutrition_inversion_jour_nuit':'🌛 Nutrition — Inversion jour/nuit',
+      'nutrition_jus_vegetaux':'🐄 Nutrition — Lait inadapté (jus végétaux)',
+      'rythme_dette_sommeil':'😴 Rythme — Dette de sommeil',
+      'rythme_reveil_matinal':'🌅 Rythme — Réveil matinal précoce',
+      'rythme_activite_physique':"🏃 Rythme — Manque d'activité physique",
+      'strategie_presence':'👐 Endormissement — Présence parentale indispensable',
+      'strategie_tetine':'🍭 Endormissement — Tétine (réveils nocturnes)',
+      'strategie_biberon_sein':'🍼 Endormissement — Biberon / sein (association)',
+      'env_obscurite':'🌑 Environnement — Obscurité insuffisante',
+      'env_temperature':'🌡 Environnement — Température trop élevée',
+      'env_lit_ouvert':'🛏 Environnement — Lit ouvert trop tôt (avant 2,5 ans)',
+      'env_rituel':'🌙 Environnement — Rituel absent ou trop court',
+      'env_cadre':'🗺 Environnement — Cadre non clair / incohérent',
+      'env_stimulations':'👀 Environnement — Stimulations visuelles',
+      'relationnel_conflit':'💬 Relation — Venue au lit parental',
+      'relationnel_rappels':'📢 Relation — Rappels multiples après le coucher',
+    };
+    const leviers = [...state.selectedPbs].filter(pb => leviersMap[pb]).map(pb => leviersMap[pb]);
+    if (!leviers.length) return `<div class="block block-normal"><em>Aucune problématique sélectionnée — les leviers s'afficheront ici.</em></div>`;
+    return `<div class="block block-conseil"><strong>⚙️ Leviers identifiés :</strong><ul class="leviers-list">${leviers.map(l=>`<li class="levier-item">${l}</li>`).join('')}</ul></div>`;
+  }
+
+  if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
+
+  if (b.type === 'separator') return `<div class="block block-separator">${text}</div>`;
+
+  const cls = { normal:'block-normal', question:'block-question', important:'block-important', conseil:'block-conseil', empathie:'block-empathie' }[b.type] || 'block-normal';
+  return `<div class="block ${cls}">${text}</div>`;
+}
+
+function renderBesoinsSommeil(tranches) {
+  const months = parseInt(state.client.ageEnfant);
+  function matchAge(t) {
+    if (isNaN(months)) return false;
+    const a = t.age;
+    if (a.includes('0-2') && months<=2) return true;
+    if (a.includes('2-3') && months>=2 && months<=3) return true;
+    if (a.includes('4-7') && months>=4 && months<=7) return true;
+    if (a.includes('8-14') && months>=8 && months<=14) return true;
+    if (a.includes('15') && months>=15 && months<=24) return true;
+    if (a.includes('2-3 ans') && months>=24 && months<=36) return true;
+    if (a.includes('4-5') && months>=48) return true;
+    return false;
+  }
+  return `<table class="besoins-table"><thead><tr><th>Tranche d'âge</th><th>Total / 24h</th><th>Nuit</th><th>Jour / Siestes</th></tr></thead><tbody>`
+    + tranches.map(t => `<tr class="${matchAge(t)?'age-active':''}"><td class="age-highlight">${t.age}</td><td>${t.total}</td><td>${t.nuit}</td><td>${t.jour}<br><small style="color:#666">${t.siestes}</small></td></tr>`).join('')
+    + `</tbody></table>`;
+}
+
+// ──► FIX toggleOption ◄──
+function toggleOption(header) {
+  const content = header.nextElementSibling;
+  const toggle = header.querySelector('.option-toggle');
+  const arrow = header.querySelector('.option-arrow');
+  const isOpen = content.classList.toggle('open');
+  toggle.textContent = isOpen ? 'Réduire' : 'Dérouler';
+  arrow.textContent = isOpen ? '▾' : '▸';
+}
+
+// ═══════════════════════════════════════════════════
+// VARIABLE SUBSTITUTION
+// ═══════════════════════════════════════════════════
+function substituteVars(text) {
+  if (!text) return '';
+  const c = state.client;
+  const parents = [c.prenomParent1, c.prenomParent2].filter(Boolean).join(' & ');
+  const pb = c.problematique || '[problématique]';
+  const obj = c.objectifs || '[objectifs]';
+  const roleShort = { 'les deux parents':'parents', 'la maman':'maman', 'le papa':'papa' }[c.roleParents] || c.roleParents || 'parents';
+  const heureFin = state.heureFinStr || 'XXXX';
+  return text
+    .replace(/\[prénom_enfant\]/g, c.prenomEnfant||'[prénom]')
+    .replace(/\[prénom_parents\]/g, parents||'[parents]')
+    .replace(/\[age\]/g, c.ageEnfant||'[âge]')
+    .replace(/\[role_parents\]/g, roleShort)
+    .replace(/\[heure_fin\]/g, heureFin)
+    .replace(/\[pb_text\]/g, pb)
+    .replace(/\[obj_text\]/g, obj)
+    .replace(/\[XXX – rappeler ici la problématique écrite par les parents\]/g, pb)
+    .replace(/\[XXX – rappeler les objectifs des parents\]/g, obj)
+    .replace(/\[XXX – rappeler les objectifs\]/g, obj)
+    .replace(/\[prénom\]/gi, c.prenomEnfant||'[prénom]')
+    .replace(/\[Prénom enfant\]/gi, c.prenomEnfant||'[prénom]')
+    .replace(/\[prénom enfant\]/gi, c.prenomEnfant||'[prénom]')
+    .replace(/\[prénom parents\]/gi, parents||'[parents]')
+    .replace(/XXXX/g, heureFin)
+    .replace(/\n/g, '<br>');
+}
+
+// ═══════════════════════════════════════════════════
+// MODAL PROBLÉMATIQUES
+// ═══════════════════════════════════════════════════
+function togglePbModal() {
+  const modal = document.getElementById('pb-modal');
+  modal.classList.toggle('open');
+  if (modal.classList.contains('open')) buildModalPbList();
+}
+
+function buildModalPbList() {
+  const cats = [
+    {cat:'🩺 Confort physique', items:[{value:'rgo_allergie',label:'RGO + Allergie (APLV)'},{value:'allergie_seule',label:'Suspicion allergie seule'},{value:'rgo_seul',label:'RGO seul'}]},
+    {cat:'🍽️ Nutrition', items:[{value:'nutrition_courbe',label:'Courbe déclinante (faim)'},{value:'nutrition_espacement_long',label:'Espacement trop long'},{value:'nutrition_espacement_court',label:'Espacement trop court'},{value:'nutrition_inversion_jour_nuit',label:'Inversion jour/nuit'},{value:'nutrition_jus_vegetaux',label:'Jus végétaux / lait animal'}]},
+    {cat:'⏰ Rythme', items:[{value:'rythme_dette_sommeil',label:'Dette de sommeil'},{value:'rythme_reveil_matinal',label:'Réveil matinal précoce'},{value:'rythme_activite_physique',label:"Manque d'activité physique"}]},
+    {cat:"😴 Stratégie d'endormissement", items:[{value:'strategie_presence',label:'Présence parentale indispensable'},{value:'strategie_tetine',label:'Tétine (cause de réveils)'},{value:'strategie_biberon_sein',label:"Biberon / sein pour s'endormir"}]},
+    {cat:'🏠 Environnement', items:[{value:'env_obscurite',label:'Obscurité insuffisante'},{value:'env_temperature',label:'Température trop élevée'},{value:'env_lit_ouvert',label:'Lit ouvert trop tôt'},{value:'env_rituel',label:'Rituel absent ou trop court'},{value:'env_cadre',label:'Cadre non clair'},{value:'env_stimulations',label:'Stimulations visuelles'}]},
+    {cat:'💬 Enjeux relationnels', items:[{value:'relationnel_conflit',label:'Conflit / lit parental'},{value:'relationnel_rappels',label:'Rappels multiples après coucher'}]},
+  ];
+  document.getElementById('modal-pb-list').innerHTML = cats.map(cat => `
+    <div style="margin-bottom:14px">
+      <div style="font-weight:700;font-size:13px;margin-bottom:7px;color:var(--primary-dark)">${cat.cat}</div>
+      ${cat.items.map(it=>`
+        <label style="display:flex;align-items:center;gap:8px;padding:6px 4px;cursor:pointer;font-size:13.5px">
+          <input type="checkbox" class="modal-pb" value="${it.value}" ${state.selectedPbs.has(it.value)?'checked':''}> ${it.label}
+        </label>`).join('')}
+    </div>`).join('');
+}
+
+function applyPbChanges() {
+  const savedId = state.sections[state.currentIdx]?.id;
+  state.selectedPbs = new Set([...document.querySelectorAll('.modal-pb:checked')].map(cb=>cb.value));
+  buildSidebarPbPanel();
+  buildSections();
+  const newIdx = state.sections.findIndex(s=>s.id===savedId);
+  state.currentIdx = newIdx>=0 ? newIdx : Math.min(state.currentIdx, state.sections.length-1);
+  buildSidebar();
+  renderCurrentSection();
+  togglePbModal();
+}
+
+function newConsultation() {
+  if (confirm('Revenir à l\'écran de setup ?')) {
+    document.getElementById('app-screen').style.display = 'none';
+    document.getElementById('setup-screen').style.display = 'flex';
+    loadSavedClients();
+  }
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) document.getElementById('app-screen').requestFullscreen?.();
+  else document.exitFullscreen?.();
+}
+
+document.getElementById('pb-modal').addEventListener('click', e => { if(e.target===e.currentTarget) togglePbModal(); });
+
+document.addEventListener('keydown', e => {
+  if (document.getElementById('app-screen').style.display==='none') return;
+  if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
+  if (e.key==='ArrowRight'||e.key==='ArrowDown') nextSection();
+  if (e.key==='ArrowLeft'||e.key==='ArrowUp') prevSection();
+  if (e.key==='Escape') document.getElementById('pb-modal').classList.remove('open');
+});
+
+// INIT
+loadSavedClients();
+
+// Pré-remplir date et heure actuelles
+(function initConsultFields() {
+  const now = new Date();
+  const dateStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+  const timeStr = String(now.getHours()).padStart(2,'0') + ':' + String(Math.round(now.getMinutes()/5)*5).padStart(2,'0');
+  const dateEl = document.getElementById('consult-date');
+  const heureEl = document.getElementById('consult-heure');
+  if (dateEl) dateEl.value = dateStr;
+  if (heureEl) heureEl.value = timeStr;
+})();
+</script>
+</body>
+</html>
