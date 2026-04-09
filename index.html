@@ -761,14 +761,32 @@
       </div>
 
       <!-- Âges calculés automatiquement -->
-      <div id="ages-calcules" style="display:none;margin-top:14px;background:#f0fff4;border:1.5px solid var(--border);border-radius:10px;padding:12px 16px">
-        <div style="font-size:12px;font-weight:700;color:var(--primary);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.8px">📊 Âges calculés automatiquement</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
-          <div><span style="color:var(--text-light)">Âge réel :</span> <strong id="age-reel-calc">–</strong></div>
-          <div><span style="color:var(--text-light)">Âge réel (mois) :</span> <strong id="age-reel-mois">–</strong></div>
-          <div><span style="color:var(--text-light)">Âge corrigé :</span> <strong id="age-corrige-calc">–</strong></div>
-          <div><span style="color:var(--text-light)">Âge corrigé (mois) :</span> <strong id="age-corrige-mois">–</strong></div>
-          <div style="grid-column:1/-1"><span style="color:var(--text-light)">Besoin en lait :</span> <strong id="besoin-lait-calc">–</strong></div>
+      <div id="ages-calcules" style="display:none;margin-top:14px;border-radius:12px;overflow:hidden;border:2px solid var(--primary-light);box-shadow:0 4px 16px rgba(45,153,72,0.12)">
+        <div style="background:linear-gradient(90deg,var(--primary-dark),var(--primary));color:white;font-size:12px;font-weight:800;padding:8px 16px;letter-spacing:0.8px;text-transform:uppercase">
+          📊 Âges calculés automatiquement
+        </div>
+        <div style="background:white;padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+
+          <!-- Âge réel -->
+          <div style="background:#f0fff4;border-radius:10px;padding:10px 14px;border:1.5px solid var(--border)">
+            <div style="font-size:10px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px">🎂 Âge réel</div>
+            <div style="font-size:16px;font-weight:800;color:var(--primary-dark)" id="age-reel-calc">–</div>
+            <div style="font-size:12px;color:var(--text-light);margin-top:2px" id="age-reel-mois">–</div>
+          </div>
+
+          <!-- Âge corrigé -->
+          <div style="background:#e3f2fd;border-radius:10px;padding:10px 14px;border:1.5px solid #90caf9">
+            <div style="font-size:10px;font-weight:700;color:#1565c0;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px">✏️ Âge corrigé <span style="font-weight:400;text-transform:none;font-style:italic">(si né à terme)</span></div>
+            <div style="font-size:16px;font-weight:800;color:#0d47a1" id="age-corrige-calc">–</div>
+            <div style="font-size:12px;color:#1565c0;margin-top:2px" id="age-corrige-mois">–</div>
+          </div>
+
+          <!-- Besoin en lait -->
+          <div style="grid-column:1/-1;background:#fff9e6;border-radius:10px;padding:10px 14px;border:1.5px solid #f0ad4e">
+            <div style="font-size:10px;font-weight:700;color:#7c5200;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px">🍼 Besoin en lait (selon âge corrigé)</div>
+            <div style="font-size:14px;font-weight:700;color:#7c5200" id="besoin-lait-calc">–</div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -1406,8 +1424,20 @@ function computeClientFields() {
     agesDiv.style.display = 'block';
     document.getElementById('age-reel-calc').textContent = ageReel.str;
     document.getElementById('age-reel-mois').textContent = ageReel.totalMois + ' mois';
-    document.getElementById('age-corrige-calc').textContent = ageCorrige ? ageCorrige.str : '–';
-    document.getElementById('age-corrige-mois').textContent = ageCorrige ? ageCorrige.totalMois + ' mois' : '–';
+
+    const premature = dateTerme && dateTerme !== dateNaiss;
+    if (premature && ageCorrige) {
+      document.getElementById('age-corrige-calc').textContent = ageCorrige.str;
+      document.getElementById('age-corrige-mois').textContent = ageCorrige.totalMois + ' mois';
+      // Diff de prématurité
+      const diffSem = Math.round((new Date(dateTerme) - new Date(dateNaiss)) / (7 * 24 * 3600 * 1000));
+      if (diffSem > 0) {
+        document.getElementById('age-corrige-mois').textContent += ` (né ${diffSem} sem. tôt)`;
+      }
+    } else {
+      document.getElementById('age-corrige-calc').textContent = 'Même âge (né à terme)';
+      document.getElementById('age-corrige-mois').textContent = ageReel.totalMois + ' mois';
+    }
     document.getElementById('besoin-lait-calc').textContent = besoinLait(ageCorrige ? ageCorrige.totalMois : ageReel.totalMois);
     // Pré-remplir l'âge texte
     const ageEl = document.getElementById('age-enfant');
@@ -1567,7 +1597,19 @@ function startTimer() {
 function updateHeader() {
   const c = state.client;
   document.getElementById('header-enfant').textContent = c.prenomEnfant;
-  document.getElementById('header-age-rituel').textContent = [c.ageEnfant, c.rituel ? 'Rituel : '+c.rituel : ''].filter(Boolean).join(' • ');
+
+  // Âges : réel + corrigé (si différents = enfant prématuré)
+  let ageLine = '';
+  if (c.ageReelStr) {
+    ageLine = '🎂 ' + c.ageReelStr;
+    if (c.ageCorrigeStr && c.ageCorrigeStr !== c.ageReelStr) {
+      ageLine += ' · ✏️ corrigé : ' + c.ageCorrigeStr;
+    }
+  } else if (c.ageEnfant) {
+    ageLine = c.ageEnfant;
+  }
+  const rituelPart = c.rituel ? '🌙 ' + c.rituel : '';
+  document.getElementById('header-age-rituel').textContent = [ageLine, rituelPart].filter(Boolean).join('  •  ');
   document.getElementById('header-parents').textContent = [c.prenomParent1, c.prenomParent2].filter(Boolean).join(' & ');
   document.getElementById('header-nom').textContent = c.nomFamille||'';
   // Emoji parent conditionnel
