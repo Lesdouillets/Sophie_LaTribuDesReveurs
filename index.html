@@ -92,12 +92,21 @@
     .setup-card {
       background: white;
       border-radius: 24px;
-      padding: 48px;
+      padding: 48px 48px 100px 48px;
       width: 100%;
       max-width: 960px;
       box-shadow: 0 20px 60px rgba(27,67,50,0.35);
       max-height: 95vh;
       overflow-y: auto;
+      position: relative;
+    }
+    .setup-card .btn-start {
+      position: sticky;
+      bottom: -48px;
+      margin: 24px -48px -100px;
+      border-radius: 0 0 24px 24px;
+      z-index: 10;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
     }
     .setup-card::-webkit-scrollbar { width: 5px; }
     .setup-card::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
@@ -718,7 +727,12 @@
 
     <!-- CLIENTS SAUVEGARDÉS -->
     <div class="setup-section" id="saved-clients-section">
-      <h3>📁 Clients récents</h3>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <h3 style="margin:0">📁 Clients récents</h3>
+      </div>
+      <input type="text" id="search-clients" placeholder="🔍 Rechercher par nom, prénom enfant, prénom maman…"
+        oninput="filterSavedClients()"
+        style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;margin-bottom:12px;outline:none">
       <div id="saved-clients-list"></div>
       <div style="font-size:13px;color:#aaa;text-align:center;margin-top:4px" id="no-saved">Aucun client sauvegardé</div>
     </div>
@@ -898,11 +912,17 @@
       <h3>👨‍👩‍👧 Informations des parents</h3>
       <div class="form-grid">
         <div class="form-group">
-          <label>Prénom mère *</label>
-          <input type="text" id="prenom-parent1" placeholder="ex. Florence" autocomplete="off">
+          <label>Prénom Parent 1 *</label>
+          <div style="display:flex;gap:8px">
+            <input type="text" id="prenom-parent1" placeholder="ex. Florence" autocomplete="off" style="flex:1">
+            <select id="sexe-parent1" style="width:105px;padding:10px;border:1.5px solid var(--border);border-radius:10px;font-size:14px">
+              <option value="maman">👩 Maman</option>
+              <option value="papa">👨 Papa</option>
+            </select>
+          </div>
         </div>
         <div class="form-group">
-          <label>Prénom co-parent (optionnel)</label>
+          <label>Prénom Parent 2 (optionnel)</label>
           <input type="text" id="prenom-parent2" placeholder="ex. Eddy" autocomplete="off">
         </div>
         <div class="form-group">
@@ -1325,15 +1345,32 @@ function currentSection() { return state.sections[state.currentIdx]; }
 // ═══════════════════════════════════════════════════
 // SAVED CLIENTS
 // ═══════════════════════════════════════════════════
+function filterSavedClients() {
+  const query = (document.getElementById('search-clients')?.value || '').toLowerCase().trim();
+  const saved = JSON.parse(localStorage.getItem('tdr_clients') || '[]');
+  const filtered = !query ? saved : saved.filter(c => {
+    return (c.prenomEnfant||'').toLowerCase().includes(query)
+      || (c.nomFamille||'').toLowerCase().includes(query)
+      || (c.prenomParent1||'').toLowerCase().includes(query)
+      || (c.prenomParent2||'').toLowerCase().includes(query);
+  });
+  _renderClientsList(filtered, saved);
+}
+
 function loadSavedClients() {
   const saved = JSON.parse(localStorage.getItem('tdr_clients') || '[]');
+  _renderClientsList(saved, saved);
+}
+
+function _renderClientsList(filtered, allSaved) {
   const list = document.getElementById('saved-clients-list');
   const noSaved = document.getElementById('no-saved');
   list.innerHTML = '';
-  if (!saved.length) { noSaved.style.display = 'block'; return; }
+  if (!filtered.length) { noSaved.style.display = 'block'; return; }
   noSaved.style.display = 'none';
-  saved.slice().reverse().slice(0, 5).forEach((c, i) => {
-    const realIdx = saved.length - 1 - i;
+  filtered.slice().reverse().slice(0, 8).forEach((c, i) => {
+    const realIdx = allSaved.indexOf(c);
+    // realIdx already computed above
     const div = document.createElement('div');
     div.className = 'saved-client-item';
     div.innerHTML = `
