@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>La tribu des rêveurs – Consultation Sommeil</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>😴</text></svg>">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     /* ── VARIABLES (THÈME VERT) ─────────────────────── */
     :root {
@@ -46,6 +47,37 @@
       height: 100vh;
       overflow: hidden;
     }
+
+    /* ── LOGIN SCREEN ──────────────────────────────── */
+    #login-screen {
+      display: flex; align-items: center; justify-content: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #1b4332 0%, #2d9948 50%, #74c69d 100%);
+    }
+    .login-card {
+      background: white; border-radius: 24px; padding: 48px 40px;
+      width: 100%; max-width: 420px;
+      box-shadow: 0 20px 60px rgba(27,67,50,0.4);
+      text-align: center;
+    }
+    .login-logo { font-size: 48px; margin-bottom: 8px; }
+    .login-brand { font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+    .login-sub { font-size: 13px; color: var(--text-light); margin-bottom: 32px; }
+    .login-card .form-group { margin-bottom: 14px; text-align: left; }
+    .login-card input {
+      width: 100%; padding: 12px 16px; border: 2px solid var(--border);
+      border-radius: 10px; font-size: 15px; transition: border-color 0.2s;
+    }
+    .login-card input:focus { outline: none; border-color: var(--primary-light); }
+    .btn-login {
+      width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: white; border: none; border-radius: 12px; font-size: 16px;
+      font-weight: 700; cursor: pointer; margin-top: 8px; transition: all 0.2s;
+    }
+    .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(45,153,72,0.4); }
+    .btn-login:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .login-error { color: #e74c3c; font-size: 13px; margin-top: 10px; min-height: 18px; }
+    .login-offline { font-size: 12px; color: var(--text-light); margin-top: 16px; }
 
     /* ── SETUP SCREEN ───────────────────────────────── */
     #setup-screen {
@@ -630,6 +662,30 @@
 </head>
 <body>
 
+<!-- ════ LOGIN SCREEN ════ -->
+<div id="login-screen" style="display:none">
+  <div class="login-card">
+    <div class="login-logo">🌿</div>
+    <div class="login-brand">La tribu des rêveurs</div>
+    <div class="login-sub">Espace réservé — Sophie Douesneau</div>
+    <div class="form-group">
+      <label style="font-size:13px;font-weight:600;color:var(--text-light)">Email</label>
+      <input type="email" id="login-email" placeholder="votre@email.com" autocomplete="email"
+        onkeydown="if(event.key==='Enter')document.getElementById('login-password').focus()">
+    </div>
+    <div class="form-group">
+      <label style="font-size:13px;font-weight:600;color:var(--text-light)">Mot de passe</label>
+      <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password"
+        onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn-login" id="btn-login" onclick="doLogin()">🔐 Se connecter</button>
+    <div class="login-error" id="login-error"></div>
+    <div class="login-offline" id="login-offline" style="display:none">
+      📶 Hors ligne — reconnectez-vous à internet pour accéder à vos données.
+    </div>
+  </div>
+</div>
+
 <!-- ════ SETUP SCREEN ════ -->
 <div id="setup-screen">
   <div class="setup-card">
@@ -832,6 +888,7 @@
       <button class="btn-icon" title="Ajuster les problématiques" onclick="togglePbModal()">⚙️</button>
       <button class="btn-icon" title="Nouvelle consultation" onclick="newConsultation()">🔄</button>
       <button class="btn-icon" title="Plein écran" onclick="toggleFullscreen()">⛶</button>
+      <button class="btn-icon" title="Se déconnecter" onclick="doLogout()" style="color:#ff7675">🚪</button>
     </div>
   </div>
 
@@ -976,6 +1033,113 @@
 <script src="script-data.js"></script>
 <script>
 // ═══════════════════════════════════════════════════
+// SUPABASE
+// ═══════════════════════════════════════════════════
+const SUPA_URL = 'https://chgtvqpfjkasttjktupf.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNoZ3R2cXBmamthc3R0amt0dXBmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3MjIyNzgsImV4cCI6MjA5MTI5ODI3OH0.LT_Z47Yu-ZHZjEcH8IZwDigMfAH6WJre1oluni1-mvE';
+const db = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+
+let currentUser = null;
+
+async function checkAuth() {
+  try {
+    const { data: { session } } = await db.auth.getSession();
+    if (session?.user) {
+      currentUser = session.user;
+      showSetup();
+    } else {
+      showLogin();
+    }
+  } catch(e) {
+    // Hors ligne — vérifie si une session est en cache
+    const cached = localStorage.getItem('tdr_offline_user');
+    if (cached) { currentUser = JSON.parse(cached); showSetup(); }
+    else { showLogin(); document.getElementById('login-offline').style.display='block'; }
+  }
+}
+
+function showLogin() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('setup-screen').style.display = 'none';
+  document.getElementById('app-screen').style.display = 'none';
+}
+
+function showSetup() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('setup-screen').style.display = 'flex';
+  document.getElementById('app-screen').style.display = 'none';
+  if (currentUser) localStorage.setItem('tdr_offline_user', JSON.stringify(currentUser));
+  loadSavedClients();
+  loadSupabaseOverrides();
+}
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const btn = document.getElementById('btn-login');
+  const errEl = document.getElementById('login-error');
+  if (!email || !password) { errEl.textContent = '❌ Email et mot de passe requis.'; return; }
+  btn.disabled = true; btn.textContent = '⏳ Connexion…'; errEl.textContent = '';
+  const { data, error } = await db.auth.signInWithPassword({ email, password });
+  btn.disabled = false; btn.textContent = '🔐 Se connecter';
+  if (error) { errEl.textContent = '❌ ' + (error.message === 'Invalid login credentials' ? 'Email ou mot de passe incorrect.' : error.message); return; }
+  currentUser = data.user;
+  showSetup();
+}
+
+async function doLogout() {
+  if (!confirm('Se déconnecter ?')) return;
+  await db.auth.signOut();
+  currentUser = null;
+  localStorage.removeItem('tdr_offline_user');
+  document.getElementById('notes-panel').style.display = 'none';
+  if (state.timerInterval) clearInterval(state.timerInterval);
+  showLogin();
+}
+
+// ─── Sync overrides ───
+async function loadSupabaseOverrides() {
+  if (!currentUser) return;
+  try {
+    const { data } = await db.from('script_overrides').select('overrides').eq('user_id', currentUser.id).single();
+    if (data?.overrides) {
+      state.scriptOverrides = data.overrides;
+      localStorage.setItem('tdr_script_overrides', JSON.stringify(data.overrides));
+    }
+  } catch(e) {}
+}
+
+async function syncOverridesToSupabase() {
+  if (!currentUser) return;
+  try {
+    await db.from('script_overrides').upsert({ user_id: currentUser.id, overrides: state.scriptOverrides, updated_at: new Date().toISOString() });
+  } catch(e) {}
+}
+
+// ─── Sync sessions ───
+async function syncSessionToSupabase(session) {
+  if (!currentUser) return;
+  try {
+    await db.from('sessions').upsert({
+      id: session.id, user_id: currentUser.id,
+      client_name: `${session.client?.prenomEnfant||''} ${session.client?.nomFamille||''}`.trim(),
+      client_data: session.client,
+      session_data: { selectedPbs: session.selectedPbs, completedSections: session.completedSections, currentSection: session.currentSection, notes: session.notes, checkedItems: session.checkedItems, heureFinStr: session.heureFinStr, savedAt: session.savedAt },
+      updated_at: new Date().toISOString()
+    });
+  } catch(e) {}
+}
+
+async function loadSessionsFromSupabase() {
+  if (!currentUser) return null;
+  try {
+    const { data } = await db.from('sessions').select('*').eq('user_id', currentUser.id).order('updated_at', { ascending: false });
+    if (!data) return null;
+    return data.map(r => ({ id: r.id, client: r.client_data, savedAt: r.updated_at, ...r.session_data }));
+  } catch(e) { return null; }
+}
+
+// ═══════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════
 let state = {
@@ -996,6 +1160,7 @@ state.scriptOverrides = JSON.parse(localStorage.getItem('tdr_script_overrides') 
 
 function saveScriptOverrides() {
   localStorage.setItem('tdr_script_overrides', JSON.stringify(state.scriptOverrides));
+  syncOverridesToSupabase();
 }
 
 function getOverrideBlocks(section) {
@@ -1696,7 +1861,7 @@ document.addEventListener('keydown', e => {
 // ═══════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════
-loadSavedClients();
+checkAuth();
 
 // Boutons "Tout ✓ / Tout ✗" par catégorie (setup + modal)
 function addCatSelectButtons(container) {
@@ -1760,6 +1925,7 @@ function saveCurrentSession() {
   const idx = all.findIndex(s => s.id === session.id);
   if (idx >= 0) all[idx] = session; else all.push(session);
   localStorage.setItem('tdr_sessions', JSON.stringify(all));
+  syncSessionToSupabase(session);
 
   // Flash feedback
   const btn = document.querySelector('.btn-save-session');
@@ -1781,8 +1947,12 @@ document.getElementById('sessions-modal').addEventListener('click', e => {
   if (e.target === e.currentTarget) document.getElementById('sessions-modal').classList.remove('open');
 });
 
-function buildSessionsList() {
-  const all = JSON.parse(localStorage.getItem('tdr_sessions') || '[]').reverse();
+async function buildSessionsList() {
+  const remote = await loadSessionsFromSupabase();
+  const local = JSON.parse(localStorage.getItem('tdr_sessions') || '[]');
+  // Merge: Supabase prioritaire, localStorage en fallback
+  const merged = remote || local;
+  const all = [...merged].reverse();
   const container = document.getElementById('sessions-list');
   if (!all.length) {
     container.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px">Aucune session sauvegardée</p>';
