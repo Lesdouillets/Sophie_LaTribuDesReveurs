@@ -173,6 +173,115 @@ const SCRIPT_DATA = {
       ]
     },
 
+    // ── VI. OBJECTIFS REVUS ────────────────────────────────
+    {
+      id: "objectifs_revus",
+      title: "VI. Objectifs revus",
+      emoji: "🎯",
+      blocks: [
+        {
+          type: "option", label: "✅ Objectifs faisables",
+          blocks: [
+            { type: "normal", text: "Par rapport aux objectifs que vous avez donné ⇒ moi ce que je pense c'est que c'est tout à fait COHÉRENT et FAISABLES" }
+          ]
+        },
+        {
+          type: "option", label: "⚠️ Objectifs PAS faisables — points à re-discuter",
+          blocks: [
+            { type: "normal", text: "Par rapport aux objectifs que vous avez donné ⇒ Il y a certains points que je voudrais re-discuter avec vous" },
+            {
+              type: "option", label: "Nuits complètes (mais besoin de temps d'alimentation car PETIT)",
+              blocks: [
+                { type: "normal", text: "BB trop petit ⇒ Il a encore besoin de temps d'alimentation la nuit\nSon estomac n'est pas assez gros pour \"TENIR\" toute la nuit\n⇒ Il a donc encore besoin de temps d'alimentation la nuit" }
+              ]
+            },
+            {
+              type: "option", label: "Nuits complètes (mais besoin de rattrapage de courbe)",
+              blocks: [
+                { type: "normal", text: "Aujourd'hui, votre enfant a besoin de faire un rattrapage de courbe\nIl est possible que les temps d'alimentation la nuit soient encore présents quelque temps\nMais c'est TEMPORAIRE :\n- le temps que sa courbe de poids remonte\n- et que ses apports alimentaires se remettent en journée\n⇒ Il a donc encore besoin de temps d'alimentation la nuit de manière temporaire" }
+              ]
+            },
+            {
+              type: "option", label: "Si la crèche ne suit pas les recommandations",
+              blocks: [
+                { type: "normal", text: "Si la crèche ne suit pas vos recommandations :\n⇒ ça aura un impact sur ses nuits (ex: réveils nocturnes, réveils matinaux, terreurs nocturnes)\n⇒ Vous faites un test et voyez si la crèche lui correspond ou pas" }
+              ]
+            },
+            {
+              type: "option", label: "Si activités qui obligent à réveiller l'enfant",
+              blocks: [
+                { type: "normal", text: "Si votre enfant est réveillé pour aller à des activités :\n- Son corps aura la validation que c'est OK de faire de courtes siestes\n- Ne comprendra pas ses variations de rythmes\n- Et n'arrivera pas à enchaîner les cycles de sommeil pour ses siestes\nDe plus, le manque de sommeil de jour aura un impact sur ses nuits (ex: réveils nocturnes, réveils matinaux, terreurs nocturnes)" }
+              ]
+            },
+            {
+              type: "option", label: "Si nuit supérieure à 12h",
+              blocks: [
+                { type: "normal", text: "Votre enfant fait des nuits qui correspondent à ses besoins.\nSi son horaire de lever ne correspond pas à VOTRE rythme\n⇒ on peut voir pour décaler toute sa journée (temps d'alimentation, siestes…)" }
+              ]
+            },
+          ]
+        },
+        {
+          type: "option", label: "🍭 Tétine = stratégie dépendante",
+          blocks: [
+            { type: "normal", text: "Et j'aimerais aussi qu'on prenne un moment pour REPARLER de la tétine.\n\nAu vu de ce qu'on s'est dit ensemble, aujourd'hui la tétine FAIT PARTIE de la stratégie d'endormissement de [prénom_enfant]\nMais elle fait AUSSI partie des éléments qui contribuent à ses réveils\n\n⇒ Et c'est pour ça qu'il va vous appeler pour :\n- venir la lui remettre\n- pour pouvoir se rendormir\n\nEt ça, c'est quelque chose qu'on voit très fréquemment\n\n⇒ Du coup par rapport à ça, il y a 2 chemins possibles… et les 2 sont tout à fait valables" },
+            {
+              type: "option", label: "Option 1 : GARDER la tétine",
+              blocks: [
+                {
+                  type: "option", label: "Bébé PAS assez moteur (moins de 6 mois)",
+                  blocks: [
+                    { type: "normal", text: "Comme [prénom_enfant] est encore petit et n'a pas encore la capacité motrice pour la remettre seul\n\nDans ce cas, ce sera VOUS qui viendrez la lui remettre lorsqu'elle tombera pendant son sommeil\n\nDonc au départ, il dépend encore de vous pour ça\n\nEn lui remettant sa tétine À CHAQUE FOIS ⇒ Vous allez garder la cohérence dans ses stratégies d'endormissement ET de rendormissement.\n\nMais on peut progressivement lui apprendre comment il peut la remettre dans la bouche\n\nC'est vraiment vers 6-7 mois qu'il aura la capacité motrice pour la chercher ET la remettre SEUL\n⇒ Et comme ça, il pourra gérer SEUL ses micro-réveils avec sa tétine" }
+                  ]
+                },
+                {
+                  type: "option", label: "Bébé assez moteur (plus de 6 mois)",
+                  blocks: [
+                    { type: "normal", text: "Et comme [prénom_enfant] il est assez grand et moteur\n\nOn peut progressivement lui apprendre à la retrouver ET à la remettre seul\n\nL'objectif est qu'il gère SEUL ses micro-réveils avec sa tétine" }
+                  ]
+                },
+              ]
+            },
+            {
+              type: "option", label: "Option 2 : SUPPRIMER la tétine",
+              blocks: [
+                { type: "normal", text: "L'objectif est de faire disparaître les réveils liés à la tétine\n\nQuand on évoque cette idée, ça peut parfois faire un peu peur aux parents, parce que la tétine a souvent une grande place dans l'apaisement d'un bébé.\n\nMais MON expérience montre qu'en général, les BB s'adaptent très vite,\net en quelques jours, la tétine devient souvent un lointain souvenir !" },
+                { type: "question", text: "Alors dites-moi :\n→ Souhaitez-vous la garder MAIS avec les conséquences que ça implique\n→ ou souhaitez-vous la supprimer définitivement ?\n→ Option hybride : la supprimer durant les temps de sommeil (et pas la journée)\n\n⇒ Vers quoi vous voudriez aller ?" }
+              ]
+            },
+          ]
+        },
+        {
+          type: "option", label: "🛌 Objectif lit ouvert MAIS enfant trop petit (1 à 2,5 ans)",
+          blocks: [
+            { type: "normal", text: "J'aimerais aussi revenir sur votre objectif d'aller vers un lit ouvert.\n\nAller vers un lit ouvert, c'est une étape naturelle du développement et de l'autonomie d'un enfant\nMais avec un lit ouvert, il y a quelques éléments importants à avoir en tête.\n\n1. La sécurité : il a la possibilité de se lever et de se promener dans toute la maison\n   Parfois, il peut aller dans des endroits dangereux\n\n2. Le sentiment de sécurité : le lit est + grand, ouvert sur toute la chambre…\n\n⇒ C'est pour ces raisons que je ne recommande pas le lit ouvert AVANT l'âge de 2,5-3 ans\n\nMais dans tous les cas, ça reste un choix parental.\nC'est VOUS qui décidez ce qui vous semble le + juste pour votre enfant et pour votre famille." },
+            { type: "question", text: "Qu'est-ce qui vous semble le + juste pour vous, aujourd'hui :\n→ Garder le lit ouvert\n→ Retourner vers un lit à barreaux/parapluie ?\n\n(Ce n'est PAS DU TOUT une régression — c'est simplement un outil TEMPORAIRE pour un sommeil de grand !)" }
+          ]
+        },
+      ]
+    },
+
+    // ── VII. PLUSIEURS CHEMINS POSSIBLES ───────────────────
+    {
+      id: "chemins_possibles",
+      title: "VII. Plusieurs chemins possibles",
+      emoji: "🛤️",
+      blocks: [
+        { type: "normal", text: "Il va y avoir plusieurs chemins possibles pour accompagner [prénom_enfant],\net l'idée c'est vraiment de trouver celui qui vous correspond le mieux\n\nPour ça, j'aurais besoin de savoir :\n- Est-ce que vous avez BESOIN que ça aille plutôt vite,\n  OU est-ce que vous préférez mettre un peu + de progressivité ?\n  → La progressivité pas à pas sera + douce MAIS + longue en terme de résultats\n  → Tandis que le chemin le + direct permet de faire évoluer les choses + rapidement\n    mais PEUT générer + d'émotions\n\n- Donc, c'est vraiment vous qui choisissez le chemin en fonction de :\n  - ce que vous préférez\n  - de ce que vous attendez en terme de rapidité\n  - et de gestion des émotions" },
+        { type: "question", text: "Avec tout ça en tête, qu'est-ce qui vous semblerait le plus juste pour vous et pour [prénom_enfant] :\n- Quelque chose de plutôt progressif,\n- ou quelque chose de + rapide?" },
+        { type: "normal", text: "Du coup, je préfère vous dire, pour être totalement transparente avec vous :\n- quand on met en place des changements\n- même avec beaucoup de progressivité,\n- il PEUT y avoir des émotions\n- surtout au début.\n⇒ C'est tout à fait NORMAL\n\nOn va demander à [prénom_enfant] de changer ses habitudes et il PEUT :\n- réagir\n- et montrer qu'il n'est pas d'accord\n\nDans ces moments-là, ce qui va vraiment l'aider c'est :\n- que vous soyez à ses côtés\n- et que vous l'accompagniez avec cohérence…" },
+        { type: "empathie", text: "… et avec tout ce que vous avez déjà mis en place, vous êtes sur la bonne voie" },
+        { type: "question", text: "Est-ce que vous êtes à l'aise avec ça, avec les émotions?" },
+        {
+          type: "option", label: "Si PAS OK avec les émotions 😭",
+          blocks: [
+            { type: "empathie", text: "Merci de me le dire, c'est vraiment important pour MOI de le savoir.\nJe comprends… c'est difficile d'entendre son enfant pleurer\nEt franchement, personne n'aime ça\n\nEt CE QUE je peux vous dire TOUT DE SUITE\n⇒ c'est qu'on ne va PAS laisser votre enfant seul avec ses pleurs.\n\nPar contre, il y a quelque chose d'important à comprendre :\n- Les pleurs chez l'enfant, c'est surtout une façon de communiquer.\n\nAujourd'hui, on va lui demander de changer une habitude\n… et comme pour nous, le changement, personne n'aime ça !\n\nDonc oui, c'est possible qu'il réagisse,\n- qu'il proteste\n- ou qu'il pleure\n- pour dire \"je préférais avant\"\n⇒ Et ça… c'est une réaction normale\n\nL'idée, encore une fois, c'est vraiment de VOUS respecter\nOn va simplement :\n- adapter l'accompagnement\n- pour que ce soit le + confortable possible POUR VOUS.\nOn pourra aller vers quelque chose :\n- de + progressif\n- avec des ajustements tout en douceur\n- et vous POURREZ avancer à votre rythme\n\nEt surtout, vous ne SEREZ PAS SEULE\nOn va LE faire ensemble\n… ET LUI il aura SURTOUT besoin :\n- de sentir que vous êtes là\n- et que vous SAVEZ ce que vous faites" }
+          ]
+        },
+        { type: "normal", text: "Alors, si ça vous va :\n- On va pouvoir passer à la suite,\n- et voir concrètement COMMENT on va mettre ça en place" },
+      ]
+    },
+
   ],
 
   // ── SECTIONS CONDITIONNELLES ─────────────────────────────
