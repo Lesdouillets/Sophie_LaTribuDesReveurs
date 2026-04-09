@@ -710,12 +710,122 @@
           <input type="text" id="prenom-enfant" placeholder="ex. Emma" autocomplete="off">
         </div>
         <div class="form-group">
-          <label>Âge *</label>
-          <input type="text" id="age-enfant" placeholder="ex. 8 mois" autocomplete="off">
+          <label>Nom de famille</label>
+          <input type="text" id="nom-famille-enfant" placeholder="ex. Dupont" autocomplete="off">
         </div>
-        <div class="form-group full">
+        <div class="form-group">
+          <label>Sexe</label>
+          <select id="sexe-enfant">
+            <option value="">–</option>
+            <option value="Fille">Fille</option>
+            <option value="Garçon">Garçon</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fratrie</label>
+          <input type="text" id="fratrie-enfant" placeholder="ex. 1 grand frère, /" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label>Date de naissance</label>
+          <input type="date" id="date-naissance" oninput="computeClientFields()">
+        </div>
+        <div class="form-group">
+          <label>Date du terme <span style="color:#aaa;font-size:11px">(si prématuré)</span></label>
+          <input type="date" id="date-terme" oninput="computeClientFields()">
+        </div>
+        <div class="form-group">
+          <label>Poids (kg)</label>
+          <input type="number" id="poids-enfant" placeholder="ex. 8.35" step="0.01" min="0" oninput="computeClientFields()">
+        </div>
+        <div class="form-group">
           <label>Rituel actuel</label>
           <input type="text" id="rituel-enfant" placeholder="ex. sein + bercement dans les bras" autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Âges calculés automatiquement -->
+      <div id="ages-calcules" style="display:none;margin-top:14px;background:#f0fff4;border:1.5px solid var(--border);border-radius:10px;padding:12px 16px">
+        <div style="font-size:12px;font-weight:700;color:var(--primary);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.8px">📊 Âges calculés automatiquement</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
+          <div><span style="color:var(--text-light)">Âge réel :</span> <strong id="age-reel-calc">–</strong></div>
+          <div><span style="color:var(--text-light)">Âge réel (mois) :</span> <strong id="age-reel-mois">–</strong></div>
+          <div><span style="color:var(--text-light)">Âge corrigé :</span> <strong id="age-corrige-calc">–</strong></div>
+          <div><span style="color:var(--text-light)">Âge corrigé (mois) :</span> <strong id="age-corrige-mois">–</strong></div>
+          <div style="grid-column:1/-1"><span style="color:var(--text-light)">Besoin en lait :</span> <strong id="besoin-lait-calc">–</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALIMENTATION -->
+    <div class="setup-section">
+      <h3>🍼 Alimentation</h3>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Mode d'alimentation <span style="color:#aaa;font-size:11px">(plusieurs choix possibles)</span></label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
+            <label class="pb-item"><input type="checkbox" name="alim" value="Allaitement maternel"> <span>🤱 Allaitement maternel</span></label>
+            <label class="pb-item"><input type="checkbox" name="alim" value="Biberon lait infantile"> <span>🍼 Biberon lait infantile</span></label>
+            <label class="pb-item"><input type="checkbox" name="alim" value="Allaitement mixte"> <span>🔀 Allaitement mixte</span></label>
+            <label class="pb-item"><input type="checkbox" name="alim" value="Diversification"> <span>🥑 Diversification</span></label>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label>Type de lait</label>
+          <select id="type-lait">
+            <option value="">–</option>
+            <option value='Lait 1er âge'>Lait 1er âge</option>
+            <option value='Lait 2ème âge'>Lait 2ème âge</option>
+            <option value='Lait 3ème âge'>Lait 3ème âge</option>
+            <option value='Lait "normal" aux PLV'>Lait "normal" aux PLV</option>
+            <option value='Lait HA (hypoallergénique)'>Lait HA (hypoallergénique)</option>
+            <option value='Lait sans PLV (Nutramigen/Neocate)'>Lait sans PLV (Nutramigen/Neocate)</option>
+            <option value='Lait végétal (soja)'>Lait végétal (soja)</option>
+            <option value='Lait de vache entier'>Lait de vache entier</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- CROISSANCE -->
+    <div class="setup-section">
+      <h3>📏 Croissance & Taille cible</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Taille père (cm)</label>
+          <input type="number" id="taille-pere" placeholder="ex. 175" oninput="computeClientFields()">
+        </div>
+        <div class="form-group">
+          <label>Taille mère (cm)</label>
+          <input type="number" id="taille-mere" placeholder="ex. 160" oninput="computeClientFields()">
+        </div>
+        <div class="form-group full">
+          <label>Taille cible estimée</label>
+          <div id="taille-cible-calc" style="padding:10px 14px;background:#f0fff4;border:2px solid var(--border);border-radius:10px;font-size:15px;font-weight:700;color:var(--primary-dark)">–</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MÉDICAL -->
+    <div class="setup-section">
+      <h3>🏥 Informations médicales</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <label class="pb-item"><input type="checkbox" id="medical-rgo"> <span>😣 RGO</span></label>
+        <label class="pb-item"><input type="checkbox" id="medical-aplv-susp"> <span>🌿 APLV suspectée</span></label>
+        <label class="pb-item"><input type="checkbox" id="medical-aplv-conf"> <span>⚠️ APLV confirmée</span></label>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="setup-section">
+      <h3>📞 Contact</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" id="email-famille" placeholder="ex. famille@email.com" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label>Téléphone</label>
+          <input type="tel" id="telephone-famille" placeholder="ex. 06 12 34 56 78" autocomplete="off">
         </div>
       </div>
     </div>
@@ -748,16 +858,12 @@
       <h3>👨‍👩‍👧 Informations des parents</h3>
       <div class="form-grid">
         <div class="form-group">
-          <label>Prénom Parent 1 *</label>
-          <input type="text" id="prenom-parent1" placeholder="ex. Marie" autocomplete="off">
+          <label>Prénom mère *</label>
+          <input type="text" id="prenom-parent1" placeholder="ex. Florence" autocomplete="off">
         </div>
         <div class="form-group">
-          <label>Prénom Parent 2 (optionnel)</label>
-          <input type="text" id="prenom-parent2" placeholder="ex. Thomas" autocomplete="off">
-        </div>
-        <div class="form-group">
-          <label>Nom de famille</label>
-          <input type="text" id="nom-famille" placeholder="ex. Dupont" autocomplete="off">
+          <label>Prénom co-parent (optionnel)</label>
+          <input type="text" id="prenom-parent2" placeholder="ex. Eddy" autocomplete="off">
         </div>
         <div class="form-group">
           <label>Participant(s) aujourd'hui</label>
@@ -1237,9 +1343,74 @@ function saveClient() {
   localStorage.setItem('tdr_clients', JSON.stringify(saved));
 }
 
-document.querySelectorAll('input[name="pb"]').forEach(cb => {
+document.querySelectorAll('input[name="pb"], input[name="alim"]').forEach(cb => {
   cb.addEventListener('change', function() { this.closest('.pb-item').classList.toggle('checked', this.checked); });
 });
+
+// ═══════════════════════════════════════════════════
+// CALCULS AUTOMATIQUES
+// ═══════════════════════════════════════════════════
+function calcAge(dateStr, referenceStr) {
+  if (!dateStr || !referenceStr) return null;
+  const d = new Date(dateStr), r = new Date(referenceStr);
+  if (isNaN(d) || isNaN(r) || r < d) return null;
+  let y = r.getFullYear() - d.getFullYear();
+  let m = r.getMonth() - d.getMonth();
+  let j = r.getDate() - d.getDate();
+  if (j < 0) { m--; j += 30; }
+  if (m < 0) { y--; m += 12; }
+  const totalMois = y * 12 + m;
+  const str = (y > 0 ? y + ' an' + (y>1?'s':'') + ' ' : '') + m + ' mois ' + j + ' j';
+  return { totalMois, str };
+}
+
+function besoinLait(mois) {
+  if (mois === null) return '–';
+  if (mois < 1)  return '150–180 mL/kg/j';
+  if (mois < 3)  return '120–150 mL/kg/j';
+  if (mois < 6)  return '100–120 mL/kg/j';
+  if (mois < 9)  return '500–600 mL/j total';
+  return 'Âge supérieur à 9 mois — 500 mL/j min';
+}
+
+function computeClientFields() {
+  const dateNaiss = document.getElementById('date-naissance')?.value;
+  const dateTerme = document.getElementById('date-terme')?.value;
+  const consultDate = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
+  const taillePere = parseFloat(document.getElementById('taille-pere')?.value);
+  const tailleMere = parseFloat(document.getElementById('taille-mere')?.value);
+  const sexe = document.getElementById('sexe-enfant')?.value;
+
+  const ageReel = calcAge(dateNaiss, consultDate);
+  const ageCorrige = calcAge(dateTerme || dateNaiss, consultDate);
+
+  const agesDiv = document.getElementById('ages-calcules');
+  if (ageReel) {
+    agesDiv.style.display = 'block';
+    document.getElementById('age-reel-calc').textContent = ageReel.str;
+    document.getElementById('age-reel-mois').textContent = ageReel.totalMois + ' mois';
+    document.getElementById('age-corrige-calc').textContent = ageCorrige ? ageCorrige.str : '–';
+    document.getElementById('age-corrige-mois').textContent = ageCorrige ? ageCorrige.totalMois + ' mois' : '–';
+    document.getElementById('besoin-lait-calc').textContent = besoinLait(ageCorrige ? ageCorrige.totalMois : ageReel.totalMois);
+    // Pré-remplir l'âge texte
+    const ageEl = document.getElementById('age-enfant');
+    if (ageEl && !ageEl.value) ageEl.value = ageReel.str;
+  } else {
+    agesDiv.style.display = 'none';
+  }
+
+  // Taille cible
+  const tcEl = document.getElementById('taille-cible-calc');
+  if (!isNaN(taillePere) && !isNaN(tailleMere) && sexe) {
+    const corr = sexe === 'Fille' ? -13 : 13;
+    const tc = Math.round((taillePere + tailleMere + corr) / 2);
+    tcEl.textContent = tc + ' cm';
+    tcEl.style.borderColor = 'var(--primary-light)';
+  } else {
+    tcEl.textContent = '–';
+    tcEl.style.borderColor = 'var(--border)';
+  }
+}
 
 // ═══════════════════════════════════════════════════
 // START
@@ -1248,7 +1419,42 @@ function startConsultation() {
   const prenomEnfant = document.getElementById('prenom-enfant').value.trim();
   const prenomParent1 = document.getElementById('prenom-parent1').value.trim();
   if (!prenomEnfant || !prenomParent1) { alert('Merci de renseigner le prénom de l\'enfant et du parent 1.'); return; }
-  state.client = { prenomEnfant, ageEnfant: document.getElementById('age-enfant').value.trim(), rituel: document.getElementById('rituel-enfant').value.trim(), prenomParent1, prenomParent2: document.getElementById('prenom-parent2').value.trim(), nomFamille: document.getElementById('nom-famille').value.trim(), roleParents: document.getElementById('role-parents').value, problematique: document.getElementById('problematique-text').value.trim(), objectifs: document.getElementById('objectifs-text').value.trim() };
+  const consultDate2 = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
+  const dateNaiss = document.getElementById('date-naissance')?.value;
+  const dateTerme = document.getElementById('date-terme')?.value;
+  const ageReel = calcAge(dateNaiss, consultDate2);
+  const ageCorrige = calcAge(dateTerme || dateNaiss, consultDate2);
+  const taillePere = parseFloat(document.getElementById('taille-pere')?.value);
+  const tailleMere = parseFloat(document.getElementById('taille-mere')?.value);
+  const sexe = document.getElementById('sexe-enfant')?.value;
+  const tc = (!isNaN(taillePere) && !isNaN(tailleMere) && sexe) ? Math.round((taillePere + tailleMere + (sexe==='Fille'?-13:13))/2) : null;
+
+  state.client = {
+    prenomEnfant,
+    nomFamille: document.getElementById('nom-famille-enfant')?.value.trim() || '',
+    ageEnfant: document.getElementById('age-enfant').value.trim() || (ageReel?.str || ''),
+    rituel: document.getElementById('rituel-enfant').value.trim(),
+    sexe, fratrie: document.getElementById('fratrie-enfant')?.value.trim() || '',
+    dateNaissance: dateNaiss, dateTerme,
+    poids: document.getElementById('poids-enfant')?.value || '',
+    ageReelStr: ageReel?.str || '', ageReelMois: ageReel?.totalMois ?? '',
+    ageCorrigeStr: ageCorrige?.str || '', ageCorrigeMois: ageCorrige?.totalMois ?? '',
+    besoinLait: besoinLait(ageCorrige?.totalMois ?? ageReel?.totalMois ?? null),
+    alimentation: [...document.querySelectorAll('input[name="alim"]:checked')].map(c=>c.value),
+    typeLait: document.getElementById('type-lait')?.value || '',
+    taillePere: isNaN(taillePere)?'':taillePere,
+    tailleMere: isNaN(tailleMere)?'':tailleMere,
+    tailleCible: tc || '',
+    rgo: document.getElementById('medical-rgo')?.checked || false,
+    aplvSuspecte: document.getElementById('medical-aplv-susp')?.checked || false,
+    aplvConfirme: document.getElementById('medical-aplv-conf')?.checked || false,
+    email: document.getElementById('email-famille')?.value.trim() || '',
+    telephone: document.getElementById('telephone-famille')?.value.trim() || '',
+    prenomParent1, prenomParent2: document.getElementById('prenom-parent2').value.trim(),
+    roleParents: document.getElementById('role-parents').value,
+    problematique: document.getElementById('problematique-text').value.trim(),
+    objectifs: document.getElementById('objectifs-text').value.trim()
+  };
   state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
   state.completedSet = new Set();
   state.currentIdx = 0;
