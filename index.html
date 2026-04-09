@@ -326,11 +326,28 @@
       box-shadow: var(--shadow);
     }
     .block-question {
-      background: var(--question-bg);
-      border-left: 4px solid var(--question-border);
-      color: var(--question-text); font-weight: 500;
+      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+      border: 2px solid #42a5f5;
+      border-left: 6px solid #1565c0;
+      color: #0d47a1;
+      font-weight: 600;
+      font-size: 16px;
+      box-shadow: 0 6px 24px rgba(21,101,192,0.18), inset 0 0 0 1px rgba(255,255,255,0.5);
+      padding: 0 !important;
+      overflow: hidden;
     }
-    .block-question::before { content: "❓ "; }
+    .block-question::before { display: none; }
+    .q-label {
+      background: linear-gradient(90deg, #1565c0, #1976d2);
+      color: white; font-weight: 800; font-size: 12px;
+      padding: 6px 16px 6px 14px; letter-spacing: 0.8px;
+      text-transform: uppercase; display: flex; align-items: center; gap: 6px;
+    }
+    .q-text {
+      padding: 16px 20px; line-height: 1.8;
+    }
+    .q-text ul { margin: 6px 0 0 18px; }
+    .q-text li { margin-bottom: 4px; }
     .block-important {
       background: var(--important-bg);
       border-left: 4px solid var(--important-border);
@@ -1779,7 +1796,14 @@ function renderBlockInner(b, i, sectionId, depth) {
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
   if (b.type === 'separator') return `<div class="block block-separator">${text}</div>`;
 
-  const cls = { normal:'block-normal', question:'block-question', important:'block-important', conseil:'block-conseil', empathie:'block-empathie' }[b.type] || 'block-normal';
+  if (b.type === 'question') {
+    return `<div class="block block-question">
+      <div class="q-label">❓ Question à poser</div>
+      <div class="q-text">${text}</div>
+    </div>`;
+  }
+
+  const cls = { normal:'block-normal', important:'block-important', conseil:'block-conseil', empathie:'block-empathie' }[b.type] || 'block-normal';
   return `<div class="block ${cls}">${text}</div>`;
 }
 
@@ -1823,7 +1847,7 @@ function substituteVars(text) {
   const obj = c.objectifs || '[objectifs]';
   const roleShort = { 'les deux parents':'parents', 'la maman':'maman', 'le papa':'papa' }[c.roleParents] || c.roleParents || 'parents';
   const heureFin = state.heureFinStr || 'XXXX';
-  return text
+  let t = text
     .replace(/\[prénom_enfant\]/g, c.prenomEnfant||'[prénom]')
     .replace(/\[prénom_parents\]/g, parents||'[parents]')
     .replace(/\[age\]/g, c.ageEnfant||'[âge]')
@@ -1838,8 +1862,56 @@ function substituteVars(text) {
     .replace(/\[Prénom enfant\]/gi, c.prenomEnfant||'[prénom]')
     .replace(/\[prénom enfant\]/gi, c.prenomEnfant||'[prénom]')
     .replace(/\[prénom parents\]/gi, parents||'[parents]')
-    .replace(/XXXX/g, heureFin)
-    .replace(/\n/g, '<br>');
+    .replace(/XXXX/g, heureFin);
+  return renderMarkdown(t);
+}
+
+function renderMarkdown(text) {
+  if (!text) return '';
+  // Inline formatting
+  function formatInline(s) {
+    return s
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*([^*]+?)\*/g, '<em>$1</em>');
+  }
+
+  const lines = text.split('\n');
+  let html = '';
+  let listStack = []; // tracks open <ul> depth levels
+
+  function closeLists(toDepth) {
+    while (listStack.length > toDepth) {
+      html += '</ul>';
+      listStack.pop();
+    }
+  }
+
+  for (let line of lines) {
+    // Match bullet: any leading spaces then "- "
+    const bulletMatch = line.match(/^(\s*)-\s+(.*)$/);
+    if (bulletMatch) {
+      const depth = Math.floor(bulletMatch[1].length / 2) + 1;
+      // Open lists if needed
+      while (listStack.length < depth) {
+        html += '<ul style="margin:4px 0 4px 20px;padding:0;">';
+        listStack.push(depth);
+      }
+      // Close deeper lists if needed
+      if (listStack.length > depth) closeLists(depth);
+      html += `<li style="margin-bottom:3px;line-height:1.65">${formatInline(bulletMatch[2])}</li>`;
+    } else {
+      // Close all open lists
+      closeLists(0);
+      if (line.trim() === '---' || line.trim() === '') {
+        html += '<br>';
+      } else {
+        html += formatInline(line) + '<br>';
+      }
+    }
+  }
+  closeLists(0);
+  // Clean up multiple consecutive <br>
+  return html.replace(/(<br>){3,}/g, '<br><br>');
 }
 
 // ═══════════════════════════════════════════════════
