@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>La tribu des rêveurs – Consultation Sommeil</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>😴</text></svg>">
   <style>
     /* ── VARIABLES (THÈME VERT) ─────────────────────── */
     :root {
@@ -461,6 +462,170 @@
     }
     .sidebar-search-wrap input::placeholder { color: rgba(255,255,255,0.4); }
     .sidebar-search-wrap input:focus { background: rgba(255,255,255,0.2); }
+
+    /* ── EDIT MODE ──────────────────────────────────── */
+    .btn-edit-mode {
+      padding: 5px 11px; border-radius: 8px; font-size: 12px;
+      cursor: pointer; border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.12); color: white; font-weight: 600;
+      transition: all 0.15s; white-space: nowrap;
+    }
+    .btn-edit-mode.active { background: #f0ad4e; color: #7c3000; border-color: transparent; }
+
+    .edit-block-wrap { position: relative; }
+    .edit-block-controls {
+      display: none; position: absolute; top: 6px; right: 8px;
+      gap: 4px; z-index: 5;
+    }
+    .edit-mode-on .edit-block-wrap:hover .edit-block-controls { display: flex; }
+    .ebc-btn {
+      padding: 3px 8px; font-size: 11px; border-radius: 6px; cursor: pointer;
+      border: 1px solid; transition: all 0.15s; background: white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15); font-weight: 600;
+    }
+    .ebc-btn.edit { color: var(--primary); border-color: var(--primary-light); }
+    .ebc-btn.edit:hover { background: #d8f3dc; }
+    .ebc-btn.del { color: #e74c3c; border-color: #e74c3c; }
+    .ebc-btn.del:hover { background: #ffeaea; }
+
+    .add-block-row {
+      display: none; width: 100%; padding: 5px;
+      background: none; border: 1.5px dashed #ccc;
+      border-radius: 8px; color: #aaa; font-size: 12px;
+      cursor: pointer; margin: 2px 0 8px; transition: all 0.15s;
+    }
+    .edit-mode-on .add-block-row { display: block; }
+    .add-block-row:hover { border-color: var(--primary-light); color: var(--primary); background: #f0fff4; }
+
+    .restore-section-btn {
+      display: none; margin: 0 0 10px; padding: 5px 12px;
+      border: 1px solid #e07b39; border-radius: 8px;
+      background: #fff3e0; color: #a04000; font-size: 12px; cursor: pointer;
+    }
+    .edit-mode-on .restore-section-btn { display: inline-block; }
+
+    /* CHECKLIST EDIT CONTROLS */
+    .cl-item-row { display: flex; align-items: flex-start; gap: 6px; }
+    .cl-del-btn {
+      display: none; background: none; border: none; color: #e74c3c;
+      cursor: pointer; font-size: 14px; padding: 2px; flex-shrink: 0; margin-top: 2px;
+    }
+    .edit-mode-on .cl-del-btn { display: inline; }
+    .cl-add-row {
+      display: none; align-items: center; gap: 6px;
+      padding: 8px 0 2px; border-top: 1px dashed #ddd; margin-top: 4px;
+    }
+    .edit-mode-on .cl-add-row { display: flex; }
+    .cl-add-input {
+      flex: 1; border: 1px solid var(--border); border-radius: 6px;
+      padding: 5px 8px; font-size: 13px; font-family: inherit;
+    }
+    .cl-add-btn {
+      padding: 5px 10px; background: var(--primary); color: white;
+      border: none; border-radius: 6px; cursor: pointer; font-size: 12px;
+    }
+
+    /* SESSIONS */
+    .session-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 10px;
+      margin-bottom: 8px; transition: all 0.15s;
+    }
+    .session-item:hover { border-color: var(--primary-light); background: #f0fff4; }
+    .session-info { flex: 1; cursor: pointer; }
+    .session-name { font-weight: 700; font-size: 14px; color: var(--primary-dark); }
+    .session-meta { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+    .session-actions { display: flex; gap: 6px; }
+    .btn-session-resume {
+      padding: 5px 12px; border-radius: 7px; border: none;
+      background: var(--primary); color: white; font-size: 12px;
+      font-weight: 700; cursor: pointer; transition: all 0.15s;
+    }
+    .btn-session-resume:hover { background: var(--primary-dark); }
+    .btn-session-del { background: none; border: none; color: #ff7675; cursor: pointer; font-size: 16px; padding: 4px; }
+
+    /* NOTES DE SESSION */
+    .session-notes-wrap {
+      position: fixed; bottom: 20px; right: 20px; z-index: 200;
+      background: white; border-radius: 14px; box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      width: 320px; border: 1.5px solid var(--border);
+      transition: all 0.25s; overflow: hidden;
+    }
+    .session-notes-wrap.collapsed { width: 160px; }
+    .notes-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px; background: var(--primary-dark); color: white;
+      cursor: pointer; font-size: 13px; font-weight: 700;
+    }
+    .notes-body { padding: 0; }
+    .notes-body textarea {
+      width: 100%; min-height: 140px; border: none; outline: none;
+      font-size: 13px; padding: 12px 14px; resize: vertical;
+      font-family: inherit; background: #fafff5; color: var(--text);
+    }
+    .notes-footer { padding: 8px 12px; border-top: 1px solid var(--border); display: flex; gap: 6px; }
+    .btn-save-session {
+      flex: 1; padding: 7px; background: var(--primary); color: white;
+      border: none; border-radius: 8px; font-size: 12px; font-weight: 700;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .btn-save-session:hover { background: var(--primary-dark); }
+    .btn-cr {
+      padding: 7px 10px; background: #e8f5e9; color: var(--primary-dark);
+      border: 1.5px solid var(--primary-light); border-radius: 8px;
+      font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .btn-cr:hover { background: #d8f3dc; }
+
+    /* COMPTE RENDU MODAL */
+    .cr-modal-box {
+      background: white; border-radius: 20px; padding: 36px;
+      width: 720px; max-width: 96vw; max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    .cr-modal-box h2 { font-size: 20px; color: var(--primary-dark); margin-bottom: 4px; }
+    .cr-section { margin: 18px 0; }
+    .cr-section h3 { font-size: 13px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--primary); margin-bottom: 8px;
+      padding-bottom: 5px; border-bottom: 2px solid var(--border); }
+    .cr-section p { font-size: 14px; line-height: 1.7; color: var(--text); }
+    .cr-tag {
+      display: inline-block; padding: 3px 10px; border-radius: 20px;
+      background: #d8f3dc; color: var(--primary-dark);
+      font-size: 12.5px; font-weight: 600; margin: 3px 3px 3px 0;
+    }
+    .cr-checked-item { font-size: 13.5px; color: #1b4332; padding: 3px 0; }
+    .cr-checked-item::before { content: "✅ "; }
+    .cr-section-done { font-size: 13.5px; padding: 2px 0; color: var(--text); }
+    .cr-section-done::before { content: "☑️ "; }
+    .cr-print-btn {
+      padding: 10px 20px; background: var(--primary); color: white;
+      border: none; border-radius: 10px; font-size: 14px; font-weight: 700;
+      cursor: pointer; margin-right: 8px;
+    }
+    .cr-copy-btn {
+      padding: 10px 20px; background: #e8f5e9; color: var(--primary-dark);
+      border: 1.5px solid var(--primary-light); border-radius: 10px;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+    }
+    @media print {
+      #app-screen, #setup-screen { display: none !important; }
+      .cr-modal-box { box-shadow: none; max-height: none; width: 100%; }
+    }
+
+    /* SELECT ALL CATEGORY */
+    .pb-category-title { cursor: default; }
+    .pb-cat-btns { margin-left: auto; display: flex; gap: 4px; }
+    .pb-cat-btn {
+      font-size: 10px; padding: 2px 7px; border-radius: 5px;
+      border: 1px solid var(--border); background: white;
+      cursor: pointer; font-weight: 600; transition: all 0.15s;
+    }
+    .pb-cat-btn.all { color: var(--primary); }
+    .pb-cat-btn.all:hover { background: #d8f3dc; border-color: var(--primary-light); }
+    .pb-cat-btn.none { color: #e74c3c; }
+    .pb-cat-btn.none:hover { background: #ffeaea; border-color: #e74c3c; }
   </style>
 </head>
 <body>
@@ -662,6 +827,8 @@
       </div>
     </div>
     <div class="header-actions">
+      <button class="btn-edit-mode" id="btn-edit-mode" onclick="toggleEditMode()">✏️ Éditer</button>
+      <button class="btn-icon" title="Sessions sauvegardées" onclick="openSessionsModal()">📁</button>
       <button class="btn-icon" title="Ajuster les problématiques" onclick="togglePbModal()">⚙️</button>
       <button class="btn-icon" title="Nouvelle consultation" onclick="newConsultation()">🔄</button>
       <button class="btn-icon" title="Plein écran" onclick="toggleFullscreen()">⛶</button>
@@ -708,6 +875,93 @@
   </div>
 </div>
 
+<!-- PANNEAU NOTES FLOTTANT (visible pendant consultation) -->
+<div class="session-notes-wrap" id="notes-panel" style="display:none">
+  <div class="notes-header" onclick="toggleNotesPanel()">
+    <span>📝 Notes de session</span>
+    <span id="notes-collapse-icon">▼</span>
+  </div>
+  <div class="notes-body" id="notes-body">
+    <textarea id="session-notes-textarea" placeholder="Vos notes libres pendant la consultation…&#10;(sauvegarde automatique)"></textarea>
+    <div class="notes-footer">
+      <button class="btn-cr" onclick="openCrModal()">📄 Compte rendu</button>
+      <button class="btn-save-session" onclick="saveCurrentSession()">💾 Sauvegarder session</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SESSIONS -->
+<div class="modal-overlay" id="sessions-modal">
+  <div class="modal-box" style="width:600px;max-width:96vw">
+    <button class="modal-close" onclick="document.getElementById('sessions-modal').classList.remove('open')">✕</button>
+    <h3>📁 Sessions sauvegardées</h3>
+    <p style="font-size:13px;color:#999;margin-bottom:16px">Reprenez une session ou consultez les comptes rendus.</p>
+    <div id="sessions-list"></div>
+  </div>
+</div>
+
+<!-- MODAL COMPTE RENDU -->
+<div class="modal-overlay" id="cr-modal">
+  <div class="cr-modal-box">
+    <button class="modal-close" onclick="document.getElementById('cr-modal').classList.remove('open')">✕</button>
+    <div id="cr-content"></div>
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap">
+      <button class="cr-print-btn" onclick="printCR()">🖨️ Imprimer / PDF</button>
+      <button class="cr-copy-btn" onclick="copyCRText()">📋 Copier le texte</button>
+      <button class="cr-copy-btn" onclick="downloadCR()">⬇️ Télécharger .txt</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDIT BLOCK -->
+<div class="modal-overlay" id="edit-block-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeEditBlockModal()">✕</button>
+    <h3 id="edit-block-modal-title">✏️ Modifier ce bloc</h3>
+    <div style="margin-bottom:10px">
+      <label style="font-size:12px;font-weight:600;color:var(--text-light)">Type de bloc</label>
+      <select id="edit-block-type" style="width:100%;padding:8px;border:1.5px solid var(--border);border-radius:8px;margin-top:5px;font-size:14px">
+        <option value="normal">Texte normal</option>
+        <option value="question">❓ Question</option>
+        <option value="important">⚠️ Important</option>
+        <option value="conseil">💡 Conseil</option>
+        <option value="empathie">💗 Empathie</option>
+        <option value="separator">──── Séparateur</option>
+      </select>
+    </div>
+    <div>
+      <label style="font-size:12px;font-weight:600;color:var(--text-light)">Texte</label>
+      <textarea id="edit-block-textarea" style="width:100%;min-height:130px;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;resize:vertical;margin-top:5px" placeholder="Texte du bloc…"></textarea>
+    </div>
+    <button class="btn-start" style="margin-top:12px;font-size:14px;padding:12px" onclick="saveEditBlock()">💾 Enregistrer</button>
+  </div>
+</div>
+
+<!-- MODAL ADD BLOCK -->
+<div class="modal-overlay" id="add-block-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('add-block-modal').classList.remove('open')">✕</button>
+    <h3>➕ Ajouter un bloc</h3>
+    <div style="margin-bottom:10px">
+      <label style="font-size:12px;font-weight:600;color:var(--text-light)">Type de bloc</label>
+      <select id="add-block-type" style="width:100%;padding:8px;border:1.5px solid var(--border);border-radius:8px;margin-top:5px;font-size:14px">
+        <option value="normal">Texte normal</option>
+        <option value="question">❓ Question</option>
+        <option value="important">⚠️ Important</option>
+        <option value="conseil">💡 Conseil</option>
+        <option value="empathie">💗 Empathie</option>
+        <option value="separator">──── Séparateur</option>
+        <option value="checklist">☑️ Checklist</option>
+      </select>
+    </div>
+    <div>
+      <label style="font-size:12px;font-weight:600;color:var(--text-light)">Texte (ou titre pour une checklist)</label>
+      <textarea id="add-block-textarea" style="width:100%;min-height:100px;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;resize:vertical;margin-top:5px" placeholder="Texte…"></textarea>
+    </div>
+    <button class="btn-start" style="margin-top:12px;font-size:14px;padding:12px" onclick="confirmAddBlock()">➕ Ajouter</button>
+  </div>
+</div>
+
 <!-- MODAL PROBLÉMATIQUES -->
 <div class="modal-overlay" id="pb-modal">
   <div class="modal-box">
@@ -733,7 +987,29 @@ let state = {
   heureFin: null,
   heureFinStr: '',
   timerInterval: null,
+  scriptOverrides: {},
+  editMode: false,
 };
+
+// Charge les overrides sauvegardés
+state.scriptOverrides = JSON.parse(localStorage.getItem('tdr_script_overrides') || '{}');
+
+function saveScriptOverrides() {
+  localStorage.setItem('tdr_script_overrides', JSON.stringify(state.scriptOverrides));
+}
+
+function getOverrideBlocks(section) {
+  return (state.scriptOverrides[section.id] || {}).blocks || section.blocks || [];
+}
+
+function ensureOverride(section) {
+  if (!state.scriptOverrides[section.id]) {
+    state.scriptOverrides[section.id] = { blocks: JSON.parse(JSON.stringify(section.blocks || [])) };
+  }
+  return state.scriptOverrides[section.id];
+}
+
+function currentSection() { return state.sections[state.currentIdx]; }
 
 // ═══════════════════════════════════════════════════
 // SAVED CLIENTS
@@ -811,6 +1087,8 @@ function startConsultation() {
   state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
   state.completedSet = new Set();
   state.currentIdx = 0;
+  state.currentSessionId = null;
+  state._notes = '';
 
   // Calcul heure de fin
   const consultHeure = document.getElementById('consult-heure').value;
@@ -867,6 +1145,12 @@ function initUI() {
   buildSidebarPbPanel();
   renderCurrentSection();
   startTimer();
+  // Affiche le panneau de notes
+  const notesPanel = document.getElementById('notes-panel');
+  if (notesPanel) notesPanel.style.display = 'block';
+  // Restore notes si session en cours
+  const ta = document.getElementById('session-notes-textarea');
+  if (ta && state._notes !== undefined) ta.value = state._notes;
 }
 
 function startTimer() {
@@ -898,6 +1182,12 @@ function updateHeader() {
   document.getElementById('header-age-rituel').textContent = [c.ageEnfant, c.rituel ? 'Rituel : '+c.rituel : ''].filter(Boolean).join(' • ');
   document.getElementById('header-parents').textContent = [c.prenomParent1, c.prenomParent2].filter(Boolean).join(' & ');
   document.getElementById('header-nom').textContent = c.nomFamille||'';
+  // Emoji parent conditionnel
+  const parentIconEl = document.querySelector('#app-screen .client-badge:nth-child(2) .icon');
+  if (parentIconEl) {
+    const icons = { 'la maman':'👩', 'le papa':'👨', 'les deux parents':'👨‍👩‍👧' };
+    parentIconEl.textContent = icons[c.roleParents] || '👨‍👩‍👧';
+  }
 }
 
 function updatePobBar() {
@@ -1004,11 +1294,17 @@ function markDone() {
 function renderCurrentSection() {
   const section = state.sections[state.currentIdx]; if (!section) return;
   const area = document.getElementById('content-area');
+  area.classList.toggle('edit-mode-on', state.editMode);
+  const hasOverride = !!state.scriptOverrides[section.id];
   let html = `<div class="section-header">
     <span class="section-emoji">${section.emoji||'📄'}</span>
     <h1 class="section-title">${section.title}</h1>
   </div>`;
-  html += renderBlocks(section.blocks||[]);
+  if (hasOverride) {
+    html += `<button class="restore-section-btn" onclick="restoreSection('${section.id}')">↩️ Restaurer le contenu original de cette section</button>`;
+  }
+  html += `<button class="add-block-row" style="margin-bottom:8px" onclick="openAddBlockModal('${section.id}',-1)">➕ Ajouter un bloc au début</button>`;
+  html += renderBlocks(getOverrideBlocks(section), section.id);
   html += `<div class="nav-buttons">
     <button class="btn-nav btn-prev" onclick="prevSection()" ${state.currentIdx===0?'disabled':''}>← Précédent</button>
     <div style="display:flex;align-items:center;gap:10px">
@@ -1022,11 +1318,27 @@ function renderCurrentSection() {
   area.innerHTML = html;
 }
 
-function renderBlocks(blocks) {
-  return (blocks||[]).map((b,i) => renderBlock(b,i)).join('');
+function renderBlocks(blocks, sectionId='', depth=0) {
+  return (blocks||[]).map((b,i) => renderBlock(b,i,sectionId,depth)).join('');
 }
 
-function renderBlock(b, i) {
+function renderBlock(b, i, sectionId='', depth=0) {
+  const inner = renderBlockInner(b, i, sectionId, depth);
+  // Wrap top-level blocks with edit controls
+  if (sectionId && depth === 0) {
+    return `<div class="edit-block-wrap">
+      <div class="edit-block-controls">
+        <button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}',${i})">✏️ Modifier</button>
+        <button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>
+      </div>
+      ${inner}
+    </div>
+    <button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>`;
+  }
+  return inner;
+}
+
+function renderBlockInner(b, i, sectionId, depth) {
   const text = substituteVars(b.text||'');
 
   if (b.type === 'option') {
@@ -1039,19 +1351,27 @@ function renderBlock(b, i) {
         </span>
         <span class="option-toggle">Dérouler</span>
       </div>
-      <div class="option-content">${renderBlocks(b.blocks||[])}</div>
+      <div class="option-content">${renderBlocks(b.blocks||[], sectionId, depth+1)}</div>
     </div>`;
   }
 
   if (b.type === 'checklist') {
-    const uid = 'cl_' + Math.random().toString(36).slice(2,8);
+    const sid = sectionId || 'nosec';
     return `<div class="block-checklist">
       ${b.title ? `<div class="checklist-title">${substituteVars(b.title)}</div>` : ''}
       ${(b.items||[]).map((item,j) => `
-        <label class="checklist-item" id="${uid}_${j}">
-          <input type="checkbox" onchange="this.closest('.checklist-item').classList.toggle('checked',this.checked)">
-          <span>${substituteVars(item)}</span>
-        </label>`).join('')}
+        <div class="cl-item-row">
+          <label class="checklist-item" style="flex:1">
+            <input type="checkbox" onchange="this.closest('.checklist-item').classList.toggle('checked',this.checked)">
+            <span contenteditable="false" ondblclick="makeClItemEditable(this,'${sid}',${i},${j})">${substituteVars(item)}</span>
+          </label>
+          <button class="cl-del-btn" onclick="deleteChecklistItem('${sid}',${i},${j})">✕</button>
+        </div>`).join('')}
+      <div class="cl-add-row">
+        <input type="text" class="cl-add-input" id="cl-add-${sid}-${i}" placeholder="Nouvel élément… (Entrée pour valider)"
+          onkeydown="if(event.key==='Enter'){addChecklistItem('${sid}',${i});event.preventDefault()}">
+        <button class="cl-add-btn" onclick="addChecklistItem('${sid}',${i})">➕</button>
+      </div>
     </div>`;
   }
 
@@ -1086,7 +1406,6 @@ function renderBlock(b, i) {
   }
 
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
-
   if (b.type === 'separator') return `<div class="block block-separator">${text}</div>`;
 
   const cls = { normal:'block-normal', question:'block-question', important:'block-important', conseil:'block-conseil', empathie:'block-empathie' }[b.type] || 'block-normal';
@@ -1161,23 +1480,48 @@ function togglePbModal() {
   if (modal.classList.contains('open')) buildModalPbList();
 }
 
+const ALL_PB_CATS = [
+  {cat:'🩺 Confort physique', items:[{value:'rgo_allergie',label:'RGO + Allergie (APLV)'},{value:'allergie_seule',label:'Suspicion allergie seule'},{value:'rgo_seul',label:'RGO seul'}]},
+  {cat:'🍽️ Nutrition', items:[{value:'nutrition_courbe',label:'Courbe déclinante (faim)'},{value:'nutrition_espacement_long',label:'Espacement trop long'},{value:'nutrition_espacement_court',label:'Espacement trop court'},{value:'nutrition_inversion_jour_nuit',label:'Inversion jour/nuit'},{value:'nutrition_jus_vegetaux',label:'Jus végétaux / lait animal'}]},
+  {cat:'⏰ Rythme', items:[{value:'rythme_dette_sommeil',label:'Dette de sommeil'},{value:'rythme_reveil_matinal',label:'Réveil matinal précoce'},{value:'rythme_activite_physique',label:"Manque d'activité physique"}]},
+  {cat:"😴 Stratégie d'endormissement", items:[{value:'strategie_presence',label:'Présence parentale indispensable'},{value:'strategie_tetine',label:'Tétine (cause de réveils)'},{value:'strategie_biberon_sein',label:"Biberon / sein pour s'endormir"}]},
+  {cat:'🏠 Environnement', items:[{value:'env_obscurite',label:'Obscurité insuffisante'},{value:'env_temperature',label:'Température trop élevée'},{value:'env_lit_ouvert',label:'Lit ouvert trop tôt'},{value:'env_rituel',label:'Rituel absent ou trop court'},{value:'env_cadre',label:'Cadre non clair'},{value:'env_stimulations',label:'Stimulations visuelles'}]},
+  {cat:'💬 Enjeux relationnels', items:[{value:'relationnel_conflit',label:'Conflit / lit parental'},{value:'relationnel_rappels',label:'Rappels multiples après coucher'}]},
+];
+
 function buildModalPbList() {
-  const cats = [
-    {cat:'🩺 Confort physique', items:[{value:'rgo_allergie',label:'RGO + Allergie (APLV)'},{value:'allergie_seule',label:'Suspicion allergie seule'},{value:'rgo_seul',label:'RGO seul'}]},
-    {cat:'🍽️ Nutrition', items:[{value:'nutrition_courbe',label:'Courbe déclinante (faim)'},{value:'nutrition_espacement_long',label:'Espacement trop long'},{value:'nutrition_espacement_court',label:'Espacement trop court'},{value:'nutrition_inversion_jour_nuit',label:'Inversion jour/nuit'},{value:'nutrition_jus_vegetaux',label:'Jus végétaux / lait animal'}]},
-    {cat:'⏰ Rythme', items:[{value:'rythme_dette_sommeil',label:'Dette de sommeil'},{value:'rythme_reveil_matinal',label:'Réveil matinal précoce'},{value:'rythme_activite_physique',label:"Manque d'activité physique"}]},
-    {cat:"😴 Stratégie d'endormissement", items:[{value:'strategie_presence',label:'Présence parentale indispensable'},{value:'strategie_tetine',label:'Tétine (cause de réveils)'},{value:'strategie_biberon_sein',label:"Biberon / sein pour s'endormir"}]},
-    {cat:'🏠 Environnement', items:[{value:'env_obscurite',label:'Obscurité insuffisante'},{value:'env_temperature',label:'Température trop élevée'},{value:'env_lit_ouvert',label:'Lit ouvert trop tôt'},{value:'env_rituel',label:'Rituel absent ou trop court'},{value:'env_cadre',label:'Cadre non clair'},{value:'env_stimulations',label:'Stimulations visuelles'}]},
-    {cat:'💬 Enjeux relationnels', items:[{value:'relationnel_conflit',label:'Conflit / lit parental'},{value:'relationnel_rappels',label:'Rappels multiples après coucher'}]},
-  ];
-  document.getElementById('modal-pb-list').innerHTML = cats.map(cat => `
+  const allValues = ALL_PB_CATS.flatMap(c => c.items.map(i => i.value));
+  const allChecked = allValues.every(v => state.selectedPbs.has(v));
+  document.getElementById('modal-pb-list').innerHTML =
+    `<div style="display:flex;gap:8px;margin-bottom:14px">
+      <button style="flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--primary-light);background:#d8f3dc;color:var(--primary-dark);font-weight:700;cursor:pointer;font-size:13px"
+        onclick="modalSelectAll(true)">✅ Tout sélectionner</button>
+      <button style="flex:1;padding:7px;border-radius:8px;border:1.5px solid #e74c3c;background:#ffeaea;color:#c0392b;font-weight:700;cursor:pointer;font-size:13px"
+        onclick="modalSelectAll(false)">❌ Tout désélectionner</button>
+    </div>` +
+    ALL_PB_CATS.map(cat => `
     <div style="margin-bottom:14px">
-      <div style="font-weight:700;font-size:13px;margin-bottom:7px;color:var(--primary-dark)">${cat.cat}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:13px;margin-bottom:7px;color:var(--primary-dark)">
+        <span>${cat.cat}</span>
+        <span style="display:flex;gap:4px">
+          <button style="font-size:10px;padding:2px 7px;border-radius:5px;border:1px solid var(--border);background:white;cursor:pointer;font-weight:600;color:var(--primary)"
+            onclick="modalSelectCat(this,true)">Tout ✓</button>
+          <button style="font-size:10px;padding:2px 7px;border-radius:5px;border:1px solid #e74c3c;background:white;cursor:pointer;font-weight:600;color:#e74c3c"
+            onclick="modalSelectCat(this,false)">Tout ✗</button>
+        </span>
+      </div>
       ${cat.items.map(it=>`
         <label style="display:flex;align-items:center;gap:8px;padding:6px 4px;cursor:pointer;font-size:13.5px">
           <input type="checkbox" class="modal-pb" value="${it.value}" ${state.selectedPbs.has(it.value)?'checked':''}> ${it.label}
         </label>`).join('')}
     </div>`).join('');
+}
+
+function modalSelectAll(checked) {
+  document.querySelectorAll('.modal-pb').forEach(cb => cb.checked = checked);
+}
+function modalSelectCat(btn, checked) {
+  btn.closest('div[style*="margin-bottom:14px"]').querySelectorAll('.modal-pb').forEach(cb => cb.checked = checked);
 }
 
 function applyPbChanges() {
@@ -1194,6 +1538,8 @@ function applyPbChanges() {
 
 function newConsultation() {
   if (confirm('Revenir à l\'écran de setup ?')) {
+    if (state.timerInterval) clearInterval(state.timerInterval);
+    document.getElementById('notes-panel').style.display = 'none';
     document.getElementById('app-screen').style.display = 'none';
     document.getElementById('setup-screen').style.display = 'flex';
     loadSavedClients();
@@ -1206,6 +1552,138 @@ function toggleFullscreen() {
 }
 
 document.getElementById('pb-modal').addEventListener('click', e => { if(e.target===e.currentTarget) togglePbModal(); });
+document.getElementById('edit-block-modal').addEventListener('click', e => { if(e.target===e.currentTarget) closeEditBlockModal(); });
+document.getElementById('add-block-modal').addEventListener('click', e => { if(e.target===e.currentTarget) document.getElementById('add-block-modal').classList.remove('open'); });
+
+// ═══════════════════════════════════════════════════
+// MODE ÉDITION
+// ═══════════════════════════════════════════════════
+function toggleEditMode() {
+  state.editMode = !state.editMode;
+  const btn = document.getElementById('btn-edit-mode');
+  btn.classList.toggle('active', state.editMode);
+  btn.textContent = state.editMode ? '✅ Fin édition' : '✏️ Éditer';
+  renderCurrentSection();
+}
+
+// ─── Edit block ───
+let _editRef = null;
+function openEditBlockModal(sectionId, blockIdx) {
+  const sec = state.sections.find(s => s.id === sectionId); if (!sec) return;
+  const blocks = getOverrideBlocks(sec);
+  const b = blocks[blockIdx];
+  _editRef = { sectionId, blockIdx };
+  const typeEl = document.getElementById('edit-block-type');
+  const taEl = document.getElementById('edit-block-textarea');
+  const titleEl = document.getElementById('edit-block-modal-title');
+  if (b.type === 'option') {
+    titleEl.textContent = '✏️ Modifier le titre de l\'option';
+    typeEl.style.display = 'none';
+    taEl.value = b.label || '';
+  } else {
+    titleEl.textContent = '✏️ Modifier ce bloc';
+    typeEl.style.display = 'block';
+    typeEl.value = b.type || 'normal';
+    taEl.value = b.text || '';
+  }
+  document.getElementById('edit-block-modal').classList.add('open');
+}
+function closeEditBlockModal() {
+  document.getElementById('edit-block-modal').classList.remove('open');
+  _editRef = null;
+}
+function saveEditBlock() {
+  if (!_editRef) return;
+  const { sectionId, blockIdx } = _editRef;
+  const sec = state.sections.find(s => s.id === sectionId);
+  const ov = ensureOverride(sec);
+  const b = ov.blocks[blockIdx];
+  const newText = document.getElementById('edit-block-textarea').value;
+  if (b.type === 'option') {
+    ov.blocks[blockIdx] = { ...b, label: newText };
+  } else {
+    ov.blocks[blockIdx] = { ...b, type: document.getElementById('edit-block-type').value, text: newText };
+  }
+  saveScriptOverrides();
+  closeEditBlockModal();
+  renderCurrentSection();
+}
+
+// ─── Delete block ───
+function deleteBlock(sectionId, blockIdx) {
+  if (!confirm('Supprimer ce bloc définitivement ?')) return;
+  const sec = state.sections.find(s => s.id === sectionId);
+  const ov = ensureOverride(sec);
+  ov.blocks.splice(blockIdx, 1);
+  saveScriptOverrides();
+  renderCurrentSection();
+}
+
+// ─── Add block ───
+let _addRef = null;
+function openAddBlockModal(sectionId, afterIdx) {
+  _addRef = { sectionId, afterIdx };
+  document.getElementById('add-block-type').value = 'normal';
+  document.getElementById('add-block-textarea').value = '';
+  document.getElementById('add-block-modal').classList.add('open');
+}
+function confirmAddBlock() {
+  if (!_addRef) return;
+  const { sectionId, afterIdx } = _addRef;
+  const sec = state.sections.find(s => s.id === sectionId);
+  const ov = ensureOverride(sec);
+  const type = document.getElementById('add-block-type').value;
+  const text = document.getElementById('add-block-textarea').value;
+  const newBlock = type === 'checklist'
+    ? { type: 'checklist', title: text, items: [] }
+    : { type, text };
+  ov.blocks.splice(afterIdx + 1, 0, newBlock);
+  saveScriptOverrides();
+  document.getElementById('add-block-modal').classList.remove('open');
+  _addRef = null;
+  renderCurrentSection();
+}
+
+// ─── Restore section ───
+function restoreSection(sectionId) {
+  if (!confirm('Restaurer le contenu original de cette section ? Toutes vos modifications seront perdues.')) return;
+  delete state.scriptOverrides[sectionId];
+  saveScriptOverrides();
+  renderCurrentSection();
+}
+
+// ─── Checklist item operations ───
+function addChecklistItem(sectionId, blockIdx) {
+  const inputEl = document.getElementById(`cl-add-${sectionId}-${blockIdx}`);
+  const text = inputEl?.value?.trim(); if (!text) return;
+  const sec = state.sections.find(s => s.id === sectionId);
+  const ov = ensureOverride(sec);
+  ov.blocks[blockIdx].items = ov.blocks[blockIdx].items || [];
+  ov.blocks[blockIdx].items.push(text);
+  saveScriptOverrides();
+  renderCurrentSection();
+}
+function deleteChecklistItem(sectionId, blockIdx, itemIdx) {
+  const sec = state.sections.find(s => s.id === sectionId);
+  const ov = ensureOverride(sec);
+  ov.blocks[blockIdx].items.splice(itemIdx, 1);
+  saveScriptOverrides();
+  renderCurrentSection();
+}
+function makeClItemEditable(span, sectionId, blockIdx, itemIdx) {
+  if (!state.editMode) return;
+  span.contentEditable = 'true';
+  span.focus();
+  span.onblur = () => {
+    span.contentEditable = 'false';
+    const newText = span.textContent.trim();
+    if (!newText) return;
+    const sec = state.sections.find(s => s.id === sectionId);
+    const ov = ensureOverride(sec);
+    ov.blocks[blockIdx].items[itemIdx] = newText;
+    saveScriptOverrides();
+  };
+}
 
 document.addEventListener('keydown', e => {
   if (document.getElementById('app-screen').style.display==='none') return;
@@ -1215,8 +1693,308 @@ document.addEventListener('keydown', e => {
   if (e.key==='Escape') document.getElementById('pb-modal').classList.remove('open');
 });
 
+// ═══════════════════════════════════════════════════
 // INIT
+// ═══════════════════════════════════════════════════
 loadSavedClients();
+
+// Boutons "Tout ✓ / Tout ✗" par catégorie (setup + modal)
+function addCatSelectButtons(container) {
+  container.querySelectorAll('.pb-category').forEach(cat => {
+    const title = cat.querySelector('.pb-category-title');
+    if (!title || title.querySelector('.pb-cat-btns')) return;
+    const wrap = document.createElement('span');
+    wrap.className = 'pb-cat-btns';
+    wrap.innerHTML = `
+      <button class="pb-cat-btn all" onclick="selectCat(this,true)">Tout ✓</button>
+      <button class="pb-cat-btn none" onclick="selectCat(this,false)">Tout ✗</button>`;
+    title.appendChild(wrap);
+  });
+}
+function selectCat(btn, checked) {
+  const cat = btn.closest('.pb-category');
+  cat.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.checked = checked;
+    cb.closest('.pb-item')?.classList.toggle('checked', checked);
+    // also update sidebar panel if present
+    const spb = document.getElementById('spb-' + cb.value);
+    if (spb) { spb.checked = checked; togglePb(cb.value, checked); }
+  });
+}
+addCatSelectButtons(document.querySelector('#setup-screen'));
+
+// ═══════════════════════════════════════════════════
+// SESSIONS
+// ═══════════════════════════════════════════════════
+
+function sessionKey() {
+  const c = state.client;
+  return 'tdr_session_' + (c.prenomEnfant + '_' + c.nomFamille).toLowerCase().replace(/\s+/g,'_') + '_' + Date.now();
+}
+
+function saveCurrentSession() {
+  const c = state.client;
+  const notes = document.getElementById('session-notes-textarea')?.value || '';
+  const checkedItems = [];
+  document.querySelectorAll('.checklist-item input:checked').forEach(cb => {
+    const label = cb.closest('.checklist-item')?.querySelector('span')?.textContent?.trim();
+    if (label) checkedItems.push(label);
+  });
+
+  const session = {
+    id: state.currentSessionId || sessionKey(),
+    savedAt: new Date().toISOString(),
+    client: { ...state.client },
+    selectedPbs: [...state.selectedPbs],
+    completedSections: [...state.completedSet].map(idx => state.sections[idx]?.title).filter(Boolean),
+    currentSection: state.sections[state.currentIdx]?.title || '',
+    notes,
+    checkedItems,
+    heureFinStr: state.heureFinStr,
+    consultDate: document.getElementById('consult-date')?.value || '',
+    consultDuree: document.getElementById('consult-duree')?.value || '75',
+  };
+
+  state.currentSessionId = session.id;
+  const all = JSON.parse(localStorage.getItem('tdr_sessions') || '[]');
+  const idx = all.findIndex(s => s.id === session.id);
+  if (idx >= 0) all[idx] = session; else all.push(session);
+  localStorage.setItem('tdr_sessions', JSON.stringify(all));
+
+  // Flash feedback
+  const btn = document.querySelector('.btn-save-session');
+  if (btn) { btn.textContent = '✅ Sauvegardé !'; setTimeout(() => btn.textContent = '💾 Sauvegarder session', 1500); }
+}
+
+// Auto-save notes toutes les 30 secondes
+setInterval(() => {
+  if (document.getElementById('app-screen').style.display !== 'none' && state.currentSessionId) {
+    saveCurrentSession();
+  }
+}, 30000);
+
+function openSessionsModal() {
+  buildSessionsList();
+  document.getElementById('sessions-modal').classList.add('open');
+}
+document.getElementById('sessions-modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) document.getElementById('sessions-modal').classList.remove('open');
+});
+
+function buildSessionsList() {
+  const all = JSON.parse(localStorage.getItem('tdr_sessions') || '[]').reverse();
+  const container = document.getElementById('sessions-list');
+  if (!all.length) {
+    container.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px">Aucune session sauvegardée</p>';
+    return;
+  }
+  container.innerHTML = all.map((s, i) => {
+    const realIdx = all.length - 1 - i;
+    const date = new Date(s.savedAt).toLocaleString('fr-FR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    const pbCount = (s.selectedPbs || []).length;
+    return `<div class="session-item">
+      <div class="session-info" onclick="resumeSession(${all.length-1-i})">
+        <div class="session-name">👶 ${s.client?.prenomEnfant || ''} ${s.client?.nomFamille || ''}</div>
+        <div class="session-meta">📅 ${date} • ${pbCount} problématique${pbCount>1?'s':''} • Section : ${s.currentSection || '–'}</div>
+      </div>
+      <div class="session-actions">
+        <button class="btn-session-resume" onclick="showSessionCR(${all.length-1-i})">📄 CR</button>
+        <button class="btn-session-resume" onclick="resumeSession(${all.length-1-i})">▶ Reprendre</button>
+        <button class="btn-session-del" onclick="deleteSession(event,'${s.id}')">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function resumeSession(idx) {
+  const all = JSON.parse(localStorage.getItem('tdr_sessions') || '[]');
+  const s = all[idx]; if (!s) return;
+
+  state.client = { ...s.client };
+  state.selectedPbs = new Set(s.selectedPbs || []);
+  state.completedSet = new Set();
+  state.currentIdx = 0;
+  state.currentSessionId = s.id;
+  state.heureFinStr = s.heureFinStr || '';
+  state.heureFin = null;
+
+  buildSections();
+  // Restore current section position
+  const targetIdx = state.sections.findIndex(sec => sec.title === s.currentSection);
+  if (targetIdx >= 0) state.currentIdx = targetIdx;
+
+  initUI();
+  if (document.getElementById('session-notes-textarea'))
+    document.getElementById('session-notes-textarea').value = s.notes || '';
+
+  document.getElementById('sessions-modal').classList.remove('open');
+  document.getElementById('setup-screen').style.display = 'none';
+  document.getElementById('app-screen').style.display = 'flex';
+}
+
+function deleteSession(e, id) {
+  e.stopPropagation();
+  if (!confirm('Supprimer cette session ?')) return;
+  const all = JSON.parse(localStorage.getItem('tdr_sessions') || '[]');
+  localStorage.setItem('tdr_sessions', JSON.stringify(all.filter(s => s.id !== id)));
+  buildSessionsList();
+}
+
+// ═══════════════════════════════════════════════════
+// NOTES PANEL
+// ═══════════════════════════════════════════════════
+let notesPanelCollapsed = false;
+function toggleNotesPanel() {
+  notesPanelCollapsed = !notesPanelCollapsed;
+  document.getElementById('notes-body').style.display = notesPanelCollapsed ? 'none' : '';
+  document.getElementById('notes-collapse-icon').textContent = notesPanelCollapsed ? '▲' : '▼';
+}
+
+// Auto-save notes dans state à chaque frappe
+document.getElementById('session-notes-textarea').addEventListener('input', function() {
+  state._notes = this.value;
+});
+
+// ═══════════════════════════════════════════════════
+// COMPTE RENDU
+// ═══════════════════════════════════════════════════
+function openCrModal(sessionData) {
+  const html = generateCRHtml(sessionData);
+  document.getElementById('cr-content').innerHTML = html;
+  document.getElementById('cr-modal').classList.add('open');
+}
+document.getElementById('cr-modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) document.getElementById('cr-modal').classList.remove('open');
+});
+
+function showSessionCR(idx) {
+  const all = JSON.parse(localStorage.getItem('tdr_sessions') || '[]');
+  document.getElementById('sessions-modal').classList.remove('open');
+  openCrModal(all[idx]);
+}
+
+function generateCRHtml(s) {
+  // Si pas de session fournie, utilise l'état courant
+  const isLive = !s;
+  if (isLive) {
+    const notes = document.getElementById('session-notes-textarea')?.value || '';
+    const checkedItems = [];
+    document.querySelectorAll('.checklist-item input:checked').forEach(cb => {
+      const label = cb.closest('.checklist-item')?.querySelector('span')?.textContent?.trim();
+      if (label) checkedItems.push(label);
+    });
+    s = {
+      client: { ...state.client },
+      selectedPbs: [...state.selectedPbs],
+      completedSections: [...state.completedSet].map(idx => state.sections[idx]?.title).filter(Boolean),
+      currentSection: state.sections[state.currentIdx]?.title || '',
+      notes,
+      checkedItems,
+      heureFinStr: state.heureFinStr,
+      savedAt: new Date().toISOString(),
+    };
+  }
+
+  const c = s.client || {};
+  const date = new Date(s.savedAt).toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  const parents = [c.prenomParent1, c.prenomParent2].filter(Boolean).join(' & ');
+  const pbLabels = {
+    'rgo_allergie':'RGO + Allergie (APLV)', 'allergie_seule':'Suspicion allergie', 'rgo_seul':'RGO',
+    'nutrition_courbe':'Courbe de poids déclinante', 'nutrition_espacement_long':'Espacements trop longs',
+    'nutrition_espacement_court':'Espacements trop courts', 'nutrition_inversion_jour_nuit':'Inversion jour/nuit',
+    'nutrition_jus_vegetaux':'Jus végétaux / lait inadapté',
+    'rythme_dette_sommeil':'Dette de sommeil', 'rythme_reveil_matinal':'Réveil matinal précoce',
+    'rythme_activite_physique':"Manque d'activité physique",
+    'strategie_presence':'Présence parentale indispensable', 'strategie_tetine':'Tétine (réveils)',
+    'strategie_biberon_sein':'Biberon / sein pour s\'endormir',
+    'env_obscurite':'Obscurité insuffisante', 'env_temperature':'Température élevée',
+    'env_lit_ouvert':'Lit ouvert trop tôt', 'env_rituel':'Rituel absent / trop court',
+    'env_cadre':'Cadre non clair', 'env_stimulations':'Stimulations visuelles',
+    'relationnel_conflit':'Venue au lit parental', 'relationnel_rappels':'Rappels multiples',
+  };
+
+  const pbTags = (s.selectedPbs || []).map(pb => `<span class="cr-tag">${pbLabels[pb]||pb}</span>`).join('');
+  const doneItems = (s.completedSections || []).map(t => `<div class="cr-section-done">${t}</div>`).join('') || '<em style="color:#aaa">–</em>';
+  const checkItems = (s.checkedItems || []).map(i => `<div class="cr-checked-item">${i}</div>`).join('') || '<em style="color:#aaa">Aucun élément coché</em>';
+  const notesHtml = s.notes ? s.notes.replace(/\n/g,'<br>') : '<em style="color:#aaa">–</em>';
+
+  return `
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:20px">
+      <div>
+        <h2>📋 Compte rendu de consultation</h2>
+        <div style="font-size:13px;color:var(--text-light);margin-top:4px">${date}${s.heureFinStr ? ' • Fin prévue : '+s.heureFinStr : ''}</div>
+      </div>
+      <div style="background:var(--bg);padding:10px 16px;border-radius:10px;border:1px solid var(--border);font-size:13px;line-height:1.8">
+        <strong>👶 ${c.prenomEnfant || '–'}</strong> • ${c.ageEnfant || '–'}<br>
+        <strong>Rituel :</strong> ${c.rituel || '–'}<br>
+        <strong>👨‍👩‍👧 ${parents || '–'}</strong> ${c.nomFamille ? ''+c.nomFamille : ''}
+      </div>
+    </div>
+
+    <div class="cr-section">
+      <h3>🔥 Problématique des parents</h3>
+      <p>${c.problematique || '–'}</p>
+    </div>
+
+    <div class="cr-section">
+      <h3>🎯 Objectifs</h3>
+      <p>${c.objectifs || '–'}</p>
+    </div>
+
+    <div class="cr-section">
+      <h3>⚙️ Leviers identifiés (${(s.selectedPbs||[]).length})</h3>
+      <div>${pbTags || '<em style="color:#aaa">Aucun</em>'}</div>
+    </div>
+
+    <div class="cr-section">
+      <h3>☑️ Éléments cochés / symptômes confirmés</h3>
+      ${checkItems}
+    </div>
+
+    <div class="cr-section">
+      <h3>📚 Sections abordées</h3>
+      ${doneItems}
+    </div>
+
+    <div class="cr-section">
+      <h3>📝 Notes libres de la consultante</h3>
+      <p>${notesHtml}</p>
+    </div>
+
+    <div class="cr-section" style="background:#fffde7;border:1.5px solid #f0c040;border-radius:10px;padding:14px 18px">
+      <h3 style="border-color:#f0c040">📌 À suivre / prochaines étapes</h3>
+      <p style="color:#7c5800;font-style:italic">À compléter manuellement avant envoi aux parents.</p>
+    </div>`;
+}
+
+function printCR() {
+  window.print();
+}
+
+function copyCRText() {
+  const el = document.getElementById('cr-content');
+  const text = el.innerText || el.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    alert('✅ Texte copié dans le presse-papiers !');
+  });
+}
+
+function downloadCR() {
+  const el = document.getElementById('cr-content');
+  const text = el.innerText || el.textContent;
+  const c = state.client;
+  const fname = `CR_${c.prenomEnfant || 'consultation'}_${new Date().toISOString().slice(0,10)}.txt`;
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = fname; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Service Worker pour fonctionnement hors ligne
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
 
 // Pré-remplir date et heure actuelles
 (function initConsultFields() {
