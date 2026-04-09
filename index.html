@@ -1586,8 +1586,19 @@ function calcAge(dateStr, referenceStr) {
   if (j < 0) { m--; j += 30; }
   if (m < 0) { y--; m += 12; }
   const totalMois = y * 12 + m;
-  const str = (y > 0 ? y + ' an' + (y>1?'s':'') + ' ' : '') + m + ' mois ' + j + ' j';
-  return { totalMois, str };
+  const totalJours = Math.floor((r - d) / (1000 * 60 * 60 * 24));
+  // Formatted string
+  let str = '';
+  if (y > 0) str += y + ' an' + (y > 1 ? 's' : '') + ' ';
+  if (m > 0 || y > 0) str += m + ' mois';
+  if (y === 0 && m < 6) str += (str ? ' ' : '') + j + ' j';
+  str = str.trim() || '0 j';
+  // Short version for header
+  let strCourt = '';
+  if (y > 0) strCourt += y + 'a ';
+  strCourt += m + ' mois';
+  if (y === 0 && totalMois < 3) strCourt += ' ' + j + 'j';
+  return { totalMois, totalJours, str, strCourt };
 }
 
 function besoinLait(mois) {
@@ -1614,12 +1625,12 @@ function computeClientFields() {
   if (ageReel) {
     agesDiv.style.display = 'block';
     document.getElementById('age-reel-calc').textContent = ageReel.str;
-    document.getElementById('age-reel-mois').textContent = ageReel.totalMois + ' mois';
+    document.getElementById('age-reel-mois').textContent = ageReel.totalMois + ' mois • ' + ageReel.totalJours + ' jours';
 
     const premature = dateTerme && dateTerme !== dateNaiss;
     if (premature && ageCorrige) {
       document.getElementById('age-corrige-calc').textContent = ageCorrige.str;
-      document.getElementById('age-corrige-mois').textContent = ageCorrige.totalMois + ' mois';
+      document.getElementById('age-corrige-mois').textContent = ageCorrige.totalMois + ' mois • ' + ageCorrige.totalJours + ' jours';
       // Diff de prématurité
       const diffSem = Math.round((new Date(dateTerme) - new Date(dateNaiss)) / (7 * 24 * 3600 * 1000));
       if (diffSem > 0) {
@@ -1675,8 +1686,10 @@ function startConsultation() {
     sexe, fratrie: document.getElementById('fratrie-enfant')?.value.trim() || '',
     dateNaissance: dateNaiss, dateTerme,
     poids: document.getElementById('poids-enfant')?.value || '',
-    ageReelStr: ageReel?.str || '', ageReelMois: ageReel?.totalMois ?? '',
-    ageCorrigeStr: ageCorrige?.str || '', ageCorrigeMois: ageCorrige?.totalMois ?? '',
+    ageReelStr: ageReel?.str || '', ageReelStrCourt: ageReel?.strCourt || '',
+    ageReelMois: ageReel?.totalMois ?? '', ageReelJours: ageReel?.totalJours ?? '',
+    ageCorrigeStr: ageCorrige?.str || '', ageCorrigeStrCourt: ageCorrige?.strCourt || '',
+    ageCorrigeMois: ageCorrige?.totalMois ?? '', ageCorrigeJours: ageCorrige?.totalJours ?? '',
     besoinLait: besoinLait(ageCorrige?.totalMois ?? ageReel?.totalMois ?? null),
     alimentation: [...document.querySelectorAll('input[name="alim"]:checked')].map(c=>c.value),
     typeLait: document.getElementById('type-lait')?.value || '',
@@ -1795,9 +1808,9 @@ function updateHeader() {
   // Âges : réel + corrigé (si différents = enfant prématuré)
   let ageLine = '';
   if (c.ageReelStr) {
-    ageLine = '🎂 ' + c.ageReelStr;
-    if (c.ageCorrigeStr && c.ageCorrigeStr !== c.ageReelStr) {
-      ageLine += ' · ✏️ corrigé : ' + c.ageCorrigeStr;
+    ageLine = '🎂 ' + (c.ageReelStrCourt || c.ageReelStr);
+    if (c.ageCorrigeStr && c.ageCorrigeMois !== c.ageReelMois) {
+      ageLine += '  ·  ✏️ corrigé : ' + (c.ageCorrigeStrCourt || c.ageCorrigeStr);
     }
   } else if (c.ageEnfant) {
     ageLine = c.ageEnfant;
