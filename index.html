@@ -662,6 +662,27 @@
     .sos-section-body strong { color: #8b0000; font-weight: 700; }
     .sos-section-body em { color: var(--text-light); font-style: italic; }
 
+    /* TOOLTIPS */
+    [title] { position: relative; }
+    [title]:hover::after {
+      content: attr(title);
+      position: absolute; bottom: calc(100% + 8px); left: 50%;
+      transform: translateX(-50%);
+      background: rgba(20,20,30,0.92); color: #fff;
+      font-size: 12px; font-weight: 500; white-space: nowrap;
+      padding: 5px 10px; border-radius: 7px;
+      pointer-events: none; z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    [title]:hover::before {
+      content: '';
+      position: absolute; bottom: calc(100% + 3px); left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: rgba(20,20,30,0.92);
+      pointer-events: none; z-index: 9999;
+    }
+
     /* COUNTDOWN */
     #countdown-badge { transition: all 0.3s; border-radius: 12px; }
     #countdown-badge.warning {
@@ -1545,8 +1566,8 @@
   <div class="notes-body" id="notes-body">
     <textarea id="session-notes-textarea" placeholder="Vos notes libres pendant la consultation…&#10;(sauvegarde automatique)"></textarea>
     <div class="notes-footer">
-      <button class="btn-cr" onclick="openCrModal()">📄 Compte rendu</button>
-      <button class="btn-save-session" onclick="saveCurrentSession()">💾 Sauvegarder session</button>
+      <button class="btn-cr" title="Générer le compte rendu de la consultation" onclick="openCrModal()">📄 Compte rendu</button>
+      <button class="btn-save-session" title="Sauvegarder les notes et l'avancement de cette session" onclick="saveCurrentSession()">💾 Sauvegarder session</button>
     </div>
   </div>
 </div>
@@ -2760,14 +2781,14 @@ function renderCurrentSection() {
   html += `<button class="add-block-row" style="margin-bottom:8px" onclick="openAddBlockModal('${section.id}',-1)">➕ Ajouter un bloc au début</button>`;
   html += renderBlocks(getOverrideBlocks(section), section.id);
   html += `<div class="nav-buttons">
-    <button class="btn-nav btn-prev" onclick="prevSection()" ${state.currentIdx===0?'disabled':''}>← Précédent</button>
+    <button class="btn-nav btn-prev" title="Aller à la section précédente" onclick="prevSection()" ${state.currentIdx===0?'disabled':''}>← Précédent</button>
     <div style="display:flex;align-items:center;gap:10px">
       <span class="section-progress">${state.currentIdx+1} / ${state.sections.length}</span>
       <button class="btn-done ${state.completedSet.has(state.currentIdx)?'done':''}" id="btn-done" onclick="markDone()">
         ${state.completedSet.has(state.currentIdx)?'✅ Validée':'☑️ Marquer comme vue'}
       </button>
     </div>
-    <button class="btn-nav btn-next" onclick="nextSection()" ${state.currentIdx===state.sections.length-1?'disabled':''}>Suivant →</button>
+    <button class="btn-nav btn-next" title="Aller à la section suivante" onclick="nextSection()" ${state.currentIdx===state.sections.length-1?'disabled':''}>Suivant →</button>
   </div>`;
   area.innerHTML = html;
 }
@@ -2931,23 +2952,65 @@ function substituteVars(text) {
     .replace(/\[prénom enfant\]/gi, c.prenomEnfant||'[prénom]')
     .replace(/\[prénom parents\]/gi, parents||'[parents]')
     .replace(/XXXX/g, heureFin);
-  // Pronoms selon sexe (uniquement pour les pronoms bébé, pas les impersonnels)
+  // Pronoms selon sexe du bébé — remplacer il/le/son/lui → elle/la/sa/lui
   const sexeE = state.client.sexe;
   if (sexeE === 'Fille') {
-    // Protéger les "il" impersonnels avant remplacement global
-    const protect = [
-      ["il y a", '§0§'], ["il y avait", '§1§'], ["il y aurait", '§2§'],
-      ["y'a-t-il", '§3§'], ["y a-t-il", '§4§'], ["y a t-il", '§5§'],
-      ["il faut", '§6§'], ["il faudra", '§7§'], ["il faudrait", '§8§'],
-      ["s'il", '§9§'], ["s'Il", '§10§'],
-      ["il n'y a", '§11§'], ["il n'y avait", '§12§'],
-      ["Il y a", '§13§'], ["Il y avait", '§14§'],
-      ["Il faut", '§15§'], ["Il faudra", '§16§'], ["Il faudrait", '§17§'],
-      ["Il n'y a", '§18§'],
+    // Normaliser les apostrophes typographiques ' → ' pour la correspondance
+    t = t.replace(/[\u2018\u2019\u02BC]/g, "'");
+
+    // ── Protéger les expressions impersonnelles avec "il" ──────────────────
+    // On utilise des regex insensibles à la casse et on stocke la casse originale
+    const impersonnels = [
+      // y a-t-il / y'a-t-il (toutes variantes d'apostrophe)
+      /y['\u2019]?a-t-il/gi,
+      /y a-t-il/gi,
+      /y a t-il/gi,
+      // il y a / il y avait / il y aurait / il n'y a / il n'y avait
+      /il n['\u2019]?y a(?:vait|it)?\b/gi,
+      /il y a(?:vait|it|urait)?\b/gi,
+      // il faut / faudra / faudrait / faudrait
+      /il fau(?:t|dra|drait|t-il)\b/gi,
+      // il s'agit / il suffit / il convient / il existe / il reste / il arrive / il est (adj)
+      /il s['\u2019]agit\b/gi,
+      /il suffit\b/gi,
+      /il convient\b/gi,
+      /il existe\b/gi,
+      /il reste\b/gi,
+      /il arrive\b/gi,
+      /il importe\b/gi,
+      /il est (?:important|possible|nécessaire|conseillé|recommandé|préférable|normal|fréquent|rare|difficile|essentiel|utile|probable|certain|vrai|clair|évident|temps)\b/gi,
+      /il peut (?:être|arriver|sembler)\b/gi,
+      /il semble\b/gi,
+      /il paraît\b/gi,
+      /il vaut mieux\b/gi,
+      /il vaut mieux\b/gi,
+      // s'il vous plaît / s'il te plaît
+      /s['\u2019]il\b/gi,
+      // même s'il / bien qu'il (impersonnel)
+      /même s['\u2019]il\b/gi,
     ];
-    protect.forEach(([orig, ph]) => { t = t.split(orig).join(ph); });
-    t = t.replace(/\bil\b/g, 'elle').replace(/\bIl\b/g, 'Elle');
-    protect.forEach(([orig, ph]) => { t = t.split(ph).join(orig); });
+
+    // Remplacer chaque expression impersonnelle par un placeholder
+    const snapshots = [];
+    let counter = 0;
+    for (const re of impersonnels) {
+      t = t.replace(re, match => {
+        const ph = `\x00${counter}\x00`;
+        snapshots[counter] = match;
+        counter++;
+        return ph;
+      });
+    }
+
+    // Remplacer maintenant les pronoms bébé
+    t = t
+      .replace(/\bil\b/g, 'elle')
+      .replace(/\bIl\b/g, 'Elle')
+      .replace(/\bsien\b/g, 'sienne')
+      .replace(/\bSien\b/g, 'Sienne');
+
+    // Restaurer les expressions protégées
+    t = t.replace(/\x00(\d+)\x00/g, (_, i) => snapshots[parseInt(i)]);
   }
   return renderMarkdown(t);
 }
