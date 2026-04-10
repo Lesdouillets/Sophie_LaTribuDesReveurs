@@ -142,8 +142,8 @@
       transition: all 0.15s;
     }
     .setup-client-card:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.25); }
-    .setup-client-name { font-size: 13px; font-weight: 700; color: white; margin-bottom: 2px; }
-    .setup-client-info { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.3; }
+    .setup-client-name { font-size: 13px; font-weight: 700; color: #ffffff; margin-bottom: 2px; text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
+    .setup-client-info { font-size: 11px; color: rgba(255,255,255,0.75); line-height: 1.3; }
     .setup-client-actions { display: flex; gap: 4px; margin-top: 6px; }
     .btn-resume { flex:1; padding: 4px; font-size: 10px; background: rgba(196,122,58,0.5); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
     .btn-resume:hover { background: rgba(196,122,58,0.8); }
@@ -390,12 +390,13 @@
     }
     .pob-toggle-btn:hover { background: rgba(45,153,72,0.1); }
 
-    /* PROGRESS BAR */
-    .progress-bar { height: 3px; background: rgba(0,0,0,0.08); flex-shrink: 0; }
+    /* PROGRESS BAR (temps écoulé) */
+    .progress-bar { height: 5px; background: rgba(0,0,0,0.10); flex-shrink: 0; }
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--primary-light), var(--accent));
-      transition: width 0.4s ease;
+      background: var(--primary);
+      transition: width 1s linear, background 0.5s;
+      border-radius: 0 3px 3px 0;
     }
 
     /* BODY */
@@ -445,7 +446,7 @@
 
     /* CONTENT AREA */
     .content-area {
-      flex: 1; overflow-y: auto; padding: 28px 36px;
+      flex: 1; overflow-y: auto; padding: 28px 36px 340px;
       background: var(--bg);
     }
     .content-area::-webkit-scrollbar { width: 6px; }
@@ -468,13 +469,13 @@
       box-shadow: var(--shadow);
     }
     .block-question {
-      background: linear-gradient(135deg, #fff0f0 0%, #ffe0e0 100%);
-      border: 2px solid #e88;
-      border-left: 6px solid #c0392b;
-      color: #5a1010;
+      background: white;
+      border: 1.5px solid #ffb3b3;
+      border-left: 5px solid #c0392b;
+      color: var(--text);
       font-weight: 400;
       font-size: 15px;
-      box-shadow: 0 4px 16px rgba(192,57,43,0.12), inset 0 0 0 1px rgba(255,255,255,0.6);
+      box-shadow: 0 2px 10px rgba(192,57,43,0.08);
       padding: 0 !important;
       overflow: hidden;
     }
@@ -491,16 +492,16 @@
     .q-text ul { margin: 6px 0 0 18px; }
     .q-text li { margin-bottom: 4px; }
     .block-important {
-      background: var(--important-bg);
-      border-left: 4px solid var(--important-border);
+      background: #f5f0ff;
+      border-left: 5px solid #7c3aed;
     }
     .block-conseil {
-      background: var(--conseil-bg);
-      border-left: 4px solid var(--conseil-border);
+      background: #f0fdf4;
+      border-left: 5px solid #16a34a;
     }
     .block-empathie {
-      background: var(--empathie-bg);
-      border-left: 4px solid var(--empathie-border);
+      background: #f0fdf4;
+      border-left: 5px solid #15803d;
       font-style: italic;
     }
     .block-separator {
@@ -610,15 +611,57 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
+    /* SOS PANEL */
+    .sos-panel {
+      position: fixed; top: 70px; right: 16px; z-index: 500;
+      width: 380px; max-height: calc(100vh - 90px);
+      background: white; border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.22);
+      border: 1.5px solid var(--border);
+      display: none; flex-direction: column; overflow: hidden;
+    }
+    .sos-panel.open { display: flex; }
+    .sos-header {
+      background: linear-gradient(135deg, #c0392b, #e74c3c);
+      color: white; padding: 12px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-weight: 800; font-size: 15px; flex-shrink: 0;
+    }
+    .sos-body {
+      overflow-y: auto; padding: 14px 18px; flex: 1;
+      font-size: 13.5px; line-height: 1.75; color: var(--text);
+    }
+    .sos-section {
+      margin-bottom: 18px; padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sos-section:last-child { border-bottom: none; }
+    .sos-section h3 {
+      font-size: 13px; font-weight: 800; color: #c0392b;
+      text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 10px;
+    }
+    .sos-section ul { padding-left: 18px; margin: 6px 0; }
+    .sos-section li { margin-bottom: 5px; }
+    .sos-section strong { color: var(--primary-dark); }
+
     /* COUNTDOWN */
-    #countdown-badge { transition: all 0.3s; }
-    #countdown-badge.warning { background: rgba(255,150,0,0.15); border-radius: 10px; padding: 2px 8px; }
-    #countdown-badge.warning .info { color: #d07000 !important; font-weight: 800; }
-    #countdown-badge.warning .sub { color: #d07000 !important; }
-    #countdown-badge.urgent { background: rgba(220,50,50,0.12); border-radius: 10px; padding: 2px 8px; animation: pulse-red 1s infinite; }
-    #countdown-badge.urgent .info { color: #c62828 !important; font-weight: 800; }
-    #countdown-badge.urgent .sub { color: #c62828 !important; }
-    @keyframes pulse-red { 0%,100% { opacity:1; } 50% { opacity:0.65; } }
+    #countdown-badge { transition: all 0.3s; border-radius: 12px; }
+    #countdown-badge.warning {
+      background: rgba(255,140,0,0.12); padding: 2px 10px;
+      box-shadow: 0 0 0 1.5px #ff8c00, 0 0 14px rgba(255,140,0,0.55);
+      animation: glow-orange 2s ease-in-out infinite;
+    }
+    #countdown-badge.warning .info { color: #b35c00 !important; font-weight: 900; font-size: 14px !important; }
+    #countdown-badge.warning .sub { color: #b35c00 !important; font-weight: 700; }
+    #countdown-badge.urgent {
+      background: rgba(200,0,0,0.10); padding: 2px 10px;
+      box-shadow: 0 0 0 1.5px #cc1111, 0 0 14px rgba(200,0,0,0.6);
+      animation: glow-red 0.8s ease-in-out infinite;
+    }
+    #countdown-badge.urgent .info { color: #8b0000 !important; font-weight: 900; font-size: 14px !important; }
+    #countdown-badge.urgent .sub { color: #8b0000 !important; font-weight: 700; }
+    @keyframes glow-orange { 0%,100% { box-shadow: 0 0 0 1.5px #ff8c00, 0 0 10px rgba(255,140,0,0.4); } 50% { box-shadow: 0 0 0 2px #ff8c00, 0 0 22px rgba(255,140,0,0.85); } }
+    @keyframes glow-red { 0%,100% { box-shadow: 0 0 0 1.5px #cc1111, 0 0 10px rgba(200,0,0,0.5); } 50% { box-shadow: 0 0 0 2.5px #cc1111, 0 0 24px rgba(200,0,0,0.95); } }
 
     /* OPTION DANGER (orange vif) */
     .block-option.danger {
@@ -1014,7 +1057,8 @@
             </div>
             <div class="form-group">
               <label>Taille cible estimée</label>
-              <div id="taille-cible-calc" style="padding:16px 14px;background:#eaeff8;border:2px solid var(--border);border-radius:10px;font-size:28px;font-weight:800;color:var(--primary-dark);text-align:center;display:flex;align-items:center;justify-content:center;flex:1;min-height:90px">–</div>
+              <div id="taille-cible-calc" style="padding:12px 14px;background:#eaeff8;border:2px solid var(--border);border-radius:10px;font-size:28px;font-weight:800;color:var(--primary-dark);text-align:center;display:flex;align-items:center;justify-content:center;min-height:70px">–</div>
+              <div id="taille-cible-percentile" style="display:none;margin-top:8px;border-radius:8px;overflow:hidden;border:1px solid var(--border);font-size:11px"></div>
             </div>
           </div>
         </div>
@@ -1124,6 +1168,10 @@
 
       <!-- ── TAB CONSULTATION ── -->
       <div id="tab-consult" class="tab-pane">
+        <div class="setup-section" id="last-consult-section" style="display:none">
+          <h3>🕐 Historique</h3>
+          <div id="last-consult-info" style="font-size:13px;line-height:1.8;color:var(--text)"></div>
+        </div>
         <div class="setup-section">
           <h3>📅 Paramètres de la consultation</h3>
           <div class="form-grid">
@@ -1252,7 +1300,7 @@
           <div class="sub" id="header-age-rituel">–</div>
         </div>
       </div>
-      <div class="client-badge clickable" onclick="editClientInConsultation()" title="Modifier la fiche client">
+      <div class="client-badge clickable" onclick="editClientInConsultation('tab-parents')" title="Modifier la fiche parents">
         <span class="icon">👨‍👩‍👧</span>
         <div>
           <div class="info" id="header-parents">–</div>
@@ -1269,6 +1317,7 @@
     </div>
     <div class="header-actions">
       <button class="btn-edit-mode" id="btn-edit-mode" onclick="toggleEditMode()">✏️ Éditer</button>
+      <button class="btn-icon" title="Outils SOS" onclick="toggleSosPanel()" style="font-size:17px">🆘</button>
       <button class="btn-icon" title="Sessions sauvegardées" onclick="openSessionsModal()">📁</button>
       <button class="btn-icon" title="Ajuster les problématiques" onclick="togglePbModal()">⚙️</button>
       <button class="btn-icon" title="Nouvelle consultation" onclick="newConsultation()">🔄</button>
@@ -1415,6 +1464,83 @@
   </div>
 </div>
 
+<!-- SOS PANEL -->
+<div class="sos-panel" id="sos-panel">
+  <div class="sos-header">
+    🆘 Outils SOS
+    <button onclick="toggleSosPanel()" style="background:none;border:none;color:white;font-size:18px;cursor:pointer;padding:0">✕</button>
+  </div>
+  <div class="sos-body" id="sos-body">
+    <div class="sos-section">
+      <h3>🙂 Donner confiance aux parents</h3>
+      <ul>
+        <li><strong>VOUS</strong> êtes les <strong>experts de votre BB</strong> → mon rôle : vous apporter des repères et des outils</li>
+        <li>On va avancer <strong>pas à pas</strong>, en respectant votre rythme et celui de votre enfant</li>
+        <li>Il n'y a <strong>PAS 1 seule bonne façon de faire</strong> → l'important, c'est de trouver ce qui fonctionne pour VOTRE famille</li>
+      </ul>
+    </div>
+    <div class="sos-section">
+      <h3>💪 Déculpabiliser les parents</h3>
+      <ul>
+        <li>Il n'existe PAS de parents parfaits, NI de sommeil parfait</li>
+        <li>Vous avez <strong>fait au mieux</strong> avec ce que vous aviez à ce moment-là</li>
+        <li>Le sommeil d'un BB évolue beaucoup → c'est <strong>NORMAL</strong> de rencontrer des moments plus compliqués</li>
+      </ul>
+    </div>
+    <div class="sos-section">
+      <h3>😭 "Je n'aime pas l'entendre pleurer"</h3>
+      <ul>
+        <li>On ne va <strong>PAS laisser votre enfant SEUL à pleurer</strong></li>
+        <li>Les pleurs des enfants ≠ pleurs des adultes → c'est leur <strong>seul moyen de communication</strong></li>
+        <li>Aujourd'hui, on demande à votre enfant de <strong>changer une habitude</strong> → c'est possible qu'il proteste. C'est <strong>normal !</strong></li>
+        <li>Votre enfant va apprendre de nouvelles stratégies pour s'endormir → vous ne pouvez pas le faire à sa place</li>
+      </ul>
+    </div>
+    <div class="sos-section">
+      <h3>🧠 "Pleurer = délétère pour le cerveau"</h3>
+      <ul>
+        <li>Ce n'est <strong>PAS le fait de pleurer</strong> qui est dangereux</li>
+        <li>Ce qui est problématique : les pleurs qui se répètent <strong>sans aucune réponse d'un adulte</strong></li>
+        <li>Dans ce que je vous propose, votre enfant n'est <strong>JAMAIS seul</strong> → vous reconnaissez et accueillez son émotion</li>
+      </ul>
+    </div>
+    <div class="sos-section">
+      <h3>🤱 "Il a besoin de moi, pas d'apprendre à dormir"</h3>
+      <ul>
+        <li>OUI, votre enfant a besoin de vous. Il aura toujours besoin de vous.</li>
+        <li>Il ne va pas "apprendre à dormir" — il <strong>SAIT déjà dormir</strong></li>
+        <li>Ce qu'il va apprendre : de <strong>nouvelles habitudes</strong> autour de l'endormissement</li>
+        <li>C'est <strong>grâce au lien fort</strong> entre vous qu'il peut se sentir en sécurité et oser découvrir de nouvelles choses</li>
+      </ul>
+    </div>
+    <div class="sos-section">
+      <h3>😤 "Il pleure pour manipuler / faire un caprice"</h3>
+      <ul>
+        <li>Un BB n'a pas la <strong>maturité neurologique</strong> pour ça</li>
+        <li>Les pleurs ne sont PAS une stratégie → c'est leur <strong>seul moyen de communication</strong></li>
+        <li>Quand il pleure fort, ce n'est pas un caprice, c'est : <em>"j'ai besoin de toi"</em></li>
+      </ul>
+    </div>
+    <div class="sos-section">
+      <h3>🔁 Entraînement au S. vs. Endormissement autonome</h3>
+      <ul>
+        <li><strong>Entraînement au sommeil</strong> = recherche de PERFORMANCE, peu importe ce qu'il ressent</li>
+        <li><strong>Endormissement autonome</strong> = COMPÉTENCE qui se développe à son rythme, en sécurité</li>
+        <li>À chaque émotion forte → vous êtes là pour l'accompagner. Pas pour le faire taire.</li>
+      </ul>
+    </div>
+    <div class="sos-section">
+      <h3>❤️ Accompagner les émotions</h3>
+      <ul>
+        <li>Être <strong>présent</strong>, simplement, avec bienveillance</li>
+        <li>Le toucher doucement, lui parler doucement</li>
+        <li>Nommer ce qu'il ressent : <em>"je comprends ta colère"</em></li>
+        <li>Lui rappeler qu'il est en sécurité, que vous êtes là pour lui</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 <script src="script-data.js"></script>
 <script>
 // ═══════════════════════════════════════════════════
@@ -1535,6 +1661,7 @@ let state = {
   completedSet: new Set(),
   heureFin: null,
   heureFinStr: '',
+  consultStart: null,
   timerInterval: null,
   scriptOverrides: {},
   editMode: false,
@@ -1730,7 +1857,43 @@ function loadClient(idx) {
   const saved = JSON.parse(localStorage.getItem('tdr_clients') || '[]');
   const c = saved[idx]; if (!c) return;
   populateFormFromClient(c);
+  showLastConsultInfo(c);
   showSetupTab('tab-bebe', document.querySelector('.setup-tab'));
+}
+
+function showLastConsultInfo(c) {
+  const section = document.getElementById('last-consult-section');
+  const info = document.getElementById('last-consult-info');
+  if (!section || !info || !c.savedAt) { if(section) section.style.display='none'; return; }
+  const lastDate = new Date(c.savedAt);
+  const today = new Date();
+  // Age au moment de la dernière consultation
+  const ageAtLast = c.ageReelStr || c.ageEnfant || '–';
+  // Age aujourd'hui (recalculer si date de naissance connue)
+  let ageNow = '–';
+  if (c.dateNaissance) {
+    const a = calcAge(c.dateNaissance, today.toISOString().slice(0,10));
+    if (a) ageNow = a.str;
+  }
+  const daysDiff = Math.floor((today - lastDate) / (1000*60*60*24));
+  const diffStr = daysDiff === 0 ? 'aujourd\'hui' : daysDiff === 1 ? 'hier' : `il y a ${daysDiff} jours`;
+  section.style.display = 'block';
+  info.innerHTML = `
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <div style="flex:1;min-width:160px;background:#eaeff8;border-radius:8px;padding:10px 14px">
+        <div style="font-size:10px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px">📅 Dernière consultation</div>
+        <div style="font-size:15px;font-weight:700;color:var(--primary-dark)">${lastDate.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})}</div>
+        <div style="font-size:12px;color:var(--text-light)">${diffStr}</div>
+      </div>
+      <div style="flex:1;min-width:140px;background:#f5f0ff;border-radius:8px;padding:10px 14px">
+        <div style="font-size:10px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px">🎂 Âge lors de la dernière consult.</div>
+        <div style="font-size:15px;font-weight:700;color:#7c3aed">${ageAtLast}</div>
+      </div>
+      <div style="flex:1;min-width:140px;background:#f0fdf4;border-radius:8px;padding:10px 14px">
+        <div style="font-size:10px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px">🎂 Âge aujourd'hui</div>
+        <div style="font-size:15px;font-weight:700;color:#16a34a">${ageNow}</div>
+      </div>
+    </div>`;
 }
 
 async function deleteClient(e, idx) {
@@ -1842,14 +2005,14 @@ async function saveFicheOnly() {
   }
 }
 
-function editClientInConsultation() {
-  // Go back to setup form with current client data, preserving consultation position
+function editClientInConsultation(tab) {
   populateFormFromClient(state.client);
   state._returningFromConsult = true;
   document.getElementById('app-screen').style.display = 'none';
   document.getElementById('setup-screen').style.display = 'flex';
-  showSetupTab('tab-bebe', document.querySelector('.setup-tab'));
-  // Update footer to show "Reprendre" button
+  const targetTab = tab || 'tab-bebe';
+  const tabBtn = document.querySelector(`.setup-tab[onclick*="${targetTab}"]`) || document.querySelector('.setup-tab');
+  showSetupTab(targetTab, tabBtn);
   const footer = document.getElementById('setup-footer');
   if (footer) footer.innerHTML = `
     <div class="setup-footer-row">
@@ -1859,21 +2022,18 @@ function editClientInConsultation() {
     </div>`;
 }
 
-function resumeConsultation() {
-  // Save updated form data to state.client without resetting position
-  saveFicheOnly().then(() => {
-    state._returningFromConsult = false;
-    document.getElementById('setup-screen').style.display = 'none';
-    document.getElementById('app-screen').style.display = 'flex';
-    updateHeader();
-    // Reset footer for next time
-    const footer = document.getElementById('setup-footer');
-    if (footer) footer.innerHTML = `
-      <div class="setup-footer-row">
-        <button class="btn-save-fiche" id="btn-save-fiche" onclick="saveFicheOnly()">💾 Sauvegarder la fiche</button>
-        <button class="btn-start-new" id="btn-start-consult" onclick="startConsultation()">🚀 Démarrer la consultation</button>
-      </div>`;
-  });
+async function resumeConsultation() {
+  try { await saveFicheOnly(); } catch(e) { console.warn('saveFicheOnly error:', e); }
+  state._returningFromConsult = false;
+  document.getElementById('setup-screen').style.display = 'none';
+  document.getElementById('app-screen').style.display = 'flex';
+  updateHeader();
+  const footer = document.getElementById('setup-footer');
+  if (footer) footer.innerHTML = `
+    <div class="setup-footer-row">
+      <button class="btn-save-fiche" id="btn-save-fiche" onclick="saveFicheOnly()">💾 Sauvegarder la fiche</button>
+      <button class="btn-start-new" id="btn-start-consult" onclick="startConsultation()">🚀 Démarrer la consultation</button>
+    </div>`;
 }
 
 document.querySelectorAll('input[name="pb"], input[name="alim"]').forEach(cb => {
@@ -1974,7 +2134,21 @@ function computeClientFields() {
       document.getElementById('age-corrige-mois').textContent = ageReel.totalMois + ' mois';
     }
     const poidsVal = document.getElementById('poids-enfant')?.value;
-    const agePourLait = (ageCorrige && (dateTerme && dateTerme !== dateNaiss)) ? ageCorrige.totalMois : (ageReel ? ageReel.totalMois : null);
+    // Age pour calcul lait : age corrigé si prématuré, sinon réel, sinon parsing manuel
+    let agePourLait = null;
+    if (ageCorrige && dateTerme && dateTerme !== dateNaiss) agePourLait = ageCorrige.totalMois;
+    else if (ageReel) agePourLait = ageReel.totalMois;
+    if (agePourLait === null) {
+      // Fallback: parser l'âge manuel (ex: "4 ans 11 mois" ou "3 mois 5 jours")
+      const tryParse = (s) => {
+        if (!s) return null;
+        let y=0, m=0;
+        const ym = s.match(/(\d+)\s*an/i); if(ym) y=parseInt(ym[1]);
+        const mm = s.match(/(\d+)\s*mois/i); if(mm) m=parseInt(mm[1]);
+        return (y*12+m) || null;
+      };
+      agePourLait = tryParse(ageCorrigeManuel) ?? tryParse(ageManuel);
+    }
     const bl = besoinLait(agePourLait, poidsVal);
     document.getElementById('besoin-lait-formule').textContent = bl.formula;
     const volEl = document.getElementById('besoin-lait-volume');
@@ -1985,16 +2159,50 @@ function computeClientFields() {
     agesDiv.style.display = 'none';
   }
 
-  // Taille cible
+  // Taille cible + percentile
   const tcEl = document.getElementById('taille-cible-calc');
+  const percEl = document.getElementById('taille-cible-percentile');
+  const percFille = [{p:3,t:152},{p:5,t:154},{p:10,t:156},{p:25,t:160},{p:50,t:164},{p:75,t:168},{p:90,t:172},{p:95,t:174},{p:97,t:176}];
+  const percGarcon = [{p:3,t:166},{p:5,t:167},{p:10,t:169},{p:25,t:173},{p:50,t:177},{p:75,t:181},{p:90,t:185},{p:95,t:187},{p:97,t:188}];
   if (!isNaN(taillePere) && !isNaN(tailleMere) && sexe) {
     const corr = sexe === 'Fille' ? -13 : 13;
     const tc = Math.round((taillePere + tailleMere + corr) / 2);
     tcEl.textContent = tc + ' cm';
     tcEl.style.borderColor = 'var(--primary-light)';
+    // Trouver les 2 percentiles encadrant tc
+    const table = sexe === 'Fille' ? percFille : percGarcon;
+    let below = null, above = null;
+    for (let i = 0; i < table.length; i++) {
+      if (table[i].t <= tc) below = table[i];
+      if (table[i].t >= tc && !above) above = table[i];
+    }
+    if (percEl) {
+      let rows = table.map(r => {
+        const isBelow = below && r.p === below.p && r.t !== above?.t;
+        const isAbove = above && r.p === above.p;
+        const highlight = isBelow || isAbove;
+        const bg = highlight ? (isAbove ? '#dcfce7' : '#dbeafe') : 'white';
+        const fw = highlight ? '800' : '400';
+        return `<tr style="background:${bg}">
+          <td style="padding:3px 8px;font-weight:${fw};color:${highlight?'#1a3a1a':'#555'}">${r.p}e</td>
+          <td style="padding:3px 8px;font-weight:${fw};color:${highlight?'#1a3a1a':'#555'}">${r.t} cm</td>
+          ${highlight ? `<td style="padding:3px 6px;font-size:10px;color:#555">${isAbove ? '⬆ au-dessus' : '⬇ en-dessous'}</td>` : '<td></td>'}
+        </tr>`;
+      }).join('');
+      percEl.style.display = 'block';
+      percEl.innerHTML = `<table style="width:100%;border-collapse:collapse">
+        <thead><tr style="background:var(--primary-dark);color:white">
+          <th style="padding:4px 8px;text-align:left;font-size:11px">%ile</th>
+          <th style="padding:4px 8px;text-align:left;font-size:11px">Taille</th>
+          <th style="padding:4px 8px;text-align:left;font-size:11px"></th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+    }
   } else {
     tcEl.textContent = '–';
     tcEl.style.borderColor = 'var(--border)';
+    if (percEl) percEl.style.display = 'none';
   }
 }
 
@@ -2078,8 +2286,11 @@ function startConsultation() {
     state.heureFinStr = '';
   }
 
+  state.consultStart = Date.now();
   saveClient();
   buildSections();
+  // Adapter les sections selon les données client
+  adaptSectionsToClient();
   initUI();
   document.getElementById('setup-screen').style.display = 'none';
   document.getElementById('app-screen').style.display = 'flex';
@@ -2088,6 +2299,51 @@ function startConsultation() {
 // ═══════════════════════════════════════════════════
 // BUILD SECTIONS
 // ═══════════════════════════════════════════════════
+function adaptSectionsToClient() {
+  const c = state.client;
+  state.sections = state.sections.map(s => {
+    if (s.id === 'problematique') {
+      if (c.problematique && c.problematique.trim()) {
+        // Problématique connue : afficher avec le texte copié
+        return { ...s, blocks: [
+          { type: 'normal', text: 'Maintenant, je vais reprendre votre problématique\net APRÈS vous allez m\'expliquer ce qui se passe exactement pour le sommeil de [prénom_enfant].' },
+          { type: 'important', text: '🔥 Donc, vous m\'avez écrit :\n' + c.problematique },
+          { type: 'question', text: 'Est-ce que c\'est toujours d\'actualité?' },
+          { type: 'option', label: 'Si pleurs difficiles 😭', blocks: [
+            { type: 'empathie', text: 'J\'entends que c\'est difficile pour vous d\'entendre votre enfant pleurer…\nMerci de me le confier.\n\nIl y a beaucoup de parents POUR QUI :\n→ c\'est vraiment compliqué,\n→ et chacun a sa sensibilité là-dessus\n→ et c\'est OK\n\nL\'idée ici, ça ne va PAS ÊTRE de vous forcer à faire quelque chose qui ne vous correspond pas.\nOn va plutôt adapter les choses à vous, à CE QUE vous ÊTES CAPABLE de faire aujourd\'hui.\n\nParce que :\nPLUS vous serez alignée avec vous-même → PLUS ce sera fluide pour vous… et pour votre enfant aussi.\n\nEt on va justement trouver ensemble une façon de faire QUI respecte ça' }
+          ]}
+        ]};
+      } else {
+        // Pas de problématique renseignée : poser la question
+        return { ...s, blocks: [
+          { type: 'question', text: 'Maintenant, j\'aimerais savoir quelle est votre problématique aujourd\'hui pour [prénom_enfant].' },
+          { type: 'option', label: 'Si pleurs difficiles 😭', blocks: [
+            { type: 'empathie', text: 'J\'entends que c\'est difficile pour vous d\'entendre votre enfant pleurer…\nMerci de me le confier.\n\nIl y a beaucoup de parents POUR QUI :\n→ c\'est vraiment compliqué,\n→ et chacun a sa sensibilité là-dessus\n→ et c\'est OK\n\nL\'idée ici, ça ne va PAS ÊTRE de vous forcer à faire quelque chose qui ne vous correspond pas.\nOn va plutôt adapter les choses à vous, à CE QUE vous ÊTES CAPABLE de faire aujourd\'hui.' }
+          ]}
+        ]};
+      }
+    }
+    if (s.id === 'objectifs') {
+      if (c.objectifs && c.objectifs.trim()) {
+        // Objectifs connus : afficher avec le texte copié
+        return { ...s, blocks: [
+          { type: 'normal', text: 'Alors maintenant, j\'aimerais qu\'on parle de vos objectifs\nJe vais relire ce que vous m\'avez noté… pour être sûre qu\'on est bien alignés.' },
+          { type: 'important', text: '🔥 Vous m\'avez écrit :\n' + c.objectifs },
+          { type: 'question', text: 'Est-ce que ça correspond toujours à ce que vous souhaitez aujourd\'hui ?\nEst-ce que vous avez quelque chose à ajouter ou préciser ?' },
+          ...s.blocks.slice(3) // garder les options (lieu de sommeil, position ventrale…)
+        ]};
+      } else {
+        // Pas d'objectifs renseignés : poser la question
+        return { ...s, blocks: [
+          { type: 'question', text: 'J\'aimerais maintenant savoir quels sont vos objectifs aujourd\'hui pour [prénom_enfant].\nQu\'est-ce que vous souhaitez idéalement mettre en place ?' },
+          ...s.blocks.slice(3) // garder les options
+        ]};
+      }
+    }
+    return s;
+  });
+}
+
 function buildSections() {
   state.sections = [];
   SCRIPT_DATA.required.forEach(s => state.sections.push({...s, sectionType:'required'}));
@@ -2125,6 +2381,23 @@ function initUI() {
   if (ta && state._notes !== undefined) ta.value = state._notes;
 }
 
+function toggleSosPanel() {
+  const panel = document.getElementById('sos-panel');
+  if (panel) panel.classList.toggle('open');
+}
+
+function updateTimeProgress() {
+  const fill = document.getElementById('progress-fill');
+  if (!fill) return;
+  if (!state.heureFin || !state.consultStart) { fill.style.width = '0%'; return; }
+  const total = state.heureFin - state.consultStart;
+  const elapsed = Date.now() - state.consultStart;
+  const pct = Math.min(100, Math.max(0, (elapsed / total) * 100));
+  fill.style.width = pct + '%';
+  const remMins = (state.heureFin - Date.now()) / 60000;
+  fill.style.background = remMins <= 10 ? '#c62828' : remMins <= 20 ? '#e65100' : 'var(--primary)';
+}
+
 function startTimer() {
   if (state.timerInterval) clearInterval(state.timerInterval);
   const badge = document.getElementById('countdown-badge');
@@ -2146,7 +2419,7 @@ function startTimer() {
     badge.classList.toggle('urgent', mins < 10);
   }
   update();
-  state.timerInterval = setInterval(update, 1000);
+  state.timerInterval = setInterval(() => { update(); updateTimeProgress(); }, 1000);
 }
 
 function updateHeader() {
@@ -2213,8 +2486,7 @@ function buildSidebar() {
     const target = s.sectionType==='required' ? 'nav-required' : s.sectionType==='conditional' ? 'nav-conditional' : 'nav-plan';
     document.getElementById(target).appendChild(div);
   });
-  const pct = state.sections.length>1 ? Math.round((state.currentIdx/(state.sections.length-1))*100) : 0;
-  document.getElementById('progress-fill').style.width = pct+'%';
+  updateTimeProgress();
 }
 
 function buildSidebarPbPanel() {
@@ -2475,13 +2747,23 @@ function substituteVars(text) {
     .replace(/\[prénom enfant\]/gi, c.prenomEnfant||'[prénom]')
     .replace(/\[prénom parents\]/gi, parents||'[parents]')
     .replace(/XXXX/g, heureFin);
-  // Pronoms selon sexe
+  // Pronoms selon sexe (uniquement pour les pronoms bébé, pas les impersonnels)
   const sexeE = state.client.sexe;
   if (sexeE === 'Fille') {
-    t = t.replace(/\bil\b/g,'elle').replace(/\bIl\b/g,'Elle')
-         .replace(/\blui\b/g,'elle').replace(/\bLui\b/g,'Elle')
-         .replace(/\bson sommeil\b/gi,'son sommeil')
-         .replace(/\bBB\b/g,'BB');
+    // Protéger les "il" impersonnels avant remplacement global
+    const protect = [
+      ["il y a", '§0§'], ["il y avait", '§1§'], ["il y aurait", '§2§'],
+      ["y'a-t-il", '§3§'], ["y a-t-il", '§4§'], ["y a t-il", '§5§'],
+      ["il faut", '§6§'], ["il faudra", '§7§'], ["il faudrait", '§8§'],
+      ["s'il", '§9§'], ["s'Il", '§10§'],
+      ["il n'y a", '§11§'], ["il n'y avait", '§12§'],
+      ["Il y a", '§13§'], ["Il y avait", '§14§'],
+      ["Il faut", '§15§'], ["Il faudra", '§16§'], ["Il faudrait", '§17§'],
+      ["Il n'y a", '§18§'],
+    ];
+    protect.forEach(([orig, ph]) => { t = t.split(orig).join(ph); });
+    t = t.replace(/\bil\b/g, 'elle').replace(/\bIl\b/g, 'Elle');
+    protect.forEach(([orig, ph]) => { t = t.split(ph).join(orig); });
   }
   return renderMarkdown(t);
 }
