@@ -868,7 +868,11 @@
     </div>
 
     <div class="setup-left-footer">
+      <div id="sync-status" style="font-size:10px;color:rgba(255,255,255,0.35);text-align:center;margin-bottom:4px">
+        ☁️ Synchronisation…
+      </div>
       <button class="btn-sessions-left" onclick="openSessionsModal()">📁 Mes sessions sauvegardées</button>
+      <button class="btn-sessions-left" onclick="loadSavedClients()" style="margin-top:4px">🔄 Actualiser</button>
     </div>
   </div>
 
@@ -1538,6 +1542,7 @@ function filterSavedClients() {
     return (c.prenomEnfant||'').toLowerCase().includes(query)
       || (c.nomFamille||'').toLowerCase().includes(query)
       || (c.prenomParent1||'').toLowerCase().includes(query)
+      || (c.prenomParent2||'').toLowerCase().includes(query)
       || (c.prenomParent2||'').toLowerCase().includes(query);
   });
   _renderClientsList(filtered, saved);
@@ -1579,9 +1584,51 @@ function showSetupTab(tabId, btn) {
   btn?.classList.add('active');
 }
 
-function loadSavedClients() {
+async function loadSavedClients() {
   updateEnseigneUI();
-  const saved = JSON.parse(localStorage.getItem('tdr_clients') || '[]');
+  let saved = JSON.parse(localStorage.getItem('tdr_clients') || '[]');
+
+  // Fetch from Supabase and merge
+  if (currentUser) {
+    try {
+      const { data } = await db.from('clients')
+        .select('client_data, updated_at')
+        .eq('user_id', currentUser.id)
+        .order('updated_at', { ascending: false });
+
+      if (data && data.length > 0) {
+        // Merge: Supabase wins on conflict (more recent)
+        const supaClients = data.map(r => r.client_data).filter(Boolean);
+        const merged = [...saved];
+        for (const sc of supaClients) {
+          const localIdx = merged.findIndex(l => l._id === sc._id ||
+            (l.prenomEnfant === sc.prenomEnfant && l.nomFamille === sc.nomFamille));
+          if (localIdx >= 0) {
+            // Keep most recent
+            if (!merged[localIdx].savedAt || sc.savedAt > merged[localIdx].savedAt) {
+              merged[localIdx] = sc;
+            }
+          } else {
+            merged.push(sc);
+          }
+        }
+        // Sort by savedAt desc
+        merged.sort((a, b) => (b.savedAt || '').localeCompare(a.savedAt || ''));
+        saved = merged;
+        localStorage.setItem('tdr_clients', JSON.stringify(saved));
+        const syncEl = document.getElementById('sync-status');
+        if (syncEl) syncEl.textContent = `☁️ Sync OK — ${saved.length} famille${saved.length>1?'s':''}`;
+      }
+    } catch(e) {
+      console.warn('Chargement clients Supabase:', e);
+      const syncEl = document.getElementById('sync-status');
+      if (syncEl) syncEl.textContent = '⚠️ Hors ligne — données locales';
+    }
+  } else {
+    const syncEl = document.getElementById('sync-status');
+    if (syncEl) syncEl.textContent = saved.length ? `💾 ${saved.length} famille${saved.length>1?'s':''} (local)` : '';
+  }
+
   _renderClientsList(saved, saved);
 }
 
@@ -1627,20 +1674,54 @@ function loadClient(idx) {
   document.querySelectorAll('.pb-item').forEach(el => el.classList.toggle('checked', el.querySelector('input')?.checked));
 }
 
-function deleteClient(e, idx) {
+async function deleteClient(e, idx) {
   e.stopPropagation();
+  if (!confirm('Supprimer ce client ?')) return;
   const saved = JSON.parse(localStorage.getItem('tdr_clients') || '[]');
+  const client = saved[idx];
   saved.splice(idx, 1);
   localStorage.setItem('tdr_clients', JSON.stringify(saved));
+  // Delete from Supabase
+  if (currentUser && client?._id) {
+    try {
+      await db.from('clients').delete().eq('id', client._id).eq('user_id', currentUser.id);
+    } catch(e) { console.warn('Delete client Supabase:', e); }
+  }
   loadSavedClients();
 }
 
-function saveClient() {
-  const c = { prenomEnfant: document.getElementById('prenom-enfant').value.trim(), ageEnfant: document.getElementById('age-enfant').value.trim(), rituel: document.getElementById('rituel-enfant').value.trim(), prenomParent1: document.getElementById('prenom-parent1').value.trim(), prenomParent2: document.getElementById('prenom-parent2').value.trim(), nomFamille: document.getElementById('nom-famille').value.trim(), roleParents: document.getElementById('role-parents').value, problematique: document.getElementById('problematique-text').value.trim(), objectifs: document.getElementById('objectifs-text').value.trim(), pbs: [...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value), savedAt: new Date().toISOString() };
+function clientId(c) {
+  // Unique slug per family
+  return [c.prenomEnfant, c.nomFamille, c.prenomParent1]
+    .filter(Boolean).join('_').toLowerCase()
+    .replace(/[^a-z0-9_àâçéèêëîïôùûüÿ]/g, '-').substring(0, 80)
+    || 'client_' + Date.now();
+}
+
+async function saveClient() {
+  const c = state.client;
+  if (!c || !c.prenomEnfant) return;
+  c.savedAt = new Date().toISOString();
+  const id = clientId(c);
+  c._id = id;
+
+  // 1. Save locally
   const saved = JSON.parse(localStorage.getItem('tdr_clients') || '[]');
-  const idx = saved.findIndex(s => s.prenomEnfant===c.prenomEnfant && s.nomFamille===c.nomFamille);
-  if (idx>=0) saved[idx]=c; else saved.push(c);
+  const idx = saved.findIndex(s => s._id === id || (s.prenomEnfant === c.prenomEnfant && s.nomFamille === c.nomFamille));
+  if (idx >= 0) saved[idx] = c; else saved.push(c);
   localStorage.setItem('tdr_clients', JSON.stringify(saved));
+
+  // 2. Sync to Supabase
+  if (currentUser) {
+    try {
+      await db.from('clients').upsert({
+        id,
+        user_id: currentUser.id,
+        client_data: c,
+        updated_at: c.savedAt
+      });
+    } catch(e) { console.warn('Sync client Supabase:', e); }
+  }
 }
 
 document.querySelectorAll('input[name="pb"], input[name="alim"]').forEach(cb => {
