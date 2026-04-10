@@ -459,6 +459,7 @@
     .block {
       margin-bottom: 14px; border-radius: var(--radius);
       padding: 16px 20px; line-height: 1.75; font-size: 15px;
+      font-weight: 600;
     }
 
     .block-normal {
@@ -467,25 +468,25 @@
       box-shadow: var(--shadow);
     }
     .block-question {
-      background: linear-gradient(135deg, #eaeff8 0%, #d5deef 100%);
-      border: 2px solid #7a95b5;
-      border-left: 6px solid #2d3f5c;
-      color: #2d3f5c;
-      font-weight: 600;
-      font-size: 16px;
-      box-shadow: 0 6px 24px rgba(21,101,192,0.18), inset 0 0 0 1px rgba(255,255,255,0.5);
+      background: linear-gradient(135deg, #fff0f0 0%, #ffe0e0 100%);
+      border: 2px solid #e88;
+      border-left: 6px solid #c0392b;
+      color: #5a1010;
+      font-weight: 400;
+      font-size: 15px;
+      box-shadow: 0 4px 16px rgba(192,57,43,0.12), inset 0 0 0 1px rgba(255,255,255,0.6);
       padding: 0 !important;
       overflow: hidden;
     }
     .block-question::before { display: none; }
     .q-label {
-      background: linear-gradient(90deg, #2d3f5c, #5e7194);
+      background: linear-gradient(90deg, #c0392b, #e74c3c);
       color: white; font-weight: 800; font-size: 12px;
       padding: 6px 16px 6px 14px; letter-spacing: 0.8px;
       text-transform: uppercase; display: flex; align-items: center; gap: 6px;
     }
     .q-text {
-      padding: 16px 20px; line-height: 1.8;
+      padding: 16px 20px; line-height: 1.8; font-weight: 400;
     }
     .q-text ul { margin: 6px 0 0 18px; }
     .q-text li { margin-bottom: 4px; }
@@ -906,6 +907,16 @@
       <div id="tab-bebe" class="tab-pane active">
         <div class="setup-section">
           <h3>👶 Identité de l'enfant</h3>
+          <!-- Enseigne (obligatoire) -->
+          <div class="form-group full" style="margin-bottom:16px">
+            <label>Enseigne <span style="color:#e74c3c">*</span></label>
+            <select id="enseigne-select" required onchange="setEnseigneFromSelect(this.value)"
+              style="border-color:var(--accent);font-weight:700">
+              <option value="">– choisir –</option>
+              <option value="tribu">🌿 La tribu des rêveurs</option>
+              <option value="feedodo">🧚 Fée dodo</option>
+            </select>
+          </div>
           <div class="form-grid">
             <div class="form-group">
               <label>Prénom de l'enfant <span style="color:#e74c3c">*</span></label>
@@ -1570,12 +1581,14 @@ function filterSavedClients() {
 let currentEnseigne = localStorage.getItem('tdr_enseigne') || 'tribu';
 
 function setEnseigne(enseigne) {
+  if (!enseigne) return;
   currentEnseigne = enseigne;
   localStorage.setItem('tdr_enseigne', enseigne);
-  document.getElementById('btn-tribu').className = 'enseigne-btn' + (enseigne === 'tribu' ? ' active-tribu' : '');
-  document.getElementById('btn-feedodo').className = 'enseigne-btn' + (enseigne === 'feedodo' ? ' active-feedodo' : '');
-  // Update brand logo/name if needed
   updateEnseigneUI();
+}
+
+function setEnseigneFromSelect(val) {
+  setEnseigne(val);
 }
 
 function updateEnseigneUI() {
@@ -1583,11 +1596,13 @@ function updateEnseigneUI() {
   if (brandName) {
     brandName.textContent = currentEnseigne === 'feedodo' ? '🧚 Fée dodo' : '🌿 La tribu des rêveurs';
   }
-  // Restore correct active state on switcher buttons
   const tribu = document.getElementById('btn-tribu');
   const feedodo = document.getElementById('btn-feedodo');
   if (tribu) tribu.className = 'enseigne-btn' + (currentEnseigne === 'tribu' ? ' active-tribu' : '');
   if (feedodo) feedodo.className = 'enseigne-btn' + (currentEnseigne === 'feedodo' ? ' active-feedodo' : '');
+  // Sync the select in the form
+  const sel = document.getElementById('enseigne-select');
+  if (sel && currentEnseigne) sel.value = currentEnseigne;
 }
 
 function toggleAutreAllergie() {
@@ -1707,7 +1722,7 @@ function populateFormFromClient(c) {
   document.querySelectorAll('input[name="pb"]').forEach(cb => cb.checked = false);
   (c.pbs||[]).forEach(pb => { const el = document.querySelector(`input[name="pb"][value="${pb}"]`); if (el) el.checked = true; });
   document.querySelectorAll('.pb-item').forEach(el => el.classList.toggle('checked', el.querySelector('input')?.checked));
-  if (c.enseigne) setEnseigne(c.enseigne);
+  if (c.enseigne) { setEnseigne(c.enseigne); const sel = document.getElementById('enseigne-select'); if (sel) sel.value = c.enseigne; }
   computeClientFields();
 }
 
@@ -1992,6 +2007,8 @@ function startConsultation() {
   const sexeEnfant = document.getElementById('sexe-enfant').value;
   const dateNaissVal = document.getElementById('date-naissance')?.value;
   const ageManuelVal = document.getElementById('age-enfant')?.value.trim();
+  const enseigneVal = document.getElementById('enseigne-select')?.value;
+  if (!enseigneVal) { alert('Merci de sélectionner l\'enseigne (La tribu ou Fée dodo).'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
   if (!prenomEnfant) { alert('Merci de renseigner le prénom de l\'enfant.'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
   if (!sexeEnfant) { alert('Merci de sélectionner le sexe de l\'enfant.'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
   if (!dateNaissVal && !ageManuelVal) { alert('Merci d\'indiquer la date de naissance ou l\'âge de l\'enfant.'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
@@ -2391,7 +2408,7 @@ function renderBlockInner(b, i, sectionId, depth) {
 
   if (b.type === 'question') {
     return `<div class="block block-question">
-      <div class="q-label">❓ Question à poser</div>
+      <div class="q-label">❓ Questions à poser</div>
       <div class="q-text">${text}</div>
     </div>`;
   }
