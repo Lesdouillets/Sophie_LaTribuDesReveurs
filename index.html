@@ -1888,7 +1888,7 @@ function startConsultation() {
     prenomParent1, prenomParent2: document.getElementById('prenom-parent2').value.trim(),
     sexeParent1: document.getElementById('sexe-parent1')?.value || 'maman',
     sexeParent2: document.getElementById('sexe-parent2')?.value || 'papa',
-    roleParents: document.getElementById('role-parents').value,
+    roleParents: document.getElementById('role-parents')?.value || 'les deux parents',
     problematique: document.getElementById('problematique-text').value.trim(),
     objectifs: document.getElementById('objectifs-text').value.trim()
   };
