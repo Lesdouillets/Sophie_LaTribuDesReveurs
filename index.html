@@ -2816,13 +2816,25 @@ function computeClientFields() {
 
     // Prématuré = date du terme APRÈS la date de naissance (l'enfant est né avant le terme)
     const premature = dateTerme && dateNaiss && dateTerme !== dateNaiss && new Date(dateTerme) > new Date(dateNaiss);
-    if (premature && ageCorrige) {
-      document.getElementById('age-corrige-calc').textContent = ageCorrige.str;
-      document.getElementById('age-corrige-mois').textContent = ageCorrige.totalMois + ' mois • ' + ageCorrige.totalJours + ' jours';
+    if (premature) {
+      // L'âge calculé depuis les dates prime TOUJOURS sur le manuel
+      if (ageCorrige) {
+        document.getElementById('age-corrige-calc').textContent = ageCorrige.str;
+        document.getElementById('age-corrige-mois').textContent = ageCorrige.totalMois + ' mois • ' + ageCorrige.totalJours + ' jours';
+      } else {
+        // Terme pas encore atteint → âge corrigé négatif
+        const diffJours = Math.floor((new Date(consultDate) - new Date(dateTerme)) / (1000*60*60*24));
+        document.getElementById('age-corrige-calc').textContent = diffJours + ' jours';
+        document.getElementById('age-corrige-mois').textContent = '(terme non atteint)';
+      }
       const diffSem = Math.round((new Date(dateTerme) - new Date(dateNaiss)) / (7 * 24 * 3600 * 1000));
-      if (diffSem > 0) document.getElementById('age-corrige-mois').textContent += ` (né ${diffSem} sem. tôt)`;
+      if (diffSem > 0) {
+        const moisEl = document.getElementById('age-corrige-mois');
+        moisEl.textContent += ` (né ${diffSem} sem. tôt)`;
+      }
+      // Toujours mettre à jour le champ manuel avec l'âge calculé
       const acEl = document.getElementById('age-corrige-manuel');
-      if (acEl && !acEl.value) acEl.value = ageCorrige.str;
+      if (acEl) acEl.value = ageCorrige ? ageCorrige.str : '';
     } else if (ageCorrigeManuel) {
       document.getElementById('age-corrige-calc').textContent = ageCorrigeManuel;
       document.getElementById('age-corrige-mois').textContent = '(saisi manuellement)';
