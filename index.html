@@ -2448,33 +2448,41 @@ function loadClient(idx) {
   showSetupTab('tab-bebe', document.querySelector('.setup-tab'));
   // Mettre à jour state.client si consultation en cours
   if (state && state.sections && state.sections.length) {
-    // Reconstruire state.client depuis le formulaire (comme startConsultation)
+    // Utiliser directement les données du client chargé
     const consultDate2 = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
-    const dateNaiss = document.getElementById('date-naissance')?.value;
-    const dateTerme = document.getElementById('date-terme')?.value;
+    const dateNaiss = c.dateNaissance || '';
+    const dateTerme = c.dateTerme || '';
     const ageReel = calcAge(dateNaiss, consultDate2);
     const ageCorrige = calcAge(dateTerme || dateNaiss, consultDate2);
     state.client = {
-      ...state.client,
-      prenomEnfant: document.getElementById('prenom-enfant')?.value.trim() || '',
-      nomFamille: document.getElementById('nom-famille-enfant')?.value.trim() || '',
-      sexe: document.getElementById('sexe-enfant')?.value || '',
-      ageEnfant: document.getElementById('age-enfant')?.value.trim() || '',
-      dateNaissance: dateNaiss || '',
+      prenomEnfant: c.prenomEnfant || '',
+      nomFamille: c.nomFamille || '',
+      sexe: c.sexe || '',
+      ageEnfant: c.ageEnfant || '',
+      dateNaissance: dateNaiss,
+      dateTerme: dateTerme,
       ageReelMois: ageReel ? ageReel.months : '',
       ageReelStr: ageReel ? ageReel.str : '',
+      ageReelStrCourt: ageReel ? ageReel.strCourt : '',
       ageCorrigeMois: ageCorrige ? ageCorrige.months : '',
       ageCorrigeStr: ageCorrige ? ageCorrige.str : '',
-      rituel: document.getElementById('rituel-enfant')?.value || '',
-      prenomParent1: document.getElementById('prenom-parent1')?.value.trim() || '',
-      prenomParent2: document.getElementById('prenom-parent2')?.value.trim() || '',
-      sexeParent1: document.getElementById('sexe-parent1')?.value || 'maman',
-      problematique: document.getElementById('problematique-text')?.value.trim() || '',
-      objectifs: document.getElementById('objectifs-text')?.value.trim() || '',
-      enseigne: currentEnseigne,
+      ageCorrigeStrCourt: ageCorrige ? ageCorrige.strCourt : '',
+      rituel: c.rituel || '',
+      prenomParent1: c.prenomParent1 || '',
+      prenomParent2: c.prenomParent2 || '',
+      sexeParent1: c.sexeParent1 || 'maman',
+      sexeParent2: c.sexeParent2 || 'papa',
+      roleParents: c.roleParents || 'les deux parents',
+      problematique: c.problematique || '',
+      objectifs: c.objectifs || '',
+      enseigne: c.enseigne || currentEnseigne,
+      pbs: c.pbs || [],
     };
     // Reconstruire les problématiques cochées
     state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
+    // Effacer les overrides pour que les blocs dynamiques (pb_recap etc.) soient recalculés
+    state.scriptOverrides = {};
+    saveScriptOverrides();
     updateHeader();
     updatePobBar();
     buildSections();
