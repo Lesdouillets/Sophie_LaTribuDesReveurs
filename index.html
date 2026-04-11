@@ -8,9 +8,9 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
   // Force reset: vider caches, SW et overrides
-  if (!localStorage.getItem('tdr_force_clean_v92')) {
+  if (!localStorage.getItem('tdr_force_clean_v95')) {
     localStorage.removeItem('tdr_script_overrides');
-    localStorage.setItem('tdr_force_clean_v92', '1');
+    localStorage.setItem('tdr_force_clean_v95', '1');
     if ('caches' in window) caches.keys().then(k => k.forEach(n => caches.delete(n)));
     if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(r => r.forEach(sw => sw.unregister()));
     setTimeout(() => location.reload(true), 500);
@@ -2271,6 +2271,10 @@ function saveScriptOverrides() {
 }
 
 function getOverrideBlocks(section) {
+  // Les sections avec des blocs dynamiques ne doivent jamais utiliser d'overrides
+  const dynamicTypes = ['pb_section', 'pb_recap', 'obj_section', 'obj_recap', 'besoins_sommeil'];
+  const hasD = (section.blocks || []).some(b => dynamicTypes.includes(b.type));
+  if (hasD) return section.blocks || [];
   return (state.scriptOverrides[section.id] || {}).blocks || section.blocks || [];
 }
 
