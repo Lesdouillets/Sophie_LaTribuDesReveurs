@@ -2271,11 +2271,19 @@ function saveScriptOverrides() {
 }
 
 function getOverrideBlocks(section) {
-  // Les sections avec des blocs dynamiques ne doivent jamais utiliser d'overrides
-  const dynamicTypes = ['pb_section', 'pb_recap', 'obj_section', 'obj_recap', 'besoins_sommeil'];
-  const hasD = (section.blocks || []).some(b => dynamicTypes.includes(b.type));
-  if (hasD) return section.blocks || [];
-  return (state.scriptOverrides[section.id] || {}).blocks || section.blocks || [];
+  const ov = state.scriptOverrides[section.id];
+  if (!ov) return section.blocks || [];
+  // Utiliser les overrides, mais remplacer les blocs dynamiques par leur version live
+  const dynamicTypes = ['pb_section', 'pb_recap', 'obj_section', 'obj_recap', 'besoins_sommeil', 'leviers_dynamiques'];
+  const liveBlocks = section.blocks || [];
+  // Si l'override a le même nombre de blocs que l'original, on peut fusionner
+  // Sinon on retourne les overrides tels quels (l'utilisateur a ajouté/supprimé des blocs)
+  return ov.blocks.map((b, i) => {
+    if (dynamicTypes.includes(b.type) && liveBlocks[i] && dynamicTypes.includes(liveBlocks[i].type)) {
+      return liveBlocks[i]; // utiliser la version live pour les blocs dynamiques
+    }
+    return b;
+  });
 }
 
 function ensureOverride(section) {
@@ -3879,6 +3887,8 @@ function saveEditBlock() {
     .replace(/<\/?div>/gi, '')
     .replace(/<br\s*\/?>/gi, '\n')
     .replace(/\n+$/g, '');
+  console.log('[saveEditBlock] innerHTML:', taEl.innerHTML);
+  console.log('[saveEditBlock] newText:', newText);
   if (b.type === 'option') {
     ov.blocks[blockIdx] = { ...b, label: newText };
   } else {
