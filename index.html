@@ -1033,7 +1033,7 @@
     <!-- Enseigne switcher -->
     <div class="enseigne-switcher">
       <button class="enseigne-btn active-tribu" id="btn-tribu" onclick="setEnseigne('tribu')">
-        🌿 La tribu<br>des rêveurs
+        🌿 La Tribu<br>des Rêveurs
       </button>
       <button class="enseigne-btn" id="btn-feedodo" onclick="setEnseigne('feedodo')">
         Fée<br>Dodo
@@ -1083,7 +1083,7 @@
             <div id="enseigne-cards" style="display:flex;gap:10px;margin-top:6px">
               <div class="enseigne-card" id="card-tribu" onclick="setEnseigneFromCard('tribu')"
                 style="flex:1;padding:12px 8px;border-radius:10px;border:2px solid #ccc;background:#f0f2f8;color:#5e7194;font-size:12px;font-weight:700;cursor:pointer;text-align:center;transition:all 0.2s;line-height:1.4">
-                🌿 La tribu<br>des rêveurs
+                🌿 La Tribu<br>des Rêveurs
               </div>
               <div class="enseigne-card" id="card-feedodo" onclick="setEnseigneFromCard('feedodo')"
                 style="flex:1;padding:12px 8px;border-radius:10px;border:2px solid #ccc;background:#fdf5eb;color:#8b5e2a;font-size:12px;font-weight:700;cursor:pointer;text-align:center;transition:all 0.2s;line-height:1.4">
@@ -1926,7 +1926,7 @@
     <span style="flex:1">📝 Notes de session</span>
     <span class="notes-collapse-btn" id="notes-collapse-icon" onclick="toggleNotesPanel()">▲</span>
   </div>
-  <div class="notes-body" id="notes-body" style="display:none"
+  <div class="notes-body" id="notes-body" style="display:none">
     <textarea id="session-notes-textarea" placeholder="Vos notes libres pendant la consultation…&#10;(sauvegarde automatique)"></textarea>
     <div class="notes-footer">
       <button class="btn-cr" title="Générer le compte rendu de la consultation" onclick="openCrModal()">📄 Compte rendu</button>
@@ -2273,6 +2273,13 @@ function setEnseigne(enseigne) {
   currentEnseigne = enseigne;
   localStorage.setItem('tdr_enseigne', enseigne);
   updateEnseigneUI();
+  // Mettre à jour le client et re-rendre la section si consultation en cours
+  if (state && state.client) {
+    state.client.enseigne = enseigne;
+    if (typeof renderCurrentSection === 'function' && state.sections && state.sections.length) {
+      renderCurrentSection();
+    }
+  }
 }
 
 function setEnseigneFromCard(val) {
@@ -2802,7 +2809,7 @@ function startConsultation() {
   const dateNaissVal = document.getElementById('date-naissance')?.value;
   const ageManuelVal = document.getElementById('age-enfant')?.value.trim();
   const enseigneVal = document.getElementById('enseigne-select')?.value;
-  if (!enseigneVal) { alert('Merci de sélectionner l\'enseigne (La tribu ou Fée dodo).'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
+  if (!enseigneVal) { alert('Merci de sélectionner l\'enseigne (La Tribu ou Fée dodo).'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
   if (!prenomEnfant) { alert('Merci de renseigner le prénom de l\'enfant.'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
   if (!sexeEnfant) { alert('Merci de sélectionner le sexe de l\'enfant.'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
   if (!dateNaissVal && !ageManuelVal) { alert('Merci d\'indiquer la date de naissance ou l\'âge de l\'enfant.'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
@@ -3959,7 +3966,8 @@ function makeNotesDraggable() {
 }
 
 // Auto-save notes dans state à chaque frappe
-document.getElementById('session-notes-textarea').addEventListener('input', function() {
+const _notesTA = document.getElementById('session-notes-textarea');
+if (_notesTA) _notesTA.addEventListener('input', function() {
   state._notes = this.value;
 });
 
