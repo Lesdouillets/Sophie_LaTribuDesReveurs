@@ -593,7 +593,7 @@
     .besoins-table tr:last-child td { border-bottom: none; }
     .besoins-table tr:hover td { background: #f0fff4; }
     .age-highlight { font-weight: 700; color: var(--primary-dark); }
-    .age-active td { background: #e8f5e9 !important; font-weight: 700; font-size: 15px; padding: 16px 13px !important; text-align: right; vertical-align: middle; }
+    .age-active td { background: #e8f5e9 !important; font-weight: 700; font-size: 15px; padding: 16px 13px !important; text-align: left; vertical-align: middle; }
     .age-active td:first-child::before { content: "▶ "; color: var(--primary); }
     .age-active td:last-child { background: #fff !important; border: 2px solid #e8a0a0 !important; border-radius: 12px; }
 
@@ -3026,13 +3026,13 @@ function adaptSectionsToClient() {
           { type: 'normal', text: 'Alors maintenant, j\'aimerais qu\'on parle de vos objectifs\nJe vais relire ce que vous m\'avez noté… pour être sûre qu\'on est bien alignés.' },
           { type: 'important', text: '🔥 Vous m\'avez écrit :\n' + c.objectifs },
           { type: 'question', text: 'Est-ce que ça correspond toujours à ce que vous souhaitez aujourd\'hui ?\nEst-ce que vous avez quelque chose à ajouter ou préciser ?' },
-          ...s.blocks.slice(3) // garder les options (lieu de sommeil, position ventrale…)
+          ...s.blocks.slice(1) // garder les options purple (lieu de sommeil, position ventrale…)
         ]};
       } else {
         // Pas d'objectifs renseignés : poser la question
         return { ...s, blocks: [
           { type: 'question', text: 'J\'aimerais maintenant savoir quels sont vos objectifs aujourd\'hui pour [prénom_enfant].\nQu\'est-ce que vous souhaitez idéalement mettre en place ?' },
-          ...s.blocks.slice(3) // garder les options
+          ...s.blocks.slice(1) // garder les options purple
         ]};
       }
     }
@@ -3146,7 +3146,10 @@ function updateHeader() {
       ageLine += '  ·  ✏️ corrigé : ' + (c.ageCorrigeStrCourt || c.ageCorrigeStr);
     }
   } else if (c.ageEnfant) {
-    ageLine = c.ageEnfant;
+    ageLine = '🎂 ' + c.ageEnfant;
+    if (c.ageCorrigeManuel) {
+      ageLine += '  ·  ✏️ corrigé : ' + c.ageCorrigeManuel;
+    }
   }
   const rituelPart = c.rituel ? '🌙 ' + c.rituel : '';
   document.getElementById('header-age-rituel').textContent = [ageLine, rituelPart].filter(Boolean).join('  •  ');
