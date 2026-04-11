@@ -4022,9 +4022,14 @@ function setBlockByPath(blocks, path, newBlock) {
 
 function openEditBlockModal(sectionId, path) {
   const sec = state.sections.find(s => s.id === sectionId); if (!sec) return;
-  // Utiliser les mêmes blocs que ceux rendus à l'écran
+  // Utiliser les blocs rendus à l'écran, avec fallback sur les blocs live
   const blocks = getOverrideBlocks(sec);
-  const b = getBlockByPath(blocks, path);
+  let b = getBlockByPath(blocks, path);
+  // Si le bloc override est vide (pas de text/label/title), utiliser le bloc live
+  if (b && !b.text && !b.label && !b.title) {
+    const liveBlock = getBlockByPath(sec.blocks || [], path);
+    if (liveBlock && (liveBlock.text || liveBlock.label || liveBlock.title)) b = liveBlock;
+  }
   if (!b) return;
   _editRef = { sectionId, path };
   const typeEl = document.getElementById('edit-block-type');
