@@ -1571,11 +1571,11 @@
         </div>
         <button class="sos-close-btn" onclick="toggleSosPanel()">✕</button>
       </div>
-      <div class="sos-toolbar" style="display:flex;gap:2px;padding:6px 10px;background:#f0f2f8;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:2">
-        <button type="button" onmousedown="event.preventDefault();execWithSelection('bold');saveSosContent()" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 10px;cursor:pointer;font-weight:900;font-size:13px" title="Gras">G</button>
-        <button type="button" onmousedown="event.preventDefault();execWithSelection('italic');saveSosContent()" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 10px;cursor:pointer;font-style:italic;font-size:13px" title="Italique">I</button>
-        <button type="button" onmousedown="event.preventDefault();execWithSelection('underline');saveSosContent()" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 10px;cursor:pointer;text-decoration:underline;font-size:13px" title="Souligné">S</button>
-        <input type="color" value="#8b0000" class="color-picker-exec" style="width:28px;height:28px;border:1px solid #ccc;border-radius:4px;cursor:pointer;padding:0" title="Couleur">
+      <div class="sos-toolbar" style="display:flex;gap:3px;padding:4px 8px;background:#f0f2f8;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:2;flex-wrap:nowrap;height:32px;align-items:center;flex-shrink:0">
+        <button type="button" onmousedown="event.preventDefault();execWithSelection('bold');saveSosContent()" style="background:none;border:1px solid #ccc;border-radius:4px;padding:2px 8px;cursor:pointer;font-weight:900;font-size:12px;min-width:0;flex-shrink:0" title="Gras">G</button>
+        <button type="button" onmousedown="event.preventDefault();execWithSelection('italic');saveSosContent()" style="background:none;border:1px solid #ccc;border-radius:4px;padding:2px 8px;cursor:pointer;font-style:italic;font-size:12px;min-width:0;flex-shrink:0" title="Italique">I</button>
+        <button type="button" onmousedown="event.preventDefault();execWithSelection('underline');saveSosContent()" style="background:none;border:1px solid #ccc;border-radius:4px;padding:2px 8px;cursor:pointer;text-decoration:underline;font-size:12px;min-width:0;flex-shrink:0" title="Souligné">S</button>
+        <input type="color" value="#8b0000" class="color-picker-exec" style="width:24px;height:24px;border:1px solid #ccc;border-radius:4px;cursor:pointer;padding:0;flex-shrink:0" title="Couleur">
       <div class="sos-body" id="sos-body">
 
         <div class="sos-section">
@@ -4025,7 +4025,6 @@ function openEditBlockModal(sectionId, path) {
   // Utiliser les mêmes blocs que ceux rendus à l'écran
   const blocks = getOverrideBlocks(sec);
   const b = getBlockByPath(blocks, path);
-  console.log('[openEdit]', sectionId, path, 'block:', b, 'type:', b?.type, 'text:', b?.text?.substring(0,50));
   if (!b) return;
   _editRef = { sectionId, path };
   const typeEl = document.getElementById('edit-block-type');
@@ -4047,6 +4046,8 @@ function openEditBlockModal(sectionId, path) {
     taEl.innerHTML = rawText.replace(/\n/g, '<br>');
   }
   document.getElementById('edit-block-modal').classList.add('open');
+  // Forcer le focus sur le textarea après ouverture
+  setTimeout(() => { document.getElementById('edit-block-textarea').focus(); }, 100);
 }
 function closeEditBlockModal() {
   document.getElementById('edit-block-modal').classList.remove('open');
