@@ -4022,13 +4022,10 @@ function setBlockByPath(blocks, path, newBlock) {
 
 function openEditBlockModal(sectionId, path) {
   const sec = state.sections.find(s => s.id === sectionId); if (!sec) return;
-  // Lire le bloc live en priorité (après customisation), puis fallback sur les overrides
-  const liveBlock = getBlockByPath(sec.blocks || [], path);
-  const ovBlocks = getOverrideBlocks(sec);
-  const ovBlock = getBlockByPath(ovBlocks, path);
-  const b = (liveBlock && (liveBlock.text || liveBlock.label || liveBlock.title)) ? liveBlock
-    : (ovBlock && (ovBlock.text || ovBlock.label || ovBlock.title)) ? ovBlock
-    : liveBlock || ovBlock;
+  // Utiliser les mêmes blocs que ceux rendus à l'écran
+  const blocks = getOverrideBlocks(sec);
+  const b = getBlockByPath(blocks, path);
+  console.log('[openEdit]', sectionId, path, 'block:', b, 'type:', b?.type, 'text:', b?.text?.substring(0,50));
   if (!b) return;
   _editRef = { sectionId, path };
   const typeEl = document.getElementById('edit-block-type');
