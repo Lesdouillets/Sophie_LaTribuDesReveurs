@@ -25,8 +25,8 @@
       --question-bg: #eaeff8;
       --question-border: #5e7194;
       --question-text: #2d3f5c;
-      --option-bg: #fdf3e8;
-      --option-border: #c47a3a;
+      --option-bg: #e8f4fb;
+      --option-border: #2980b9;
       --important-bg: #fdf3e8;
       --important-border: #c47a3a;
       --conseil-bg: #eaeff8;
@@ -530,8 +530,8 @@
       border-left: 5px solid #16a34a;
     }
     .block-empathie {
-      background: #f0fdf4;
-      border-left: 5px solid #15803d;
+      background: #d6eaf8;
+      border-left: 5px solid #2980b9;
     }
     .block-separator {
       background: var(--separator-bg); border: 1px solid var(--border);
@@ -550,11 +550,11 @@
       padding: 12px 16px; cursor: pointer; user-select: none;
       transition: background 0.15s;
     }
-    .option-header:hover { background: rgba(240,173,78,0.18); }
+    .option-header:hover { background: rgba(41,128,185,0.15); }
 
     /* ──► FIX : arrow dans son propre span, label dans un autre ◄── */
-    .option-arrow { font-size: 13px; color: #9c6400; margin-right: 6px; transition: transform 0.2s; }
-    .option-label-text { font-weight: 600; font-size: 14px; color: #7c5200; }
+    .option-arrow { font-size: 13px; color: #1a5276; margin-right: 6px; transition: transform 0.2s; }
+    .option-label-text { font-weight: 600; font-size: 14px; color: #1a5276; }
     .option-toggle { font-size: 11px; color: var(--text-light); white-space: nowrap; }
 
     .option-content { padding: 0 16px 14px; display: none; }
@@ -2452,6 +2452,12 @@ function loadClient(idx) {
   populateFormFromClient(c);
   showLastConsultInfo(c);
   showSetupTab('tab-bebe', document.querySelector('.setup-tab'));
+  // Mettre à jour state.client si consultation en cours
+  if (state && state.sections && state.sections.length) {
+    Object.assign(state.client, c);
+    renderCurrentSection();
+    updateHeader();
+  }
 }
 
 function showLastConsultInfo(c) {
