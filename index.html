@@ -3389,6 +3389,16 @@ function renderBlockInner(b, i, sectionId, depth) {
     </div>`;
   }
 
+  if (b.type === 'obj_recap') {
+    const obj = state.client.objectifs;
+    if (!obj) return '';
+    const objHtml = obj.replace(/\n/g, '<br>');
+    return `<div class="block block-pb-recap">
+      <div class="pb-recap-intro">🔥 Vous m'avez écrit :</div>
+      <div class="pb-recap-text">${objHtml}</div>
+    </div>`;
+  }
+
   if (b.type === 'question') {
     return `<div class="block block-question">
       <div class="q-text" contenteditable="true">❓ ${text}</div>

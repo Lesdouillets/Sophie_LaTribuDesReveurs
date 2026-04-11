@@ -95,7 +95,7 @@ const SCRIPT_DATA = {
       emoji: "🎯",
       blocks: [
         { type: "normal", text: "Alors maintenant, j'aimerais qu'on parle de vos objectifs\nJe vais relire ce que vous m'avez noté… pour être sûre qu'on est bien alignés." },
-        { type: "important", text: "🔥 Vous m'avez écrit :\n[obj_text]" },
+        { type: "obj_recap" },
         { type: "question", text: "Est-ce que ça correspond toujours à ce que vous souhaitez aujourd'hui ?\nEst-ce que vous avez quelque chose à ajouter ou préciser ?" },
         {
           type: "option", label: "🛌 Souhaitent changer de lieu de sommeil / lit",
