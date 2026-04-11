@@ -4137,8 +4137,12 @@ function downloadCR() {
 
 // Service Worker pour fonctionnement hors ligne
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).then(reg => {
-    reg.update();
+  // Désinscrire tout ancien SW puis réinscrire
+  navigator.serviceWorker.getRegistrations().then(regs => {
+    regs.forEach(r => r.unregister());
+    setTimeout(() => {
+      navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).then(reg => reg.update());
+    }, 500);
   }).catch(() => {});
 }
 
