@@ -8,9 +8,9 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
   // Force reset: vider caches, SW et overrides
-  if (!localStorage.getItem('tdr_force_clean_v85')) {
+  if (!localStorage.getItem('tdr_force_clean_v89')) {
     localStorage.removeItem('tdr_script_overrides');
-    localStorage.setItem('tdr_force_clean_v85', '1');
+    localStorage.setItem('tdr_force_clean_v89', '1');
     if ('caches' in window) caches.keys().then(k => k.forEach(n => caches.delete(n)));
     if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(r => r.forEach(sw => sw.unregister()));
     setTimeout(() => location.reload(true), 500);
@@ -805,8 +805,8 @@
     .block-option.purple .option-arrow { color: #5b21b6; }
     .block-option.purple .option-label-text { color: #5b21b6; font-weight: 700; }
     .block-option.purple .option-content { background: #f5f0ff; }
-    .block-option.purple .option-content .block { background: #f5f0ff; border-color: #d4c4f0; }
-    .block-option.purple .option-content .block-option.purple .option-content .block { background: #ddd3f8; border-color: #c4b5e0; }
+    .block-option.purple .option-content .block:not(.block-question) { background: #f5f0ff; border-color: #d4c4f0; }
+    .block-option.purple .option-content .block-option.purple .option-content .block:not(.block-question) { background: #ddd3f8; border-color: #c4b5e0; }
 
     /* OPTION DANGER (orange vif) */
     .block-option.danger {
