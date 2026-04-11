@@ -504,30 +504,29 @@
       border-left: 5px solid #7c3aed;
     }
     .block-pb-recap {
-      background: white;
-      border: 1.5px solid #aed6f1;
-      border-left: 5px solid #2980b9;
-      border-radius: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px 20px;
       overflow: hidden;
     }
     .pb-recap-intro {
-      padding: 12px 16px 6px;
-      font-weight: 700; font-size: 14px; color: #1a5276;
+      font-weight: 700; font-size: 15px; color: var(--text);
+      margin-bottom: 8px;
     }
     .pb-recap-text {
-      margin: 0 16px 10px;
-      padding: 10px 14px;
-      background: #eaf4fb;
-      border-left: 3px solid #2980b9;
-      border-radius: 0 6px 6px 0;
-      font-size: 14px;
-      color: #1a3a4f; line-height: 1.7;
+      padding: 0;
+      font-size: 15px;
+      color: var(--text); line-height: 1.75;
     }
     .pb-recap-question {
-      background: linear-gradient(90deg, #c0392b, #e74c3c);
-      color: white; padding: 10px 16px;
-      font-weight: 700; font-size: 14px;
+      background: #fdf0f0; border: 1px solid #f5c6c6;
+      border-radius: var(--radius);
+      color: var(--text); padding: 16px 20px;
+      font-weight: 400; font-size: 15px;
       display: flex; align-items: center; gap: 8px;
+      margin-top: 10px;
     }
     .block-conseil {
       background: #f0fdf4;
@@ -3441,10 +3440,14 @@ function substituteVars(text) {
   let roleLabel;
   if (p1 && p2) {
     roleLabel = 'les Parents';
-  } else if (c.sexeParent1 === 'papa') {
-    roleLabel = 'le Papa';
+  } else if (p1) {
+    // Seul parent 1 renseigné
+    roleLabel = c.sexeParent1 === 'papa' ? 'le Papa' : 'la Maman';
+  } else if (p2) {
+    // Seul parent 2 renseigné
+    roleLabel = c.sexeParent2 === 'papa' ? 'le Papa' : 'la Maman';
   } else {
-    roleLabel = 'la Maman';
+    roleLabel = 'le/la Parent';
   }
   const prenomsParts = [p1, p2].filter(Boolean);
   const prenomsList = prenomsParts.length === 2
