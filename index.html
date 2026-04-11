@@ -534,9 +534,8 @@
       border-left: 5px solid #16a34a;
     }
     .block-empathie {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
+      background: #e8f4fb;
+      border: 1px solid #aed6f1;
     }
     .block-separator {
       background: var(--separator-bg); border: 1px solid var(--border);
@@ -566,6 +565,7 @@
     .option-content.open { display: block; }
     .option-content[contenteditable="true"]:focus { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 4px; }
     .option-content .block { margin-bottom: 10px; }
+    .option-content .block-option { margin-left: 20px; }
 
     /* TABLEAU BESOINS SOMMEIL */
     .besoins-table {
@@ -3821,8 +3821,6 @@ function makeClItemEditable(span, sectionId, blockIdx, itemIdx) {
 document.addEventListener('keydown', e => {
   if (document.getElementById('app-screen').style.display==='none') return;
   if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
-  if (e.key==='ArrowRight'||e.key==='ArrowDown') nextSection();
-  if (e.key==='ArrowLeft'||e.key==='ArrowUp') prevSection();
   if (e.key==='Escape') document.getElementById('pb-modal').classList.remove('open');
 });
 
