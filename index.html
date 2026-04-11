@@ -1539,6 +1539,12 @@
         </div>
         <button class="sos-close-btn" onclick="toggleSosPanel()">✕</button>
       </div>
+      <div class="sos-toolbar" style="display:flex;gap:2px;padding:6px 10px;background:#f0f2f8;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:2">
+        <button type="button" onmousedown="event.preventDefault();document.execCommand('bold')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 10px;cursor:pointer;font-weight:900;font-size:13px" title="Gras">G</button>
+        <button type="button" onmousedown="event.preventDefault();document.execCommand('italic')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 10px;cursor:pointer;font-style:italic;font-size:13px" title="Italique">I</button>
+        <button type="button" onmousedown="event.preventDefault();document.execCommand('underline')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 10px;cursor:pointer;text-decoration:underline;font-size:13px" title="Souligné">S</button>
+        <input type="color" value="#8b0000" onchange="document.execCommand('foreColor',false,this.value)" style="width:28px;height:28px;border:1px solid #ccc;border-radius:4px;cursor:pointer;padding:0" title="Couleur">
+      </div>
       <div class="sos-body" id="sos-body">
 
         <div class="sos-section">
@@ -3092,6 +3098,27 @@ function toggleSosPanel() {
   if (panel) panel.classList.toggle('open');
 }
 
+// ─── SOS auto-save ───
+function saveSosContent() {
+  const body = document.getElementById('sos-body');
+  if (body) localStorage.setItem('tdr_sos_content', body.innerHTML);
+}
+function loadSosContent() {
+  const saved = localStorage.getItem('tdr_sos_content');
+  if (saved) {
+    const body = document.getElementById('sos-body');
+    if (body) body.innerHTML = saved;
+  }
+}
+// Auto-save sur chaque modification dans le SOS
+document.addEventListener('DOMContentLoaded', () => {
+  loadSosContent();
+  const body = document.getElementById('sos-body');
+  if (body) {
+    body.addEventListener('input', () => { clearTimeout(body._saveTimer); body._saveTimer = setTimeout(saveSosContent, 500); });
+  }
+});
+
 function updateTimeProgress() {
   const fill = document.getElementById('progress-fill');
   if (!fill || !state.consultStart) { if (fill) fill.style.width = '0%'; return; }
@@ -3347,8 +3374,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_section','pb_recap','obj_section','obj_recap','besoins_sommeil','leviers_dynamiques','separator','checklist'].includes(b.type);
-    const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
+    const editBtn = `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
     return `<div class="edit-block-wrap">
@@ -3376,7 +3402,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         <span style="display:flex;align-items:center;gap:6px">
           ${emojiHtml}
           <span class="option-arrow">▸</span>
-          <span class="option-label-text">${b.label}</span>
+          <span class="option-label-text">${substituteVars(b.label||'')}</span>
         </span>
         <span class="option-toggle">Dérouler</span>
       </div>
@@ -3897,12 +3923,18 @@ function openEditBlockModal(sectionId, path) {
   if (b.type === 'option') {
     titleEl.textContent = '✏️ Modifier le titre de l\'option';
     typeEl.style.display = 'none';
-    taEl.innerHTML = (b.label || '').replace(/\n/g, '<br>');
+    taEl.innerHTML = substituteVars(b.label || '').replace(/\n/g, '<br>');
+  } else if (b.type === 'checklist') {
+    titleEl.textContent = '✏️ Modifier le titre de la checklist';
+    typeEl.style.display = 'none';
+    taEl.innerHTML = substituteVars(b.title || '').replace(/\n/g, '<br>');
   } else {
     titleEl.textContent = '✏️ Modifier ce bloc';
     typeEl.style.display = 'block';
     typeEl.value = b.type || 'normal';
-    taEl.innerHTML = (b.text || '').replace(/\n/g, '<br>');
+    // Charger le texte disponible (text, title, ou texte vide)
+    const rawText = b.text || b.title || '';
+    taEl.innerHTML = substituteVars(rawText).replace(/\n/g, '<br>');
   }
   document.getElementById('edit-block-modal').classList.add('open');
 }
@@ -3927,16 +3959,24 @@ function saveEditBlock() {
     .replace(/\n+$/g, '');
   if (b.type === 'option') {
     setBlockByPath(ov.blocks, path, { ...b, label: newText });
+  } else if (b.type === 'checklist') {
+    setBlockByPath(ov.blocks, path, { ...b, title: newText });
   } else {
-    setBlockByPath(ov.blocks, path, { ...b, type: document.getElementById('edit-block-type').value, text: newText });
+    const newType = document.getElementById('edit-block-type').style.display !== 'none'
+      ? document.getElementById('edit-block-type').value : b.type;
+    setBlockByPath(ov.blocks, path, { ...b, type: newType, text: newText });
   }
   // Mettre à jour aussi directement section.blocks pour les sections dynamiques
   const secBlock = getBlockByPath(sec.blocks || [], path);
   if (secBlock) {
     if (b.type === 'option') {
       setBlockByPath(sec.blocks, path, { ...secBlock, label: newText });
+    } else if (b.type === 'checklist') {
+      setBlockByPath(sec.blocks, path, { ...secBlock, title: newText });
     } else {
-      setBlockByPath(sec.blocks, path, { ...secBlock, type: document.getElementById('edit-block-type').value, text: newText });
+      const newType = document.getElementById('edit-block-type').style.display !== 'none'
+        ? document.getElementById('edit-block-type').value : secBlock.type;
+      setBlockByPath(sec.blocks, path, { ...secBlock, type: newType, text: newText });
     }
   }
   saveScriptOverrides();
