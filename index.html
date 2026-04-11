@@ -500,8 +500,9 @@
     .q-text ul { margin: 6px 0 0 18px; }
     .q-text li { margin-bottom: 4px; }
     .block-important {
-      background: #f5f0ff;
-      border-left: 5px solid #7c3aed;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
     }
     .block-pb-recap {
       background: var(--card-bg);
@@ -3127,14 +3128,22 @@ function updateHeader() {
       headerLogo.src = window._tribuLogoSrc;
     }
   }
-  // Emoji parent conditionnel
+  // Emoji parent conditionnel — basé sur les prénoms renseignés
   const parentIconEl = document.querySelector('#app-screen .client-badge:nth-child(2) .icon');
   if (parentIconEl) {
+    const hasP1 = !!(c.prenomParent1);
+    const hasP2 = !!(c.prenomParent2);
     const p1Icon = c.sexeParent1 === 'papa' ? '👨' : '👩';
-  const hasP2 = !!(c.prenomParent2);
-  const p2Icon = c.sexeParent2 === 'maman' ? '👩' : '👨';
-  const icons = { 'la maman':'👩', 'le papa':'👨', 'les deux parents': hasP2 ? p1Icon+p2Icon : '👨‍👩‍👧' };
-    parentIconEl.textContent = icons[c.roleParents] || '👨‍👩‍👧';
+    const p2Icon = c.sexeParent2 === 'maman' ? '👩' : '👨';
+    if (hasP1 && hasP2) {
+      parentIconEl.textContent = p1Icon + p2Icon;
+    } else if (hasP1) {
+      parentIconEl.textContent = p1Icon;
+    } else if (hasP2) {
+      parentIconEl.textContent = p2Icon;
+    } else {
+      parentIconEl.textContent = '👨‍👩‍👧';
+    }
   }
 }
 
