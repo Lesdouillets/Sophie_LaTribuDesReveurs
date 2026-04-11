@@ -58,6 +58,7 @@ const SCRIPT_DATA = {
         { type: "normal", text: "On va maintenant regarder les courbes" },
         { type: "question", text: "Est-ce que vous pourriez me donner votre taille à TOUS les 2?\nAvez-vous des personnes très GRANDES dans vos familles?" },
         { type: "question", text: "Avez-vous les courbes devant vous?\nOn va commencer par lire la courbe du périmètre crânien" },
+        { type: "question", text: "Maintenant, je voudrais savoir\n\nSi vous deviez mettre une note de 0 à 10, 10 étant la meilleure note, quelle note vous mettriez à :\n→ Votre grossesse et pour le Papa?\n→ Votre accouchement et pour le Papa?\n→ Et maintenant à votre ÉTAT D'ÊTRE actuel (en prenant en compte votre vie perso/pro/par rapport au sommeil de votre enfant) et pour le Papa?" },
         { type: "separator", text: "📸 Photos de la chambre" },
         { type: "normal", text: "On va maintenant regarder rapidement les photos de la chambre" },
         { type: "separator", text: "📋 Tableau de suivi du sommeil" },
