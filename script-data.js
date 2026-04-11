@@ -50,7 +50,7 @@ const SCRIPT_DATA = {
     {
       id: "decouverte",
       title: "III. Découverte",
-      emoji: "🗓️",
+      emoji: "🔍",
       blocks: [
         { type: "normal", text: "Ce que je vous propose maintenant, c'est de dérouler une journée type, pour essayer de comprendre AU MIEUX votre quotidien" },
         { type: "question", text: "Ce qu'on peut faire, c'est qu'on peut commencer par le réveil du matin, si ça vous va?\n⇒ [Suivre la fiche découverte]" },
@@ -63,17 +63,17 @@ const SCRIPT_DATA = {
         { type: "separator", text: "❤️ Bien-être parental" },
         { type: "question", text: "Si vous deviez mettre une note de 0 à 10, 10 étant la meilleure note, quelle note vous mettriez à :\n→ Votre grossesse et pour le Papa?\n→ Votre accouchement et pour le Papa?\n→ Et maintenant à votre ÉTAT D'ÊTRE actuel (en prenant en compte votre vie perso/pro/par rapport au sommeil de votre enfant) et pour le Papa?" },
         {
-          type: "option", label: "Si Maman en dépression / très fatiguée",
+          type: "option", label: "Si Maman en dépression/très fatiguée", emoji: "😭", style: "pleurs",
           blocks: [
             { type: "question", text: "Est-ce que vous êtes accompagnée du coup?" },
             {
-              type: "option", label: "✅ Accompagnée avec un psy",
+              type: "option", label: "✅ Accompagnée avec un psy", style: "pleurs",
               blocks: [
                 { type: "empathie", text: "Super !\nJe comprends… ce que vous vivez, c'est vraiment pas simple.\nAprès une naissance, c'est NORMAL de se sentir fatiguée, et de se sentir un peu perdue par moments.\nVous êtes LOIN d'être la SEULE à passer par là\n\n👏 Et j'ai envie de vous dire quelque chose d'important :\nvous faites déjà énormément pour votre BB\nMême si parfois, vous avez l'impression DE NE pas y arriver ⇒ EN RÉALITÉ, vous vous en occupez très bien\n\nLe manque de sommeil… tous les changements… ⇒ forcément, ça joue sur le moral\nMais ça ne remet absolument PAS en question le fait que vous êtes une bonne maman\n\nEt je trouve ça super que vous soyez déjà accompagnée par un professionnel — C'est une très bonne démarche !\n\nDe mon côté, je suis là pour vous accompagner sur le sommeil de votre bébé ET AUSSI pour vous aider à retrouver un peu de souffle au quotidien.\n\nVous n'êtes pas seule, et vous faites de votre mieux 👏" }
               ]
             },
             {
-              type: "option", label: "PAS accompagnée avec un psy",
+              type: "option", label: "PAS accompagnée avec un psy", style: "pleurs",
               blocks: [
                 { type: "empathie", text: "D'accord. Je comprends… ce que vous vivez, c'est vraiment pas simple.\nAprès une naissance, c'est NORMAL de se sentir fatiguée et un peu perdue par moments.\nVous êtes LOIN d'être la SEULE à passer par là.\n\n👏 Vous faites déjà énormément pour votre BB\nMême si parfois, vous avez l'impression DE NE pas y arriver ⇒ EN RÉALITÉ, vous vous en occupez très bien\n\nEt si à un moment vous ressentez le besoin d'en parler, de ne PAS rester seule avec tout ça…\nÇa peut être : votre médecin, votre sage-femme, ou un psychologue.\nL'idée : de ne PAS garder tout ça pour vous, et d'avoir un espace pour en parler.\n\nDe mon côté, je suis là pour vous accompagner sur le sommeil ET aussi pour vous aider à retrouver un peu de souffle au quotidien." }
               ]
