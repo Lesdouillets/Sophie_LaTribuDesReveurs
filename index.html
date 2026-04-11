@@ -555,6 +555,7 @@
 
     .option-content { padding: 0 16px 14px; display: none; }
     .option-content.open { display: block; }
+    .option-content[contenteditable="true"]:focus { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 4px; }
     .option-content .block { margin-bottom: 10px; }
 
     /* TABLEAU BESOINS SOMMEIL */
@@ -3230,7 +3231,7 @@ function renderBlockInner(b, i, sectionId, depth) {
         </span>
         <span class="option-toggle">Dérouler</span>
       </div>
-      <div class="option-content">${renderBlocks(b.blocks||[], sectionId, depth+1)}</div>
+      <div class="option-content" contenteditable="true">${renderBlocks(b.blocks||[], sectionId, depth+1)}</div>
     </div>`;
   }
 
