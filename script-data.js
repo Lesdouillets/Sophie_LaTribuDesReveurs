@@ -38,9 +38,9 @@ const SCRIPT_DATA = {
         { type: "normal", text: "Maintenant, je vais reprendre votre problématique\net APRÈS vous allez m'expliquer ce qui se passe exactement pour le sommeil de [prénom_enfant]." },
         { type: "pb_recap" },
         {
-          type: "option", label: "Si pleurs difficiles 😭",
+          type: "option", label: "Si pleurs difficiles", emoji: "😭", style: "pleurs",
           blocks: [
-            { type: "empathie", text: "J'entends que c'est difficile pour vous d'entendre votre enfant pleurer…\nMerci de me le confier.\n\nIl y a beaucoup de parents POUR QUI :\n→ c'est vraiment compliqué,\n→ et chacun a sa sensibilité là-dessus\n→ et c'est OK\n\nL'idée ici, ça ne va PAS ÊTRE de vous forcer à faire quelque chose qui ne vous correspond pas.\nOn va plutôt adapter les choses à vous, à CE QUE vous ÊTES CAPABLE de faire aujourd'hui.\n\nParce que :\nPLUS vous serez alignée avec vous-même → PLUS ce sera fluide pour vous… et pour votre enfant aussi.\n\nEt on va justement trouver ensemble une façon de faire QUI respecte ça" }
+            { type: "empathie", text: "- J'entends que c'est **difficile pour vous** d'**entendre** votre enfant **pleurer**...\n- Merci de me le confier.\n- Il y a **beaucoup de parents** POUR QUI :\n  - c'est **vraiment compliqué**,\n  - et **chacun a sa sensibilité** là-dessus\n  - et **c'est OK**\n- L'**idée ici**, ça ne va **PAS ÊTRE de vous forcer** à faire **qqch qui ne vous correspond pas**.\n- On va plutôt **adapter les choses à vous**, à CE QUE vous **ÊTES CAPABLE de faire** aujourd'hui.\n- Parce que :\n  - **PLUS** vous serez **alignée avec vous-même**\n  - **PLUS** ce **sera fluide :**\n    - pour vous...\n    - et **pour votre enfant aussi.**\n- Et on va justement **trouver ensemble :**\n  - une **façon de faire**\n  - QUI **respecte ça**" }
           ]
         },
       ]
