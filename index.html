@@ -8,9 +8,9 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
   // Force reset: vider caches, SW et overrides
-  if (!localStorage.getItem('tdr_force_clean_v95')) {
+  if (!localStorage.getItem('tdr_force_clean_v100')) {
     localStorage.removeItem('tdr_script_overrides');
-    localStorage.setItem('tdr_force_clean_v95', '1');
+    localStorage.setItem('tdr_force_clean_v100', '1');
     if ('caches' in window) caches.keys().then(k => k.forEach(n => caches.delete(n)));
     if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(r => r.forEach(sw => sw.unregister()));
     setTimeout(() => location.reload(true), 500);
@@ -2130,7 +2130,7 @@
   </div>
 </div>
 
-<script src="script-data.js"></script>
+<script src="script-data.js?v=100"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
