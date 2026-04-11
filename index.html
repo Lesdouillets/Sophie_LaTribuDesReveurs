@@ -460,7 +460,11 @@
     .block {
       margin-bottom: 14px; border-radius: var(--radius);
       padding: 16px 20px; line-height: 1.75; font-size: 15px;
-      font-weight: 600;
+      font-weight: 600; cursor: text;
+    }
+    .block[contenteditable="true"]:focus,
+    .q-text[contenteditable="true"]:focus {
+      outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 6px;
     }
 
     .block-normal {
@@ -3193,6 +3197,10 @@ function renderCurrentSection() {
     <button class="btn-nav btn-next" title="Aller à la section suivante" onclick="nextSection()" ${state.currentIdx===state.sections.length-1?'disabled':''}>Suivant →</button>
   </div>`;
   area.innerHTML = html;
+  // Rendre tous les blocs et contenus d'options éditables
+  area.querySelectorAll('.block, .option-content, .q-text').forEach(el => {
+    el.setAttribute('contenteditable', 'true');
+  });
 }
 
 function renderBlocks(blocks, sectionId='', depth=0) {
