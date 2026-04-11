@@ -2524,9 +2524,8 @@ function loadClient(idx) {
     };
     // Reconstruire les problématiques cochées
     state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
-    // Effacer les overrides pour que les blocs dynamiques (pb_recap etc.) soient recalculés
-    state.scriptOverrides = {};
-    saveScriptOverrides();
+    // Garder les overrides existants pour que les modifications de blocs persistent entre clients
+    // Seuls les blocs dynamiques (pb_recap, obj_section, etc.) sont recalculés automatiquement via getOverrideBlocks
     updateHeader();
     updatePobBar();
     buildSections();
@@ -3872,13 +3871,26 @@ function saveEditBlock() {
   const sec = state.sections.find(s => s.id === sectionId);
   const ov = ensureOverride(sec);
   const b = ov.blocks[blockIdx];
-  const rawHtml = document.getElementById('edit-block-textarea').innerHTML;
-  // Convertir <br> en \n pour le stockage, mais garder les balises de formatage (strong, em, u, span…)
-  const newText = rawHtml.replace(/<br\s*\/?>/gi, '\n').replace(/<div>/gi, '\n').replace(/<\/div>/gi, '');
+  const taEl = document.getElementById('edit-block-textarea');
+  // Nettoyer le HTML du contenteditable : convertir les <div> et <br> en \n pour le stockage
+  // mais garder les balises de formatage (strong, em, u, span…)
+  const newText = taEl.innerHTML
+    .replace(/<\/div><div>/gi, '\n')
+    .replace(/<\/?div>/gi, '')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/\n+$/g, '');
   if (b.type === 'option') {
     ov.blocks[blockIdx] = { ...b, label: newText };
   } else {
     ov.blocks[blockIdx] = { ...b, type: document.getElementById('edit-block-type').value, text: newText };
+  }
+  // Mettre à jour aussi directement section.blocks pour les sections dynamiques
+  if (sec.blocks && sec.blocks[blockIdx]) {
+    if (b.type === 'option') {
+      sec.blocks[blockIdx] = { ...sec.blocks[blockIdx], label: newText };
+    } else {
+      sec.blocks[blockIdx] = { ...sec.blocks[blockIdx], type: document.getElementById('edit-block-type').value, text: newText };
+    }
   }
   saveScriptOverrides();
   closeEditBlockModal();
@@ -3910,7 +3922,7 @@ function confirmAddBlock() {
   const ov = ensureOverride(sec);
   const type = document.getElementById('add-block-type').value;
   const rawHtml = document.getElementById('add-block-textarea').innerHTML;
-  const text = rawHtml.replace(/<br\s*\/?>/gi, '\n').replace(/<div>/gi, '\n').replace(/<\/div>/gi, '');
+  const text = rawHtml.replace(/<\/div><div>/gi, '\n').replace(/<\/?div>/gi, '').replace(/<br\s*\/?>/gi, '\n').replace(/\n+$/g, '');
   const newBlock = type === 'checklist'
     ? { type: 'checklist', title: text, items: [] }
     : { type, text };
