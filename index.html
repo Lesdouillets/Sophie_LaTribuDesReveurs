@@ -593,9 +593,9 @@
     .besoins-table tr:last-child td { border-bottom: none; }
     .besoins-table tr:hover td { background: #f0fff4; }
     .age-highlight { font-weight: 700; color: var(--primary-dark); }
-    .age-active td { background: #d8f3dc !important; font-weight: 700; font-size: 15px; padding: 16px 13px !important; text-align: center; }
+    .age-active td { background: #e8f5e9 !important; font-weight: 700; font-size: 15px; padding: 16px 13px !important; text-align: right; vertical-align: middle; }
     .age-active td:first-child::before { content: "▶ "; color: var(--primary); }
-    .age-active td:last-child { background: #fdf0f0 !important; }
+    .age-active td:last-child { background: #fff !important; border: 2px solid #e8a0a0 !important; border-radius: 12px; }
 
     /* NAV BUTTONS */
     .nav-buttons {
@@ -2779,6 +2779,12 @@ function computeClientFields() {
   const ageCorrige = (dateTerme && dateNaiss && new Date(dateTerme) > new Date(dateNaiss)) ? calcAge(dateTerme, consultDate) : calcAge(dateNaiss, consultDate);
 
   const agesDiv = document.getElementById('ages-calcules');
+  // Reset des affichages pour éviter les résidus d'anciens calculs
+  document.getElementById('age-reel-calc').textContent = '–';
+  document.getElementById('age-reel-mois').textContent = '–';
+  document.getElementById('age-corrige-calc').textContent = '–';
+  document.getElementById('age-corrige-mois').textContent = '–';
+
   if (ageReel || ageManuel || ageCorrigeManuel) {
     agesDiv.style.display = 'block';
 
@@ -2808,6 +2814,9 @@ function computeClientFields() {
     } else if (ageReel) {
       document.getElementById('age-corrige-calc').textContent = 'Même âge (né à terme)';
       document.getElementById('age-corrige-mois').textContent = ageReel.totalMois + ' mois';
+    } else if (ageManuel) {
+      document.getElementById('age-corrige-calc').textContent = 'Même âge (né à terme)';
+      document.getElementById('age-corrige-mois').textContent = '';
     }
     const poidsVal = document.getElementById('poids-enfant')?.value;
     // Age pour calcul lait : age corrigé si prématuré, sinon réel, sinon parsing manuel
@@ -3484,11 +3493,20 @@ function renderBesoinsSommeil(tranches) {
   // Priorité : âge corrigé, puis âge réel, puis âge manuel
   const corrige = state.client.ageCorrigeMois;
   const reel = state.client.ageReelMois;
+  function parseAgeToMonths(s) {
+    if (!s) return NaN;
+    let y = 0, m = 0, d = 0;
+    const ym = s.match(/(\d+)\s*an/i); if (ym) y = parseInt(ym[1]);
+    const mm = s.match(/(\d+)\s*mois/i); if (mm) m = parseInt(mm[1]);
+    const dm = s.match(/(\d+)\s*jour/i); if (dm) d = parseInt(dm[1]);
+    if (y === 0 && m === 0 && d === 0) return parseInt(s) || NaN;
+    return y * 12 + m;
+  }
   const months = (corrige !== '' && corrige !== undefined && corrige !== null)
     ? parseInt(corrige)
     : (reel !== '' && reel !== undefined && reel !== null)
       ? parseInt(reel)
-      : parseInt(state.client.ageEnfant);
+      : parseAgeToMonths(state.client.ageEnfant);
   const ageLabel = (corrige !== '' && corrige !== undefined && corrige !== null)
     ? (state.client.ageCorrigeStr || corrige + ' mois') + ' (corrigé)'
     : (state.client.ageReelStr || months + ' mois');
