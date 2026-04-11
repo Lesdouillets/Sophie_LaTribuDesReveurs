@@ -58,7 +58,7 @@ const SCRIPT_DATA = {
         { type: "question", text: "Est-ce que vous pourriez me donner votre taille à TOUS les 2?\nAvez-vous des personnes très GRANDES dans vos familles?" },
         { type: "question", text: "Avez-vous les courbes devant vous?\nOn va commencer par lire la courbe du périmètre crânien" },
         { type: "separator", text: "📋 Tableau de suivi du sommeil" },
-        { type: "normal", text: "" },
+        { type: "normal", text: "Maintenant, on va lire ensemble le tableau de suivi du sommeil que vous avez rempli" },
         { type: "separator", text: "📸 Photos de la chambre" },
         { type: "normal", text: "On va maintenant regarder rapidement les photos de la chambre" },
         { type: "question", text: "Maintenant, je voudrais savoir\n\nSi vous deviez mettre une note de 0 à 10, 10 étant la meilleure note, quelle note vous mettriez à :\n→ Votre grossesse et pour le Papa?\n→ Votre accouchement et pour le Papa?\n→ Et maintenant à votre ÉTAT D'ÊTRE actuel (en prenant en compte votre vie perso/pro/par rapport au sommeil de votre enfant) et pour le Papa?" },
@@ -125,6 +125,7 @@ const SCRIPT_DATA = {
       blocks: [
         { type: "normal", text: "OK, là super, j'ai eu beaucoup d'information — MERCI !\n\nMaintenant, j'ai :\n→ une vue PLUS globale de la situation\n→ ET des solutions à mettre en œuvre" },
         { type: "separator", text: "📊 Besoins de sommeil selon l'âge" },
+        { type: "normal", text: "Votre enfant a des <strong style=\"color:#c0392b\">BESOINS</strong> pour son âge" },
         { type: "normal", text: "D'après les données consolidées de la National Sleep Foundation (États-Unis) et le laboratoire français d'étude du sommeil :\n\n⚠️ Je parle toujours en âge CORRIGÉ : l'âge qu'aurait eu votre enfant s'il était né à terme" },
         {
           type: "besoins_sommeil",

@@ -8,9 +8,9 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
   // Force reset: vider caches, SW et overrides
-  if (!localStorage.getItem('tdr_force_clean_v74')) {
+  if (!localStorage.getItem('tdr_force_clean_v77')) {
     localStorage.removeItem('tdr_script_overrides');
-    localStorage.setItem('tdr_force_clean_v74', '1');
+    localStorage.setItem('tdr_force_clean_v77', '1');
     if ('caches' in window) caches.keys().then(k => k.forEach(n => caches.delete(n)));
     if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(r => r.forEach(sw => sw.unregister()));
     setTimeout(() => location.reload(true), 500);
@@ -539,9 +539,11 @@
       border: 1px solid #aed6f1;
     }
     .block-separator {
-      background: var(--separator-bg); border: 1px solid var(--border);
-      text-align: center; font-weight: 700; font-size: 13.5px;
-      color: var(--primary-dark); padding: 11px 18px; letter-spacing: 0.3px;
+      background: var(--primary); border: none;
+      text-align: center; font-weight: 800; font-size: 15px;
+      color: white; padding: 14px 18px; letter-spacing: 0.5px;
+      text-transform: uppercase; border-radius: var(--radius);
+      box-shadow: 0 2px 8px rgba(94,113,148,0.25);
     }
 
     /* OPTION BLOCKS */
@@ -568,11 +570,11 @@
     .option-content .block { margin-bottom: 10px; }
     .option-content .block-option { margin-left: 20px; }
     .block-option.purple .option-content .block-option.purple {
-      background: #ebe5ff;
+      background: #ddd3f8;
       border-color: #6d28d9;
     }
     .block-option.purple .option-content .block-option.purple .option-header:hover { background: rgba(109,40,217,0.15); }
-    .block-option.purple .option-content .block-option.purple .option-content { background: #ebe5ff; }
+    .block-option.purple .option-content .block-option.purple .option-content { background: #ddd3f8; }
 
     /* TABLEAU BESOINS SOMMEIL */
     .besoins-table {
@@ -803,6 +805,8 @@
     .block-option.purple .option-arrow { color: #5b21b6; }
     .block-option.purple .option-label-text { color: #5b21b6; font-weight: 700; }
     .block-option.purple .option-content { background: #f5f0ff; }
+    .block-option.purple .option-content .block { background: #f5f0ff; border-color: #d4c4f0; }
+    .block-option.purple .option-content .block-option.purple .option-content .block { background: #ddd3f8; border-color: #c4b5e0; }
 
     /* OPTION DANGER (orange vif) */
     .block-option.danger {
@@ -3465,9 +3469,18 @@ function renderBlockInner(b, i, sectionId, depth) {
 }
 
 function renderBesoinsSommeil(tranches) {
-  const months = state.client.ageReelMois !== '' && state.client.ageReelMois !== undefined
-    ? parseInt(state.client.ageReelMois)
-    : parseInt(state.client.ageEnfant);
+  // Priorité : âge corrigé, puis âge réel, puis âge manuel
+  const corrige = state.client.ageCorrigeMois;
+  const reel = state.client.ageReelMois;
+  const months = (corrige !== '' && corrige !== undefined && corrige !== null)
+    ? parseInt(corrige)
+    : (reel !== '' && reel !== undefined && reel !== null)
+      ? parseInt(reel)
+      : parseInt(state.client.ageEnfant);
+  const ageLabel = (corrige !== '' && corrige !== undefined && corrige !== null)
+    ? (state.client.ageCorrigeStr || corrige + ' mois') + ' (corrigé)'
+    : (state.client.ageReelStr || months + ' mois');
+  const prenom = state.client.prenomEnfant || '[prénom]';
   function matchAge(t) {
     if (isNaN(months)) return false;
     const a = t.age;
@@ -3480,9 +3493,34 @@ function renderBesoinsSommeil(tranches) {
     if (a.includes('4-5') && months>=48) return true;
     return false;
   }
+  // Trouver la tranche active pour l'encadré de comparaison
+  const activeTranche = tranches.find(t => matchAge(t));
+  const compareBox = activeTranche
+    ? `<div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px;background:#f5f0ff;border:2px solid #7c3aed;border-radius:10px;padding:14px 16px">
+          <div style="font-weight:800;font-size:13px;color:#5b21b6;margin-bottom:8px">📊 Besoins recommandés (${ageLabel})</div>
+          <div style="font-size:13px;line-height:1.8;color:var(--text)">
+            Total : <strong>${activeTranche.total}</strong><br>
+            Nuit : <strong>${activeTranche.nuit}</strong><br>
+            Jour : <strong>${activeTranche.jour}</strong><br>
+            <small style="color:#666">${activeTranche.siestes}</small>
+          </div>
+        </div>
+        <div style="flex:1;min-width:200px;background:#fdf0f0;border:2px solid #e8a0a0;border-radius:10px;padding:14px 16px">
+          <div style="font-weight:800;font-size:13px;color:#c0392b;margin-bottom:8px">📝 Sommeil actuel de ${prenom}</div>
+          <div style="font-size:13px;line-height:1.8;color:var(--text)" contenteditable="true">
+            Total : <strong>___h</strong><br>
+            Nuit : <strong>___h</strong><br>
+            Jour : <strong>___h</strong><br>
+            Siestes : <strong>___</strong>
+          </div>
+        </div>
+      </div>`
+    : '';
   return `<table class="besoins-table"><thead><tr><th>Tranche d'âge</th><th>Total / 24h</th><th>Nuit</th><th>Jour / Siestes</th></tr></thead><tbody>`
     + tranches.map(t => `<tr class="${matchAge(t)?'age-active':''}"><td class="age-highlight">${t.age}</td><td>${t.total}</td><td>${t.nuit}</td><td>${t.jour}<br><small style="color:#666">${t.siestes}</small></td></tr>`).join('')
-    + `</tbody></table>`;
+    + `</tbody></table>`
+    + compareBox;
 }
 
 // ──► FIX toggleOption ◄──
