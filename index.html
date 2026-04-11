@@ -8,9 +8,9 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
   // Force reset: vider caches, SW et overrides
-  if (!localStorage.getItem('tdr_force_clean_v89')) {
+  if (!localStorage.getItem('tdr_force_clean_v92')) {
     localStorage.removeItem('tdr_script_overrides');
-    localStorage.setItem('tdr_force_clean_v89', '1');
+    localStorage.setItem('tdr_force_clean_v92', '1');
     if ('caches' in window) caches.keys().then(k => k.forEach(n => caches.delete(n)));
     if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(r => r.forEach(sw => sw.unregister()));
     setTimeout(() => location.reload(true), 500);
@@ -593,8 +593,9 @@
     .besoins-table tr:last-child td { border-bottom: none; }
     .besoins-table tr:hover td { background: #f0fff4; }
     .age-highlight { font-weight: 700; color: var(--primary-dark); }
-    .age-active td { background: #d8f3dc !important; font-weight: 600; }
+    .age-active td { background: #b7e4c7 !important; font-weight: 800; font-size: 15px; padding: 16px 13px !important; }
     .age-active td:first-child::before { content: "▶ "; color: var(--primary); }
+    .age-active td:last-child { background: #fdf0f0 !important; }
 
     /* NAV BUTTONS */
     .nav-buttons {
@@ -3493,15 +3494,15 @@ function renderBesoinsSommeil(tranches) {
     if (a.includes('4-5') && months>=48) return true;
     return false;
   }
-  const inputStyle = 'width:60px;padding:3px 4px;border:1.5px solid #e8a0a0;border-radius:5px;font-size:12px;font-weight:700;text-align:center;background:#fff';
-  return `<table class="besoins-table"><thead><tr><th>Tranche d'âge</th><th>Total / 24h</th><th>Nuit</th><th>Jour / Siestes</th><th style="background:#c0392b;color:white">📝 ${prenom}</th></tr></thead><tbody>`
+  const inputStyle = 'width:80px;padding:8px 6px;border:2px solid #e8a0a0;border-radius:8px;font-size:16px;font-weight:800;text-align:center;background:#fff';
+  return `<table class="besoins-table"><thead><tr><th>Tranche d'âge</th><th>Total / 24h</th><th>Nuit</th><th>Jour / Siestes</th><th style="background:#c0392b;color:white;font-size:14px">📝 ${prenom}</th></tr></thead><tbody>`
     + tranches.map(t => {
       const active = matchAge(t);
       const inputCell = active
-        ? `<td style="background:#fdf0f0;vertical-align:middle;text-align:center">
-            <strong style="font-size:14px;color:#c0392b" id="sommeil-total">0h00</strong><br>
-            <span style="font-size:10px;color:#888">Nuit</span> <input type="text" id="sommeil-nuit" placeholder="0,00" style="${inputStyle}" oninput="calcSommeilTotal()"><br>
-            <span style="font-size:10px;color:#888">Jour</span> <input type="text" id="sommeil-jour" placeholder="0,00" style="${inputStyle}" oninput="calcSommeilTotal()">
+        ? `<td style="background:#fdf0f0;vertical-align:middle;text-align:center;padding:12px 10px">
+            <div style="margin-bottom:8px"><strong style="font-size:20px;color:#c0392b" id="sommeil-total">0h00</strong></div>
+            <div style="margin-bottom:6px"><span style="font-size:12px;color:#888;font-weight:600">Nuit</span><br><input type="text" id="sommeil-nuit" placeholder="0,00" style="${inputStyle}" oninput="calcSommeilTotal()"></div>
+            <div><span style="font-size:12px;color:#888;font-weight:600">Jour</span><br><input type="text" id="sommeil-jour" placeholder="0,00" style="${inputStyle}" oninput="calcSommeilTotal()"></div>
           </td>`
         : '<td></td>';
       return `<tr class="${active?'age-active':''}"><td class="age-highlight">${t.age}</td><td>${t.total}</td><td>${t.nuit}</td><td>${t.jour}<br><small style="color:#666">${t.siestes}</small></td>${inputCell}</tr>`;
