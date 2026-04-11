@@ -567,6 +567,12 @@
     .option-content[contenteditable="true"]:focus { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 4px; }
     .option-content .block { margin-bottom: 10px; }
     .option-content .block-option { margin-left: 20px; }
+    .block-option.purple .option-content .block-option.purple {
+      background: #ebe5ff;
+      border-color: #6d28d9;
+    }
+    .block-option.purple .option-content .block-option.purple .option-header:hover { background: rgba(109,40,217,0.15); }
+    .block-option.purple .option-content .block-option.purple .option-content { background: #ebe5ff; }
 
     /* TABLEAU BESOINS SOMMEIL */
     .besoins-table {
@@ -787,6 +793,16 @@
     .block-option.pleurs .option-content { background: #e8f4fb; }
     .block-option.pleurs .block-empathie strong { color: var(--text); }
     .option-emoji { font-size: 18px; line-height: 1; flex-shrink: 0; }
+
+    /* OPTION PURPLE (violet clair) */
+    .block-option.purple {
+      background: #f5f0ff;
+      border-color: #7c3aed;
+    }
+    .block-option.purple .option-header:hover { background: rgba(124,58,237,0.12); }
+    .block-option.purple .option-arrow { color: #5b21b6; }
+    .block-option.purple .option-label-text { color: #5b21b6; font-weight: 700; }
+    .block-option.purple .option-content { background: #f5f0ff; }
 
     /* OPTION DANGER (orange vif) */
     .block-option.danger {
@@ -3311,8 +3327,9 @@ function renderBlockInner(b, i, sectionId, depth) {
   if (b.type === 'option') {
     const dangerClass = b.style === 'danger' ? ' danger' : '';
     const pleursClass = b.style === 'pleurs' ? ' pleurs' : '';
+    const purpleClass = b.style === 'purple' ? ' purple' : '';
     const emojiHtml = b.emoji ? `<span class="option-emoji">${b.emoji}</span>` : '';
-    return `<div class="block-option${dangerClass}${pleursClass}">
+    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}">
       <div class="option-header" onclick="toggleOption(this)">
         <span style="display:flex;align-items:center;gap:6px">
           ${emojiHtml}

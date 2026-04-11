@@ -95,20 +95,20 @@ const SCRIPT_DATA = {
       blocks: [
         { type: "obj_section" },
         {
-          type: "option", label: "🛌 Souhaitent changer de lieu de sommeil / lit",
+          type: "option", label: "🛌 Souhaitent changer de lieu de sommeil / lit", style: "purple",
           blocks: [
             { type: "normal", text: "J'ai aussi une petite question par rapport au LIEU de sommeil\nAujourd'hui, votre enfant dort dans VOTRE chambre" },
             {
-              type: "option", label: "Dort dans le lit parental",
+              type: "option", label: "Dort dans le lit parental", style: "purple",
               blocks: [
                 { type: "normal", text: "Et plus précisément dans VOTRE LIT\n\nDe mon côté, je dois quand même vous partager les recommandations de l'OMS…\n…qui encouragent à faire dormir les enfants dans LEUR PROPRE LIT…\n…car cela diminue significativement le risque de Mort Inattendue du Nourrisson\n\nMais au-delà de ça, l'idée, ce n'est pas de vous dire quoi faire.\nC'est surtout de voir ce qui vous convient à vous, aujourd'hui.\n\nIl n'y a PAS de bonne ou de mauvaise réponse :\n→ certains parents préfèrent attendre encore un peu,\n→ d'autres sont prêts à faire la transition." },
-                { type: "question", text: "Est-ce que c'est quelque chose qui vous CONVIENT pour l'instant,\n…OU est-ce que vous aimeriez qu'il passe dans SA chambre / dans SON lit ?" }
               ]
             },
+            { type: "question", text: "Est-ce que c'est quelque chose qui vous CONVIENT pour l'instant,\n…OU est-ce que vous aimeriez qu'il passe dans SA chambre / dans SON lit ?" }
           ]
         },
         {
-          type: "option", label: "Position ventrale – souhait de garder ou non ?",
+          type: "option", label: "Position ventrale – souhait de garder ou non ?", style: "purple",
           blocks: [
             { type: "normal", text: "J'ai également une question concernant la position de sommeil de votre enfant.\nAujourd'hui, il semble s'endormir sur le ventre… c'est devenu SA stratégie pour trouver le sommeil…\nc'est quelque chose que l'on observe souvent chez les BB car c'est la position la + physiologique pour le corps\n\nNéanmoins, je dois aussi vous partager les recommandations de l'OMS…\n…qui encouragent à poser son enfant sur le DOS…\n…car cette position diminue significativement le risque de Mort Inattendue du Nourrisson\n\nIl n'y a pas de bonne ou mauvaise réponse… SEULEMENT CELLE qui correspond à vos besoins !" },
             { type: "question", text: "J'aimerais beaucoup connaître votre point de vue sur ce sujet…\n→ Souhaitez-vous rester en position ventrale ou changer vers la position dorsale?" }
