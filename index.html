@@ -1029,7 +1029,7 @@
         🌿 La tribu<br>des rêveurs
       </button>
       <button class="enseigne-btn" id="btn-feedodo" onclick="setEnseigne('feedodo')">
-        🧚 Fée<br>dodo
+        🧚🧚 Fée<br>dodo
       </button>
     </div>
 
@@ -1076,7 +1076,7 @@
               style="font-weight:700">
               <option value="">– choisir –</option>
               <option value="tribu">🌿 La tribu des rêveurs</option>
-              <option value="feedodo">🧚 Fée dodo</option>
+              <option value="feedodo">🧚🧚 Fée dodo</option>
             </select>
           </div>
           <div class="form-grid">
@@ -2250,7 +2250,7 @@ function setEnseigneFromSelect(val) {
 function updateEnseigneUI() {
   const brandName = document.getElementById('setup-brand-name');
   if (brandName) {
-    brandName.textContent = currentEnseigne === 'feedodo' ? '🧚 Fée dodo' : '🌿 La tribu des rêveurs';
+    brandName.textContent = currentEnseigne === 'feedodo' ? '🧚🧚 Fée dodo' : '🌿 La tribu des rêveurs';
   }
   const tribu = document.getElementById('btn-tribu');
   const feedodo = document.getElementById('btn-feedodo');
@@ -2990,7 +2990,7 @@ function updateHeader() {
   const brandDiv = document.getElementById('header-brand-div');
   if (brandDiv) {
     const badge = c.enseigne === 'feedodo'
-      ? '<span style="background:#c47a3a;color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;margin-left:6px">🧚 Fée dodo</span>'
+      ? '<span style="background:#c47a3a;color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;margin-left:6px">🧚🧚 Fée dodo</span>'
       : '<span style="background:#5e7194;color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;margin-left:6px">🌿 Tribu</span>';
     const existingBadge = brandDiv.querySelector('.enseigne-badge');
     if (existingBadge) existingBadge.remove();
