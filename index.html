@@ -3493,25 +3493,20 @@ function renderBesoinsSommeil(tranches) {
     if (a.includes('4-5') && months>=48) return true;
     return false;
   }
-  const sommeilBox = `<div style="min-width:200px;background:#fdf0f0;border:2px solid #e8a0a0;border-radius:10px;padding:14px 16px;align-self:start">
-      <div style="font-weight:800;font-size:13px;color:#c0392b;margin-bottom:8px">📝 Sommeil actuel de ${prenom}</div>
-      <div style="font-size:13px;color:var(--text)">
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
-          <strong style="font-size:16px;color:#c0392b" id="sommeil-total">0h00</strong>
-          <span style="color:#888;font-size:11px">Total (auto)</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:4px;margin-bottom:6px">
-          Nuit : <input type="text" id="sommeil-nuit" value="" placeholder="ex: 10,45" style="width:70px;padding:4px 6px;border:1.5px solid #e8a0a0;border-radius:6px;font-size:13px;font-weight:700;text-align:center" oninput="calcSommeilTotal()">
-        </div>
-        <div style="display:flex;align-items:center;gap:4px">
-          Jour : <input type="text" id="sommeil-jour" value="" placeholder="ex: 1,15" style="width:70px;padding:4px 6px;border:1.5px solid #e8a0a0;border-radius:6px;font-size:13px;font-weight:700;text-align:center" oninput="calcSommeilTotal()">
-        </div>
-      </div>
-    </div>`;
-  const tableHtml = `<table class="besoins-table" style="flex:1"><thead><tr><th>Tranche d'âge</th><th>Total / 24h</th><th>Nuit</th><th>Jour / Siestes</th></tr></thead><tbody>`
-    + tranches.map(t => `<tr class="${matchAge(t)?'age-active':''}"><td class="age-highlight">${t.age}</td><td>${t.total}</td><td>${t.nuit}</td><td>${t.jour}<br><small style="color:#666">${t.siestes}</small></td></tr>`).join('')
+  const inputStyle = 'width:60px;padding:3px 4px;border:1.5px solid #e8a0a0;border-radius:5px;font-size:12px;font-weight:700;text-align:center;background:#fff';
+  return `<table class="besoins-table"><thead><tr><th>Tranche d'âge</th><th>Total / 24h</th><th>Nuit</th><th>Jour / Siestes</th><th style="background:#c0392b;color:white">📝 ${prenom}</th></tr></thead><tbody>`
+    + tranches.map(t => {
+      const active = matchAge(t);
+      const inputCell = active
+        ? `<td style="background:#fdf0f0;vertical-align:middle;text-align:center">
+            <strong style="font-size:14px;color:#c0392b" id="sommeil-total">0h00</strong><br>
+            <span style="font-size:10px;color:#888">Nuit</span> <input type="text" id="sommeil-nuit" placeholder="0,00" style="${inputStyle}" oninput="calcSommeilTotal()"><br>
+            <span style="font-size:10px;color:#888">Jour</span> <input type="text" id="sommeil-jour" placeholder="0,00" style="${inputStyle}" oninput="calcSommeilTotal()">
+          </td>`
+        : '<td></td>';
+      return `<tr class="${active?'age-active':''}"><td class="age-highlight">${t.age}</td><td>${t.total}</td><td>${t.nuit}</td><td>${t.jour}<br><small style="color:#666">${t.siestes}</small></td>${inputCell}</tr>`;
+    }).join('')
     + `</tbody></table>`;
-  return `<div style="display:flex;gap:16px;align-items:start;flex-wrap:wrap">${tableHtml}${sommeilBox}</div>`;
 }
 
 function parseHM(val) {
