@@ -473,25 +473,19 @@
       box-shadow: var(--shadow);
     }
     .block-question {
-      background: white;
-      border: 1.5px solid #ffb3b3;
-      border-left: 5px solid #c0392b;
+      background: #fdf0f0;
+      border: 1px solid #f5c6c6;
+      border-radius: var(--radius);
       color: var(--text);
       font-weight: 400;
       font-size: 15px;
-      box-shadow: 0 2px 10px rgba(192,57,43,0.08);
-      padding: 0 !important;
+      padding: 16px 20px !important;
       overflow: hidden;
     }
     .block-question::before { display: none; }
-    .q-label {
-      background: linear-gradient(90deg, #c0392b, #e74c3c);
-      color: white; font-weight: 800; font-size: 12px;
-      padding: 6px 16px 6px 14px; letter-spacing: 0.8px;
-      text-transform: uppercase; display: flex; align-items: center; gap: 6px;
-    }
+    .q-label { display: none; }
     .q-text {
-      padding: 16px 20px; line-height: 1.8; font-weight: 400;
+      line-height: 1.8; font-weight: 400;
     }
     .q-text ul { margin: 6px 0 0 18px; }
     .q-text li { margin-bottom: 4px; }
@@ -2454,9 +2448,33 @@ function loadClient(idx) {
   showSetupTab('tab-bebe', document.querySelector('.setup-tab'));
   // Mettre à jour state.client si consultation en cours
   if (state && state.sections && state.sections.length) {
-    Object.assign(state.client, c);
-    renderCurrentSection();
+    // Reconstruire state.client depuis le formulaire (comme startConsultation)
+    const consultDate2 = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
+    const dateNaiss = document.getElementById('date-naissance')?.value;
+    const dateTerme = document.getElementById('date-terme')?.value;
+    const ageReel = calcAge(dateNaiss, consultDate2);
+    const ageCorrige = calcAge(dateTerme || dateNaiss, consultDate2);
+    state.client = {
+      ...state.client,
+      prenomEnfant: document.getElementById('prenom-enfant')?.value.trim() || '',
+      nomFamille: document.getElementById('nom-famille-enfant')?.value.trim() || '',
+      sexe: document.getElementById('sexe-enfant')?.value || '',
+      ageEnfant: document.getElementById('age-enfant')?.value.trim() || '',
+      dateNaissance: dateNaiss || '',
+      ageReelMois: ageReel ? ageReel.months : '',
+      ageReelStr: ageReel ? ageReel.str : '',
+      ageCorrigeMois: ageCorrige ? ageCorrige.months : '',
+      ageCorrigeStr: ageCorrige ? ageCorrige.str : '',
+      rituel: document.getElementById('rituel-enfant')?.value || '',
+      prenomParent1: document.getElementById('prenom-parent1')?.value.trim() || '',
+      prenomParent2: document.getElementById('prenom-parent2')?.value.trim() || '',
+      sexeParent1: document.getElementById('sexe-parent1')?.value || 'maman',
+      problematique: document.getElementById('problematique-text')?.value.trim() || '',
+      objectifs: document.getElementById('objectifs-text')?.value.trim() || '',
+      enseigne: currentEnseigne,
+    };
     updateHeader();
+    renderCurrentSection();
   }
 }
 
@@ -3332,8 +3350,7 @@ function renderBlockInner(b, i, sectionId, depth) {
 
   if (b.type === 'question') {
     return `<div class="block block-question">
-      <div class="q-label">❓ Questions à poser</div>
-      <div class="q-text" contenteditable="true">${text}</div>
+      <div class="q-text" contenteditable="true">❓ ${text}</div>
     </div>`;
   }
 
