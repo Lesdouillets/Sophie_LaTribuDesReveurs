@@ -495,6 +495,32 @@
       background: #f5f0ff;
       border-left: 5px solid #7c3aed;
     }
+    .block-pb-recap {
+      background: white;
+      border: 1.5px solid #aed6f1;
+      border-left: 5px solid #2980b9;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .pb-recap-intro {
+      padding: 12px 16px 6px;
+      font-weight: 700; font-size: 14px; color: #1a5276;
+    }
+    .pb-recap-text {
+      margin: 0 16px 10px;
+      padding: 10px 14px;
+      background: #eaf4fb;
+      border-left: 3px solid #2980b9;
+      border-radius: 0 6px 6px 0;
+      font-style: italic; font-size: 14px;
+      color: #1a3a4f; line-height: 1.7;
+    }
+    .pb-recap-question {
+      background: linear-gradient(90deg, #c0392b, #e74c3c);
+      color: white; padding: 10px 16px;
+      font-weight: 700; font-size: 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
     .block-conseil {
       background: #f0fdf4;
       border-left: 5px solid #16a34a;
@@ -641,6 +667,7 @@
     .sos-section {
       background: white; border-radius: 10px;
       border: 1px solid var(--border); overflow: hidden;
+      flex-shrink: 0;
     }
     .sos-section-header {
       display: flex; align-items: center; gap: 10px;
@@ -3183,6 +3210,17 @@ function renderBlockInner(b, i, sectionId, depth) {
 
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
   if (b.type === 'separator') return `<div class="block block-separator">${text}</div>`;
+
+  if (b.type === 'pb_recap') {
+    const pb = state.client.problematique;
+    if (!pb) return '';
+    const pbHtml = pb.replace(/\n/g, '<br>');
+    return `<div class="block block-pb-recap">
+      <div class="pb-recap-intro">Donc, vous m'avez écrit :</div>
+      <div class="pb-recap-text">${pbHtml}</div>
+      <div class="pb-recap-question"><span class="q-icon-inline">❓</span> Est-ce que c'est toujours d'actualité ?</div>
+    </div>`;
+  }
 
   if (b.type === 'question') {
     return `<div class="block block-question">

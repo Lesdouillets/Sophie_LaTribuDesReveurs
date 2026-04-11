@@ -33,11 +33,10 @@ const SCRIPT_DATA = {
     {
       id: "problematique",
       title: "II. Problématique",
-      emoji: "🔍",
+      emoji: "🤔",
       blocks: [
         { type: "normal", text: "Maintenant, je vais reprendre votre problématique\net APRÈS vous allez m'expliquer ce qui se passe exactement pour le sommeil de [prénom_enfant]." },
-        { type: "important", text: "🔥 Donc, vous m'avez écrit :\n[pb_text]" },
-        { type: "question", text: "Est-ce que c'est toujours d'actualité?" },
+        { type: "pb_recap" },
         {
           type: "option", label: "Si pleurs difficiles 😭",
           blocks: [
