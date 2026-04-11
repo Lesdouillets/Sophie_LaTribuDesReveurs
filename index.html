@@ -41,7 +41,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: Calibri, 'Segoe UI', Candara, sans-serif;
       background: var(--bg);
       color: var(--text);
       height: 100vh;
@@ -111,7 +111,7 @@
     }
     .setup-brand h1 {
       font-size: 17px; font-weight: 800; color: white;
-      margin: 10px 0 3px; font-family: Georgia, serif;
+      margin: 10px 0 3px; font-family: Calibri, 'Segoe UI', Candara, sans-serif;
       line-height: 1.3;
     }
     .setup-brand p {
@@ -380,7 +380,7 @@
     .pob-text {
       color: #2d5016;
       display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-      overflow: hidden; font-style: italic;
+      overflow: hidden;
     }
     .pob-toggle-btn {
       background: none; border: none; cursor: pointer;
@@ -512,7 +512,7 @@
       background: #eaf4fb;
       border-left: 3px solid #2980b9;
       border-radius: 0 6px 6px 0;
-      font-style: italic; font-size: 14px;
+      font-size: 14px;
       color: #1a3a4f; line-height: 1.7;
     }
     .pb-recap-question {
@@ -528,7 +528,6 @@
     .block-empathie {
       background: #f0fdf4;
       border-left: 5px solid #15803d;
-      font-style: italic;
     }
     .block-separator {
       background: var(--separator-bg); border: 1px solid var(--border);
@@ -690,12 +689,12 @@
     .sos-section-body ul { padding-left: 16px; margin: 10px 0 4px; }
     .sos-section-body li { font-size: 13px; line-height: 1.7; color: var(--text); margin-bottom: 4px; }
     .sos-section-body strong { color: #8b0000; font-weight: 700; }
-    .sos-section-body em { color: var(--text-light); font-style: italic; }
+    .sos-section-body em { color: var(--text-light); font-style: normal; }
     .sos-aside {
       margin: 10px 0 6px; padding: 10px 14px;
       background: #fff8ee; border-left: 3px solid #f0a500;
       border-radius: 0 8px 8px 0;
-      font-size: 12.5px; font-style: italic; color: #5a4000;
+      font-size: 12.5px; font-style: normal; color: #5a4000;
       line-height: 1.6;
     }
     .sos-aside p { margin: 0 0 6px; }
@@ -995,7 +994,7 @@
 <div id="login-screen" style="display:none">
   <div class="login-card">
     <div class="login-logo">🌿</div>
-    <div class="login-brand" style="font-family:Georgia,serif;color:#2d3f5c">La tribu des rêveurs</div>
+    <div class="login-brand" style="font-family:Calibri,'Segoe UI',Candara,sans-serif;color:#2d3f5c">La tribu des rêveurs</div>
     <div class="login-sub">Espace réservé — Sophie Douesneau</div>
     <div class="form-group">
       <label style="font-size:13px;font-weight:600;color:var(--text-light)">Email</label>
@@ -1913,9 +1912,9 @@
   <div class="notes-header">
     <span class="notes-drag-handle" id="notes-drag-handle">⠿</span>
     <span style="flex:1">📝 Notes de session</span>
-    <span class="notes-collapse-btn" id="notes-collapse-icon" onclick="toggleNotesPanel()">▼</span>
+    <span class="notes-collapse-btn" id="notes-collapse-icon" onclick="toggleNotesPanel()">▲</span>
   </div>
-  <div class="notes-body" id="notes-body">
+  <div class="notes-body" id="notes-body" style="display:none"
     <textarea id="session-notes-textarea" placeholder="Vos notes libres pendant la consultation…&#10;(sauvegarde automatique)"></textarea>
     <div class="notes-footer">
       <button class="btn-cr" title="Générer le compte rendu de la consultation" onclick="openCrModal()">📄 Compte rendu</button>
@@ -2851,7 +2850,15 @@ function startConsultation() {
     state.heureFinStr = '';
   }
 
-  state.consultStart = Date.now();
+  // Utiliser l'heure de début saisie pour la progression (pas Date.now())
+  if (consultHeure) {
+    const [hs, ms] = consultHeure.split(':').map(Number);
+    const startBase = consultDate ? new Date(consultDate) : new Date();
+    startBase.setHours(hs, ms, 0, 0);
+    state.consultStart = startBase.getTime();
+  } else {
+    state.consultStart = Date.now();
+  }
   state.consultDuree = parseInt(document.getElementById('consult-duree').value) || 75;
   saveClient();
   buildSections();
@@ -2978,7 +2985,7 @@ function startTimer() {
     if (state.heureFin) {
       badge.style.display = 'flex';
       const diff = state.heureFin - new Date();
-      document.getElementById('header-heure-fin').textContent = 'Fin : ' + state.heureFinStr;
+      document.getElementById('header-heure-fin').textContent = 'Fin à ' + state.heureFinStr;
       if (diff <= 0) {
         document.getElementById('header-countdown').textContent = '⏰ Temps écoulé !';
         badge.className = badge.className.replace('warning','') + ' urgent';
@@ -3287,12 +3294,12 @@ function renderBlockInner(b, i, sectionId, depth) {
   if (b.type === 'question') {
     return `<div class="block block-question">
       <div class="q-label">❓ Questions à poser</div>
-      <div class="q-text">${text}</div>
+      <div class="q-text" contenteditable="true">${text}</div>
     </div>`;
   }
 
   const cls = { normal:'block-normal', important:'block-important', conseil:'block-conseil', empathie:'block-empathie' }[b.type] || 'block-normal';
-  return `<div class="block ${cls}">${text}</div>`;
+  return `<div class="block ${cls}" contenteditable="true">${text}</div>`;
 }
 
 function renderBesoinsSommeil(tranches) {
@@ -3876,7 +3883,7 @@ function deleteSession(e, id) {
 // ═══════════════════════════════════════════════════
 // NOTES PANEL
 // ═══════════════════════════════════════════════════
-let notesPanelCollapsed = false;
+let notesPanelCollapsed = true;
 function toggleNotesPanel() {
   notesPanelCollapsed = !notesPanelCollapsed;
   document.getElementById('notes-body').style.display = notesPanelCollapsed ? 'none' : '';
