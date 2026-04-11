@@ -3336,29 +3336,34 @@ function renderCurrentSection() {
   });
 }
 
-function renderBlocks(blocks, sectionId='', depth=0) {
-  return (blocks||[]).map((b,i) => renderBlock(b,i,sectionId,depth)).join('');
+function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
+  return (blocks||[]).map((b,i) => {
+    const path = parentPath ? parentPath + '.' + i : '' + i;
+    return renderBlock(b, i, sectionId, depth, path);
+  }).join('');
 }
 
-function renderBlock(b, i, sectionId='', depth=0) {
-  const inner = renderBlockInner(b, i, sectionId, depth);
-  // Wrap top-level blocks with edit controls
-  if (sectionId && depth === 0) {
+function renderBlock(b, i, sectionId='', depth=0, path='') {
+  const inner = renderBlockInner(b, i, sectionId, depth, path);
+  // Wrap blocks with edit controls (all depths)
+  if (sectionId) {
     const noEdit = ['pb_section','pb_recap','obj_section','obj_recap','besoins_sommeil','leviers_dynamiques','separator','checklist'].includes(b.type);
-    const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}',${i})">✏️ Modifier</button>`;
+    const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
+    const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
+    const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
     return `<div class="edit-block-wrap">
       <div class="edit-block-controls">
         ${editBtn}
-        <button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>
+        ${delBtn}
       </div>
       ${inner}
     </div>
-    <button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>`;
+    ${addBtn}`;
   }
   return inner;
 }
 
-function renderBlockInner(b, i, sectionId, depth) {
+function renderBlockInner(b, i, sectionId, depth, path) {
   const text = substituteVars(b.text||'');
 
   if (b.type === 'option') {
@@ -3375,7 +3380,7 @@ function renderBlockInner(b, i, sectionId, depth) {
         </span>
         <span class="option-toggle">Dérouler</span>
       </div>
-      <div class="option-content">${renderBlocks(b.blocks||[], sectionId, depth+1)}</div>
+      <div class="option-content">${renderBlocks(b.blocks||[], sectionId, depth+1, path)}</div>
     </div>`;
   }
 
@@ -3851,11 +3856,41 @@ function toggleEditMode() {
 
 // ─── Edit block ───
 let _editRef = null;
-function openEditBlockModal(sectionId, blockIdx) {
+
+// Naviguer dans un arbre de blocs via un chemin "0.2.1" → blocks[0].blocks[2].blocks[1]
+function getBlockByPath(blocks, path) {
+  const indices = String(path).split('.').map(Number);
+  let b = blocks[indices[0]];
+  for (let k = 1; k < indices.length; k++) {
+    if (!b || !b.blocks) return null;
+    b = b.blocks[indices[k]];
+  }
+  return b;
+}
+function setBlockByPath(blocks, path, newBlock) {
+  const indices = String(path).split('.').map(Number);
+  let parent = null;
+  let b = blocks[indices[0]];
+  let lastIdx = indices[0];
+  for (let k = 1; k < indices.length; k++) {
+    if (!b || !b.blocks) return;
+    parent = b;
+    lastIdx = indices[k];
+    b = b.blocks[indices[k]];
+  }
+  if (parent) {
+    parent.blocks[lastIdx] = newBlock;
+  } else {
+    blocks[indices[0]] = newBlock;
+  }
+}
+
+function openEditBlockModal(sectionId, path) {
   const sec = state.sections.find(s => s.id === sectionId); if (!sec) return;
   const blocks = getOverrideBlocks(sec);
-  const b = blocks[blockIdx];
-  _editRef = { sectionId, blockIdx };
+  const b = getBlockByPath(blocks, path);
+  if (!b) return;
+  _editRef = { sectionId, path };
   const typeEl = document.getElementById('edit-block-type');
   const taEl = document.getElementById('edit-block-textarea');
   const titleEl = document.getElementById('edit-block-modal-title');
@@ -3877,10 +3912,11 @@ function closeEditBlockModal() {
 }
 function saveEditBlock() {
   if (!_editRef) return;
-  const { sectionId, blockIdx } = _editRef;
+  const { sectionId, path } = _editRef;
   const sec = state.sections.find(s => s.id === sectionId);
   const ov = ensureOverride(sec);
-  const b = ov.blocks[blockIdx];
+  const b = getBlockByPath(ov.blocks, path);
+  if (!b) return;
   const taEl = document.getElementById('edit-block-textarea');
   // Nettoyer le HTML du contenteditable : convertir les <div> et <br> en \n pour le stockage
   // mais garder les balises de formatage (strong, em, u, span…)
@@ -3890,16 +3926,17 @@ function saveEditBlock() {
     .replace(/<br\s*\/?>/gi, '\n')
     .replace(/\n+$/g, '');
   if (b.type === 'option') {
-    ov.blocks[blockIdx] = { ...b, label: newText };
+    setBlockByPath(ov.blocks, path, { ...b, label: newText });
   } else {
-    ov.blocks[blockIdx] = { ...b, type: document.getElementById('edit-block-type').value, text: newText };
+    setBlockByPath(ov.blocks, path, { ...b, type: document.getElementById('edit-block-type').value, text: newText });
   }
   // Mettre à jour aussi directement section.blocks pour les sections dynamiques
-  if (sec.blocks && sec.blocks[blockIdx]) {
+  const secBlock = getBlockByPath(sec.blocks || [], path);
+  if (secBlock) {
     if (b.type === 'option') {
-      sec.blocks[blockIdx] = { ...sec.blocks[blockIdx], label: newText };
+      setBlockByPath(sec.blocks, path, { ...secBlock, label: newText });
     } else {
-      sec.blocks[blockIdx] = { ...sec.blocks[blockIdx], type: document.getElementById('edit-block-type').value, text: newText };
+      setBlockByPath(sec.blocks, path, { ...secBlock, type: document.getElementById('edit-block-type').value, text: newText });
     }
   }
   saveScriptOverrides();
