@@ -1457,7 +1457,7 @@
         <div>
           <div class="info" id="header-enfant">–</div>
           <div class="sub" id="header-age-rituel">–</div>
-          <div class="sub" id="header-age-corrige" style="display:none;color:#7c3aed;font-size:10px"></div>
+          <div class="sub" id="header-age-corrige" style="display:none"></div>
         </div>
       </div>
       <div class="client-badge clickable" onclick="editClientInConsultation('tab-parents')" title="Modifier la fiche parents">
@@ -2749,11 +2749,12 @@ function calcAge(dateStr, referenceStr) {
   if (m > 0 || y > 0) str += m + ' mois';
   if (y === 0 && m < 6) str += (str ? ' ' : '') + j + ' j';
   str = str.trim() || '0 j';
-  // Short version for header
+  // Short version for header (même logique que str pour la cohérence)
   let strCourt = '';
   if (y > 0) strCourt += y + 'a ';
-  strCourt += m + ' mois';
-  if (y === 0 && totalMois < 3) strCourt += ' ' + j + 'j';
+  if (m > 0 || y > 0) strCourt += m + ' mois';
+  if (y === 0 && m < 6) strCourt += (strCourt ? ' ' : '') + j + 'j';
+  strCourt = strCourt.trim() || '0 j';
   return { totalMois, totalJours, str, strCourt };
 }
 
