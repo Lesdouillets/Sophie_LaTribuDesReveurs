@@ -593,7 +593,7 @@
     .besoins-table tr:last-child td { border-bottom: none; }
     .besoins-table tr:hover td { background: #f0fff4; }
     .age-highlight { font-weight: 700; color: var(--primary-dark); }
-    .age-active td { background: #b7e4c7 !important; font-weight: 800; font-size: 15px; padding: 16px 13px !important; }
+    .age-active td { background: #d8f3dc !important; font-weight: 700; font-size: 15px; padding: 16px 13px !important; text-align: center; }
     .age-active td:first-child::before { content: "▶ "; color: var(--primary); }
     .age-active td:last-child { background: #fdf0f0 !important; }
 
@@ -1181,7 +1181,7 @@
                 <div style="font-size:16px;font-weight:800;color:#2d3f5c" id="age-corrige-calc">–</div>
                 <div style="font-size:12px;color:#5e7194;margin-top:2px" id="age-corrige-mois">–</div>
               </div>
-              <div style="grid-column:1/-1;background:#fff9e6;border-radius:10px;padding:10px 14px;border:1.5px solid #f0ad4e">
+              <div id="besoin-lait-wrap" style="grid-column:1/-1;background:#fff9e6;border-radius:10px;padding:10px 14px;border:1.5px solid #f0ad4e">
                 <div style="font-size:10px;font-weight:700;color:#7c5200;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px">🍼 Besoin en lait / 24h <span style="font-weight:400;font-style:italic;text-transform:none">(selon âge corrigé)</span></div>
                 <div style="font-size:13px;color:#9c6a00" id="besoin-lait-formule">–</div>
                 <div style="font-size:20px;font-weight:800;color:#7c5200;margin-top:4px" id="besoin-lait-volume"></div>
@@ -2825,6 +2825,11 @@ function computeClientFields() {
       agePourLait = tryParse(ageCorrigeManuel) ?? tryParse(ageManuel);
     }
     const bl = besoinLait(agePourLait, poidsVal);
+    const laitWrap = document.getElementById('besoin-lait-wrap');
+    // Cacher si 3 ans (36 mois) ou plus
+    if (laitWrap) {
+      laitWrap.style.display = (agePourLait && agePourLait >= 36) ? 'none' : '';
+    }
     document.getElementById('besoin-lait-formule').textContent = bl.formula;
     const volEl = document.getElementById('besoin-lait-volume');
     if (bl.volume) { volEl.textContent = bl.volume; volEl.style.display = ''; }

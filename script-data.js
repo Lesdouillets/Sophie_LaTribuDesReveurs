@@ -138,7 +138,6 @@ const SCRIPT_DATA = {
             { age: "4-5 ans", nuit: "11h-13h (moy. 11-12h)", jour: "2h-3h ou 45 min temps calme", total: "12h-16h (moy. 13-14h)", siestes: "1 sieste ou temps calme" },
           ]
         },
-        { type: "important", text: "🔥 À comparer avec les données de [prénom_enfant]" },
         { type: "separator", text: "📋 Difficultés identifiées" },
         { type: "normal", text: "Au vu de ce qu'on s'est dit\nEn effet, vous aviez BIEN identifié que votre enfant a des difficultés de sommeil." },
         {
