@@ -1457,6 +1457,7 @@
         <div>
           <div class="info" id="header-enfant">–</div>
           <div class="sub" id="header-age-rituel">–</div>
+          <div class="sub" id="header-age-corrige" style="display:none;color:#7c3aed;font-size:10px"></div>
         </div>
       </div>
       <div class="client-badge clickable" onclick="editClientInConsultation('tab-parents')" title="Modifier la fiche parents">
@@ -3172,21 +3173,27 @@ function updateHeader() {
   const c = state.client;
   document.getElementById('header-enfant').textContent = c.prenomEnfant;
 
-  // Âges : réel + corrigé (si différents = enfant prématuré)
+  // Âge réel
   let ageLine = '';
   if (c.ageReelStr) {
     ageLine = '🎂 ' + (c.ageReelStrCourt || c.ageReelStr);
-    if (c.ageCorrigeStr && c.ageCorrigeMois !== c.ageReelMois) {
-      ageLine += '  ·  ✏️ corrigé : ' + (c.ageCorrigeStrCourt || c.ageCorrigeStr);
-    }
   } else if (c.ageEnfant) {
     ageLine = '🎂 ' + c.ageEnfant;
-    if (c.ageCorrigeManuel) {
-      ageLine += '  ·  ✏️ corrigé : ' + c.ageCorrigeManuel;
-    }
   }
   const rituelPart = c.rituel ? '🌙 ' + c.rituel : '';
   document.getElementById('header-age-rituel').textContent = [ageLine, rituelPart].filter(Boolean).join('  •  ');
+
+  // Âge corrigé (ligne séparée, en violet)
+  const acEl = document.getElementById('header-age-corrige');
+  const ageCorrige = (c.ageCorrigeStr && c.ageCorrigeMois !== c.ageReelMois)
+    ? (c.ageCorrigeStrCourt || c.ageCorrigeStr)
+    : c.ageCorrigeManuel || '';
+  if (ageCorrige) {
+    acEl.textContent = '📒 corrigé : ' + ageCorrige;
+    acEl.style.display = 'block';
+  } else {
+    acEl.style.display = 'none';
+  }
   document.getElementById('header-parents').textContent = [c.prenomParent1, c.prenomParent2].filter(Boolean).join(' & ');
   document.getElementById('header-nom').textContent = c.nomFamille||'';
   // Texte enseigne dans header (pas de badge)
