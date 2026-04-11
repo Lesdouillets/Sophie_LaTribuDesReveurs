@@ -3389,12 +3389,10 @@ function substituteVars(text) {
   let roleLabel;
   if (p1 && p2) {
     roleLabel = 'les Parents';
-  } else if (c.roleParents === 'la maman' || c.sexeParent1 === 'maman') {
-    roleLabel = 'la Maman';
-  } else if (c.roleParents === 'le papa' || c.sexeParent1 === 'papa') {
+  } else if (c.sexeParent1 === 'papa') {
     roleLabel = 'le Papa';
   } else {
-    roleLabel = 'le/la Parent';
+    roleLabel = 'la Maman';
   }
   const prenomsParts = [p1, p2].filter(Boolean);
   const prenomsList = prenomsParts.length === 2
