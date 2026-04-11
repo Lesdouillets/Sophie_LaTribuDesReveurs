@@ -661,10 +661,19 @@
     .sos-section-body li { font-size: 13px; line-height: 1.7; color: var(--text); margin-bottom: 4px; }
     .sos-section-body strong { color: #8b0000; font-weight: 700; }
     .sos-section-body em { color: var(--text-light); font-style: italic; }
+    .sos-aside {
+      margin: 10px 0 6px; padding: 10px 14px;
+      background: #fff8ee; border-left: 3px solid #f0a500;
+      border-radius: 0 8px 8px 0;
+      font-size: 12.5px; font-style: italic; color: #5a4000;
+      line-height: 1.6;
+    }
+    .sos-aside p { margin: 0 0 6px; }
+    .sos-aside p:last-child { margin-bottom: 0; }
 
-    /* TOOLTIPS */
-    [title] { position: relative; }
-    [title]:hover::after {
+    /* TOOLTIPS — uniquement sur les boutons */
+    button[title] { position: relative; }
+    button[title]:hover::after {
       content: attr(title);
       position: absolute; bottom: calc(100% + 8px); left: 50%;
       transform: translateX(-50%);
@@ -674,7 +683,7 @@
       pointer-events: none; z-index: 9999;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
-    [title]:hover::before {
+    button[title]:hover::before {
       content: '';
       position: absolute; bottom: calc(100% + 3px); left: 50%;
       transform: translateX(-50%);
@@ -1449,11 +1458,19 @@
             <span class="sos-section-title">Donner confiance aux parents</span>
             <span class="sos-section-arrow">▼</span>
           </div>
-          <div class="sos-section-body"><ul>
-            <li><strong>VOUS êtes les experts</strong> de votre BB → mon rôle : vous apporter des repères et des outils</li>
-            <li>On va avancer <strong>pas à pas</strong>, en respectant votre rythme et celui de votre enfant</li>
-            <li>Il n'y a <strong>PAS 1 seule bonne façon de faire</strong> → l'important, c'est de trouver ce qui fonctionne pour VOTRE famille</li>
-          </ul></div>
+          <div class="sos-section-body">
+            <ul>
+              <li><strong>VOUS</strong> êtes les <strong>experts de votre BB</strong> ⇒ <strong>mon rôle,</strong> c'est simplement de <strong>vous apporter des repères et des outils</strong></li>
+              <li>On va <strong>avancer pas à pas :</strong>
+                <ul>
+                  <li>en <strong>respectant votre rythme</strong></li>
+                  <li>et <strong>celui de votre enfant.</strong></li>
+                </ul>
+                ⇒ Il n'y a <strong>PAS 1 seule bonne façon de faire</strong><br>
+                ⇒ <strong>l'important,</strong> c'est de <strong>trouver ce qui fonctionne</strong> pour VOTRE <strong>famille.</strong>
+              </li>
+            </ul>
+          </div>
         </div>
 
         <div class="sos-section">
@@ -1462,11 +1479,19 @@
             <span class="sos-section-title">Déculpabiliser les parents</span>
             <span class="sos-section-arrow">▼</span>
           </div>
-          <div class="sos-section-body"><ul>
-            <li>Il n'existe PAS de parents parfaits, NI de sommeil parfait → l'objectif est simplement de <strong>comprendre comment fonctionne votre BB</strong> pour l'accompagner au mieux</li>
-            <li>Vous avez déjà <strong>mis beaucoup de choses en place</strong> pour votre bébé → nous allons simplement <strong>peaufiner quelques éléments</strong> pour l'aider à mieux dormir</li>
-            <li>Le sommeil d'un BB <strong>évolue beaucoup</strong> en grandissant → c'est <strong>NORMAL</strong> de rencontrer des moments un peu + compliqués</li>
-          </ul></div>
+          <div class="sos-section-body">
+            <ul>
+              <li>Il n'existe :
+                <ul>
+                  <li>PAS de parents parfaits</li>
+                  <li>NI de sommeil parfait</li>
+                </ul>
+                ⇒ l'objectif est simplement de <strong>comprendre comment fonctionne votre BB</strong> pour <strong>l'accompagner au mieux</strong>
+              </li>
+              <li>Vous avez <strong>déjà mis beaucoup de choses en place</strong> pour votre bébé ⇒ nous allons <strong>simplement peaufiner quelques éléments</strong> pour <strong>l'aider à mieux dormir</strong></li>
+              <li>Le <strong>sommeil d'un BB évolue beaucoup</strong> en grandissant ⇒ Du coup, c'est <strong>NORMAL</strong> de <strong>rencontrer des moments un peu + compliqués.</strong></li>
+            </ul>
+          </div>
         </div>
 
         <div class="sos-section open">
@@ -1475,131 +1500,51 @@
             <span class="sos-section-title">"Je n'aime pas l'entendre pleurer"</span>
             <span class="sos-section-arrow">▼</span>
           </div>
-          <div class="sos-section-body"><ul>
-            <li>Je comprends — c'est <strong>très difficile</strong> d'entendre son enfant pleurer. Personne n'aime ça.</li>
-            <li>Rassurez-vous tout de suite : on ne va <strong>PAS laisser votre enfant SEUL à pleurer</strong></li>
-            <li>Les <strong>pleurs des enfants ≠ pleurs des adultes</strong> → ils n'ont pas encore les mots pour parler. Ils pleurent pour dire <em>"j'ai faim", "j'ai froid", "je ne suis pas d'accord"</em></li>
-            <li>Aujourd'hui, on demande à votre enfant de <strong>changer une habitude</strong>. Qui aime le changement ? → c'est possible qu'il proteste. C'est <strong>normal !</strong></li>
-            <li>Il va apprendre à trouver ses <strong>propres stratégies</strong> pour s'endormir → vous ne pouvez pas le faire à sa place (comme chacun a sa façon de s'endormir)</li>
-            <li>Il n'a pas besoin qu'on fasse <strong>disparaître ses pleurs</strong> tout de suite — il a besoin de sentir <em>"je ne suis pas seul, Maman/Papa est là"</em></li>
-          </ul></div>
-        </div>
-
-        <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
-            <span class="sos-section-emoji">🤔</span>
-            <span class="sos-section-title">"S'il pleure, c'est que ça ne lui convient pas"</span>
-            <span class="sos-section-arrow">▼</span>
+          <div class="sos-section-body">
+            <ul>
+              <li>Je <strong>comprends</strong></li>
+              <li>C'est <strong>très difficile</strong> d'<strong>entendre</strong> son enfant pleurer</li>
+              <li><strong>Personne n'aime ça</strong></li>
+              <li>Et si je peux vous <strong>rassurer tout de suite</strong> sur <strong>qqch d'important</strong> : c'est qu'<strong>on ne va PAS laisser votre enfant SEUL à pleurer.</strong></li>
+              <li><strong>Par contre</strong>, il y a une <strong>chose importante</strong> à <strong>comprendre</strong> sur les <strong>pleurs</strong> :<br>
+                ⇒ Les <strong>pleurs des enfants</strong> ne sont <strong>pas les mêmes</strong> que les <strong>pleurs des adultes.</strong>
+              </li>
+              <li><strong>NOUS</strong>, en <strong>tant qu'adultes</strong>, quand on pleure, c'est <strong>souvent</strong> parce que <strong>l'émotion est très forte</strong> : on est <strong>très triste</strong>, ou on est <strong>très en colère</strong></li>
+              <li>Les enfants eux, <strong>pleurent beaucoup + souvent</strong>, parce qu'ils n'ont <strong>pas encore les mots</strong> pour <strong>parler</strong>. Ils ne <strong>peuvent pas encore</strong> nous <strong>dire</strong> :
+                <ul>
+                  <li><em>"j'ai faim", "j'ai froid", "il y a cette étiquette qui me gratte dans le dos",</em></li>
+                  <li>Ou simplement : <em>"je ne suis pas d'accord"</em></li>
+                </ul>
+                ⇒ Alors, ils <strong>utilisent</strong> les <strong>pleurs pour communiquer.</strong>
+              </li>
+              <li>Aujourd'hui, on va <strong>demander</strong> à votre enfant <strong>de changer une habitude</strong>. Et franchement… <em>qui <strong>aime le changement</strong> ?</em> Peu de personnes. Parce que <strong>le changement</strong>, ça veut dire :
+                <ul>
+                  <li><strong>Quitter</strong> ce qu'<strong>on connaît</strong>…</li>
+                  <li><strong>Quitter</strong> ce qui <strong>nous rassure</strong>…</li>
+                  <li>Pour aller <strong>vers qqch</strong> de <strong>nouveau</strong>.</li>
+                </ul>
+                ⇒ Donc c'est <strong>possible qu'il proteste.</strong><br>
+                ⇒ C'est <strong>possible qu'il pleure</strong> pour dire : <em>"moi je <strong>préférais avant</strong>."</em><br>
+                ⇒ Et ça, c'est une réaction <strong>normale !</strong>
+              </li>
+              <li>Votre enfant va aussi <strong>apprendre qqch de nouveau</strong> : <strong>trouver ses PROPRES stratégies pour s'endormir</strong>. Et ça, vous ne pouvez <strong>pas le faire à sa place !</strong> Un peu comme nous, adultes — on a <strong>TOUS notre façon de nous endormir</strong> : <em>certains sur le côté, d'autres sur le ventre, certains avec un bras en l'air…</em> On ne peut <strong>PAS dire à qqn : <em>"Tiens, dors comme moi, ça marchera."</em> NON</strong><br>
+                ⇒ Votre enfant va <strong>devoir découvrir ce qui fonctionne POUR LUI</strong>
+              </li>
+            </ul>
+            <div class="sos-aside">
+              <p>Imaginez une journée <strong>difficile</strong>. Vous rentrez chez vous, dans un <strong>endroit</strong> où vous vous sentez en <strong>sécurité</strong>. Vous vous mettez à <strong>pleurer</strong>.</p>
+              <p>Si votre <strong>conjoint</strong> est dans <strong>la pièce d'à côté</strong>, à <strong>regarder une série, SACHANT</strong> que <strong>vous pleurez</strong><br>
+                ⇒ Vous pourriez vous <strong>sentir seul… Voire abandonné</strong>, <strong>non</strong> ?
+              </p>
+              <p><strong>MAIS s'il vient près de vous</strong>, qu'il <strong>vous écoute</strong>, vous <strong>caresse doucement le dos</strong>, ou vous <strong>parle avec bienveillance</strong> :<br>
+                ⇒ La <strong>tristesse ne disparaîtra pas d'un coup</strong><br>
+                ⇒ <strong>Mais</strong> ça <strong>deviendra bcp + facile</strong> à vivre
+              </p>
+              <p>Pour un BB, c'est <strong>pareil</strong>. Il n'a <strong>pas besoin</strong> qu'on fasse <strong>disparaître ses pleurs</strong> tout de suite. Il a <strong>besoin</strong> de sentir <em>« Je ne suis <strong>pas seul.</strong> Maman/Papa est là. »</em><br>
+                ⇒ C'est comme ça, qu'il va pouvoir <strong>traverser sereinement</strong> ce changement
+              </p>
+            </div>
           </div>
-          <div class="sos-section-body"><ul>
-            <li>Je comprends — et les pleurs peuvent vouloir dire <strong>beaucoup de choses</strong></li>
-            <li>Parfois c'est un besoin, mais parfois c'est aussi une <strong>façon d'exprimer une frustration</strong> ou une réaction face à un changement</li>
-            <li>On demande à votre enfant de changer une habitude → c'est possible qu'il pleure pour dire <em>"moi je préférais avant"</em> → c'est <strong>normal !</strong></li>
-            <li>Ça ne veut <strong>PAS forcément dire</strong> que ça ne lui convient pas → ça peut vouloir dire que ce changement lui <strong>demande un peu de temps pour s'adapter</strong></li>
-            <li>Votre rôle : rester <strong>son repère</strong>, une présence calme et rassurante pendant qu'il traverse ce changement</li>
-          </ul></div>
-        </div>
-
-        <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
-            <span class="sos-section-emoji">🧠</span>
-            <span class="sos-section-title">"Pleurer = délétère pour le cerveau"</span>
-            <span class="sos-section-arrow">▼</span>
-          </div>
-          <div class="sos-section-body"><ul>
-            <li>Beaucoup de parents ont cette peur → c'est <strong>normal de s'inquiéter</strong></li>
-            <li>Ce n'est <strong>PAS le fait de pleurer</strong> qui est dangereux</li>
-            <li>Ce qui est problématique : des pleurs qui se répètent <strong>sans aucune réponse d'un adulte</strong> → c'est l'<strong>isolement émotionnel</strong> qui est dangereux</li>
-            <li>Dans ce que je propose, votre enfant n'est <strong>JAMAIS seul</strong> → à chaque émotion forte, vous êtes là pour l'accompagner, vous reconnaissez et accueillez son émotion → il se sentira <strong>entendu, soutenu et aimé</strong></li>
-            <li>Dans ces conditions, il n'y aura <strong>aucun impact</strong> sur son cerveau</li>
-          </ul></div>
-        </div>
-
-        <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
-            <span class="sos-section-emoji">😠</span>
-            <span class="sos-section-title">"Il pleure pour manipuler / faire un caprice"</span>
-            <span class="sos-section-arrow">▼</span>
-          </div>
-          <div class="sos-section-body"><ul>
-            <li>Je veux vous rassurer : <strong>ce n'est pas le cas</strong></li>
-            <li>Un BB n'a pas la <strong>maturité neurologique</strong> pour ça → les pleurs sont leur <strong>seul moyen de communication</strong></li>
-            <li>Quand il pleure, il exprime un besoin : <em>"j'ai faim", "je suis fatigué"</em>… Même quand les pleurs sont forts, c'est juste une façon de dire <em>"j'ai besoin de toi"</em></li>
-            <li>Votre manière de répondre est essentielle : accueillir avec <strong>patience, cohérence et sans jugement</strong> → il se sent entendu, compris et en sécurité → c'est dans cette bulle de sécurité qu'il construit sa <strong>confiance envers vous</strong></li>
-          </ul></div>
-        </div>
-
-        <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
-            <span class="sos-section-emoji">🚫</span>
-            <span class="sos-section-title">"Mauvaises habitudes"</span>
-            <span class="sos-section-arrow">▼</span>
-          </div>
-          <div class="sos-section-body"><ul>
-            <li>Ce ne sont <strong>PAS de mauvaises habitudes</strong> → ce sont des solutions qui ont fonctionné à un moment donné</li>
-            <li>Vous avez fait au mieux <strong>avec ce que vous aviez à ce moment-là</strong></li>
-            <li>Il n'existe PAS de manuel pour élever un BB → <strong>tous les parents tâtonnent</strong>, tous les parents ajustent → c'est normal, c'est humain</li>
-            <li>Sur la santé et la nutrition → on est souvent bien guidés. <strong>Sur le sommeil → on est souvent seuls</strong></li>
-            <li>Aujourd'hui vous avez <strong>d'autres informations</strong> → vous pouvez faire autrement</li>
-            <li>Vous êtes le <strong>meilleur parent possible</strong> pour votre enfant → aujourd'hui <strong>comme hier</strong>. N'en doutez JAMAIS !</li>
-          </ul></div>
-        </div>
-
-        <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
-            <span class="sos-section-emoji">🤱</span>
-            <span class="sos-section-title">"Il a besoin de moi, pas d'apprendre à dormir"</span>
-            <span class="sos-section-arrow">▼</span>
-          </div>
-          <div class="sos-section-body"><ul>
-            <li>OUI, votre enfant a besoin de vous. Il aura <strong>toujours besoin de vous</strong>, même à 40 ans !</li>
-            <li>Il ne va pas "apprendre à dormir" car il <strong>SAIT déjà dormir</strong></li>
-            <li>Ce qu'il va apprendre : de <strong>nouvelles habitudes</strong> autour de l'endormissement → et ça, vous ne pouvez pas le faire à sa place</li>
-            <li>C'est <strong>grâce au lien fort</strong> entre vous qu'il peut se sentir en sécurité et oser découvrir de nouvelles choses</li>
-            <li>Votre rôle : être <strong>son repère</strong> → <em>"C'est nouveau… mais je suis là. Tu peux y arriver."</em></li>
-            <li>Pour qu'un jour il puisse être <strong>fier d'y être arrivé par lui-même</strong></li>
-          </ul></div>
-        </div>
-
-        <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
-            <span class="sos-section-emoji">💭</span>
-            <span class="sos-section-title">Émotions des parents</span>
-            <span class="sos-section-arrow">▼</span>
-          </div>
-          <div class="sos-section-body"><ul>
-            <li>Les parents ont aussi des émotions → elles font partie de la vie → c'est <strong>normal !</strong></li>
-            <li>On ne peut PAS toujours les cacher → et il ne <strong>FAUT surtout PAS</strong> !</li>
-            <li>Un enfant ressent tout → il ne comprend peut-être pas les mots, mais il capte les <strong>tensions et les émotions</strong> autour de lui → cacher ses émotions peut créer de l'<strong>insécurité</strong></li>
-            <li>Ce qu'il faut faire : <strong>nommer ce que l'on ressent</strong> avec les mots adaptés à son âge, dire que ce sont des "choses de grands", qu'il n'y est pour rien, que ce n'est <strong>pas sa faute</strong>, que Papa/Maman s'en occupent, que tout va bien pour lui → ça le <strong>sécurisera</strong></li>
-          </ul></div>
-        </div>
-
-        <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
-            <span class="sos-section-emoji">⚠️</span>
-            <span class="sos-section-title">Maltraitance</span>
-            <span class="sos-section-arrow">▼</span>
-          </div>
-          <div class="sos-section-body"><ul>
-            <li>La maltraitance, c'est quand on fait du <strong>mal intentionnellement</strong> → abandon, violence, ou absence répétée de réponse aux besoins d'un enfant</li>
-            <li>Laisser pleurer un BB seul, longtemps, sans réponse → OUI, ça peut être maltraitant → mais ce n'est <strong>PAS DU TOUT</strong> ce que je vous propose</li>
-            <li>Dans ce que je propose, votre enfant n'est <strong>JAMAIS seul</strong> → à chaque émotion forte, vous êtes là</li>
-            <li>Vous lui montrez qu'il peut <strong>compter sur vous</strong> et que vous l'aimez → en restant présent et attentif : vous ne l'ignorez pas, vous n'exercez aucune violence → <strong>AU CONTRAIRE</strong>, vous renforcez le lien avec votre enfant</li>
-          </ul></div>
-        </div>
-
-        <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
-            <span class="sos-section-emoji">🔁</span>
-            <span class="sos-section-title">Entraînement S. vs. Endormissement autonome</span>
-            <span class="sos-section-arrow">▼</span>
-          </div>
-          <div class="sos-section-body"><ul>
-            <li><strong>Entraînement au sommeil</strong> = recherche de performance → l'enfant DOIT dormir coûte que coûte, parfois peu importe ce qu'il ressent</li>
-            <li><strong>Endormissement autonome</strong> = une compétence → quelque chose que l'enfant va apprendre et qui va se développer à son rythme → objectif : qu'il se sente <strong>capable, soutenu et en sécurité</strong></li>
-            <li>À chaque émotion forte → vous êtes là pour l'accompagner. <strong>Pas pour le faire taire. Pas pour le pousser.</strong> Pour qu'il apprenne en douceur de nouvelles compétences</li>
-          </ul></div>
         </div>
 
         <div class="sos-section">
@@ -1608,12 +1553,302 @@
             <span class="sos-section-title">Accompagner les émotions</span>
             <span class="sos-section-arrow">▼</span>
           </div>
-          <div class="sos-section-body"><ul>
-            <li>Accompagner les émotions, concrètement : être <strong>présent</strong>, simplement, avec bienveillance — comme on le ferait avec un ami en peine</li>
-            <li>Être juste présent, à l'écoute, <strong>sans chercher à faire taire</strong> les larmes</li>
-            <li>Le toucher doucement (s'il en a envie), lui parler doucement : <em>"je comprends ta colère"</em>, lui rappeler qu'il est en sécurité, lui dire que vous êtes là, que vous êtes <strong>fier de lui</strong></li>
-            <li>Même s'il ne comprend pas encore les mots → il va percevoir le <strong>ton de votre voix</strong>, la douceur de votre regard, votre stabilité → ça va l'aider à traverser ses émotions <strong>sans être seul</strong></li>
-          </ul></div>
+          <div class="sos-section-body">
+            <ul>
+              <li>Accompagner les émotions, concrètement, c'est :
+                <ul>
+                  <li><strong>Être présent</strong> pour son enfant</li>
+                  <li><strong>Simplement</strong></li>
+                  <li>Et avec <strong>bienveillance</strong></li>
+                </ul>
+                Comme on le ferait avec un <strong>ami qui est en peine</strong>
+              </li>
+              <li>Vous pouvez par exemple :
+                <ul>
+                  <li>Être <strong>juste présent :</strong> à l'écoute, <strong>SANS</strong> pour autant chercher à <strong>faire taire</strong> les larmes</li>
+                  <li><strong>Le toucher doucement</strong> (s'il en a envie)</li>
+                  <li>Lui <strong>parler</strong> doucement : <strong>Nommer</strong> ce qu'il ressent : <em>« je comprends ta colère »</em> — lui rappeler qu'il est en <strong>sécurité</strong> — lui dire que <strong>vous êtes là pour lui</strong> — lui dire que vous êtes <strong>fier de lui</strong></li>
+                </ul>
+              </li>
+              <li>Alors, même s'il ne <strong>comprend PAS</strong> encore les <strong>mots</strong> :
+                <ul>
+                  <li>Il va percevoir le <strong>ton</strong> de votre <strong>voix</strong></li>
+                  <li>La <strong>douceur</strong> de votre <strong>regard</strong></li>
+                  <li>Votre <strong>stabilité</strong> dans ce que <strong>vous faites</strong></li>
+                </ul>
+              </li>
+            </ul>
+            <div class="sos-aside">
+              <p>Imaginez-vous qqn qui vous parle en chinois ! Vous ne comprendrez sûrement rien ! Mais vous comprendrez l'intonation, ou la douceur de la voix !</p>
+            </div>
+            <ul>
+              <li>Tout ça, ça va <strong>l'aider</strong> à se sentir en <strong>sécurité</strong> pour <strong>traverser ses émotions</strong> — <strong>SANS être seul</strong> — <strong>SANS</strong> se sentir <strong>abandonné</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sos-section">
+          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="sos-section-emoji">🚫</span>
+            <span class="sos-section-title">Mauvaises habitudes</span>
+            <span class="sos-section-arrow">▼</span>
+          </div>
+          <div class="sos-section-body">
+            <ul>
+              <li>Ce ne sont <strong>PAS de mauvaises habitudes</strong></li>
+              <li>Vous avez <strong>fait au mieux AVEC</strong> ce que vous <strong>aviez à ce moment-là</strong></li>
+              <li>Ce sont <strong>des solutions qui ont fonctionné à un moment donné</strong></li>
+              <li>Il n'existe <strong>PAS de manuel</strong> pour <strong>élever un BB</strong> :
+                <ul>
+                  <li><strong>TOUS</strong> les parents <strong>tâtonnent</strong></li>
+                  <li><strong>TOUS</strong> les parents <strong>ajustent</strong></li>
+                </ul>
+                ⇒ C'est normal<br>
+                ⇒ C'est humain
+              </li>
+              <li>Sur la <strong>santé ET la nutrition</strong> ⇒ On est souvent bien <strong>guidés</strong></li>
+              <li><strong>Sur le sommeil</strong> ⇒ On est souvent <strong>seuls</strong></li>
+              <li><strong>Aujourd'hui</strong>, vous <strong>AVEZ d'AUTRES informations</strong>. Et vous pouvez <strong>faire AUTREMENT.</strong></li>
+              <li>Vous êtes le <strong>meilleur parent possible</strong> pour votre enfant ⇒ <strong>aujourd'hui COMME hier</strong>. N'en <strong>doutez JAMAIS !</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sos-section">
+          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="sos-section-emoji">🧠</span>
+            <span class="sos-section-title">"Pleurer = délétère pour le cerveau"</span>
+            <span class="sos-section-arrow">▼</span>
+          </div>
+          <div class="sos-section-body">
+            <ul>
+              <li><strong>Bcp de parents</strong> ont <strong>cette peur</strong>. Rassurez-vous, c'est <strong>normal de s'inquiéter</strong></li>
+              <li>Les BB n'ont <strong>PAS encore de langage</strong> pour dire ce qu'ils ressentent ⇒ Les <strong>pleurs</strong> sont donc leur <strong>SEUL moyen de communication</strong></li>
+              <li>Ce n'est <strong>PAS le fait qu'ils pleurent</strong> qui est <strong>dangereux</strong></li>
+              <li>Ce qui est problématique, c'est si les pleurs :
+                <ul>
+                  <li><strong>Se répètent</strong></li>
+                  <li><strong>Sans aucune réponse d'un adulte</strong></li>
+                </ul>
+                <strong>Alors OUI</strong>, dans ces conditions, les pleurs <strong>peuvent</strong> être <strong>délétères</strong> ⇒ Ce qui est dangereux, c'est <strong>l'isolement émotionnel</strong>
+              </li>
+              <li>Mais dans ce que je vous propose, votre enfant n'est <strong>JAMAIS</strong> seul. <strong>A CHAQUE FOIS</strong> qu'il <strong>exprime une émotion forte</strong> :
+                <ul>
+                  <li>Vous êtes <strong>là pour l'accompagner</strong></li>
+                </ul>
+                ⇒ Vous <strong>reconnaissez ce qu'il ressent</strong><br>
+                ⇒ Vous <strong>acceptez</strong> son <strong>émotion</strong><br>
+                ⇒ Vous <strong>l'accueillez</strong><br>
+                ⇒ Alors, il <strong>se sentira</strong> ainsi <strong>ENTENDU, SOUTENU et AIMÉ</strong><br>
+                ⇒ Dans ces conditions, il n'y aura <strong>aucun impact</strong> sur son <strong>cerveau</strong>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sos-section">
+          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="sos-section-emoji">💭</span>
+            <span class="sos-section-title">Émotions des parents</span>
+            <span class="sos-section-arrow">▼</span>
+          </div>
+          <div class="sos-section-body">
+            <ul>
+              <li>Les <strong>parents</strong> ont aussi des <strong>émotions</strong>. Elles font <strong>partie</strong> de la <strong>vie</strong> ⇒ Et c'est <strong>normal !</strong></li>
+              <li>On ne peut <strong>PAS</strong> tjs les <strong>cacher</strong>. Et il ne <strong>FAUT surtout PAS !</strong></li>
+              <li>Parce qu'un enfant <strong>ressent tout</strong>. Il <strong>ne comprend</strong> peut-être <strong>pas les mots</strong>. Mais il capte les <strong>tensions</strong> et les <strong>émotions</strong> autour de lui ⇒ Alors <strong>cacher</strong> ses émotions peut <strong>créer</strong> de <strong>l'insécurité</strong></li>
+              <li>Ce qu'il faut faire, c'est :
+                <ul>
+                  <li><strong>Nommer</strong> ce que l'on ressent</li>
+                  <li>Avec les <strong>mots adaptés à son âge</strong></li>
+                  <li>Dire que ce sont des « <strong>choses de grands</strong> »</li>
+                  <li>Qu'il n'y est pour <strong>rien</strong></li>
+                  <li>Que ce n'est <strong>pas sa faute</strong></li>
+                  <li>Que <strong>Papa/Maman s'en occupent</strong></li>
+                  <li>Que <strong>tout va bien pour lui</strong> et qu'il peut <strong>grandir tranquillement</strong></li>
+                </ul>
+                ⇒ Et ça, ça le <strong>SÉCURISERA</strong>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sos-section">
+          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="sos-section-emoji">⚠️</span>
+            <span class="sos-section-title">Maltraitance</span>
+            <span class="sos-section-arrow">▼</span>
+          </div>
+          <div class="sos-section-body">
+            <ul>
+              <li>La maltraitance, c'est quand on fait <strong>du MAL INTENTIONNELLEMENT</strong>. Ça implique :
+                <ul>
+                  <li>De l'<strong>abandon</strong></li>
+                  <li>De la <strong>violence</strong></li>
+                  <li>Ou une <strong>absence répétée</strong> de réponse <strong>aux besoins d'un enfant</strong></li>
+                </ul>
+              </li>
+              <li>Alors <strong>EST-CE</strong> que <strong>laisser pleurer</strong> un <strong>BB : Seul, Longtemps, Sans réponse</strong>… ça peut être <strong>maltraitant</strong> ?<br>
+                ⇒ <strong>OUI</strong>, ça peut l'être<br>
+                ⇒ Mais ce n'est <strong>PAS DU TOUT</strong> ce que <strong>je vous propose</strong>
+              </li>
+              <li>Dans ce que je vous propose, votre enfant n'est <strong>JAMAIS</strong> seul</li>
+              <li><strong>A CHAQUE FOIS</strong> qu'il <strong>exprime une émotion forte</strong> :
+                <ul>
+                  <li>Vous êtes <strong>là pour l'accompagner</strong></li>
+                  <li>Vous lui montrez : qu'il peut <strong>COMPTER SUR VOUS</strong> — et que <strong>vous l'AIMEZ</strong></li>
+                </ul>
+                Et en <strong>restant présent</strong> et <strong>attentif</strong> :<br>
+                ⇒ Vous ne <strong>l'IGNOREZ PAS</strong><br>
+                ⇒ Vous n'exercez <strong>AUCUNE VIOLENCE</strong><br>
+                ⇒ Et <strong>AU CONTRAIRE</strong>, vous <strong>RENFORCEZ le lien</strong> avec votre enfant
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sos-section">
+          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="sos-section-emoji">🤱</span>
+            <span class="sos-section-title">"Il a besoin de moi, pas d'apprendre à dormir"</span>
+            <span class="sos-section-arrow">▼</span>
+          </div>
+          <div class="sos-section-body">
+            <ul>
+              <li><strong>OUI</strong>, votre enfant a <strong>besoin de vous</strong>. Il aura <strong>tjs besoin de vous</strong>, même à 40 ans !</li>
+              <li>Il ne va <strong>PAS « apprendre à dormir »</strong> car il <strong>SAIT déjà DORMIR</strong>. Ce qu'il va <strong>apprendre</strong>, ce sont de <strong>nouvelles habitudes autour de l'endormissement</strong>. Et ça, vous ne pouvez <strong>PAS</strong> le faire <strong>à SA PLACE !</strong></li>
+              <li>Un peu <strong>comme</strong> pour nous, <strong>adultes</strong> : <strong>chacun a sa façon de s'endormir</strong> : <em>Certains sur le côté, d'autres sur le ventre, certains avec un bras en l'air…</em> On ne peut <strong>pas dire à qqn</strong> : <em>"<strong>Dors comme moi, ça marchera</strong>."</em> NON. Pour <strong>les enfants c'est pareil</strong><br>
+                ⇒ <strong>Votre enfant doit découvrir ce qui fonctionne pour lui</strong>
+              </li>
+              <li>Et c'est là que <strong>votre rôle</strong> prend <strong>tout son sens</strong> : C'est <strong>GRACE</strong> à ce <strong>LIEN FORT entre vous</strong> :
+                <ul>
+                  <li>Qu'il peut se <strong>SENTIR en SECURITE</strong></li>
+                  <li>Et <strong>OSER DECOUVRIR</strong> de <strong>nouvelles choses</strong></li>
+                </ul>
+              </li>
+              <li>Vous pouvez l'aider en faisant en sorte que toutes les <strong>conditions soient réunies</strong> pour qu'il <strong>y arrive</strong>… Et surtout de <strong>le soutenir</strong> dans cette <strong>découverte</strong>. Parce que <strong>votre rôle</strong>, à ce moment-là, ça sera d'être <strong>son repère</strong>.<br>
+                <em>« Oui, c'est <strong>nouveau</strong>… mais je <strong>suis là. Tu peux y arriver</strong>. »</em>
+              </li>
+              <li>Pour qu'un jour, il puisse être <strong>fier d'y être arrivé par lui-même</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sos-section">
+          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="sos-section-emoji">😤</span>
+            <span class="sos-section-title">"Il pleure pour manipuler / faire un caprice"</span>
+            <span class="sos-section-arrow">▼</span>
+          </div>
+          <div class="sos-section-body">
+            <ul>
+              <li>Je veux vous <strong>rassurer</strong> tout de suite : <strong>ce n'est pas le cas</strong>.</li>
+              <li>Un BB n'a pas la <strong>maturité neurologique</strong> pour ça. Les pleurs ne sont <strong>donc PAS</strong> une <strong>stratégie</strong> ⇒ <strong>C'est simplement</strong> leur <strong>SEUL</strong> moyen de <strong>communication</strong></li>
+              <li>Quand il pleure :
+                <ul>
+                  <li>Il exprime un <strong>besoin</strong> <em>(« j'ai faim », « je suis fatigué »</em>…)</li>
+                  <li>Et même quand les <strong>pleurs sont forts,</strong> ce n'est <strong>pas</strong> un <strong>caprice</strong>, c'est juste une <strong>façon de dire <em>« j'ai besoin de toi »</em></strong></li>
+                </ul>
+              </li>
+              <li><strong>Et c'est là QUE VOTRE MANIÈRE de répondre</strong> va être <strong>essentielle</strong> : Accueillir ses pleurs avec <strong>patience, cohérence</strong> et surtout <strong>SANS JUGEMENT</strong><br>
+                ⇒ Ça va lui montrer qu'il n'est <strong>PAS IGNORÉ</strong><br>
+                ⇒ <strong>MAIS</strong> qu'il est <strong>ENTENDU, COMPRIS</strong> et en <strong>SÉCURITÉ</strong><br>
+                ⇒ C'est dans cette <em>« bulle de sécurité »</em> qu'il va <strong>CONSTRUIRE</strong> sa <strong>CONFIANCE ENVERS VOUS</strong>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sos-section">
+          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="sos-section-emoji">🤔</span>
+            <span class="sos-section-title">"S'il pleure, c'est que ça ne lui convient pas"</span>
+            <span class="sos-section-arrow">▼</span>
+          </div>
+          <div class="sos-section-body">
+            <ul>
+              <li>Je <strong>comprends</strong>. C'est <strong>très difficile</strong> d'<strong>entendre</strong> son enfant pleurer. <strong>Personne n'aime ça</strong>. Et souvent, comme parent, <strong>on se dit : <em>"S'il pleure, c'est que ça ne lui convient pas."</em></strong></li>
+              <li>Mais les <strong>pleurs</strong> peuvent <strong>vouloir dire bcp de choses</strong>. <strong>Parfois</strong> c'est :
+                <ul>
+                  <li>Un <strong>besoin</strong>,</li>
+                  <li>Mais parfois c'est aussi une <strong>façon d'exprimer une frustration OU</strong> une <strong>réaction face à un changement</strong>.</li>
+                </ul>
+              </li>
+              <li>Aujourd'hui, on va <strong>demander</strong> à votre enfant <strong>de changer une habitude</strong>. Et franchement… <em>qui <strong>aime le changement</strong> ?</em> Peu de personnes. Parce que <strong>le changement</strong>, ça veut dire :
+                <ul>
+                  <li><strong>Quitter</strong> ce qu'<strong>on connaît</strong>…</li>
+                  <li><strong>Quitter</strong> ce qui <strong>nous rassure</strong>…</li>
+                  <li>Pour aller <strong>vers qqch</strong> de <strong>nouveau</strong>.</li>
+                </ul>
+                ⇒ Donc c'est <strong>possible qu'il proteste</strong><br>
+                ⇒ C'est <strong>possible qu'il pleure</strong> pour dire : <em>"moi je <strong>préférais avant</strong>."</em><br>
+                ⇒ Et ça, c'est une réaction <strong>normale !</strong><br>
+                ⇒ <strong>Mais ça</strong> ne veut <strong>PAS forcément dire</strong> que <strong>ça ne lui convient PAS</strong><br>
+                ⇒ Ça peut <strong>simplement vouloir dire</strong> que <strong>CE changement</strong> lui <strong>demande un peu de temps pour s'adapter</strong>
+              </li>
+              <li>Et dans ces moments-là, <strong>votre rôle</strong> c'est surtout :
+                <ul>
+                  <li>De rester <strong>son repère</strong></li>
+                  <li>Une <strong>présence calme</strong> et <strong>rassurante</strong></li>
+                  <li>… pendant qu'il <strong>traverse ce changement</strong>.</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sos-section">
+          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="sos-section-emoji">🔁</span>
+            <span class="sos-section-title">Entraînement au S. vs. Endormissement autonome</span>
+            <span class="sos-section-arrow">▼</span>
+          </div>
+          <div class="sos-section-body">
+            <ul>
+              <li>Je comprends que l'on puisse faire le <strong>raccourci</strong>. Mais l'<strong>endormissement autonome</strong> et l'<strong>entraînement au sommeil</strong> ce n'est <strong>pas</strong> du tout <strong>la même chose</strong></li>
+              <li>L'<strong>entraînement au sommeil</strong> est une <strong>recherche de PERFORMANCE</strong>. L'<strong>objectif</strong> c'est que l'enfant <strong>DORME COÛTE QUE COÛTE</strong>, parfois <strong>peu importe ce qu'il ressent</strong></li>
+              <li>Tandis que <strong>l'endormissement autonome</strong> est une <strong>COMPÉTENCE</strong>. C'est qqch que l'enfant va apprendre et qui <strong>va se DÉVELOPPER à son rythme</strong>. L'<strong>objectif</strong> c'est qu'il se sente :
+                <ul>
+                  <li><strong>CAPABLE</strong></li>
+                  <li><strong>SOUTENU</strong></li>
+                  <li>Et en <strong>SÉCURITÉ</strong></li>
+                </ul>
+                ⇒ Pour qu'il puisse <strong>DÉCOUVRIR</strong> de <strong>NOUVELLES FAÇONS</strong> de s'endormir
+              </li>
+              <li>Et <strong>A CHAQUE FOIS</strong> que votre enfant <strong>exprimera une émotion forte</strong>, vous serez <strong>là pour l'accompagner</strong>. <strong>Pas</strong> pour <strong>le faire taire</strong>. <strong>Pas</strong> pour <strong>le pousser</strong><br>
+                ⇒ Mais pour qu'il puisse <strong>apprendre en DOUCEUR</strong> de <strong>NOUVELLES COMPÉTENCES</strong>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sos-section">
+          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="sos-section-emoji">💡</span>
+            <span class="sos-section-title">L'endormissement autonome n'est pas toujours obligatoire</span>
+            <span class="sos-section-arrow">▼</span>
+          </div>
+          <div class="sos-section-body">
+            <ul>
+              <li>Je veux <strong>être claire</strong> : l'endormissement <strong>autonome</strong> n'est <strong>PAS</strong> qqch d'<strong>obligatoire</strong>. Ça va <strong>DÉPENDRE</strong> de :
+                <ul>
+                  <li>De <strong>votre enfant</strong></li>
+                  <li>Et des <strong>BESOINS de chacun</strong></li>
+                </ul>
+              </li>
+              <li>Si certaines <strong>stratégies DÉPENDANTES</strong> se sont <strong>installées</strong>, il <strong>peut arriver</strong> que votre enfant vous <strong>appelle</strong> pour <strong>RETROUVER ses conditions d'endormissement</strong><br>
+                ⇒ Simplement, car il ne <strong>SAIT PAS les reproduire par LUI-MÊME</strong>
+              </li>
+              <li><strong>Dans CE CAS</strong>, l'<strong>autonomie PEUT</strong> aider à <strong>RÉÉQUILIBRER ses REPÈRES</strong></li>
+              <li>Mais attention, il faut <strong>TOUJOURS L'ACCOMPAGNER</strong> dans cette <strong>transition</strong>. L'<strong>objectif</strong> c'est qu'il puisse :
+                <ul>
+                  <li>Se <strong>SENTIR EN SÉCURITÉ</strong></li>
+                  <li>Pour <strong>DÉCOUVRIR</strong> de <strong>NOUVELLES STRATÉGIES AUTONOMES</strong></li>
+                </ul>
+              </li>
+              <li><strong>MAIS</strong> pour que cela fonctionne, il <strong>faut AUSSI</strong> que <strong>VOUS VOUS sentiez CONFIANT</strong> et <strong>À L'AISE</strong> avec <strong>ce chemin</strong></li>
+            </ul>
+          </div>
         </div>
 
       </div><!-- /sos-body -->
@@ -3002,10 +3237,45 @@ function substituteVars(text) {
   const obj = c.objectifs || '[objectifs]';
   const roleShort = { 'les deux parents':'parents', 'la maman':'maman', 'le papa':'papa' }[c.roleParents] || c.roleParents || 'parents';
   const heureFin = state.heureFinStr || 'XXXX';
+
+  // ── [enseigne_nom] ─────────────────────────────────────────
+  const enseigne = c.enseigne || currentEnseigne || 'tribu';
+  const enseigneNom = enseigne === 'feedodo' ? 'Fée Dodo' : 'La tribu des Rêveurs';
+
+  // ── [verif_identite] — question "Vous êtes bien…" ─────────
+  const age = c.ageReelStr || c.ageEnfant || '[âge]';
+  const p1 = c.prenomParent1 || '';
+  const p2 = c.prenomParent2 || '';
+  let roleLabel;
+  if (p1 && p2) {
+    roleLabel = 'les Parents';
+  } else if (c.roleParents === 'la maman' || c.sexeParent1 === 'maman') {
+    roleLabel = 'la Maman';
+  } else if (c.roleParents === 'le papa' || c.sexeParent1 === 'papa') {
+    roleLabel = 'le Papa';
+  } else {
+    roleLabel = 'le/la Parent';
+  }
+  const prenomsParts = [p1, p2].filter(Boolean);
+  const prenomsList = prenomsParts.length === 2
+    ? `${prenomsParts[0]} et ${prenomsParts[1]}`
+    : prenomsParts[0] || '[prénom parent]';
+  const verifIdentite = `Vous êtes bien ${prenomsList}, ${roleLabel} de ${c.prenomEnfant||'[prénom]'} qui a ${age} ?\n⇒ C'est bien ça?`;
+
+  // ── [accord_enfant] — question accordée selon le sexe ─────
+  const isFille = c.sexe === 'Fille';
+  const unUne = isFille ? 'une' : 'un';
+  const petitePetit = isFille ? 'petite' : 'petit';
+  const filleGarcon = isFille ? 'fille' : 'garçon';
+  const accordEnfant = `Nous sommes bien d'accord que ${c.prenomEnfant||'[prénom]'} est ${unUne} ${petitePetit} ${filleGarcon} qui est :\n→ En bonne santé?\n→ A été vu récemment par un médecin?`;
+
   let t = text
+    .replace(/\[enseigne_nom\]/g, enseigneNom)
+    .replace(/\[verif_identite\]/g, verifIdentite)
+    .replace(/\[accord_enfant\]/g, accordEnfant)
     .replace(/\[prénom_enfant\]/g, c.prenomEnfant||'[prénom]')
     .replace(/\[prénom_parents\]/g, parents||'[parents]')
-    .replace(/\[age\]/g, c.ageReelStr || c.ageEnfant || '[âge]')
+    .replace(/\[age\]/g, age)
     .replace(/\[role_parents\]/g, roleShort)
     .replace(/\[heure_fin\]/g, heureFin)
     .replace(/\[pb_text\]/g, pb)
