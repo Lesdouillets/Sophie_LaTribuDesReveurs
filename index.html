@@ -3495,16 +3495,16 @@ function renderBesoinsSommeil(tranches) {
   }
   const sommeilBox = `<div style="min-width:200px;background:#fdf0f0;border:2px solid #e8a0a0;border-radius:10px;padding:14px 16px;align-self:start">
       <div style="font-weight:800;font-size:13px;color:#c0392b;margin-bottom:8px">📝 Sommeil actuel de ${prenom}</div>
-      <div style="font-size:13px;line-height:2.2;color:var(--text)">
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
-          <strong style="font-size:15px;color:#c0392b" id="sommeil-total">0h</strong>
-          <span style="color:#888;font-size:12px">Total (auto)</span>
+      <div style="font-size:13px;color:var(--text)">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+          <strong style="font-size:16px;color:#c0392b" id="sommeil-total">0h00</strong>
+          <span style="color:#888;font-size:11px">Total (auto)</span>
         </div>
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
-          Nuit : <input type="number" id="sommeil-nuit" min="0" max="24" step="0.5" value="" placeholder="0" style="width:50px;padding:4px 6px;border:1.5px solid #e8a0a0;border-radius:6px;font-size:13px;font-weight:700;text-align:center" oninput="calcSommeilTotal()"> h
+        <div style="display:flex;align-items:center;gap:4px;margin-bottom:6px">
+          Nuit : <input type="text" id="sommeil-nuit" value="" placeholder="ex: 10,45" style="width:70px;padding:4px 6px;border:1.5px solid #e8a0a0;border-radius:6px;font-size:13px;font-weight:700;text-align:center" oninput="calcSommeilTotal()">
         </div>
-        <div style="display:flex;align-items:center;gap:6px">
-          Jour : <input type="number" id="sommeil-jour" min="0" max="24" step="0.5" value="" placeholder="0" style="width:50px;padding:4px 6px;border:1.5px solid #e8a0a0;border-radius:6px;font-size:13px;font-weight:700;text-align:center" oninput="calcSommeilTotal()"> h
+        <div style="display:flex;align-items:center;gap:4px">
+          Jour : <input type="text" id="sommeil-jour" value="" placeholder="ex: 1,15" style="width:70px;padding:4px 6px;border:1.5px solid #e8a0a0;border-radius:6px;font-size:13px;font-weight:700;text-align:center" oninput="calcSommeilTotal()">
         </div>
       </div>
     </div>`;
@@ -3514,12 +3514,22 @@ function renderBesoinsSommeil(tranches) {
   return `<div style="display:flex;gap:16px;align-items:start;flex-wrap:wrap">${tableHtml}${sommeilBox}</div>`;
 }
 
+function parseHM(val) {
+  if (!val) return 0;
+  val = val.replace(/[.,;:h]/g, ',');
+  const parts = val.split(',');
+  const h = parseInt(parts[0]) || 0;
+  const m = parseInt(parts[1]) || 0;
+  return h * 60 + m;
+}
 function calcSommeilTotal() {
-  const nuit = parseFloat(document.getElementById('sommeil-nuit')?.value) || 0;
-  const jour = parseFloat(document.getElementById('sommeil-jour')?.value) || 0;
-  const total = nuit + jour;
+  const nuitMin = parseHM(document.getElementById('sommeil-nuit')?.value);
+  const jourMin = parseHM(document.getElementById('sommeil-jour')?.value);
+  const totalMin = nuitMin + jourMin;
+  const h = Math.floor(totalMin / 60);
+  const m = totalMin % 60;
   const el = document.getElementById('sommeil-total');
-  if (el) el.textContent = total + 'h';
+  if (el) el.textContent = h + 'h' + (m > 0 ? m.toString().padStart(2, '0') : '');
 }
 
 // ──► FIX toggleOption ◄──
