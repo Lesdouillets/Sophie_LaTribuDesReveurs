@@ -1491,6 +1491,13 @@
     <!-- CONTENT -->
     <div class="content-area" id="content-area"></div>
 
+    <!-- Mini toolbar formatage -->
+    <div id="format-toolbar" style="display:none;position:fixed;z-index:9999;background:#2d3f5c;border-radius:8px;padding:4px 6px;box-shadow:0 4px 16px rgba(0,0,0,0.25);gap:2px;align-items:center">
+      <button onmousedown="event.preventDefault();document.execCommand('bold')" style="background:none;border:none;color:white;font-weight:900;font-size:14px;cursor:pointer;padding:4px 8px;border-radius:4px" title="Gras">G</button>
+      <button onmousedown="event.preventDefault();document.execCommand('italic')" style="background:none;border:none;color:white;font-style:italic;font-size:14px;cursor:pointer;padding:4px 8px;border-radius:4px" title="Italique">I</button>
+      <button onmousedown="event.preventDefault();document.execCommand('underline')" style="background:none;border:none;color:white;text-decoration:underline;font-size:14px;cursor:pointer;padding:4px 8px;border-radius:4px" title="Souligné">S</button>
+    </div>
+
     <!-- SOS PANEL — right rail -->
     <div class="sos-panel" id="sos-panel">
       <div class="sos-header">
@@ -4088,6 +4095,27 @@ if ('serviceWorker' in navigator) {
   const heureEl = document.getElementById('consult-heure');
   if (dateEl) dateEl.value = dateStr;
   if (heureEl) heureEl.value = timeStr;
+})();
+// ── FORMAT TOOLBAR ──
+(function() {
+  const toolbar = document.getElementById('format-toolbar');
+  document.addEventListener('mouseup', function() {
+    setTimeout(function() {
+      const sel = window.getSelection();
+      if (!sel || sel.isCollapsed || !sel.rangeCount) { toolbar.style.display = 'none'; return; }
+      const node = sel.anchorNode;
+      const editable = node && (node.nodeType === 3 ? node.parentElement : node).closest('[contenteditable="true"]');
+      if (!editable) { toolbar.style.display = 'none'; return; }
+      const range = sel.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+      toolbar.style.display = 'flex';
+      toolbar.style.left = (rect.left + rect.width / 2 - 60) + 'px';
+      toolbar.style.top = (rect.top - 42) + 'px';
+    }, 10);
+  });
+  document.addEventListener('mousedown', function(e) {
+    if (!toolbar.contains(e.target)) toolbar.style.display = 'none';
+  });
 })();
 </script>
 </body>
