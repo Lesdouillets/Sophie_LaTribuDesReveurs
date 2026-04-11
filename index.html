@@ -2497,7 +2497,7 @@ function loadClient(idx) {
     const dateNaiss = c.dateNaissance || '';
     const dateTerme = c.dateTerme || '';
     const ageReel = calcAge(dateNaiss, consultDate2);
-    const ageCorrige = calcAge(dateTerme || dateNaiss, consultDate2);
+    const ageCorrige = (dateTerme && dateNaiss && new Date(dateTerme) > new Date(dateNaiss)) ? calcAge(dateTerme, consultDate2) : calcAge(dateNaiss, consultDate2);
     state.client = {
       prenomEnfant: c.prenomEnfant || '',
       nomFamille: c.nomFamille || '',
@@ -2628,7 +2628,7 @@ async function saveFicheOnly() {
   const dateNaiss = document.getElementById('date-naissance')?.value;
   const dateTerme = document.getElementById('date-terme')?.value;
   const ageReel = calcAge(dateNaiss, consultDate2);
-  const ageCorrige = calcAge(dateTerme || dateNaiss, consultDate2);
+  const ageCorrige = (dateTerme && dateNaiss && new Date(dateTerme) > new Date(dateNaiss)) ? calcAge(dateTerme, consultDate2) : calcAge(dateNaiss, consultDate2);
   const taillePere = parseFloat(document.getElementById('taille-pere')?.value);
   const tailleMere = parseFloat(document.getElementById('taille-mere')?.value);
   const sexe = document.getElementById('sexe-enfant')?.value;
@@ -2776,7 +2776,7 @@ function computeClientFields() {
   const ageCorrigeManuel = document.getElementById('age-corrige-manuel')?.value.trim();
 
   const ageReel = calcAge(dateNaiss, consultDate);
-  const ageCorrige = calcAge(dateTerme || dateNaiss, consultDate);
+  const ageCorrige = (dateTerme && dateNaiss && new Date(dateTerme) > new Date(dateNaiss)) ? calcAge(dateTerme, consultDate) : calcAge(dateNaiss, consultDate);
 
   const agesDiv = document.getElementById('ages-calcules');
   if (ageReel || ageManuel || ageCorrigeManuel) {
@@ -2793,7 +2793,8 @@ function computeClientFields() {
       document.getElementById('age-reel-mois').textContent = '(saisi manuellement)';
     }
 
-    const premature = dateTerme && dateTerme !== dateNaiss;
+    // Prématuré = date du terme APRÈS la date de naissance (l'enfant est né avant le terme)
+    const premature = dateTerme && dateNaiss && dateTerme !== dateNaiss && new Date(dateTerme) > new Date(dateNaiss);
     if (premature && ageCorrige) {
       document.getElementById('age-corrige-calc').textContent = ageCorrige.str;
       document.getElementById('age-corrige-mois').textContent = ageCorrige.totalMois + ' mois • ' + ageCorrige.totalJours + ' jours';
@@ -2904,7 +2905,7 @@ function startConsultation() {
   const dateNaiss = document.getElementById('date-naissance')?.value;
   const dateTerme = document.getElementById('date-terme')?.value;
   const ageReel = calcAge(dateNaiss, consultDate2);
-  const ageCorrige = calcAge(dateTerme || dateNaiss, consultDate2);
+  const ageCorrige = (dateTerme && dateNaiss && new Date(dateTerme) > new Date(dateNaiss)) ? calcAge(dateTerme, consultDate2) : calcAge(dateNaiss, consultDate2);
   const taillePere = parseFloat(document.getElementById('taille-pere')?.value);
   const tailleMere = parseFloat(document.getElementById('taille-mere')?.value);
   const sexe = document.getElementById('sexe-enfant')?.value;
