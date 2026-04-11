@@ -2863,7 +2863,11 @@ function startConsultation() {
   let startTime;
   if (consultHeure) {
     const [h, m] = consultHeure.split(':').map(Number);
-    const base = consultDate ? new Date(consultDate) : new Date();
+    const base = new Date();
+    if (consultDate) {
+      const [y, mo, d] = consultDate.split('-').map(Number);
+      base.setFullYear(y, mo - 1, d);
+    }
     base.setHours(h, m, 0, 0);
     startTime = base.getTime();
   } else {
@@ -3200,8 +3204,11 @@ function renderCurrentSection() {
   </div>`;
   area.innerHTML = html;
   // Rendre tous les blocs et contenus d'options éditables
-  area.querySelectorAll('.block, .option-content, .q-text').forEach(el => {
+  area.querySelectorAll('.block, .q-text').forEach(el => {
     el.setAttribute('contenteditable', 'true');
+    el.style.cursor = 'text';
+    // Empêcher la propagation du clic vers le header de l'option
+    el.addEventListener('click', function(e) { e.stopPropagation(); });
   });
 }
 
@@ -3241,7 +3248,7 @@ function renderBlockInner(b, i, sectionId, depth) {
         </span>
         <span class="option-toggle">Dérouler</span>
       </div>
-      <div class="option-content" contenteditable="true">${renderBlocks(b.blocks||[], sectionId, depth+1)}</div>
+      <div class="option-content">${renderBlocks(b.blocks||[], sectionId, depth+1)}</div>
     </div>`;
   }
 
@@ -3385,14 +3392,14 @@ function substituteVars(text) {
   const prenomsList = prenomsParts.length === 2
     ? `${prenomsParts[0]} et ${prenomsParts[1]}`
     : prenomsParts[0] || '[prénom parent]';
-  const verifIdentite = `Vous êtes bien ${prenomsList}, ${roleLabel} de ${c.prenomEnfant||'[prénom]'} qui a ${age} ?\n⇒ C'est bien ça?`;
+  const verifIdentite = `Vous êtes bien ${prenomsList}, ${roleLabel} de ${c.prenomEnfant||'[prénom]'} qui a ${age} ?`;
 
   // ── [accord_enfant] — question accordée selon le sexe ─────
   const isFille = c.sexe === 'Fille';
   const unUne = isFille ? 'une' : 'un';
   const petitePetit = isFille ? 'petite' : 'petit';
   const filleGarcon = isFille ? 'fille' : 'garçon';
-  const accordEnfant = `Nous sommes bien d'accord que ${c.prenomEnfant||'[prénom]'} est ${unUne} ${petitePetit} ${filleGarcon} qui est :\n→ En bonne santé?\n→ A été vu récemment par un médecin?`;
+  const accordEnfant = `Nous sommes bien d'accord que ${c.prenomEnfant||'[prénom]'} est ${unUne} ${petitePetit} ${filleGarcon} qui est :\n→ En bonne santé ?\n→ A été vu récemment par un médecin ?`;
 
   let t = text
     .replace(/\[enseigne_nom\]/g, enseigneNom)
