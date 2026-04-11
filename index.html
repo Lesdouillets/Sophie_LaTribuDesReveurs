@@ -3853,12 +3853,12 @@ function openEditBlockModal(sectionId, blockIdx) {
   if (b.type === 'option') {
     titleEl.textContent = '✏️ Modifier le titre de l\'option';
     typeEl.style.display = 'none';
-    taEl.innerText = b.label || '';
+    taEl.innerHTML = (b.label || '').replace(/\n/g, '<br>');
   } else {
     titleEl.textContent = '✏️ Modifier ce bloc';
     typeEl.style.display = 'block';
     typeEl.value = b.type || 'normal';
-    taEl.innerText = b.text || '';
+    taEl.innerHTML = (b.text || '').replace(/\n/g, '<br>');
   }
   document.getElementById('edit-block-modal').classList.add('open');
 }
@@ -3872,7 +3872,9 @@ function saveEditBlock() {
   const sec = state.sections.find(s => s.id === sectionId);
   const ov = ensureOverride(sec);
   const b = ov.blocks[blockIdx];
-  const newText = document.getElementById('edit-block-textarea').innerText;
+  const rawHtml = document.getElementById('edit-block-textarea').innerHTML;
+  // Convertir <br> en \n pour le stockage, mais garder les balises de formatage (strong, em, u, span…)
+  const newText = rawHtml.replace(/<br\s*\/?>/gi, '\n').replace(/<div>/gi, '\n').replace(/<\/div>/gi, '');
   if (b.type === 'option') {
     ov.blocks[blockIdx] = { ...b, label: newText };
   } else {
@@ -3898,7 +3900,7 @@ let _addRef = null;
 function openAddBlockModal(sectionId, afterIdx) {
   _addRef = { sectionId, afterIdx };
   document.getElementById('add-block-type').value = 'normal';
-  document.getElementById('add-block-textarea').innerText = '';
+  document.getElementById('add-block-textarea').innerHTML = '';
   document.getElementById('add-block-modal').classList.add('open');
 }
 function confirmAddBlock() {
@@ -3907,7 +3909,8 @@ function confirmAddBlock() {
   const sec = state.sections.find(s => s.id === sectionId);
   const ov = ensureOverride(sec);
   const type = document.getElementById('add-block-type').value;
-  const text = document.getElementById('add-block-textarea').innerText;
+  const rawHtml = document.getElementById('add-block-textarea').innerHTML;
+  const text = rawHtml.replace(/<br\s*\/?>/gi, '\n').replace(/<div>/gi, '\n').replace(/<\/div>/gi, '');
   const newBlock = type === 'checklist'
     ? { type: 'checklist', title: text, items: [] }
     : { type, text };
