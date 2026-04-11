@@ -2294,10 +2294,10 @@ let state = {
   editMode: false,
 };
 
-// Nettoyage unique des anciens overrides (v47)
-if (!localStorage.getItem('tdr_overrides_cleaned_v47')) {
+// Nettoyage unique des anciens overrides (v48 — supprime aussi problematique/objectifs obsolètes)
+if (!localStorage.getItem('tdr_overrides_cleaned_v48')) {
   localStorage.removeItem('tdr_script_overrides');
-  localStorage.setItem('tdr_overrides_cleaned_v47', '1');
+  localStorage.setItem('tdr_overrides_cleaned_v48', '1');
 }
 // Charge les overrides sauvegardés
 state.scriptOverrides = JSON.parse(localStorage.getItem('tdr_script_overrides') || '{}');
@@ -2330,7 +2330,16 @@ function getOverrideBlocks(section) {
 
 function ensureOverride(section) {
   if (!state.scriptOverrides[section.id]) {
+    // Copier les blocs live actuels (après customisation par adaptSectionsToClient)
     state.scriptOverrides[section.id] = { blocks: JSON.parse(JSON.stringify(section.blocks || [])) };
+  } else {
+    // S'assurer que le nombre de blocs est synchronisé avec les blocs live
+    const ov = state.scriptOverrides[section.id];
+    const live = section.blocks || [];
+    if (ov.blocks.length !== live.length) {
+      // Les blocs ont changé (customisation client), re-synchroniser
+      state.scriptOverrides[section.id] = { blocks: JSON.parse(JSON.stringify(live)) };
+    }
   }
   return state.scriptOverrides[section.id];
 }
@@ -3084,6 +3093,11 @@ function startConsultation() {
 // ═══════════════════════════════════════════════════
 function adaptSectionsToClient() {
   const c = state.client;
+  // Supprimer les overrides des sections dynamiques qui vont être reconstruites
+  // pour éviter les décalages entre overrides et blocs live
+  delete state.scriptOverrides['problematique'];
+  delete state.scriptOverrides['objectifs'];
+  saveScriptOverrides();
   state.sections = state.sections.map(s => {
     if (s.id === 'problematique') {
       if (c.problematique && c.problematique.trim()) {
@@ -4008,8 +4022,13 @@ function setBlockByPath(blocks, path, newBlock) {
 
 function openEditBlockModal(sectionId, path) {
   const sec = state.sections.find(s => s.id === sectionId); if (!sec) return;
-  const blocks = getOverrideBlocks(sec);
-  const b = getBlockByPath(blocks, path);
+  // Lire le bloc live en priorité (après customisation), puis fallback sur les overrides
+  const liveBlock = getBlockByPath(sec.blocks || [], path);
+  const ovBlocks = getOverrideBlocks(sec);
+  const ovBlock = getBlockByPath(ovBlocks, path);
+  const b = (liveBlock && (liveBlock.text || liveBlock.label || liveBlock.title)) ? liveBlock
+    : (ovBlock && (ovBlock.text || ovBlock.label || ovBlock.title)) ? ovBlock
+    : liveBlock || ovBlock;
   if (!b) return;
   _editRef = { sectionId, path };
   const typeEl = document.getElementById('edit-block-type');
