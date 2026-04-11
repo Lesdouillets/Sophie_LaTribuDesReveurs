@@ -2958,8 +2958,9 @@ function startConsultation() {
   } else {
     startTime = Date.now();
   }
-  state.consultStart = startTime;
-  const fin = new Date(startTime + consultDuree * 60000);
+  // S'assurer que startTime n'est pas dans le futur
+  state.consultStart = Math.min(startTime, Date.now());
+  const fin = new Date(state.consultStart + consultDuree * 60000);
   state.heureFin = fin;
   state.heureFinStr = fin.getHours().toString().padStart(2,'0') + 'h' + fin.getMinutes().toString().padStart(2,'0');
   state.consultDuree = parseInt(document.getElementById('consult-duree').value) || 75;
