@@ -1976,7 +1976,12 @@
     </div>
     <div>
       <label style="font-size:12px;font-weight:600;color:var(--text-light)">Texte</label>
-      <textarea id="edit-block-textarea" style="width:100%;min-height:130px;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;resize:vertical;margin-top:5px" placeholder="Texte du bloc…"></textarea>
+      <div class="rich-toolbar" style="margin-top:5px;display:flex;gap:2px;padding:4px 6px;background:#f0f2f8;border:1.5px solid var(--border);border-bottom:none;border-radius:8px 8px 0 0">
+        <button type="button" onmousedown="event.preventDefault();document.execCommand('bold')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 10px;cursor:pointer;font-weight:900;font-size:13px" title="Gras">G</button>
+        <button type="button" onmousedown="event.preventDefault();document.execCommand('italic')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 10px;cursor:pointer;font-style:italic;font-size:13px" title="Italique">I</button>
+        <button type="button" onmousedown="event.preventDefault();document.execCommand('underline')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 10px;cursor:pointer;text-decoration:underline;font-size:13px" title="Souligné">S</button>
+      </div>
+      <div id="edit-block-textarea" contenteditable="true" style="width:100%;min-height:130px;padding:10px;border:1.5px solid var(--border);border-radius:0 0 8px 8px;font-size:14px;font-family:inherit;outline:none;overflow-y:auto;cursor:text;line-height:1.6" data-placeholder="Texte du bloc…"></div>
     </div>
     <button class="btn-start" style="margin-top:12px;font-size:14px;padding:12px" onclick="saveEditBlock()">💾 Enregistrer</button>
   </div>
@@ -2001,7 +2006,12 @@
     </div>
     <div>
       <label style="font-size:12px;font-weight:600;color:var(--text-light)">Texte (ou titre pour une checklist)</label>
-      <textarea id="add-block-textarea" style="width:100%;min-height:100px;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;resize:vertical;margin-top:5px" placeholder="Texte…"></textarea>
+      <div class="rich-toolbar" style="margin-top:5px;display:flex;gap:2px;padding:4px 6px;background:#f0f2f8;border:1.5px solid var(--border);border-bottom:none;border-radius:8px 8px 0 0">
+        <button type="button" onmousedown="event.preventDefault();document.execCommand('bold')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 10px;cursor:pointer;font-weight:900;font-size:13px" title="Gras">G</button>
+        <button type="button" onmousedown="event.preventDefault();document.execCommand('italic')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 10px;cursor:pointer;font-style:italic;font-size:13px" title="Italique">I</button>
+        <button type="button" onmousedown="event.preventDefault();document.execCommand('underline')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 10px;cursor:pointer;text-decoration:underline;font-size:13px" title="Souligné">S</button>
+      </div>
+      <div id="add-block-textarea" contenteditable="true" style="width:100%;min-height:100px;padding:10px;border:1.5px solid var(--border);border-radius:0 0 8px 8px;font-size:14px;font-family:inherit;outline:none;overflow-y:auto;cursor:text;line-height:1.6" data-placeholder="Texte…"></div>
     </div>
     <button class="btn-start" style="margin-top:12px;font-size:14px;padding:12px" onclick="confirmAddBlock()">➕ Ajouter</button>
   </div>
@@ -2850,27 +2860,19 @@ function startConsultation() {
   const consultHeure = document.getElementById('consult-heure').value;
   const consultDate  = document.getElementById('consult-date').value;
   const consultDuree = parseInt(document.getElementById('consult-duree').value) || 75;
+  let startTime;
   if (consultHeure) {
     const [h, m] = consultHeure.split(':').map(Number);
     const base = consultDate ? new Date(consultDate) : new Date();
     base.setHours(h, m, 0, 0);
-    const fin = new Date(base.getTime() + consultDuree * 60000);
-    state.heureFin = fin;
-    state.heureFinStr = fin.getHours().toString().padStart(2,'0') + 'h' + fin.getMinutes().toString().padStart(2,'0');
+    startTime = base.getTime();
   } else {
-    state.heureFin = null;
-    state.heureFinStr = '';
+    startTime = Date.now();
   }
-
-  // Utiliser l'heure de début saisie pour la progression (pas Date.now())
-  if (consultHeure) {
-    const [hs, ms] = consultHeure.split(':').map(Number);
-    const startBase = consultDate ? new Date(consultDate) : new Date();
-    startBase.setHours(hs, ms, 0, 0);
-    state.consultStart = startBase.getTime();
-  } else {
-    state.consultStart = Date.now();
-  }
+  state.consultStart = startTime;
+  const fin = new Date(startTime + consultDuree * 60000);
+  state.heureFin = fin;
+  state.heureFinStr = fin.getHours().toString().padStart(2,'0') + 'h' + fin.getMinutes().toString().padStart(2,'0');
   state.consultDuree = parseInt(document.getElementById('consult-duree').value) || 75;
   saveClient();
   buildSections();
@@ -3630,12 +3632,12 @@ function openEditBlockModal(sectionId, blockIdx) {
   if (b.type === 'option') {
     titleEl.textContent = '✏️ Modifier le titre de l\'option';
     typeEl.style.display = 'none';
-    taEl.value = b.label || '';
+    taEl.innerText = b.label || '';
   } else {
     titleEl.textContent = '✏️ Modifier ce bloc';
     typeEl.style.display = 'block';
     typeEl.value = b.type || 'normal';
-    taEl.value = b.text || '';
+    taEl.innerText = b.text || '';
   }
   document.getElementById('edit-block-modal').classList.add('open');
 }
@@ -3649,7 +3651,7 @@ function saveEditBlock() {
   const sec = state.sections.find(s => s.id === sectionId);
   const ov = ensureOverride(sec);
   const b = ov.blocks[blockIdx];
-  const newText = document.getElementById('edit-block-textarea').value;
+  const newText = document.getElementById('edit-block-textarea').innerText;
   if (b.type === 'option') {
     ov.blocks[blockIdx] = { ...b, label: newText };
   } else {
@@ -3675,7 +3677,7 @@ let _addRef = null;
 function openAddBlockModal(sectionId, afterIdx) {
   _addRef = { sectionId, afterIdx };
   document.getElementById('add-block-type').value = 'normal';
-  document.getElementById('add-block-textarea').value = '';
+  document.getElementById('add-block-textarea').innerText = '';
   document.getElementById('add-block-modal').classList.add('open');
 }
 function confirmAddBlock() {
@@ -3684,7 +3686,7 @@ function confirmAddBlock() {
   const sec = state.sections.find(s => s.id === sectionId);
   const ov = ensureOverride(sec);
   const type = document.getElementById('add-block-type').value;
-  const text = document.getElementById('add-block-textarea').value;
+  const text = document.getElementById('add-block-textarea').innerText;
   const newBlock = type === 'checklist'
     ? { type: 'checklist', title: text, items: [] }
     : { type, text };
@@ -4092,7 +4094,9 @@ function downloadCR() {
 
 // Service Worker pour fonctionnement hors ligne
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(() => {});
+  navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).then(reg => {
+    reg.update();
+  }).catch(() => {});
 }
 
 // Pré-remplir date et heure actuelles
