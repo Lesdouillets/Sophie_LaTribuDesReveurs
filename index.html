@@ -2642,7 +2642,20 @@ async function saveFicheOnly() {
   const dateNaiss = document.getElementById('date-naissance')?.value;
   const dateTerme = document.getElementById('date-terme')?.value;
   const ageReel = calcAge(dateNaiss, consultDate2);
-  const ageCorrige = (dateTerme && dateNaiss && new Date(dateTerme) > new Date(dateNaiss)) ? calcAge(dateTerme, consultDate2) : calcAge(dateNaiss, consultDate2);
+  const premature2 = dateTerme && dateNaiss && new Date(dateTerme) > new Date(dateNaiss);
+  const ageCorrige = premature2 ? calcAge(dateTerme, consultDate2) : calcAge(dateNaiss, consultDate2);
+  // Si prématuré et terme pas encore atteint, calculer un âge corrigé négatif en jours
+  let ageCorrigeMoisVal = ageCorrige?.totalMois ?? '';
+  let ageCorrigeJoursVal = ageCorrige?.totalJours ?? '';
+  let ageCorrigeStrVal = ageCorrige?.str || '';
+  let ageCorrigeStrCourtVal = ageCorrige?.strCourt || '';
+  if (premature2 && !ageCorrige) {
+    const diffJours = Math.floor((new Date(consultDate2) - new Date(dateTerme)) / (1000*60*60*24));
+    ageCorrigeMoisVal = Math.floor(diffJours / 30);
+    ageCorrigeJoursVal = diffJours;
+    ageCorrigeStrVal = diffJours + ' jours';
+    ageCorrigeStrCourtVal = diffJours + 'j';
+  }
   const taillePere = parseFloat(document.getElementById('taille-pere')?.value);
   const tailleMere = parseFloat(document.getElementById('taille-mere')?.value);
   const sexe = document.getElementById('sexe-enfant')?.value;
@@ -2659,8 +2672,8 @@ async function saveFicheOnly() {
     poids: document.getElementById('poids-enfant')?.value || '',
     ageReelStr: ageReel?.str || '', ageReelStrCourt: ageReel?.strCourt || '',
     ageReelMois: ageReel?.totalMois ?? '', ageReelJours: ageReel?.totalJours ?? '',
-    ageCorrigeStr: ageCorrige?.str || '', ageCorrigeStrCourt: ageCorrige?.strCourt || '',
-    ageCorrigeMois: ageCorrige?.totalMois ?? '', ageCorrigeJours: ageCorrige?.totalJours ?? '',
+    ageCorrigeStr: ageCorrigeStrVal, ageCorrigeStrCourt: ageCorrigeStrCourtVal,
+    ageCorrigeMois: ageCorrigeMoisVal, ageCorrigeJours: ageCorrigeJoursVal,
     besoinLait: blObj.formula,
     alimentation: [...document.querySelectorAll('input[name="alim"]:checked')].map(c=>c.value),
     typeLait: document.getElementById('type-lait')?.value || '',
@@ -2941,7 +2954,19 @@ function startConsultation() {
   const dateNaiss = document.getElementById('date-naissance')?.value;
   const dateTerme = document.getElementById('date-terme')?.value;
   const ageReel = calcAge(dateNaiss, consultDate2);
-  const ageCorrige = (dateTerme && dateNaiss && new Date(dateTerme) > new Date(dateNaiss)) ? calcAge(dateTerme, consultDate2) : calcAge(dateNaiss, consultDate2);
+  const premature3 = dateTerme && dateNaiss && new Date(dateTerme) > new Date(dateNaiss);
+  const ageCorrige = premature3 ? calcAge(dateTerme, consultDate2) : calcAge(dateNaiss, consultDate2);
+  let ageCorrigeMoisVal2 = ageCorrige?.totalMois ?? '';
+  let ageCorrigeJoursVal2 = ageCorrige?.totalJours ?? '';
+  let ageCorrigeStrVal2 = ageCorrige?.str || '';
+  let ageCorrigeStrCourtVal2 = ageCorrige?.strCourt || '';
+  if (premature3 && !ageCorrige) {
+    const diffJours = Math.floor((new Date(consultDate2) - new Date(dateTerme)) / (1000*60*60*24));
+    ageCorrigeMoisVal2 = Math.floor(diffJours / 30);
+    ageCorrigeJoursVal2 = diffJours;
+    ageCorrigeStrVal2 = diffJours + ' jours';
+    ageCorrigeStrCourtVal2 = diffJours + 'j';
+  }
   const taillePere = parseFloat(document.getElementById('taille-pere')?.value);
   const tailleMere = parseFloat(document.getElementById('taille-mere')?.value);
   const sexe = document.getElementById('sexe-enfant')?.value;
@@ -2957,8 +2982,8 @@ function startConsultation() {
     poids: document.getElementById('poids-enfant')?.value || '',
     ageReelStr: ageReel?.str || '', ageReelStrCourt: ageReel?.strCourt || '',
     ageReelMois: ageReel?.totalMois ?? '', ageReelJours: ageReel?.totalJours ?? '',
-    ageCorrigeStr: ageCorrige?.str || '', ageCorrigeStrCourt: ageCorrige?.strCourt || '',
-    ageCorrigeMois: ageCorrige?.totalMois ?? '', ageCorrigeJours: ageCorrige?.totalJours ?? '',
+    ageCorrigeStr: ageCorrigeStrVal2, ageCorrigeStrCourt: ageCorrigeStrCourtVal2,
+    ageCorrigeMois: ageCorrigeMoisVal2, ageCorrigeJours: ageCorrigeJoursVal2,
     besoinLait: besoinLait(ageCorrige?.totalMois ?? ageReel?.totalMois ?? null, document.getElementById('poids-enfant')?.value).formula,
     alimentation: [...document.querySelectorAll('input[name="alim"]:checked')].map(c=>c.value),
     typeLait: document.getElementById('type-lait')?.value || '',
@@ -3196,13 +3221,28 @@ function updateHeader() {
   const rituelPart = c.rituel ? '🌙 ' + c.rituel : '';
   document.getElementById('header-age-rituel').textContent = [ageLine, rituelPart].filter(Boolean).join('  •  ');
 
-  // Âge corrigé (ligne séparée, en violet)
+  // Âge corrigé (ligne séparée) — affiché dès qu'il est disponible, même négatif
   const acEl = document.getElementById('header-age-corrige');
-  const ageCorrige = (c.ageCorrigeStr && c.ageCorrigeMois !== c.ageReelMois)
-    ? (c.ageCorrigeStrCourt || c.ageCorrigeStr)
-    : c.ageCorrigeManuel || '';
-  if (ageCorrige) {
-    acEl.textContent = '📒 corrigé : ' + ageCorrige;
+  let ageCorrigeText = '';
+  // Priorité 1 : calculé depuis les dates (prématuré)
+  const premature = c.dateTerme && c.dateNaissance && c.dateTerme !== c.dateNaissance
+    && new Date(c.dateTerme) > new Date(c.dateNaissance);
+  if (premature) {
+    if (c.ageCorrigeStr) {
+      ageCorrigeText = c.ageCorrigeStrCourt || c.ageCorrigeStr;
+    } else {
+      // Terme pas encore atteint → calcul négatif
+      const consultDate = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
+      const diffJours = Math.floor((new Date(consultDate) - new Date(c.dateTerme)) / (1000*60*60*24));
+      ageCorrigeText = diffJours + ' jours';
+    }
+  }
+  // Priorité 2 : saisi manuellement
+  if (!ageCorrigeText && c.ageCorrigeManuel) {
+    ageCorrigeText = c.ageCorrigeManuel;
+  }
+  if (ageCorrigeText) {
+    acEl.textContent = '📒 corrigé : ' + ageCorrigeText;
     acEl.style.display = 'block';
   } else {
     acEl.style.display = 'none';
