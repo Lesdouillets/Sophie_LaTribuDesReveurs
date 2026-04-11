@@ -1,4 +1,4 @@
-const CACHE = 'tdr-v17';
+const CACHE = 'tdr-v18';
 const ASSETS = ['./index.html', './script-data.js'];
 
 self.addEventListener('install', e => {
@@ -14,10 +14,18 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  // Ne mettre en cache que les requêtes GET (jamais POST/PUT/DELETE)
+  if (e.request.method !== 'GET') return;
+  // Ne pas mettre en cache les requêtes vers Supabase ou externes
+  const url = new URL(e.request.url);
+  if (url.origin !== self.location.origin) return;
+
   e.respondWith(
     caches.match(e.request).then(cached => cached || fetch(e.request).then(resp => {
-      const clone = resp.clone();
-      caches.open(CACHE).then(c => c.put(e.request, clone));
+      if (resp.ok) {
+        const clone = resp.clone();
+        caches.open(CACHE).then(c => c.put(e.request, clone));
+      }
       return resp;
     }))
   );
