@@ -8,9 +8,9 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
   // Force reset: vider caches, SW et overrides
-  if (!localStorage.getItem('tdr_force_clean_v69')) {
+  if (!localStorage.getItem('tdr_force_clean_v74')) {
     localStorage.removeItem('tdr_script_overrides');
-    localStorage.setItem('tdr_force_clean_v69', '1');
+    localStorage.setItem('tdr_force_clean_v74', '1');
     if ('caches' in window) caches.keys().then(k => k.forEach(n => caches.delete(n)));
     if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(r => r.forEach(sw => sw.unregister()));
     setTimeout(() => location.reload(true), 500);
@@ -3389,13 +3389,51 @@ function renderBlockInner(b, i, sectionId, depth) {
     </div>`;
   }
 
+  if (b.type === 'pb_section') {
+    const pb = state.client.problematique;
+    const prenom = state.client.prenomEnfant || '[prénom]';
+    if (!pb) {
+      return `<div class="block block-question">
+        <div class="q-text" contenteditable="true">❓ Maintenant, on va parler de vos objectifs. Qu'est-ce qui vous amène ici aujourd'hui ?</div>
+      </div>`;
+    }
+    const pbHtml = pb.replace(/\n/g, '<br>');
+    return `<div class="block block-normal" contenteditable="true">Maintenant, je vais reprendre votre problématique<br>et APRÈS vous allez m'expliquer ce qui se passe exactement pour le sommeil de ${prenom}.</div>
+    <div class="block block-pb-recap">
+      <div class="pb-recap-intro">Vous m'avez écrit :</div>
+      <div class="pb-recap-text">${pbHtml}</div>
+      <div class="pb-recap-question"><span class="q-icon-inline">❓</span> Est-ce que c'est toujours d'actualité ?</div>
+    </div>`;
+  }
+
   if (b.type === 'obj_recap') {
     const obj = state.client.objectifs;
     if (!obj) return '';
     const objHtml = obj.replace(/\n/g, '<br>');
     return `<div class="block block-pb-recap">
-      <div class="pb-recap-intro">🔥 Vous m'avez écrit :</div>
+      <div class="pb-recap-intro">Vous m'avez écrit :</div>
       <div class="pb-recap-text">${objHtml}</div>
+    </div>`;
+  }
+
+  if (b.type === 'obj_section') {
+    const obj = state.client.objectifs;
+    const prenom = state.client.prenomEnfant || '[prénom]';
+    if (!obj) {
+      // Pas d'objectifs renseignés
+      return `<div class="block block-question">
+        <div class="q-text" contenteditable="true">❓ Alors maintenant j'aimerais qu'on discute de vos objectifs. Quels sont vos objectifs pour le sommeil de ${prenom} ?</div>
+      </div>`;
+    }
+    // Objectifs renseignés
+    const objHtml = obj.replace(/\n/g, '<br>');
+    return `<div class="block block-normal" contenteditable="true">Alors maintenant, j'aimerais qu'on parle de vos objectifs<br>Je vais relire ce que vous m'avez noté… pour être sûre qu'on est bien alignés.</div>
+    <div class="block block-pb-recap">
+      <div class="pb-recap-intro">Vous m'avez écrit :</div>
+      <div class="pb-recap-text">${objHtml}</div>
+    </div>
+    <div class="block block-question">
+      <div class="q-text" contenteditable="true">❓ Est-ce que ça correspond toujours à ce que vous souhaitez aujourd'hui ?<br>Est-ce que vous avez quelque chose à ajouter ou préciser ?</div>
     </div>`;
   }
 
