@@ -2473,9 +2473,13 @@ function loadClient(idx) {
       objectifs: document.getElementById('objectifs-text')?.value.trim() || '',
       enseigne: currentEnseigne,
     };
+    // Reconstruire les problématiques cochées
+    state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
     updateHeader();
     updatePobBar();
     buildSections();
+    buildSidebar();
+    buildSidebarPbPanel();
     renderCurrentSection();
   }
 }
