@@ -1150,7 +1150,7 @@
               <input type="date" id="date-naissance" oninput="computeClientFields()">
             </div>
             <div class="form-group">
-              <label>Âge réel <span style="color:#aaa;font-size:11px">(auto ou manuel)</span></label>
+              <label>Âge réel <span style="color:#aaa;font-size:11px">(au jour de la consultation)</span></label>
               <input type="text" id="age-enfant" placeholder="ex. 8 mois 12 jours" autocomplete="off"
                 oninput="computeClientFields()">
             </div>
@@ -1159,7 +1159,7 @@
               <input type="date" id="date-terme" oninput="computeClientFields()">
             </div>
             <div class="form-group">
-              <label>Âge corrigé <span style="color:#aaa;font-size:11px">(auto ou manuel)</span></label>
+              <label>Âge corrigé <span style="color:#aaa;font-size:11px">(au jour de la consultation)</span></label>
               <input type="text" id="age-corrige-manuel" placeholder="ex. 6 mois 5 jours" autocomplete="off"
                 oninput="computeClientFields()">
             </div>
@@ -1172,12 +1172,12 @@
             </div>
             <div style="background:white;padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
               <div style="background:#f5f7fc;border-radius:10px;padding:10px 14px;border:1.5px solid var(--border)">
-                <div style="font-size:10px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px">🎂 Âge réel</div>
+                <div style="font-size:10px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px">🎂 Âge réel aujourd'hui</div>
                 <div style="font-size:16px;font-weight:800;color:var(--primary-dark)" id="age-reel-calc">–</div>
                 <div style="font-size:12px;color:var(--text-light);margin-top:2px" id="age-reel-mois">–</div>
               </div>
               <div style="background:#eaeff8;border-radius:10px;padding:10px 14px;border:1.5px solid #7a95b5">
-                <div style="font-size:10px;font-weight:700;color:#2d3f5c;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px">✏️ Âge corrigé <span style="font-weight:400;font-style:italic">(si né à terme)</span></div>
+                <div style="font-size:10px;font-weight:700;color:#2d3f5c;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px">✏️ Âge corrigé aujourd'hui <span style="font-weight:400;font-style:italic">(si né à terme)</span></div>
                 <div style="font-size:16px;font-weight:800;color:#2d3f5c" id="age-corrige-calc">–</div>
                 <div style="font-size:12px;color:#5e7194;margin-top:2px" id="age-corrige-mois">–</div>
               </div>
@@ -3344,9 +3344,11 @@ function renderBlock(b, i, sectionId='', depth=0) {
   const inner = renderBlockInner(b, i, sectionId, depth);
   // Wrap top-level blocks with edit controls
   if (sectionId && depth === 0) {
+    const noEdit = ['pb_section','pb_recap','obj_section','obj_recap','besoins_sommeil','leviers_dynamiques','separator','checklist'].includes(b.type);
+    const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}',${i})">✏️ Modifier</button>`;
     return `<div class="edit-block-wrap">
       <div class="edit-block-controls">
-        <button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}',${i})">✏️ Modifier</button>
+        ${editBtn}
         <button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>
       </div>
       ${inner}
@@ -3887,8 +3889,6 @@ function saveEditBlock() {
     .replace(/<\/?div>/gi, '')
     .replace(/<br\s*\/?>/gi, '\n')
     .replace(/\n+$/g, '');
-  console.log('[saveEditBlock] innerHTML:', taEl.innerHTML);
-  console.log('[saveEditBlock] newText:', newText);
   if (b.type === 'option') {
     ov.blocks[blockIdx] = { ...b, label: newText };
   } else {
