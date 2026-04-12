@@ -707,10 +707,10 @@ const SCRIPT_DATA = {
               blocks: [
                 { type: "tarifs_tableau" }
               ]
-            },
-            { type: "conseil", text: "👏 En tout cas, ON VOIT :\n- que vous avez essayé de mettre des choses en place\n- et AVEC CE QU'ON vient de voir ensemble :\n  - vous avez toutes les bases\n  - pour que ça évolue dans le bon sens !" }
+            }
           ]
         },
+        { type: "conseil", text: "👏 En tout cas, ON VOIT :\n- que vous avez essayé de mettre des choses en place\n- et AVEC CE QU'ON vient de voir ensemble :\n  - vous avez toutes les bases\n  - pour que ça évolue dans le bon sens !" },
       ]
     },
 
