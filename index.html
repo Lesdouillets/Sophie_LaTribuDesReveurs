@@ -2103,7 +2103,7 @@
       </div>
       <div id="edit-block-textarea" contenteditable="true" style="width:100%;min-height:130px;padding:10px;border:1.5px solid var(--border);border-radius:0 0 8px 8px;font-size:14px;font-family:inherit;outline:none;overflow-y:auto;cursor:text;line-height:1.6" data-placeholder="Texte du bloc…"></div>
     </div>
-    <button class="btn-start" style="margin-top:12px;font-size:14px;padding:12px" onclick="saveEditBlock()">💾 Enregistrer</button>
+    <button class="btn-start" style="margin-top:12px;font-size:14px;padding:12px;position:sticky;bottom:0;z-index:10;width:100%" onclick="saveEditBlock()">💾 Enregistrer</button>
   </div>
 </div>
 
@@ -3659,7 +3659,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const customText = b.text ? substituteVars(b.text) : `Maintenant, je vais <strong>reprendre votre problématique</strong><br>et APRÈS vous allez <strong>m'expliquer ce qui se passe exactement</strong> pour le sommeil de ${prenom}.`;
       return `<div class="block block-normal" contenteditable="true">${customText}</div>`;
     } else {
-      const customText = b.text ? substituteVars(b.text) : `Maintenant, j'aimerais savoir quelle est votre problématique aujourd'hui pour ${prenom}.`;
+      const customText = b.text ? substituteVars(b.text) : `<ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Maintenant, j'aimerais savoir quelle est <strong>votre problématique aujourd'hui</strong> pour ${prenom}.</li></ul>`;
       return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ ${customText}</div></div>`;
     }
   }
@@ -3674,11 +3674,11 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   if (b.type === 'obj_intro') {
     const obj = state.client.objectifs;
     if (obj && obj.trim()) {
-      const customText = b.text ? substituteVars(b.text) : `Alors maintenant, j'aimerais qu'on parle de vos objectifs<br>Je vais relire ce que vous m'avez noté… pour être sûre qu'on est bien alignés.`;
+      const customText = b.text ? substituteVars(b.text) : `<ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Alors maintenant, j'aimerais <strong>qu'on parle de vos objectifs</strong></li><li style="margin-bottom:3px;line-height:1.65">Je vais <strong>relire ce que vous m'avez noté</strong>… pour être <strong>sûre qu'on est bien alignés</strong>.</li></ul>`;
       return `<div class="block block-normal" contenteditable="true">${customText}</div>`;
     } else {
       const prenom = state.client.prenomEnfant || '[prénom]';
-      const customText = b.text ? substituteVars(b.text) : `J'aimerais maintenant savoir quels sont vos objectifs aujourd'hui pour ${prenom}.<br>Qu'est-ce que vous souhaitez idéalement mettre en place ?`;
+      const customText = b.text ? substituteVars(b.text) : `<ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">J'aimerais maintenant savoir quels sont <strong>vos objectifs aujourd'hui</strong> pour ${prenom}.</li><li style="margin-bottom:3px;line-height:1.65">Qu'est-ce que vous <strong>souhaitez idéalement mettre en place</strong> ?</li></ul>`;
       return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ ${customText}</div></div>`;
     }
   }
@@ -3686,7 +3686,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   if (b.type === 'obj_question') {
     const obj = state.client.objectifs;
     if (!obj || !obj.trim()) return '';
-    const customText = b.text ? substituteVars(b.text) : `Est-ce que ça correspond toujours à ce que vous souhaitez aujourd'hui ?<br>Est-ce que vous avez quelque chose à ajouter ou préciser ?`;
+    const customText = b.text ? substituteVars(b.text) : `<ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Est-ce que ça <strong>correspond toujours</strong> à ce que vous souhaitez aujourd'hui ?</li><li style="margin-bottom:3px;line-height:1.65">Est-ce que vous avez <strong>quelque chose</strong> à <strong>ajouter</strong> ou <strong>préciser</strong> ?</li></ul>`;
     return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ ${customText}</div></div>`;
   }
 
@@ -3738,7 +3738,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     }
     // Objectifs renseignés
     const objHtml = obj.replace(/\n/g, '<br>');
-    return `<div class="block block-normal" contenteditable="true">Alors maintenant, j'aimerais qu'on parle de vos objectifs<br>Je vais relire ce que vous m'avez noté… pour être sûre qu'on est bien alignés.</div>
+    return `<div class="block block-normal" contenteditable="true">Alors maintenant, j'aimerais <strong>qu'on parle de vos objectifs</strong><br>Je vais <strong>relire ce que vous m'avez noté</strong>… pour être <strong>sûre qu'on est bien alignés</strong>.</div>
     <div class="block block-pb-recap">
       <div class="pb-recap-intro">Vous m'avez écrit :</div>
       <div class="pb-recap-text"><em>${objHtml}</em></div>
@@ -4264,6 +4264,8 @@ function saveEditBlock() {
   const { sectionId, path } = _editRef;
   const sec = state.sections.find(s => s.id === sectionId);
   const ov = ensureOverride(sec);
+  // Synchroniser ov.blocks avec la vue rendue (filtrée/réordonnée) pour que le path corresponde
+  ov.blocks = getOverrideBlocks(sec);
   const b = getBlockByPath(ov.blocks, path);
   if (!b) return;
   const taEl = document.getElementById('edit-block-textarea');
