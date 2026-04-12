@@ -3656,7 +3656,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const pb = state.client.problematique;
     const prenom = state.client.prenomEnfant || '[prénom]';
     if (pb && pb.trim()) {
-      const customText = b.text ? substituteVars(b.text) : `Maintenant, je vais reprendre votre problématique<br>et APRÈS vous allez m'expliquer ce qui se passe exactement pour le sommeil de ${prenom}.`;
+      const customText = b.text ? substituteVars(b.text) : `Maintenant, je vais <strong>reprendre votre problématique</strong><br>et APRÈS vous allez <strong>m'expliquer ce qui se passe exactement</strong> pour le sommeil de ${prenom}.`;
       return `<div class="block block-normal" contenteditable="true">${customText}</div>`;
     } else {
       const customText = b.text ? substituteVars(b.text) : `Maintenant, j'aimerais savoir quelle est votre problématique aujourd'hui pour ${prenom}.`;
@@ -3667,7 +3667,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   if (b.type === 'pb_question') {
     const pb = state.client.problematique;
     if (!pb || !pb.trim()) return '';
-    const customText = b.text ? substituteVars(b.text) : `Est-ce que c'est toujours d'actualité ?`;
+    const customText = b.text ? substituteVars(b.text) : `Est-ce que c'est <strong>toujours d'actualité</strong> ?`;
     return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ ${customText}</div></div>`;
   }
 
