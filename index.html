@@ -3992,30 +3992,42 @@ function renderMarkdown(text) {
 
   const lines = text.split('\n');
   let html = '';
-  let listStack = []; // tracks open <ul> depth levels
+  let currentDepth = 0;
 
   function closeLists(toDepth) {
-    while (listStack.length > toDepth) {
-      html += '</ul>';
-      listStack.pop();
+    while (currentDepth > toDepth) {
+      html += '</li></ul>';
+      currentDepth--;
     }
   }
+
+  let needsLiClose = false;
 
   for (let line of lines) {
     // Match bullet: any leading spaces then "- "
     const bulletMatch = line.match(/^(\s*)-\s+(.*)$/);
     if (bulletMatch) {
       const depth = Math.floor(bulletMatch[1].length / 2) + 1;
-      // Open lists if needed
-      while (listStack.length < depth) {
-        html += '<ul style="margin:4px 0 4px 20px;padding:0;">';
-        listStack.push(depth);
+      if (depth > currentDepth) {
+        // Open deeper lists
+        while (currentDepth < depth) {
+          html += '<ul style="margin:4px 0 4px 20px;padding:0;">';
+          currentDepth++;
+        }
+      } else if (depth < currentDepth) {
+        // Close deeper lists back to this depth
+        closeLists(depth);
+        // Close the previous <li> at this depth
+        html += '</li>';
+      } else {
+        // Same depth — close previous <li>
+        if (needsLiClose) html += '</li>';
       }
-      // Close deeper lists if needed
-      if (listStack.length > depth) closeLists(depth);
-      html += `<li style="margin-bottom:3px;line-height:1.65">${formatInline(bulletMatch[2])}</li>`;
+      html += `<li style="margin-bottom:3px;line-height:1.65">${formatInline(bulletMatch[2])}`;
+      needsLiClose = true;
     } else {
       // Close all open lists
+      if (needsLiClose) { html += '</li>'; needsLiClose = false; }
       closeLists(0);
       if (line.trim() === '---' || line.trim() === '') {
         html += '<br>';
@@ -4024,6 +4036,7 @@ function renderMarkdown(text) {
       }
     }
   }
+  if (needsLiClose) { html += '</li>'; needsLiClose = false; }
   closeLists(0);
   // Clean up multiple consecutive <br> and trailing <br>
   return html.replace(/(<br>){3,}/g, '<br><br>').replace(/(<br>)+$/g, '');
