@@ -3171,6 +3171,7 @@ function buildSections() {
     }
   });
   state.sections.push({...SCRIPT_DATA.conclusion, sectionType:'conclusion'});
+  console.log('[BUILD] conclusion blocks:', SCRIPT_DATA.conclusion.blocks.length, SCRIPT_DATA.conclusion.blocks.map(b=>b.type||b.label));
 }
 
 // ═══════════════════════════════════════════════════
@@ -3453,6 +3454,11 @@ function markDone() {
 // ═══════════════════════════════════════════════════
 function renderCurrentSection() {
   const section = state.sections[state.currentIdx]; if (!section) return;
+  if (section.id === 'conclusion') {
+    const ovBlocks = getOverrideBlocks(section);
+    console.log('[RENDER conclusion] section.blocks:', section.blocks.length, '| override blocks:', ovBlocks.length, '| hasOverride:', !!state.scriptOverrides['conclusion']);
+    console.log('[RENDER conclusion] block types:', ovBlocks.map(b=>b.type + (b.label?' "'+b.label+'"':'')));
+  }
   const area = document.getElementById('content-area');
   area.classList.toggle('edit-mode-on', state.editMode);
   const hasOverride = !!state.scriptOverrides[section.id];
