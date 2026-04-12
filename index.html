@@ -2349,10 +2349,10 @@ let state = {
   editMode: false,
 };
 
-// Nettoyage unique des anciens overrides (v53 — ajout tableau tarifs)
-if (!localStorage.getItem('tdr_overrides_cleaned_v53')) {
+// Nettoyage unique des anciens overrides (v54 — structure finale pb/obj/tarifs)
+if (!localStorage.getItem('tdr_overrides_cleaned_v54')) {
   localStorage.removeItem('tdr_script_overrides');
-  localStorage.setItem('tdr_overrides_cleaned_v53', '1');
+  localStorage.setItem('tdr_overrides_cleaned_v54', '1');
 }
 // Charge les overrides sauvegardés
 state.scriptOverrides = JSON.parse(localStorage.getItem('tdr_script_overrides') || '{}');
