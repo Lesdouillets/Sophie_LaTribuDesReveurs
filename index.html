@@ -2226,7 +2226,7 @@
   </div>
 </div>
 
-<script src="script-data.js?v=155"></script>
+<script src="script-data.js?v=156"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -2382,7 +2382,7 @@ let state = {
 
 // Nettoyage des overrides — supprimer TOUT pour forcer la re-sync
 // Incrémentez ce numéro pour forcer un nouveau nettoyage
-const OVERRIDES_VERSION = 54;
+const OVERRIDES_VERSION = 56;
 if (parseInt(localStorage.getItem('tdr_overrides_version') || '0') < OVERRIDES_VERSION) {
   localStorage.removeItem('tdr_script_overrides');
   localStorage.setItem('tdr_overrides_version', String(OVERRIDES_VERSION));
@@ -2398,7 +2398,7 @@ function saveScriptOverrides() {
 function getOverrideBlocks(section) {
   const ov = state.scriptOverrides[section.id];
   if (!ov) return section.blocks || [];
-  const dynamicTypes = ['pb_section', 'pb_recap', 'obj_section', 'obj_recap', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'tarifs_tableau'];
+  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'tarifs_tableau'];
   const liveBlocks = section.blocks || [];
   // Remplacer chaque bloc dynamique dans les overrides par sa version live (même type)
   // On cherche le bloc live correspondant par type plutôt que par index
@@ -3529,7 +3529,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','tarifs_tableau'].includes(b.type);
+    const noEdit = ['pb_recap','pb_intro','pb_question','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','tarifs_tableau'].includes(b.type);
     const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
@@ -3618,6 +3618,38 @@ function renderBlockInner(b, i, sectionId, depth, path) {
 
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
   if (b.type === 'separator') return `<div class="block block-separator">${text}</div>`;
+
+  if (b.type === 'pb_intro') {
+    const pb = state.client.problematique;
+    const prenom = state.client.prenomEnfant || '[prénom]';
+    if (pb && pb.trim()) {
+      return `<div class="block block-normal" contenteditable="true">Maintenant, je vais reprendre votre problématique<br>et APRÈS vous allez m'expliquer ce qui se passe exactement pour le sommeil de ${prenom}.</div>`;
+    } else {
+      return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ Maintenant, j'aimerais savoir quelle est votre problématique aujourd'hui pour ${prenom}.</div></div>`;
+    }
+  }
+
+  if (b.type === 'pb_question') {
+    const pb = state.client.problematique;
+    if (!pb || !pb.trim()) return '';
+    return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ Est-ce que c'est toujours d'actualité ?</div></div>`;
+  }
+
+  if (b.type === 'obj_intro') {
+    const obj = state.client.objectifs;
+    if (obj && obj.trim()) {
+      return `<div class="block block-normal" contenteditable="true">Alors maintenant, j'aimerais qu'on parle de vos objectifs<br>Je vais relire ce que vous m'avez noté… pour être sûre qu'on est bien alignés.</div>`;
+    } else {
+      const prenom = state.client.prenomEnfant || '[prénom]';
+      return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ J'aimerais maintenant savoir quels sont vos objectifs aujourd'hui pour ${prenom}.<br>Qu'est-ce que vous souhaitez idéalement mettre en place ?</div></div>`;
+    }
+  }
+
+  if (b.type === 'obj_question') {
+    const obj = state.client.objectifs;
+    if (!obj || !obj.trim()) return '';
+    return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ Est-ce que ça correspond toujours à ce que vous souhaitez aujourd'hui ?<br>Est-ce que vous avez quelque chose à ajouter ou préciser ?</div></div>`;
+  }
 
   if (b.type === 'pb_recap') {
     const pb = state.client.problematique;

@@ -35,9 +35,9 @@ const SCRIPT_DATA = {
       title: "II. Problématique",
       emoji: "🤔",
       blocks: [
-        { type: "normal", text: "Maintenant, je vais reprendre votre problématique\net APRÈS vous allez m'expliquer ce qui se passe exactement pour le sommeil de [prénom_enfant]." },
+        { type: "pb_intro" },
         { type: "pb_recap" },
-        { type: "question", text: "Est-ce que c'est toujours d'actualité?" },
+        { type: "pb_question" },
         {
           type: "option", label: "Si pleurs difficiles", emoji: "😭", style: "pleurs",
           blocks: [
@@ -95,9 +95,9 @@ const SCRIPT_DATA = {
       title: "IV. Objectifs",
       emoji: "🎯",
       blocks: [
-        { type: "normal", text: "Alors maintenant, j'aimerais qu'on parle de vos objectifs\nJe vais relire ce que vous m'avez noté… pour être sûre qu'on est bien alignés." },
+        { type: "obj_intro" },
         { type: "obj_recap" },
-        { type: "question", text: "Est-ce que ça correspond toujours à ce que vous souhaitez aujourd'hui ?\nEst-ce que vous avez quelque chose à ajouter ou préciser ?" },
+        { type: "obj_question" },
         {
           type: "option", label: "🛌 Souhaitent changer de lieu de sommeil / lit", style: "purple",
           blocks: [
