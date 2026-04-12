@@ -4209,11 +4209,24 @@ function openEditBlockModal(sectionId, path) {
     typeEl.style.display = 'block';
     typeEl.value = b.type || 'normal';
     const rawText = b.text || b.title || '';
-    taEl.innerHTML = rawText.replace(/\n/g, '<br>');
+    taEl.innerHTML = rawText
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*([^*]+?)\*/g, '<em>$1</em>')
+      .replace(/\n/g, '<br>');
   }
   document.getElementById('edit-block-modal').classList.add('open');
   // Forcer le focus sur le textarea après ouverture
   setTimeout(() => { document.getElementById('edit-block-textarea').focus(); }, 100);
+}
+
+// Support Tab pour indenter les bullet points dans l'éditeur
+document.getElementById('edit-block-textarea').addEventListener('keydown', function(e) {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    // Insérer 2 espaces au curseur pour créer un sous-niveau
+    document.execCommand('insertText', false, '  ');
+  }
+});
 }
 function closeEditBlockModal() {
   document.getElementById('edit-block-modal').classList.remove('open');
@@ -4227,12 +4240,16 @@ function saveEditBlock() {
   const b = getBlockByPath(ov.blocks, path);
   if (!b) return;
   const taEl = document.getElementById('edit-block-textarea');
-  // Nettoyer le HTML du contenteditable : convertir les <div> et <br> en \n pour le stockage
-  // mais garder les balises de formatage (strong, em, u, span…)
+  // Nettoyer le HTML du contenteditable : convertir en markdown pour le stockage
   const newText = taEl.innerHTML
+    .replace(/<strong>(.*?)<\/strong>/gi, '**$1**')
+    .replace(/<b>(.*?)<\/b>/gi, '**$1**')
+    .replace(/<em>(.*?)<\/em>/gi, '*$1*')
+    .replace(/<i>(.*?)<\/i>/gi, '*$1*')
     .replace(/<\/div><div>/gi, '\n')
     .replace(/<\/?div>/gi, '')
     .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/&nbsp;/gi, ' ')
     .replace(/\n+$/g, '');
   if (b.type === 'option') {
     setBlockByPath(ov.blocks, path, { ...b, label: newText });

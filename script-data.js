@@ -282,7 +282,7 @@ const SCRIPT_DATA = {
             { type: "empathie", text: "Merci de me le dire, c'est vraiment important pour MOI de le savoir.\nJe comprends… c'est difficile d'entendre son enfant pleurer\nEt franchement, personne n'aime ça\n\nEt CE QUE je peux vous dire TOUT DE SUITE\n⇒ c'est qu'on ne va PAS laisser votre enfant seul avec ses pleurs.\n\nPar contre, il y a quelque chose d'important à comprendre :\n- Les pleurs chez l'enfant, c'est surtout une façon de communiquer.\n\nAujourd'hui, on va lui demander de changer une habitude\n… et comme pour nous, le changement, personne n'aime ça !\n\nDonc oui, c'est possible qu'il réagisse,\n- qu'il proteste\n- ou qu'il pleure\n- pour dire \"je préférais avant\"\n⇒ Et ça… c'est une réaction normale\n\nL'idée, encore une fois, c'est vraiment de VOUS respecter\nOn va simplement :\n- adapter l'accompagnement\n- pour que ce soit le + confortable possible POUR VOUS.\nOn pourra aller vers quelque chose :\n- de + progressif\n- avec des ajustements tout en douceur\n- et vous POURREZ avancer à votre rythme\n\nEt surtout, vous ne SEREZ PAS SEULE\nOn va LE faire ensemble\n… ET LUI il aura SURTOUT besoin :\n- de sentir que vous êtes là\n- et que vous SAVEZ ce que vous faites" }
           ]
         },
-        { type: "normal", text: "Alors, si ça vous va :\n- On va pouvoir **passer à la suite**,\n  - avec tout ce qu'on a vu\n- et voir concrètement COMMENT on va mettre ça en place" },
+        { type: "normal", text: "Alors, si ça vous va :\n- On va pouvoir passer à la suite,\n- et voir concrètement COMMENT on va mettre ça en place" },
       ]
     },
 
