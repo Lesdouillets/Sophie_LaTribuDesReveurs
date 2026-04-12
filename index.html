@@ -2349,10 +2349,10 @@ let state = {
   editMode: false,
 };
 
-// Nettoyage unique des anciens overrides (v49 — variables verif_identite/accord_enfant remplacées)
-if (!localStorage.getItem('tdr_overrides_cleaned_v49')) {
+// Nettoyage unique des anciens overrides (v50 — pb/obj utilisent blocs dynamiques)
+if (!localStorage.getItem('tdr_overrides_cleaned_v50')) {
   localStorage.removeItem('tdr_script_overrides');
-  localStorage.setItem('tdr_overrides_cleaned_v49', '1');
+  localStorage.setItem('tdr_overrides_cleaned_v50', '1');
 }
 // Charge les overrides sauvegardés
 state.scriptOverrides = JSON.parse(localStorage.getItem('tdr_script_overrides') || '{}');
@@ -3148,18 +3148,14 @@ function startConsultation() {
 // ═══════════════════════════════════════════════════
 function adaptSectionsToClient() {
   const c = state.client;
-  // Supprimer les overrides des sections dynamiques qui vont être reconstruites
-  // pour éviter les décalages entre overrides et blocs live
-  delete state.scriptOverrides['problematique'];
-  delete state.scriptOverrides['objectifs'];
-  saveScriptOverrides();
+  // NE PAS supprimer les overrides — les modifications de formatage persistent entre clients
   state.sections = state.sections.map(s => {
     if (s.id === 'problematique') {
       if (c.problematique && c.problematique.trim()) {
-        // Problématique connue : afficher avec le texte copié
+        // Problématique connue : bloc intro + recap dynamique + question + options
         return { ...s, blocks: [
           { type: 'normal', text: 'Maintenant, je vais reprendre votre problématique\net APRÈS vous allez m\'expliquer ce qui se passe exactement pour le sommeil de [prénom_enfant].' },
-          { type: 'important', text: 'Donc, vous m\'avez écrit :\n<em>' + c.problematique.replace(/\n/g, '\n') + '</em>' },
+          { type: 'pb_recap' },
           { type: 'question', text: 'Est-ce que c\'est toujours d\'actualité?' },
           { type: 'option', label: 'Si pleurs difficiles 😭', blocks: [
             { type: 'empathie', text: 'J\'entends que c\'est difficile pour vous d\'entendre votre enfant pleurer…\nMerci de me le confier.\n\nIl y a beaucoup de parents POUR QUI :\n→ c\'est vraiment compliqué,\n→ et chacun a sa sensibilité là-dessus\n→ et c\'est OK\n\nL\'idée ici, ça ne va PAS ÊTRE de vous forcer à faire quelque chose qui ne vous correspond pas.\nOn va plutôt adapter les choses à vous, à CE QUE vous ÊTES CAPABLE de faire aujourd\'hui.\n\nParce que :\nPLUS vous serez alignée avec vous-même → PLUS ce sera fluide pour vous… et pour votre enfant aussi.\n\nEt on va justement trouver ensemble une façon de faire QUI respecte ça' }
@@ -3177,10 +3173,10 @@ function adaptSectionsToClient() {
     }
     if (s.id === 'objectifs') {
       if (c.objectifs && c.objectifs.trim()) {
-        // Objectifs connus : afficher avec le texte copié
+        // Objectifs connus : bloc intro + recap dynamique + question + options purple
         return { ...s, blocks: [
           { type: 'normal', text: 'Alors maintenant, j\'aimerais qu\'on parle de vos objectifs\nJe vais relire ce que vous m\'avez noté… pour être sûre qu\'on est bien alignés.' },
-          { type: 'important', text: 'Vous m\'avez écrit :\n<em>' + c.objectifs.replace(/\n/g, '\n') + '</em>' },
+          { type: 'obj_recap' },
           { type: 'question', text: 'Est-ce que ça correspond toujours à ce que vous souhaitez aujourd\'hui ?\nEst-ce que vous avez quelque chose à ajouter ou préciser ?' },
           ...s.blocks.slice(1) // garder les options purple (lieu de sommeil, position ventrale…)
         ]};
