@@ -3658,18 +3658,21 @@ function renderBesoinsSommeil(tranches) {
     if (!s) return NaN;
     let y = 0, m = 0, d = 0;
     const ym = s.match(/(\d+)\s*an/i); if (ym) y = parseInt(ym[1]);
-    const mm = s.match(/(\d+)\s*mois/i); if (mm) m = parseInt(mm[1]);
+    // Supporter les décimales : "7,5 mois" ou "7.5 mois"
+    const mm = s.match(/([\d]+[.,]?\d*)\s*mois/i); if (mm) m = Math.floor(parseFloat(mm[1].replace(',', '.')));
     const dm = s.match(/(\d+)\s*jour/i); if (dm) d = parseInt(dm[1]);
-    if (y === 0 && m === 0 && d === 0) return parseInt(s) || NaN;
+    if (y === 0 && m === 0 && d === 0) {
+      const num = parseFloat(s.replace(',', '.'));
+      return isNaN(num) ? NaN : Math.floor(num);
+    }
     return y * 12 + m;
   }
-  console.log('[DIAG] corrige:', corrige, typeof corrige, '| reel:', reel, typeof reel, '| ageEnfant:', state.client.ageEnfant, '| ageCorrigeManuel:', state.client.ageCorrigeManuel);
+  // Priorité : âge corrigé calculé > âge réel calculé > âge corrigé manuel > âge réel manuel
   const months = (corrige !== '' && corrige !== undefined && corrige !== null)
     ? parseInt(corrige)
     : (reel !== '' && reel !== undefined && reel !== null)
       ? parseInt(reel)
       : parseAgeToMonths(state.client.ageCorrigeManuel || state.client.ageEnfant);
-  console.log('[DIAG] months:', months);
   const ageLabel = (corrige !== '' && corrige !== undefined && corrige !== null)
     ? (state.client.ageCorrigeStr || corrige + ' mois') + ' (corrigé)'
     : (state.client.ageReelStr || months + ' mois');
