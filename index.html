@@ -3148,7 +3148,8 @@ function startConsultation() {
 // ═══════════════════════════════════════════════════
 function adaptSectionsToClient() {
   const c = state.client;
-  // NE PAS supprimer les overrides — les modifications de formatage persistent entre clients
+  // Les overrides persistent entre clients, SAUF si le nombre de blocs change
+  // (ex: passage de "avec problématique" à "sans problématique")
   state.sections = state.sections.map(s => {
     if (s.id === 'problematique') {
       if (c.problematique && c.problematique.trim()) {
@@ -3189,6 +3190,15 @@ function adaptSectionsToClient() {
       }
     }
     return s;
+  });
+  // Invalider les overrides si le nombre de blocs ne correspond plus
+  ['problematique', 'objectifs'].forEach(id => {
+    const ov = state.scriptOverrides[id];
+    const sec = state.sections.find(s => s.id === id);
+    if (ov && sec && ov.blocks.length !== sec.blocks.length) {
+      delete state.scriptOverrides[id];
+      saveScriptOverrides();
+    }
   });
 }
 
@@ -3630,7 +3640,6 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     return `<div class="block block-pb-recap">
       <div class="pb-recap-intro">Donc, vous m'avez écrit :</div>
       <div class="pb-recap-text"><em>${pbHtml}</em></div>
-      <div class="pb-recap-question"><span class="q-icon-inline">❓</span> Est-ce que c'est toujours d'actualité ?</div>
     </div>`;
   }
 

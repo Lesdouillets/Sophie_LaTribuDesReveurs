@@ -705,6 +705,13 @@ const SCRIPT_DATA = {
       },
       { type: "question", text: "Est-ce qu'il vous reste des questions?" },
       { type: "question", text: "Quand est-ce que vous pensez pouvoir commencer à mettre ces changements en place ?" },
+      {
+        type: "option", label: "🔥 Si Pas pris de RDV", style: "purple",
+        blocks: [
+          { type: "important", text: "🔥 Au vu de ce qu'on s'est dit, je pense qu'il serait **intéressant de se revoir**\n\nSachant que **vous voulez commencer** le <strong style=\"color:#C0392B\">XXX</strong>, on **peut se voir** le <strong style=\"color:#C0392B\">XXX</strong>" },
+          { type: "question", text: "Qu'est-ce que vous en pensez ?" }
+        ]
+      },
       { type: "separator", text: "📅 Proposition de suivi" },
       {
         type: "option", label: "RDV de suivi",
