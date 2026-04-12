@@ -510,6 +510,18 @@
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
     }
+    .block-fin-consultation {
+      background: linear-gradient(135deg, #1e3a5f, #2d5a8e);
+      color: white;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 700;
+      padding: 28px 20px;
+      border-radius: 16px;
+      border: 3px solid #ffc107;
+      box-shadow: 0 4px 20px rgba(30,58,95,0.3);
+    }
+    .block-fin-consultation strong { color: #ffc107; }
     .block-pb-recap {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -2422,7 +2434,7 @@ function getOverrideBlocks(section) {
   const liveBlocks = section.blocks || [];
 
   // Pour problematique/objectifs, ov.blocks est déjà nettoyé par ensureOverride
-  if (section.id === 'problematique' || section.id === 'objectifs') {
+  if (section.id === 'problematique' || section.id === 'objectifs' || section.id === 'conclusion') {
     ensureOverride(section);
     return ov.blocks;
   }
@@ -2448,7 +2460,7 @@ function ensureOverride(section) {
   }
   const ov = state.scriptOverrides[section.id];
   // Nettoyer et réordonner pour problematique/objectifs (synchro avec getOverrideBlocks)
-  if ((section.id === 'problematique' || section.id === 'objectifs') && ov._cleaned !== true) {
+  if ((section.id === 'problematique' || section.id === 'objectifs' || section.id === 'conclusion') && ov._cleaned !== true) {
     const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','tarifs_tableau'];
     const liveBlocks = section.blocks || [];
     // Types présents dans les blocs source de cette section
@@ -3796,6 +3808,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     return `<div class="block block-question">
       <div class="q-text" contenteditable="true">❓ ${text}</div>
     </div>`;
+  }
+
+  if (b.type === 'fin_consultation') {
+    return `<div class="block block-fin-consultation">${text}</div>`;
   }
 
   const cls = { normal:'block-normal', important:'block-important', conseil:'block-conseil', empathie:'block-empathie' }[b.type] || 'block-normal';
