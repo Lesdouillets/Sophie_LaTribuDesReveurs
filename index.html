@@ -2230,7 +2230,7 @@
   </div>
 </div>
 
-<script src="script-data.js?v=162"></script>
+<script src="script-data.js?v=163"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -2301,14 +2301,6 @@ async function doLogout() {
 async function loadSupabaseOverrides() {
   if (!currentUser) return;
   try {
-    if (state._forceCleanSupabase) {
-      // Nettoyage forcé par changement de version : vider sur Supabase
-      state.scriptOverrides = {};
-      localStorage.setItem('tdr_script_overrides', '{}');
-      syncOverridesToSupabase();
-      delete state._forceCleanSupabase;
-      return;
-    }
     const { data } = await db.from('script_overrides').select('overrides').eq('user_id', currentUser.id).single();
     if (data?.overrides) {
       state.scriptOverrides = data.overrides;
@@ -2319,7 +2311,7 @@ async function loadSupabaseOverrides() {
 }
 
 function cleanStaleOverrides() {
-  // Vérifier chaque override : supprimer SEULEMENT si les types dynamiques ne sont pas présents
+  // Fusion intelligente : ajouter les blocs dynamiques manquants sans supprimer les personnalisations
   const allSections = [
     ...(SCRIPT_DATA.required || []),
     ...(SCRIPT_DATA.conditional || []),
@@ -2333,18 +2325,16 @@ function cleanStaleOverrides() {
     if (!src) continue;
     const ovBlocks = state.scriptOverrides[sectionId]?.blocks || [];
     const srcBlocks = src.blocks || [];
-    // Vérifier que chaque bloc dynamique de la source existe dans les overrides (même type)
-    let stale = false;
-    for (const srcBlock of srcBlocks) {
-      if (dynamicTypes.includes(srcBlock.type)) {
-        if (!ovBlocks.some(ob => ob.type === srcBlock.type)) {
-          stale = true; break;
+    // Pour chaque bloc dynamique de la source, vérifier s'il existe dans l'override
+    for (let i = 0; i < srcBlocks.length; i++) {
+      if (dynamicTypes.includes(srcBlocks[i].type)) {
+        if (!ovBlocks.some(ob => ob.type === srcBlocks[i].type)) {
+          // Bloc dynamique manquant → l'insérer à la bonne position
+          const insertPos = Math.min(i, ovBlocks.length);
+          ovBlocks.splice(insertPos, 0, JSON.parse(JSON.stringify(srcBlocks[i])));
+          changed = true;
         }
       }
-    }
-    if (stale) {
-      delete state.scriptOverrides[sectionId];
-      changed = true;
     }
   }
   if (changed) {
@@ -2403,13 +2393,8 @@ let state = {
 
 // Nettoyage des overrides — supprimer TOUT pour forcer la re-sync
 // Incrémentez ce numéro pour forcer un nouveau nettoyage
-const OVERRIDES_VERSION = 62;
-if (parseInt(localStorage.getItem('tdr_overrides_version') || '0') < OVERRIDES_VERSION) {
-  localStorage.removeItem('tdr_script_overrides');
-  localStorage.setItem('tdr_overrides_version', String(OVERRIDES_VERSION));
-  // Aussi nettoyer sur Supabase pour éviter que les anciens overrides reviennent
-  state._forceCleanSupabase = true;
-}
+// Ne plus supprimer les overrides — les personnalisations sont préservées
+// cleanStaleOverrides() gère la fusion intelligente
 // Charge les overrides sauvegardés
 state.scriptOverrides = JSON.parse(localStorage.getItem('tdr_script_overrides') || '{}');
 
