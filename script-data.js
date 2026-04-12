@@ -14,7 +14,7 @@ const SCRIPT_DATA = {
       emoji: "👋",
       blocks: [
         { type: "normal", text: "Bonjour\nJe suis Sophie Douesneau,\nJe suis consultante du sommeil chez [enseigne_nom]" },
-        { type: "question", text: "[verif_identite]" },
+        { type: "question", text: "Vous êtes bien [prénom_parents], [role_parents] de [prénom_enfant] qui a [age] ?" },
         { type: "question", text: "Est-ce que quelqu'un d'autre se joindra à nous aujourd'hui?" },
         { type: "normal", text: "On est ensemble aujourd'hui jusque [heure_fin]" },
         { type: "question", text: "Est-ce que vous avez bien prévu d'être disponible jusque [heure_fin] ?" },
@@ -23,7 +23,7 @@ const SCRIPT_DATA = {
         { type: "normal", text: "2. On va lire les courbes de taille/poids et périmètre crânien, car le sommeil et l'alimentation sont étroitement liés\n\n3. On va lire ensemble le tableau de suivi que vous avez rempli\n\n4. On va regarder aussi rapidement les photos de la chambre que vous m'avez envoyé\n\nÀ partir de là, je vais avoir une vue détaillée de votre situation et je vais pouvoir vous établir un diagnostic\n\nEnsuite, je vais vous proposer un plan d'action à mettre en place par rapport à tout ce que j'aurais compris de nos échanges\n\nL'idée de cette 1ère consultation c'est généralement de vous donner des 1ers conseils par rapport à ce que je comprends et ce qui me semble prioritaire dans votre situation\n\nDans certains cas, il y aura peut-être besoin d'une AUTRE petite consultation de 20 min\n→ Pour faire le point sur les 1ères choses que vous aurez mises en place\n→ Pour vous donner des conseils supplémentaires\n→ OU Pour répondre aux questions qui seraient survenues durant ses 1ers jours" },
         { type: "question", text: "Est-ce que ça vous convient?" },
         { type: "important", text: "Je précise aussi que je NE suis PAS médecin, et NE remplace PAS votre médecin\nLes conseils que je donne, sont donnés à titre informatif\nSI j'ai le moindre doute médical ⇒ Je vous redirigerai vers un professionnel de santé" },
-        { type: "question", text: "[accord_enfant]" },
+        { type: "question", text: "Nous sommes bien d'accord que [prénom_enfant] est en bonne santé ?\nEt a été vu récemment par un médecin ?" },
         { type: "normal", text: "La consultation est filmée et enregistrée pour que vous puissiez la revisionner à tête reposée (et la montrer au co-parent)\n\nVous pouvez prendre des notes, si vous le souhaitez\nMais de toute façon, je vous enverrai un compte rendu automatique de cette consultation" },
         { type: "question", text: "Est-ce que c'est OK pour vous?" },
       ]

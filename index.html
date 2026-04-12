@@ -513,7 +513,7 @@
       overflow: hidden;
     }
     .pb-recap-intro {
-      font-weight: 700; font-size: 15px; color: var(--text);
+      font-weight: 400; font-size: 15px; color: var(--text);
       margin-bottom: 8px;
     }
     .pb-recap-text {
@@ -2294,10 +2294,10 @@ let state = {
   editMode: false,
 };
 
-// Nettoyage unique des anciens overrides (v48 — supprime aussi problematique/objectifs obsolètes)
-if (!localStorage.getItem('tdr_overrides_cleaned_v48')) {
+// Nettoyage unique des anciens overrides (v49 — variables verif_identite/accord_enfant remplacées)
+if (!localStorage.getItem('tdr_overrides_cleaned_v49')) {
   localStorage.removeItem('tdr_script_overrides');
-  localStorage.setItem('tdr_overrides_cleaned_v48', '1');
+  localStorage.setItem('tdr_overrides_cleaned_v49', '1');
 }
 // Charge les overrides sauvegardés
 state.scriptOverrides = JSON.parse(localStorage.getItem('tdr_script_overrides') || '{}');
@@ -3763,7 +3763,7 @@ function substituteVars(text) {
     .replace(/\[prénom_enfant\]/g, c.prenomEnfant||'[prénom]')
     .replace(/\[prénom_parents\]/g, parents||'[parents]')
     .replace(/\[age\]/g, age)
-    .replace(/\[role_parents\]/g, roleShort)
+    .replace(/\[role_parents\]/g, roleLabel)
     .replace(/\[heure_fin\]/g, heureFin)
     .replace(/\[pb_text\]/g, pb)
     .replace(/\[obj_text\]/g, obj)
