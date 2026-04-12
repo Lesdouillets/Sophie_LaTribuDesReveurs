@@ -2858,7 +2858,6 @@ function editClientInConsultation(tab) {
 }
 
 async function resumeConsultation() {
-  console.log('[RESUME] BEFORE overrides conclusion:', state.scriptOverrides['conclusion']?.blocks?.length, 'blocs');
   // saveFicheOnly met à jour state.client avec les données du formulaire + sauvegarde
   try { await saveFicheOnly(); } catch(e) { console.warn('saveFicheOnly error:', e); }
   state._returningFromConsult = false;
@@ -2867,9 +2866,7 @@ async function resumeConsultation() {
   // Reconstruire les problématiques cochées
   state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
   // Re-construire les sections pour mettre à jour problématique/objectifs
-  console.log('[RESUME] AFTER saveFiche overrides conclusion:', state.scriptOverrides['conclusion']?.blocks?.length, 'blocs');
   buildSections();
-  console.log('[RESUME] AFTER buildSections overrides conclusion:', state.scriptOverrides['conclusion']?.blocks?.length, 'blocs');
   adaptSectionsToClient();
   buildSidebar();
   buildSidebarPbPanel();
@@ -3182,10 +3179,7 @@ function startConsultation() {
   state.consultDuree = parseInt(document.getElementById('consult-duree').value) || 75;
   saveClient();
   buildSections();
-  // Adapter les sections selon les données client
   adaptSectionsToClient();
-  console.log('[START] overrides conclusion:', state.scriptOverrides['conclusion']?.blocks?.length, 'blocs');
-  console.log('[START] all override keys:', Object.keys(state.scriptOverrides));
   initUI();
   document.getElementById('setup-screen').style.display = 'none';
   document.getElementById('app-screen').style.display = 'flex';
@@ -3755,7 +3749,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     if (!obj) return '';
     const objHtml = obj.replace(/\n/g, '<br>');
     return `<div class="block block-pb-recap">
-      <div class="pb-recap-intro">Pour rappel, vos objectifs étaient :</div>
+      <div class="pb-recap-intro"><u>Pour rappel, vos objectifs étaient :</u></div>
       <div class="pb-recap-text"><em>${objHtml}</em></div>
     </div>`;
   }
