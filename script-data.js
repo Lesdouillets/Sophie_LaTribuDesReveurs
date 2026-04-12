@@ -36,8 +36,8 @@ const SCRIPT_DATA = {
       emoji: "🤔",
       blocks: [
         { type: "pb_intro" },
-        { type: "pb_recap" },
         { type: "pb_question" },
+        { type: "pb_recap" },
         {
           type: "option", label: "Si pleurs difficiles", emoji: "😭", style: "pleurs",
           blocks: [
