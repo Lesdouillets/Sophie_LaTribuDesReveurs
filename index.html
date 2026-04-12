@@ -3181,6 +3181,8 @@ function startConsultation() {
   buildSections();
   // Adapter les sections selon les données client
   adaptSectionsToClient();
+  console.log('[START] overrides conclusion:', state.scriptOverrides['conclusion']?.blocks?.length, 'blocs');
+  console.log('[START] all override keys:', Object.keys(state.scriptOverrides));
   initUI();
   document.getElementById('setup-screen').style.display = 'none';
   document.getElementById('app-screen').style.display = 'flex';
