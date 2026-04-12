@@ -701,9 +701,36 @@ const SCRIPT_DATA = {
       { type: "obj_rappel" },
       { type: "question", text: "Est-ce que j'ai répondu à ces objectifs?" },
       {
-        type: "option", label: "Si parent pas OK / perdu 😕",
+        type: "option", label: "Si parent pas OK / perdu 😕", style: "purple",
         blocks: [
-          { type: "normal", text: "OK je vous entends — Et merci de me le dire !\n\nJe ne peux PAS vous laisser avec quelque chose qui ne vous convient PAS ou qui n'est PAS aidant pour vous.\n\nSi je devais vous proposer 1 seule chose pour commencer, ce serait XXX\n\nOn va trouver un autre chemin ensemble qui vous convienne mieux !" }
+          { type: "normal", text: "- Ok je vous entends\n- Et merci de me le dire !" },
+          {
+            type: "option", label: "Si pas OK avec les valeurs/objectifs", style: "purple",
+            blocks: [
+              { type: "question", text: "Qu'est-ce qui… dans ce que j'ai proposé, ne vous ressemble PAS / ne vous parle PAS ?\nEt à l'inverse, qu'est-ce qui serait + juste pour vous ?" }
+            ]
+          },
+          {
+            type: "option", label: "Si c'est TROP ⇒ il faut reprendre", style: "purple",
+            blocks: [
+              { type: "normal", text: "- OK, on est parti sur qqch d'un peu trop compliqué\n- Ce qui compte, c'est que vous vous sentiez soutenu(e), PAS sous pression\n- ⇒ On va simplifier" },
+              { type: "question", text: "Là, qu'est-ce qui vous semble faisable, même tout petit ?\nEst-ce qu'il y a besoin de mettre + de progressivité ?" }
+            ]
+          },
+          {
+            type: "option", label: "Si parent perdu", style: "purple",
+            blocks: [
+              { type: "question", text: "J'ai l'impression que c'est flou pour vous là ⇒ est-ce que je me trompe ?" },
+              { type: "important", text: "🔥 Si je devais vous proposer 1 seule chose pour commencer, ce serait <strong style=\"color:#C0392B\">XXX</strong>" }
+            ]
+          },
+          { type: "normal", text: "- Je ne peux PAS vous laisser avec qqch qui ne vous convient PAS OU qui n'est PAS aidant pour vous.\n- Mais là, malheureusement je dois arrêter là\n- <strong style=\"color:#C0392B\"><u>JE</u></strong> n'ai PAS pris le bon chemin\n⇒ on va trouver un autre chemin ensemble et qui vous convienne mieux\n- MAIS SI vous êtes d'accord, je vous propose qu'on se revoie (gratuitement) :\n  - pour reprendre tout ça + tranquillement\n  - simplifier,\n  - et ajuster vraiment à VOTRE rythme." },
+          { type: "question", text: "Est-ce que ça vous irait qu'on reprogramme un tps ensemble pour retravailler les choses + simplement, à VOTRE rythme ?" },
+          { type: "important", text: "🔥 Écoutez, le <strong style=\"color:#C0392B\">XXX</strong> à <strong style=\"color:#C0392B\">XXX</strong> heures je suis libre, est-ce que ça vous conviendrait ?" },
+          { type: "normal", text: "- Ok, donc on se reparle prochainement\n- En attendant, vous pouvez :\n  - vous reposer sur ce que l'on s'est dit,\n  - et on reprendra notre conversation" },
+          { type: "question", text: "Est-ce que c'est OK pour vous ?" },
+          { type: "normal", text: "Je vous souhaite une bonne journée et à très bientôt" },
+          { type: "important", text: "🏁 **FIN**" }
         ]
       },
       { type: "question", text: "Est-ce qu'il vous reste des questions?" },
