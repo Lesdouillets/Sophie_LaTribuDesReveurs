@@ -3634,32 +3634,38 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const pb = state.client.problematique;
     const prenom = state.client.prenomEnfant || '[prénom]';
     if (pb && pb.trim()) {
-      return `<div class="block block-normal" contenteditable="true">Maintenant, je vais reprendre votre problématique<br>et APRÈS vous allez m'expliquer ce qui se passe exactement pour le sommeil de ${prenom}.</div>`;
+      const customText = b.text ? substituteVars(b.text) : `Maintenant, je vais reprendre votre problématique<br>et APRÈS vous allez m'expliquer ce qui se passe exactement pour le sommeil de ${prenom}.`;
+      return `<div class="block block-normal" contenteditable="true">${customText}</div>`;
     } else {
-      return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ Maintenant, j'aimerais savoir quelle est votre problématique aujourd'hui pour ${prenom}.</div></div>`;
+      const customText = b.text ? substituteVars(b.text) : `Maintenant, j'aimerais savoir quelle est votre problématique aujourd'hui pour ${prenom}.`;
+      return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ ${customText}</div></div>`;
     }
   }
 
   if (b.type === 'pb_question') {
     const pb = state.client.problematique;
     if (!pb || !pb.trim()) return '';
-    return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ Est-ce que c'est toujours d'actualité ?</div></div>`;
+    const customText = b.text ? substituteVars(b.text) : `Est-ce que c'est toujours d'actualité ?`;
+    return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ ${customText}</div></div>`;
   }
 
   if (b.type === 'obj_intro') {
     const obj = state.client.objectifs;
     if (obj && obj.trim()) {
-      return `<div class="block block-normal" contenteditable="true">Alors maintenant, j'aimerais qu'on parle de vos objectifs<br>Je vais relire ce que vous m'avez noté… pour être sûre qu'on est bien alignés.</div>`;
+      const customText = b.text ? substituteVars(b.text) : `Alors maintenant, j'aimerais qu'on parle de vos objectifs<br>Je vais relire ce que vous m'avez noté… pour être sûre qu'on est bien alignés.`;
+      return `<div class="block block-normal" contenteditable="true">${customText}</div>`;
     } else {
       const prenom = state.client.prenomEnfant || '[prénom]';
-      return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ J'aimerais maintenant savoir quels sont vos objectifs aujourd'hui pour ${prenom}.<br>Qu'est-ce que vous souhaitez idéalement mettre en place ?</div></div>`;
+      const customText = b.text ? substituteVars(b.text) : `J'aimerais maintenant savoir quels sont vos objectifs aujourd'hui pour ${prenom}.<br>Qu'est-ce que vous souhaitez idéalement mettre en place ?`;
+      return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ ${customText}</div></div>`;
     }
   }
 
   if (b.type === 'obj_question') {
     const obj = state.client.objectifs;
     if (!obj || !obj.trim()) return '';
-    return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ Est-ce que ça correspond toujours à ce que vous souhaitez aujourd'hui ?<br>Est-ce que vous avez quelque chose à ajouter ou préciser ?</div></div>`;
+    const customText = b.text ? substituteVars(b.text) : `Est-ce que ça correspond toujours à ce que vous souhaitez aujourd'hui ?<br>Est-ce que vous avez quelque chose à ajouter ou préciser ?`;
+    return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ ${customText}</div></div>`;
   }
 
   if (b.type === 'pb_recap') {
@@ -4158,10 +4164,23 @@ function openEditBlockModal(sectionId, path) {
   // Utiliser les blocs rendus à l'écran, avec fallback sur les blocs live
   const blocks = getOverrideBlocks(sec);
   let b = getBlockByPath(blocks, path);
-  // Si le bloc override est vide (pas de text/label/title), utiliser le bloc live
+  // Si le bloc n'a pas de text/label/title, essayer le bloc live ou générer un texte par défaut
   if (b && !b.text && !b.label && !b.title) {
     const liveBlock = getBlockByPath(sec.blocks || [], path);
-    if (liveBlock && (liveBlock.text || liveBlock.label || liveBlock.title)) b = liveBlock;
+    if (liveBlock && (liveBlock.text || liveBlock.label || liveBlock.title)) {
+      b = liveBlock;
+    } else {
+      // Blocs dynamiques : générer le texte par défaut pour l'édition
+      const defaultTexts = {
+        'pb_intro': 'Maintenant, je vais reprendre votre problématique\net APRÈS vous allez m\'expliquer ce qui se passe exactement pour le sommeil de [prénom_enfant].',
+        'pb_question': 'Est-ce que c\'est toujours d\'actualité ?',
+        'obj_intro': 'Alors maintenant, j\'aimerais qu\'on parle de vos objectifs\nJe vais relire ce que vous m\'avez noté… pour être sûre qu\'on est bien alignés.',
+        'obj_question': 'Est-ce que ça correspond toujours à ce que vous souhaitez aujourd\'hui ?\nEst-ce que vous avez quelque chose à ajouter ou préciser ?',
+      };
+      if (defaultTexts[b.type]) {
+        b = { ...b, text: defaultTexts[b.type] };
+      }
+    }
   }
   if (!b) return;
   _editRef = { sectionId, path };
