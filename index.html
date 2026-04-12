@@ -2425,30 +2425,29 @@ function getOverrideBlocks(section) {
   // Garder seulement les blocs qui ont un vrai type
   const cleaned = ov.blocks.filter(b => b.type && b.type !== '');
 
-  // Dédoublonner : pour chaque type dynamique, ne garder que la DERNIÈRE occurrence
-  const seenDynamic = new Set();
-  const deduped = [];
-  for (let i = cleaned.length - 1; i >= 0; i--) {
-    const b = cleaned[i];
+  // Séparer blocs dynamiques et non-dynamiques
+  const dynamicBlocks = {};
+  const nonDynamicBlocks = [];
+  for (const b of cleaned) {
     if (dynamicTypes.includes(b.type)) {
-      if (seenDynamic.has(b.type)) continue;
-      seenDynamic.add(b.type);
+      dynamicBlocks[b.type] = b; // ne garde que le dernier de chaque type
+    } else {
+      nonDynamicBlocks.push(b);
     }
-    deduped.unshift(b);
   }
 
-  // Remplacer chaque bloc dynamique dans les overrides par sa version live (même type)
-  const usedLive = new Set();
-  return deduped.map(b => {
-    if (dynamicTypes.includes(b.type)) {
-      const liveIdx = liveBlocks.findIndex((lb, j) => lb.type === b.type && !usedLive.has(j));
-      if (liveIdx !== -1) {
-        usedLive.add(liveIdx);
-        return liveBlocks[liveIdx];
-      }
+  // Reconstruire dans l'ordre de la source : les dynamiques à leur place, les non-dynamiques après
+  const finalResult = [];
+  for (const src of liveBlocks) {
+    if (dynamicTypes.includes(src.type) && dynamicBlocks[src.type]) {
+      finalResult.push(src); // utiliser la version live
+      delete dynamicBlocks[src.type];
     }
-    return b;
-  });
+  }
+  // Ajouter les blocs non-dynamiques (option, normal, etc.) à la fin
+  finalResult.push(...nonDynamicBlocks);
+
+  return finalResult;
 }
 
 function ensureOverride(section) {
