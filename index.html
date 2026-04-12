@@ -2332,14 +2332,6 @@ function ensureOverride(section) {
   if (!state.scriptOverrides[section.id]) {
     // Copier les blocs live actuels (après customisation par adaptSectionsToClient)
     state.scriptOverrides[section.id] = { blocks: JSON.parse(JSON.stringify(section.blocks || [])) };
-  } else {
-    // S'assurer que le nombre de blocs est synchronisé avec les blocs live
-    const ov = state.scriptOverrides[section.id];
-    const live = section.blocks || [];
-    if (ov.blocks.length !== live.length) {
-      // Les blocs ont changé (customisation client), re-synchroniser
-      state.scriptOverrides[section.id] = { blocks: JSON.parse(JSON.stringify(live)) };
-    }
   }
   return state.scriptOverrides[section.id];
 }
