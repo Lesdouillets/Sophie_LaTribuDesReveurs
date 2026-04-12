@@ -2296,9 +2296,36 @@ async function loadSupabaseOverrides() {
     const { data } = await db.from('script_overrides').select('overrides').eq('user_id', currentUser.id).single();
     if (data?.overrides) {
       state.scriptOverrides = data.overrides;
-      localStorage.setItem('tdr_script_overrides', JSON.stringify(data.overrides));
+      // Nettoyer les overrides dont le nombre de blocs ne correspond plus aux données source
+      cleanStaleOverrides();
+      localStorage.setItem('tdr_script_overrides', JSON.stringify(state.scriptOverrides));
     }
   } catch(e) {}
+}
+
+function cleanStaleOverrides() {
+  // Vérifier chaque override : si le nombre de blocs ne correspond pas aux données source, supprimer
+  const allSections = [
+    ...(SCRIPT_DATA.required || []),
+    ...(SCRIPT_DATA.conditional || []),
+    ...(SCRIPT_DATA.planAction || []),
+    SCRIPT_DATA.conclusion
+  ].filter(Boolean);
+  let changed = false;
+  for (const sectionId of Object.keys(state.scriptOverrides)) {
+    const src = allSections.find(s => s.id === sectionId);
+    if (src && state.scriptOverrides[sectionId]?.blocks?.length !== src.blocks?.length) {
+      console.log('[CLEAN] Override obsolète supprimé:', sectionId,
+        'override:', state.scriptOverrides[sectionId].blocks.length, 'blocs',
+        'source:', src.blocks.length, 'blocs');
+      delete state.scriptOverrides[sectionId];
+      changed = true;
+    }
+  }
+  if (changed) {
+    localStorage.setItem('tdr_script_overrides', JSON.stringify(state.scriptOverrides));
+    syncOverridesToSupabase();
+  }
 }
 
 async function syncOverridesToSupabase() {
@@ -3171,7 +3198,8 @@ function buildSections() {
     }
   });
   state.sections.push({...SCRIPT_DATA.conclusion, sectionType:'conclusion'});
-  console.log('[BUILD] conclusion blocks:', SCRIPT_DATA.conclusion.blocks.length, SCRIPT_DATA.conclusion.blocks.map(b=>b.type||b.label));
+  // Nettoyer les overrides obsolètes après construction des sections
+  cleanStaleOverrides();
 }
 
 // ═══════════════════════════════════════════════════
@@ -3454,11 +3482,6 @@ function markDone() {
 // ═══════════════════════════════════════════════════
 function renderCurrentSection() {
   const section = state.sections[state.currentIdx]; if (!section) return;
-  if (section.id === 'conclusion') {
-    const ovBlocks = getOverrideBlocks(section);
-    console.log('[RENDER conclusion] section.blocks:', section.blocks.length, '| override blocks:', ovBlocks.length, '| hasOverride:', !!state.scriptOverrides['conclusion']);
-    console.log('[RENDER conclusion] block types:', ovBlocks.map(b=>b.type + (b.label?' "'+b.label+'"':'')));
-  }
   const area = document.getElementById('content-area');
   area.classList.toggle('edit-mode-on', state.editMode);
   const hasOverride = !!state.scriptOverrides[section.id];
