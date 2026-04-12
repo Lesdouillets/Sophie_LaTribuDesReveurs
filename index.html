@@ -2308,7 +2308,7 @@ async function loadSupabaseOverrides() {
 }
 
 function cleanStaleOverrides() {
-  // Vérifier chaque override : si le nombre de blocs ne correspond pas aux données source, supprimer
+  // Vérifier chaque override : supprimer si le nombre OU les types de blocs ne correspondent plus
   const allSections = [
     ...(SCRIPT_DATA.required || []),
     ...(SCRIPT_DATA.conditional || []),
@@ -2318,10 +2318,21 @@ function cleanStaleOverrides() {
   let changed = false;
   for (const sectionId of Object.keys(state.scriptOverrides)) {
     const src = allSections.find(s => s.id === sectionId);
-    if (src && state.scriptOverrides[sectionId]?.blocks?.length !== src.blocks?.length) {
-      console.log('[CLEAN] Override obsolète supprimé:', sectionId,
-        'override:', state.scriptOverrides[sectionId].blocks.length, 'blocs',
-        'source:', src.blocks.length, 'blocs');
+    if (!src) continue;
+    const ovBlocks = state.scriptOverrides[sectionId]?.blocks || [];
+    const srcBlocks = src.blocks || [];
+    // Vérifier nombre de blocs
+    let stale = ovBlocks.length !== srcBlocks.length;
+    // Vérifier que les types de blocs correspondent (surtout les dynamiques)
+    if (!stale) {
+      const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','tarifs_tableau'];
+      for (let i = 0; i < srcBlocks.length; i++) {
+        if (dynamicTypes.includes(srcBlocks[i].type) && ovBlocks[i]?.type !== srcBlocks[i].type) {
+          stale = true; break;
+        }
+      }
+    }
+    if (stale) {
       delete state.scriptOverrides[sectionId];
       changed = true;
     }
