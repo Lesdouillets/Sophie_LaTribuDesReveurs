@@ -2226,7 +2226,7 @@
   </div>
 </div>
 
-<script src="script-data.js?v=157"></script>
+<script src="script-data.js?v=158"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -2392,7 +2392,7 @@ let state = {
 
 // Nettoyage des overrides — supprimer TOUT pour forcer la re-sync
 // Incrémentez ce numéro pour forcer un nouveau nettoyage
-const OVERRIDES_VERSION = 57;
+const OVERRIDES_VERSION = 58;
 if (parseInt(localStorage.getItem('tdr_overrides_version') || '0') < OVERRIDES_VERSION) {
   localStorage.removeItem('tdr_script_overrides');
   localStorage.setItem('tdr_overrides_version', String(OVERRIDES_VERSION));
