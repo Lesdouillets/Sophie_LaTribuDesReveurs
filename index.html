@@ -4270,7 +4270,7 @@ function saveEditBlock() {
   if (!b) return;
   const taEl = document.getElementById('edit-block-textarea');
   // Nettoyer le HTML du contenteditable : convertir en markdown pour le stockage
-  const newText = taEl.innerHTML
+  let newText = taEl.innerHTML
     .replace(/<strong>(.*?)<\/strong>/gi, '**$1**')
     .replace(/<b>(.*?)<\/b>/gi, '**$1**')
     .replace(/<em>(.*?)<\/em>/gi, '*$1*')
