@@ -581,6 +581,10 @@
     }
     .block-option.purple .option-content .block-option.purple .option-header:hover { background: rgba(109,40,217,0.15); }
     .block-option.purple .option-content .block-option.purple .option-content { background: #ddd3f8; }
+    .block-option.purple .option-content > .edit-block-wrap > .block-important,
+    .block-option.purple .option-content > .block-important {
+      background: transparent; border: none; box-shadow: none;
+    }
 
     /* TABLEAU BESOINS SOMMEIL */
     .besoins-table {
@@ -3674,17 +3678,21 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
 
   if (b.type === 'tarifs_tableau') {
-    return `<div class="block block-normal" style="padding:8px;overflow-x:auto;font-size:12px">
-      <table style="width:100%;border-collapse:collapse;margin-bottom:10px">
-        <tr><td style="padding:5px 8px;border:1px solid #ddd;font-weight:700;background:#f5f7fc">Consultation de suivi</td><td style="padding:5px 8px;border:1px solid #ddd">20min</td><td style="padding:5px 8px;border:1px solid #ddd">45€</td><td style="padding:5px 8px;border:1px solid #ddd"></td></tr>
-        <tr><td style="padding:5px 8px;border:1px solid #ddd;font-weight:700;background:#f5f7fc"></td><td style="padding:5px 8px;border:1px solid #ddd">45 min</td><td style="padding:5px 8px;border:1px solid #ddd">90€</td><td style="padding:5px 8px;border:1px solid #ddd"></td></tr>
-        <tr><td style="padding:5px 8px;border:1px solid #ddd;font-weight:700;background:#f5f7fc">WhatsApp</td><td style="padding:5px 8px;border:1px solid #ddd">1 sem.</td><td style="padding:5px 8px;border:1px solid #ddd">90€</td><td style="padding:5px 8px;border:1px solid #ddd">Délai rép. 24h</td></tr>
-        <tr><td style="padding:5px 8px;border:1px solid #ddd;font-weight:700;background:#f5f7fc">Semaine de suivi</td><td style="padding:5px 8px;border:1px solid #ddd">1 sem.</td><td style="padding:5px 8px;border:1px solid #ddd">18€ puis 150€</td><td style="padding:5px 8px;border:1px solid #ddd">2 RDV 20min + WhatsApp</td></tr>
-        <tr><td style="padding:5px 8px;border:1px solid #ddd;font-weight:700;background:#f5f7fc">Lecture de courbes</td><td style="padding:5px 8px;border:1px solid #ddd">20min</td><td style="padding:5px 8px;border:1px solid #ddd">45€</td><td style="padding:5px 8px;border:1px solid #ddd"></td></tr>
+    const hd = 'padding:5px 8px;border:1px solid #ddd;font-weight:700;background:#2d3f5c;color:white;width:180px';
+    const td = 'padding:5px 8px;border:1px solid #ddd;background:white';
+    return `<div class="block block-normal" style="padding:8px;overflow-x:auto;font-size:12px;background:transparent;border:none;box-shadow:none">
+      <table style="width:100%;border-collapse:collapse;margin-bottom:10px;table-layout:fixed">
+        <col style="width:180px"><col><col><col>
+        <tr><td style="${hd}">Consultation de suivi</td><td style="${td}">20min</td><td style="${td}">45€</td><td style="${td}"></td></tr>
+        <tr><td style="${hd}"></td><td style="${td}">45 min</td><td style="${td}">90€</td><td style="${td}"></td></tr>
+        <tr><td style="${hd}">WhatsApp</td><td style="${td}">1 sem.</td><td style="${td}">90€</td><td style="${td}">Délai rép. 24h</td></tr>
+        <tr><td style="${hd}">Semaine de suivi</td><td style="${td}">1 sem.</td><td style="${td}">18€ puis 150€</td><td style="${td}">2 RDV 20min + WhatsApp</td></tr>
+        <tr><td style="${hd}">Lecture de courbes</td><td style="${td}">20min</td><td style="${td}">45€</td><td style="${td}"></td></tr>
       </table>
-      <table style="width:100%;border-collapse:collapse">
-        <tr><td style="padding:5px 8px;border:1px solid #ddd;font-weight:700;background:#f5f7fc">Grimoire Fée Dodo</td><td style="padding:5px 8px;border:1px solid #ddd">Accès illimité 2 ans</td><td style="padding:5px 8px;border:1px solid #ddd">299€</td><td style="padding:5px 8px;border:1px solid #ddd"></td></tr>
-        <tr><td style="padding:5px 8px;border:1px solid #ddd;font-weight:700;background:#f5f7fc">Consultations de groupe</td><td style="padding:5px 8px;border:1px solid #ddd">1h/sem. (par âge)</td><td style="padding:5px 8px;border:1px solid #ddd">29.99€/mois</td><td style="padding:5px 8px;border:1px solid #ddd">Sans engagement</td></tr>
+      <table style="width:100%;border-collapse:collapse;table-layout:fixed">
+        <col style="width:180px"><col><col><col>
+        <tr><td style="${hd}">Grimoire Fée Dodo</td><td style="${td}">Accès illimité 2 ans</td><td style="${td}">299€</td><td style="${td}"></td></tr>
+        <tr><td style="${hd}">Consultations de groupe</td><td style="${td}">1h/sem. (par âge)</td><td style="${td}">29.99€/mois</td><td style="${td}">Sans engagement</td></tr>
       </table>
     </div>`;
   }
