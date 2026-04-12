@@ -690,12 +690,12 @@ const SCRIPT_DATA = {
   // ── CONCLUSION ────────────────────────────────────────────
   conclusion: {
     id: "conclusion",
-    title: "X. Validation et fin",
+    title: "X. Validation des objectifs et fin",
     emoji: "✅",
     blocks: [
       { type: "normal", text: "C'est TRÈS important que vous vous sentiez acteur ET libre dans vos choix" },
       { type: "question", text: "Est-ce que tout ce que je vous ai proposé vous correspond à vos valeurs?" },
-      { type: "important", text: "🔥 Pour rappel, vos objectifs étaient :\n[obj_text]" },
+      { type: "obj_rappel" },
       { type: "question", text: "Est-ce que j'ai répondu à ces objectifs?" },
       {
         type: "option", label: "Si parent pas OK / perdu 😕",
