@@ -1575,6 +1575,9 @@
         <button type="button" onmousedown="event.preventDefault();execWithSelection('bold');saveSosContent()" style="background:none;border:1px solid #ccc;border-radius:4px;padding:2px 8px;cursor:pointer;font-weight:900;font-size:12px;min-width:0;flex-shrink:0" title="Gras">G</button>
         <button type="button" onmousedown="event.preventDefault();execWithSelection('italic');saveSosContent()" style="background:none;border:1px solid #ccc;border-radius:4px;padding:2px 8px;cursor:pointer;font-style:italic;font-size:12px;min-width:0;flex-shrink:0" title="Italique">I</button>
         <button type="button" onmousedown="event.preventDefault();execWithSelection('underline');saveSosContent()" style="background:none;border:1px solid #ccc;border-radius:4px;padding:2px 8px;cursor:pointer;text-decoration:underline;font-size:12px;min-width:0;flex-shrink:0" title="Souligné">S</button>
+        <button type="button" onmousedown="event.preventDefault();execWithSelection('insertUnorderedList');saveSosContent()" style="background:none;border:1px solid #ccc;border-radius:4px;padding:2px 6px;cursor:pointer;font-size:11px;min-width:0;flex-shrink:0" title="Liste à puces">•≡</button>
+        <button type="button" onmousedown="event.preventDefault();execWithSelection('indent');saveSosContent()" style="background:none;border:1px solid #ccc;border-radius:4px;padding:2px 6px;cursor:pointer;font-size:11px;min-width:0;flex-shrink:0" title="Retrait →">→</button>
+        <button type="button" onmousedown="event.preventDefault();execWithSelection('outdent');saveSosContent()" style="background:none;border:1px solid #ccc;border-radius:4px;padding:2px 6px;cursor:pointer;font-size:11px;min-width:0;flex-shrink:0" title="← Retrait">←</button>
         <input type="color" value="#8b0000" class="color-picker-exec" style="width:24px;height:24px;border:1px solid #ccc;border-radius:4px;cursor:pointer;padding:0;flex-shrink:0" title="Couleur">
       <div class="sos-body" id="sos-body">
 
@@ -2044,6 +2047,11 @@
         <button type="button" onmousedown="event.preventDefault();document.execCommand('bold')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 10px;cursor:pointer;font-weight:900;font-size:13px" title="Gras">G</button>
         <button type="button" onmousedown="event.preventDefault();document.execCommand('italic')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 10px;cursor:pointer;font-style:italic;font-size:13px" title="Italique">I</button>
         <button type="button" onmousedown="event.preventDefault();document.execCommand('underline')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 10px;cursor:pointer;text-decoration:underline;font-size:13px" title="Souligné">S</button>
+        <span style="width:1px;background:#ccc;margin:0 4px"></span>
+        <button type="button" onmousedown="event.preventDefault();document.execCommand('insertUnorderedList')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:13px" title="Liste à puces">•≡</button>
+        <button type="button" onmousedown="event.preventDefault();document.execCommand('indent')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:13px" title="Retrait →">→</button>
+        <button type="button" onmousedown="event.preventDefault();document.execCommand('outdent')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:13px" title="← Retrait">←</button>
+        <span style="width:1px;background:#ccc;margin:0 4px"></span>
         <input type="color" value="#c0392b" class="color-picker-exec" style="width:28px;height:28px;border:1px solid #ccc;border-radius:4px;cursor:pointer;padding:0" title="Couleur">
       </div>
       <div id="edit-block-textarea" contenteditable="true" style="width:100%;min-height:130px;padding:10px;border:1.5px solid var(--border);border-radius:0 0 8px 8px;font-size:14px;font-family:inherit;outline:none;overflow-y:auto;cursor:text;line-height:1.6" data-placeholder="Texte du bloc…"></div>
@@ -2075,6 +2083,11 @@
         <button type="button" onmousedown="event.preventDefault();document.execCommand('bold')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 10px;cursor:pointer;font-weight:900;font-size:13px" title="Gras">G</button>
         <button type="button" onmousedown="event.preventDefault();document.execCommand('italic')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 10px;cursor:pointer;font-style:italic;font-size:13px" title="Italique">I</button>
         <button type="button" onmousedown="event.preventDefault();document.execCommand('underline')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 10px;cursor:pointer;text-decoration:underline;font-size:13px" title="Souligné">S</button>
+        <span style="width:1px;background:#ccc;margin:0 4px"></span>
+        <button type="button" onmousedown="event.preventDefault();document.execCommand('insertUnorderedList')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:13px" title="Liste à puces">•≡</button>
+        <button type="button" onmousedown="event.preventDefault();document.execCommand('indent')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:13px" title="Retrait →">→</button>
+        <button type="button" onmousedown="event.preventDefault();document.execCommand('outdent')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:13px" title="← Retrait">←</button>
+        <span style="width:1px;background:#ccc;margin:0 4px"></span>
         <input type="color" value="#c0392b" class="color-picker-exec" style="width:28px;height:28px;border:1px solid #ccc;border-radius:4px;cursor:pointer;padding:0" title="Couleur">
       </div>
       <div id="add-block-textarea" contenteditable="true" style="width:100%;min-height:100px;padding:10px;border:1.5px solid var(--border);border-radius:0 0 8px 8px;font-size:14px;font-family:inherit;outline:none;overflow-y:auto;cursor:text;line-height:1.6" data-placeholder="Texte…"></div>
