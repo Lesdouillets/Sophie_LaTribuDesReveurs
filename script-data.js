@@ -689,6 +689,31 @@ const SCRIPT_DATA = {
       ]
     },
 
+    // ── IX. REFORMULATION ET STATISTIQUES ──────────────────
+    {
+      id: "reformulation",
+      title: "IX. Reformulation et statistiques",
+      emoji: "📊",
+      blocks: [
+        { type: "question", text: "C'est bien ça ?\nEst-ce clair pour vous ?" },
+        {
+          type: "option", label: "Pas eu le temps de tout discuter", style: "purple",
+          blocks: [
+            { type: "normal", text: "On a discuté de pas mal de choses\nMais malheureusement, on n'a PAS eu le temps de TOUT discuter\nCe que je vous propose c'est que l'on finisse cette discussion autour d'**un AUTRE RDV**" },
+            { type: "question", text: "Est-ce que ça vous irait ?" },
+            {
+              type: "option", label: "💰 Tarifs", style: "purple",
+              blocks: [
+                { type: "tarifs_tableau" }
+              ]
+            },
+            { type: "important", text: "🔥 On peut se voir le <strong style=\"color:#C0392B\">XXX</strong>" },
+            { type: "conseil", text: "👏 En tout cas, ON VOIT :\n- que vous avez essayé de mettre des choses en place\n- et AVEC CE QU'ON vient de voir ensemble :\n  - vous avez toutes les bases\n  - pour que ça évolue dans le bon sens !" }
+          ]
+        },
+      ]
+    },
+
   ],
 
   // ── CONCLUSION ────────────────────────────────────────────
