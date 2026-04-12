@@ -714,7 +714,7 @@
     .sos-section.open .sos-section-body { display: block; }
     .sos-section-body ul { padding-left: 16px; margin: 10px 0 4px; }
     .sos-section-body li { font-size: 13px; line-height: 1.7; color: var(--text); margin-bottom: 4px; }
-    .sos-section-body strong { color: #8b0000; font-weight: 700; }
+    .sos-section-body strong { color: #C0392B; font-weight: 700; }
     .sos-section-body em { color: var(--text-light); font-style: normal; }
     .sos-aside {
       margin: 10px 0 6px; padding: 10px 14px;
@@ -1549,13 +1549,38 @@
         }
         document.execCommand(cmd, false, val || null);
       }
-      // Attacher le listener à tous les color pickers
-      document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.color-picker-exec').forEach(picker => {
-          picker.addEventListener('input', function(e) {
-            execWithSelection('foreColor', e.target.value);
-          });
-        });
+      // Palette de couleurs prédéfinies (style Word)
+      const COLOR_PALETTE = [
+        { color: '#000000', name: 'Noir' },
+        { color: '#C0392B', name: 'Rouge foncé' },
+        { color: '#E74C3C', name: 'Rouge' },
+        { color: '#E67E22', name: 'Orange' },
+        { color: '#F1C40F', name: 'Jaune' },
+        { color: '#27AE60', name: 'Vert' },
+        { color: '#2980B9', name: 'Bleu' },
+        { color: '#8E44AD', name: 'Violet' },
+        { color: '#5B21B6', name: 'Violet foncé' },
+        { color: '#2D3F5C', name: 'Bleu marine' },
+      ];
+      function createColorPaletteHTML(onClickFn) {
+        return `<div class="color-palette-popup" style="display:none;position:absolute;bottom:100%;left:0;background:white;border:1.5px solid #ccc;border-radius:8px;padding:6px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:100;margin-bottom:4px">
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px">
+            ${COLOR_PALETTE.map(c => `<button type="button" onmousedown="event.preventDefault();${onClickFn}('${c.color}')" style="width:28px;height:28px;background:${c.color};border:1.5px solid #ddd;border-radius:4px;cursor:pointer" title="${c.name}"></button>`).join('')}
+          </div>
+        </div>`;
+      }
+      function toggleColorPalette(btn) {
+        const popup = btn.parentElement.querySelector('.color-palette-popup');
+        if (!popup) return;
+        // Fermer les autres popups
+        document.querySelectorAll('.color-palette-popup').forEach(p => { if (p !== popup) p.style.display = 'none'; });
+        popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
+      }
+      // Fermer les palettes en cliquant ailleurs
+      document.addEventListener('mousedown', (e) => {
+        if (!e.target.closest('.color-palette-wrap')) {
+          document.querySelectorAll('.color-palette-popup').forEach(p => p.style.display = 'none');
+        }
       });
     </script>
 
@@ -1564,7 +1589,10 @@
       <button onmousedown="event.preventDefault();document.execCommand('bold')" style="background:none;border:none;color:white;font-weight:900;font-size:14px;cursor:pointer;padding:4px 8px;border-radius:4px" title="Gras">G</button>
       <button onmousedown="event.preventDefault();document.execCommand('italic')" style="background:none;border:none;color:white;font-style:italic;font-size:14px;cursor:pointer;padding:4px 8px;border-radius:4px" title="Italique">I</button>
       <button onmousedown="event.preventDefault();document.execCommand('underline')" style="background:none;border:none;color:white;text-decoration:underline;font-size:14px;cursor:pointer;padding:4px 8px;border-radius:4px" title="Souligné">S</button>
-      <input type="color" value="#c0392b" onmousedown="event.stopPropagation()" class="color-picker-exec" style="width:24px;height:24px;border:none;border-radius:4px;cursor:pointer;padding:0;background:none" title="Couleur">
+      <span class="color-palette-wrap" style="position:relative">
+        <button onmousedown="event.preventDefault();toggleColorPalette(this)" style="background:none;border:none;color:white;font-size:14px;cursor:pointer;padding:4px 8px;border-radius:4px" title="Couleur">🎨</button>
+        <script>document.currentScript.parentElement.insertAdjacentHTML('beforeend', createColorPaletteHTML("execWithSelection.bind(null,'foreColor')"))</script>
+      </span>
     </div>
 
     <!-- SOS PANEL — right rail -->
@@ -1579,7 +1607,10 @@
             <button type="button" onmousedown="event.preventDefault();execWithSelection('insertUnorderedList');saveSosContent()" style="background:none;border:1px solid rgba(255,255,255,0.3);border-radius:3px;padding:1px 5px;cursor:pointer;font-size:9px;color:white;min-width:0" title="Liste à puces">•≡</button>
             <button type="button" onmousedown="event.preventDefault();execWithSelection('indent');saveSosContent()" style="background:none;border:1px solid rgba(255,255,255,0.3);border-radius:3px;padding:1px 5px;cursor:pointer;font-size:9px;color:white;min-width:0" title="Retrait →">→</button>
             <button type="button" onmousedown="event.preventDefault();execWithSelection('outdent');saveSosContent()" style="background:none;border:1px solid rgba(255,255,255,0.3);border-radius:3px;padding:1px 5px;cursor:pointer;font-size:9px;color:white;min-width:0" title="← Retrait">←</button>
-            <input type="color" value="#8b0000" class="color-picker-exec" style="width:18px;height:18px;border:1px solid rgba(255,255,255,0.3);border-radius:3px;cursor:pointer;padding:0" title="Couleur">
+            <span class="color-palette-wrap" style="position:relative">
+              <button type="button" onmousedown="event.preventDefault();toggleColorPalette(this)" style="background:none;border:1px solid rgba(255,255,255,0.3);border-radius:3px;padding:1px 5px;cursor:pointer;font-size:9px;min-width:0" title="Couleur">🎨</button>
+              <script>document.currentScript.parentElement.insertAdjacentHTML('beforeend', createColorPaletteHTML("function(c){execWithSelection('foreColor',c);saveSosContent()}"))</script>
+            </span>
           </div>
         </div>
         <button class="sos-close-btn" onclick="toggleSosPanel()">✕</button>
@@ -2057,7 +2088,10 @@
         <button type="button" onmousedown="event.preventDefault();document.execCommand('indent')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:13px" title="Retrait →">→</button>
         <button type="button" onmousedown="event.preventDefault();document.execCommand('outdent')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:13px" title="← Retrait">←</button>
         <span style="width:1px;background:#ccc;margin:0 4px"></span>
-        <input type="color" value="#c0392b" class="color-picker-exec" style="width:28px;height:28px;border:1px solid #ccc;border-radius:4px;cursor:pointer;padding:0" title="Couleur">
+        <span class="color-palette-wrap" style="position:relative">
+          <button type="button" onmousedown="event.preventDefault();toggleColorPalette(this)" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:13px" title="Couleur">🎨</button>
+          <script>document.currentScript.parentElement.insertAdjacentHTML('beforeend', createColorPaletteHTML("execWithSelection.bind(null,'foreColor')"))</script>
+        </span>
       </div>
       <div id="edit-block-textarea" contenteditable="true" style="width:100%;min-height:130px;padding:10px;border:1.5px solid var(--border);border-radius:0 0 8px 8px;font-size:14px;font-family:inherit;outline:none;overflow-y:auto;cursor:text;line-height:1.6" data-placeholder="Texte du bloc…"></div>
     </div>
@@ -2093,7 +2127,10 @@
         <button type="button" onmousedown="event.preventDefault();document.execCommand('indent')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:13px" title="Retrait →">→</button>
         <button type="button" onmousedown="event.preventDefault();document.execCommand('outdent')" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:13px" title="← Retrait">←</button>
         <span style="width:1px;background:#ccc;margin:0 4px"></span>
-        <input type="color" value="#c0392b" class="color-picker-exec" style="width:28px;height:28px;border:1px solid #ccc;border-radius:4px;cursor:pointer;padding:0" title="Couleur">
+        <span class="color-palette-wrap" style="position:relative">
+          <button type="button" onmousedown="event.preventDefault();toggleColorPalette(this)" style="background:none;border:1px solid #ccc;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:13px" title="Couleur">🎨</button>
+          <script>document.currentScript.parentElement.insertAdjacentHTML('beforeend', createColorPaletteHTML("execWithSelection.bind(null,'foreColor')"))</script>
+        </span>
       </div>
       <div id="add-block-textarea" contenteditable="true" style="width:100%;min-height:100px;padding:10px;border:1.5px solid var(--border);border-radius:0 0 8px 8px;font-size:14px;font-family:inherit;outline:none;overflow-y:auto;cursor:text;line-height:1.6" data-placeholder="Texte…"></div>
     </div>
@@ -3691,7 +3728,7 @@ function renderBesoinsSommeil(tranches) {
     return false;
   }
   const inputStyle = 'width:80px;padding:8px 6px;border:2px solid #e8a0a0;border-radius:8px;font-size:16px;font-weight:800;text-align:center;background:#fff';
-  return `<table class="besoins-table"><thead><tr><th>Tranche d'âge</th><th>Total / 24h</th><th>Nuit</th><th>Jour / Siestes</th><th style="background:#c0392b;color:white;font-size:14px">📝 ${prenom}</th></tr></thead><tbody>`
+  return `<table class="besoins-table"><thead><tr><th>Tranche d'âge</th><th>Total / 24h</th><th>Nuit 🌙</th><th>Jour / Siestes ☀️</th><th style="background:#c0392b;color:white;font-size:14px">📝 ${prenom}</th></tr></thead><tbody>`
     + tranches.map(t => {
       const active = matchAge(t);
       const inputCell = active
