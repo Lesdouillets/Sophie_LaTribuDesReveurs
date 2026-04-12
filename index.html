@@ -2858,6 +2858,7 @@ function editClientInConsultation(tab) {
 }
 
 async function resumeConsultation() {
+  console.log('[RESUME] BEFORE overrides conclusion:', state.scriptOverrides['conclusion']?.blocks?.length, 'blocs');
   // saveFicheOnly met à jour state.client avec les données du formulaire + sauvegarde
   try { await saveFicheOnly(); } catch(e) { console.warn('saveFicheOnly error:', e); }
   state._returningFromConsult = false;
@@ -2866,7 +2867,9 @@ async function resumeConsultation() {
   // Reconstruire les problématiques cochées
   state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
   // Re-construire les sections pour mettre à jour problématique/objectifs
+  console.log('[RESUME] AFTER saveFiche overrides conclusion:', state.scriptOverrides['conclusion']?.blocks?.length, 'blocs');
   buildSections();
+  console.log('[RESUME] AFTER buildSections overrides conclusion:', state.scriptOverrides['conclusion']?.blocks?.length, 'blocs');
   adaptSectionsToClient();
   buildSidebar();
   buildSidebarPbPanel();
