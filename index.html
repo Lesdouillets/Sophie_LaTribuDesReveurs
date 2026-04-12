@@ -3663,11 +3663,13 @@ function renderBesoinsSommeil(tranches) {
     if (y === 0 && m === 0 && d === 0) return parseInt(s) || NaN;
     return y * 12 + m;
   }
+  console.log('[DIAG] corrige:', corrige, typeof corrige, '| reel:', reel, typeof reel, '| ageEnfant:', state.client.ageEnfant, '| ageCorrigeManuel:', state.client.ageCorrigeManuel);
   const months = (corrige !== '' && corrige !== undefined && corrige !== null)
     ? parseInt(corrige)
     : (reel !== '' && reel !== undefined && reel !== null)
       ? parseInt(reel)
-      : parseAgeToMonths(state.client.ageEnfant);
+      : parseAgeToMonths(state.client.ageCorrigeManuel || state.client.ageEnfant);
+  console.log('[DIAG] months:', months);
   const ageLabel = (corrige !== '' && corrige !== undefined && corrige !== null)
     ? (state.client.ageCorrigeStr || corrige + ' mois') + ' (corrigé)'
     : (state.client.ageReelStr || months + ' mois');
