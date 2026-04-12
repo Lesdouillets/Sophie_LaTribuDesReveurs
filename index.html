@@ -2815,16 +2815,18 @@ function editClientInConsultation(tab) {
 }
 
 async function resumeConsultation() {
+  // saveFicheOnly met à jour state.client avec les données du formulaire + sauvegarde
   try { await saveFicheOnly(); } catch(e) { console.warn('saveFicheOnly error:', e); }
-  // Mettre à jour state.client avec les nouvelles données du formulaire
-  collectClientData();
   state._returningFromConsult = false;
   document.getElementById('setup-screen').style.display = 'none';
   document.getElementById('app-screen').style.display = 'flex';
+  // Reconstruire les problématiques cochées
+  state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
   // Re-construire les sections pour mettre à jour problématique/objectifs
   buildSections();
   adaptSectionsToClient();
   buildSidebar();
+  buildSidebarPbPanel();
   updateHeader();
   updatePobBar();
   renderCurrentSection();
@@ -3949,8 +3951,8 @@ function renderMarkdown(text) {
     }
   }
   closeLists(0);
-  // Clean up multiple consecutive <br>
-  return html.replace(/(<br>){3,}/g, '<br><br>');
+  // Clean up multiple consecutive <br> and trailing <br>
+  return html.replace(/(<br>){3,}/g, '<br><br>').replace(/(<br>)+$/g, '');
 }
 
 // ═══════════════════════════════════════════════════
