@@ -2349,10 +2349,10 @@ let state = {
   editMode: false,
 };
 
-// Nettoyage unique des anciens overrides (v50 — pb/obj utilisent blocs dynamiques)
-if (!localStorage.getItem('tdr_overrides_cleaned_v50')) {
+// Nettoyage unique des anciens overrides (v53 — ajout tableau tarifs)
+if (!localStorage.getItem('tdr_overrides_cleaned_v53')) {
   localStorage.removeItem('tdr_script_overrides');
-  localStorage.setItem('tdr_overrides_cleaned_v50', '1');
+  localStorage.setItem('tdr_overrides_cleaned_v53', '1');
 }
 // Charge les overrides sauvegardés
 state.scriptOverrides = JSON.parse(localStorage.getItem('tdr_script_overrides') || '{}');
@@ -2365,7 +2365,7 @@ function saveScriptOverrides() {
 function getOverrideBlocks(section) {
   const ov = state.scriptOverrides[section.id];
   if (!ov) return section.blocks || [];
-  const dynamicTypes = ['pb_section', 'pb_recap', 'obj_section', 'obj_recap', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques'];
+  const dynamicTypes = ['pb_section', 'pb_recap', 'obj_section', 'obj_recap', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'tarifs_tableau'];
   const liveBlocks = section.blocks || [];
   // Remplacer chaque bloc dynamique dans les overrides par sa version live (même type)
   // On cherche le bloc live correspondant par type plutôt que par index
@@ -3147,59 +3147,9 @@ function startConsultation() {
 // BUILD SECTIONS
 // ═══════════════════════════════════════════════════
 function adaptSectionsToClient() {
-  const c = state.client;
-  // Les overrides persistent entre clients, SAUF si le nombre de blocs change
-  // (ex: passage de "avec problématique" à "sans problématique")
-  state.sections = state.sections.map(s => {
-    if (s.id === 'problematique') {
-      if (c.problematique && c.problematique.trim()) {
-        // Problématique connue : bloc intro + recap dynamique + question + options
-        return { ...s, blocks: [
-          { type: 'normal', text: 'Maintenant, je vais reprendre votre problématique\net APRÈS vous allez m\'expliquer ce qui se passe exactement pour le sommeil de [prénom_enfant].' },
-          { type: 'pb_recap' },
-          { type: 'question', text: 'Est-ce que c\'est toujours d\'actualité?' },
-          { type: 'option', label: 'Si pleurs difficiles 😭', blocks: [
-            { type: 'empathie', text: 'J\'entends que c\'est difficile pour vous d\'entendre votre enfant pleurer…\nMerci de me le confier.\n\nIl y a beaucoup de parents POUR QUI :\n→ c\'est vraiment compliqué,\n→ et chacun a sa sensibilité là-dessus\n→ et c\'est OK\n\nL\'idée ici, ça ne va PAS ÊTRE de vous forcer à faire quelque chose qui ne vous correspond pas.\nOn va plutôt adapter les choses à vous, à CE QUE vous ÊTES CAPABLE de faire aujourd\'hui.\n\nParce que :\nPLUS vous serez alignée avec vous-même → PLUS ce sera fluide pour vous… et pour votre enfant aussi.\n\nEt on va justement trouver ensemble une façon de faire QUI respecte ça' }
-          ]}
-        ]};
-      } else {
-        // Pas de problématique renseignée : poser la question
-        return { ...s, blocks: [
-          { type: 'question', text: 'Maintenant, j\'aimerais savoir quelle est votre problématique aujourd\'hui pour [prénom_enfant].' },
-          { type: 'option', label: 'Si pleurs difficiles 😭', blocks: [
-            { type: 'empathie', text: 'J\'entends que c\'est difficile pour vous d\'entendre votre enfant pleurer…\nMerci de me le confier.\n\nIl y a beaucoup de parents POUR QUI :\n→ c\'est vraiment compliqué,\n→ et chacun a sa sensibilité là-dessus\n→ et c\'est OK\n\nL\'idée ici, ça ne va PAS ÊTRE de vous forcer à faire quelque chose qui ne vous correspond pas.\nOn va plutôt adapter les choses à vous, à CE QUE vous ÊTES CAPABLE de faire aujourd\'hui.' }
-          ]}
-        ]};
-      }
-    }
-    if (s.id === 'objectifs') {
-      if (c.objectifs && c.objectifs.trim()) {
-        // Objectifs connus : bloc intro + recap dynamique + question + options purple
-        return { ...s, blocks: [
-          { type: 'normal', text: 'Alors maintenant, j\'aimerais qu\'on parle de vos objectifs\nJe vais relire ce que vous m\'avez noté… pour être sûre qu\'on est bien alignés.' },
-          { type: 'obj_recap' },
-          { type: 'question', text: 'Est-ce que ça correspond toujours à ce que vous souhaitez aujourd\'hui ?\nEst-ce que vous avez quelque chose à ajouter ou préciser ?' },
-          ...s.blocks.slice(1) // garder les options purple (lieu de sommeil, position ventrale…)
-        ]};
-      } else {
-        // Pas d'objectifs renseignés : poser la question
-        return { ...s, blocks: [
-          { type: 'question', text: 'J\'aimerais maintenant savoir quels sont vos objectifs aujourd\'hui pour [prénom_enfant].\nQu\'est-ce que vous souhaitez idéalement mettre en place ?' },
-          ...s.blocks.slice(1) // garder les options purple
-        ]};
-      }
-    }
-    return s;
-  });
-  // Invalider les overrides si le nombre de blocs ne correspond plus
-  ['problematique', 'objectifs'].forEach(id => {
-    const ov = state.scriptOverrides[id];
-    const sec = state.sections.find(s => s.id === id);
-    if (ov && sec && ov.blocks.length !== sec.blocks.length) {
-      delete state.scriptOverrides[id];
-      saveScriptOverrides();
-    }
-  });
+  // Structure FIXE pour problématique et objectifs — même nombre de blocs pour tous les clients
+  // Les blocs dynamiques (pb_recap, obj_recap) s'affichent/se cachent automatiquement selon le client
+  // Pas besoin de toucher aux overrides → le formatage persiste entre clients
 }
 
 function buildSections() {
@@ -3544,7 +3494,8 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const editBtn = `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
+    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','tarifs_tableau'].includes(b.type);
+    const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
     return `<div class="edit-block-wrap">
@@ -3688,6 +3639,22 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     </div>
     <div class="block block-question">
       <div class="q-text" contenteditable="true">❓ Est-ce que ça correspond toujours à ce que vous souhaitez aujourd'hui ?<br>Est-ce que vous avez quelque chose à ajouter ou préciser ?</div>
+    </div>`;
+  }
+
+  if (b.type === 'tarifs_tableau') {
+    return `<div class="block block-normal" style="padding:10px;overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:16px">
+        <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:700;background:#f5f7fc">Consultation de suivi</td><td style="padding:10px 12px;border:1px solid #ddd">20min</td><td style="padding:10px 12px;border:1px solid #ddd">45€</td><td style="padding:10px 12px;border:1px solid #ddd"></td></tr>
+        <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:700;background:#f5f7fc"></td><td style="padding:10px 12px;border:1px solid #ddd">45 min</td><td style="padding:10px 12px;border:1px solid #ddd">90€</td><td style="padding:10px 12px;border:1px solid #ddd"></td></tr>
+        <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:700;background:#f5f7fc">WhatsApp</td><td style="padding:10px 12px;border:1px solid #ddd">1 semaine</td><td style="padding:10px 12px;border:1px solid #ddd">90€</td><td style="padding:10px 12px;border:1px solid #ddd">Délai réponse 24h</td></tr>
+        <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:700;background:#f5f7fc">Semaine de suivi</td><td style="padding:10px 12px;border:1px solid #ddd">1 semaine</td><td style="padding:10px 12px;border:1px solid #ddd">18€ la 1ère semaine puis 150€</td><td style="padding:10px 12px;border:1px solid #ddd">2 RDV de suivi de 20min + WhatsApp</td></tr>
+        <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:700;background:#f5f7fc">Lecture de courbes</td><td style="padding:10px 12px;border:1px solid #ddd">20min</td><td style="padding:10px 12px;border:1px solid #ddd">45€</td><td style="padding:10px 12px;border:1px solid #ddd"></td></tr>
+      </table>
+      <table style="width:100%;border-collapse:collapse;font-size:14px">
+        <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:700;background:#f5f7fc">Grimoire Fée Dodo</td><td style="padding:10px 12px;border:1px solid #ddd">Accès illimité aux modules pdt 2 ans</td><td style="padding:10px 12px;border:1px solid #ddd">299€</td><td style="padding:10px 12px;border:1px solid #ddd"></td></tr>
+        <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:700;background:#f5f7fc">Consultations de groupe</td><td style="padding:10px 12px;border:1px solid #ddd">1h/semaine (groupe par âge)</td><td style="padding:10px 12px;border:1px solid #ddd">29.99€/mois (sans engagement)</td><td style="padding:10px 12px;border:1px solid #ddd">Ouvert aux détenteur du Grimoire Fée Dodo</td></tr>
+      </table>
     </div>`;
   }
 
@@ -3883,6 +3850,10 @@ function substituteVars(text) {
       /il convient\b/gi,
       /il existe\b/gi,
       /il reste\b/gi,
+      /qu['\u2019]?il vous reste\b/gi,
+      /qu['\u2019]?il nous reste\b/gi,
+      /qu['\u2019]?il me reste\b/gi,
+      /qu['\u2019]?il leur reste\b/gi,
       /il vous reste\b/gi,
       /il nous reste\b/gi,
       /il me reste\b/gi,

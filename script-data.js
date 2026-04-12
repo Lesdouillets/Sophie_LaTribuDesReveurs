@@ -35,7 +35,9 @@ const SCRIPT_DATA = {
       title: "II. Problématique",
       emoji: "🤔",
       blocks: [
-        { type: "pb_section" },
+        { type: "normal", text: "Maintenant, je vais reprendre votre problématique\net APRÈS vous allez m'expliquer ce qui se passe exactement pour le sommeil de [prénom_enfant]." },
+        { type: "pb_recap" },
+        { type: "question", text: "Est-ce que c'est toujours d'actualité?" },
         {
           type: "option", label: "Si pleurs difficiles", emoji: "😭", style: "pleurs",
           blocks: [
@@ -93,7 +95,9 @@ const SCRIPT_DATA = {
       title: "IV. Objectifs",
       emoji: "🎯",
       blocks: [
-        { type: "obj_section" },
+        { type: "normal", text: "Alors maintenant, j'aimerais qu'on parle de vos objectifs\nJe vais relire ce que vous m'avez noté… pour être sûre qu'on est bien alignés." },
+        { type: "obj_recap" },
+        { type: "question", text: "Est-ce que ça correspond toujours à ce que vous souhaitez aujourd'hui ?\nEst-ce que vous avez quelque chose à ajouter ou préciser ?" },
         {
           type: "option", label: "🛌 Souhaitent changer de lieu de sommeil / lit", style: "purple",
           blocks: [
@@ -716,7 +720,14 @@ const SCRIPT_DATA = {
       {
         type: "option", label: "RDV de suivi",
         blocks: [
-          { type: "important", text: "🔥 Au vu de ce qu'on s'est dit, je pense qu'il serait intéressant de se revoir\n\nSachant que vous voulez commencer le XXX, on peut se voir le XXX\n\n📋 Tarifs :\n→ Consultation de suivi 20min : 45€\n→ Consultation de suivi 45min : 90€\n→ WhatsApp 1 semaine (délai réponse 24h) : 90€\n→ Semaine de suivi (2 RDV 20min + WhatsApp) 1ère semaine : 18€, puis 150€\n→ Lecture de courbes 20min : 45€\n→ Grimoire Fée Dodo (accès illimité 2 ans) : 299€\n→ Consultations de groupe 1h/semaine : 29,99€/mois (sans engagement)" }
+          { type: "important", text: "🔥 Au vu de ce qu'on s'est dit, je pense qu'il serait intéressant de se revoir\n\nSachant que vous voulez commencer le <strong style=\"color:#C0392B\">XXX</strong>, on peut se voir le <strong style=\"color:#C0392B\">XXX</strong>" },
+          { type: "question", text: "Qu'est-ce que vous en pensez ?" }
+        ]
+      },
+      {
+        type: "option", label: "💰 Tarifs", style: "purple",
+        blocks: [
+          { type: "tarifs_tableau" }
         ]
       },
     ]
