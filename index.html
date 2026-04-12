@@ -2421,6 +2421,28 @@ function getOverrideBlocks(section) {
   const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'tarifs_tableau'];
   const liveBlocks = section.blocks || [];
 
+  // Identifier les blocs à type vide qui sont des doublons de blocs dynamiques
+  // en comparant leur texte avec les blocs dynamiques existants ou les blocs source
+  const srcBlocks = section.blocks || [];
+  for (let i = 0; i < ov.blocks.length; i++) {
+    const b = ov.blocks[i];
+    if (b.type === '' || b.type === 'normal' || b.type === 'question') {
+      // Vérifier si ce texte ressemble à un bloc dynamique de la source
+      for (const src of srcBlocks) {
+        if (dynamicTypes.includes(src.type) && b.text) {
+          // Comparer le début du texte (sans markdown) pour détecter les doublons
+          const cleanB = (b.text || '').replace(/\*\*/g, '').substring(0, 40);
+          const cleanSrc = (src.text || '').replace(/\*\*/g, '').substring(0, 40);
+          if (cleanB && cleanSrc && cleanB === cleanSrc) {
+            // C'est un doublon d'un bloc dynamique — lui redonner son type
+            ov.blocks[i] = { ...b, type: src.type };
+            break;
+          }
+        }
+      }
+    }
+  }
+
   // Dédoublonner : pour chaque type dynamique, ne garder que la DERNIÈRE occurrence (la + récente)
   const seenDynamic = new Set();
   const deduped = [];
@@ -4280,8 +4302,8 @@ function saveEditBlock() {
   } else if (b.type === 'checklist') {
     setBlockByPath(ov.blocks, path, { ...b, title: newText });
   } else {
-    const newType = document.getElementById('edit-block-type').style.display !== 'none'
-      ? document.getElementById('edit-block-type').value : b.type;
+    const typeSelect = document.getElementById('edit-block-type');
+    const newType = typeSelect.style.display !== 'none' ? typeSelect.value : (b.type || 'normal');
     setBlockByPath(ov.blocks, path, { ...b, type: newType, text: newText });
   }
   // Mettre à jour aussi directement section.blocks pour les sections dynamiques
@@ -4292,9 +4314,9 @@ function saveEditBlock() {
     } else if (b.type === 'checklist') {
       setBlockByPath(sec.blocks, path, { ...secBlock, title: newText });
     } else {
-      const newType = document.getElementById('edit-block-type').style.display !== 'none'
-        ? document.getElementById('edit-block-type').value : secBlock.type;
-      setBlockByPath(sec.blocks, path, { ...secBlock, type: newType, text: newText });
+      const typeSelect2 = document.getElementById('edit-block-type');
+      const newType2 = typeSelect2.style.display !== 'none' ? typeSelect2.value : (secBlock.type || 'normal');
+      setBlockByPath(sec.blocks, path, { ...secBlock, type: newType2, text: newText });
     }
   }
   saveScriptOverrides();
