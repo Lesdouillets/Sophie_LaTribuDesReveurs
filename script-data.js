@@ -697,7 +697,6 @@ const SCRIPT_DATA = {
     title: "X. Validation des objectifs et fin",
     emoji: "✅",
     blocks: [
-      { type: "normal", text: "C'est TRÈS important que vous vous sentiez acteur ET libre dans vos choix" },
       { type: "question", text: "Est-ce que tout ce que je vous ai proposé vous correspond à vos valeurs?" },
       { type: "obj_rappel" },
       { type: "question", text: "Est-ce que j'ai répondu à ces objectifs?" },
@@ -713,7 +712,13 @@ const SCRIPT_DATA = {
         type: "option", label: "🔥 Si Pas pris de RDV", style: "purple",
         blocks: [
           { type: "important", text: "🔥 Au vu de ce qu'on s'est dit, je pense qu'il serait **intéressant de se revoir**\n\nSachant que **vous voulez commencer** le <strong style=\"color:#C0392B\">XXX</strong>, on **peut se voir** le <strong style=\"color:#C0392B\">XXX</strong>" },
-          { type: "question", text: "Qu'est-ce que vous en pensez ?" }
+          { type: "question", text: "Qu'est-ce que vous en pensez ?" },
+          {
+            type: "option", label: "💰 Tarifs", style: "purple",
+            blocks: [
+              { type: "tarifs_tableau" }
+            ]
+          }
         ]
       },
       { type: "separator", text: "📅 Proposition de suivi" },
@@ -722,12 +727,6 @@ const SCRIPT_DATA = {
         blocks: [
           { type: "important", text: "🔥 Au vu de ce qu'on s'est dit, je pense qu'il serait intéressant de se revoir\n\nSachant que vous voulez commencer le <strong style=\"color:#C0392B\">XXX</strong>, on peut se voir le <strong style=\"color:#C0392B\">XXX</strong>" },
           { type: "question", text: "Qu'est-ce que vous en pensez ?" }
-        ]
-      },
-      {
-        type: "option", label: "💰 Tarifs", style: "purple",
-        blocks: [
-          { type: "tarifs_tableau" }
         ]
       },
     ]
