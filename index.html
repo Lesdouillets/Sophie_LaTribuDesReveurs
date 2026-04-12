@@ -2326,10 +2326,22 @@ function cleanStaleOverrides() {
     const ovBlocks = state.scriptOverrides[sectionId]?.blocks || [];
     const srcBlocks = src.blocks || [];
     // Pour chaque bloc dynamique de la source, vérifier s'il existe dans l'override
+    // Dédoublonner d'abord les blocs dynamiques existants (garder le dernier)
+    const seenTypes = new Set();
+    for (let i = ovBlocks.length - 1; i >= 0; i--) {
+      if (dynamicTypes.includes(ovBlocks[i].type)) {
+        if (seenTypes.has(ovBlocks[i].type)) {
+          ovBlocks.splice(i, 1);
+          changed = true;
+        } else {
+          seenTypes.add(ovBlocks[i].type);
+        }
+      }
+    }
+    // Ajouter les blocs dynamiques manquants
     for (let i = 0; i < srcBlocks.length; i++) {
       if (dynamicTypes.includes(srcBlocks[i].type)) {
         if (!ovBlocks.some(ob => ob.type === srcBlocks[i].type)) {
-          // Bloc dynamique manquant → l'insérer à la bonne position
           const insertPos = Math.min(i, ovBlocks.length);
           ovBlocks.splice(insertPos, 0, JSON.parse(JSON.stringify(srcBlocks[i])));
           changed = true;
@@ -2408,12 +2420,23 @@ function getOverrideBlocks(section) {
   if (!ov) return section.blocks || [];
   const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'tarifs_tableau'];
   const liveBlocks = section.blocks || [];
-  // Remplacer chaque bloc dynamique dans les overrides par sa version live (même type)
-  // On cherche le bloc live correspondant par type plutôt que par index
-  const usedLive = new Set();
-  return ov.blocks.map(b => {
+
+  // Dédoublonner : pour chaque type dynamique, ne garder que la DERNIÈRE occurrence (la + récente)
+  const seenDynamic = new Set();
+  const deduped = [];
+  for (let i = ov.blocks.length - 1; i >= 0; i--) {
+    const b = ov.blocks[i];
     if (dynamicTypes.includes(b.type)) {
-      // Trouver le premier bloc live du même type non encore utilisé
+      if (seenDynamic.has(b.type)) continue; // doublon, on skip
+      seenDynamic.add(b.type);
+    }
+    deduped.unshift(b);
+  }
+
+  // Remplacer chaque bloc dynamique dans les overrides par sa version live (même type)
+  const usedLive = new Set();
+  return deduped.map(b => {
+    if (dynamicTypes.includes(b.type)) {
       const liveIdx = liveBlocks.findIndex((lb, j) => lb.type === b.type && !usedLive.has(j));
       if (liveIdx !== -1) {
         usedLive.add(liveIdx);
@@ -3882,7 +3905,7 @@ function substituteVars(text) {
   const prenomsList = prenomsParts.length === 2
     ? `${prenomsParts[0]} et ${prenomsParts[1]}`
     : prenomsParts[0] || '[prénom parent]';
-  const verifIdentite = `Vous êtes bien ${prenomsList}, ${roleLabel} de ${c.prenomEnfant||'[prénom]'} qui a ${age} ?`;
+  const verifIdentite = `Vous êtes BIEN ${prenomsList}, ${roleLabel} de ${c.prenomEnfant||'[prénom]'} qui a ${age} ?`;
 
   // ── [accord_enfant] — question accordée selon le sexe ─────
   const isFille = c.sexe === 'Fille';
