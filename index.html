@@ -2451,7 +2451,10 @@ function ensureOverride(section) {
   if ((section.id === 'problematique' || section.id === 'objectifs') && ov._cleaned !== true) {
     const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','tarifs_tableau'];
     const liveBlocks = section.blocks || [];
-    const cleaned = ov.blocks.filter(b => b.type && b.type !== '');
+    // Types présents dans les blocs source de cette section
+    const sourceTypes = new Set(liveBlocks.map(b => b.type));
+    // Filtrer les types vides ET les blocs non-source (doublons d'édition)
+    const cleaned = ov.blocks.filter(b => b.type && b.type !== '' && sourceTypes.has(b.type));
     const dynamicBlocks = {};
     const nonDynamicBlocks = [];
     for (const b of cleaned) {
@@ -2464,7 +2467,7 @@ function ensureOverride(section) {
     const reordered = [];
     for (const src of liveBlocks) {
       if (dynamicTypes.includes(src.type)) {
-        reordered.push(dynamicBlocks[src.type] || src);
+        reordered.push(src); // toujours utiliser la version source pour les dynamiques
         delete dynamicBlocks[src.type];
       }
     }
@@ -3673,38 +3676,32 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const pb = state.client.problematique;
     const prenom = state.client.prenomEnfant || '[prénom]';
     if (pb && pb.trim()) {
-      const customText = b.text ? substituteVars(b.text) : `Maintenant, je vais <strong>reprendre votre problématique</strong><br>et APRÈS vous allez <strong>m'expliquer ce qui se passe exactement</strong> pour le sommeil de ${prenom}.`;
-      return `<div class="block block-normal" contenteditable="true">${customText}</div>`;
+      return `<div class="block block-normal">Maintenant, je vais <strong>reprendre votre problématique</strong><br>et APRÈS vous allez <strong>m'expliquer CE QUI se passe exactement</strong> pour le sommeil de ${prenom}.</div>`;
     } else {
-      const customText = b.text ? substituteVars(b.text) : `<ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Maintenant, j'aimerais savoir quelle est <strong>votre problématique aujourd'hui</strong> pour ${prenom}.</li></ul>`;
-      return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ ${customText}</div></div>`;
+      return `<div class="block block-question"><div class="q-text">❓ <ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Maintenant, j'aimerais <strong>savoir quelle est votre problématique aujourd'hui</strong> pour ${prenom}.</li></ul></div></div>`;
     }
   }
 
   if (b.type === 'pb_question') {
     const pb = state.client.problematique;
     if (!pb || !pb.trim()) return '';
-    const customText = b.text ? substituteVars(b.text) : `Est-ce que c'est <strong>toujours d'actualité</strong> ?`;
-    return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ ${customText}</div></div>`;
+    return `<div class="block block-question"><div class="q-text">❓ Est-ce que c'est <strong>toujours d'actualité</strong> ?</div></div>`;
   }
 
   if (b.type === 'obj_intro') {
     const obj = state.client.objectifs;
     if (obj && obj.trim()) {
-      const customText = b.text ? substituteVars(b.text) : `<ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Alors maintenant, j'aimerais <strong>qu'on parle de vos objectifs</strong></li><li style="margin-bottom:3px;line-height:1.65">Je vais <strong>relire ce que vous m'avez noté</strong>… pour être <strong>sûre qu'on est bien alignés</strong>.</li></ul>`;
-      return `<div class="block block-normal" contenteditable="true">${customText}</div>`;
+      return `<div class="block block-normal"><ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Alors maintenant, j'aimerais <strong>savoir</strong> quels sont vos <strong>objectifs aujourd'hui</strong></li><li style="margin-bottom:3px;line-height:1.65">Je vais <strong>relire CE QUE vous m'avez marqué</strong>… pour être <strong>sûre qu'on est bien alignés</strong>.</li></ul></div>`;
     } else {
       const prenom = state.client.prenomEnfant || '[prénom]';
-      const customText = b.text ? substituteVars(b.text) : `<ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">J'aimerais maintenant savoir quels sont <strong>vos objectifs aujourd'hui</strong> pour ${prenom}.</li><li style="margin-bottom:3px;line-height:1.65">Qu'est-ce que vous <strong>souhaitez idéalement mettre en place</strong> ?</li></ul>`;
-      return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ ${customText}</div></div>`;
+      return `<div class="block block-question"><div class="q-text">❓ <ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">J'aimerais maintenant <strong>savoir quels sont vos objectifs</strong> aujourd'hui pour ${prenom}.</li><li style="margin-bottom:3px;line-height:1.65">Qu'est-ce que vous <strong>souhaitez idéalement mettre en place</strong> ?</li></ul></div></div>`;
     }
   }
 
   if (b.type === 'obj_question') {
     const obj = state.client.objectifs;
     if (!obj || !obj.trim()) return '';
-    const customText = b.text ? substituteVars(b.text) : `<ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Est-ce que ça <strong>correspond toujours</strong> à ce que vous souhaitez aujourd'hui ?</li><li style="margin-bottom:3px;line-height:1.65">Est-ce que vous avez <strong>quelque chose</strong> à <strong>ajouter</strong> ou <strong>préciser</strong> ?</li></ul>`;
-    return `<div class="block block-question"><div class="q-text" contenteditable="true">❓ ${customText}</div></div>`;
+    return `<div class="block block-question"><div class="q-text">❓ <ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Est-ce que ça <strong>correspond toujours</strong> à ce que vous <strong>souhaitez aujourd'hui</strong> ?</li><li style="margin-bottom:3px;line-height:1.65">Est-ce que vous avez <strong>quelque chose</strong> à <strong>ajouter</strong> ou <strong>ajuster</strong> ?</li></ul></div></div>`;
   }
 
   if (b.type === 'pb_recap') {
