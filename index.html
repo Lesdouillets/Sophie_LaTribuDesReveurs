@@ -1436,7 +1436,6 @@
     <!-- Sticky footer with start button -->
     <div class="setup-right-footer" id="setup-footer">
       <div class="setup-footer-row">
-        <button class="btn-save-fiche" id="btn-save-fiche" onclick="saveFicheOnly()">💾 Sauvegarder la fiche</button>
         <button class="btn-start-new" id="btn-start-consult" onclick="startConsultation()">🚀 Démarrer la consultation</button>
       </div>
     </div>
@@ -1567,18 +1566,18 @@
       <div class="sos-header">
         <div>
           <div class="sos-header-title">🆘 Outils SOS</div>
-          <div class="sos-header-sub">Réponses aux objections fréquentes</div>
+          <div style="display:flex;gap:2px;margin-top:3px;align-items:center">
+            <button type="button" onmousedown="event.preventDefault();execWithSelection('bold');saveSosContent()" style="background:none;border:1px solid rgba(255,255,255,0.3);border-radius:3px;padding:1px 6px;cursor:pointer;font-weight:900;font-size:10px;color:white;min-width:0" title="Gras">G</button>
+            <button type="button" onmousedown="event.preventDefault();execWithSelection('italic');saveSosContent()" style="background:none;border:1px solid rgba(255,255,255,0.3);border-radius:3px;padding:1px 6px;cursor:pointer;font-style:italic;font-size:10px;color:white;min-width:0" title="Italique">I</button>
+            <button type="button" onmousedown="event.preventDefault();execWithSelection('underline');saveSosContent()" style="background:none;border:1px solid rgba(255,255,255,0.3);border-radius:3px;padding:1px 6px;cursor:pointer;text-decoration:underline;font-size:10px;color:white;min-width:0" title="Souligné">S</button>
+            <button type="button" onmousedown="event.preventDefault();execWithSelection('insertUnorderedList');saveSosContent()" style="background:none;border:1px solid rgba(255,255,255,0.3);border-radius:3px;padding:1px 5px;cursor:pointer;font-size:9px;color:white;min-width:0" title="Liste à puces">•≡</button>
+            <button type="button" onmousedown="event.preventDefault();execWithSelection('indent');saveSosContent()" style="background:none;border:1px solid rgba(255,255,255,0.3);border-radius:3px;padding:1px 5px;cursor:pointer;font-size:9px;color:white;min-width:0" title="Retrait →">→</button>
+            <button type="button" onmousedown="event.preventDefault();execWithSelection('outdent');saveSosContent()" style="background:none;border:1px solid rgba(255,255,255,0.3);border-radius:3px;padding:1px 5px;cursor:pointer;font-size:9px;color:white;min-width:0" title="← Retrait">←</button>
+            <input type="color" value="#8b0000" class="color-picker-exec" style="width:18px;height:18px;border:1px solid rgba(255,255,255,0.3);border-radius:3px;cursor:pointer;padding:0" title="Couleur">
+          </div>
         </div>
         <button class="sos-close-btn" onclick="toggleSosPanel()">✕</button>
       </div>
-      <div class="sos-toolbar" style="display:flex;gap:3px;padding:4px 8px;background:#f0f2f8;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:2;flex-wrap:nowrap;height:32px;align-items:center;flex-shrink:0">
-        <button type="button" onmousedown="event.preventDefault();execWithSelection('bold');saveSosContent()" style="background:none;border:1px solid #ccc;border-radius:4px;padding:2px 8px;cursor:pointer;font-weight:900;font-size:12px;min-width:0;flex-shrink:0" title="Gras">G</button>
-        <button type="button" onmousedown="event.preventDefault();execWithSelection('italic');saveSosContent()" style="background:none;border:1px solid #ccc;border-radius:4px;padding:2px 8px;cursor:pointer;font-style:italic;font-size:12px;min-width:0;flex-shrink:0" title="Italique">I</button>
-        <button type="button" onmousedown="event.preventDefault();execWithSelection('underline');saveSosContent()" style="background:none;border:1px solid #ccc;border-radius:4px;padding:2px 8px;cursor:pointer;text-decoration:underline;font-size:12px;min-width:0;flex-shrink:0" title="Souligné">S</button>
-        <button type="button" onmousedown="event.preventDefault();execWithSelection('insertUnorderedList');saveSosContent()" style="background:none;border:1px solid #ccc;border-radius:4px;padding:2px 6px;cursor:pointer;font-size:11px;min-width:0;flex-shrink:0" title="Liste à puces">•≡</button>
-        <button type="button" onmousedown="event.preventDefault();execWithSelection('indent');saveSosContent()" style="background:none;border:1px solid #ccc;border-radius:4px;padding:2px 6px;cursor:pointer;font-size:11px;min-width:0;flex-shrink:0" title="Retrait →">→</button>
-        <button type="button" onmousedown="event.preventDefault();execWithSelection('outdent');saveSosContent()" style="background:none;border:1px solid #ccc;border-radius:4px;padding:2px 6px;cursor:pointer;font-size:11px;min-width:0;flex-shrink:0" title="← Retrait">←</button>
-        <input type="color" value="#8b0000" class="color-picker-exec" style="width:24px;height:24px;border:1px solid #ccc;border-radius:4px;cursor:pointer;padding:0;flex-shrink:0" title="Couleur">
       <div class="sos-body" id="sos-body">
 
         <div class="sos-section">
@@ -2782,7 +2781,6 @@ async function resumeConsultation() {
   const footer = document.getElementById('setup-footer');
   if (footer) footer.innerHTML = `
     <div class="setup-footer-row">
-      <button class="btn-save-fiche" id="btn-save-fiche" onclick="saveFicheOnly()">💾 Sauvegarder la fiche</button>
       <button class="btn-start-new" id="btn-start-consult" onclick="startConsultation()">🚀 Démarrer la consultation</button>
     </div>`;
 }
@@ -3671,13 +3669,14 @@ function renderBesoinsSommeil(tranches) {
   function matchAge(t) {
     if (isNaN(months)) return false;
     const a = t.age;
-    if (a.includes('0-2') && months<=2) return true;
-    if (a.includes('2-3') && months>=2 && months<=3) return true;
-    if (a.includes('4-7') && months>=4 && months<=7) return true;
-    if (a.includes('8-14') && months>=8 && months<=14) return true;
-    if (a.includes('15') && months>=15 && months<=24) return true;
-    if (a.includes('2-3 ans') && months>=24 && months<=36) return true;
-    if (a.includes('4-5') && months>=48) return true;
+    // Plages exclusives : chaque mois ne tombe que dans une seule ligne
+    if (a === '0-2 mois')           return months < 2;
+    if (a === '2-3 mois')           return months >= 2 && months < 4;
+    if (a === '4-7 mois')           return months >= 4 && months < 8;
+    if (a === '8-14 mois')          return months >= 8 && months < 15;
+    if (a === '15 mois – 2 ans')    return months >= 15 && months < 24;
+    if (a === '2-3 ans')            return months >= 24 && months < 48;
+    if (a === '4-5 ans')            return months >= 48;
     return false;
   }
   const inputStyle = 'width:80px;padding:8px 6px;border:2px solid #e8a0a0;border-radius:8px;font-size:16px;font-weight:800;text-align:center;background:#fff';
