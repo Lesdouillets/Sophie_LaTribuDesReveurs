@@ -2421,33 +2421,41 @@ function getOverrideBlocks(section) {
   const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'tarifs_tableau'];
   const liveBlocks = section.blocks || [];
 
-  // Supprimer les blocs avec type vide — ce sont des doublons créés par un bug d'édition
-  // Garder seulement les blocs qui ont un vrai type
-  const cleaned = ov.blocks.filter(b => b.type && b.type !== '');
+  // Nettoyage spécifique pour problematique et objectifs uniquement
+  if (section.id === 'problematique' || section.id === 'objectifs') {
+    const cleaned = ov.blocks.filter(b => b.type && b.type !== '');
+    const dynamicBlocks = {};
+    const nonDynamicBlocks = [];
+    for (const b of cleaned) {
+      if (dynamicTypes.includes(b.type)) {
+        dynamicBlocks[b.type] = b;
+      } else {
+        nonDynamicBlocks.push(b);
+      }
+    }
+    const finalResult = [];
+    for (const src of liveBlocks) {
+      if (dynamicTypes.includes(src.type) && dynamicBlocks[src.type]) {
+        finalResult.push(src);
+        delete dynamicBlocks[src.type];
+      }
+    }
+    finalResult.push(...nonDynamicBlocks);
+    return finalResult;
+  }
 
-  // Séparer blocs dynamiques et non-dynamiques
-  const dynamicBlocks = {};
-  const nonDynamicBlocks = [];
-  for (const b of cleaned) {
+  // Toutes les autres sections : comportement original inchangé
+  const usedLive = new Set();
+  return ov.blocks.map(b => {
     if (dynamicTypes.includes(b.type)) {
-      dynamicBlocks[b.type] = b; // ne garde que le dernier de chaque type
-    } else {
-      nonDynamicBlocks.push(b);
+      const liveIdx = liveBlocks.findIndex((lb, j) => lb.type === b.type && !usedLive.has(j));
+      if (liveIdx !== -1) {
+        usedLive.add(liveIdx);
+        return liveBlocks[liveIdx];
+      }
     }
-  }
-
-  // Reconstruire dans l'ordre de la source : les dynamiques à leur place, les non-dynamiques après
-  const finalResult = [];
-  for (const src of liveBlocks) {
-    if (dynamicTypes.includes(src.type) && dynamicBlocks[src.type]) {
-      finalResult.push(src); // utiliser la version live
-      delete dynamicBlocks[src.type];
-    }
-  }
-  // Ajouter les blocs non-dynamiques (option, normal, etc.) à la fin
-  finalResult.push(...nonDynamicBlocks);
-
-  return finalResult;
+    return b;
+  });
 }
 
 function ensureOverride(section) {
@@ -2455,7 +2463,12 @@ function ensureOverride(section) {
     // Copier les blocs live actuels (après customisation par adaptSectionsToClient)
     state.scriptOverrides[section.id] = { blocks: JSON.parse(JSON.stringify(section.blocks || [])) };
   }
-  return state.scriptOverrides[section.id];
+  const ov = state.scriptOverrides[section.id];
+  // Nettoyer les blocs à type vide pour problematique/objectifs (bug d'édition ancien)
+  if (section.id === 'problematique' || section.id === 'objectifs') {
+    ov.blocks = ov.blocks.filter(b => b.type && b.type !== '');
+  }
+  return ov;
 }
 
 function currentSection() { return state.sections[state.currentIdx]; }
@@ -4219,7 +4232,7 @@ function openEditBlockModal(sectionId, path) {
     }
   }
   if (!b) return;
-  _editRef = { sectionId, path };
+  _editRef = { sectionId, path, originalBlock: b };
   const typeEl = document.getElementById('edit-block-type');
   const taEl = document.getElementById('edit-block-textarea');
   const titleEl = document.getElementById('edit-block-modal-title');
@@ -4261,12 +4274,25 @@ function closeEditBlockModal() {
 }
 function saveEditBlock() {
   if (!_editRef) return;
-  const { sectionId, path } = _editRef;
+  const { sectionId, path, originalBlock } = _editRef;
   const sec = state.sections.find(s => s.id === sectionId);
   const ov = ensureOverride(sec);
-  // Synchroniser ov.blocks avec la vue rendue (filtrée/réordonnée) pour que le path corresponde
-  ov.blocks = getOverrideBlocks(sec);
-  const b = getBlockByPath(ov.blocks, path);
+  let b = getBlockByPath(ov.blocks, path);
+  // Si le path ne correspond pas (blocs filtrés/réordonnés), retrouver le bloc par référence
+  if (!b && originalBlock) {
+    // Chercher le bloc dans ov.blocks par référence ou par contenu identique
+    const findInBlocks = (blocks) => {
+      for (let i = 0; i < blocks.length; i++) {
+        if (blocks[i] === originalBlock) return blocks[i];
+        if (blocks[i].blocks) {
+          const found = findInBlocks(blocks[i].blocks);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+    b = findInBlocks(ov.blocks);
+  }
   if (!b) return;
   const taEl = document.getElementById('edit-block-textarea');
   // Nettoyer le HTML du contenteditable : convertir en markdown pour le stockage
@@ -4281,25 +4307,23 @@ function saveEditBlock() {
     .replace(/&nbsp;/gi, ' ')
     .replace(/\n+$/g, '');
   if (b.type === 'option') {
-    setBlockByPath(ov.blocks, path, { ...b, label: newText });
+    b.label = newText;
   } else if (b.type === 'checklist') {
-    setBlockByPath(ov.blocks, path, { ...b, title: newText });
+    b.title = newText;
   } else {
     const typeSelect = document.getElementById('edit-block-type');
-    const newType = typeSelect.style.display !== 'none' ? typeSelect.value : (b.type || 'normal');
-    setBlockByPath(ov.blocks, path, { ...b, type: newType, text: newText });
+    b.type = typeSelect.style.display !== 'none' ? typeSelect.value : (b.type || 'normal');
+    b.text = newText;
   }
   // Mettre à jour aussi directement section.blocks pour les sections dynamiques
-  const secBlock = getBlockByPath(sec.blocks || [], path);
-  if (secBlock) {
-    if (b.type === 'option') {
-      setBlockByPath(sec.blocks, path, { ...secBlock, label: newText });
-    } else if (b.type === 'checklist') {
-      setBlockByPath(sec.blocks, path, { ...secBlock, title: newText });
+  const secBlock = getBlockByPath(sec.blocks || [], path) || originalBlock;
+  if (secBlock && secBlock !== b) {
+    if (secBlock.type === 'option') {
+      secBlock.label = newText;
+    } else if (secBlock.type === 'checklist') {
+      secBlock.title = newText;
     } else {
-      const typeSelect2 = document.getElementById('edit-block-type');
-      const newType2 = typeSelect2.style.display !== 'none' ? typeSelect2.value : (secBlock.type || 'normal');
-      setBlockByPath(sec.blocks, path, { ...secBlock, type: newType2, text: newText });
+      secBlock.text = newText;
     }
   }
   saveScriptOverrides();
