@@ -3096,7 +3096,7 @@ function adaptSectionsToClient() {
         // Problématique connue : afficher avec le texte copié
         return { ...s, blocks: [
           { type: 'normal', text: 'Maintenant, je vais reprendre votre problématique\net APRÈS vous allez m\'expliquer ce qui se passe exactement pour le sommeil de [prénom_enfant].' },
-          { type: 'important', text: '🔥 Donc, vous m\'avez écrit :\n' + c.problematique },
+          { type: 'important', text: 'Donc, vous m\'avez écrit :\n<em>' + c.problematique.replace(/\n/g, '\n') + '</em>' },
           { type: 'question', text: 'Est-ce que c\'est toujours d\'actualité?' },
           { type: 'option', label: 'Si pleurs difficiles 😭', blocks: [
             { type: 'empathie', text: 'J\'entends que c\'est difficile pour vous d\'entendre votre enfant pleurer…\nMerci de me le confier.\n\nIl y a beaucoup de parents POUR QUI :\n→ c\'est vraiment compliqué,\n→ et chacun a sa sensibilité là-dessus\n→ et c\'est OK\n\nL\'idée ici, ça ne va PAS ÊTRE de vous forcer à faire quelque chose qui ne vous correspond pas.\nOn va plutôt adapter les choses à vous, à CE QUE vous ÊTES CAPABLE de faire aujourd\'hui.\n\nParce que :\nPLUS vous serez alignée avec vous-même → PLUS ce sera fluide pour vous… et pour votre enfant aussi.\n\nEt on va justement trouver ensemble une façon de faire QUI respecte ça' }
@@ -3117,7 +3117,7 @@ function adaptSectionsToClient() {
         // Objectifs connus : afficher avec le texte copié
         return { ...s, blocks: [
           { type: 'normal', text: 'Alors maintenant, j\'aimerais qu\'on parle de vos objectifs\nJe vais relire ce que vous m\'avez noté… pour être sûre qu\'on est bien alignés.' },
-          { type: 'important', text: '🔥 Vous m\'avez écrit :\n' + c.objectifs },
+          { type: 'important', text: 'Vous m\'avez écrit :\n<em>' + c.objectifs.replace(/\n/g, '\n') + '</em>' },
           { type: 'question', text: 'Est-ce que ça correspond toujours à ce que vous souhaitez aujourd\'hui ?\nEst-ce que vous avez quelque chose à ajouter ou préciser ?' },
           ...s.blocks.slice(1) // garder les options purple (lieu de sommeil, position ventrale…)
         ]};
@@ -3570,7 +3570,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const pbHtml = pb.replace(/\n/g, '<br>');
     return `<div class="block block-pb-recap">
       <div class="pb-recap-intro">Donc, vous m'avez écrit :</div>
-      <div class="pb-recap-text">${pbHtml}</div>
+      <div class="pb-recap-text"><em>${pbHtml}</em></div>
       <div class="pb-recap-question"><span class="q-icon-inline">❓</span> Est-ce que c'est toujours d'actualité ?</div>
     </div>`;
   }
@@ -3587,7 +3587,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     return `<div class="block block-normal" contenteditable="true">Maintenant, je vais reprendre votre problématique<br>et APRÈS vous allez m'expliquer ce qui se passe exactement pour le sommeil de ${prenom}.</div>
     <div class="block block-pb-recap">
       <div class="pb-recap-intro">Vous m'avez écrit :</div>
-      <div class="pb-recap-text">${pbHtml}</div>
+      <div class="pb-recap-text"><em>${pbHtml}</em></div>
       <div class="pb-recap-question"><span class="q-icon-inline">❓</span> Est-ce que c'est toujours d'actualité ?</div>
     </div>`;
   }
@@ -3598,7 +3598,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const objHtml = obj.replace(/\n/g, '<br>');
     return `<div class="block block-pb-recap">
       <div class="pb-recap-intro">Vous m'avez écrit :</div>
-      <div class="pb-recap-text">${objHtml}</div>
+      <div class="pb-recap-text"><em>${objHtml}</em></div>
     </div>`;
   }
 
@@ -3616,7 +3616,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     return `<div class="block block-normal" contenteditable="true">Alors maintenant, j'aimerais qu'on parle de vos objectifs<br>Je vais relire ce que vous m'avez noté… pour être sûre qu'on est bien alignés.</div>
     <div class="block block-pb-recap">
       <div class="pb-recap-intro">Vous m'avez écrit :</div>
-      <div class="pb-recap-text">${objHtml}</div>
+      <div class="pb-recap-text"><em>${objHtml}</em></div>
     </div>
     <div class="block block-question">
       <div class="q-text" contenteditable="true">❓ Est-ce que ça correspond toujours à ce que vous souhaitez aujourd'hui ?<br>Est-ce que vous avez quelque chose à ajouter ou préciser ?</div>
