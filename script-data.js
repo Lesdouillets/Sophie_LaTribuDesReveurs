@@ -14,7 +14,7 @@ const SCRIPT_DATA = {
       emoji: "👋",
       blocks: [
         { type: "normal", text: "Bonjour\nJe suis Sophie Douesneau,\nJe suis consultante du sommeil chez [enseigne_nom]" },
-        { type: "question", text: "Vous êtes bien [prénom_parents], [role_parents] de [prénom_enfant] qui a [age] ?" },
+        { type: "question", text: "Vous êtes BIEN [prénom_parents], [role_parents] de [prénom_enfant] qui a [age] ?" },
         { type: "question", text: "Est-ce que quelqu'un d'autre se joindra à nous aujourd'hui?" },
         { type: "normal", text: "On est ensemble aujourd'hui jusque [heure_fin]" },
         { type: "question", text: "Est-ce que vous avez bien prévu d'être disponible jusque [heure_fin] ?" },
