@@ -2421,27 +2421,10 @@ function getOverrideBlocks(section) {
   const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'tarifs_tableau'];
   const liveBlocks = section.blocks || [];
 
-  // Nettoyage spécifique pour problematique et objectifs uniquement
+  // Pour problematique/objectifs, ov.blocks est déjà nettoyé par ensureOverride
   if (section.id === 'problematique' || section.id === 'objectifs') {
-    const cleaned = ov.blocks.filter(b => b.type && b.type !== '');
-    const dynamicBlocks = {};
-    const nonDynamicBlocks = [];
-    for (const b of cleaned) {
-      if (dynamicTypes.includes(b.type)) {
-        dynamicBlocks[b.type] = b;
-      } else {
-        nonDynamicBlocks.push(b);
-      }
-    }
-    const finalResult = [];
-    for (const src of liveBlocks) {
-      if (dynamicTypes.includes(src.type) && dynamicBlocks[src.type]) {
-        finalResult.push(src);
-        delete dynamicBlocks[src.type];
-      }
-    }
-    finalResult.push(...nonDynamicBlocks);
-    return finalResult;
+    ensureOverride(section);
+    return ov.blocks;
   }
 
   // Toutes les autres sections : comportement original inchangé
@@ -2464,9 +2447,30 @@ function ensureOverride(section) {
     state.scriptOverrides[section.id] = { blocks: JSON.parse(JSON.stringify(section.blocks || [])) };
   }
   const ov = state.scriptOverrides[section.id];
-  // Nettoyer les blocs à type vide pour problematique/objectifs (bug d'édition ancien)
-  if (section.id === 'problematique' || section.id === 'objectifs') {
-    ov.blocks = ov.blocks.filter(b => b.type && b.type !== '');
+  // Nettoyer et réordonner pour problematique/objectifs (synchro avec getOverrideBlocks)
+  if ((section.id === 'problematique' || section.id === 'objectifs') && ov._cleaned !== true) {
+    const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','tarifs_tableau'];
+    const liveBlocks = section.blocks || [];
+    const cleaned = ov.blocks.filter(b => b.type && b.type !== '');
+    const dynamicBlocks = {};
+    const nonDynamicBlocks = [];
+    for (const b of cleaned) {
+      if (dynamicTypes.includes(b.type)) {
+        dynamicBlocks[b.type] = b;
+      } else {
+        nonDynamicBlocks.push(b);
+      }
+    }
+    const reordered = [];
+    for (const src of liveBlocks) {
+      if (dynamicTypes.includes(src.type)) {
+        reordered.push(dynamicBlocks[src.type] || src);
+        delete dynamicBlocks[src.type];
+      }
+    }
+    reordered.push(...nonDynamicBlocks);
+    ov.blocks = reordered;
+    ov._cleaned = true;
   }
   return ov;
 }
@@ -4248,7 +4252,16 @@ function openEditBlockModal(sectionId, path) {
     titleEl.textContent = '✏️ Modifier ce bloc';
     typeEl.style.display = 'block';
     typeEl.value = b.type || 'normal';
-    const rawText = b.text || b.title || '';
+    let rawText = b.text || b.title || '';
+    // Expandre [accord_enfant] pour le rendre éditable avec [prénom_enfant] comme placeholder
+    if (rawText.includes('[accord_enfant]')) {
+      const c = state.client || {};
+      const isFille = c.sexe === 'Fille';
+      const unUne = isFille ? 'une' : 'un';
+      const petitePetit = isFille ? 'petite' : 'petit';
+      const filleGarcon = isFille ? 'fille' : 'garçon';
+      rawText = rawText.replace('[accord_enfant]', `Nous sommes bien d'accord que [prénom_enfant] est ${unUne} ${petitePetit} ${filleGarcon} qui est :\n→ En bonne santé ?\n→ A été vu récemment par un médecin ?`);
+    }
     taEl.innerHTML = rawText
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*([^*]+?)\*/g, '<em>$1</em>')
