@@ -2421,35 +2421,17 @@ function getOverrideBlocks(section) {
   const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'tarifs_tableau'];
   const liveBlocks = section.blocks || [];
 
-  // Identifier les blocs à type vide qui sont des doublons de blocs dynamiques
-  // en comparant leur texte avec les blocs dynamiques existants ou les blocs source
-  const srcBlocks = section.blocks || [];
-  for (let i = 0; i < ov.blocks.length; i++) {
-    const b = ov.blocks[i];
-    if (b.type === '' || b.type === 'normal' || b.type === 'question') {
-      // Vérifier si ce texte ressemble à un bloc dynamique de la source
-      for (const src of srcBlocks) {
-        if (dynamicTypes.includes(src.type) && b.text) {
-          // Comparer le début du texte (sans markdown) pour détecter les doublons
-          const cleanB = (b.text || '').replace(/\*\*/g, '').substring(0, 40);
-          const cleanSrc = (src.text || '').replace(/\*\*/g, '').substring(0, 40);
-          if (cleanB && cleanSrc && cleanB === cleanSrc) {
-            // C'est un doublon d'un bloc dynamique — lui redonner son type
-            ov.blocks[i] = { ...b, type: src.type };
-            break;
-          }
-        }
-      }
-    }
-  }
+  // Supprimer les blocs avec type vide — ce sont des doublons créés par un bug d'édition
+  // Garder seulement les blocs qui ont un vrai type
+  const cleaned = ov.blocks.filter(b => b.type && b.type !== '');
 
-  // Dédoublonner : pour chaque type dynamique, ne garder que la DERNIÈRE occurrence (la + récente)
+  // Dédoublonner : pour chaque type dynamique, ne garder que la DERNIÈRE occurrence
   const seenDynamic = new Set();
   const deduped = [];
-  for (let i = ov.blocks.length - 1; i >= 0; i--) {
-    const b = ov.blocks[i];
+  for (let i = cleaned.length - 1; i >= 0; i--) {
+    const b = cleaned[i];
     if (dynamicTypes.includes(b.type)) {
-      if (seenDynamic.has(b.type)) continue; // doublon, on skip
+      if (seenDynamic.has(b.type)) continue;
       seenDynamic.add(b.type);
     }
     deduped.unshift(b);
