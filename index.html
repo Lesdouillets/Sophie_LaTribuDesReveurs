@@ -2809,7 +2809,6 @@ function editClientInConsultation(tab) {
   const footer = document.getElementById('setup-footer');
   if (footer) footer.innerHTML = `
     <div class="setup-footer-row">
-      <button class="btn-save-fiche" id="btn-save-fiche" onclick="saveFicheOnly()">💾 Sauvegarder</button>
       <button class="btn-start-new" style="flex:2;background:linear-gradient(135deg,#1a5c3a,#2d8a57)" onclick="resumeConsultation()">↩️ Reprendre la consultation</button>
       <button class="btn-start-new" style="flex:1;font-size:13px;opacity:0.75" onclick="startConsultation()">🔄 Redémarrer</button>
     </div>`;
@@ -2817,10 +2816,18 @@ function editClientInConsultation(tab) {
 
 async function resumeConsultation() {
   try { await saveFicheOnly(); } catch(e) { console.warn('saveFicheOnly error:', e); }
+  // Mettre à jour state.client avec les nouvelles données du formulaire
+  collectClientData();
   state._returningFromConsult = false;
   document.getElementById('setup-screen').style.display = 'none';
   document.getElementById('app-screen').style.display = 'flex';
+  // Re-construire les sections pour mettre à jour problématique/objectifs
+  buildSections();
+  adaptSectionsToClient();
+  buildSidebar();
   updateHeader();
+  updatePobBar();
+  renderCurrentSection();
   const footer = document.getElementById('setup-footer');
   if (footer) footer.innerHTML = `
     <div class="setup-footer-row">
