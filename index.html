@@ -2297,10 +2297,17 @@ async function doLogout() {
 async function loadSupabaseOverrides() {
   if (!currentUser) return;
   try {
+    if (state._forceCleanSupabase) {
+      // Nettoyage forcé par changement de version : vider sur Supabase
+      state.scriptOverrides = {};
+      localStorage.setItem('tdr_script_overrides', '{}');
+      syncOverridesToSupabase();
+      delete state._forceCleanSupabase;
+      return;
+    }
     const { data } = await db.from('script_overrides').select('overrides').eq('user_id', currentUser.id).single();
     if (data?.overrides) {
       state.scriptOverrides = data.overrides;
-      // Nettoyer les overrides dont le nombre de blocs ne correspond plus aux données source
       cleanStaleOverrides();
       localStorage.setItem('tdr_script_overrides', JSON.stringify(state.scriptOverrides));
     }
@@ -2392,10 +2399,12 @@ let state = {
 
 // Nettoyage des overrides — supprimer TOUT pour forcer la re-sync
 // Incrémentez ce numéro pour forcer un nouveau nettoyage
-const OVERRIDES_VERSION = 61;
+const OVERRIDES_VERSION = 62;
 if (parseInt(localStorage.getItem('tdr_overrides_version') || '0') < OVERRIDES_VERSION) {
   localStorage.removeItem('tdr_script_overrides');
   localStorage.setItem('tdr_overrides_version', String(OVERRIDES_VERSION));
+  // Aussi nettoyer sur Supabase pour éviter que les anciens overrides reviennent
+  state._forceCleanSupabase = true;
 }
 // Charge les overrides sauvegardés
 state.scriptOverrides = JSON.parse(localStorage.getItem('tdr_script_overrides') || '{}');
