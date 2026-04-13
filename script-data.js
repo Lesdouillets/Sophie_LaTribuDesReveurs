@@ -127,9 +127,9 @@ const SCRIPT_DATA = {
       title: "V. Diagnostic",
       emoji: "🩺",
       blocks: [
-        { type: "normal", text: "OK, là super, j'ai eu beaucoup d'information — MERCI !\n\nMaintenant, j'ai :\n→ une vue PLUS globale de la situation\n→ ET des solutions à mettre en œuvre" },
+        { type: "normal", text: "- OK, là super, j'ai eu **beaucoup d'information**\n- MERCI !\n\n- **Maintenant, j'ai :**\n  - une **vue PLUS globale** de la situation\n  - ET des **solutions à mettre en œuvre**" },
         { type: "separator", text: "📊 Besoins de sommeil selon l'âge" },
-        { type: "normal", text: "D'après les données consolidées de la National Sleep Foundation (États-Unis) et le laboratoire français d'étude du sommeil :\n\nVotre enfant a des <strong style=\"color:#c0392b\">BESOINS</strong> pour son âge\n\n⚠️ Je parle toujours en âge CORRIGÉ : l'âge qu'aurait eu votre enfant s'il était né à terme" },
+        { type: "normal", text: "- D'après les **données consolidées** de la **National Sleep Foundation** (États-Unis) ET le **laboratoire français d'étude du sommeil** :\n\n- Votre enfant a des <strong style=\"color:#c0392b\">BESOINS</strong> pour son âge\n- ⚠️ Je parle toujours en **âge CORRIGÉ** *(l'âge qu'aurait eu votre enfant s'il était né à terme)*" },
         {
           type: "besoins_sommeil",
           tranches: [
