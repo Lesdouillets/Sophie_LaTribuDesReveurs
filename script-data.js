@@ -108,7 +108,7 @@ const SCRIPT_DATA = {
                 { type: "normal", text: "- Et plus précisément **dans VOTRE LIT**\n\n- De mon côté, je dois **quand même** vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à faire **dormir** les enfants dans **LEUR PROPRE LIT**…\n  - …car cela **diminue significativement le risque de Mort Inattendue du Nourrisson**\n\n- Mais **au-delà de ça**, l'idée, ce n'est **PAS de vous dire quoi faire.**\n- C'est surtout de **voir CE QUI vous convient** à vous, aujourd'hui.\n\n- Il n'y a **PAS** de **bonne** ou de **mauvaise réponse** :\n  - **certains parents** préfèrent **attendre** encore un peu,\n  - d'**autres** sont **prêts à faire la transition.**" },
               ]
             },
-            { type: "question", text: "Est-ce que c'est **quelque chose qui vous CONVIENT** pour l'instant,\n…OU est-ce que vous **aimeriez qu'elle passe dans SA chambre / dans SON lit** ?" }
+            { type: "question", text: "Est-ce que c'est **quelque chose qui vous CONVIENT** pour l'instant,\n…OU est-ce que vous **aimeriez qu'elle passe dans SA chambre / dans SON lit** ?\n\n- Il n'y a **PAS** de **bonne ou de mauvaise réponse** :\n\n  - certains parents **préfèrent attendre** encore un peu,\n  - d'autres **sont prêts** à faire la **transition**.\n\n- L'**idée** est surtout de voir ce qui **correspond le mieux** à votre **famille**\n\n  Pour que je puisse m**'adapter au mieux**" }
           ]
         },
         {
