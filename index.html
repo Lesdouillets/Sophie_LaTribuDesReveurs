@@ -3934,7 +3934,7 @@ function substituteVars(text) {
   const unUne = isFille ? 'une' : 'un';
   const petitePetit = isFille ? 'petite' : 'petit';
   const filleGarcon = isFille ? 'fille' : 'garçon';
-  const accordEnfant = `Nous sommes bien d'accord que ${c.prenomEnfant||'[prénom]'} est ${unUne} ${petitePetit} ${filleGarcon} qui est :\n→ En bonne santé ?\n→ A été vu récemment par un médecin ?`;
+  const accordEnfant = `Nous sommes **BIEN d'accord** que ${c.prenomEnfant||'[prénom]'} est ${unUne} ${petitePetit} ${filleGarcon} qui est :\n  - En **bonne santé** ?\n  - A été **vu récemment par un médecin** ?`;
 
   let t = text
     .replace(/\[enseigne_nom\]/g, enseigneNom)
@@ -3945,6 +3945,9 @@ function substituteVars(text) {
     .replace(/\[age\]/g, age)
     .replace(/\[role_parents\]/g, roleLabel)
     .replace(/\[heure_fin\]/g, heureFin)
+    .replace(/\[un_une\]/g, isFille ? 'une' : 'un')
+    .replace(/\[petit_petite\]/g, isFille ? 'petite' : 'petit')
+    .replace(/\[fille_garcon\]/g, isFille ? 'fille' : 'garçon')
     .replace(/\[pb_text\]/g, pb)
     .replace(/\[obj_text\]/g, obj)
     .replace(/\[XXX – rappeler ici la problématique écrite par les parents\]/g, pb)
