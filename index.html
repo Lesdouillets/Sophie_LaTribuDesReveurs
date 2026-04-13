@@ -4011,7 +4011,7 @@ function substituteVars(text) {
       /il importe\b/gi,
       /il est (?:important|possible|nécessaire|conseillé|recommandé|préférable|normal|fréquent|rare|difficile|essentiel|utile|probable|certain|vrai|clair|évident|temps)\b/gi,
       /il peut (?:être|arriver|sembler|y avoir)\b/gi,
-      /il \*\*PEUT y avoir/gi,
+      /il\b.{0,5}PEUT y avoir/gi,
       /il semble\b/gi,
       /il paraît\b/gi,
       /il vaut mieux\b/gi,
