@@ -3943,7 +3943,7 @@ function toggleOption(header) {
   const content = header.nextElementSibling;
   const toggle = header.querySelector('.option-toggle');
   const arrow = header.querySelector('.option-arrow');
-  const optionDiv = header.closest('.block-option.action');
+  const optionDiv = header.parentElement.classList.contains('action') ? header.parentElement : null;
   if (optionDiv) {
     // Bouton action : soit carré, soit pleine largeur
     const willOpen = !content.classList.contains('open');
