@@ -733,7 +733,7 @@ const SCRIPT_DATA = {
           {
             type: "option", label: "Si pas OK avec les valeurs/objectifs", style: "purple",
             blocks: [
-              { type: "question", text: "Qu'est-ce qui… dans ce que j'ai proposé, ne vous ressemble PAS / ne vous parle PAS ?\nEt à l'inverse, qu'est-ce qui serait + juste pour vous ?" }
+              { type: "question", text: "Qu'est-CE QUI… **dans ce que j'ai proposé, ne vous ressemble PAS / ne vous parle PAS** ?\nEt à **l'inverse**, qu'est-ce qui serait **+ juste pour vous** ?" }
             ]
           },
           {
@@ -750,7 +750,7 @@ const SCRIPT_DATA = {
               { type: "important", text: "- 🔥 Si je devais vous **proposer 1 seule chose** pour commencer, ce serait <strong style=\"color:#C0392B\">XXX</strong>" }
             ]
           },
-          { type: "normal", text: "- Je ne **peux PAS vous laisser** avec qqch qui ne vous convient PAS OU qui **n'est PAS aidant** pour vous.\n- Mais là, **malheureusement** je dois arrêter là\n- <strong style=\"color:#C0392B\"><u>JE</u></strong> n'ai **PAS pris le bon chemin**\n⇒ on va **trouver un autre chemin ensemble** et qui vous **convienne mieux**\n- MAIS **SI vous êtes d'accord**, je vous **propose qu'on se revoie** (gratuitement) :\n  - pour **reprendre tout ça + tranquillement**\n  - **simplifier**,\n  - et **ajuster** vraiment à **VOTRE rythme.**" },
+          { type: "normal", text: "- Je ne **peux PAS vous laisser** avec qqch qui ne vous **convient PAS** OU qui **n'est PAS aidant** pour vous.\n- Mais là, **malheureusement** je dois **arrêter là**\n- <strong style=\"color:#C0392B\"><u>JE</u></strong> n'ai **PAS pris le bon chemin**\n⇒ on va **trouver un autre chemin ensemble** et qui vous **convienne mieux**\n- MAIS **SI vous êtes d'accord**, je vous **propose qu'on se revoie** (gratuitement) :\n  - pour **reprendre tout ça + tranquillement**\n  - **simplifier**,\n  - et **ajuster** vraiment à **VOTRE rythme.**" },
           { type: "question", text: "Est-ce que **ça vous irait** qu'on **reprogramme un tps ensemble** pour **retravailler les choses + simplement**, à VOTRE rythme ?" },
           { type: "important", text: "- 🔥 Écoutez, le <strong style=\"color:#C0392B\">XXX</strong> à <strong style=\"color:#C0392B\">XXX</strong> heures je suis libre, est-ce que **ça vous conviendrait** ?" },
           { type: "normal", text: "- Ok, donc **on se reparle prochainement**\n- **En attendant**, vous pouvez :\n  - vous **reposer sur ce que l'on s'est dit**,\n  - et on **reprendra notre conversation**" },
@@ -775,7 +775,7 @@ const SCRIPT_DATA = {
         ]
       },
       { type: "separator", text: "📅 Proposition de suivi" },
-      { type: "question", text: "Moi, j'ai une **dernière question** pour VOUS qui est **très importante** :\n\n⇒ Comment vous **vous sentez LÀ,** à **l'idée de mettre** tout ceci **en place** ?" },
+      { type: "question", text: "Moi, j'ai une **dernière question** pour VOUS qui est **très importante** :\n⇒ Comment vous **vous sentez LÀ,** à **l'idée de mettre** tout ceci **en place** ?" },
       { type: "normal", text: "- C'est super ! J'entends **plein de motivation** ! C'est génial !\n- Je vous **envoie** plein d'**énergie positive / bonnes ondes**\n- Je **vous souhaite** que les **nuits/siestes** de [prénom_enfant] **s'apaisent rapidement**, et que **les vôtres suivent** tout **aussi vite**.\n- Bonne journée !" },
       { type: "fin_consultation", text: "🏁 **FIN DE LA CONSULTATION** 🏁" },
     ]
