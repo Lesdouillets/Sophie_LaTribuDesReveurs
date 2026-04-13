@@ -2431,6 +2431,9 @@ let state = {
 // cleanStaleOverrides() gère la fusion intelligente
 // Charge les overrides sauvegardés
 state.scriptOverrides = JSON.parse(localStorage.getItem('tdr_script_overrides') || '{}');
+// Force re-sync sections modifiées dans script-data.js (v2)
+['chemins_possibles','objectifs'].forEach(id => delete state.scriptOverrides[id]);
+localStorage.setItem('tdr_script_overrides', JSON.stringify(state.scriptOverrides));
 
 function saveScriptOverrides() {
   localStorage.setItem('tdr_script_overrides', JSON.stringify(state.scriptOverrides));
