@@ -755,7 +755,7 @@ const SCRIPT_DATA = {
           { type: "normal", text: "- Ok, donc on se reparle prochainement\n- En attendant, vous pouvez :\n  - vous reposer sur ce que l'on s'est dit,\n  - et on reprendra notre conversation" },
           { type: "question", text: "Est-ce que c'est OK pour vous ?" },
           { type: "normal", text: "Je vous souhaite une bonne journée et à très bientôt" },
-          { type: "important", text: "🏁 **FIN**" }
+          { type: "fin_consultation", text: "🏁 **FIN DE LA CONSULTATION** 🏁" }
         ]
       },
       { type: "question", text: "Est-ce qu'il vous reste des questions?" },
@@ -783,7 +783,7 @@ const SCRIPT_DATA = {
       },
       { type: "question", text: "Moi, j'ai une **dernière question** pour VOUS qui est **très importante** :\n\n⇒ Comment vous **vous sentez LÀ,** à **l'idée de mettre** tout ceci **en place** ?" },
       { type: "normal", text: "- C'est super ! J'entends **plein de motivation** ! C'est génial !\n- Je vous **envoie** plein d'**énergie positive / bonnes ondes**\n- Je **vous souhaite** que les **nuits/siestes** de [prénom_enfant] **s'apaisent rapidement**, et que **les vôtres suivent** tout **aussi vite**.\n- Bonne journée !" },
-      { type: "fin_consultation", text: "🏁 **FIN DE LA CONSULTATION** 🏁\n\nMerci pour votre confiance et à très bientôt !" },
+      { type: "fin_consultation", text: "🏁 **FIN DE LA CONSULTATION** 🏁" },
     ]
   }
 
