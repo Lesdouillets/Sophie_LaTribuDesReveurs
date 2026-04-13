@@ -4218,22 +4218,25 @@ function openEditBlockModal(sectionId, path) {
   // Utiliser les blocs rendus à l'écran, avec fallback sur les blocs live
   const blocks = getOverrideBlocks(sec);
   let b = getBlockByPath(blocks, path);
-  // Si le bloc n'a pas de text/label/title, essayer le bloc live ou générer un texte par défaut
+  // Blocs dynamiques : toujours utiliser le texte généré (pas l'ancien override)
+  const dynamicEditTexts = {
+    'pb_intro': state.client.problematique?.trim()
+      ? `Maintenant, je vais **reprendre votre problématique**\net APRÈS vous allez **m'expliquer CE QUI se passe exactement** pour le sommeil de [prénom_enfant].`
+      : `Maintenant, j'aimerais **savoir quelle est votre problématique aujourd'hui** pour [prénom_enfant].`,
+    'pb_question': `Est-ce que c'est **toujours d'actualité** ?`,
+    'obj_intro': state.client.objectifs?.trim()
+      ? `Alors maintenant, j'aimerais **savoir** quels sont vos **objectifs aujourd'hui**\nJe vais **relire CE QUE vous m'avez marqué**… pour être **sûre qu'on est bien alignés**.`
+      : `J'aimerais maintenant **savoir quels sont vos objectifs** aujourd'hui pour [prénom_enfant].\nQu'est-ce que vous **souhaitez idéalement mettre en place** ?`,
+    'obj_question': `Est-ce que ça **correspond toujours** à ce que vous **souhaitez aujourd'hui** ?\nEst-ce que vous avez **quelque chose** à **ajouter** ou **ajuster** ?`,
+  };
+  if (b && dynamicEditTexts[b.type]) {
+    b = { ...b, text: dynamicEditTexts[b.type] };
+  }
+  // Si le bloc n'a pas de text/label/title, essayer le bloc live
   if (b && !b.text && !b.label && !b.title) {
     const liveBlock = getBlockByPath(sec.blocks || [], path);
     if (liveBlock && (liveBlock.text || liveBlock.label || liveBlock.title)) {
       b = liveBlock;
-    } else {
-      // Blocs dynamiques : générer le texte par défaut pour l'édition
-      const defaultTexts = {
-        'pb_intro': 'Maintenant, je vais reprendre votre problématique\net APRÈS vous allez m\'expliquer ce qui se passe exactement pour le sommeil de [prénom_enfant].',
-        'pb_question': 'Est-ce que c\'est toujours d\'actualité ?',
-        'obj_intro': 'Alors maintenant, j\'aimerais qu\'on parle de vos objectifs\nJe vais relire ce que vous m\'avez noté… pour être sûre qu\'on est bien alignés.',
-        'obj_question': 'Est-ce que ça correspond toujours à ce que vous souhaitez aujourd\'hui ?\nEst-ce que vous avez quelque chose à ajouter ou préciser ?',
-      };
-      if (defaultTexts[b.type]) {
-        b = { ...b, text: defaultTexts[b.type] };
-      }
     }
   }
   if (!b) return;
