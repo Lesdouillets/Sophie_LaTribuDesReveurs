@@ -2459,33 +2459,21 @@ function ensureOverride(section) {
     state.scriptOverrides[section.id] = { blocks: JSON.parse(JSON.stringify(section.blocks || [])) };
   }
   const ov = state.scriptOverrides[section.id];
-  // Nettoyer et réordonner pour problematique/objectifs (synchro avec getOverrideBlocks)
-  if ((section.id === 'problematique' || section.id === 'objectifs' || section.id === 'conclusion') && ov._cleaned !== true) {
-    const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','tarifs_tableau'];
+  // Nettoyer pour problematique/objectifs/conclusion : reconstruire depuis la source
+  if (section.id === 'problematique' || section.id === 'objectifs' || section.id === 'conclusion') {
     const liveBlocks = section.blocks || [];
-    // Types présents dans les blocs source de cette section
-    const sourceTypes = new Set(liveBlocks.map(b => b.type));
-    // Filtrer les types vides ET les blocs non-source (doublons d'édition)
-    const cleaned = ov.blocks.filter(b => b.type && b.type !== '' && sourceTypes.has(b.type));
-    const dynamicBlocks = {};
-    const nonDynamicBlocks = [];
-    for (const b of cleaned) {
-      if (dynamicTypes.includes(b.type)) {
-        dynamicBlocks[b.type] = b;
-      } else {
-        nonDynamicBlocks.push(b);
+    // Reconstruire : prendre exactement les mêmes blocs que la source
+    // Pour les options : garder la version de l'override (avec les sous-blocs modifiés)
+    const rebuilt = liveBlocks.map(src => {
+      if (src.type === 'option') {
+        // Chercher l'option correspondante dans l'override (par label)
+        const ovOption = ov.blocks.find(b => b.type === 'option' && b.label === src.label);
+        return ovOption || src;
       }
-    }
-    const reordered = [];
-    for (const src of liveBlocks) {
-      if (dynamicTypes.includes(src.type)) {
-        reordered.push(src); // toujours utiliser la version source pour les dynamiques
-        delete dynamicBlocks[src.type];
-      }
-    }
-    reordered.push(...nonDynamicBlocks);
-    ov.blocks = reordered;
-    ov._cleaned = true;
+      return JSON.parse(JSON.stringify(src));
+    });
+    ov.blocks = rebuilt;
+    saveScriptOverrides();
   }
   return ov;
 }
