@@ -67,21 +67,21 @@ const SCRIPT_DATA = {
         {
           type: "option", label: "Si Maman en dépression/très fatiguée", emoji: "😭", style: "action",
           blocks: [
-            { type: "question", text: "Est-ce que vous êtes accompagnée du coup?" },
+            { type: "question", text: "Est-ce que vous êtes **accompagnée** du coup?" },
             {
               type: "option", label: "✅ Accompagnée avec un psy", style: "pleurs",
               blocks: [
-                { type: "empathie", text: "Super !\nJe comprends… ce que vous vivez, c'est vraiment pas simple.\nAprès une naissance, c'est NORMAL de se sentir fatiguée, et de se sentir un peu perdue par moments.\nVous êtes LOIN d'être la SEULE à passer par là" },
-                { type: "conseil", text: "👏 Et j'ai envie de vous dire quelque chose d'important :\nvous faites déjà énormément pour votre BB\nMême si parfois, vous avez l'impression DE NE pas y arriver ⇒ EN RÉALITÉ, vous vous en occupez très bien" },
-                { type: "empathie", text: "Le manque de sommeil… tous les changements… ⇒ forcément, ça joue sur le moral\nMais ça ne remet absolument PAS en question le fait que vous êtes une bonne maman\n\nEt je trouve ça super que vous soyez déjà accompagnée par un professionnel — C'est une très bonne démarche !\n\nDe mon côté, je suis là pour vous accompagner sur le sommeil de votre bébé ET AUSSI pour vous aider à retrouver un peu de souffle au quotidien.\n\nVous n'êtes pas seule, et vous faites de votre mieux\n\n(👏… et c'est déjà beaucoup)" }
+                { type: "empathie", text: "- **Super !**\n- **Je comprends…** ce que vous vivez, c'est **vraiment pas simple.**\n- Après une naissance, c'est **NORMAL** de se sentir **fatiguée**, et de se sentir un peu **perdue** par moments.\n- Vous êtes **LOIN** d'être la **SEULE** à passer par là" },
+                { type: "conseil", text: "- 👏 Et j'ai envie de vous dire **quelque chose d'important** :\n- vous faites déjà **énormément** pour votre BB\n- Même si parfois, vous avez l'impression **DE NE pas y arriver** ⇒ **EN RÉALITÉ**, vous vous en occupez **très bien**" },
+                { type: "empathie", text: "- Le **manque de sommeil**… tous les **changements**… ⇒ forcément, ça joue sur le **moral**\n- Mais ça ne remet absolument **PAS** en question le fait que vous êtes une **bonne maman**\n\n- Et je trouve ça **super** que vous soyez déjà **accompagnée par un professionnel** — C'est une **très bonne démarche** !\n\n- De mon côté, je suis là pour vous **accompagner sur le sommeil** de votre bébé **ET AUSSI** pour vous aider à retrouver un peu de **souffle au quotidien.**\n\n- **Vous n'êtes pas seule**, et vous faites de votre mieux\n\n  (👏… et c'est **déjà beaucoup**)" }
               ]
             },
             {
               type: "option", label: "❌ PAS accompagnée avec un psy", style: "pleurs",
               blocks: [
-                { type: "empathie", text: "D'accord. Je comprends… ce que vous vivez, c'est vraiment pas simple.\nAprès une naissance, c'est NORMAL de se sentir fatiguée et un peu perdue par moments.\nVous êtes LOIN d'être la SEULE à passer par là." },
-                { type: "conseil", text: "👏 Vous faites déjà énormément pour votre BB\nMême si parfois, vous avez l'impression DE NE pas y arriver ⇒ EN RÉALITÉ, vous vous en occupez très bien" },
-                { type: "empathie", text: "Et si à un moment vous ressentez le besoin d'en parler, de ne PAS rester seule avec tout ça…\nÇa peut être : votre médecin, votre sage-femme, ou un psychologue.\nL'idée : de ne PAS garder tout ça pour vous, et d'avoir un espace pour en parler.\n\nDe mon côté, je suis là pour vous accompagner sur le sommeil ET aussi pour vous aider à retrouver un peu de souffle au quotidien.\n\nMais je voulais aussi que vous gardiez en tête que :\n→ vous n'êtes pas seule,\n→ que vous faites de votre mieux (👏… et c'est déjà beaucoup)" }
+                { type: "empathie", text: "- D'accord. **Je comprends…** ce que vous vivez, c'est **vraiment pas simple.**\n- Après une naissance, c'est **NORMAL** de se sentir **fatiguée** et un peu **perdue** par moments.\n- Vous êtes **LOIN** d'être la **SEULE** à passer par là." },
+                { type: "conseil", text: "- 👏 Vous faites déjà **énormément** pour votre BB\n- Même si parfois, vous avez l'impression **DE NE pas y arriver** ⇒ **EN RÉALITÉ**, vous vous en occupez **très bien**" },
+                { type: "empathie", text: "- Et si à un moment vous ressentez le **besoin d'en parler**, de ne **PAS rester seule** avec tout ça…\n- Ça peut être : votre **médecin**, votre **sage-femme**, ou un **psychologue.**\n- L'idée : de ne **PAS garder tout ça pour vous**, et d'avoir un **espace pour en parler.**\n\n- De mon côté, je suis là pour vous **accompagner sur le sommeil** **ET aussi** pour vous aider à retrouver un peu de **souffle au quotidien.**\n\n- Mais je voulais aussi que vous gardiez en tête que :\n  - → **vous n'êtes pas seule,**\n  - → que vous faites de votre mieux (👏… et c'est **déjà beaucoup**)" }
               ]
             },
           ]
