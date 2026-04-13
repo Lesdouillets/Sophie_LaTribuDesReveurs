@@ -838,9 +838,10 @@
     .block-option.purple .option-arrow { color: #5b21b6; }
     .block-option.purple .option-label-text { color: #5b21b6; font-weight: 700; }
     .block-option.purple .option-content { background: #f5f0ff; }
-    .block-option.purple .option-content .block:not(.block-question) { background: #f5f0ff; border-color: #d4c4f0; }
+    .block-option.purple .option-content .block:not(.block-question):not(.block-conseil-vert) { background: #f5f0ff; border-color: #d4c4f0; }
     .block-option.purple > .option-content > .edit-block-wrap:first-child .block { border: none; box-shadow: none; background: #f5f0ff; }
     .block-purple-dark { background: #ddd3f8 !important; border-color: #c4b5e0 !important; }
+    .block-no-border { border: none !important; box-shadow: none !important; }
     .block-option.purple .option-content .block-option.purple .option-content .block:not(.block-question) { background: #ddd3f8; border-color: #c4b5e0; }
 
     /* OPTION DANGER (orange vif) */
@@ -3811,7 +3812,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
 
   const cls = { normal:'block-normal', important:'block-important', conseil:'block-conseil', conseil_vert:'block-conseil-vert', empathie:'block-empathie' }[b.type] || 'block-normal';
-  const extraCls = b._purpleDark ? ' block-purple-dark' : '';
+  const extraCls = (b._purpleDark ? ' block-purple-dark' : '') + (b._noBorder ? ' block-no-border' : '');
   return `<div class="block ${cls}${extraCls}" contenteditable="true">${text}</div>`;
 }
 
