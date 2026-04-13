@@ -18,9 +18,9 @@ const SCRIPT_DATA = {
         { type: "question", text: "Est-ce que **quelqu'un d'autre** se **joindra** à nous aujourd'hui?" },
         { type: "normal", text: "- On est **ensemble aujourd'hui jusque** [heure_fin]" },
         { type: "question", text: "Est-ce que vous avez **bien prévu d'être disponible** jusque [heure_fin] ?" },
-        { type: "normal", text: "- Dans le cadre d'une 1ère consultation, je vais vous **expliquer comment ça va se passer**\n\n- On va faire ensemble **l'évaluation de la situation de sommeil** de [prénom_enfant]\n\n1. Je vais m'appuyer sur le questionnaire que vous avez rempli\n  - Pour **approfondir les choses**\n  - Pour être **sûr de ne passer à côté de rien** en terme d'**information importante**" },
+        { type: "normal", text: "- Dans le cadre d'une 1ère consultation, je vais vous **expliquer comment ça va se passer**\n\n- On va faire ensemble **l'évaluation de la situation de sommeil** de [prénom_enfant]\n\n  - 1. Je vais m'appuyer sur le questionnaire que vous avez rempli\n    - Pour **approfondir les choses**\n    - Pour être **sûr de ne passer à côté de rien** en terme d'**information importante**" },
         { type: "question", text: "En **parlant de ça**, y'a-t-il eu des **changements récents** depuis que vous **m'avez envoyé le questionnaire**?" },
-        { type: "normal", text: "2. On va **lire les courbes de taille/poids et périmètre crânien**, car le **sommeil et l'alimentation** sont **étroitement liés**\n\n3. On va **lire ensemble** le **tableau de suivi** que vous avez rempli\n\n4. On va **regarder** aussi **rapidement les photos de la chambre** que vous m'avez envoyé\n\n- À partir de là, je vais avoir une **vue détaillée de votre situation** et je vais pouvoir vous **établir un diagnostic**\n\n- Ensuite, je vais vous **proposer un plan d'action** à mettre en place par rapport à tout ce que *j'aurais compris de nos échanges*\n\n- L'**idée** de cette **1ère consultation** c'est généralement:\n  - de vous **donner des 1ers conseils**\n  - par rapport à ce que **je comprends**\n  - et ce qui me **semble prioritaire** dans votre situation\n\n- Dans certains cas, elle y aura **peut-être besoin d'une AUTRE petite consultation** de 20 min\n  - Pour **faire le point sur les 1ères choses** que vous aurez **mises en place**\n  - Pour vous **donner des conseils supplémentaires**\n  - OU Pour **répondre aux questions** qui seraient **survenues durant ses 1ers jours**" },
+        { type: "normal", text: "  - 2. On va **lire les courbes de taille/poids et périmètre crânien**, car le **sommeil et l'alimentation** sont **étroitement liés**\n\n  - 3. On va **lire ensemble** le **tableau de suivi** que vous avez rempli\n\n  - 4. On va **regarder** aussi **rapidement les photos de la chambre** que vous m'avez envoyé\n\n- À partir de là, je vais avoir une **vue détaillée de votre situation** et je vais pouvoir vous **établir un diagnostic**\n- Ensuite, je vais vous **proposer un plan d'action** à mettre en place par rapport à tout ce que **j'aurais compris de nos échanges**\n\n- L'**idée** de cette **1ère consultation** c'est généralement:\n  - de vous **donner des 1ers conseils**\n  - par rapport à ce que **je comprends**\n  - et ce qui me **semble prioritaire** dans votre situation\n\n- Dans certains cas, elle y aura **peut-être besoin d'une AUTRE petite consultation** de 20 min\n  - Pour **faire le point sur les 1ères choses** que vous aurez **mises en place**\n  - Pour vous **donner des conseils supplémentaires**\n  - OU Pour **répondre aux questions** qui seraient **survenues durant ses 1ers jours**" },
         { type: "question", text: "Est-ce que **ça vous convient**?" },
         { type: "important", text: "- Je précise aussi que je **NE suis PAS médecin**, et NE remplace PAS votre médecin\n- Les **conseils** que je donne, sont **donnés à titre informatif**\n- SI j'ai le **moindre doute médical** ⇒ Je vous **redirigerai** vers un professionnel de santé" },
         { type: "question", text: "Nous sommes **BIEN d'accord** que [prénom_enfant] est [un_une] [petit_petite] [fille_garcon] qui est :\n  - En **bonne santé** ?\n  - A été **vu récemment par un médecin** ?" },
@@ -54,7 +54,7 @@ const SCRIPT_DATA = {
       emoji: "🔍",
       blocks: [
         { type: "normal", text: "- Ce que je vous propose maintenant,\nc'est de **dérouler** une **journée type**, pour essayer de **comprendre AU MIEUX** votre quotidien" },
-        { type: "question", text: "Ce qu'on peut faire, c'est qu'on peut **commencer par le réveil** du matin, si ça vous va?\n⇒ [Suivre la fiche découverte]" },
+        { type: "question", text: "**CE QU'ON peut faire**, c'est qu'on peut **commencer par le réveil** du matin, si ça vous va?\n⇒ [Suivre la fiche découverte]" },
         { type: "separator", text: "📊 Lecture des courbes" },
         { type: "normal", text: "- On va maintenant **regarder les courbes**" },
         { type: "question", text: "Est-ce que vous pourriez **me donner votre taille à TOUS les 2**?\nAvez-vous des **personnes très GRANDES dans vos familles**?" },
@@ -63,7 +63,7 @@ const SCRIPT_DATA = {
         { type: "normal", text: "- Maintenant, on va **lire ensemble** le **tableau de suivi du sommeil** que vous avez rempli" },
         { type: "separator", text: "📸 Photos de la chambre" },
         { type: "normal", text: "- On va maintenant **regarder rapidement les photos** de la chambre" },
-        { type: "question", text: "Maintenant, je **voudrai savoir:**\n- Si vous deviez mettre une **note de 0 à 10**, 10 étant la meilleure note, quelle note vous mettriez à :\n  - **Votre grossesse** et <u>pour le Papa</u>?\n  - **Votre accouchement** et <u>pour le Papa</u>?\n  - Et maintenant à **votre ÉTAT D'ÊTRE actuel** (en prenant en compte votre **vie perso/pro/par rapport au sommeil de votre enfant**) et <u>pour le Papa</u>?" },
+        { type: "question", text: "Maintenant, je **voudrai savoir:**\n- Si vous deviez mettre une **note de 0 à 10**, 10 étant la meilleure note, quelle note vous mettriez à :\n  - **Votre grossesse** ET <u>pour le Papa</u>?\n  - **Votre accouchement** ET <u>pour le Papa</u>?\n  - Et maintenant à **votre ÉTAT D'ÊTRE actuel** (en prenant en compte votre **vie perso/pro/par rapport au sommeil de votre enfant**) ET <u>pour le Papa</u>?" },
         {
           type: "option", label: "Si Maman en dépression/très fatiguée", emoji: "😭", style: "pleurs",
           blocks: [
@@ -101,21 +101,21 @@ const SCRIPT_DATA = {
         {
           type: "option", label: "🛌 Souhaitent changer de lieu de sommeil / lit", style: "purple",
           blocks: [
-            { type: "normal", text: "J'ai aussi une petite question par rapport au LIEU de sommeil\nAujourd'hui, votre enfant dort dans VOTRE chambre" },
+            { type: "normal", text: "- J'ai aussi une **petite question** par rapport au **LIEU de sommeil**\n- Aujourd'hui, votre enfant **dort dans VOTRE chambre**" },
             {
               type: "option", label: "Dort dans le lit parental", style: "purple",
               blocks: [
-                { type: "normal", text: "Et plus précisément dans VOTRE LIT\n\nDe mon côté, je dois quand même vous partager les recommandations de l'OMS…\n…qui encouragent à faire dormir les enfants dans LEUR PROPRE LIT…\n…car cela diminue significativement le risque de Mort Inattendue du Nourrisson\n\nMais au-delà de ça, l'idée, ce n'est pas de vous dire quoi faire.\nC'est surtout de voir ce qui vous convient à vous, aujourd'hui.\n\nIl n'y a PAS de bonne ou de mauvaise réponse :\n→ certains parents préfèrent attendre encore un peu,\n→ d'autres sont prêts à faire la transition." },
+                { type: "normal", text: "- Et plus précisément **dans VOTRE LIT**\n\n- De mon côté, je dois **quand même** vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à faire **dormir** les enfants dans **LEUR PROPRE LIT**…\n  - …car cela **diminue significativement le risque de Mort Inattendue du Nourrisson**\n\n- Mais **au-delà de ça**, l'idée, ce n'est **PAS de vous dire quoi faire.**\n- C'est surtout de **voir CE QUI vous convient** à vous, aujourd'hui.\n\n- Il n'y a **PAS** de **bonne** ou de **mauvaise réponse** :\n  - **certains parents** préfèrent **attendre** encore un peu,\n  - d'**autres** sont **prêts à faire la transition.**" },
               ]
             },
-            { type: "question", text: "Est-ce que c'est quelque chose qui vous CONVIENT pour l'instant,\n…OU est-ce que vous aimeriez qu'il passe dans SA chambre / dans SON lit ?" }
+            { type: "question", text: "Est-ce que c'est **quelque chose qui vous CONVIENT** pour l'instant,\n…OU est-ce que vous **aimeriez qu'elle passe dans SA chambre / dans SON lit** ?" }
           ]
         },
         {
           type: "option", label: "Position ventrale – souhait de garder ou non ?", style: "purple",
           blocks: [
-            { type: "normal", text: "J'ai également une question concernant la position de sommeil de votre enfant.\nAujourd'hui, il semble s'endormir sur le ventre… c'est devenu SA stratégie pour trouver le sommeil…\nc'est quelque chose que l'on observe souvent chez les BB car c'est la position la + physiologique pour le corps\n\nNéanmoins, je dois aussi vous partager les recommandations de l'OMS…\n…qui encouragent à poser son enfant sur le DOS…\n…car cette position diminue significativement le risque de Mort Inattendue du Nourrisson\n\nIl n'y a pas de bonne ou mauvaise réponse… SEULEMENT CELLE qui correspond à vos besoins !" },
-            { type: "question", text: "J'aimerais beaucoup connaître votre point de vue sur ce sujet…\n→ Souhaitez-vous rester en position ventrale ou changer vers la position dorsale?" }
+            { type: "normal", text: "- J'ai également une **question** concernant la **position de sommeil** de [prénom_enfant].\n- Aujourd'hui, elle **semble s'endormir sur le ventre**… c'est devenu **SA stratégie** pour **trouver le sommeil**…\n  - c'est **quelque chose** que l'on **observe souvent** chez les BB car c'est la **position la + physiologique** pour le corps\n\n- **Néanmoins**, je dois aussi vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à **poser son enfant** sur le **DOS**…\n  - …car cette position **diminue significativement le risque de Mort Inattendue du Nourrisson**\n\n- Il n'y a **PAS** de **bonne ou mauvaise réponse**… SEULEMENT CELLE qui **correspond à vos besoins** !" },
+            { type: "question", text: "J'**aimerais** beaucoup **connaître votre point de vue** sur ce sujet…\n- Souhaitez-vous **rester**\n  - **en position ventrale**\n  - ou changer **vers la position dorsale**?" }
           ]
         },
       ]

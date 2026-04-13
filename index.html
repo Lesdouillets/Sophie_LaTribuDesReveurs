@@ -3687,7 +3687,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     if (pb && pb.trim()) {
       return `<div class="block block-normal"><ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Maintenant, je vais <strong>reprendre votre problématique</strong><br>et APRÈS vous allez <strong>m'expliquer CE QUI se passe exactement</strong> pour le sommeil de ${prenom}.</li></ul></div>`;
     } else {
-      return `<div class="block block-question"><div class="q-text">❓ <ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Maintenant, j'aimerais <strong>savoir quelle est votre problématique aujourd'hui</strong> pour ${prenom}.</li></ul></div></div>`;
+      return `<div class="block block-question"><div class="q-text">❓ Maintenant, j'aimerais <strong>savoir quelle est votre problématique aujourd'hui</strong> pour ${prenom}.</div></div>`;
     }
   }
 
@@ -3703,7 +3703,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       return `<div class="block block-normal"><ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Alors maintenant, j'aimerais <strong>savoir</strong> quels sont vos <strong>objectifs aujourd'hui</strong></li><li style="margin-bottom:3px;line-height:1.65">Je vais <strong>relire CE QUE vous m'avez marqué</strong>… pour être <strong>sûre qu'on est bien alignés</strong>.</li></ul></div>`;
     } else {
       const prenom = state.client.prenomEnfant || '[prénom]';
-      return `<div class="block block-question"><div class="q-text">❓ J'aimerais maintenant <strong>savoir quels sont vos objectifs</strong> aujourd'hui pour ${prenom}. Qu'est-ce que vous <strong>souhaitez idéalement mettre en place</strong> ?</div></div>`;
+      return `<div class="block block-question"><div class="q-text">❓ J'aimerais maintenant <strong>savoir quels sont vos objectifs</strong> aujourd'hui pour ${prenom}.<br>Qu'est-ce que vous <strong>souhaitez idéalement mettre en place</strong> ?</div></div>`;
     }
   }
 
@@ -3936,7 +3936,7 @@ function substituteVars(text) {
   const prenomsList = prenomsParts.length === 2
     ? `${prenomsParts[0]} et ${prenomsParts[1]}`
     : prenomsParts[0] || '[prénom parent]';
-  const verifIdentite = `Vous êtes BIEN ${prenomsList}, ${roleLabel} de ${c.prenomEnfant||'[prénom]'} qui a ${age} ?`;
+  const verifIdentite = `Vous êtes **BIEN** ${prenomsList}, ${roleLabel} de ${c.prenomEnfant||'[prénom]'} qui a ${age} ?`;
 
   // ── [accord_enfant] — question accordée selon le sexe ─────
   const isFille = (c.sexe || '').toLowerCase() === 'fille';
