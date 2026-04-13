@@ -2434,7 +2434,7 @@ function getOverrideBlocks(section) {
   const liveBlocks = section.blocks || [];
 
   // Pour problematique/objectifs, ov.blocks est déjà nettoyé par ensureOverride
-  if (section.id === 'problematique' || section.id === 'objectifs' || section.id === 'conclusion') {
+  if (section.id === 'problematique' || section.id === 'objectifs') {
     ensureOverride(section);
     return ov.blocks;
   }
@@ -2460,7 +2460,7 @@ function ensureOverride(section) {
   }
   const ov = state.scriptOverrides[section.id];
   // Nettoyer pour problematique/objectifs/conclusion : reconstruire depuis la source
-  if (section.id === 'problematique' || section.id === 'objectifs' || section.id === 'conclusion') {
+  if (section.id === 'problematique' || section.id === 'objectifs') {
     const liveBlocks = section.blocks || [];
     // Reconstruire : prendre exactement les mêmes blocs que la source
     // Pour les options : garder la version de l'override (avec les sous-blocs modifiés)
@@ -3676,7 +3676,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const pb = state.client.problematique;
     const prenom = state.client.prenomEnfant || '[prénom]';
     if (pb && pb.trim()) {
-      return `<div class="block block-normal">Maintenant, je vais <strong>reprendre votre problématique</strong><br>et APRÈS vous allez <strong>m'expliquer CE QUI se passe exactement</strong> pour le sommeil de ${prenom}.</div>`;
+      return `<div class="block block-normal"><ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Maintenant, je vais <strong>reprendre votre problématique</strong><br>et APRÈS vous allez <strong>m'expliquer CE QUI se passe exactement</strong> pour le sommeil de ${prenom}.</li></ul></div>`;
     } else {
       return `<div class="block block-question"><div class="q-text">❓ <ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Maintenant, j'aimerais <strong>savoir quelle est votre problématique aujourd'hui</strong> pour ${prenom}.</li></ul></div></div>`;
     }
