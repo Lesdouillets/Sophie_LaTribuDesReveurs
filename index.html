@@ -2368,7 +2368,7 @@ async function loadSupabaseOverrides() {
       state.scriptOverrides = data.overrides;
       cleanStaleOverrides();
       // Force re-sync sections modifiées dans script-data.js (v2)
-      ['chemins_possibles','objectifs','objectifs_revus','decouverte'].forEach(id => delete state.scriptOverrides[id]);
+      ['chemins_possibles','objectifs','objectifs_revus','decouverte','problematique'].forEach(id => delete state.scriptOverrides[id]);
       localStorage.setItem('tdr_script_overrides', JSON.stringify(state.scriptOverrides));
       syncOverridesToSupabase();
     }
@@ -2475,7 +2475,7 @@ let state = {
 // Charge les overrides sauvegardés
 state.scriptOverrides = JSON.parse(localStorage.getItem('tdr_script_overrides') || '{}');
 // Force re-sync sections modifiées dans script-data.js (v2)
-['chemins_possibles','objectifs','objectifs_revus','decouverte'].forEach(id => delete state.scriptOverrides[id]);
+['chemins_possibles','objectifs','objectifs_revus','decouverte','problematique'].forEach(id => delete state.scriptOverrides[id]);
 localStorage.setItem('tdr_script_overrides', JSON.stringify(state.scriptOverrides));
 
 function saveScriptOverrides() {
