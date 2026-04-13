@@ -3733,7 +3733,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const pbHtml = pb.replace(/\n/g, '<br>');
     return `<div class="block block-normal" contenteditable="true">Maintenant, je vais reprendre votre problématique<br>et APRÈS vous allez m'expliquer ce qui se passe exactement pour le sommeil de ${prenom}.</div>
     <div class="block block-pb-recap">
-      <div class="pb-recap-intro">Vous m'avez écrit :</div>
+      <div class="pb-recap-intro"><u>Vous m'avez écrit :</u></div>
       <div class="pb-recap-text"><em>${pbHtml}</em></div>
       <div class="pb-recap-question"><span class="q-icon-inline">❓</span> Est-ce que c'est toujours d'actualité ?</div>
     </div>`;
@@ -3744,7 +3744,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     if (!obj) return '';
     const objHtml = obj.replace(/\n/g, '<br>');
     return `<div class="block block-pb-recap">
-      <div class="pb-recap-intro">Vous m'avez écrit :</div>
+      <div class="pb-recap-intro"><u>Vous m'avez écrit :</u></div>
       <div class="pb-recap-text"><em>${objHtml}</em></div>
     </div>`;
   }
@@ -3762,7 +3762,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const objHtml = obj.replace(/\n/g, '<br>');
     return `<div class="block block-normal" contenteditable="true">Alors maintenant, j'aimerais <strong>qu'on parle de vos objectifs</strong><br>Je vais <strong>relire ce que vous m'avez noté</strong>… pour être <strong>sûre qu'on est bien alignés</strong>.</div>
     <div class="block block-pb-recap">
-      <div class="pb-recap-intro">Vous m'avez écrit :</div>
+      <div class="pb-recap-intro"><u>Vous m'avez écrit :</u></div>
       <div class="pb-recap-text"><em>${objHtml}</em></div>
     </div>
     <div class="block block-question">
