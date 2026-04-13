@@ -115,7 +115,8 @@ const SCRIPT_DATA = {
           type: "option", label: "Position ventrale – souhait de garder ou non ?", style: "purple",
           blocks: [
             { type: "normal", text: "- J'ai également une **question** concernant la **position de sommeil** de [prénom_enfant].\n- Aujourd'hui, elle **semble s'endormir sur le ventre**… c'est devenu **SA stratégie** pour **trouver le sommeil**…\n  - c'est **quelque chose** que l'on **observe souvent** chez les BB car c'est la **position la + physiologique** pour le corps\n\n- **Néanmoins**, je dois aussi vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à **poser son enfant** sur le **DOS**…\n  - …car cette position **diminue significativement le risque de Mort Inattendue du Nourrisson**\n\n- Il n'y a **PAS** de **bonne ou mauvaise réponse**… SEULEMENT CELLE qui **correspond à vos besoins** !" },
-            { type: "question", text: "J'**aimerais** beaucoup **connaître votre point de vue** sur ce sujet…\n- Souhaitez-vous **rester**\n  - **en position ventrale**\n  - ou changer **vers la position dorsale**?" }
+            { type: "normal", text: "- **Mon rôle** c'est de vous **transmettre ces informations..**\n\n  …tout en **restant à l'écoute** de **votre réalité**\n\n- Il n'y a **pas de bonne ou mauvaise réponse**..\n\n  ...**SEULEMENT CELLE** qui **correspond à vos besoins** !" },
+            { type: "question", text: "J'**aimerais** beaucoup **connaître votre point de vue** sur ce sujet…\n- Souhaitez-vous **rester**\n  - **en position ventrale**\n  - ou changer **vers la position dorsale**?\n\n- Cela me **permettra** **d'adapter au mieux mon accompagnement** à votre famille\n\n  ...et à **vos préférences.**" }
           ]
         },
       ]
