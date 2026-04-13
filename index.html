@@ -830,7 +830,7 @@
     .block-option.pleurs .block-normal { border: none !important; box-shadow: none !important; background: #e8f4fb !important; }
     .option-emoji { font-size: 18px; line-height: 1; flex-shrink: 0; }
 
-    /* OPTION ACTION (bouton carré) */
+    /* OPTION ACTION (bouton carré — fermé) */
     .block-option.action {
       width: 150px; background: #2980b9; border: none; border-radius: 16px;
       box-shadow: 0 4px 15px rgba(41,128,185,0.35);
@@ -848,18 +848,20 @@
       text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
     .block-option.action > .option-header .option-toggle { color: #d4eaf7; font-size: 10px; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-    .block-option.action > .option-header:hover { background: rgba(255,255,255,0.1); }
-    .block-option.action .option-content {
-      background: #e8f4fb; padding: 0 16px 14px;
-    }
-    .block-option.action .block-normal { border: none !important; box-shadow: none !important; background: #e8f4fb !important; }
-    .block-option.action .block-empathie { border: none; box-shadow: none; }
-    .block-option.action .block-question { border: none !important; box-shadow: none !important; }
+    .block-option.action > .option-header:hover { background: rgba(255,255,255,0.1); border-radius: 16px; }
+    /* OPTION ACTION (bouton carré — ouvert) */
     .block-option.action.open-action {
       width: 100%; border-radius: var(--radius); margin-left: 0; margin-right: 0;
+      background: #e8f4fb; border: 1.5px solid #2980b9;
     }
     .block-option.action.open-action > .option-header { display: none; }
-    .block-option.action.open-action .option-content { background: #e8f4fb; }
+    .block-option.action.open-action > .option-content {
+      background: #e8f4fb; padding: 0 16px 14px;
+    }
+    .block-option.action.open-action .block-normal { border: none !important; box-shadow: none !important; background: #e8f4fb !important; }
+    .block-option.action.open-action .block-empathie { border: none !important; box-shadow: none !important; background: #e8f4fb !important; }
+    .block-option.action.open-action .block-question { background: #fdf0f0 !important; }
+    .block-option.action.open-action .block-conseil { background: #eaeff8 !important; }
     .action-close-btn {
       display: block; margin: 8px auto 12px; padding: 6px 20px;
       background: #2980b9; color: #fff; border: none; border-radius: 8px;
