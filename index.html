@@ -869,6 +869,26 @@
     }
     .action-close-btn:hover { background: var(--primary-dark); }
 
+    /* OPTION CARD (carte cliquable) */
+    .block-option.card {
+      background: #f5f0ff; border: 2px solid #7c3aed; border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(124,58,237,0.15);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .block-option.card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(124,58,237,0.25); }
+    .block-option.card > .option-header {
+      padding: 14px 18px; gap: 10px;
+    }
+    .block-option.card > .option-header .option-emoji { font-size: 24px; }
+    .block-option.card > .option-header .option-arrow { color: #7c3aed; font-size: 16px; }
+    .block-option.card > .option-header .option-label-text { color: #5b21b6; font-weight: 700; font-size: 15px; }
+    .block-option.card > .option-header .option-toggle { color: #7c3aed; font-weight: 600; }
+    .block-option.card > .option-header:hover { background: rgba(124,58,237,0.08); border-radius: 12px; }
+    .block-option.card .option-content { background: #f5f0ff; }
+    .block-option.card .option-content .block:not(.block-question):not(.block-conseil-vert):not(.block-fin-consultation) { background: #f5f0ff; border-color: #d4c4f0; }
+    .block-option.card .option-content .block-option.purple .option-content .block:not(.block-question) { background: #ddd3f8; border-color: #c4b5e0; }
+    .block-option.card .block-question { background: #fdf0f0 !important; border-color: #e8a0a0 !important; }
+
     /* OPTION PURPLE (violet clair) */
     .block-option.purple {
       background: #f5f0ff;
@@ -3662,8 +3682,9 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const pleursClass = b.style === 'pleurs' ? ' pleurs' : '';
     const purpleClass = b.style === 'purple' ? ' purple' : '';
     const actionClass = b.style === 'action' ? ' action' : '';
+    const cardClass = b.style === 'card' ? ' card' : '';
     const emojiHtml = b.emoji ? `<span class="option-emoji">${b.emoji}</span>` : '';
-    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${actionClass}">
+    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${actionClass}${cardClass}">
       <div class="option-header" onclick="toggleOption(this)">
         <span style="display:flex;align-items:center;gap:6px">
           ${emojiHtml}
