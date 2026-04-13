@@ -834,6 +834,8 @@
     .block-option.purple .option-label-text { color: #5b21b6; font-weight: 700; }
     .block-option.purple .option-content { background: #f5f0ff; }
     .block-option.purple .option-content .block:not(.block-question) { background: #f5f0ff; border-color: #d4c4f0; }
+    .block-option.purple > .option-content > .edit-block-wrap:first-child .block { border: none; box-shadow: none; background: #f5f0ff; }
+    .block-purple-dark { background: #ddd3f8 !important; border-color: #c4b5e0 !important; }
     .block-option.purple .option-content .block-option.purple .option-content .block:not(.block-question) { background: #ddd3f8; border-color: #c4b5e0; }
 
     /* OPTION DANGER (orange vif) */
@@ -3804,7 +3806,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
 
   const cls = { normal:'block-normal', important:'block-important', conseil:'block-conseil', empathie:'block-empathie' }[b.type] || 'block-normal';
-  return `<div class="block ${cls}" contenteditable="true">${text}</div>`;
+  const extraCls = b._purpleDark ? ' block-purple-dark' : '';
+  return `<div class="block ${cls}${extraCls}" contenteditable="true">${text}</div>`;
 }
 
 function renderBesoinsSommeil(tranches) {

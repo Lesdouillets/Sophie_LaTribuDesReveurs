@@ -143,30 +143,25 @@ const SCRIPT_DATA = {
           ]
         },
         { type: "separator", text: "📋 Difficultés identifiées" },
-        { type: "normal", text: "Au vu de ce qu'on s'est dit\nEn effet, vous aviez BIEN identifié que votre enfant a des difficultés de sommeil." },
         {
-          type: "option", label: "❌ Difficultés de sommeil identifiées", style: "danger",
+          type: "option", label: "❌ Difficultés de sommeil identifiées", style: "purple",
           blocks: [
-            {
-              type: "option", label: "⏱ Temps d'endormissement trop long",
-              blocks: [{ type: "normal", text: "Il y a une petite problématique au niveau des durées d'endormissement… qui sont très longues" }]
-            },
-            {
-              type: "option", label: "⏰ Durée des siestes trop courte",
-              blocks: [{ type: "normal", text: "Il y a aussi un petit caillou concernant la durée des siestes… qui sont très courtes" }]
-            },
-            {
-              type: "option", label: "🔢 Nombre de siestes inadapté",
-              blocks: [{ type: "normal", text: "Il y a aussi quelque chose à travailler au niveau du nombre de siestes… qui ne correspondent pas forcément aux besoins de son âge" }]
-            },
-            {
-              type: "option", label: "✅ Pas de dette de sommeil",
-              blocks: [{ type: "conseil", text: "La bonne nouvelle c'est qu'aujourd'hui [prénom_enfant] n'est PAS en dette de sommeil\n👏 Vous faites TOUT pour que ça ne soit pas le cas!" }]
-            },
+            { type: "normal", text: "Au vu de ce qu'on s'est dit\nEn effet, vous aviez BIEN identifié que votre enfant a des difficultés de sommeil.", _noBorder: true },
+            { type: "normal", text: "**<u>⏱ Temps d'endormissement trop long :</u>** Il y a une petite problématique au niveau des durées d'endormissement… qui sont très longues", _purpleDark: true },
+            { type: "normal", text: "**<u>⏰ Durée des siestes trop courte :</u>** Il y a aussi un petit caillou concernant la durée des siestes… qui sont très courtes", _purpleDark: true },
+            { type: "normal", text: "**<u>🔢 Nombre de siestes inadapté :</u>** Il y a aussi quelque chose à travailler au niveau du nombre de siestes… qui ne correspondent pas forcément aux besoins de son âge", _purpleDark: true },
           ]
         },
         {
-          type: "option", label: "🍼 Difficultés alimentaires identifiées (courbes en déclin)", style: "danger",
+          type: "option", label: "✅ Pas de dette de sommeil", style: "purple",
+          blocks: [
+            { type: "conseil", text: "La bonne nouvelle c'est qu'aujourd'hui [prénom_enfant] n'est PAS en dette de sommeil\n👏 Vous faites TOUT pour que ça ne soit pas le cas!" },
+            { type: "normal", text: "**<u>Au niveau du tps d'endormissement :</u>** Par contre, je vois des difficultés sur la durée d'endormissement … qui est très long", _purpleDark: true },
+            { type: "normal", text: "**<u>Au niveau du nombre de siestes …</u>** Par contre, je peux voir que le nombre de siestes … ne correspond pas aux besoins d'un enfant de cet âge", _purpleDark: true },
+          ]
+        },
+        {
+          type: "option", label: "🍼 Difficultés alimentaires identifiées (courbes en déclin)", style: "purple",
           blocks: [
             { type: "normal", text: "Je valide AUSSI des difficultés alimentaires parce que…\n🔥 En effet :\n→ au niveau des courbes qu'on a vues ensemble, il y a quelque chose qui se joue\n→ au niveau des différents symptômes que vous m'avez partagé, il y a quelque chose à creuser\n→ au niveau de son inconfort, pour [prénom_enfant] il faudrait comprendre pourquoi il est ainsi\n\nDu coup il y a BIEN quelque chose qui NE VA PAS du côté de la nutrition\n\nMAIS la bonne nouvelle c'est que :\n→ TOUT ce que vous m'avez partagé a du sens, est explicable\n→ Mais SURTOUT que c'est solutionnable !\n→ ET que je peux vous accompagner pour les troubles du sommeil de [prénom_enfant]" }
           ]
