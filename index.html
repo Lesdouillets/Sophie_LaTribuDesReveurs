@@ -836,19 +836,19 @@
       box-shadow: 0 4px 15px rgba(41,128,185,0.35);
       margin-left: auto; margin-right: auto;
     }
-    .block-option.action .option-header {
+    .block-option.action > .option-header {
       flex-direction: column; align-items: center; justify-content: center;
       padding: 20px 12px; gap: 8px; min-height: 120px;
     }
-    .block-option.action .option-header > span { flex-direction: column; align-items: center; }
-    .block-option.action .option-emoji { font-size: 36px; }
-    .block-option.action .option-arrow { display: none; }
-    .block-option.action .option-label-text {
+    .block-option.action > .option-header > span { flex-direction: column; align-items: center; }
+    .block-option.action > .option-header .option-emoji { font-size: 36px; }
+    .block-option.action > .option-header .option-arrow { display: none; }
+    .block-option.action > .option-header .option-label-text {
       color: #fff; font-weight: 700; font-size: 12px; text-align: center; line-height: 1.3;
       text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
-    .block-option.action .option-toggle { color: #d4eaf7; font-size: 10px; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-    .block-option.action .option-header:hover { background: rgba(255,255,255,0.1); }
+    .block-option.action > .option-header .option-toggle { color: #d4eaf7; font-size: 10px; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+    .block-option.action > .option-header:hover { background: rgba(255,255,255,0.1); }
     .block-option.action .option-content {
       background: #e8f4fb; padding: 0 16px 14px;
     }
@@ -858,7 +858,7 @@
     .block-option.action.open-action {
       width: 100%; border-radius: var(--radius); margin-left: 0; margin-right: 0;
     }
-    .block-option.action.open-action .option-header { display: none; }
+    .block-option.action.open-action > .option-header { display: none; }
     .block-option.action.open-action .option-content { background: #e8f4fb; }
     .action-close-btn {
       display: block; margin: 8px auto 12px; padding: 6px 20px;
