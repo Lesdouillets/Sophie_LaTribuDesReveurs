@@ -65,7 +65,7 @@ const SCRIPT_DATA = {
         { type: "normal", text: "- On va maintenant **regarder rapidement les photos** de la chambre" },
         { type: "question", text: "Maintenant, je **voudrai savoir:**\n- Si vous deviez mettre une **note de 0 à 10**, 10 étant la meilleure note, quelle note vous mettriez à :\n  - **Votre grossesse** ET <u>pour le Papa</u>?\n  - **Votre accouchement** ET <u>pour le Papa</u>?\n  - Et maintenant à **votre ÉTAT D'ÊTRE actuel** (en prenant en compte votre **vie perso/pro/par rapport au sommeil de votre enfant**) ET <u>pour le Papa</u>?" },
         {
-          type: "option", label: "Si Maman en dépression/très fatiguée", emoji: "😭", style: "pleurs",
+          type: "option", label: "Si Maman en dépression/très fatiguée", emoji: "😭", style: "action",
           blocks: [
             { type: "question", text: "Est-ce que vous êtes accompagnée du coup?" },
             {

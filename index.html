@@ -830,6 +830,40 @@
     .block-option.pleurs .block-normal { border: none !important; box-shadow: none !important; background: #e8f4fb !important; }
     .option-emoji { font-size: 18px; line-height: 1; flex-shrink: 0; }
 
+    /* OPTION ACTION (bouton carré) */
+    .block-option.action {
+      width: 150px; background: #2980b9; border: none; border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(41,128,185,0.35); transition: width 0.4s ease, border-radius 0.3s ease;
+    }
+    .block-option.action .option-header {
+      flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px 12px; gap: 8px; min-height: 120px;
+    }
+    .block-option.action .option-header > span { flex-direction: column; align-items: center; }
+    .block-option.action .option-emoji { font-size: 36px; }
+    .block-option.action .option-arrow { display: none; }
+    .block-option.action .option-label-text {
+      color: #fff; font-weight: 700; font-size: 12px; text-align: center; line-height: 1.3;
+    }
+    .block-option.action .option-toggle { color: rgba(255,255,255,0.7); font-size: 10px; }
+    .block-option.action .option-header:hover { background: rgba(255,255,255,0.1); }
+    .block-option.action .option-content {
+      background: #e8f4fb; padding: 0 16px 14px;
+    }
+    .block-option.action .block-normal { border: none !important; box-shadow: none !important; background: #e8f4fb !important; }
+    .block-option.action .block-empathie { border: none; box-shadow: none; }
+    .block-option.action .block-question { border: none !important; box-shadow: none !important; }
+    .block-option.action.open-action {
+      width: 100%; border-radius: var(--radius);
+    }
+    .block-option.action.open-action .option-header {
+      flex-direction: row; align-items: center; justify-content: space-between;
+      min-height: auto; padding: 12px 16px; gap: 6px;
+    }
+    .block-option.action.open-action .option-header > span { flex-direction: row; align-items: center; }
+    .block-option.action.open-action .option-emoji { font-size: 18px; }
+    .block-option.action.open-action .option-label-text { font-size: 14px; text-align: left; }
+
     /* OPTION PURPLE (violet clair) */
     .block-option.purple {
       background: #f5f0ff;
@@ -2329,7 +2363,7 @@ async function loadSupabaseOverrides() {
       state.scriptOverrides = data.overrides;
       cleanStaleOverrides();
       // Force re-sync sections modifiées dans script-data.js (v2)
-      ['chemins_possibles','objectifs','objectifs_revus'].forEach(id => delete state.scriptOverrides[id]);
+      ['chemins_possibles','objectifs','objectifs_revus','decouverte'].forEach(id => delete state.scriptOverrides[id]);
       localStorage.setItem('tdr_script_overrides', JSON.stringify(state.scriptOverrides));
       syncOverridesToSupabase();
     }
@@ -2436,7 +2470,7 @@ let state = {
 // Charge les overrides sauvegardés
 state.scriptOverrides = JSON.parse(localStorage.getItem('tdr_script_overrides') || '{}');
 // Force re-sync sections modifiées dans script-data.js (v2)
-['chemins_possibles','objectifs','objectifs_revus'].forEach(id => delete state.scriptOverrides[id]);
+['chemins_possibles','objectifs','objectifs_revus','decouverte'].forEach(id => delete state.scriptOverrides[id]);
 localStorage.setItem('tdr_script_overrides', JSON.stringify(state.scriptOverrides));
 
 function saveScriptOverrides() {
@@ -3622,8 +3656,9 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const dangerClass = b.style === 'danger' ? ' danger' : '';
     const pleursClass = b.style === 'pleurs' ? ' pleurs' : '';
     const purpleClass = b.style === 'purple' ? ' purple' : '';
+    const actionClass = b.style === 'action' ? ' action' : '';
     const emojiHtml = b.emoji ? `<span class="option-emoji">${b.emoji}</span>` : '';
-    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}">
+    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${actionClass}">
       <div class="option-header" onclick="toggleOption(this)">
         <span style="display:flex;align-items:center;gap:6px">
           ${emojiHtml}
@@ -3906,6 +3941,9 @@ function toggleOption(header) {
   const isOpen = content.classList.toggle('open');
   toggle.textContent = isOpen ? 'Réduire' : 'Dérouler';
   arrow.textContent = isOpen ? '▾' : '▸';
+  // Bouton action : basculer entre carré et pleine largeur
+  const optionDiv = header.closest('.block-option.action');
+  if (optionDiv) optionDiv.classList.toggle('open-action', isOpen);
 }
 
 // ═══════════════════════════════════════════════════
