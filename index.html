@@ -552,6 +552,14 @@
       border: 1px solid #bbf7d0;
       border-radius: var(--radius);
     }
+    .block-conseil-vert {
+      background: #d4edda;
+      border: 2px solid #28a745;
+      border-radius: var(--radius);
+      text-align: center;
+      font-weight: 600;
+      font-size: 15px;
+    }
     .block-empathie {
       background: #e8f4fb;
       border: 1px solid #aed6f1;
@@ -3805,7 +3813,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     return `<div class="block block-fin-consultation">${text}</div>`;
   }
 
-  const cls = { normal:'block-normal', important:'block-important', conseil:'block-conseil', empathie:'block-empathie' }[b.type] || 'block-normal';
+  const cls = { normal:'block-normal', important:'block-important', conseil:'block-conseil', conseil_vert:'block-conseil-vert', empathie:'block-empathie' }[b.type] || 'block-normal';
   const extraCls = b._purpleDark ? ' block-purple-dark' : '';
   return `<div class="block ${cls}${extraCls}" contenteditable="true">${text}</div>`;
 }

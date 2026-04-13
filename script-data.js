@@ -146,18 +146,19 @@ const SCRIPT_DATA = {
         {
           type: "option", label: "❌ Difficultés de sommeil identifiées", style: "purple",
           blocks: [
-            { type: "normal", text: "Au vu de ce qu'on s'est dit\nEn effet, vous aviez BIEN identifié que votre enfant a des difficultés de sommeil.", _noBorder: true },
-            { type: "normal", text: "**<u>⏱ Temps d'endormissement trop long :</u>** Il y a une petite problématique au niveau des durées d'endormissement… qui sont très longues", _purpleDark: true },
-            { type: "normal", text: "**<u>⏰ Durée des siestes trop courte :</u>** Il y a aussi un petit caillou concernant la durée des siestes… qui sont très courtes", _purpleDark: true },
-            { type: "normal", text: "**<u>🔢 Nombre de siestes inadapté :</u>** Il y a aussi quelque chose à travailler au niveau du nombre de siestes… qui ne correspondent pas forcément aux besoins de son âge", _purpleDark: true },
+            { type: "normal", text: "- Au vu de ce qu'on s'est dit\n- En effet, vous aviez **BIEN identifié** que votre enfant a des **difficultés de sommeil**.", _noBorder: true },
+            { type: "normal", text: "**<u>⏱ Temps d'endormissement trop long :</u>** Il y a une **petite problématique** au niveau des **durées d'endormissement**… qui sont **très longues**", _purpleDark: true },
+            { type: "normal", text: "**<u>⏰ Durée des siestes trop courte :</u>** Il y a aussi un **petit caillou** concernant la **durée des siestes**… qui sont **très courtes**", _purpleDark: true },
+            { type: "normal", text: "**<u>🔢 Nombre de siestes inadapté :</u>** Il y a aussi **quelque chose à travailler** au niveau du **nombre de siestes**… qui ne **correspondent PAS** forcément aux **besoins de son âge**", _purpleDark: true },
           ]
         },
         {
           type: "option", label: "✅ Pas de dette de sommeil", style: "purple",
           blocks: [
-            { type: "conseil", text: "La bonne nouvelle c'est qu'aujourd'hui [prénom_enfant] n'est PAS en dette de sommeil\n👏 Vous faites TOUT pour que ça ne soit pas le cas!" },
-            { type: "normal", text: "**<u>Au niveau du tps d'endormissement :</u>** Par contre, je vois des difficultés sur la durée d'endormissement … qui est très long", _purpleDark: true },
-            { type: "normal", text: "**<u>Au niveau du nombre de siestes …</u>** Par contre, je peux voir que le nombre de siestes … ne correspond pas aux besoins d'un enfant de cet âge", _purpleDark: true },
+            { type: "conseil", text: "- La **bonne nouvelle** c'est qu'aujourd'hui [prénom_enfant] n'est **PAS en dette de sommeil**" },
+            { type: "conseil_vert", text: "👏 Vous faites **TOUT** pour que ça ne **soit pas le cas**!" },
+            { type: "normal", text: "**<u>Au niveau du tps d'endormissement :</u>** Par contre, je vois des **difficultés** sur la **durée d'endormissement** … qui est **très long**", _purpleDark: true },
+            { type: "normal", text: "**<u>Au niveau du nombre de siestes …</u>** Par contre, je peux voir que le **nombre de siestes** … ne **correspond PAS** aux **besoins** d'un enfant de **cet âge**", _purpleDark: true },
           ]
         },
         {
