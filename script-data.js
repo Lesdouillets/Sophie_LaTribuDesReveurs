@@ -99,7 +99,7 @@ const SCRIPT_DATA = {
         { type: "obj_recap" },
         { type: "obj_question" },
         {
-          type: "option", label: "🛌 Souhaitent changer de lieu de sommeil / lit", style: "purple",
+          type: "option", label: "🛌 Lieu de sommeil/lit - Souhait de changer?", style: "purple",
           blocks: [
             { type: "normal", text: "- J'ai aussi une **petite question** par rapport au **LIEU de sommeil**\n- Aujourd'hui, votre enfant **dort dans VOTRE chambre**" },
             {
@@ -112,7 +112,7 @@ const SCRIPT_DATA = {
           ]
         },
         {
-          type: "option", label: "Position ventrale – souhait de garder ou non ?", style: "purple",
+          type: "option", label: "Position ventrale – Souhait de garder ou non ?", style: "purple",
           blocks: [
             { type: "normal", text: "- J'ai également une **question** concernant la **position de sommeil** de [prénom_enfant].\n- Aujourd'hui, elle **semble s'endormir sur le ventre**… c'est devenu **SA stratégie** pour **trouver le sommeil**…\n  - c'est **quelque chose** que l'on **observe souvent** chez les BB car c'est la **position la + physiologique** pour le corps\n\n- **Néanmoins**, je dois aussi vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à **poser son enfant** sur le **DOS**…\n  - …car cette position **diminue significativement le risque de Mort Inattendue du Nourrisson**\n\n- Il n'y a **PAS** de **bonne ou mauvaise réponse**… SEULEMENT CELLE qui **correspond à vos besoins** !" },
             { type: "normal", text: "- **Mon rôle** c'est de vous **transmettre ces informations..**\n  - …tout en **restant à l'écoute** de **votre réalité**\n\n- Il n'y a **pas de bonne ou mauvaise réponse**..\n  - ...**SEULEMENT CELLE** qui **correspond à vos besoins** !" },
