@@ -3930,7 +3930,7 @@ function substituteVars(text) {
   const verifIdentite = `Vous êtes BIEN ${prenomsList}, ${roleLabel} de ${c.prenomEnfant||'[prénom]'} qui a ${age} ?`;
 
   // ── [accord_enfant] — question accordée selon le sexe ─────
-  const isFille = c.sexe === 'Fille';
+  const isFille = (c.sexe || '').toLowerCase() === 'fille';
   const unUne = isFille ? 'une' : 'un';
   const petitePetit = isFille ? 'petite' : 'petit';
   const filleGarcon = isFille ? 'fille' : 'garçon';
@@ -4264,7 +4264,7 @@ function openEditBlockModal(sectionId, path) {
     // Expandre [accord_enfant] pour le rendre éditable avec [prénom_enfant] comme placeholder
     if (rawText.includes('[accord_enfant]')) {
       const c = state.client || {};
-      const isFille = c.sexe === 'Fille';
+      const isFille = (c.sexe || '').toLowerCase() === 'fille';
       const unUne = isFille ? 'une' : 'un';
       const petitePetit = isFille ? 'petite' : 'petit';
       const filleGarcon = isFille ? 'fille' : 'garçon';
