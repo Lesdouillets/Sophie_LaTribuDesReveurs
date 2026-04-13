@@ -2327,7 +2327,10 @@ async function loadSupabaseOverrides() {
     if (data?.overrides) {
       state.scriptOverrides = data.overrides;
       cleanStaleOverrides();
+      // Force re-sync sections modifiées dans script-data.js (v2)
+      ['chemins_possibles','objectifs'].forEach(id => delete state.scriptOverrides[id]);
       localStorage.setItem('tdr_script_overrides', JSON.stringify(state.scriptOverrides));
+      syncOverridesToSupabase();
     }
   } catch(e) {}
 }
