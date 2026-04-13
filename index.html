@@ -832,8 +832,8 @@
 
     /* OPTION ACTION (bouton carré — fermé) */
     .block-option.action {
-      width: 150px; background: #2980b9; border: none; border-radius: 16px;
-      box-shadow: 0 4px 15px rgba(41,128,185,0.35);
+      width: 150px; background: var(--primary); border: none; border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(94,113,148,0.35);
       margin-left: auto; margin-right: auto;
     }
     .block-option.action > .option-header {
@@ -852,7 +852,7 @@
     /* OPTION ACTION (bouton carré — ouvert) */
     .block-option.action.open-action {
       width: 100%; border-radius: var(--radius); margin-left: 0; margin-right: 0;
-      background: #e8f4fb; border: 1.5px solid #2980b9;
+      background: #e8f4fb; border: 1.5px solid var(--primary);
     }
     .block-option.action.open-action > .option-header { display: none; }
     .block-option.action.open-action > .option-content {
@@ -861,13 +861,13 @@
     .block-option.action.open-action .block-normal { border: none !important; box-shadow: none !important; background: #e8f4fb !important; }
     .block-option.action.open-action .block-empathie { border: none !important; box-shadow: none !important; background: #e8f4fb !important; }
     .block-option.action.open-action .block-question { background: #fdf0f0 !important; }
-    .block-option.action.open-action .block-conseil { background: #eaeff8 !important; }
+    .block-option.action.open-action .block-conseil { background: #f0fdf4 !important; border: 1px solid #bbf7d0 !important; }
     .action-close-btn {
       display: block; margin: 8px auto 12px; padding: 6px 20px;
-      background: #2980b9; color: #fff; border: none; border-radius: 8px;
+      background: var(--primary); color: #fff; border: none; border-radius: 8px;
       font-size: 13px; font-weight: 600; cursor: pointer;
     }
-    .action-close-btn:hover { background: #1a5276; }
+    .action-close-btn:hover { background: var(--primary-dark); }
 
     /* OPTION PURPLE (violet clair) */
     .block-option.purple {
@@ -3943,15 +3943,14 @@ function toggleOption(header) {
   const content = header.nextElementSibling;
   const toggle = header.querySelector('.option-toggle');
   const arrow = header.querySelector('.option-arrow');
-  const isOpen = content.classList.toggle('open');
-  toggle.textContent = isOpen ? 'Réduire' : 'Dérouler';
-  arrow.textContent = isOpen ? '▾' : '▸';
-  // Bouton action : basculer entre carré et pleine largeur
   const optionDiv = header.closest('.block-option.action');
   if (optionDiv) {
-    optionDiv.classList.toggle('open-action', isOpen);
-    if (isOpen) {
-      // Ajouter bouton fermer en haut du contenu
+    // Bouton action : soit carré, soit pleine largeur
+    const willOpen = !content.classList.contains('open');
+    if (willOpen) {
+      optionDiv.classList.add('open-action');
+      optionDiv.offsetWidth; // forcer reflow
+      content.classList.add('open');
       if (!content.querySelector('.action-close-btn')) {
         const btn = document.createElement('button');
         btn.className = 'action-close-btn';
@@ -3959,7 +3958,16 @@ function toggleOption(header) {
         btn.onclick = function() { toggleOption(header); };
         content.insertBefore(btn, content.firstChild);
       }
+    } else {
+      content.classList.remove('open');
+      optionDiv.classList.remove('open-action');
     }
+    toggle.textContent = willOpen ? 'Réduire' : 'Dérouler';
+    arrow.textContent = willOpen ? '▾' : '▸';
+  } else {
+    const isOpen = content.classList.toggle('open');
+    toggle.textContent = isOpen ? 'Réduire' : 'Dérouler';
+    arrow.textContent = isOpen ? '▾' : '▸';
   }
 }
 
