@@ -4452,6 +4452,13 @@ function syncPbsHighlights() {
       }
     }
   });
+  // Sync sub-parents fiche client
+  document.querySelectorAll('.pb-sub-parent[data-subgroup]').forEach(sp => {
+    const group = sp.dataset.subgroup;
+    const anyChecked = [...document.querySelectorAll(`input[name="pb"][data-subgroup-child="${group}"]`)].some(c => c.checked);
+    sp.checked = anyChecked;
+    sp.closest('.pb-item')?.classList.toggle('checked', anyChecked);
+  });
 }
 
 function rebuildAfterPbChange() {
