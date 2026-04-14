@@ -4503,7 +4503,25 @@ document.addEventListener('change', function(e) {
       parent.closest('.pb-item')?.classList.toggle('checked', parent.checked);
     });
   }
-  // Exclusion mutuelle (data-excludes = décocher les enfants du groupe, data-excludes-value = décocher une valeur spécifique)
+  // 1. Exclusivité — décocher les autres du même groupe + leurs children
+  if (cb.dataset.exclusive && cb.checked) {
+    const group = cb.dataset.exclusive;
+    document.querySelectorAll(`input[data-exclusive="${group}"]`).forEach(other => {
+      if (other !== cb) {
+        // D'abord décocher les children
+        if (other.value) {
+          document.querySelectorAll(`input[data-auto-parent="${other.value}"]`).forEach(child => {
+            child.checked = false;
+            child.closest('.pb-item')?.classList.remove('checked');
+          });
+        }
+        // Puis décocher le parent
+        other.checked = false;
+        other.closest('.pb-item')?.classList.remove('checked');
+      }
+    });
+  }
+  // 2. Exclusion mutuelle data-excludes (décocher les enfants du groupe + sub-parents)
   if (cb.checked && cb.dataset.excludes) {
     const group = cb.dataset.excludes;
     document.querySelectorAll(`input[data-subgroup-child="${group}"]`).forEach(other => {
@@ -4515,6 +4533,7 @@ document.addEventListener('change', function(e) {
       sp.closest('.pb-item')?.classList.remove('checked');
     });
   }
+  // 3. Exclusion mutuelle data-excludes-value
   if (cb.checked && cb.dataset.excludesValue) {
     const val = cb.dataset.excludesValue;
     document.querySelectorAll(`input[value="${val}"]`).forEach(other => {
@@ -4522,15 +4541,7 @@ document.addEventListener('change', function(e) {
       other.closest('.pb-item')?.classList.remove('checked');
     });
   }
-  // Empêcher de décocher un parent si un enfant est encore coché
-  if (!cb.checked && cb.value) {
-    const hasCheckedChild = [...document.querySelectorAll(`input[data-auto-parent="${cb.value}"]`)].some(c => c.checked);
-    if (hasCheckedChild) {
-      cb.checked = true;
-      return;
-    }
-  }
-  // Auto-cocher le parent quand un enfant est coché (data-auto-parent)
+  // 4. Auto-cocher le parent quand un enfant est coché
   if (cb.checked && cb.dataset.autoParent) {
     const parentVal = cb.dataset.autoParent;
     document.querySelectorAll(`input[value="${parentVal}"]`).forEach(parent => {
@@ -4540,22 +4551,13 @@ document.addEventListener('change', function(e) {
       }
     });
   }
-  // Exclusivité
-  if (cb.dataset.exclusive && cb.checked) {
-    const group = cb.dataset.exclusive;
-    document.querySelectorAll(`input[data-exclusive="${group}"]`).forEach(other => {
-      if (other !== cb) {
-        other.checked = false;
-        other.closest('.pb-item')?.classList.remove('checked');
-        // Décocher aussi les children de l'élément exclu
-        if (other.value) {
-          document.querySelectorAll(`input[data-auto-parent="${other.value}"]`).forEach(child => {
-            child.checked = false;
-            child.closest('.pb-item')?.classList.remove('checked');
-          });
-        }
-      }
-    });
+  // 5. Empêcher de décocher un parent si un enfant est encore coché
+  if (!cb.checked && cb.value) {
+    const hasCheckedChild = [...document.querySelectorAll(`input[data-auto-parent="${cb.value}"]`)].some(c => c.checked);
+    if (hasCheckedChild) {
+      cb.checked = true;
+      return;
+    }
   }
   // Sync catégorie modal ↔ sous-items
   const modalCatDiv = cb.closest('div[style*="margin-bottom:14px"]');
