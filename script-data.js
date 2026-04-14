@@ -570,12 +570,22 @@ const SCRIPT_DATA = {
 
     // ─── RELATIONNEL ─────────────────────────────────────
     {
-      id: "relationnel_conflit",
-      problematiqueId: "relationnel_conflit",
-      title: "Enjeux relationnels – Conflit / Lit parental",
+      id: "relationnel_lit_parental",
+      problematiqueId: "relationnel_lit_parental",
+      title: "Enjeux relationnels – Vient dans le lit parental",
       emoji: "💬",
       blocks: [
-        { type: "normal", text: "Aujourd'hui [prénom_enfant] :\n→ Vient souvent vous rejoindre dans votre lit 🛏️\n→ semble parfois en 'conflit' avec vous sur différents sujets\n⇒ Alors qu'à la crèche/chez Papy et Mamie, ça ne se passe pas comme ça !\n\nÀ son âge, il commence à comprendre qu'il peut influencer les choses autour de lui\n→ Et il découvre que certains comportements peuvent lui permettre d'avoir PLUS de temps avec vous\n\nCe n'est PAS de la manipulation — c'est tout à fait normal !" },
+        { type: "normal", text: "Aujourd'hui [prénom_enfant] :\n→ Vient souvent vous rejoindre dans votre lit 🛏️\n\nÀ son âge, il commence à comprendre qu'il peut influencer les choses autour de lui\n→ Et il découvre que certains comportements peuvent lui permettre d'avoir PLUS de temps avec vous\n\nCe n'est PAS de la manipulation — c'est tout à fait normal !" },
+        { type: "question", text: "CE QUE je vous propose, c'est qu'on discute ensemble\nde COMMENT sortir doucement de ce petit 'jeu relationnel' qui s'est installé\nen vous proposant des manières concrètes de réagir\npour que le coucher puisse se passer beaucoup + sereinement… pour tout le monde\n\n⇒ Est-ce que vous reconnaissez VOTRE situation… dans ce que je vous dis là?" },
+      ]
+    },
+    {
+      id: "relationnel_conflit_autres",
+      problematiqueId: "relationnel_conflit_autres",
+      title: "Enjeux relationnels – Conflit sur d'autres sujets",
+      emoji: "💬",
+      blocks: [
+        { type: "normal", text: "Aujourd'hui [prénom_enfant] :\n→ semble parfois en 'conflit' avec vous sur différents sujets\n⇒ Alors qu'à la crèche/chez Papy et Mamie, ça ne se passe pas comme ça !\n\nÀ son âge, il commence à comprendre qu'il peut influencer les choses autour de lui\n→ Et il découvre que certains comportements peuvent lui permettre d'avoir PLUS de temps avec vous\n\nCe n'est PAS de la manipulation — c'est tout à fait normal !" },
         { type: "question", text: "CE QUE je vous propose, c'est qu'on discute ensemble\nde COMMENT sortir doucement de ce petit 'jeu relationnel' qui s'est installé\nen vous proposant des manières concrètes de réagir\npour que le coucher puisse se passer beaucoup + sereinement… pour tout le monde\n\n⇒ Est-ce que vous reconnaissez VOTRE situation… dans ce que je vous dis là?" },
       ]
     },
