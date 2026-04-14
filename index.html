@@ -1545,8 +1545,8 @@
                               <label class="pb-item nutri-diversif-only"><input type="checkbox" name="pb" value="nutri_autre_feculents" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Pas assez de féculents</span></label>
                               <label class="pb-item nutri-diversif-only"><input type="checkbox" name="pb" value="nutri_autre_lait_important" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Lait trop important</span></label>
                               <label class="pb-item nutri-diversif-only"><input type="checkbox" name="pb" value="nutri_autre_solide_important" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Solide trop important</span></label>
-                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_autre_jus_vegetal" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Jus végétal</span></label>
-                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_autre_lait_animal" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Lait animal</span></label>
+                              <label class="pb-item nutri-jus-vegetal-only"><input type="checkbox" name="pb" value="nutri_autre_jus_vegetal" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Jus végétal</span></label>
+                              <label class="pb-item nutri-lait-animal-only"><input type="checkbox" name="pb" value="nutri_autre_lait_animal" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Lait animal</span></label>
                             </div>
                           </div>
                           <label class="pb-item" style="font-style:italic;color:#999"><input type="checkbox" name="pb" value="nutri_conseq_inconfort" data-auto-parent="nutri_courbe_declinante"> <span>Conséquences : Inconfort</span></label>
@@ -2752,6 +2752,12 @@ function toggleTypeLait() {
   const diversif = document.querySelector('input[name="alim"][value="Diversification"]');
   document.querySelectorAll('.nutri-diversif-only').forEach(el => {
     el.style.display = diversif?.checked ? '' : 'none';
+  });
+  document.querySelectorAll('.nutri-jus-vegetal-only').forEach(el => {
+    el.style.display = jusVegetal?.checked ? '' : 'none';
+  });
+  document.querySelectorAll('.nutri-lait-animal-only').forEach(el => {
+    el.style.display = laitAnimal?.checked ? '' : 'none';
   });
 }
 
