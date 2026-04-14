@@ -1466,7 +1466,7 @@
         <div class="setup-section">
           <h3>⚙️ Problématiques identifiées</h3>
           <p style="font-size:12px;color:#999;margin-bottom:14px">Cochez tout ce qui correspond — vous pourrez ajuster pendant la consultation.</p>
-          <div class="problematiques-grid">
+          <div class="problematiques-grid" onchange="onFicheClientPbChange()">
             <div>
               <div class="pb-category">
                 <div class="pb-category-title">🩺 Confort physique</div>
@@ -4250,6 +4250,8 @@ function modalSelectCat(btn, checked) {
 function applyPbChanges() {
   const savedId = state.sections[state.currentIdx]?.id;
   state.selectedPbs = new Set([...document.querySelectorAll('.modal-pb:checked')].map(cb=>cb.value));
+  // Synchroniser vers la fiche client (onglet Consultation)
+  syncPbsToFicheClient();
   buildSidebarPbPanel();
   buildSections();
   const newIdx = state.sections.findIndex(s=>s.id===savedId);
@@ -4257,6 +4259,25 @@ function applyPbChanges() {
   buildSidebar();
   renderCurrentSection();
   togglePbModal();
+}
+
+// Synchronise state.selectedPbs → checkboxes fiche client
+function syncPbsToFicheClient() {
+  document.querySelectorAll('input[name="pb"]').forEach(cb => {
+    cb.checked = state.selectedPbs.has(cb.value);
+  });
+}
+
+// Synchronise checkboxes fiche client → state.selectedPbs + sections
+function onFicheClientPbChange() {
+  state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
+  const savedId = state.sections[state.currentIdx]?.id;
+  buildSidebarPbPanel();
+  buildSections();
+  const newIdx = state.sections.findIndex(s=>s.id===savedId);
+  state.currentIdx = newIdx>=0 ? newIdx : Math.min(state.currentIdx, state.sections.length-1);
+  buildSidebar();
+  renderCurrentSection();
 }
 
 function newConsultation() {
