@@ -4888,6 +4888,8 @@ document.addEventListener('change', function(e) {
       }
     }
   }
+  // Re-sync visibilité alimentation après toute modification
+  if (cb.name === 'alim') toggleTypeLait();
 });
 
 // Menus déroulants pour catégories de problématiques
