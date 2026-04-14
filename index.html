@@ -4427,13 +4427,20 @@ function rebuildAfterPbChange() {
 // Appliquer les règles d'exclusion après un "tout cocher"
 function applyExclusionRules(container) {
   if (!container) return;
-  // Exclusivité : garder seulement le 1er coché de chaque groupe
+  // Exclusivité : garder seulement le 1er coché de chaque groupe + décocher les children des exclus
   const seenGroups = new Set();
   container.querySelectorAll('input[data-exclusive]:checked').forEach(cb => {
     const group = cb.dataset.exclusive;
     if (seenGroups.has(group)) {
       cb.checked = false;
       cb.closest('.pb-item')?.classList.remove('checked');
+      // Décocher les children
+      if (cb.value) {
+        container.querySelectorAll(`input[data-auto-parent="${cb.value}"]`).forEach(child => {
+          child.checked = false;
+          child.closest('.pb-item')?.classList.remove('checked');
+        });
+      }
     } else {
       seenGroups.add(group);
     }
@@ -4522,6 +4529,13 @@ document.addEventListener('change', function(e) {
       if (other !== cb) {
         other.checked = false;
         other.closest('.pb-item')?.classList.remove('checked');
+        // Décocher aussi les children de l'élément exclu
+        if (other.value) {
+          document.querySelectorAll(`input[data-auto-parent="${other.value}"]`).forEach(child => {
+            child.checked = false;
+            child.closest('.pb-item')?.classList.remove('checked');
+          });
+        }
       }
     });
   }
