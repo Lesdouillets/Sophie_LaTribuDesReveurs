@@ -3818,8 +3818,9 @@ function renderCurrentSection() {
     clonePbGridFor('diag-pb-container', 'diag-pb', 'onDiagnosticPbChange()');
   }
   // Rendre tous les blocs et contenus d'options éditables (sauf le conteneur de checkboxes diagnostic)
+  const diagEl = document.getElementById('diag-pb-container');
   area.querySelectorAll('.block, .q-text').forEach(el => {
-    if (el.querySelector('#diag-pb-container') || el.id === 'diag-pb-container') return;
+    if (diagEl && (el.contains(diagEl) || diagEl.contains(el))) return;
     el.setAttribute('contenteditable', 'true');
     el.style.cursor = 'text';
     // Empêcher la propagation du clic vers le header de l'option
