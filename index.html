@@ -3692,6 +3692,11 @@ function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
       const pbs = Array.isArray(b.hideIfPb) ? b.hideIfPb : [b.hideIfPb];
       if (pbs.some(pb => state.selectedPbs.has(pb))) return '';
     }
+    // Afficher le bloc uniquement si la problématique indiquée dans showIfPb est cochée
+    if (b.showIfPb) {
+      const pbs = Array.isArray(b.showIfPb) ? b.showIfPb : [b.showIfPb];
+      if (!pbs.some(pb => state.selectedPbs.has(pb))) return '';
+    }
     const path = parentPath ? parentPath + '.' + i : '' + i;
     return renderBlock(b, i, sectionId, depth, path);
   }).join('');

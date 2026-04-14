@@ -228,7 +228,7 @@ const SCRIPT_DATA = {
           ]
         },
         {
-          type: "option", label: "🍭 Tétine = stratégie dépendante", hideIfPb: "souhait_tetine",
+          type: "option", label: "🍭 Tétine = stratégie dépendante", showIfPb: "strategie_tetine",
           blocks: [
             { type: "normal", text: "Et j'aimerais aussi qu'on prenne un moment pour REPARLER de la tétine.\n\nAu vu de ce qu'on s'est dit ensemble, aujourd'hui la tétine FAIT PARTIE de la stratégie d'endormissement de [prénom_enfant]\nMais elle fait AUSSI partie des éléments qui contribuent à ses réveils\n\n⇒ Et c'est pour ça qu'il va vous appeler pour :\n- venir la lui remettre\n- pour pouvoir se rendormir\n\nEt ça, c'est quelque chose qu'on voit très fréquemment\n\n⇒ Du coup par rapport à ça, il y a 2 chemins possibles… et les 2 sont tout à fait valables" },
             {
