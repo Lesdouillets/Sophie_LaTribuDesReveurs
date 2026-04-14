@@ -1492,7 +1492,7 @@
               <div class="pb-category">
                 <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="rythme"> ⏰ Organisation de la journée</label>
                 <div class="pb-items">
-                  <label class="pb-item"><input type="checkbox" class="pb-sub-parent" data-subgroup="rythme_te"> <span>Temps d'éveil</span></label>
+                  <label class="pb-item"><input type="checkbox" class="pb-sub-parent" data-subgroup="rythme_te" data-auto-only="true"> <span>Temps d'éveil</span></label>
                   <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_te_trop_long" data-exclusive="rythme_te" data-subgroup-child="rythme_te" data-excludes-value="rythme_siestes_courtes"> <span>Trop long</span></label>
                   <label class="pb-item" style="padding-left:40px;font-size:11px"><input type="checkbox" name="pb" value="rythme_te_long_siestes_courtes" data-auto-parent="rythme_te_trop_long"> <span>Siestes courtes</span></label>
                   <label class="pb-item" style="padding-left:40px;font-size:11px"><input type="checkbox" name="pb" value="rythme_te_long_reveils_matinaux" data-excludes-value="rythme_reveil_fatigue" data-auto-parent="rythme_te_trop_long"> <span>Réveils matinaux</span></label>
@@ -4520,6 +4520,13 @@ function applyExclusionRules(container) {
 document.addEventListener('change', function(e) {
   const cb = e.target;
   if (cb.type !== 'checkbox') return;
+  // Bloquer le clic manuel sur les checkboxes auto-only (gérées uniquement par la sync)
+  if (cb.dataset.autoOnly) {
+    const group = cb.dataset.subgroup;
+    const shouldBeChecked = group ? [...document.querySelectorAll(`input[data-subgroup-child="${group}"]`)].some(c => c.checked) : false;
+    cb.checked = shouldBeChecked;
+    return;
+  }
   // Sync sous-groupe parent ↔ enfants (fiche client + modal)
   if (cb.classList.contains('pb-sub-parent') || cb.classList.contains('modal-pb-sub-parent') || cb.classList.contains('diag-sub-parent')) {
     const group = cb.dataset.subgroup;
