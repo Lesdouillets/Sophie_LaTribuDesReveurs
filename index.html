@@ -1509,7 +1509,7 @@
                   <label class="pb-item" style="padding-left:40px;font-size:11px"><input type="checkbox" name="pb" value="nutri_autre_jus_vegetal" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Jus végétal</span></label>
                   <label class="pb-item" style="padding-left:40px;font-size:11px"><input type="checkbox" name="pb" value="nutri_autre_lait_animal" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Lait animal</span></label>
                   <label class="pb-item" style="padding-left:24px;font-style:italic;color:#999"><input type="checkbox" name="pb" value="nutri_conseq_inconfort" data-auto-parent="nutri_courbe_declinante"> <span>Conséquences : Inconfort</span></label>
-                  <label class="pb-item" style="padding-left:24px;font-style:italic;color:#999"><input type="checkbox" name="pb" value="nutri_conseq_greve_tetees" data-auto-parent="nutri_courbe_declinante"> <span>Conséquences : Grève des tétées</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-style:italic;color:#999"><input type="checkbox" name="pb" value="nutri_conseq_greve_tetees" data-auto-parent="nutri_courbe_declinante" data-requires="nutri_tetee_greve"> <span>Conséquences : Grève des tétées</span></label>
                   <label class="pb-item" style="padding-left:24px;font-style:italic;color:#999"><input type="checkbox" name="pb" value="nutri_conseq_mange_nuit" data-auto-parent="nutri_courbe_declinante"> <span>Conséquences : Mange la nuit mais ne devrait pas</span></label>
                 </div>
               </div>
@@ -4586,6 +4586,15 @@ function applyExclusionRules(container) {
 document.addEventListener('change', function(e) {
   const cb = e.target;
   if (cb.type !== 'checkbox') return;
+  // Bloquer si la case requise n'est pas cochée (data-requires)
+  if (cb.checked && cb.dataset.requires) {
+    const reqVal = cb.dataset.requires;
+    const isReqChecked = [...document.querySelectorAll(`input[value="${reqVal}"]`)].some(c => c.checked);
+    if (!isReqChecked) {
+      cb.checked = false;
+      return;
+    }
+  }
   // Bloquer le clic manuel sur les checkboxes auto-only (gérées uniquement par la sync)
   if (cb.dataset.autoOnly) {
     const group = cb.dataset.subgroup;
@@ -4714,6 +4723,13 @@ document.addEventListener('change', function(e) {
       cb.checked = true;
       return;
     }
+  }
+  // 5c. Décocher les cases qui dépendent d'une case décochée (data-requires)
+  if (!cb.checked && cb.value) {
+    document.querySelectorAll(`input[data-requires="${cb.value}"]`).forEach(dep => {
+      dep.checked = false;
+      dep.closest('.pb-item')?.classList.remove('checked');
+    });
   }
   // 6. Re-sync sub-parents après toutes les modifications
   document.querySelectorAll('.pb-sub-parent[data-subgroup], .modal-pb-sub-parent[data-subgroup], .diag-sub-parent[data-subgroup]').forEach(sp => {
