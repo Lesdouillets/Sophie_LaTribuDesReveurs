@@ -4311,16 +4311,10 @@ function buildModalPbList() {
   const allValues = ALL_PB_CATS.flatMap(c => [...c.items.flatMap(i => [i.value, ...(i.children||[]).map(ch=>ch.value)]), ...(c.subgroups||[]).flatMap(sg => sg.items.flatMap(i => [i.value, ...(i.children||[]).map(ch=>ch.value)]))]);
   const allChecked = allValues.every(v => state.selectedPbs.has(v));
   document.getElementById('modal-pb-list').innerHTML =
-    `<div style="display:flex;gap:8px;margin-bottom:14px">
-      <button style="flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--primary-light);background:#d8f3dc;color:var(--primary-dark);font-weight:700;cursor:pointer;font-size:13px"
-        onclick="modalSelectAll(true)">✅ Tout sélectionner</button>
-      <button style="flex:1;padding:7px;border-radius:8px;border:1.5px solid #e74c3c;background:#ffeaea;color:#c0392b;font-weight:700;cursor:pointer;font-size:13px"
-        onclick="modalSelectAll(false)">❌ Tout désélectionner</button>
-    </div>` +
     ALL_PB_CATS.map(cat => `
     <div style="margin-bottom:14px">
       <div style="display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:13px;margin-bottom:7px;color:var(--primary-dark)">
-        <span>${cat.cat}</span>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" class="modal-cat-checkbox" ${catHasCheckedModal(cat)?'checked':''}> ${cat.cat}</label>
         <span style="display:flex;gap:4px">
           <button style="font-size:10px;padding:2px 7px;border-radius:5px;border:1px solid var(--border);background:white;cursor:pointer;font-weight:600;color:var(--primary)"
             onclick="modalSelectCat(this,true)">Tout ✓</button>
@@ -4339,20 +4333,27 @@ function buildModalPbList() {
         </label>` +
         sg.items.map(it=>`<label style="display:flex;align-items:center;gap:8px;padding:6px 4px 6px 32px;cursor:pointer;font-size:12px">
           <input type="checkbox" class="modal-pb" value="${it.value}" ${it.exclusive?`data-exclusive="${it.exclusive}"`:''} ${it.excludesValue?`data-excludes-value="${it.excludesValue}"`:''} data-subgroup-child="${it.exclusive||''}" ${state.selectedPbs.has(it.value)?'checked':''}> ${it.label}
-        </label>${(it.children||[]).map(ch=>`<label style="display:flex;align-items:center;gap:8px;padding:4px 4px 4px 48px;cursor:pointer;font-size:11px"><input type="checkbox" class="modal-pb" value="${ch.value}" ${state.selectedPbs.has(ch.value)?'checked':''}> ${ch.label}</label>`).join('')}`).join('');
+        </label>${(it.children||[]).map(ch=>`<label style="display:flex;align-items:center;gap:8px;padding:4px 4px 4px 48px;cursor:pointer;font-size:11px"><input type="checkbox" class="modal-pb" value="${ch.value}" ${ch.excludesValue?`data-excludes-value="${ch.excludesValue}"`:''} ${ch.autoParent?`data-auto-parent="${ch.autoParent}"`:''} ${state.selectedPbs.has(ch.value)?'checked':''}> ${ch.label}</label>`).join('')}`).join('');
       }).join('')}
     </div>`).join('');
+}
+
+function catHasCheckedModal(cat) {
+  return cat.items.some(it => state.selectedPbs.has(it.value)) || (cat.subgroups||[]).some(sg => sg.items.some(it => state.selectedPbs.has(it.value)));
 }
 
 function modalSelectAll(checked) {
   document.querySelectorAll('.modal-pb').forEach(cb => cb.checked = checked);
   document.querySelectorAll('.modal-pb-sub-parent').forEach(cb => cb.checked = checked);
+  document.querySelectorAll('.modal-cat-checkbox').forEach(cb => cb.checked = checked);
   if (checked) applyExclusionRules(document.getElementById('modal-pb-list'));
   onModalPbChange();
 }
 function modalSelectCat(btn, checked) {
-  btn.closest('div[style*="margin-bottom:14px"]').querySelectorAll('.modal-pb').forEach(cb => cb.checked = checked);
-  btn.closest('div[style*="margin-bottom:14px"]').querySelectorAll('.modal-pb-sub-parent').forEach(cb => cb.checked = checked);
+  const cat = btn.closest('div[style*="margin-bottom:14px"]');
+  cat.querySelectorAll('.modal-pb').forEach(cb => cb.checked = checked);
+  cat.querySelectorAll('.modal-pb-sub-parent').forEach(cb => cb.checked = checked);
+  cat.querySelectorAll('.modal-cat-checkbox').forEach(cb => cb.checked = checked);
   if (checked) applyExclusionRules(btn.closest('div[style*="margin-bottom:14px"]'));
   onModalPbChange();
 }
@@ -4366,7 +4367,8 @@ function applyPbChanges() {
 }
 
 function onModalPbChange() {
-  applyPbChanges();
+  // Petit délai pour laisser le handler d'exclusivité du document s'exécuter d'abord
+  setTimeout(applyPbChanges, 0);
 }
 
 // Synchronise state.selectedPbs → checkboxes fiche client
@@ -4378,10 +4380,12 @@ function syncPbsToFicheClient() {
 
 // Synchronise checkboxes fiche client → state.selectedPbs + sections
 function onFicheClientPbChange() {
-  state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
-  syncPbsToFicheClient();
-  syncPbsHighlights();
-  rebuildAfterPbChange();
+  setTimeout(function() {
+    state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
+    syncPbsToFicheClient();
+    syncPbsHighlights();
+    rebuildAfterPbChange();
+  }, 0);
 }
 
 // Synchronise checkboxes diagnostic → state.selectedPbs + sections
@@ -4547,6 +4551,21 @@ document.addEventListener('change', function(e) {
         }
       }
     });
+  }
+  // Sync catégorie modal ↔ sous-items
+  const modalCatDiv = cb.closest('div[style*="margin-bottom:14px"]');
+  if (cb.classList.contains('modal-cat-checkbox')) {
+    if (!cb.checked && modalCatDiv) {
+      modalCatDiv.querySelectorAll('.modal-pb').forEach(item => { item.checked = false; });
+      modalCatDiv.querySelectorAll('.modal-pb-sub-parent').forEach(sp => { sp.checked = false; });
+    }
+    return;
+  } else if (cb.classList.contains('modal-pb') && modalCatDiv) {
+    const modalCatCb = modalCatDiv.querySelector('.modal-cat-checkbox');
+    if (modalCatCb) {
+      const anyChecked = [...modalCatDiv.querySelectorAll('.modal-pb')].some(item => item.checked);
+      if (anyChecked) modalCatCb.checked = true;
+    }
   }
   // Sync catégorie ↔ sous-items
   const category = cb.closest('.pb-category');
