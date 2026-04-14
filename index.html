@@ -1433,9 +1433,9 @@
         <div class="setup-section">
           <h3>🏥 Informations médicales</h3>
           <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">
-            <label class="pb-item"><input type="checkbox" id="medical-rgo"> <span>🤮 RGO</span></label>
-            <label class="pb-item"><input type="checkbox" id="medical-aplv-susp"> <span>🌿 APLV suspectée</span></label>
-            <label class="pb-item"><input type="checkbox" id="medical-aplv-conf"> <span>⚠️ APLV confirmée</span></label>
+            <label class="pb-item"><input type="checkbox" id="medical-rgo" onchange="syncMedicalToConfort()"> <span>🤮 RGO</span></label>
+            <label class="pb-item"><input type="checkbox" id="medical-aplv-susp" onchange="syncMedicalToConfort()"> <span>🌿 APLV suspectée</span></label>
+            <label class="pb-item"><input type="checkbox" id="medical-aplv-conf" onchange="syncMedicalToConfort()"> <span>⚠️ APLV confirmée</span></label>
             <label class="pb-item"><input type="checkbox" id="medical-autre-allergie" onchange="toggleAutreAllergie()"> <span>🔴 Autre allergie</span></label>
           </div>
           <div id="autre-allergie-row" style="display:none;margin-top:4px">
@@ -2739,6 +2739,37 @@ function updateEnseigneUI() {
 function toggleAutreAllergie() {
   const cb = document.getElementById('medical-autre-allergie');
   document.getElementById('autre-allergie-row').style.display = cb?.checked ? 'block' : 'none';
+}
+function syncMedicalToConfort() {
+  const rgo = document.getElementById('medical-rgo')?.checked;
+  const aplvSusp = document.getElementById('medical-aplv-susp')?.checked;
+  const aplvConf = document.getElementById('medical-aplv-conf')?.checked;
+  // Décocher les 3 cases confort
+  ['rgo_allergie','allergie_seule','rgo_seul'].forEach(v => {
+    const cb = document.querySelector(`input[name="pb"][value="${v}"]`);
+    if (cb) { cb.checked = false; cb.closest('.pb-item')?.classList.remove('checked'); }
+  });
+  // Déterminer quelle case cocher
+  let target = null;
+  if (rgo && aplvSusp && !aplvConf) target = 'rgo_allergie';
+  else if (rgo && !aplvSusp) target = 'rgo_seul';
+  else if (!rgo && aplvSusp) target = 'allergie_seule';
+  else if (rgo && aplvConf) target = 'rgo_seul';
+  // Cocher la case cible
+  if (target) {
+    const cb = document.querySelector(`input[name="pb"][value="${target}"]`);
+    if (cb) { cb.checked = true; cb.closest('.pb-item')?.classList.add('checked'); }
+    // Cocher aussi la catégorie Confort physique
+    const catCb = document.querySelector('.pb-cat-checkbox[data-cat="confort_physique"]');
+    if (catCb) catCb.checked = true;
+  } else {
+    // Décocher la catégorie si aucune case confort n'est cochée
+    const catCb = document.querySelector('.pb-cat-checkbox[data-cat="confort_physique"]');
+    const anyConfort = ['rgo_allergie','allergie_seule','rgo_seul'].some(v => document.querySelector(`input[name="pb"][value="${v}"]`)?.checked);
+    if (catCb && !anyConfort) catCb.checked = false;
+  }
+  // Mettre à jour state.selectedPbs
+  state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
 }
 function toggleTypeLait() {
   const bib = document.querySelector('input[name="alim"][value="Biberon lait infantile"]');
