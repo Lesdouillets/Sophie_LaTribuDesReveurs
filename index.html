@@ -1521,7 +1521,7 @@
                               <label class="pb-item"><input type="checkbox" name="pb" value="nutri_esp_court" data-exclusive="nutri_espacement" data-subgroup-child="nutri_espacement" data-auto-parent="nutri_courbe_declinante"> <span>Trop court</span></label>
                             </div>
                           </div>
-                          <div class="pb-category pb-level-3" id="nutri-volume-group" style="display:none">
+                          <div class="pb-category pb-level-3" id="nutri-volume-group">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_volume" data-auto-only="true"> Volume/durée des bib</label>
                             <div class="pb-items">
                               <label class="pb-item"><input type="checkbox" name="pb" value="nutri_vol_petit" data-subgroup-child="nutri_volume" data-exclusive="nutri_vol_taille" data-auto-parent="nutri_courbe_declinante"> <span>Petit bib</span></label>
@@ -1529,7 +1529,7 @@
                               <label class="pb-item"><input type="checkbox" name="pb" value="nutri_vol_longtemps" data-subgroup-child="nutri_volume" data-auto-parent="nutri_courbe_declinante"> <span>Boit bib longtemps</span></label>
                             </div>
                           </div>
-                          <div class="pb-category pb-level-3" id="nutri-tetee-group" style="display:none">
+                          <div class="pb-category pb-level-3" id="nutri-tetee-group">
                             <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_tetee" data-auto-parent="nutri_courbe_declinante"> Tétée : baisse de lactation</label>
                             <div class="pb-items">
                               <label class="pb-item"><input type="checkbox" name="pb" value="nutri_tetee_longue" data-auto-parent="nutri_tetee"> <span>Longue tétée</span></label>
@@ -2774,16 +2774,15 @@ function syncMedicalToConfort() {
 function toggleTypeLait() {
   const bib = document.querySelector('input[name="alim"][value="Biberon lait infantile"]');
   const mixte = document.querySelector('input[name="alim"][value="Allaitement mixte"]');
+  const allaitement = document.querySelector('input[name="alim"][value="Allaitement maternel"]');
   const sevrage = document.querySelector('input[name="alim"][value="Sevrage en cours"]');
   const laitAnimal = document.querySelector('input[name="alim"][value="Lait animal"]');
   const jusVegetal = document.querySelector('input[name="alim"][value="Jus végétal"]');
   const hasBib = bib?.checked || mixte?.checked;
-  const hasVolume = hasBib || sevrage?.checked || laitAnimal?.checked || jusVegetal?.checked;
   const group = document.getElementById('type-lait-group');
   if (group) group.style.display = hasBib ? 'block' : 'none';
   const volGroup = document.getElementById('nutri-volume-group');
-  if (volGroup) volGroup.style.display = hasVolume ? '' : 'none';
-  const allaitement = document.querySelector('input[name="alim"][value="Allaitement maternel"]');
+  if (volGroup) volGroup.style.display = allaitement?.checked ? 'none' : '';
   const teteeGroup = document.getElementById('nutri-tetee-group');
   if (teteeGroup) teteeGroup.style.display = bib?.checked ? 'none' : '';
   const diversif = document.querySelector('input[name="alim"][value="Diversification"]');
