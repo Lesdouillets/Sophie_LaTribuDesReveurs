@@ -4836,6 +4836,8 @@ document.addEventListener('change', function(e) {
       }
     }
   }
+  // Re-sync visibilité alimentation après toute modification d'exclusivité
+  if (cb.name === 'alim') toggleTypeLait();
   // Sync catégorie ↔ sous-items
   const category = cb.closest('.pb-category');
   if (!category) return;
@@ -4886,8 +4888,6 @@ document.addEventListener('change', function(e) {
       }
     }
   }
-  // Re-sync visibilité alimentation après toute modification d'exclusivité
-  if (cb.name === 'alim') toggleTypeLait();
 });
 
 // Menus déroulants pour catégories de problématiques
