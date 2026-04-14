@@ -1493,8 +1493,8 @@
                   <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_esp_long" data-exclusive="nutri_espacement" data-subgroup-child="nutri_espacement"> <span>Trop long</span></label>
                   <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_esp_court" data-exclusive="nutri_espacement" data-subgroup-child="nutri_espacement"> <span>Trop court</span></label>
                   <label class="pb-item"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_volume" data-auto-only="true"> <span>Volume/durée des bib</span></label>
-                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_vol_petit" data-subgroup-child="nutri_volume"> <span>Petit bib</span></label>
-                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_vol_gros" data-subgroup-child="nutri_volume"> <span>Gros bib</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_vol_petit" data-subgroup-child="nutri_volume" data-exclusive="nutri_vol_taille"> <span>Petit bib</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_vol_gros" data-subgroup-child="nutri_volume" data-exclusive="nutri_vol_taille"> <span>Gros bib</span></label>
                   <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_vol_longtemps" data-subgroup-child="nutri_volume"> <span>Boit bib longtemps</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="nutri_tetee"> <span>Tétée : baisse de lactation</span></label>
                   <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_tetee_longue" data-auto-parent="nutri_tetee"> <span>Longue tétée</span></label>
@@ -4366,7 +4366,7 @@ const ALL_PB_CATS = [
 ], subgroups:[
   {label:"Courbes pas OK",hint:'(1 option possible)',autoOnly:true,items:[{value:'nutri_courbe_declinante',label:'Courbe de poids déclinante',exclusive:'nutri_courbes'},{value:'nutri_courbe_inferieur',label:'Courbe de poids sur percentile INFÉRIEUR',exclusive:'nutri_courbes'},{value:'nutri_courbe_trop_apport',label:"Trop d'apport",exclusive:'nutri_courbes'}]},
   {label:'Espacement',autoOnly:true,items:[{value:'nutri_esp_long',label:'Trop long',exclusive:'nutri_espacement'},{value:'nutri_esp_court',label:'Trop court',exclusive:'nutri_espacement'}]},
-  {label:'Volume/durée des bib',autoOnly:true,items:[{value:'nutri_vol_petit',label:'Petit bib'},{value:'nutri_vol_gros',label:'Gros bib'},{value:'nutri_vol_longtemps',label:'Boit bib longtemps'}]},
+  {label:'Volume/durée des bib',autoOnly:true,items:[{value:'nutri_vol_petit',label:'Petit bib',exclusive:'nutri_vol_taille'},{value:'nutri_vol_gros',label:'Gros bib',exclusive:'nutri_vol_taille'},{value:'nutri_vol_longtemps',label:'Boit bib longtemps'}]},
   {label:'Inversion',autoOnly:true,items:[{value:'nutri_inversion_jour_nuit',label:'Inversion Jour/Nuit'},{value:'nutri_inversion_lait_solide',label:'Inversion lait/solide'}]},
   {label:'Autre',autoOnly:true,items:[{value:'nutri_autre_feculents',label:'Pas assez de féculents'},{value:'nutri_autre_lait_important',label:'Lait trop important'},{value:'nutri_autre_solide_important',label:'Solide trop important'},{value:'nutri_autre_jus_vegetal',label:'Jus végétal'},{value:'nutri_autre_lait_animal',label:'Lait animal'}]}
 ], consequences:[
