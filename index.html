@@ -2749,7 +2749,7 @@ function toggleTypeLait() {
   if (volGroup) volGroup.style.display = hasVolume ? '' : 'none';
   const allaitement = document.querySelector('input[name="alim"][value="Allaitement maternel"]');
   const teteeGroup = document.getElementById('nutri-tetee-group');
-  if (teteeGroup) teteeGroup.style.display = allaitement?.checked ? '' : 'none';
+  if (teteeGroup) teteeGroup.style.display = (allaitement?.checked || mixte?.checked) ? '' : 'none';
   const diversif = document.querySelector('input[name="alim"][value="Diversification"]');
   document.querySelectorAll('.nutri-diversif-only').forEach(el => {
     el.style.display = diversif?.checked ? '' : 'none';
