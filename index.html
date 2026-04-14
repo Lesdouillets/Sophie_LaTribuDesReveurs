@@ -1384,7 +1384,7 @@
               <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
                 <label class="pb-item"><input type="checkbox" name="alim" value="Allaitement maternel"> <span>🤱 Allaitement maternel</span></label>
                 <label class="pb-item"><input type="checkbox" name="alim" value="Biberon lait infantile" onchange="toggleTypeLait()"> <span>🍼 Biberon lait infantile</span></label>
-                <label class="pb-item"><input type="checkbox" name="alim" value="Allaitement mixte"> <span>🔀 Allaitement mixte</span></label>
+                <label class="pb-item"><input type="checkbox" name="alim" value="Allaitement mixte" onchange="toggleTypeLait()"> <span>🔀 Allaitement mixte</span></label>
                 <label class="pb-item"><input type="checkbox" name="alim" value="Sevrage en cours"> <span>🔄 Sevrage en cours</span></label>
               </div>
               <div class="form-group full" id="type-lait-group" style="display:none;margin-top:8px">
@@ -1417,7 +1417,7 @@
         <div class="setup-section">
           <h3>🏥 Informations médicales</h3>
           <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">
-            <label class="pb-item"><input type="checkbox" id="medical-rgo"> <span>😣 RGO</span></label>
+            <label class="pb-item"><input type="checkbox" id="medical-rgo"> <span>🤮 RGO</span></label>
             <label class="pb-item"><input type="checkbox" id="medical-aplv-susp"> <span>🌿 APLV suspectée</span></label>
             <label class="pb-item"><input type="checkbox" id="medical-aplv-conf"> <span>⚠️ APLV confirmée</span></label>
             <label class="pb-item"><input type="checkbox" id="medical-autre-allergie" onchange="toggleAutreAllergie()"> <span>🔴 Autre allergie</span></label>
@@ -2697,9 +2697,10 @@ function toggleAutreAllergie() {
   document.getElementById('autre-allergie-row').style.display = cb?.checked ? 'block' : 'none';
 }
 function toggleTypeLait() {
-  const cb = document.querySelector('input[name="alim"][value="Biberon lait infantile"]');
+  const bib = document.querySelector('input[name="alim"][value="Biberon lait infantile"]');
+  const mixte = document.querySelector('input[name="alim"][value="Allaitement mixte"]');
   const group = document.getElementById('type-lait-group');
-  if (group) group.style.display = cb?.checked ? 'block' : 'none';
+  if (group) group.style.display = (bib?.checked || mixte?.checked) ? 'block' : 'none';
 }
 
 function showSetupTab(tabId, btn) {
@@ -3617,7 +3618,7 @@ function buildSidebar() {
 
 function buildSidebarPbPanel() {
   const ALL_PBS = [
-    {value:'rgo_allergie',label:'🩺 RGO + Allergie'},{value:'allergie_seule',label:'🌿 Allergie seule'},{value:'rgo_seul',label:'😣 RGO seul'},
+    {value:'rgo_allergie',label:'🩺 RGO + Allergie'},{value:'allergie_seule',label:'🌿 Allergie seule'},{value:'rgo_seul',label:'🤮 RGO seul'},
     {value:'nutri_courbe_declinante',label:'📉 Courbe déclinante'},{value:'nutri_courbe_inferieur',label:'📉 Percentile inf.'},{value:'nutri_courbe_trop_apport',label:"📉 Trop d'apport"},{value:'nutri_esp_long',label:'⏱️ Esp. long'},{value:'nutri_esp_court',label:'🔄 Esp. court'},{value:'nutri_vol_petit',label:'🍼 Petit bib'},{value:'nutri_vol_gros',label:'🍼 Gros bib'},{value:'nutri_vol_longtemps',label:'🍼 Bib longtemps'},{value:'nutri_tetee',label:'🤱 Tétée'},{value:'nutri_tetee_longue',label:'🤱 Longue tétée'},{value:'nutri_tetee_greve',label:'🤱 Grève tétées'},{value:'nutri_tetee_mode_garde',label:'🤱 Mode garde'},{value:'nutri_inversion_jour_nuit',label:'🌛 Inversion J/N'},{value:'nutri_inversion_lait_solide',label:'🌛 Inversion lait/solide'},{value:'nutri_tetine_coupe_faim',label:'🍭 Tétine coupe-faim'},{value:'nutri_autre_feculents',label:'🍽️ Féculents'},{value:'nutri_autre_lait_important',label:'🍽️ Lait important'},{value:'nutri_autre_solide_important',label:'🍽️ Solide important'},{value:'nutri_autre_jus_vegetal',label:'🍽️ Jus végétal'},{value:'nutri_autre_lait_animal',label:'🍽️ Lait animal'},{value:'nutri_conseq_inconfort',label:'🍽️ Inconfort'},{value:'nutri_conseq_greve_tetees',label:'🍽️ Grève tétées'},{value:'nutri_conseq_mange_nuit',label:'🍽️ Mange nuit'},
     {value:'rythme_te_trop_long',label:'⏰ TE trop long'},{value:'rythme_te_long_siestes_courtes',label:'⏰ TE long - Siestes courtes'},{value:'rythme_te_long_reveils_matinaux',label:'⏰ TE long - Réveils matinaux'},{value:'rythme_te_trop_court',label:'⏰ TE trop court'},{value:'rythme_te_court_siestes_courtes',label:'⏰ TE court - Siestes courtes'},{value:'rythme_siestes_courtes',label:'⏰ Siestes courtes'},{value:'rythme_horaires_aleatoires',label:'⏰ Horaires aléatoires'},{value:'rythme_reveil_decalage',label:'🌅 Réveil - Décalage'},{value:'rythme_reveil_fatigue',label:'🌅 Réveil - Fatigue'},{value:'rythme_reveil_relationnel',label:'🌅 Réveil - Relationnel'},{value:'rythme_reveil_mange',label:'🌅 Réveil - Mange'},{value:'rythme_reveil_faim',label:'🌅 Réveil - Faim'},{value:'rythme_reveil_dependance',label:'🌅 Réveil - Dépendance'},{value:'rythme_reveil_bruit',label:'🌅 Réveil - Bruit/lumière'},{value:'rythme_activite_physique',label:'🏃 Pas activité physique'},
     {value:'strategie_rendormissement',label:'😴 Rendormissement difficile'},{value:'strategie_enjeu_relationnel',label:'😴 Enjeu relationnel'},{value:'strategie_tetine',label:'🍭 Dépendance tétine'},
