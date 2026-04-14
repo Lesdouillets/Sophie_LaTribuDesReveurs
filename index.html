@@ -1434,8 +1434,8 @@
           <h3>🏥 Informations médicales</h3>
           <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">
             <label class="pb-item"><input type="checkbox" id="medical-rgo" onchange="syncMedicalToConfort()"> <span>🤮 RGO</span></label>
-            <label class="pb-item"><input type="checkbox" id="medical-aplv-susp" onchange="syncMedicalToConfort()"> <span>🌿 APLV suspectée</span></label>
-            <label class="pb-item"><input type="checkbox" id="medical-aplv-conf" onchange="syncMedicalToConfort()"> <span>⚠️ APLV confirmée</span></label>
+            <label class="pb-item"><input type="checkbox" id="medical-aplv-susp" data-exclusive="aplv_group" onchange="syncMedicalToConfort()"> <span>🌿 APLV suspectée</span></label>
+            <label class="pb-item"><input type="checkbox" id="medical-aplv-conf" data-exclusive="aplv_group" onchange="syncMedicalToConfort()"> <span>⚠️ APLV confirmée</span></label>
             <label class="pb-item"><input type="checkbox" id="medical-autre-allergie" onchange="toggleAutreAllergie()"> <span>🔴 Autre allergie</span></label>
           </div>
           <div id="autre-allergie-row" style="display:none;margin-top:4px">
