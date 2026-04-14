@@ -1101,7 +1101,8 @@
     }
 
     /* SELECT ALL CATEGORY */
-    .pb-category-title { cursor: default; }
+    .pb-category-title { cursor: pointer; }
+    label.pb-category-title { display: flex; align-items: center; gap: 6px; }
     .pb-cat-btns { margin-left: auto; display: flex; gap: 4px; }
     .pb-cat-btn {
       font-size: 10px; padding: 2px 7px; border-radius: 5px;
@@ -1469,7 +1470,7 @@
           <div class="problematiques-grid" onchange="onFicheClientPbChange()">
             <div>
               <div class="pb-category">
-                <div class="pb-category-title">🩺 Confort physique <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span></div>
+                <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="confort_physique"> 🩺 Confort physique <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span></label>
                 <div class="pb-items">
                   <label class="pb-item"><input type="checkbox" name="pb" value="rgo_allergie" data-exclusive="confort"> <span>RGO douloureux + Suspicion allergie (APLV)</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="allergie_seule" data-exclusive="confort"> <span>Suspicion allergie seule</span></label>
@@ -1477,7 +1478,7 @@
                 </div>
               </div>
               <div class="pb-category">
-                <div class="pb-category-title">🍽️ Nutrition</div>
+                <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="nutrition"> 🍽️ Nutrition</label>
                 <div class="pb-items">
                   <label class="pb-item"><input type="checkbox" name="pb" value="nutrition_courbe"> <span>Courbe de poids déclinante</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="nutrition_espacement_long"> <span>Espacement trop long</span></label>
@@ -1487,7 +1488,7 @@
                 </div>
               </div>
               <div class="pb-category">
-                <div class="pb-category-title">⏰ Rythme</div>
+                <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="rythme"> ⏰ Rythme</label>
                 <div class="pb-items">
                   <label class="pb-item"><input type="checkbox" name="pb" value="rythme_dette_sommeil"> <span>Dette de sommeil</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="rythme_reveil_matinal"> <span>Réveil matinal précoce</span></label>
@@ -1497,15 +1498,15 @@
             </div>
             <div>
               <div class="pb-category">
-                <div class="pb-category-title">😴 Stratégie d'endormissement</div>
+                <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="strategie"> 😴 Stratégie de sommeil</label>
                 <div class="pb-items">
-                  <label class="pb-item"><input type="checkbox" name="pb" value="strategie_presence"> <span>Présence parentale indispensable</span></label>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="strategie_tetine"> <span>Tétine (cause de réveils)</span></label>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="strategie_biberon_sein"> <span>Biberon / sein pour s'endormir</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="strategie_rendormissement"> <span>Rendormissement difficile</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="strategie_enjeu_relationnel"> <span>Enjeu relationnel</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="strategie_tetine"> <span>Dépendance tétine</span></label>
                 </div>
               </div>
               <div class="pb-category">
-                <div class="pb-category-title">🏠 Environnement de sommeil</div>
+                <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="env"> 🏠 Environnement de sommeil</label>
                 <div class="pb-items">
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_obscurite"> <span>Obscurité insuffisante</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_temperature"> <span>Température trop élevée</span></label>
@@ -1517,7 +1518,7 @@
                 </div>
               </div>
               <div class="pb-category">
-                <div class="pb-category-title">💬 Enjeux relationnels</div>
+                <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="relationnel"> 💬 Enjeux relationnels</label>
                 <div class="pb-items">
                   <label class="pb-item"><input type="checkbox" name="pb" value="relationnel_rappels"> <span>Multiples rappels après le coucher</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="relationnel_lit_parental" data-exclusive="relationnel_conflit"> <span>Vient dans le lit parental</span></label>
@@ -1525,7 +1526,7 @@
                 </div>
               </div>
               <div class="pb-category">
-                <div class="pb-category-title">🎯 Souhaits</div>
+                <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="souhait"> 🎯 Souhaits</label>
                 <div class="pb-items">
                   <label class="pb-item"><input type="checkbox" name="pb" value="souhait_tetine"> <span>Suppression de la tétine</span></label>
                   <div style="font-size:12px;font-weight:600;color:#555;margin:6px 0 2px 0">Changement chambre/lit <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span></div>
@@ -2761,6 +2762,11 @@ function populateFormFromClient(c) {
   document.querySelectorAll('input[name="pb"]').forEach(cb => cb.checked = false);
   (c.pbs||[]).forEach(pb => { const el = document.querySelector(`input[name="pb"][value="${pb}"]`); if (el) el.checked = true; });
   document.querySelectorAll('.pb-item').forEach(el => el.classList.toggle('checked', el.querySelector('input')?.checked));
+  // Sync catégories cochées
+  document.querySelectorAll('.pb-category').forEach(cat => {
+    const catCb = cat.querySelector('.pb-cat-checkbox');
+    if (catCb) catCb.checked = [...cat.querySelectorAll('input[name="pb"]')].some(cb => cb.checked);
+  });
   if (c.enseigne) { setEnseigne(c.enseigne); const sel = document.getElementById('enseigne-select'); if (sel) sel.value = c.enseigne; }
   computeClientFields();
 }
@@ -3558,7 +3564,7 @@ function buildSidebarPbPanel() {
     {value:'rgo_allergie',label:'🩺 RGO + Allergie'},{value:'allergie_seule',label:'🌿 Allergie seule'},{value:'rgo_seul',label:'😣 RGO seul'},
     {value:'nutrition_courbe',label:'📉 Courbe déclinante'},{value:'nutrition_espacement_long',label:'⏱️ Espacement long'},{value:'nutrition_espacement_court',label:'🔄 Espacement court'},{value:'nutrition_inversion_jour_nuit',label:'🌛 Inversion J/N'},{value:'nutrition_jus_vegetaux',label:'🐄 Jus végétaux'},
     {value:'rythme_dette_sommeil',label:'😴 Dette sommeil'},{value:'rythme_reveil_matinal',label:'🌅 Réveil matinal'},{value:'rythme_activite_physique',label:'🏃 Manque activité'},
-    {value:'strategie_presence',label:'👐 Présence parentale'},{value:'strategie_tetine',label:'🍭 Tétine'},{value:'strategie_biberon_sein',label:'🍼 Biberon/sein'},
+    {value:'strategie_rendormissement',label:'😴 Rendormissement difficile'},{value:'strategie_enjeu_relationnel',label:'😴 Enjeu relationnel'},{value:'strategie_tetine',label:'🍭 Dépendance tétine'},
     {value:'env_obscurite',label:'🌑 Obscurité'},{value:'env_temperature',label:'🌡️ Température'},{value:'env_lit_ouvert',label:'🛏️ Lit ouvert'},{value:'env_rituel',label:'🌙 Rituel'},{value:'env_cadre',label:'🗺️ Cadre clair'},{value:'env_stimulations',label:'👀 Stimulations'},{value:'env_ecrans',label:'📱 Ecrans'},
     {value:'relationnel_lit_parental',label:'💬 Vient dans le lit parental'},{value:'relationnel_conflit_autres',label:'💬 Conflit autres sujets'},{value:'relationnel_rappels',label:'📢 Rappels multiples'},{value:'souhait_tetine',label:'🎯 Suppression tétine'},{value:'souhait_changement_lit',label:'🎯 Changement de lit'},{value:'souhait_changement_chambre',label:'🎯 Changement de chambre'},{value:'souhait_changement_lit_chambre',label:'🎯 Changement lit/chambre'},
   ];
@@ -3661,8 +3667,11 @@ function renderCurrentSection() {
 
 function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
   return (blocks||[]).map((b,i) => {
-    // Cacher le bloc si la problématique indiquée dans hideIfPb est cochée
-    if (b.hideIfPb && state.selectedPbs.has(b.hideIfPb)) return '';
+    // Cacher le bloc si une des problématiques indiquées dans hideIfPb est cochée
+    if (b.hideIfPb) {
+      const pbs = Array.isArray(b.hideIfPb) ? b.hideIfPb : [b.hideIfPb];
+      if (pbs.some(pb => state.selectedPbs.has(pb))) return '';
+    }
     const path = parentPath ? parentPath + '.' + i : '' + i;
     return renderBlock(b, i, sectionId, depth, path);
   }).join('');
@@ -3744,9 +3753,9 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       'rythme_dette_sommeil':'😴 Rythme — Dette de sommeil',
       'rythme_reveil_matinal':'🌅 Rythme — Réveil matinal précoce',
       'rythme_activite_physique':"🏃 Rythme — Manque d'activité physique",
-      'strategie_presence':'👐 Endormissement — Présence parentale indispensable',
-      'strategie_tetine':'🍭 Endormissement — Tétine (réveils nocturnes)',
-      'strategie_biberon_sein':'🍼 Endormissement — Biberon / sein (association)',
+      'strategie_rendormissement':'😴 Stratégie — Rendormissement difficile',
+      'strategie_enjeu_relationnel':'😴 Stratégie — Enjeu relationnel',
+      'strategie_tetine':'🍭 Stratégie — Dépendance tétine',
       'env_obscurite':'🌑 Environnement — Obscurité insuffisante',
       'env_temperature':'🌡 Environnement — Température trop élevée',
       'env_lit_ouvert':'🛏 Environnement — Lit ouvert trop tôt (avant 2,5 ans)',
@@ -4221,7 +4230,7 @@ const ALL_PB_CATS = [
   {cat:'🩺 Confort physique <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span>', exclusive:true, items:[{value:'rgo_allergie',label:'RGO douloureux + Allergie (APLV)'},{value:'allergie_seule',label:'Suspicion allergie seule'},{value:'rgo_seul',label:'RGO seul'}]},
   {cat:'🍽️ Nutrition', items:[{value:'nutrition_courbe',label:'Courbe déclinante (faim)'},{value:'nutrition_espacement_long',label:'Espacement trop long'},{value:'nutrition_espacement_court',label:'Espacement trop court'},{value:'nutrition_inversion_jour_nuit',label:'Inversion jour/nuit'},{value:'nutrition_jus_vegetaux',label:'Jus végétaux / lait animal'}]},
   {cat:'⏰ Rythme', items:[{value:'rythme_dette_sommeil',label:'Dette de sommeil'},{value:'rythme_reveil_matinal',label:'Réveil matinal précoce'},{value:'rythme_activite_physique',label:"Manque d'activité physique"}]},
-  {cat:"😴 Stratégie d'endormissement", items:[{value:'strategie_presence',label:'Présence parentale indispensable'},{value:'strategie_tetine',label:'Tétine (cause de réveils)'},{value:'strategie_biberon_sein',label:"Biberon / sein pour s'endormir"}]},
+  {cat:"😴 Stratégie de sommeil", items:[{value:'strategie_rendormissement',label:'Rendormissement difficile'},{value:'strategie_enjeu_relationnel',label:'Enjeu relationnel'},{value:'strategie_tetine',label:'Dépendance tétine'}]},
   {cat:'🏠 Environnement de sommeil', items:[{value:'env_obscurite',label:'Obscurité insuffisante'},{value:'env_temperature',label:'Température trop élevée'},{value:'env_lit_ouvert',label:'Lit ouvert trop tôt'},{value:'env_rituel',label:'Rituel absent ou trop court'},{value:'env_cadre',label:'Cadre non clair'},{value:'env_stimulations',label:'Stimulations visuelles'},{value:'env_ecrans',label:'Ecrans'}]},
   {cat:'💬 Enjeux relationnels', items:[{value:'relationnel_rappels',label:'Multiples rappels après le coucher'},{value:'relationnel_lit_parental',label:'Vient dans le lit parental',exclusive:'relationnel_conflit'},{value:'relationnel_conflit_autres',label:'En « conflit » sur d\'autres sujets que le sommeil',exclusive:'relationnel_conflit'}]},
   {cat:'🎯 Souhaits', items:[{value:'souhait_tetine',label:'Suppression de la tétine'},{value:'souhait_changement_lit',label:'Changement de lit',exclusive:'souhait_changement'},{value:'souhait_changement_chambre',label:'Changement de chambre',exclusive:'souhait_changement'},{value:'souhait_changement_lit_chambre',label:'Changement de lit/chambre',exclusive:'souhait_changement'}]},
@@ -4298,14 +4307,37 @@ function onFicheClientPbChange() {
 // Gestion des checkboxes exclusives (1 seul choix par groupe)
 document.addEventListener('change', function(e) {
   const cb = e.target;
-  if (cb.type !== 'checkbox' || !cb.dataset.exclusive || !cb.checked) return;
-  const group = cb.dataset.exclusive;
-  document.querySelectorAll(`input[data-exclusive="${group}"]`).forEach(other => {
-    if (other !== cb) {
-      other.checked = false;
-      other.closest('.pb-item')?.classList.remove('checked');
+  if (cb.type !== 'checkbox') return;
+  // Exclusivité
+  if (cb.dataset.exclusive && cb.checked) {
+    const group = cb.dataset.exclusive;
+    document.querySelectorAll(`input[data-exclusive="${group}"]`).forEach(other => {
+      if (other !== cb) {
+        other.checked = false;
+        other.closest('.pb-item')?.classList.remove('checked');
+      }
+    });
+  }
+  // Sync catégorie ↔ sous-items
+  const category = cb.closest('.pb-category');
+  if (!category) return;
+  const catCb = category.querySelector('.pb-cat-checkbox');
+  const items = category.querySelectorAll('input[name="pb"]');
+  if (cb.classList.contains('pb-cat-checkbox')) {
+    // Clic sur la catégorie → décocher tous les sous-items si on décoche
+    if (!cb.checked) {
+      items.forEach(item => {
+        item.checked = false;
+        item.closest('.pb-item')?.classList.remove('checked');
+      });
     }
-  });
+  } else if (cb.name === 'pb') {
+    // Clic sur un sous-item → cocher la catégorie si au moins 1 coché
+    if (catCb) {
+      const anyChecked = [...items].some(item => item.checked);
+      catCb.checked = anyChecked;
+    }
+  }
 });
 
 function newConsultation() {
@@ -4848,8 +4880,7 @@ function generateCRHtml(s) {
     'nutrition_jus_vegetaux':'Jus végétaux / lait inadapté',
     'rythme_dette_sommeil':'Dette de sommeil', 'rythme_reveil_matinal':'Réveil matinal précoce',
     'rythme_activite_physique':"Manque d'activité physique",
-    'strategie_presence':'Présence parentale indispensable', 'strategie_tetine':'Tétine (réveils)',
-    'strategie_biberon_sein':'Biberon / sein pour s\'endormir',
+    'strategie_rendormissement':'Rendormissement difficile', 'strategie_enjeu_relationnel':'Enjeu relationnel', 'strategie_tetine':'Dépendance tétine',
     'env_obscurite':'Obscurité insuffisante', 'env_temperature':'Température élevée',
     'env_lit_ouvert':'Lit ouvert trop tôt', 'env_rituel':'Rituel absent / trop court',
     'env_cadre':'Cadre non clair', 'env_stimulations':'Stimulations visuelles', 'env_ecrans':'Ecrans',

@@ -99,7 +99,7 @@ const SCRIPT_DATA = {
         { type: "obj_recap" },
         { type: "obj_question" },
         {
-          type: "option", label: "🛌 Lieu de sommeil/lit - Souhait de changer?", style: "purple",
+          type: "option", label: "🛌 Lieu de sommeil/lit - Souhait de changer?", style: "purple", hideIfPb: ["souhait_changement_lit","souhait_changement_chambre","souhait_changement_lit_chambre"],
           blocks: [
             { type: "normal", text: "- J'ai aussi une **petite question** par rapport au **LIEU de sommeil**\n- Aujourd'hui, votre enfant **dort dans VOTRE chambre**" },
             {
@@ -473,10 +473,10 @@ const SCRIPT_DATA = {
 
     // ─── STRATÉGIE ───────────────────────────────────────
     {
-      id: "strategie_presence",
-      problematiqueId: "strategie_presence",
-      title: "Stratégie – Présence parentale indispensable",
-      emoji: "👐",
+      id: "strategie_rendormissement",
+      problematiqueId: "strategie_rendormissement",
+      title: "Stratégie – Rendormissement difficile",
+      emoji: "😴",
       blocks: [
         { type: "normal", text: "Aujourd'hui, [prénom_enfant] ne s'endort que :\n→ Avec votre présence\n→ Dans vos bras, en le berçant\n→ Avec votre contact physique\n\nEt quand il se réveille, l'environnement a parfois changé :\n→ Il est seul, dans son lit, vous n'êtes plus là, il n'a plus ses éléments rassurants\n→ Pas très rassurant, n'est-ce pas ?" },
         { type: "normal", text: "Pour comprendre ce qui se passe avec ses rendormissements difficiles ⇒ il faut comprendre la structure du sommeil :\n\nSon sommeil est composé de cycles, et entre chaque cycle, on fait TOUS des micro-réveils (tout à fait normaux)\nle cerveau va faire :\n→ un léger retour à la surface\n→ 'vérifier' que tout va bien\n→ puis va se rendormir de manière inconsciente\n\nChez la plupart des enfants, ces micro-réveils passent inaperçus, car ils retrouvent les MÊMES conditions qu'à l'endormissement\n\nMais pour [prénom_enfant] : il s'est endormi dans vos bras… et là il se réveille seul dans son lit." },
@@ -496,10 +496,10 @@ const SCRIPT_DATA = {
     },
 
     {
-      id: "strategie_biberon_sein",
-      problematiqueId: "strategie_biberon_sein",
-      title: "Stratégie – Biberon / Sein pour s'endormir",
-      emoji: "🍼",
+      id: "strategie_enjeu_relationnel",
+      problematiqueId: "strategie_enjeu_relationnel",
+      title: "Stratégie – Enjeu relationnel",
+      emoji: "😴",
       blocks: [
         { type: "normal", text: "Aujourd'hui, [prénom_enfant] s'endort avec le biberon / en tétant\n\nC'est une stratégie d'endormissement qui est très confortable pour lui\nMais le problème, c'est que :\n→ son cerveau associe le fait de manger avec le fait de s'endormir\n→ et donc, à chaque micro-réveil entre deux cycles de sommeil,\n→ son cerveau va chercher cette même condition pour se rendormir\n⇒ Et il va vous appeler !" },
         { type: "question", text: "L'objectif va être d'aider [prénom_enfant] à dissocier le moment de l'alimentation du moment de l'endormissement\n\n⇒ Est-ce que ça fait sens pour vous ?" },
