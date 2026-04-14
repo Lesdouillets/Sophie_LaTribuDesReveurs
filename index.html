@@ -4524,6 +4524,12 @@ document.addEventListener('change', function(e) {
   if (cb.classList.contains('pb-sub-parent') || cb.classList.contains('modal-pb-sub-parent') || cb.classList.contains('diag-sub-parent')) {
     const group = cb.dataset.subgroup;
     if (!cb.checked) {
+      // Empêcher de décocher si un enfant est coché
+      const hasCheckedChild = [...document.querySelectorAll(`input[data-subgroup-child="${group}"]`)].some(c => c.checked);
+      if (hasCheckedChild) {
+        cb.checked = true;
+        return;
+      }
       document.querySelectorAll(`input[data-subgroup-child="${group}"]`).forEach(child => {
         child.checked = false;
         child.closest('.pb-item')?.classList.remove('checked');
