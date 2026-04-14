@@ -2796,6 +2796,12 @@ function toggleTypeLait() {
   document.querySelectorAll('.nutri-lait-animal-only').forEach(el => {
     el.style.display = laitAnimal?.checked ? '' : 'none';
   });
+  // Cacher "Autre" si aucun sous-enfant n'est visible
+  const autreGroup = document.getElementById('nutri-autre-group');
+  if (autreGroup) {
+    const hasVisibleChild = diversif?.checked || jusVegetal?.checked || laitAnimal?.checked;
+    autreGroup.style.display = hasVisibleChild ? '' : 'none';
+  }
 }
 
 function showSetupTab(tabId, btn) {
