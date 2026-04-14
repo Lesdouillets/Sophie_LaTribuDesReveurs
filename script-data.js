@@ -99,7 +99,7 @@ const SCRIPT_DATA = {
         { type: "obj_recap" },
         { type: "obj_question" },
         {
-          type: "option", label: "🛌 Lieu de sommeil/lit - Souhait de changer?", style: "card",
+          type: "option", label: "🛌 Lieu de sommeil/lit - Souhait de changer?", style: "purple",
           blocks: [
             { type: "normal", text: "- J'ai aussi une **petite question** par rapport au **LIEU de sommeil**\n- Aujourd'hui, votre enfant **dort dans VOTRE chambre**" },
             {
