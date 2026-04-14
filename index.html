@@ -1393,8 +1393,8 @@
             <div class="form-group full">
               <label>Mode d'alimentation <span style="color:#aaa;font-size:11px">(plusieurs choix)</span></label>
               <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
-                <label class="pb-item"><input type="checkbox" name="alim" value="Allaitement maternel" onchange="toggleTypeLait()"> <span>🤱 Allaitement maternel</span></label>
-                <label class="pb-item"><input type="checkbox" name="alim" value="Biberon lait infantile" onchange="toggleTypeLait()"> <span>🍼 Biberon lait infantile</span></label>
+                <label class="pb-item"><input type="checkbox" name="alim" value="Allaitement maternel" data-exclusive="alim_principal" onchange="toggleTypeLait()"> <span>🤱 Allaitement maternel</span></label>
+                <label class="pb-item"><input type="checkbox" name="alim" value="Biberon lait infantile" data-exclusive="alim_principal" onchange="toggleTypeLait()"> <span>🍼 Biberon lait infantile</span></label>
                 <label class="pb-item"><input type="checkbox" name="alim" value="Allaitement mixte" onchange="toggleTypeLait()"> <span>🔀 Allaitement mixte</span></label>
                 <label class="pb-item"><input type="checkbox" name="alim" value="Sevrage en cours" onchange="toggleTypeLait()"> <span>🔄 Sevrage en cours</span></label>
               </div>
