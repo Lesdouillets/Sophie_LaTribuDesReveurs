@@ -4610,6 +4610,13 @@ document.addEventListener('change', function(e) {
       return;
     }
   }
+  // 6. Re-sync sub-parents après toutes les modifications
+  document.querySelectorAll('.pb-sub-parent[data-subgroup], .modal-pb-sub-parent[data-subgroup], .diag-sub-parent[data-subgroup]').forEach(sp => {
+    const group = sp.dataset.subgroup;
+    const anyChecked = [...document.querySelectorAll(`input[data-subgroup-child="${group}"]`)].some(c => c.checked);
+    sp.checked = anyChecked;
+    sp.closest('.pb-item')?.classList.toggle('checked', anyChecked);
+  });
   // Sync catégorie modal ↔ sous-items
   const modalCatDiv = cb.closest('div[style*="margin-bottom:14px"]');
   if (cb.classList.contains('modal-cat-checkbox')) {
