@@ -1531,6 +1531,7 @@
                 <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="souhait"> 🎯 Souhaits</label>
                 <div class="pb-items">
                   <label class="pb-item"><input type="checkbox" name="pb" value="souhait_tetine"> <span>Suppression de la tétine</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="souhait_position_dorsale"> <span>Vers une position dorsale</span></label>
                   <label class="pb-item"><input type="checkbox" class="pb-sub-parent" data-subgroup="souhait_changement"> <span>Changement chambre/lit <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span></span></label>
                   <label class="pb-item" style="padding-left:16px"><input type="checkbox" name="pb" value="souhait_changement_lit" data-exclusive="souhait_changement" data-subgroup-child="souhait_changement"> <span>Changement de lit</span></label>
                   <label class="pb-item" style="padding-left:16px"><input type="checkbox" name="pb" value="souhait_changement_chambre" data-exclusive="souhait_changement" data-subgroup-child="souhait_changement"> <span>Changement de chambre</span></label>
@@ -3568,7 +3569,7 @@ function buildSidebarPbPanel() {
     {value:'rythme_dette_sommeil',label:'😴 Dette sommeil'},{value:'rythme_reveil_matinal',label:'🌅 Réveil matinal'},{value:'rythme_activite_physique',label:'🏃 Manque activité'},
     {value:'strategie_rendormissement',label:'😴 Rendormissement difficile'},{value:'strategie_enjeu_relationnel',label:'😴 Enjeu relationnel'},{value:'strategie_tetine',label:'🍭 Dépendance tétine'},
     {value:'env_obscurite',label:'🌑 Obscurité'},{value:'env_temperature',label:'🌡️ Température'},{value:'env_lit_ouvert',label:'🛏️ Lit ouvert'},{value:'env_rituel',label:'🌙 Rituel'},{value:'env_cadre',label:'🗺️ Cadre clair'},{value:'env_stimulations',label:'👀 Stimulations'},{value:'env_ecrans',label:'📱 Ecrans'},
-    {value:'relationnel_lit_parental',label:'💬 Vient dans le lit parental'},{value:'relationnel_conflit_autres',label:'💬 Conflit autres sujets'},{value:'relationnel_rappels',label:'📢 Rappels multiples'},{value:'souhait_tetine',label:'🎯 Suppression tétine'},{value:'souhait_changement_lit',label:'🎯 Changement de lit'},{value:'souhait_changement_chambre',label:'🎯 Changement de chambre'},{value:'souhait_changement_lit_chambre',label:'🎯 Changement lit/chambre'},
+    {value:'relationnel_lit_parental',label:'💬 Vient dans le lit parental'},{value:'relationnel_conflit_autres',label:'💬 Conflit autres sujets'},{value:'relationnel_rappels',label:'📢 Rappels multiples'},{value:'souhait_tetine',label:'🎯 Suppression tétine'},{value:'souhait_position_dorsale',label:'🎯 Position dorsale'},{value:'souhait_changement_lit',label:'🎯 Changement de lit'},{value:'souhait_changement_chambre',label:'🎯 Changement de chambre'},{value:'souhait_changement_lit_chambre',label:'🎯 Changement lit/chambre'},
   ];
   document.getElementById('sidebar-pb-panel').innerHTML = ALL_PBS.map(pb => `
     <label class="sidebar-pb-item">
@@ -3764,12 +3765,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       'env_rituel':'🌙 Environnement — Rituel absent ou trop court',
       'env_cadre':'🗺 Environnement — Cadre non clair / incohérent',
       'env_stimulations':'👀 Environnement — Stimulations visuelles', 'env_ecrans':'📱 Environnement — Ecrans',
-      'relationnel_lit_parental':'💬 Relation — Vient dans le lit parental', 'relationnel_conflit_autres':'💬 Relation — Conflit autres sujets', 'souhait_tetine':'🎯 Souhait — Suppression tétine', 'souhait_changement_lit':'🎯 Souhait — Changement de lit', 'souhait_changement_chambre':'🎯 Souhait — Changement de chambre', 'souhait_changement_lit_chambre':'🎯 Souhait — Changement lit/chambre',
+      'relationnel_lit_parental':'💬 Relation — Vient dans le lit parental', 'relationnel_conflit_autres':'💬 Relation — Conflit autres sujets', 'souhait_tetine':'🎯 Souhait — Suppression tétine', 'souhait_position_dorsale':'🎯 Souhait — Vers une position dorsale', 'souhait_changement_lit':'🎯 Souhait — Changement de lit', 'souhait_changement_chambre':'🎯 Souhait — Changement de chambre', 'souhait_changement_lit_chambre':'🎯 Souhait — Changement lit/chambre',
       'relationnel_rappels':'📢 Relation — Rappels multiples après le coucher',
     };
-    const leviers = [...state.selectedPbs].filter(pb => leviersMap[pb]).map(pb => leviersMap[pb]);
-    if (!leviers.length) return `<div class="block block-normal"><em>Aucune problématique sélectionnée — les leviers s'afficheront ici.</em></div>`;
-    // Afficher checkboxes synchronisées
+    // Afficher checkboxes synchronisées (identiques à la fiche client)
     const cats = ALL_PB_CATS;
     let html = '<div class="block block-conseil" style="padding:12px 16px"><strong>⚙️ Leviers identifiés :</strong>';
     html += '<div class="problematiques-grid" style="margin-top:10px" onchange="onDiagnosticPbChange()">';
@@ -4258,13 +4257,13 @@ function togglePbModal() {
 }
 
 const ALL_PB_CATS = [
-  {cat:'🩺 Confort physique <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span>', exclusive:true, items:[{value:'rgo_allergie',label:'RGO douloureux + Allergie (APLV)'},{value:'allergie_seule',label:'Suspicion allergie seule'},{value:'rgo_seul',label:'RGO seul'}]},
-  {cat:'🍽️ Nutrition', items:[{value:'nutrition_courbe',label:'Courbe déclinante (faim)'},{value:'nutrition_espacement_long',label:'Espacement trop long'},{value:'nutrition_espacement_court',label:'Espacement trop court'},{value:'nutrition_inversion_jour_nuit',label:'Inversion jour/nuit'},{value:'nutrition_jus_vegetaux',label:'Jus végétaux / lait animal'}]},
+  {cat:'🩺 Confort physique <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span>', exclusive:true, items:[{value:'rgo_allergie',label:'RGO douloureux + Suspicion allergie (APLV)'},{value:'allergie_seule',label:'Suspicion allergie seule'},{value:'rgo_seul',label:'RGO seul'}]},
+  {cat:'🍽️ Nutrition', items:[{value:'nutrition_courbe',label:'Courbe de poids déclinante'},{value:'nutrition_espacement_long',label:'Espacement trop long'},{value:'nutrition_espacement_court',label:'Espacement trop court'},{value:'nutrition_inversion_jour_nuit',label:'Inversion jour/nuit'},{value:'nutrition_jus_vegetaux',label:'Jus végétaux / lait inadapté'}]},
   {cat:'⏰ Rythme', items:[{value:'rythme_dette_sommeil',label:'Dette de sommeil'},{value:'rythme_reveil_matinal',label:'Réveil matinal précoce'},{value:'rythme_activite_physique',label:"Manque d'activité physique"}]},
   {cat:"😴 Stratégie de sommeil", items:[{value:'strategie_rendormissement',label:'Rendormissement difficile'},{value:'strategie_enjeu_relationnel',label:'Enjeu relationnel'},{value:'strategie_tetine',label:'Dépendance tétine'}]},
   {cat:'🏠 Environnement de sommeil', items:[{value:'env_obscurite',label:'Obscurité insuffisante'},{value:'env_temperature',label:'Température trop élevée'},{value:'env_lit_ouvert',label:'Lit ouvert trop tôt'},{value:'env_rituel',label:'Rituel absent ou trop court'},{value:'env_cadre',label:'Cadre non clair'},{value:'env_stimulations',label:'Stimulations visuelles'},{value:'env_ecrans',label:'Ecrans'}]},
   {cat:'💬 Enjeux relationnels', items:[{value:'relationnel_rappels',label:'Multiples rappels après le coucher'},{value:'relationnel_lit_parental',label:'Vient dans le lit parental'},{value:'relationnel_conflit_autres',label:'En « conflit » sur d\'autres sujets que le sommeil'}]},
-  {cat:'🎯 Souhaits', items:[{value:'souhait_tetine',label:'Suppression de la tétine'}], subgroups:[{label:'Changement chambre/lit',hint:'(1 option possible)',items:[{value:'souhait_changement_lit',label:'Changement de lit',exclusive:'souhait_changement'},{value:'souhait_changement_chambre',label:'Changement de chambre',exclusive:'souhait_changement'},{value:'souhait_changement_lit_chambre',label:'Changement de lit/chambre',exclusive:'souhait_changement'}]}]},
+  {cat:'🎯 Souhaits', items:[{value:'souhait_tetine',label:'Suppression de la tétine'},{value:'souhait_position_dorsale',label:'Vers une position dorsale'}], subgroups:[{label:'Changement chambre/lit',hint:'(1 option possible)',items:[{value:'souhait_changement_lit',label:'Changement de lit',exclusive:'souhait_changement'},{value:'souhait_changement_chambre',label:'Changement de chambre',exclusive:'souhait_changement'},{value:'souhait_changement_lit_chambre',label:'Changement de lit/chambre',exclusive:'souhait_changement'}]}]},
 ];
 
 function buildModalPbList() {
@@ -4407,7 +4406,13 @@ document.addEventListener('change', function(e) {
         item.checked = false;
         item.closest('.pb-item')?.classList.remove('checked');
       });
+      // Décocher aussi les sub-parents
+      category.querySelectorAll('.pb-sub-parent').forEach(sp => {
+        sp.checked = false;
+        sp.closest('.pb-item')?.classList.remove('checked');
+      });
     }
+    return; // Ne pas continuer pour éviter que le sync auto re-décoche
   } else if (cb.classList.contains('diag-cat-checkbox')) {
     // Clic sur catégorie diagnostic → décocher tous les sous-items si on décoche
     const diagItems = category.querySelectorAll('.diag-pb');
@@ -4416,7 +4421,12 @@ document.addEventListener('change', function(e) {
         item.checked = false;
         item.closest('.pb-item')?.classList.remove('checked');
       });
+      category.querySelectorAll('.diag-sub-parent').forEach(sp => {
+        sp.checked = false;
+        sp.closest('.pb-item')?.classList.remove('checked');
+      });
     }
+    return;
   } else if (cb.name === 'pb' || cb.classList.contains('diag-pb')) {
     // Clic sur un sous-item → cocher la catégorie si au moins 1 coché
     const catCbDiag = category.querySelector('.diag-cat-checkbox');
@@ -4975,7 +4985,7 @@ function generateCRHtml(s) {
     'env_obscurite':'Obscurité insuffisante', 'env_temperature':'Température élevée',
     'env_lit_ouvert':'Lit ouvert trop tôt', 'env_rituel':'Rituel absent / trop court',
     'env_cadre':'Cadre non clair', 'env_stimulations':'Stimulations visuelles', 'env_ecrans':'Ecrans',
-    'relationnel_lit_parental':'Vient dans le lit parental', 'relationnel_conflit_autres':'Conflit autres sujets', 'relationnel_rappels':'Multiples rappels après le coucher', 'souhait_tetine':'Suppression de la tétine', 'souhait_changement_lit':'Changement de lit', 'souhait_changement_chambre':'Changement de chambre', 'souhait_changement_lit_chambre':'Changement de lit/chambre',
+    'relationnel_lit_parental':'Vient dans le lit parental', 'relationnel_conflit_autres':'Conflit autres sujets', 'relationnel_rappels':'Multiples rappels après le coucher', 'souhait_tetine':'Suppression de la tétine', 'souhait_position_dorsale':'Vers une position dorsale', 'souhait_changement_lit':'Changement de lit', 'souhait_changement_chambre':'Changement de chambre', 'souhait_changement_lit_chambre':'Changement de lit/chambre',
   };
 
   const pbTags = (s.selectedPbs || []).map(pb => `<span class="cr-tag">${pbLabels[pb]||pb}</span>`).join('');
