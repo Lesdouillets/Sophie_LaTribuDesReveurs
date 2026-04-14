@@ -3817,23 +3817,16 @@ function renderCurrentSection() {
   if (diagContainer) {
     clonePbGridFor('diag-pb-container', 'diag-pb', 'onDiagnosticPbChange()');
   }
-  // Rendre tous les blocs et contenus d'options éditables (sauf le conteneur de checkboxes diagnostic)
-  const diagEl = document.getElementById('diag-pb-container');
+  // Rendre tous les blocs et contenus d'options éditables
   area.querySelectorAll('.block, .q-text').forEach(el => {
-    if (diagEl && (el.contains(diagEl) || diagEl.contains(el) || el === diagEl)) return;
     el.setAttribute('contenteditable', 'true');
     el.style.cursor = 'text';
-    // Empêcher la propagation du clic vers le header de l'option
     el.addEventListener('click', function(e) { e.stopPropagation(); });
   });
-  // S'assurer que le conteneur diagnostic et ses parents ne sont pas contenteditable
+  // Désactiver contenteditable sur le conteneur diagnostic pour que les checkboxes fonctionnent
+  const diagEl = document.getElementById('diag-pb-container');
   if (diagEl) {
-    let parent = diagEl;
-    while (parent) {
-      parent.removeAttribute('contenteditable');
-      parent = parent.parentElement;
-      if (parent === area) break;
-    }
+    diagEl.setAttribute('contenteditable', 'false');
   }
 }
 
