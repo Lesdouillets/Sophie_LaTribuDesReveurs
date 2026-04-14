@@ -1524,6 +1524,15 @@
                   <label class="pb-item"><input type="checkbox" name="pb" value="relationnel_conflit_autres" data-exclusive="relationnel_conflit"> <span>En « conflit » sur d'autres sujets que le sommeil</span></label>
                 </div>
               </div>
+              <div class="pb-category">
+                <div class="pb-category-title">🎯 Souhaits</div>
+                <div class="pb-items">
+                  <label class="pb-item"><input type="checkbox" name="pb" value="souhait_tetine"> <span>Suppression de la tétine</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="souhait_changement_lit" data-exclusive="souhait_changement"> <span>Changement de lit</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="souhait_changement_chambre" data-exclusive="souhait_changement"> <span>Changement de chambre</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="souhait_changement_lit_chambre" data-exclusive="souhait_changement"> <span>Changement de lit/chambre</span></label>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -3550,7 +3559,7 @@ function buildSidebarPbPanel() {
     {value:'rythme_dette_sommeil',label:'😴 Dette sommeil'},{value:'rythme_reveil_matinal',label:'🌅 Réveil matinal'},{value:'rythme_activite_physique',label:'🏃 Manque activité'},
     {value:'strategie_presence',label:'👐 Présence parentale'},{value:'strategie_tetine',label:'🍭 Tétine'},{value:'strategie_biberon_sein',label:'🍼 Biberon/sein'},
     {value:'env_obscurite',label:'🌑 Obscurité'},{value:'env_temperature',label:'🌡️ Température'},{value:'env_lit_ouvert',label:'🛏️ Lit ouvert'},{value:'env_rituel',label:'🌙 Rituel'},{value:'env_cadre',label:'🗺️ Cadre clair'},{value:'env_stimulations',label:'👀 Stimulations'},{value:'env_ecrans',label:'📱 Ecrans'},
-    {value:'relationnel_lit_parental',label:'💬 Vient dans le lit parental'},{value:'relationnel_conflit_autres',label:'💬 Conflit autres sujets'},{value:'relationnel_rappels',label:'📢 Rappels multiples'},
+    {value:'relationnel_lit_parental',label:'💬 Vient dans le lit parental'},{value:'relationnel_conflit_autres',label:'💬 Conflit autres sujets'},{value:'relationnel_rappels',label:'📢 Rappels multiples'},{value:'souhait_tetine',label:'🎯 Suppression tétine'},{value:'souhait_changement_lit',label:'🎯 Changement de lit'},{value:'souhait_changement_chambre',label:'🎯 Changement de chambre'},{value:'souhait_changement_lit_chambre',label:'🎯 Changement lit/chambre'},
   ];
   document.getElementById('sidebar-pb-panel').innerHTML = ALL_PBS.map(pb => `
     <label class="sidebar-pb-item">
@@ -3741,7 +3750,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       'env_rituel':'🌙 Environnement — Rituel absent ou trop court',
       'env_cadre':'🗺 Environnement — Cadre non clair / incohérent',
       'env_stimulations':'👀 Environnement — Stimulations visuelles', 'env_ecrans':'📱 Environnement — Ecrans',
-      'relationnel_lit_parental':'💬 Relation — Vient dans le lit parental', 'relationnel_conflit_autres':'💬 Relation — Conflit autres sujets',
+      'relationnel_lit_parental':'💬 Relation — Vient dans le lit parental', 'relationnel_conflit_autres':'💬 Relation — Conflit autres sujets', 'souhait_tetine':'🎯 Souhait — Suppression tétine', 'souhait_changement_lit':'🎯 Souhait — Changement de lit', 'souhait_changement_chambre':'🎯 Souhait — Changement de chambre', 'souhait_changement_lit_chambre':'🎯 Souhait — Changement lit/chambre',
       'relationnel_rappels':'📢 Relation — Rappels multiples après le coucher',
     };
     const leviers = [...state.selectedPbs].filter(pb => leviersMap[pb]).map(pb => leviersMap[pb]);
@@ -4212,6 +4221,7 @@ const ALL_PB_CATS = [
   {cat:"😴 Stratégie d'endormissement", items:[{value:'strategie_presence',label:'Présence parentale indispensable'},{value:'strategie_tetine',label:'Tétine (cause de réveils)'},{value:'strategie_biberon_sein',label:"Biberon / sein pour s'endormir"}]},
   {cat:'🏠 Environnement de sommeil', items:[{value:'env_obscurite',label:'Obscurité insuffisante'},{value:'env_temperature',label:'Température trop élevée'},{value:'env_lit_ouvert',label:'Lit ouvert trop tôt'},{value:'env_rituel',label:'Rituel absent ou trop court'},{value:'env_cadre',label:'Cadre non clair'},{value:'env_stimulations',label:'Stimulations visuelles'},{value:'env_ecrans',label:'Ecrans'}]},
   {cat:'💬 Enjeux relationnels', items:[{value:'relationnel_rappels',label:'Multiples rappels après le coucher'},{value:'relationnel_lit_parental',label:'Vient dans le lit parental',exclusive:'relationnel_conflit'},{value:'relationnel_conflit_autres',label:'En « conflit » sur d\'autres sujets que le sommeil',exclusive:'relationnel_conflit'}]},
+  {cat:'🎯 Souhaits', items:[{value:'souhait_tetine',label:'Suppression de la tétine'},{value:'souhait_changement_lit',label:'Changement de lit',exclusive:'souhait_changement'},{value:'souhait_changement_chambre',label:'Changement de chambre',exclusive:'souhait_changement'},{value:'souhait_changement_lit_chambre',label:'Changement de lit/chambre',exclusive:'souhait_changement'}]},
 ];
 
 function buildModalPbList() {
@@ -4837,7 +4847,7 @@ function generateCRHtml(s) {
     'env_obscurite':'Obscurité insuffisante', 'env_temperature':'Température élevée',
     'env_lit_ouvert':'Lit ouvert trop tôt', 'env_rituel':'Rituel absent / trop court',
     'env_cadre':'Cadre non clair', 'env_stimulations':'Stimulations visuelles', 'env_ecrans':'Ecrans',
-    'relationnel_lit_parental':'Vient dans le lit parental', 'relationnel_conflit_autres':'Conflit autres sujets', 'relationnel_rappels':'Multiples rappels après le coucher',
+    'relationnel_lit_parental':'Vient dans le lit parental', 'relationnel_conflit_autres':'Conflit autres sujets', 'relationnel_rappels':'Multiples rappels après le coucher', 'souhait_tetine':'Suppression de la tétine', 'souhait_changement_lit':'Changement de lit', 'souhait_changement_chambre':'Changement de chambre', 'souhait_changement_lit_chambre':'Changement de lit/chambre',
   };
 
   const pbTags = (s.selectedPbs || []).map(pb => `<span class="cr-tag">${pbLabels[pb]||pb}</span>`).join('');
