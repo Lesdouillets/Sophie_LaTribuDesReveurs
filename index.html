@@ -1533,9 +1533,9 @@
                   <label class="pb-item"><input type="checkbox" name="pb" value="souhait_tetine"> <span>Suppression de la tétine</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="souhait_position_dorsale"> <span>Vers une position dorsale</span></label>
                   <label class="pb-item"><input type="checkbox" class="pb-sub-parent" data-subgroup="souhait_changement"> <span>Changement chambre/lit <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span></span></label>
-                  <label class="pb-item" style="padding-left:16px"><input type="checkbox" name="pb" value="souhait_changement_lit" data-exclusive="souhait_changement" data-subgroup-child="souhait_changement"> <span>Changement de lit</span></label>
-                  <label class="pb-item" style="padding-left:16px"><input type="checkbox" name="pb" value="souhait_changement_chambre" data-exclusive="souhait_changement" data-subgroup-child="souhait_changement"> <span>Changement de chambre</span></label>
-                  <label class="pb-item" style="padding-left:16px"><input type="checkbox" name="pb" value="souhait_changement_lit_chambre" data-exclusive="souhait_changement" data-subgroup-child="souhait_changement"> <span>Changement de lit/chambre</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="souhait_changement_lit" data-exclusive="souhait_changement" data-subgroup-child="souhait_changement"> <span>Changement de lit</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="souhait_changement_chambre" data-exclusive="souhait_changement" data-subgroup-child="souhait_changement"> <span>Changement de chambre</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="souhait_changement_lit_chambre" data-exclusive="souhait_changement" data-subgroup-child="souhait_changement"> <span>Changement de lit + chambre</span></label>
                 </div>
               </div>
             </div>
@@ -2768,7 +2768,10 @@ function populateFormFromClient(c) {
   // Sync catégories cochées
   document.querySelectorAll('.pb-category').forEach(cat => {
     const catCb = cat.querySelector('.pb-cat-checkbox');
-    if (catCb) catCb.checked = [...cat.querySelectorAll('input[name="pb"]')].some(cb => cb.checked);
+    if (catCb) {
+      const anyChecked = [...cat.querySelectorAll('input[name="pb"]')].some(cb => cb.checked);
+      if (anyChecked) catCb.checked = true;
+    }
   });
   if (c.enseigne) { setEnseigne(c.enseigne); const sel = document.getElementById('enseigne-select'); if (sel) sel.value = c.enseigne; }
   computeClientFields();
@@ -3782,7 +3785,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         const anyChecked = sg.items.some(it=>state.selectedPbs.has(it.value));
         h += `<label class="pb-item${anyChecked?' checked':''}"><input type="checkbox" class="diag-sub-parent" data-subgroup="${sg.items[0].exclusive}"${anyChecked?' checked':''}> <span>${sg.label} <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">${sg.hint||''}</span></span></label>`;
         sg.items.forEach(it => {
-          h += `<label class="pb-item${state.selectedPbs.has(it.value)?' checked':''}" style="padding-left:16px"><input type="checkbox" class="diag-pb" value="${it.value}" ${it.exclusive?`data-exclusive="${it.exclusive}"`:''} data-subgroup-child="${it.exclusive}" ${state.selectedPbs.has(it.value)?'checked':''}> <span>${it.label}</span></label>`;
+          h += `<label class="pb-item${state.selectedPbs.has(it.value)?' checked':''}" style="padding-left:24px;font-size:12px"><input type="checkbox" class="diag-pb" value="${it.value}" ${it.exclusive?`data-exclusive="${it.exclusive}"`:''} data-subgroup-child="${it.exclusive}" ${state.selectedPbs.has(it.value)?'checked':''}> <span>${it.label}</span></label>`;
         });
       });
       h += '</div></div>';
@@ -4263,7 +4266,7 @@ const ALL_PB_CATS = [
   {cat:"😴 Stratégie de sommeil", items:[{value:'strategie_rendormissement',label:'Rendormissement difficile'},{value:'strategie_enjeu_relationnel',label:'Enjeu relationnel'},{value:'strategie_tetine',label:'Dépendance tétine'}]},
   {cat:'🏠 Environnement de sommeil', items:[{value:'env_obscurite',label:'Obscurité insuffisante'},{value:'env_temperature',label:'Température trop élevée'},{value:'env_lit_ouvert',label:'Lit ouvert trop tôt'},{value:'env_rituel',label:'Rituel absent ou trop court'},{value:'env_cadre',label:'Cadre non clair'},{value:'env_stimulations',label:'Stimulations visuelles'},{value:'env_ecrans',label:'Ecrans'}]},
   {cat:'💬 Enjeux relationnels', items:[{value:'relationnel_rappels',label:'Multiples rappels après le coucher'},{value:'relationnel_lit_parental',label:'Vient dans le lit parental'},{value:'relationnel_conflit_autres',label:'En « conflit » sur d\'autres sujets que le sommeil'}]},
-  {cat:'🎯 Souhaits', items:[{value:'souhait_tetine',label:'Suppression de la tétine'},{value:'souhait_position_dorsale',label:'Vers une position dorsale'}], subgroups:[{label:'Changement chambre/lit',hint:'(1 option possible)',items:[{value:'souhait_changement_lit',label:'Changement de lit',exclusive:'souhait_changement'},{value:'souhait_changement_chambre',label:'Changement de chambre',exclusive:'souhait_changement'},{value:'souhait_changement_lit_chambre',label:'Changement de lit/chambre',exclusive:'souhait_changement'}]}]},
+  {cat:'🎯 Souhaits', items:[{value:'souhait_tetine',label:'Suppression de la tétine'},{value:'souhait_position_dorsale',label:'Vers une position dorsale'}], subgroups:[{label:'Changement chambre/lit',hint:'(1 option possible)',items:[{value:'souhait_changement_lit',label:'Changement de lit',exclusive:'souhait_changement'},{value:'souhait_changement_chambre',label:'Changement de chambre',exclusive:'souhait_changement'},{value:'souhait_changement_lit_chambre',label:'Changement de lit + chambre',exclusive:'souhait_changement'}]}]},
 ];
 
 function buildModalPbList() {
@@ -4296,7 +4299,7 @@ function buildModalPbList() {
         return `<label style="display:flex;align-items:center;gap:8px;padding:6px 4px;cursor:pointer;font-size:13.5px">
           <input type="checkbox" class="modal-pb-sub-parent" data-subgroup="${sg.items[0].exclusive}" ${anyChecked?'checked':''}> ${sg.label} <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">${sg.hint||''}</span>
         </label>` +
-        sg.items.map(it=>`<label style="display:flex;align-items:center;gap:8px;padding:6px 4px 6px 24px;cursor:pointer;font-size:13.5px">
+        sg.items.map(it=>`<label style="display:flex;align-items:center;gap:8px;padding:6px 4px 6px 32px;cursor:pointer;font-size:12px">
           <input type="checkbox" class="modal-pb" value="${it.value}" ${it.exclusive?`data-exclusive="${it.exclusive}"`:''} data-subgroup-child="${it.exclusive}" ${state.selectedPbs.has(it.value)?'checked':''}> ${it.label}
         </label>`).join('');
       }).join('')}
@@ -4348,7 +4351,10 @@ function syncPbsHighlights() {
   // Sync catégories fiche client
   document.querySelectorAll('.pb-category').forEach(cat => {
     const catCb = cat.querySelector('.pb-cat-checkbox');
-    if (catCb) catCb.checked = [...cat.querySelectorAll('input[name="pb"]')].some(cb => cb.checked);
+    if (catCb) {
+      const anyChecked = [...cat.querySelectorAll('input[name="pb"]')].some(cb => cb.checked);
+      if (anyChecked) catCb.checked = true;
+    }
   });
 }
 
@@ -4985,7 +4991,7 @@ function generateCRHtml(s) {
     'env_obscurite':'Obscurité insuffisante', 'env_temperature':'Température élevée',
     'env_lit_ouvert':'Lit ouvert trop tôt', 'env_rituel':'Rituel absent / trop court',
     'env_cadre':'Cadre non clair', 'env_stimulations':'Stimulations visuelles', 'env_ecrans':'Ecrans',
-    'relationnel_lit_parental':'Vient dans le lit parental', 'relationnel_conflit_autres':'Conflit autres sujets', 'relationnel_rappels':'Multiples rappels après le coucher', 'souhait_tetine':'Suppression de la tétine', 'souhait_position_dorsale':'Vers une position dorsale', 'souhait_changement_lit':'Changement de lit', 'souhait_changement_chambre':'Changement de chambre', 'souhait_changement_lit_chambre':'Changement de lit/chambre',
+    'relationnel_lit_parental':'Vient dans le lit parental', 'relationnel_conflit_autres':'Conflit autres sujets', 'relationnel_rappels':'Multiples rappels après le coucher', 'souhait_tetine':'Suppression de la tétine', 'souhait_position_dorsale':'Vers une position dorsale', 'souhait_changement_lit':'Changement de lit', 'souhait_changement_chambre':'Changement de chambre', 'souhait_changement_lit_chambre':'Changement de lit + chambre',
   };
 
   const pbTags = (s.selectedPbs || []).map(pb => `<span class="cr-tag">${pbLabels[pb]||pb}</span>`).join('');
