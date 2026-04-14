@@ -1521,18 +1521,18 @@
                 <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="relationnel"> 💬 Enjeux relationnels</label>
                 <div class="pb-items">
                   <label class="pb-item"><input type="checkbox" name="pb" value="relationnel_rappels"> <span>Multiples rappels après le coucher</span></label>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="relationnel_lit_parental" data-exclusive="relationnel_conflit"> <span>Vient dans le lit parental</span></label>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="relationnel_conflit_autres" data-exclusive="relationnel_conflit"> <span>En « conflit » sur d'autres sujets que le sommeil</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="relationnel_lit_parental"> <span>Vient dans le lit parental</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="relationnel_conflit_autres"> <span>En « conflit » sur d'autres sujets que le sommeil</span></label>
                 </div>
               </div>
               <div class="pb-category">
                 <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="souhait"> 🎯 Souhaits</label>
                 <div class="pb-items">
                   <label class="pb-item"><input type="checkbox" name="pb" value="souhait_tetine"> <span>Suppression de la tétine</span></label>
-                  <div style="font-size:12px;font-weight:600;color:#555;margin:6px 0 2px 0">Changement chambre/lit <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span></div>
-                  <label class="pb-item" style="padding-left:16px"><input type="checkbox" name="pb" value="souhait_changement_lit" data-exclusive="souhait_changement"> <span>Changement de lit</span></label>
-                  <label class="pb-item" style="padding-left:16px"><input type="checkbox" name="pb" value="souhait_changement_chambre" data-exclusive="souhait_changement"> <span>Changement de chambre</span></label>
-                  <label class="pb-item" style="padding-left:16px"><input type="checkbox" name="pb" value="souhait_changement_lit_chambre" data-exclusive="souhait_changement"> <span>Changement de lit/chambre</span></label>
+                  <label class="pb-item"><input type="checkbox" class="pb-sub-parent" data-subgroup="souhait_changement"> <span>Changement chambre/lit <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span></span></label>
+                  <label class="pb-item" style="padding-left:16px"><input type="checkbox" name="pb" value="souhait_changement_lit" data-exclusive="souhait_changement" data-subgroup-child="souhait_changement"> <span>Changement de lit</span></label>
+                  <label class="pb-item" style="padding-left:16px"><input type="checkbox" name="pb" value="souhait_changement_chambre" data-exclusive="souhait_changement" data-subgroup-child="souhait_changement"> <span>Changement de chambre</span></label>
+                  <label class="pb-item" style="padding-left:16px"><input type="checkbox" name="pb" value="souhait_changement_lit_chambre" data-exclusive="souhait_changement" data-subgroup-child="souhait_changement"> <span>Changement de lit/chambre</span></label>
                 </div>
               </div>
             </div>
@@ -2401,7 +2401,7 @@ async function loadSupabaseOverrides() {
       state.scriptOverrides = data.overrides;
       cleanStaleOverrides();
       // Force re-sync sections modifiées dans script-data.js (v2)
-      ['chemins_possibles','objectifs','objectifs_revus','decouverte','problematique'].forEach(id => delete state.scriptOverrides[id]);
+      ['chemins_possibles','objectifs','objectifs_revus','decouverte','problematique','diagnostic'].forEach(id => delete state.scriptOverrides[id]);
       localStorage.setItem('tdr_script_overrides', JSON.stringify(state.scriptOverrides));
       syncOverridesToSupabase();
     }
@@ -2508,7 +2508,7 @@ let state = {
 // Charge les overrides sauvegardés
 state.scriptOverrides = JSON.parse(localStorage.getItem('tdr_script_overrides') || '{}');
 // Force re-sync sections modifiées dans script-data.js (v2)
-['chemins_possibles','objectifs','objectifs_revus','decouverte','problematique'].forEach(id => delete state.scriptOverrides[id]);
+['chemins_possibles','objectifs','objectifs_revus','decouverte','problematique','diagnostic'].forEach(id => delete state.scriptOverrides[id]);
 localStorage.setItem('tdr_script_overrides', JSON.stringify(state.scriptOverrides));
 
 function saveScriptOverrides() {
@@ -3767,7 +3767,34 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     };
     const leviers = [...state.selectedPbs].filter(pb => leviersMap[pb]).map(pb => leviersMap[pb]);
     if (!leviers.length) return `<div class="block block-normal"><em>Aucune problématique sélectionnée — les leviers s'afficheront ici.</em></div>`;
-    return `<div class="block block-conseil"><strong>⚙️ Leviers identifiés :</strong><ul class="leviers-list">${leviers.map(l=>`<li class="levier-item">${l}</li>`).join('')}</ul></div>`;
+    // Afficher checkboxes synchronisées
+    const cats = ALL_PB_CATS;
+    let html = '<div class="block block-conseil" style="padding:12px 16px"><strong>⚙️ Leviers identifiés :</strong>';
+    html += '<div class="problematiques-grid" style="margin-top:10px" onchange="onDiagnosticPbChange()">';
+    html += '<div>';
+    cats.slice(0, Math.ceil(cats.length/2)).forEach(cat => {
+      html += `<div class="pb-category" style="margin-bottom:10px"><label class="pb-category-title" style="margin-bottom:4px"><input type="checkbox" class="diag-cat-checkbox"${catHasChecked(cat)?'checked':''}> ${cat.cat}</label><div class="pb-items">`;
+      cat.items.forEach(it => {
+        const exc = cat.exclusive ? `data-exclusive="confort"` : (it.exclusive ? `data-exclusive="${it.exclusive}"` : '');
+        html += `<label class="pb-item${state.selectedPbs.has(it.value)?' checked':''}"><input type="checkbox" class="diag-pb" value="${it.value}" ${exc} ${state.selectedPbs.has(it.value)?'checked':''}> <span>${it.label}</span></label>`;
+      });
+      html += '</div></div>';
+    });
+    html += '</div><div>';
+    cats.slice(Math.ceil(cats.length/2)).forEach(cat => {
+      html += `<div class="pb-category" style="margin-bottom:10px"><label class="pb-category-title" style="margin-bottom:4px"><input type="checkbox" class="diag-cat-checkbox"${catHasChecked(cat)?'checked':''}> ${cat.cat}</label><div class="pb-items">`;
+      cat.items.forEach(it => {
+        const exc = cat.exclusive ? `data-exclusive="confort"` : (it.exclusive ? `data-exclusive="${it.exclusive}"` : '');
+        html += `<label class="pb-item${state.selectedPbs.has(it.value)?' checked':''}"><input type="checkbox" class="diag-pb" value="${it.value}" ${exc} ${state.selectedPbs.has(it.value)?'checked':''}> <span>${it.label}</span></label>`;
+      });
+      html += '</div></div>';
+    });
+    html += '</div></div></div>';
+    return html;
+  }
+
+  function catHasChecked(cat) {
+    return cat.items.some(it => state.selectedPbs.has(it.value));
   }
 
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
@@ -4232,7 +4259,7 @@ const ALL_PB_CATS = [
   {cat:'⏰ Rythme', items:[{value:'rythme_dette_sommeil',label:'Dette de sommeil'},{value:'rythme_reveil_matinal',label:'Réveil matinal précoce'},{value:'rythme_activite_physique',label:"Manque d'activité physique"}]},
   {cat:"😴 Stratégie de sommeil", items:[{value:'strategie_rendormissement',label:'Rendormissement difficile'},{value:'strategie_enjeu_relationnel',label:'Enjeu relationnel'},{value:'strategie_tetine',label:'Dépendance tétine'}]},
   {cat:'🏠 Environnement de sommeil', items:[{value:'env_obscurite',label:'Obscurité insuffisante'},{value:'env_temperature',label:'Température trop élevée'},{value:'env_lit_ouvert',label:'Lit ouvert trop tôt'},{value:'env_rituel',label:'Rituel absent ou trop court'},{value:'env_cadre',label:'Cadre non clair'},{value:'env_stimulations',label:'Stimulations visuelles'},{value:'env_ecrans',label:'Ecrans'}]},
-  {cat:'💬 Enjeux relationnels', items:[{value:'relationnel_rappels',label:'Multiples rappels après le coucher'},{value:'relationnel_lit_parental',label:'Vient dans le lit parental',exclusive:'relationnel_conflit'},{value:'relationnel_conflit_autres',label:'En « conflit » sur d\'autres sujets que le sommeil',exclusive:'relationnel_conflit'}]},
+  {cat:'💬 Enjeux relationnels', items:[{value:'relationnel_rappels',label:'Multiples rappels après le coucher'},{value:'relationnel_lit_parental',label:'Vient dans le lit parental'},{value:'relationnel_conflit_autres',label:'En « conflit » sur d\'autres sujets que le sommeil'}]},
   {cat:'🎯 Souhaits', items:[{value:'souhait_tetine',label:'Suppression de la tétine'},{value:'souhait_changement_lit',label:'Changement de lit',exclusive:'souhait_changement'},{value:'souhait_changement_chambre',label:'Changement de chambre',exclusive:'souhait_changement'},{value:'souhait_changement_lit_chambre',label:'Changement de lit/chambre',exclusive:'souhait_changement'}]},
 ];
 
@@ -4274,14 +4301,9 @@ function modalSelectCat(btn, checked) {
 function applyPbChanges() {
   const savedId = state.sections[state.currentIdx]?.id;
   state.selectedPbs = new Set([...document.querySelectorAll('.modal-pb:checked')].map(cb=>cb.value));
-  // Synchroniser vers la fiche client (onglet Consultation)
   syncPbsToFicheClient();
-  buildSidebarPbPanel();
-  buildSections();
-  const newIdx = state.sections.findIndex(s=>s.id===savedId);
-  state.currentIdx = newIdx>=0 ? newIdx : Math.min(state.currentIdx, state.sections.length-1);
-  buildSidebar();
-  renderCurrentSection();
+  syncPbsHighlights();
+  rebuildAfterPbChange();
   togglePbModal();
 }
 
@@ -4295,6 +4317,30 @@ function syncPbsToFicheClient() {
 // Synchronise checkboxes fiche client → state.selectedPbs + sections
 function onFicheClientPbChange() {
   state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
+  syncPbsToFicheClient();
+  syncPbsHighlights();
+  rebuildAfterPbChange();
+}
+
+// Synchronise checkboxes diagnostic → state.selectedPbs + sections
+function onDiagnosticPbChange() {
+  state.selectedPbs = new Set([...document.querySelectorAll('.diag-pb:checked')].map(cb=>cb.value));
+  syncPbsToFicheClient();
+  syncPbsHighlights();
+  rebuildAfterPbChange();
+}
+
+// Sync le surlignage vert sur fiche client
+function syncPbsHighlights() {
+  document.querySelectorAll('.pb-item').forEach(el => el.classList.toggle('checked', el.querySelector('input')?.checked));
+  // Sync catégories fiche client
+  document.querySelectorAll('.pb-category').forEach(cat => {
+    const catCb = cat.querySelector('.pb-cat-checkbox');
+    if (catCb) catCb.checked = [...cat.querySelectorAll('input[name="pb"]')].some(cb => cb.checked);
+  });
+}
+
+function rebuildAfterPbChange() {
   const savedId = state.sections[state.currentIdx]?.id;
   buildSidebarPbPanel();
   buildSections();
@@ -4308,6 +4354,24 @@ function onFicheClientPbChange() {
 document.addEventListener('change', function(e) {
   const cb = e.target;
   if (cb.type !== 'checkbox') return;
+  // Sync sous-groupe parent ↔ enfants
+  if (cb.classList.contains('pb-sub-parent')) {
+    const group = cb.dataset.subgroup;
+    if (!cb.checked) {
+      document.querySelectorAll(`input[data-subgroup-child="${group}"]`).forEach(child => {
+        child.checked = false;
+        child.closest('.pb-item')?.classList.remove('checked');
+      });
+    }
+  }
+  if (cb.dataset.subgroupChild) {
+    const group = cb.dataset.subgroupChild;
+    const parent = document.querySelector(`.pb-sub-parent[data-subgroup="${group}"]`);
+    if (parent) {
+      parent.checked = [...document.querySelectorAll(`input[data-subgroup-child="${group}"]`)].some(c => c.checked);
+      parent.closest('.pb-item')?.classList.toggle('checked', parent.checked);
+    }
+  }
   // Exclusivité
   if (cb.dataset.exclusive && cb.checked) {
     const group = cb.dataset.exclusive;
@@ -4331,8 +4395,22 @@ document.addEventListener('change', function(e) {
         item.closest('.pb-item')?.classList.remove('checked');
       });
     }
-  } else if (cb.name === 'pb') {
+  } else if (cb.classList.contains('diag-cat-checkbox')) {
+    // Clic sur catégorie diagnostic → décocher tous les sous-items si on décoche
+    const diagItems = category.querySelectorAll('.diag-pb');
+    if (!cb.checked) {
+      diagItems.forEach(item => {
+        item.checked = false;
+        item.closest('.pb-item')?.classList.remove('checked');
+      });
+    }
+  } else if (cb.name === 'pb' || cb.classList.contains('diag-pb')) {
     // Clic sur un sous-item → cocher la catégorie si au moins 1 coché
+    const catCbDiag = category.querySelector('.diag-cat-checkbox');
+    if (catCbDiag) {
+      const diagItems = category.querySelectorAll('.diag-pb');
+      catCbDiag.checked = [...diagItems].some(item => item.checked);
+    }
     if (catCb) {
       const anyChecked = [...items].some(item => item.checked);
       catCb.checked = anyChecked;
