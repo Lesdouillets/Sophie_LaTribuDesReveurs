@@ -317,11 +317,15 @@
     .pb-category-title .pb-cat-arrow.open { transform: rotate(90deg); }
     /* Niveaux hiérarchiques */
     .pb-category.pb-level-1 { margin-left: 16px; }
+    .pb-category.pb-level-1 > .pb-items > .pb-item { margin-left: 20px; }
     .pb-category.pb-level-2 { margin-left: 20px; }
     .pb-category.pb-level-2 > .pb-category-title { background: #e8f0fa; font-size: 12.5px; text-transform: none; letter-spacing: 0; }
+    .pb-category.pb-level-2 > .pb-items > .pb-item { margin-left: 20px; }
     .pb-category.pb-level-3 { margin-left: 20px; margin-bottom: 0; }
     .pb-category.pb-level-3 > .pb-category-title { background: #f0f6ff; font-size: 12px; text-transform: none; letter-spacing: 0; font-weight: 600; margin-bottom: 4px; }
-    .pb-category.pb-level-3 > .pb-items > .pb-item { margin-left: 16px; font-size: 12px; }
+    .pb-category.pb-level-3 > .pb-items > .pb-item { margin-left: 20px; font-size: 12px; }
+    /* Retrait général des items sous une catégorie */
+    .pb-category > .pb-items > .pb-item:not(.pb-title-style):not(.pb-consequence-style) { margin-left: 20px; }
     /* Supprimer l'espace entre les level-3 quand fermés */
     .pb-category.pb-level-3 + .pb-category.pb-level-3 { margin-top: -2px; }
     /* Style titre sans déroulant (même look que level-3 mais pas cliquable pour déplier) */
