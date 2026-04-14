@@ -315,6 +315,14 @@
     .pb-items.collapsed { display: none; }
     .pb-category-title .pb-cat-arrow { font-size: 11px; transition: transform 0.2s; display: inline-block; margin-left: 4px; }
     .pb-category-title .pb-cat-arrow.open { transform: rotate(90deg); }
+    /* Niveaux hiérarchiques */
+    .pb-category.pb-level-2 { margin-left: 12px; }
+    .pb-category.pb-level-2 > .pb-category-title { background: #e8f0fa; font-size: 12.5px; text-transform: none; letter-spacing: 0; }
+    .pb-category.pb-level-3 { margin-left: 24px; }
+    .pb-category.pb-level-3 > .pb-category-title { background: #f0f6ff; font-size: 12px; text-transform: none; letter-spacing: 0; font-weight: 600; }
+    .pb-level-3 .pb-item { font-size: 12px; }
+    /* Style titre sans déroulant (même look que level-3 mais pas cliquable pour déplier) */
+    .pb-item.pb-title-style { background: #f0f6ff; border-radius: 8px; padding: 7px 10px; font-weight: 600; font-size: 12px; margin-left: 24px; }
     .pb-item {
       display: flex; align-items: center; gap: 8px; cursor: pointer;
       padding: 7px 10px; border-radius: 8px; border: 1.5px solid transparent;
@@ -1492,20 +1500,20 @@
               <div class="pb-category">
                 <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="nutrition"> 🍽️ Nutrition</label>
                 <div class="pb-items">
-                  <div class="pb-category" style="margin-left:0">
+                  <div class="pb-category pb-level-1">
                     <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_courbes" data-auto-only="true"> Courbes pas OK</label>
                     <div class="pb-items">
-                      <div class="pb-category" style="margin-left:0">
+                      <div class="pb-category pb-level-2">
                         <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_declinante" data-subgroup-child="nutri_courbes"> Courbe de poids déclinante</label>
                         <div class="pb-items">
-                          <div class="pb-category" style="margin-left:0">
+                          <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_espacement" data-auto-only="true"> Espacement</label>
                             <div class="pb-items">
                               <label class="pb-item"><input type="checkbox" name="pb" value="nutri_esp_long" data-exclusive="nutri_espacement" data-subgroup-child="nutri_espacement" data-auto-parent="nutri_courbe_declinante"> <span>Trop long</span></label>
                               <label class="pb-item"><input type="checkbox" name="pb" value="nutri_esp_court" data-exclusive="nutri_espacement" data-subgroup-child="nutri_espacement" data-auto-parent="nutri_courbe_declinante"> <span>Trop court</span></label>
                             </div>
                           </div>
-                          <div class="pb-category" style="margin-left:0">
+                          <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_volume" data-auto-only="true"> Volume/durée des bib</label>
                             <div class="pb-items">
                               <label class="pb-item"><input type="checkbox" name="pb" value="nutri_vol_petit" data-subgroup-child="nutri_volume" data-exclusive="nutri_vol_taille" data-auto-parent="nutri_courbe_declinante"> <span>Petit bib</span></label>
@@ -1513,7 +1521,7 @@
                               <label class="pb-item"><input type="checkbox" name="pb" value="nutri_vol_longtemps" data-subgroup-child="nutri_volume" data-auto-parent="nutri_courbe_declinante"> <span>Boit bib longtemps</span></label>
                             </div>
                           </div>
-                          <div class="pb-category" style="margin-left:0">
+                          <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_tetee" data-auto-parent="nutri_courbe_declinante"> Tétée : baisse de lactation</label>
                             <div class="pb-items">
                               <label class="pb-item"><input type="checkbox" name="pb" value="nutri_tetee_longue" data-auto-parent="nutri_tetee"> <span>Longue tétée</span></label>
@@ -1521,15 +1529,15 @@
                               <label class="pb-item" style="font-style:italic;color:#999"><input type="checkbox" name="pb" value="nutri_tetee_mode_garde" data-auto-parent="nutri_tetee"> <span>Cause : Mode de garde</span></label>
                             </div>
                           </div>
-                          <div class="pb-category" style="margin-left:0">
+                          <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_inversion" data-auto-only="true"> Inversion</label>
                             <div class="pb-items">
                               <label class="pb-item"><input type="checkbox" name="pb" value="nutri_inversion_jour_nuit" data-subgroup-child="nutri_inversion" data-auto-parent="nutri_courbe_declinante"> <span>Inversion Jour/Nuit</span></label>
                               <label class="pb-item"><input type="checkbox" name="pb" value="nutri_inversion_lait_solide" data-subgroup-child="nutri_inversion" data-auto-parent="nutri_courbe_declinante"> <span>Inversion lait/solide</span></label>
                             </div>
                           </div>
-                          <label class="pb-item"><input type="checkbox" name="pb" value="nutri_tetine_coupe_faim" data-auto-parent="nutri_courbe_declinante"> <span>Tétine = coupe-faim</span></label>
-                          <div class="pb-category" style="margin-left:0">
+                          <label class="pb-item pb-title-style"><input type="checkbox" name="pb" value="nutri_tetine_coupe_faim" data-auto-parent="nutri_courbe_declinante"> <span>Tétine = coupe-faim</span></label>
+                          <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_autre" data-auto-only="true"> Autre</label>
                             <div class="pb-items">
                               <label class="pb-item"><input type="checkbox" name="pb" value="nutri_autre_feculents" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Pas assez de féculents</span></label>
