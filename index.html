@@ -1469,11 +1469,11 @@
           <div class="problematiques-grid" onchange="onFicheClientPbChange()">
             <div>
               <div class="pb-category">
-                <div class="pb-category-title">🩺 Confort physique</div>
+                <div class="pb-category-title">🩺 Confort physique <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span></div>
                 <div class="pb-items">
-                  <label class="pb-item"><input type="checkbox" name="pb" value="rgo_allergie"> <span>RGO douloureux + Suspicion allergie (APLV)</span></label>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="allergie_seule"> <span>Suspicion allergie seule</span></label>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="rgo_seul"> <span>RGO seul</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="rgo_allergie" data-exclusive="confort"> <span>RGO douloureux + Suspicion allergie (APLV)</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="allergie_seule" data-exclusive="confort"> <span>Suspicion allergie seule</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="rgo_seul" data-exclusive="confort"> <span>RGO seul</span></label>
                 </div>
               </div>
               <div class="pb-category">
@@ -1505,7 +1505,7 @@
                 </div>
               </div>
               <div class="pb-category">
-                <div class="pb-category-title">🏠 Environnement</div>
+                <div class="pb-category-title">🏠 Environnement de sommeil</div>
                 <div class="pb-items">
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_obscurite"> <span>Obscurité insuffisante</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_temperature"> <span>Température trop élevée</span></label>
@@ -1513,13 +1513,16 @@
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_rituel"> <span>Rituel absent ou trop court</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_cadre"> <span>Cadre non clair</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_stimulations"> <span>Stimulations visuelles</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="env_ecrans"> <span>Ecrans</span></label>
                 </div>
               </div>
               <div class="pb-category">
                 <div class="pb-category-title">💬 Enjeux relationnels</div>
                 <div class="pb-items">
-                  <label class="pb-item"><input type="checkbox" name="pb" value="relationnel_conflit"> <span>Conflit / lit parental</span></label>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="relationnel_rappels"> <span>Rappels multiples après coucher</span></label>
+                  <div style="font-size:12px;font-weight:600;color:#555;margin:4px 0 2px 0">Conflit / va dans le lit parental <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span></div>
+                  <label class="pb-item" style="padding-left:16px"><input type="checkbox" name="pb" value="relationnel_lit_parental" data-exclusive="relationnel_conflit"> <span>Vient dans le lit parental</span></label>
+                  <label class="pb-item" style="padding-left:16px"><input type="checkbox" name="pb" value="relationnel_conflit_autres" data-exclusive="relationnel_conflit"> <span>En « conflit » sur d'autres sujets que le sommeil</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="relationnel_rappels"> <span>Multiples rappels après le coucher</span></label>
                 </div>
               </div>
             </div>
@@ -3547,8 +3550,8 @@ function buildSidebarPbPanel() {
     {value:'nutrition_courbe',label:'📉 Courbe déclinante'},{value:'nutrition_espacement_long',label:'⏱️ Espacement long'},{value:'nutrition_espacement_court',label:'🔄 Espacement court'},{value:'nutrition_inversion_jour_nuit',label:'🌛 Inversion J/N'},{value:'nutrition_jus_vegetaux',label:'🐄 Jus végétaux'},
     {value:'rythme_dette_sommeil',label:'😴 Dette sommeil'},{value:'rythme_reveil_matinal',label:'🌅 Réveil matinal'},{value:'rythme_activite_physique',label:'🏃 Manque activité'},
     {value:'strategie_presence',label:'👐 Présence parentale'},{value:'strategie_tetine',label:'🍭 Tétine'},{value:'strategie_biberon_sein',label:'🍼 Biberon/sein'},
-    {value:'env_obscurite',label:'🌑 Obscurité'},{value:'env_temperature',label:'🌡️ Température'},{value:'env_lit_ouvert',label:'🛏️ Lit ouvert'},{value:'env_rituel',label:'🌙 Rituel'},{value:'env_cadre',label:'🗺️ Cadre clair'},{value:'env_stimulations',label:'👀 Stimulations'},
-    {value:'relationnel_conflit',label:'💬 Conflit/lit parental'},{value:'relationnel_rappels',label:'📢 Rappels multiples'},
+    {value:'env_obscurite',label:'🌑 Obscurité'},{value:'env_temperature',label:'🌡️ Température'},{value:'env_lit_ouvert',label:'🛏️ Lit ouvert'},{value:'env_rituel',label:'🌙 Rituel'},{value:'env_cadre',label:'🗺️ Cadre clair'},{value:'env_stimulations',label:'👀 Stimulations'},{value:'env_ecrans',label:'📱 Ecrans'},
+    {value:'relationnel_lit_parental',label:'💬 Vient dans le lit parental'},{value:'relationnel_conflit_autres',label:'💬 Conflit autres sujets'},{value:'relationnel_rappels',label:'📢 Rappels multiples'},
   ];
   document.getElementById('sidebar-pb-panel').innerHTML = ALL_PBS.map(pb => `
     <label class="sidebar-pb-item">
@@ -3738,8 +3741,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       'env_lit_ouvert':'🛏 Environnement — Lit ouvert trop tôt (avant 2,5 ans)',
       'env_rituel':'🌙 Environnement — Rituel absent ou trop court',
       'env_cadre':'🗺 Environnement — Cadre non clair / incohérent',
-      'env_stimulations':'👀 Environnement — Stimulations visuelles',
-      'relationnel_conflit':'💬 Relation — Venue au lit parental',
+      'env_stimulations':'👀 Environnement — Stimulations visuelles', 'env_ecrans':'📱 Environnement — Ecrans',
+      'relationnel_lit_parental':'💬 Relation — Vient dans le lit parental', 'relationnel_conflit_autres':'💬 Relation — Conflit autres sujets',
       'relationnel_rappels':'📢 Relation — Rappels multiples après le coucher',
     };
     const leviers = [...state.selectedPbs].filter(pb => leviersMap[pb]).map(pb => leviersMap[pb]);
@@ -4204,12 +4207,12 @@ function togglePbModal() {
 }
 
 const ALL_PB_CATS = [
-  {cat:'🩺 Confort physique', items:[{value:'rgo_allergie',label:'RGO douloureux + Allergie (APLV)'},{value:'allergie_seule',label:'Suspicion allergie seule'},{value:'rgo_seul',label:'RGO seul'}]},
+  {cat:'🩺 Confort physique <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span>', exclusive:true, items:[{value:'rgo_allergie',label:'RGO douloureux + Allergie (APLV)'},{value:'allergie_seule',label:'Suspicion allergie seule'},{value:'rgo_seul',label:'RGO seul'}]},
   {cat:'🍽️ Nutrition', items:[{value:'nutrition_courbe',label:'Courbe déclinante (faim)'},{value:'nutrition_espacement_long',label:'Espacement trop long'},{value:'nutrition_espacement_court',label:'Espacement trop court'},{value:'nutrition_inversion_jour_nuit',label:'Inversion jour/nuit'},{value:'nutrition_jus_vegetaux',label:'Jus végétaux / lait animal'}]},
   {cat:'⏰ Rythme', items:[{value:'rythme_dette_sommeil',label:'Dette de sommeil'},{value:'rythme_reveil_matinal',label:'Réveil matinal précoce'},{value:'rythme_activite_physique',label:"Manque d'activité physique"}]},
   {cat:"😴 Stratégie d'endormissement", items:[{value:'strategie_presence',label:'Présence parentale indispensable'},{value:'strategie_tetine',label:'Tétine (cause de réveils)'},{value:'strategie_biberon_sein',label:"Biberon / sein pour s'endormir"}]},
-  {cat:'🏠 Environnement', items:[{value:'env_obscurite',label:'Obscurité insuffisante'},{value:'env_temperature',label:'Température trop élevée'},{value:'env_lit_ouvert',label:'Lit ouvert trop tôt'},{value:'env_rituel',label:'Rituel absent ou trop court'},{value:'env_cadre',label:'Cadre non clair'},{value:'env_stimulations',label:'Stimulations visuelles'}]},
-  {cat:'💬 Enjeux relationnels', items:[{value:'relationnel_conflit',label:'Conflit / lit parental'},{value:'relationnel_rappels',label:'Rappels multiples après coucher'}]},
+  {cat:'🏠 Environnement de sommeil', items:[{value:'env_obscurite',label:'Obscurité insuffisante'},{value:'env_temperature',label:'Température trop élevée'},{value:'env_lit_ouvert',label:'Lit ouvert trop tôt'},{value:'env_rituel',label:'Rituel absent ou trop court'},{value:'env_cadre',label:'Cadre non clair'},{value:'env_stimulations',label:'Stimulations visuelles'},{value:'env_ecrans',label:'Ecrans'}]},
+  {cat:'💬 Enjeux relationnels', items:[{value:'relationnel_lit_parental',label:'Vient dans le lit parental',exclusive:'relationnel_conflit'},{value:'relationnel_conflit_autres',label:'En « conflit » sur d\'autres sujets que le sommeil',exclusive:'relationnel_conflit'},{value:'relationnel_rappels',label:'Multiples rappels après le coucher'}]},
 ];
 
 function buildModalPbList() {
@@ -4235,7 +4238,7 @@ function buildModalPbList() {
       </div>
       ${cat.items.map(it=>`
         <label style="display:flex;align-items:center;gap:8px;padding:6px 4px;cursor:pointer;font-size:13.5px">
-          <input type="checkbox" class="modal-pb" value="${it.value}" ${state.selectedPbs.has(it.value)?'checked':''}> ${it.label}
+          <input type="checkbox" class="modal-pb" value="${it.value}" ${cat.exclusive?'data-exclusive="confort"':''}${it.exclusive?`data-exclusive="${it.exclusive}"`:''} ${state.selectedPbs.has(it.value)?'checked':''}> ${it.label}
         </label>`).join('')}
     </div>`).join('');
 }
@@ -4279,6 +4282,16 @@ function onFicheClientPbChange() {
   buildSidebar();
   renderCurrentSection();
 }
+
+// Gestion des checkboxes exclusives (1 seul choix par groupe)
+document.addEventListener('change', function(e) {
+  const cb = e.target;
+  if (cb.type !== 'checkbox' || !cb.dataset.exclusive || !cb.checked) return;
+  const group = cb.dataset.exclusive;
+  document.querySelectorAll(`input[data-exclusive="${group}"]`).forEach(other => {
+    if (other !== cb) other.checked = false;
+  });
+});
 
 function newConsultation() {
   if (confirm('Revenir à l\'écran de setup ?')) {
@@ -4824,8 +4837,8 @@ function generateCRHtml(s) {
     'strategie_biberon_sein':'Biberon / sein pour s\'endormir',
     'env_obscurite':'Obscurité insuffisante', 'env_temperature':'Température élevée',
     'env_lit_ouvert':'Lit ouvert trop tôt', 'env_rituel':'Rituel absent / trop court',
-    'env_cadre':'Cadre non clair', 'env_stimulations':'Stimulations visuelles',
-    'relationnel_conflit':'Venue au lit parental', 'relationnel_rappels':'Rappels multiples',
+    'env_cadre':'Cadre non clair', 'env_stimulations':'Stimulations visuelles', 'env_ecrans':'Ecrans',
+    'relationnel_lit_parental':'Vient dans le lit parental', 'relationnel_conflit_autres':'Conflit autres sujets', 'relationnel_rappels':'Multiples rappels après le coucher',
   };
 
   const pbTags = (s.selectedPbs || []).map(pb => `<span class="cr-tag">${pbLabels[pb]||pb}</span>`).join('');
