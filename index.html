@@ -2264,8 +2264,7 @@
     <button class="modal-close" onclick="togglePbModal()">✕</button>
     <h3>⚙️ Ajuster les problématiques</h3>
     <p style="font-size:13px;color:#999;margin-bottom:16px">Les sections s'adaptent immédiatement.</p>
-    <div id="modal-pb-list"></div>
-    <button class="btn-start" style="margin-top:16px;font-size:14px;padding:12px" onclick="applyPbChanges()">✅ Appliquer</button>
+    <div id="modal-pb-list" onchange="onModalPbChange()"></div>
   </div>
 </div>
 
@@ -4349,11 +4348,13 @@ function modalSelectAll(checked) {
   document.querySelectorAll('.modal-pb').forEach(cb => cb.checked = checked);
   document.querySelectorAll('.modal-pb-sub-parent').forEach(cb => cb.checked = checked);
   if (checked) applyExclusionRules(document.getElementById('modal-pb-list'));
+  onModalPbChange();
 }
 function modalSelectCat(btn, checked) {
   btn.closest('div[style*="margin-bottom:14px"]').querySelectorAll('.modal-pb').forEach(cb => cb.checked = checked);
   btn.closest('div[style*="margin-bottom:14px"]').querySelectorAll('.modal-pb-sub-parent').forEach(cb => cb.checked = checked);
   if (checked) applyExclusionRules(btn.closest('div[style*="margin-bottom:14px"]'));
+  onModalPbChange();
 }
 
 function applyPbChanges() {
@@ -4362,7 +4363,10 @@ function applyPbChanges() {
   syncPbsToFicheClient();
   syncPbsHighlights();
   rebuildAfterPbChange();
-  togglePbModal();
+}
+
+function onModalPbChange() {
+  applyPbChanges();
 }
 
 // Synchronise state.selectedPbs → checkboxes fiche client
