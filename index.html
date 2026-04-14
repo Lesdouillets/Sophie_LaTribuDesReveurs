@@ -3807,6 +3807,19 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     html += '<div class="problematiques-grid" style="margin-top:10px" onchange="onDiagnosticPbChange()">';
     function renderDiagCat(cat) {
       let h = `<div class="pb-category" style="margin-bottom:10px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px"><label class="pb-category-title" style="margin-bottom:0;flex:1"><input type="checkbox" class="diag-cat-checkbox"${catHasChecked(cat)?'checked':''}> ${cat.cat}</label><span style="display:flex;gap:4px"><button style="font-size:10px;padding:2px 7px;border-radius:5px;border:1px solid var(--border);background:white;cursor:pointer;font-weight:600;color:var(--primary)" onclick="diagSelectCat(this,true)">Tout ✓</button><button style="font-size:10px;padding:2px 7px;border-radius:5px;border:1px solid #e74c3c;background:white;cursor:pointer;font-weight:600;color:#e74c3c" onclick="diagSelectCat(this,false)">Tout ✗</button></span></div><div class="pb-items">`;
+      // Subgroups first si demandé (1er subgroup avant les items)
+      function renderDiagSubgroup(sg) {
+        const anyChecked = sg.items.some(it=>state.selectedPbs.has(it.value));
+        let s = `<label class="pb-item${anyChecked?' checked':''}"><input type="checkbox" class="diag-sub-parent" data-subgroup="${sg.items[0].exclusive}"${anyChecked?' checked':''}> <span>${sg.label} <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">${sg.hint||''}</span></span></label>`;
+        sg.items.forEach(it => {
+          s += `<label class="pb-item${state.selectedPbs.has(it.value)?' checked':''}" style="padding-left:24px;font-size:12px"><input type="checkbox" class="diag-pb" value="${it.value}" ${it.exclusive?`data-exclusive="${it.exclusive}"`:''} ${it.excludesValue?`data-excludes-value="${it.excludesValue}"`:''} data-subgroup-child="${it.exclusive||''}" ${state.selectedPbs.has(it.value)?'checked':''}> <span>${it.label}</span></label>`;
+          (it.children||[]).forEach(ch => {
+            s += `<label class="pb-item${state.selectedPbs.has(ch.value)?' checked':''}" style="padding-left:40px;font-size:11px"><input type="checkbox" class="diag-pb" value="${ch.value}" ${ch.excludesValue?`data-excludes-value="${ch.excludesValue}"`:''} ${ch.autoParent?`data-auto-parent="${ch.autoParent}"`:''} ${state.selectedPbs.has(ch.value)?'checked':''}> <span>${ch.label}</span></label>`;
+          });
+        });
+        return s;
+      }
+      if (cat.subgroupsFirst && cat.subgroups?.length) h += renderDiagSubgroup(cat.subgroups[0]);
       cat.items.forEach(it => {
         const exc = cat.exclusive ? `data-exclusive="confort"` : (it.exclusive ? `data-exclusive="${it.exclusive}"` : '');
         const excl = it.excludes ? `data-excludes="${it.excludes}"` : '';
@@ -3816,7 +3829,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
           h += `<label class="pb-item${state.selectedPbs.has(ch.value)?' checked':''}" style="padding-left:40px;font-size:11px"><input type="checkbox" class="diag-pb" value="${ch.value}" ${ch.excludesValue?`data-excludes-value="${ch.excludesValue}"`:''} ${ch.autoParent?`data-auto-parent="${ch.autoParent}"`:''} ${state.selectedPbs.has(ch.value)?'checked':''}> <span>${ch.label}</span></label>`;
         });
       });
-      (cat.subgroups||[]).forEach(sg => {
+      (cat.subgroupsFirst ? (cat.subgroups||[]).slice(1) : (cat.subgroups||[])).forEach(sg => {
         const anyChecked = sg.items.some(it=>state.selectedPbs.has(it.value));
         h += `<label class="pb-item${anyChecked?' checked':''}"><input type="checkbox" class="diag-sub-parent" data-subgroup="${sg.items[0].exclusive}"${anyChecked?' checked':''}> <span>${sg.label} <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">${sg.hint||''}</span></span></label>`;
         sg.items.forEach(it => {
@@ -3830,9 +3843,9 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       return h;
     }
     html += '<div>';
-    cats.slice(0, Math.ceil(cats.length/2)).forEach(cat => { html += renderDiagCat(cat); });
+    cats.slice(0, 3).forEach(cat => { html += renderDiagCat(cat); });
     html += '</div><div>';
-    cats.slice(Math.ceil(cats.length/2)).forEach(cat => { html += renderDiagCat(cat); });
+    cats.slice(3).forEach(cat => { html += renderDiagCat(cat); });
     html += '</div></div></div>';
     return html;
   }
@@ -4300,7 +4313,7 @@ function togglePbModal() {
 const ALL_PB_CATS = [
   {cat:'🩺 Confort physique <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span>', exclusive:true, items:[{value:'rgo_allergie',label:'RGO douloureux + Suspicion allergie (APLV)'},{value:'allergie_seule',label:'Suspicion allergie seule'},{value:'rgo_seul',label:'RGO seul'}]},
   {cat:'🍽️ Nutrition', items:[{value:'nutrition_courbe',label:'Courbe de poids déclinante'},{value:'nutrition_espacement_long',label:'Espacement trop long'},{value:'nutrition_espacement_court',label:'Espacement trop court'},{value:'nutrition_inversion_jour_nuit',label:'Inversion jour/nuit'},{value:'nutrition_jus_vegetaux',label:'Jus végétaux / lait inadapté'}]},
-  {cat:'⏰ Organisation de la journée', items:[{value:'rythme_siestes_courtes',label:'Siestes courtes <span style=\"color:#999;font-size:11px\">(TE OK)</span>',excludes:'rythme_te'},{value:'rythme_horaires_aleatoires',label:'Horaires aléatoires'},{value:'rythme_activite_physique',label:"Pas d'activité physique"}], subgroups:[{label:"Temps d'éveil",hint:'(1 option possible)',items:[{value:'rythme_te_trop_long',label:'Trop long',exclusive:'rythme_te',excludesValue:'rythme_siestes_courtes',children:[{value:'rythme_te_long_siestes_courtes',label:'Siestes courtes',autoParent:'rythme_te_trop_long'},{value:'rythme_te_long_reveils_matinaux',label:'Réveils matinaux',excludesValue:'rythme_reveil_fatigue',autoParent:'rythme_te_trop_long'}]},{value:'rythme_te_trop_court',label:'Trop court',exclusive:'rythme_te',excludesValue:'rythme_siestes_courtes',children:[{value:'rythme_te_court_siestes_courtes',label:'Siestes courtes',autoParent:'rythme_te_trop_court'}]}]},{label:'Réveils matinaux',hint:'',items:[{value:'rythme_reveil_decalage',label:'Décalage horaire <span style=\"color:#999;font-size:11px\">(mais nuit 12h OK)</span>'},{value:'rythme_reveil_fatigue',label:'Fatigue accumulée',excludesValue:'rythme_te_long_reveils_matinaux'},{value:'rythme_reveil_relationnel',label:'Enjeu relationnel'},{value:'rythme_reveil_mange',label:'Mange et ne peut pas se rendormir'},{value:'rythme_reveil_faim',label:"Faim et n'a pas le sein/bib"},{value:'rythme_reveil_dependance',label:'Dépendance'},{value:'rythme_reveil_bruit',label:'Bruit extérieur/lumière'}]}]},
+  {cat:'⏰ Organisation de la journée', subgroupsFirst:true, items:[{value:'rythme_siestes_courtes',label:'Siestes courtes <span style=\"color:#999;font-size:11px\">(TE OK)</span>',excludes:'rythme_te'},{value:'rythme_horaires_aleatoires',label:'Horaires aléatoires'},{value:'rythme_activite_physique',label:"Pas d'activité physique"}], subgroups:[{label:"Temps d'éveil",hint:'(1 option possible)',items:[{value:'rythme_te_trop_long',label:'Trop long',exclusive:'rythme_te',excludesValue:'rythme_siestes_courtes',children:[{value:'rythme_te_long_siestes_courtes',label:'Siestes courtes',autoParent:'rythme_te_trop_long'},{value:'rythme_te_long_reveils_matinaux',label:'Réveils matinaux',excludesValue:'rythme_reveil_fatigue',autoParent:'rythme_te_trop_long'}]},{value:'rythme_te_trop_court',label:'Trop court',exclusive:'rythme_te',excludesValue:'rythme_siestes_courtes',children:[{value:'rythme_te_court_siestes_courtes',label:'Siestes courtes',autoParent:'rythme_te_trop_court'}]}]},{label:'Réveils matinaux',hint:'',items:[{value:'rythme_reveil_decalage',label:'Décalage horaire <span style=\"color:#999;font-size:11px\">(mais nuit 12h OK)</span>'},{value:'rythme_reveil_fatigue',label:'Fatigue accumulée',excludesValue:'rythme_te_long_reveils_matinaux'},{value:'rythme_reveil_relationnel',label:'Enjeu relationnel'},{value:'rythme_reveil_mange',label:'Mange et ne peut pas se rendormir'},{value:'rythme_reveil_faim',label:"Faim et n'a pas le sein/bib"},{value:'rythme_reveil_dependance',label:'Dépendance'},{value:'rythme_reveil_bruit',label:'Bruit extérieur/lumière'}]}]},
   {cat:"😴 Stratégie de sommeil", items:[{value:'strategie_rendormissement',label:'Rendormissement difficile'},{value:'strategie_enjeu_relationnel',label:'Enjeu relationnel'},{value:'strategie_tetine',label:'Dépendance tétine'}]},
   {cat:'🏠 Environnement de sommeil', items:[{value:'env_obscurite',label:'Obscurité insuffisante'},{value:'env_temperature',label:'Température trop élevée'},{value:'env_lit_ouvert',label:'Lit ouvert trop tôt'},{value:'env_rituel',label:'Rituel absent ou trop court'},{value:'env_cadre',label:'Cadre non clair'},{value:'env_stimulations',label:'Stimulations visuelles'},{value:'env_ecrans',label:'Ecrans'}]},
   {cat:'💬 Enjeux relationnels', items:[{value:'relationnel_rappels',label:'Multiples rappels après le coucher'},{value:'relationnel_lit_parental',label:'Vient dans le lit parental'},{value:'relationnel_conflit_autres',label:'En « conflit » sur d\'autres sujets que le sommeil'}]},
@@ -4322,11 +4335,20 @@ function buildModalPbList() {
             onclick="modalSelectCat(this,false)">Tout ✗</button>
         </span>
       </div>
+      ${cat.subgroupsFirst ? (cat.subgroups||[]).slice(0,1).map(sg=>{
+        const anyChecked = sg.items.some(it=>state.selectedPbs.has(it.value));
+        return `<label style="display:flex;align-items:center;gap:8px;padding:6px 4px;cursor:pointer;font-size:13.5px">
+          <input type="checkbox" class="modal-pb-sub-parent" data-subgroup="${sg.items[0].exclusive}" ${anyChecked?'checked':''}> ${sg.label} <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">${sg.hint||''}</span>
+        </label>` +
+        sg.items.map(it=>`<label style="display:flex;align-items:center;gap:8px;padding:6px 4px 6px 32px;cursor:pointer;font-size:12px">
+          <input type="checkbox" class="modal-pb" value="${it.value}" ${it.exclusive?`data-exclusive="${it.exclusive}"`:''} ${it.excludesValue?`data-excludes-value="${it.excludesValue}"`:''} data-subgroup-child="${it.exclusive||''}" ${state.selectedPbs.has(it.value)?'checked':''}> ${it.label}
+        </label>${(it.children||[]).map(ch=>`<label style="display:flex;align-items:center;gap:8px;padding:4px 4px 4px 48px;cursor:pointer;font-size:11px"><input type="checkbox" class="modal-pb" value="${ch.value}" ${ch.excludesValue?`data-excludes-value="${ch.excludesValue}"`:''} ${ch.autoParent?`data-auto-parent="${ch.autoParent}"`:''} ${state.selectedPbs.has(ch.value)?'checked':''}> ${ch.label}</label>`).join('')}`).join('');
+      }).join('') : ''}
       ${cat.items.map(it=>`
         <label style="display:flex;align-items:center;gap:8px;padding:6px 4px;cursor:pointer;font-size:13.5px">
           <input type="checkbox" class="modal-pb" value="${it.value}" ${cat.exclusive?'data-exclusive="confort"':''}${it.exclusive?`data-exclusive="${it.exclusive}"`:''} ${it.excludes?`data-excludes="${it.excludes}"`:''} ${it.excludesValue?`data-excludes-value="${it.excludesValue}"`:''} ${state.selectedPbs.has(it.value)?'checked':''}> ${it.label}
         </label>${(it.children||[]).map(ch=>`<label style="display:flex;align-items:center;gap:8px;padding:4px 4px 4px 40px;cursor:pointer;font-size:11px"><input type="checkbox" class="modal-pb" value="${ch.value}" ${ch.excludesValue?`data-excludes-value="${ch.excludesValue}"`:''} ${ch.autoParent?`data-auto-parent="${ch.autoParent}"`:''} ${state.selectedPbs.has(ch.value)?'checked':''}> ${ch.label}</label>`).join('')}`).join('')}
-      ${(cat.subgroups||[]).map(sg=>{
+      ${(cat.subgroupsFirst ? (cat.subgroups||[]).slice(1) : (cat.subgroups||[])).map(sg=>{
         const anyChecked = sg.items.some(it=>state.selectedPbs.has(it.value));
         return `<label style="display:flex;align-items:center;gap:8px;padding:6px 4px;cursor:pointer;font-size:13.5px">
           <input type="checkbox" class="modal-pb-sub-parent" data-subgroup="${sg.items[0].exclusive}" ${anyChecked?'checked':''}> ${sg.label} <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">${sg.hint||''}</span>
