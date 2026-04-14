@@ -1495,31 +1495,55 @@
                   <div class="pb-category" style="margin-left:0">
                     <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_courbes" data-auto-only="true"> Courbes pas OK</label>
                     <div class="pb-items">
-                      <label class="pb-item"><input type="checkbox" name="pb" value="nutri_courbe_declinante" data-subgroup-child="nutri_courbes"> <span>Courbe de poids déclinante</span></label>
-                      <label class="pb-item" style="padding-left:16px"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_espacement" data-auto-only="true"> <span>Espacement</span></label>
-                      <label class="pb-item" style="padding-left:32px;font-size:11px"><input type="checkbox" name="pb" value="nutri_esp_long" data-exclusive="nutri_espacement" data-subgroup-child="nutri_espacement" data-auto-parent="nutri_courbe_declinante"> <span>Trop long</span></label>
-                      <label class="pb-item" style="padding-left:32px;font-size:11px"><input type="checkbox" name="pb" value="nutri_esp_court" data-exclusive="nutri_espacement" data-subgroup-child="nutri_espacement" data-auto-parent="nutri_courbe_declinante"> <span>Trop court</span></label>
-                      <label class="pb-item" style="padding-left:16px"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_volume" data-auto-only="true"> <span>Volume/durée des bib</span></label>
-                      <label class="pb-item" style="padding-left:32px;font-size:11px"><input type="checkbox" name="pb" value="nutri_vol_petit" data-subgroup-child="nutri_volume" data-exclusive="nutri_vol_taille" data-auto-parent="nutri_courbe_declinante"> <span>Petit bib</span></label>
-                      <label class="pb-item" style="padding-left:32px;font-size:11px"><input type="checkbox" name="pb" value="nutri_vol_gros" data-subgroup-child="nutri_volume" data-exclusive="nutri_vol_taille" data-auto-parent="nutri_courbe_declinante"> <span>Gros bib</span></label>
-                      <label class="pb-item" style="padding-left:32px;font-size:11px"><input type="checkbox" name="pb" value="nutri_vol_longtemps" data-subgroup-child="nutri_volume" data-auto-parent="nutri_courbe_declinante"> <span>Boit bib longtemps</span></label>
-                      <label class="pb-item" style="padding-left:16px"><input type="checkbox" name="pb" value="nutri_tetee" data-auto-parent="nutri_courbe_declinante"> <span>Tétée : baisse de lactation</span></label>
-                      <label class="pb-item" style="padding-left:32px;font-size:11px"><input type="checkbox" name="pb" value="nutri_tetee_longue" data-auto-parent="nutri_tetee"> <span>Longue tétée</span></label>
-                      <label class="pb-item" style="padding-left:32px;font-size:11px"><input type="checkbox" name="pb" value="nutri_tetee_greve" data-auto-parent="nutri_tetee"> <span>Grève des tétées</span></label>
-                      <label class="pb-item" style="padding-left:32px;font-size:11px;font-style:italic;color:#999"><input type="checkbox" name="pb" value="nutri_tetee_mode_garde" data-auto-parent="nutri_tetee"> <span>Cause : Mode de garde</span></label>
-                      <label class="pb-item" style="padding-left:16px"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_inversion" data-auto-only="true"> <span>Inversion</span></label>
-                      <label class="pb-item" style="padding-left:32px;font-size:11px"><input type="checkbox" name="pb" value="nutri_inversion_jour_nuit" data-subgroup-child="nutri_inversion" data-auto-parent="nutri_courbe_declinante"> <span>Inversion Jour/Nuit</span></label>
-                      <label class="pb-item" style="padding-left:32px;font-size:11px"><input type="checkbox" name="pb" value="nutri_inversion_lait_solide" data-subgroup-child="nutri_inversion" data-auto-parent="nutri_courbe_declinante"> <span>Inversion lait/solide</span></label>
-                      <label class="pb-item" style="padding-left:16px"><input type="checkbox" name="pb" value="nutri_tetine_coupe_faim" data-auto-parent="nutri_courbe_declinante"> <span>Tétine = coupe-faim</span></label>
-                      <label class="pb-item" style="padding-left:16px"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_autre" data-auto-only="true"> <span>Autre</span></label>
-                      <label class="pb-item" style="padding-left:32px;font-size:11px"><input type="checkbox" name="pb" value="nutri_autre_feculents" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Pas assez de féculents</span></label>
-                      <label class="pb-item" style="padding-left:32px;font-size:11px"><input type="checkbox" name="pb" value="nutri_autre_lait_important" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Lait trop important</span></label>
-                      <label class="pb-item" style="padding-left:32px;font-size:11px"><input type="checkbox" name="pb" value="nutri_autre_solide_important" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Solide trop important</span></label>
-                      <label class="pb-item" style="padding-left:32px;font-size:11px"><input type="checkbox" name="pb" value="nutri_autre_jus_vegetal" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Jus végétal</span></label>
-                      <label class="pb-item" style="padding-left:32px;font-size:11px"><input type="checkbox" name="pb" value="nutri_autre_lait_animal" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Lait animal</span></label>
-                      <label class="pb-item" style="padding-left:16px;font-style:italic;color:#999"><input type="checkbox" name="pb" value="nutri_conseq_inconfort" data-auto-parent="nutri_courbe_declinante"> <span>Conséquences : Inconfort</span></label>
-                      <label class="pb-item" style="padding-left:16px;font-style:italic;color:#999"><input type="checkbox" name="pb" value="nutri_conseq_greve_tetees" data-auto-parent="nutri_courbe_declinante" data-requires="nutri_tetee_greve"> <span>Conséquences : Grève des tétées</span></label>
-                      <label class="pb-item" style="padding-left:16px;font-style:italic;color:#999"><input type="checkbox" name="pb" value="nutri_conseq_mange_nuit" data-auto-parent="nutri_courbe_declinante"> <span>Conséquences : Mange la nuit mais ne devrait pas</span></label>
+                      <div class="pb-category" style="margin-left:0">
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_declinante" data-subgroup-child="nutri_courbes"> Courbe de poids déclinante</label>
+                        <div class="pb-items">
+                          <div class="pb-category" style="margin-left:0">
+                            <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_espacement" data-auto-only="true"> Espacement</label>
+                            <div class="pb-items">
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_esp_long" data-exclusive="nutri_espacement" data-subgroup-child="nutri_espacement" data-auto-parent="nutri_courbe_declinante"> <span>Trop long</span></label>
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_esp_court" data-exclusive="nutri_espacement" data-subgroup-child="nutri_espacement" data-auto-parent="nutri_courbe_declinante"> <span>Trop court</span></label>
+                            </div>
+                          </div>
+                          <div class="pb-category" style="margin-left:0">
+                            <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_volume" data-auto-only="true"> Volume/durée des bib</label>
+                            <div class="pb-items">
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_vol_petit" data-subgroup-child="nutri_volume" data-exclusive="nutri_vol_taille" data-auto-parent="nutri_courbe_declinante"> <span>Petit bib</span></label>
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_vol_gros" data-subgroup-child="nutri_volume" data-exclusive="nutri_vol_taille" data-auto-parent="nutri_courbe_declinante"> <span>Gros bib</span></label>
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_vol_longtemps" data-subgroup-child="nutri_volume" data-auto-parent="nutri_courbe_declinante"> <span>Boit bib longtemps</span></label>
+                            </div>
+                          </div>
+                          <div class="pb-category" style="margin-left:0">
+                            <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_tetee" data-auto-parent="nutri_courbe_declinante"> Tétée : baisse de lactation</label>
+                            <div class="pb-items">
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_tetee_longue" data-auto-parent="nutri_tetee"> <span>Longue tétée</span></label>
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_tetee_greve" data-auto-parent="nutri_tetee"> <span>Grève des tétées</span></label>
+                              <label class="pb-item" style="font-style:italic;color:#999"><input type="checkbox" name="pb" value="nutri_tetee_mode_garde" data-auto-parent="nutri_tetee"> <span>Cause : Mode de garde</span></label>
+                            </div>
+                          </div>
+                          <div class="pb-category" style="margin-left:0">
+                            <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_inversion" data-auto-only="true"> Inversion</label>
+                            <div class="pb-items">
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_inversion_jour_nuit" data-subgroup-child="nutri_inversion" data-auto-parent="nutri_courbe_declinante"> <span>Inversion Jour/Nuit</span></label>
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_inversion_lait_solide" data-subgroup-child="nutri_inversion" data-auto-parent="nutri_courbe_declinante"> <span>Inversion lait/solide</span></label>
+                            </div>
+                          </div>
+                          <label class="pb-item"><input type="checkbox" name="pb" value="nutri_tetine_coupe_faim" data-auto-parent="nutri_courbe_declinante"> <span>Tétine = coupe-faim</span></label>
+                          <div class="pb-category" style="margin-left:0">
+                            <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_autre" data-auto-only="true"> Autre</label>
+                            <div class="pb-items">
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_autre_feculents" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Pas assez de féculents</span></label>
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_autre_lait_important" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Lait trop important</span></label>
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_autre_solide_important" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Solide trop important</span></label>
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_autre_jus_vegetal" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Jus végétal</span></label>
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_autre_lait_animal" data-subgroup-child="nutri_autre" data-auto-parent="nutri_courbe_declinante"> <span>Lait animal</span></label>
+                            </div>
+                          </div>
+                          <label class="pb-item" style="font-style:italic;color:#999"><input type="checkbox" name="pb" value="nutri_conseq_inconfort" data-auto-parent="nutri_courbe_declinante"> <span>Conséquences : Inconfort</span></label>
+                          <label class="pb-item" style="font-style:italic;color:#999"><input type="checkbox" name="pb" value="nutri_conseq_greve_tetees" data-auto-parent="nutri_courbe_declinante" data-requires="nutri_tetee_greve"> <span>Conséquences : Grève des tétées</span></label>
+                          <label class="pb-item" style="font-style:italic;color:#999"><input type="checkbox" name="pb" value="nutri_conseq_mange_nuit" data-auto-parent="nutri_courbe_declinante"> <span>Conséquences : Mange la nuit mais ne devrait pas</span></label>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
