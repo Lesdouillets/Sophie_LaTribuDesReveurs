@@ -3812,6 +3812,11 @@ function renderCurrentSection() {
     <button class="btn-nav btn-next" title="Aller à la section suivante" onclick="nextSection()" ${state.currentIdx===state.sections.length-1?'disabled':''}>Suivant →</button>
   </div>`;
   area.innerHTML = html;
+  // Remplir le diagnostic avec le clone des checkboxes si la section contient le container
+  const diagContainer = document.getElementById('diag-pb-container');
+  if (diagContainer) {
+    clonePbGridFor('diag-pb-container', 'diag-pb', 'onDiagnosticPbChange()');
+  }
   // Rendre tous les blocs et contenus d'options éditables
   area.querySelectorAll('.block, .q-text').forEach(el => {
     el.setAttribute('contenteditable', 'true');
@@ -3956,60 +3961,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       'relationnel_lit_parental':'💬 Relation — Vient dans le lit parental', 'relationnel_conflit_autres':'💬 Relation — Conflit autres sujets', 'souhait_tetine':'🎯 Souhait — Suppression tétine', 'souhait_position_dorsale':'🎯 Souhait — Vers une position dorsale', 'souhait_changement_lit':'🎯 Souhait — Changement de lit', 'souhait_changement_chambre':'🎯 Souhait — Changement de chambre', 'souhait_changement_lit_chambre':'🎯 Souhait — Changement lit/chambre',
       'relationnel_rappels':'📢 Relation — Rappels multiples après le coucher',
     };
-    // Afficher checkboxes synchronisées (identiques à la fiche client)
-    const cats = ALL_PB_CATS;
-    let html = '<div class="block block-conseil" style="padding:12px 16px"><strong>⚙️ Leviers identifiés :</strong>';
-    html += '<div class="problematiques-grid" style="margin-top:10px" onchange="onDiagnosticPbChange()">';
-    function renderDiagCat(cat) {
-      let h = `<div class="pb-category" style="margin-bottom:10px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px"><label class="pb-category-title" style="margin-bottom:0;flex:1"><input type="checkbox" class="diag-cat-checkbox"${catHasChecked(cat)?'checked':''}> ${cat.cat}</label><span style="display:flex;gap:4px"><button style="font-size:10px;padding:2px 7px;border-radius:5px;border:1px solid var(--border);background:white;cursor:pointer;font-weight:600;color:var(--primary)" onclick="diagSelectCat(this,true)">Tout ✓</button><button style="font-size:10px;padding:2px 7px;border-radius:5px;border:1px solid #e74c3c;background:white;cursor:pointer;font-weight:600;color:#e74c3c" onclick="diagSelectCat(this,false)">Tout ✗</button></span></div><div class="pb-items">`;
-      // Subgroups first si demandé (1er subgroup avant les items)
-      function renderDiagSubgroup(sg) {
-        const anyChecked = sg.items.some(it=>state.selectedPbs.has(it.value));
-        let s = `<label class="pb-item${anyChecked?' checked':''}"><input type="checkbox" class="diag-sub-parent" data-subgroup="${sg.items[0].exclusive}"${anyChecked?' checked':''}> <span>${sg.label} <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">${sg.hint||''}</span></span></label>`;
-        sg.items.forEach(it => {
-          s += `<label class="pb-item${state.selectedPbs.has(it.value)?' checked':''}" style="padding-left:24px;font-size:12px"><input type="checkbox" class="diag-pb" value="${it.value}" ${it.exclusive?`data-exclusive="${it.exclusive}"`:''} ${it.excludesValue?`data-excludes-value="${it.excludesValue}"`:''} data-subgroup-child="${it.exclusive||''}" ${state.selectedPbs.has(it.value)?'checked':''}> <span>${it.label}</span></label>`;
-          (it.children||[]).forEach(ch => {
-            s += `<label class="pb-item${state.selectedPbs.has(ch.value)?' checked':''}" style="padding-left:40px;font-size:11px;font-style:italic;color:#999"><input type="checkbox" class="diag-pb" value="${ch.value}" ${ch.excludesValue?`data-excludes-value="${ch.excludesValue}"`:''} ${ch.autoParent?`data-auto-parent="${ch.autoParent}"`:''} ${state.selectedPbs.has(ch.value)?'checked':''}> <span>${ch.label}</span></label>`;
-          });
-        });
-        return s;
-      }
-      if (cat.subgroupsFirst && cat.subgroups?.length) h += renderDiagSubgroup(cat.subgroups[0]);
-      cat.items.forEach(it => {
-        const exc = cat.exclusive ? `data-exclusive="confort"` : (it.exclusive ? `data-exclusive="${it.exclusive}"` : '');
-        const excl = it.excludes ? `data-excludes="${it.excludes}"` : '';
-        const exclVal = it.excludesValue ? `data-excludes-value="${it.excludesValue}"` : '';
-        h += `<label class="pb-item${state.selectedPbs.has(it.value)?' checked':''}"><input type="checkbox" class="diag-pb" value="${it.value}" ${exc} ${excl} ${exclVal} ${state.selectedPbs.has(it.value)?'checked':''}> <span>${it.label}</span></label>`;
-        (it.children||[]).forEach(ch => {
-          h += `<label class="pb-item${state.selectedPbs.has(ch.value)?' checked':''}" style="padding-left:40px;font-size:11px;font-style:italic;color:#999"><input type="checkbox" class="diag-pb" value="${ch.value}" ${ch.excludesValue?`data-excludes-value="${ch.excludesValue}"`:''} ${ch.autoParent?`data-auto-parent="${ch.autoParent}"`:''} ${state.selectedPbs.has(ch.value)?'checked':''}> <span>${ch.label}</span></label>`;
-        });
-      });
-      (cat.subgroupsFirst ? (cat.subgroups||[]).slice(1) : (cat.subgroups||[])).forEach(sg => {
-        const anyChecked = sg.items.some(it=>state.selectedPbs.has(it.value));
-        h += `<label class="pb-item${anyChecked?' checked':''}"><input type="checkbox" class="diag-sub-parent" data-subgroup="${sg.items[0].exclusive}"${anyChecked?' checked':''}> <span>${sg.label} <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">${sg.hint||''}</span></span></label>`;
-        sg.items.forEach(it => {
-          h += `<label class="pb-item${state.selectedPbs.has(it.value)?' checked':''}" style="padding-left:24px;font-size:12px"><input type="checkbox" class="diag-pb" value="${it.value}" ${it.exclusive?`data-exclusive="${it.exclusive}"`:''} ${it.excludesValue?`data-excludes-value="${it.excludesValue}"`:''} data-subgroup-child="${it.exclusive||''}" ${state.selectedPbs.has(it.value)?'checked':''}> <span>${it.label}</span></label>`;
-          (it.children||[]).forEach(ch => {
-            h += `<label class="pb-item${state.selectedPbs.has(ch.value)?' checked':''}" style="padding-left:40px;font-size:11px"><input type="checkbox" class="diag-pb" value="${ch.value}" ${ch.excludesValue?`data-excludes-value="${ch.excludesValue}"`:''} ${ch.autoParent?`data-auto-parent="${ch.autoParent}"`:''} ${state.selectedPbs.has(ch.value)?'checked':''}> <span>${ch.label}</span></label>`;
-          });
-        });
-      });
-      (cat.consequences||[]).forEach(cq => {
-        h += `<label class="pb-item${state.selectedPbs.has(cq.value)?' checked':''}" style="font-style:italic;color:#999"><input type="checkbox" class="diag-pb" value="${cq.value}" ${state.selectedPbs.has(cq.value)?'checked':''}> <span>${cq.label}</span></label>`;
-      });
-      h += '</div></div>';
-      return h;
-    }
-    html += '<div>';
-    cats.slice(0, 3).forEach(cat => { html += renderDiagCat(cat); });
-    html += '</div><div>';
-    cats.slice(3).forEach(cat => { html += renderDiagCat(cat); });
-    html += '</div></div></div>';
-    return html;
-  }
-
-  function catHasChecked(cat) {
-    return cat.items.some(it => state.selectedPbs.has(it.value)) || (cat.subgroups||[]).some(sg => sg.items.some(it => state.selectedPbs.has(it.value))) || (cat.consequences||[]).some(cq => state.selectedPbs.has(cq.value));
+    // Afficher checkboxes synchronisées (identiques à la fiche client) via clone
+    return `<div class="block block-conseil" style="padding:12px 16px"><strong>⚙️ Leviers identifiés :</strong><div id="diag-pb-container" style="margin-top:10px"></div></div>`;
   }
 
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
@@ -4493,59 +4446,58 @@ const ALL_PB_CATS = [
   {cat:'🎯 Souhaits', items:[{value:'souhait_tetine',label:'Suppression de la tétine'},{value:'souhait_position_dorsale',label:'Vers une position dorsale'}], subgroups:[{label:'Changement chambre/lit',hint:'(1 option possible)',items:[{value:'souhait_changement_lit',label:'Changement de lit',exclusive:'souhait_changement'},{value:'souhait_changement_chambre',label:'Changement de chambre',exclusive:'souhait_changement'},{value:'souhait_changement_lit_chambre',label:'Changement de lit + chambre',exclusive:'souhait_changement'}]}]},
 ];
 
-function buildModalPbList() {
-  const allValues = ALL_PB_CATS.flatMap(c => [...c.items.flatMap(i => [i.value, ...(i.children||[]).map(ch=>ch.value)]), ...(c.subgroups||[]).flatMap(sg => sg.items.flatMap(i => [i.value, ...(i.children||[]).map(ch=>ch.value)])), ...(c.consequences||[]).map(cq=>cq.value)]);
-  const allChecked = allValues.every(v => state.selectedPbs.has(v));
-  document.getElementById('modal-pb-list').innerHTML =
-    ALL_PB_CATS.map(cat => `
-    <div class="pb-category" style="margin-bottom:14px">
-      <div class="pb-category-title" style="display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:13px;margin-bottom:7px;color:var(--primary-dark)">
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" class="modal-cat-checkbox" ${catHasCheckedModal(cat)?'checked':''}> ${cat.cat}</label>
-        <span style="display:flex;gap:4px">
-          <button style="font-size:10px;padding:2px 7px;border-radius:5px;border:1px solid var(--border);background:white;cursor:pointer;font-weight:600;color:var(--primary)"
-            onclick="modalSelectCat(this,true)">Tout ✓</button>
-          <button style="font-size:10px;padding:2px 7px;border-radius:5px;border:1px solid #e74c3c;background:white;cursor:pointer;font-weight:600;color:#e74c3c"
-            onclick="modalSelectCat(this,false)">Tout ✗</button>
-        </span>
-      </div>
-      <div class="pb-items">
-      ${cat.subgroupsFirst ? (cat.subgroups||[]).slice(0,1).map(sg=>{
-        const anyChecked = sg.items.some(it=>state.selectedPbs.has(it.value));
-        return `<label style="display:flex;align-items:center;gap:8px;padding:6px 4px;cursor:pointer;font-size:13.5px">
-          <input type="checkbox" class="modal-pb-sub-parent" data-subgroup="${sg.items[0].exclusive}" ${anyChecked?'checked':''}> ${sg.label} <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">${sg.hint||''}</span>
-        </label>` +
-        sg.items.map(it=>`<label style="display:flex;align-items:center;gap:8px;padding:6px 4px 6px 32px;cursor:pointer;font-size:12px">
-          <input type="checkbox" class="modal-pb" value="${it.value}" ${it.exclusive?`data-exclusive="${it.exclusive}"`:''} ${it.excludesValue?`data-excludes-value="${it.excludesValue}"`:''} data-subgroup-child="${it.exclusive||''}" ${state.selectedPbs.has(it.value)?'checked':''}> ${it.label}
-        </label>${(it.children||[]).map(ch=>`<label style="display:flex;align-items:center;gap:8px;padding:4px 4px 4px 48px;cursor:pointer;font-size:11px;font-style:italic;color:#999"><input type="checkbox" class="modal-pb" value="${ch.value}" ${ch.excludesValue?`data-excludes-value="${ch.excludesValue}"`:''} ${ch.autoParent?`data-auto-parent="${ch.autoParent}"`:''} ${state.selectedPbs.has(ch.value)?'checked':''}> ${ch.label}</label>`).join('')}`).join('');
-      }).join('') : ''}
-      ${cat.items.map(it=>`
-        <label style="display:flex;align-items:center;gap:8px;padding:6px 4px;cursor:pointer;font-size:13.5px">
-          <input type="checkbox" class="modal-pb" value="${it.value}" ${cat.exclusive?'data-exclusive="confort"':''}${it.exclusive?`data-exclusive="${it.exclusive}"`:''} ${it.excludes?`data-excludes="${it.excludes}"`:''} ${it.excludesValue?`data-excludes-value="${it.excludesValue}"`:''} ${state.selectedPbs.has(it.value)?'checked':''}> ${it.label}
-        </label>${(it.children||[]).map(ch=>`<label style="display:flex;align-items:center;gap:8px;padding:4px 4px 4px 40px;cursor:pointer;font-size:11px;font-style:italic;color:#999"><input type="checkbox" class="modal-pb" value="${ch.value}" ${ch.excludesValue?`data-excludes-value="${ch.excludesValue}"`:''} ${ch.autoParent?`data-auto-parent="${ch.autoParent}"`:''} ${state.selectedPbs.has(ch.value)?'checked':''}> ${ch.label}</label>`).join('')}`).join('')}
-      ${(cat.subgroupsFirst ? (cat.subgroups||[]).slice(1) : (cat.subgroups||[])).map(sg=>{
-        const anyChecked = sg.items.some(it=>state.selectedPbs.has(it.value));
-        return `<label style="display:flex;align-items:center;gap:8px;padding:6px 4px;cursor:pointer;font-size:13.5px">
-          <input type="checkbox" class="modal-pb-sub-parent" data-subgroup="${sg.items[0].exclusive}" ${anyChecked?'checked':''}> ${sg.label} <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">${sg.hint||''}</span>
-        </label>` +
-        sg.items.map(it=>`<label style="display:flex;align-items:center;gap:8px;padding:6px 4px 6px 32px;cursor:pointer;font-size:12px">
-          <input type="checkbox" class="modal-pb" value="${it.value}" ${it.exclusive?`data-exclusive="${it.exclusive}"`:''} ${it.excludesValue?`data-excludes-value="${it.excludesValue}"`:''} data-subgroup-child="${it.exclusive||''}" ${state.selectedPbs.has(it.value)?'checked':''}> ${it.label}
-        </label>${(it.children||[]).map(ch=>`<label style="display:flex;align-items:center;gap:8px;padding:4px 4px 4px 48px;cursor:pointer;font-size:11px;font-style:italic;color:#999"><input type="checkbox" class="modal-pb" value="${ch.value}" ${ch.excludesValue?`data-excludes-value="${ch.excludesValue}"`:''} ${ch.autoParent?`data-auto-parent="${ch.autoParent}"`:''} ${state.selectedPbs.has(ch.value)?'checked':''}> ${ch.label}</label>`).join('')}`).join('');
-      }).join('')}
-      ${(cat.consequences||[]).map(cq=>`<label style="display:flex;align-items:center;gap:8px;padding:4px 4px;cursor:pointer;font-size:11px;font-style:italic;color:#999"><input type="checkbox" class="modal-pb" value="${cq.value}" ${state.selectedPbs.has(cq.value)?'checked':''}> ${cq.label}</label>`).join('')}
-      </div>
-    </div>`).join('');
-  // Initialiser les menus déroulants dans le modal
+function clonePbGridFor(targetId, cbClass, onchangeFunc) {
+  const source = document.querySelector('.problematiques-grid[onchange="onFicheClientPbChange()"]');
+  if (!source) return;
+  const clone = source.cloneNode(true);
+  // Remplacer name="pb" par class cbClass, et pb-cat-checkbox/pb-sub-parent par des versions préfixées
+  clone.setAttribute('onchange', onchangeFunc);
+  clone.querySelectorAll('input[name="pb"]').forEach(cb => {
+    cb.removeAttribute('name');
+    cb.classList.add(cbClass);
+    cb.checked = state.selectedPbs.has(cb.value);
+    cb.closest('.pb-item')?.classList.toggle('checked', cb.checked);
+  });
+  clone.querySelectorAll('.pb-cat-checkbox').forEach(cb => {
+    cb.classList.remove('pb-cat-checkbox');
+    cb.classList.add(cbClass + '-cat');
+  });
+  clone.querySelectorAll('.pb-sub-parent').forEach(cb => {
+    cb.classList.remove('pb-sub-parent');
+    cb.classList.add(cbClass + '-sub-parent');
+    // Copier data-subgroup et data-auto-only
+  });
+  // Sync les catégories et sub-parents cochés
+  clone.querySelectorAll('.pb-category').forEach(cat => {
+    const catCb = cat.querySelector('.' + cbClass + '-cat');
+    if (catCb) {
+      const anyChecked = [...cat.querySelectorAll('.' + cbClass)].some(c => c.checked);
+      catCb.checked = anyChecked;
+    }
+    const subParents = cat.querySelectorAll('.' + cbClass + '-sub-parent');
+    subParents.forEach(sp => {
+      if (sp.dataset.subgroup) {
+        const anyChild = [...clone.querySelectorAll(`input[data-subgroup-child="${sp.dataset.subgroup}"]`)].some(c => c.checked);
+        sp.checked = anyChild;
+      }
+    });
+  });
+  // Rendre les éléments conditionnels visibles si nécessaire
+  clone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+  document.getElementById(targetId).innerHTML = '';
+  document.getElementById(targetId).appendChild(clone);
+  // Re-init les menus déroulants
   initPbCategoryToggles();
 }
 
-function catHasCheckedModal(cat) {
-  return cat.items.some(it => state.selectedPbs.has(it.value)) || (cat.subgroups||[]).some(sg => sg.items.some(it => state.selectedPbs.has(it.value))) || (cat.consequences||[]).some(cq => state.selectedPbs.has(cq.value));
+function buildModalPbList() {
+  clonePbGridFor('modal-pb-list', 'modal-pb', 'onModalPbChange()');
 }
 
 function modalSelectAll(checked) {
   document.querySelectorAll('.modal-pb').forEach(cb => cb.checked = checked);
   document.querySelectorAll('.modal-pb-sub-parent').forEach(cb => cb.checked = checked);
-  document.querySelectorAll('.modal-cat-checkbox').forEach(cb => cb.checked = checked);
+  document.querySelectorAll('.modal-pb-cat').forEach(cb => cb.checked = checked);
   if (checked) applyExclusionRules(document.getElementById('modal-pb-list'));
   onModalPbChange();
 }
@@ -4553,7 +4505,7 @@ function modalSelectCat(btn, checked) {
   const cat = btn.closest('div[style*="margin-bottom:14px"]');
   cat.querySelectorAll('.modal-pb').forEach(cb => cb.checked = checked);
   cat.querySelectorAll('.modal-pb-sub-parent').forEach(cb => cb.checked = checked);
-  cat.querySelectorAll('.modal-cat-checkbox').forEach(cb => cb.checked = checked);
+  cat.querySelectorAll('.modal-pb-cat').forEach(cb => cb.checked = checked);
   if (checked) applyExclusionRules(btn.closest('div[style*="margin-bottom:14px"]'));
   onModalPbChange();
 }
@@ -4592,8 +4544,8 @@ function onFicheClientPbChange() {
 function diagSelectCat(btn, checked) {
   const cat = btn.closest('.pb-category');
   cat.querySelectorAll('.diag-pb').forEach(cb => cb.checked = checked);
-  cat.querySelectorAll('.diag-cat-checkbox').forEach(cb => cb.checked = checked);
-  cat.querySelectorAll('.diag-sub-parent').forEach(cb => cb.checked = checked);
+  cat.querySelectorAll('.diag-pb-cat').forEach(cb => cb.checked = checked);
+  cat.querySelectorAll('.diag-pb-sub-parent').forEach(cb => cb.checked = checked);
   if (checked) applyExclusionRules(cat);
   cat.querySelectorAll('.pb-item').forEach(el => el.classList.toggle('checked', el.querySelector('input')?.checked));
   onDiagnosticPbChange();
@@ -4601,8 +4553,8 @@ function diagSelectCat(btn, checked) {
 
 function diagSelectAll(checked) {
   document.querySelectorAll('.diag-pb').forEach(cb => cb.checked = checked);
-  document.querySelectorAll('.diag-cat-checkbox').forEach(cb => cb.checked = checked);
-  document.querySelectorAll('.diag-sub-parent').forEach(cb => cb.checked = checked);
+  document.querySelectorAll('.diag-pb-cat').forEach(cb => cb.checked = checked);
+  document.querySelectorAll('.diag-pb-sub-parent').forEach(cb => cb.checked = checked);
   if (checked) applyExclusionRules(document.querySelector('.problematiques-grid[onchange*="onDiagnostic"]'));
   onDiagnosticPbChange();
 }
@@ -4733,7 +4685,7 @@ document.addEventListener('change', function(e) {
   if (cb.dataset.subgroupChild) {
     const group = cb.dataset.subgroupChild;
     // Sync tous les parents (fiche client + modal)
-    document.querySelectorAll(`.pb-sub-parent[data-subgroup="${group}"], .modal-pb-sub-parent[data-subgroup="${group}"], .diag-sub-parent[data-subgroup="${group}"]`).forEach(parent => {
+    document.querySelectorAll(`.pb-sub-parent[data-subgroup="${group}"], .modal-pb-sub-parent[data-subgroup="${group}"], .diag-pb-sub-parent[data-subgroup="${group}"]`).forEach(parent => {
       parent.checked = [...document.querySelectorAll(`input[data-subgroup-child="${group}"]`)].some(c => c.checked);
       parent.closest('.pb-item')?.classList.toggle('checked', parent.checked);
     });
@@ -4770,7 +4722,7 @@ document.addEventListener('change', function(e) {
       other.checked = false;
       other.closest('.pb-item')?.classList.remove('checked');
     });
-    document.querySelectorAll(`.pb-sub-parent[data-subgroup="${group}"], .modal-pb-sub-parent[data-subgroup="${group}"], .diag-sub-parent[data-subgroup="${group}"]`).forEach(sp => {
+    document.querySelectorAll(`.pb-sub-parent[data-subgroup="${group}"], .modal-pb-sub-parent[data-subgroup="${group}"], .diag-pb-sub-parent[data-subgroup="${group}"]`).forEach(sp => {
       sp.checked = false;
       sp.closest('.pb-item')?.classList.remove('checked');
     });
@@ -4810,7 +4762,7 @@ document.addEventListener('change', function(e) {
       // Remonter au grand-parent : si le parent a data-subgroup-child, cocher le sub-parent
       if (parent.dataset.subgroupChild) {
         const gpGroup = parent.dataset.subgroupChild;
-        document.querySelectorAll(`.pb-sub-parent[data-subgroup="${gpGroup}"], .modal-pb-sub-parent[data-subgroup="${gpGroup}"], .diag-sub-parent[data-subgroup="${gpGroup}"]`).forEach(gp => {
+        document.querySelectorAll(`.pb-sub-parent[data-subgroup="${gpGroup}"], .modal-pb-sub-parent[data-subgroup="${gpGroup}"], .diag-pb-sub-parent[data-subgroup="${gpGroup}"]`).forEach(gp => {
           if (!gp.checked) {
             gp.checked = true;
             gp.closest('.pb-item')?.classList.add('checked');
@@ -4844,7 +4796,7 @@ document.addEventListener('change', function(e) {
     });
   }
   // 6. Re-sync sub-parents après toutes les modifications
-  document.querySelectorAll('.pb-sub-parent[data-subgroup], .modal-pb-sub-parent[data-subgroup], .diag-sub-parent[data-subgroup]').forEach(sp => {
+  document.querySelectorAll('.pb-sub-parent[data-subgroup], .modal-pb-sub-parent[data-subgroup], .diag-pb-sub-parent[data-subgroup]').forEach(sp => {
     const group = sp.dataset.subgroup;
     const anyChecked = [...document.querySelectorAll(`input[data-subgroup-child="${group}"]`)].some(c => c.checked);
     sp.checked = anyChecked;
@@ -4859,7 +4811,7 @@ document.addEventListener('change', function(e) {
     }
     return;
   } else if (cb.classList.contains('modal-pb') && modalCatDiv) {
-    const modalCatCb = modalCatDiv.querySelector('.modal-cat-checkbox');
+    const modalCatCb = modalCatDiv.querySelector('.modal-pb-cat');
     if (modalCatCb) {
       const isStrategie = modalCatCb.closest('label')?.textContent.includes('Stratégie');
       const anyChecked = [...modalCatDiv.querySelectorAll('.modal-pb')].some(item => item.checked);
@@ -4899,7 +4851,7 @@ document.addEventListener('change', function(e) {
         item.checked = false;
         item.closest('.pb-item')?.classList.remove('checked');
       });
-      category.querySelectorAll('.diag-sub-parent').forEach(sp => {
+      category.querySelectorAll('.diag-pb-sub-parent').forEach(sp => {
         sp.checked = false;
         sp.closest('.pb-item')?.classList.remove('checked');
       });
@@ -4907,7 +4859,7 @@ document.addEventListener('change', function(e) {
     return;
   } else if (cb.name === 'pb' || cb.classList.contains('diag-pb')) {
     // Clic sur un sous-item → cocher la catégorie si au moins 1 coché
-    const catCbDiag = category.querySelector('.diag-cat-checkbox');
+    const catCbDiag = category.querySelector('.diag-pb-cat');
     if (catCbDiag) {
       const diagItems = category.querySelectorAll('.diag-pb');
       catCbDiag.checked = [...diagItems].some(item => item.checked);
