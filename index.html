@@ -318,11 +318,13 @@
     /* Niveaux hiérarchiques */
     .pb-category.pb-level-2 { margin-left: 12px; }
     .pb-category.pb-level-2 > .pb-category-title { background: #e8f0fa; font-size: 12.5px; text-transform: none; letter-spacing: 0; }
-    .pb-category.pb-level-3 { margin-left: 24px; }
-    .pb-category.pb-level-3 > .pb-category-title { background: #f0f6ff; font-size: 12px; text-transform: none; letter-spacing: 0; font-weight: 600; }
-    .pb-level-3 .pb-item { font-size: 12px; }
+    .pb-category.pb-level-3 { margin-left: 24px; margin-bottom: 0; }
+    .pb-category.pb-level-3 > .pb-category-title { background: #f0f6ff; font-size: 12px; text-transform: none; letter-spacing: 0; font-weight: 600; margin-bottom: 4px; }
+    .pb-category.pb-level-3 > .pb-items > .pb-item { margin-left: 16px; font-size: 12px; }
+    /* Supprimer l'espace entre les level-3 quand fermés */
+    .pb-category.pb-level-3 + .pb-category.pb-level-3 { margin-top: -2px; }
     /* Style titre sans déroulant (même look que level-3 mais pas cliquable pour déplier) */
-    .pb-item.pb-title-style { background: #f0f6ff; border-radius: 8px; padding: 7px 10px; font-weight: 600; font-size: 12px; margin-left: 24px; }
+    .pb-item.pb-title-style { background: #f0f6ff; border-radius: 8px; padding: 7px 10px; font-weight: 600; font-size: 12px; margin-left: 24px; margin-bottom: 0; }
     .pb-item {
       display: flex; align-items: center; gap: 8px; cursor: pointer;
       padding: 7px 10px; border-radius: 8px; border: 1.5px solid transparent;
