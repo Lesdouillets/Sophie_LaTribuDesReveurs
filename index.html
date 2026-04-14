@@ -4421,8 +4421,13 @@ function syncPbsHighlights() {
   document.querySelectorAll('.pb-category').forEach(cat => {
     const catCb = cat.querySelector('.pb-cat-checkbox');
     if (catCb) {
+      const isStrategie = catCb.dataset.cat === 'strategie';
       const anyChecked = [...cat.querySelectorAll('input[name="pb"]')].some(cb => cb.checked);
-      if (anyChecked) catCb.checked = true;
+      if (isStrategie) {
+        if (anyChecked) catCb.checked = true;
+      } else {
+        catCb.checked = anyChecked;
+      }
     }
   });
 }
@@ -4563,8 +4568,13 @@ document.addEventListener('change', function(e) {
   } else if (cb.classList.contains('modal-pb') && modalCatDiv) {
     const modalCatCb = modalCatDiv.querySelector('.modal-cat-checkbox');
     if (modalCatCb) {
+      const isStrategie = modalCatCb.closest('label')?.textContent.includes('Stratégie');
       const anyChecked = [...modalCatDiv.querySelectorAll('.modal-pb')].some(item => item.checked);
-      if (anyChecked) modalCatCb.checked = true;
+      if (isStrategie) {
+        if (anyChecked) modalCatCb.checked = true;
+      } else {
+        modalCatCb.checked = anyChecked;
+      }
     }
   }
   // Sync catégorie ↔ sous-items
@@ -4608,8 +4618,13 @@ document.addEventListener('change', function(e) {
       catCbDiag.checked = [...diagItems].some(item => item.checked);
     }
     if (catCb) {
+      const isStrategie = catCb.dataset.cat === 'strategie';
       const anyChecked = [...items].some(item => item.checked);
-      catCb.checked = anyChecked;
+      if (isStrategie) {
+        if (anyChecked) catCb.checked = true;
+      } else {
+        catCb.checked = anyChecked;
+      }
     }
   }
 });
