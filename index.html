@@ -4471,10 +4471,16 @@ function applyExclusionRules(container) {
       other.closest('.pb-item')?.classList.remove('checked');
     });
   });
-  // Exclusion mutuelle : data-excludes (décocher les enfants du groupe)
+  // Exclusion mutuelle : data-excludes (décocher les enfants du groupe + leurs children)
   container.querySelectorAll('input[data-excludes]:checked').forEach(cb => {
     const group = cb.dataset.excludes;
     container.querySelectorAll(`input[data-subgroup-child="${group}"]`).forEach(other => {
+      if (other.value) {
+        container.querySelectorAll(`input[data-auto-parent="${other.value}"]`).forEach(child => {
+          child.checked = false;
+          child.closest('.pb-item')?.classList.remove('checked');
+        });
+      }
       other.checked = false;
       other.closest('.pb-item')?.classList.remove('checked');
     });
@@ -4521,10 +4527,17 @@ document.addEventListener('change', function(e) {
       }
     });
   }
-  // 2. Exclusion mutuelle data-excludes (décocher les enfants du groupe + sub-parents)
+  // 2. Exclusion mutuelle data-excludes (décocher les enfants du groupe + leurs children + sub-parents)
   if (cb.checked && cb.dataset.excludes) {
     const group = cb.dataset.excludes;
     document.querySelectorAll(`input[data-subgroup-child="${group}"]`).forEach(other => {
+      // D'abord décocher les children de cet élément
+      if (other.value) {
+        document.querySelectorAll(`input[data-auto-parent="${other.value}"]`).forEach(child => {
+          child.checked = false;
+          child.closest('.pb-item')?.classList.remove('checked');
+        });
+      }
       other.checked = false;
       other.closest('.pb-item')?.classList.remove('checked');
     });
