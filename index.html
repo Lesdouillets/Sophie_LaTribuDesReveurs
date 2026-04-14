@@ -312,6 +312,9 @@
     }
     .pb-category-title input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
     .pb-items { display: flex; flex-direction: column; gap: 4px; }
+    .pb-items.collapsed { display: none; }
+    .pb-category-title .pb-cat-arrow { font-size: 11px; transition: transform 0.2s; display: inline-block; margin-left: 4px; }
+    .pb-category-title .pb-cat-arrow.open { transform: rotate(90deg); }
     .pb-item {
       display: flex; align-items: center; gap: 8px; cursor: pointer;
       padding: 7px 10px; border-radius: 8px; border: 1.5px solid transparent;
@@ -1482,11 +1485,34 @@
               <div class="pb-category">
                 <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="nutrition"> 🍽️ Nutrition</label>
                 <div class="pb-items">
-                  <label class="pb-item"><input type="checkbox" name="pb" value="nutrition_courbe"> <span>Courbe de poids déclinante</span></label>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="nutrition_espacement_long"> <span>Espacement trop long</span></label>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="nutrition_espacement_court"> <span>Espacement trop court</span></label>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="nutrition_inversion_jour_nuit"> <span>Inversion jour/nuit</span></label>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="nutrition_jus_vegetaux"> <span>Jus végétaux / lait inadapté</span></label>
+                  <label class="pb-item"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_courbes" data-auto-only="true"> <span>Courbes pas OK <span style="color:#999;font-style:italic;font-size:11px">(1 option possible)</span></span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_courbe_declinante" data-exclusive="nutri_courbes" data-subgroup-child="nutri_courbes"> <span>Courbe de poids déclinante</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_courbe_inferieur" data-exclusive="nutri_courbes" data-subgroup-child="nutri_courbes"> <span>Courbe de poids sur percentile INFÉRIEUR</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_courbe_trop_apport" data-exclusive="nutri_courbes" data-subgroup-child="nutri_courbes"> <span>Trop d'apport</span></label>
+                  <label class="pb-item"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_espacement" data-auto-only="true"> <span>Espacement</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_esp_long" data-exclusive="nutri_espacement" data-subgroup-child="nutri_espacement"> <span>Trop long</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_esp_court" data-exclusive="nutri_espacement" data-subgroup-child="nutri_espacement"> <span>Trop court</span></label>
+                  <label class="pb-item"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_volume" data-auto-only="true"> <span>Volume/durée des bib</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_vol_petit" data-subgroup-child="nutri_volume"> <span>Petit bib</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_vol_gros" data-subgroup-child="nutri_volume"> <span>Gros bib</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_vol_longtemps" data-subgroup-child="nutri_volume"> <span>Boit bib longtemps</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="nutri_tetee"> <span>Tétée : baisse de lactation</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_tetee_longue" data-auto-parent="nutri_tetee"> <span>Longue tétée</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_tetee_greve" data-auto-parent="nutri_tetee"> <span>Grève des tétées</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px;font-style:italic;color:#999"><input type="checkbox" name="pb" value="nutri_tetee_mode_garde" data-auto-parent="nutri_tetee"> <span>Cause : Mode de garde</span></label>
+                  <label class="pb-item"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_inversion" data-auto-only="true"> <span>Inversion</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_inversion_jour_nuit" data-subgroup-child="nutri_inversion"> <span>Inversion Jour/Nuit</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_inversion_lait_solide" data-subgroup-child="nutri_inversion"> <span>Inversion lait/solide</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="nutri_tetine_coupe_faim"> <span>Tétine = coupe-faim</span></label>
+                  <label class="pb-item"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_autre" data-auto-only="true"> <span>Autre</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_autre_feculents" data-subgroup-child="nutri_autre"> <span>Pas assez de féculents</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_autre_lait_important" data-subgroup-child="nutri_autre"> <span>Lait trop important</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_autre_solide_important" data-subgroup-child="nutri_autre"> <span>Solide trop important</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_autre_jus_vegetal" data-subgroup-child="nutri_autre"> <span>Jus végétal</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="nutri_autre_lait_animal" data-subgroup-child="nutri_autre"> <span>Lait animal</span></label>
+                  <label class="pb-item" style="font-style:italic;color:#999"><input type="checkbox" name="pb" value="nutri_conseq_inconfort"> <span>Conséquences : Inconfort</span></label>
+                  <label class="pb-item" style="font-style:italic;color:#999"><input type="checkbox" name="pb" value="nutri_conseq_greve_tetees"> <span>Conséquences : Grève des tétées</span></label>
+                  <label class="pb-item" style="font-style:italic;color:#999"><input type="checkbox" name="pb" value="nutri_conseq_mange_nuit"> <span>Conséquences : Mange la nuit mais ne devrait pas</span></label>
                 </div>
               </div>
               <div class="pb-category">
@@ -3581,7 +3607,7 @@ function buildSidebar() {
 function buildSidebarPbPanel() {
   const ALL_PBS = [
     {value:'rgo_allergie',label:'🩺 RGO + Allergie'},{value:'allergie_seule',label:'🌿 Allergie seule'},{value:'rgo_seul',label:'😣 RGO seul'},
-    {value:'nutrition_courbe',label:'📉 Courbe déclinante'},{value:'nutrition_espacement_long',label:'⏱️ Espacement long'},{value:'nutrition_espacement_court',label:'🔄 Espacement court'},{value:'nutrition_inversion_jour_nuit',label:'🌛 Inversion J/N'},{value:'nutrition_jus_vegetaux',label:'🐄 Jus végétaux'},
+    {value:'nutri_courbe_declinante',label:'📉 Courbe déclinante'},{value:'nutri_courbe_inferieur',label:'📉 Percentile inf.'},{value:'nutri_courbe_trop_apport',label:"📉 Trop d'apport"},{value:'nutri_esp_long',label:'⏱️ Esp. long'},{value:'nutri_esp_court',label:'🔄 Esp. court'},{value:'nutri_vol_petit',label:'🍼 Petit bib'},{value:'nutri_vol_gros',label:'🍼 Gros bib'},{value:'nutri_vol_longtemps',label:'🍼 Bib longtemps'},{value:'nutri_tetee',label:'🤱 Tétée'},{value:'nutri_tetee_longue',label:'🤱 Longue tétée'},{value:'nutri_tetee_greve',label:'🤱 Grève tétées'},{value:'nutri_tetee_mode_garde',label:'🤱 Mode garde'},{value:'nutri_inversion_jour_nuit',label:'🌛 Inversion J/N'},{value:'nutri_inversion_lait_solide',label:'🌛 Inversion lait/solide'},{value:'nutri_tetine_coupe_faim',label:'🍭 Tétine coupe-faim'},{value:'nutri_autre_feculents',label:'🍽️ Féculents'},{value:'nutri_autre_lait_important',label:'🍽️ Lait important'},{value:'nutri_autre_solide_important',label:'🍽️ Solide important'},{value:'nutri_autre_jus_vegetal',label:'🍽️ Jus végétal'},{value:'nutri_autre_lait_animal',label:'🍽️ Lait animal'},{value:'nutri_conseq_inconfort',label:'🍽️ Inconfort'},{value:'nutri_conseq_greve_tetees',label:'🍽️ Grève tétées'},{value:'nutri_conseq_mange_nuit',label:'🍽️ Mange nuit'},
     {value:'rythme_te_trop_long',label:'⏰ TE trop long'},{value:'rythme_te_long_siestes_courtes',label:'⏰ TE long - Siestes courtes'},{value:'rythme_te_long_reveils_matinaux',label:'⏰ TE long - Réveils matinaux'},{value:'rythme_te_trop_court',label:'⏰ TE trop court'},{value:'rythme_te_court_siestes_courtes',label:'⏰ TE court - Siestes courtes'},{value:'rythme_siestes_courtes',label:'⏰ Siestes courtes'},{value:'rythme_horaires_aleatoires',label:'⏰ Horaires aléatoires'},{value:'rythme_reveil_decalage',label:'🌅 Réveil - Décalage'},{value:'rythme_reveil_fatigue',label:'🌅 Réveil - Fatigue'},{value:'rythme_reveil_relationnel',label:'🌅 Réveil - Relationnel'},{value:'rythme_reveil_mange',label:'🌅 Réveil - Mange'},{value:'rythme_reveil_faim',label:'🌅 Réveil - Faim'},{value:'rythme_reveil_dependance',label:'🌅 Réveil - Dépendance'},{value:'rythme_reveil_bruit',label:'🌅 Réveil - Bruit/lumière'},{value:'rythme_activite_physique',label:'🏃 Pas activité physique'},
     {value:'strategie_rendormissement',label:'😴 Rendormissement difficile'},{value:'strategie_enjeu_relationnel',label:'😴 Enjeu relationnel'},{value:'strategie_tetine',label:'🍭 Dépendance tétine'},
     {value:'env_obscurite',label:'🌑 Obscurité'},{value:'env_temperature',label:'🌡️ Température'},{value:'env_lit_ouvert',label:'🛏️ Lit ouvert'},{value:'env_rituel',label:'🌙 Rituel'},{value:'env_cadre',label:'🗺️ Cadre clair'},{value:'env_stimulations',label:'👀 Stimulations'},{value:'env_ecrans',label:'📱 Ecrans'},
@@ -3770,10 +3796,29 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       'allergie_seule':'🌿 Confort digestif — Suspicion allergie',
       'rgo_seul':'😣 Confort digestif — RGO',
       'nutrition_courbe':'📉 Nutrition — Courbe de poids déclinante (faim)',
-      'nutrition_espacement_long':'⏱ Nutrition — Espacements trop longs',
-      'nutrition_espacement_court':'🔄 Nutrition — Espacements trop courts (inconfort)',
-      'nutrition_inversion_jour_nuit':'🌛 Nutrition — Inversion jour/nuit',
-      'nutrition_jus_vegetaux':'🐄 Nutrition — Lait inadapté (jus végétaux)',
+      'nutri_courbe_declinante':'📉 Nutrition — Courbe déclinante',
+      'nutri_courbe_inferieur':'📉 Nutrition — Percentile inférieur',
+      'nutri_courbe_trop_apport':"📉 Nutrition — Trop d'apport",
+      'nutri_esp_long':'⏱ Nutrition — Espacement trop long',
+      'nutri_esp_court':'🔄 Nutrition — Espacement trop court',
+      'nutri_vol_petit':'🍼 Nutrition — Petit bib',
+      'nutri_vol_gros':'🍼 Nutrition — Gros bib',
+      'nutri_vol_longtemps':'🍼 Nutrition — Boit bib longtemps',
+      'nutri_tetee':'🤱 Nutrition — Tétée baisse lactation',
+      'nutri_tetee_longue':'🤱 Nutrition — Longue tétée',
+      'nutri_tetee_greve':'🤱 Nutrition — Grève des tétées',
+      'nutri_tetee_mode_garde':'🤱 Nutrition — Mode de garde',
+      'nutri_inversion_jour_nuit':'🌛 Nutrition — Inversion Jour/Nuit',
+      'nutri_inversion_lait_solide':'🌛 Nutrition — Inversion lait/solide',
+      'nutri_tetine_coupe_faim':'🍭 Nutrition — Tétine coupe-faim',
+      'nutri_autre_feculents':'🍽️ Nutrition — Pas assez féculents',
+      'nutri_autre_lait_important':'🍽️ Nutrition — Lait trop important',
+      'nutri_autre_solide_important':'🍽️ Nutrition — Solide trop important',
+      'nutri_autre_jus_vegetal':'🍽️ Nutrition — Jus végétal',
+      'nutri_autre_lait_animal':'🍽️ Nutrition — Lait animal',
+      'nutri_conseq_inconfort':'🍽️ Nutrition — Conséquence : Inconfort',
+      'nutri_conseq_greve_tetees':'🍽️ Nutrition — Conséquence : Grève tétées',
+      'nutri_conseq_mange_nuit':'🍽️ Nutrition — Conséquence : Mange la nuit',
       'rythme_te_trop_long':'⏰ Organisation — TE trop long',
       'rythme_te_long_siestes_courtes':'⏰ Organisation — TE long → Siestes courtes',
       'rythme_te_long_reveils_matinaux':'⏰ Organisation — TE long → Réveils matinaux',
@@ -3839,6 +3884,9 @@ function renderBlockInner(b, i, sectionId, depth, path) {
           });
         });
       });
+      (cat.consequences||[]).forEach(cq => {
+        h += `<label class="pb-item${state.selectedPbs.has(cq.value)?' checked':''}" style="font-style:italic;color:#999"><input type="checkbox" class="diag-pb" value="${cq.value}" ${state.selectedPbs.has(cq.value)?'checked':''}> <span>${cq.label}</span></label>`;
+      });
       h += '</div></div>';
       return h;
     }
@@ -3851,7 +3899,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
 
   function catHasChecked(cat) {
-    return cat.items.some(it => state.selectedPbs.has(it.value)) || (cat.subgroups||[]).some(sg => sg.items.some(it => state.selectedPbs.has(it.value)));
+    return cat.items.some(it => state.selectedPbs.has(it.value)) || (cat.subgroups||[]).some(sg => sg.items.some(it => state.selectedPbs.has(it.value))) || (cat.consequences||[]).some(cq => state.selectedPbs.has(cq.value));
   }
 
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
@@ -4312,7 +4360,20 @@ function togglePbModal() {
 
 const ALL_PB_CATS = [
   {cat:'🩺 Confort physique <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span>', exclusive:true, items:[{value:'rgo_allergie',label:'RGO douloureux + Suspicion allergie (APLV)'},{value:'allergie_seule',label:'Suspicion allergie seule'},{value:'rgo_seul',label:'RGO seul'}]},
-  {cat:'🍽️ Nutrition', items:[{value:'nutrition_courbe',label:'Courbe de poids déclinante'},{value:'nutrition_espacement_long',label:'Espacement trop long'},{value:'nutrition_espacement_court',label:'Espacement trop court'},{value:'nutrition_inversion_jour_nuit',label:'Inversion jour/nuit'},{value:'nutrition_jus_vegetaux',label:'Jus végétaux / lait inadapté'}]},
+  {cat:'🍽️ Nutrition', subgroupsFirst:true, items:[
+  {value:'nutri_tetee',label:'Tétée : baisse de lactation',children:[{value:'nutri_tetee_longue',label:'Longue tétée',autoParent:'nutri_tetee'},{value:'nutri_tetee_greve',label:'Grève des tétées',autoParent:'nutri_tetee'},{value:'nutri_tetee_mode_garde',label:'Cause : Mode de garde',autoParent:'nutri_tetee',italic:true}]},
+  {value:'nutri_tetine_coupe_faim',label:'Tétine = coupe-faim'}
+], subgroups:[
+  {label:"Courbes pas OK",hint:'(1 option possible)',autoOnly:true,items:[{value:'nutri_courbe_declinante',label:'Courbe de poids déclinante',exclusive:'nutri_courbes'},{value:'nutri_courbe_inferieur',label:'Courbe de poids sur percentile INFÉRIEUR',exclusive:'nutri_courbes'},{value:'nutri_courbe_trop_apport',label:"Trop d'apport",exclusive:'nutri_courbes'}]},
+  {label:'Espacement',autoOnly:true,items:[{value:'nutri_esp_long',label:'Trop long',exclusive:'nutri_espacement'},{value:'nutri_esp_court',label:'Trop court',exclusive:'nutri_espacement'}]},
+  {label:'Volume/durée des bib',autoOnly:true,items:[{value:'nutri_vol_petit',label:'Petit bib'},{value:'nutri_vol_gros',label:'Gros bib'},{value:'nutri_vol_longtemps',label:'Boit bib longtemps'}]},
+  {label:'Inversion',autoOnly:true,items:[{value:'nutri_inversion_jour_nuit',label:'Inversion Jour/Nuit'},{value:'nutri_inversion_lait_solide',label:'Inversion lait/solide'}]},
+  {label:'Autre',autoOnly:true,items:[{value:'nutri_autre_feculents',label:'Pas assez de féculents'},{value:'nutri_autre_lait_important',label:'Lait trop important'},{value:'nutri_autre_solide_important',label:'Solide trop important'},{value:'nutri_autre_jus_vegetal',label:'Jus végétal'},{value:'nutri_autre_lait_animal',label:'Lait animal'}]}
+], consequences:[
+  {value:'nutri_conseq_inconfort',label:'Conséquences : Inconfort'},
+  {value:'nutri_conseq_greve_tetees',label:'Conséquences : Grève des tétées'},
+  {value:'nutri_conseq_mange_nuit',label:'Conséquences : Mange la nuit mais ne devrait pas'}
+]},
   {cat:'⏰ Organisation de la journée', subgroupsFirst:true, items:[{value:'rythme_siestes_courtes',label:'Siestes courtes <span style=\"color:#999;font-size:11px\">(TE OK)</span>',excludes:'rythme_te'},{value:'rythme_horaires_aleatoires',label:'Horaires aléatoires'},{value:'rythme_activite_physique',label:"Pas d'activité physique"}], subgroups:[{label:"Temps d'éveil",hint:'(1 option possible)',items:[{value:'rythme_te_trop_long',label:'Trop long',exclusive:'rythme_te',excludesValue:'rythme_siestes_courtes',children:[{value:'rythme_te_long_siestes_courtes',label:'Conséquences : Siestes courtes',autoParent:'rythme_te_trop_long'},{value:'rythme_te_long_reveils_matinaux',label:'Conséquences : Réveils matinaux',excludesValue:'rythme_reveil_fatigue',autoParent:'rythme_te_trop_long'}]},{value:'rythme_te_trop_court',label:'Trop court',exclusive:'rythme_te',excludesValue:'rythme_siestes_courtes',children:[{value:'rythme_te_court_siestes_courtes',label:'Conséquences : Siestes courtes',autoParent:'rythme_te_trop_court'}]}]},{label:'Réveils matinaux',hint:'',items:[{value:'rythme_reveil_decalage',label:'Décalage horaire <span style=\"color:#999;font-size:11px\">(mais nuit 12h OK)</span>'},{value:'rythme_reveil_fatigue',label:'Fatigue accumulée',excludesValue:'rythme_te_long_reveils_matinaux'},{value:'rythme_reveil_relationnel',label:'Enjeu relationnel'},{value:'rythme_reveil_mange',label:'Mange et ne peut pas se rendormir'},{value:'rythme_reveil_faim',label:"Faim et n'a pas le sein/bib"},{value:'rythme_reveil_dependance',label:'Dépendance'},{value:'rythme_reveil_bruit',label:'Bruit extérieur/lumière'}]}]},
   {cat:"😴 Stratégie de sommeil", items:[{value:'strategie_rendormissement',label:'Rendormissement difficile'},{value:'strategie_enjeu_relationnel',label:'Enjeu relationnel'},{value:'strategie_tetine',label:'Dépendance tétine'}]},
   {cat:'🏠 Environnement de sommeil', items:[{value:'env_obscurite',label:'Obscurité insuffisante'},{value:'env_temperature',label:'Température trop élevée'},{value:'env_lit_ouvert',label:'Lit ouvert trop tôt'},{value:'env_rituel',label:'Rituel absent ou trop court'},{value:'env_cadre',label:'Cadre non clair'},{value:'env_stimulations',label:'Stimulations visuelles'},{value:'env_ecrans',label:'Ecrans'}]},
@@ -4321,12 +4382,12 @@ const ALL_PB_CATS = [
 ];
 
 function buildModalPbList() {
-  const allValues = ALL_PB_CATS.flatMap(c => [...c.items.flatMap(i => [i.value, ...(i.children||[]).map(ch=>ch.value)]), ...(c.subgroups||[]).flatMap(sg => sg.items.flatMap(i => [i.value, ...(i.children||[]).map(ch=>ch.value)]))]);
+  const allValues = ALL_PB_CATS.flatMap(c => [...c.items.flatMap(i => [i.value, ...(i.children||[]).map(ch=>ch.value)]), ...(c.subgroups||[]).flatMap(sg => sg.items.flatMap(i => [i.value, ...(i.children||[]).map(ch=>ch.value)])), ...(c.consequences||[]).map(cq=>cq.value)]);
   const allChecked = allValues.every(v => state.selectedPbs.has(v));
   document.getElementById('modal-pb-list').innerHTML =
     ALL_PB_CATS.map(cat => `
-    <div style="margin-bottom:14px">
-      <div style="display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:13px;margin-bottom:7px;color:var(--primary-dark)">
+    <div class="pb-category" style="margin-bottom:14px">
+      <div class="pb-category-title" style="display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:13px;margin-bottom:7px;color:var(--primary-dark)">
         <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" class="modal-cat-checkbox" ${catHasCheckedModal(cat)?'checked':''}> ${cat.cat}</label>
         <span style="display:flex;gap:4px">
           <button style="font-size:10px;padding:2px 7px;border-radius:5px;border:1px solid var(--border);background:white;cursor:pointer;font-weight:600;color:var(--primary)"
@@ -4335,6 +4396,7 @@ function buildModalPbList() {
             onclick="modalSelectCat(this,false)">Tout ✗</button>
         </span>
       </div>
+      <div class="pb-items">
       ${cat.subgroupsFirst ? (cat.subgroups||[]).slice(0,1).map(sg=>{
         const anyChecked = sg.items.some(it=>state.selectedPbs.has(it.value));
         return `<label style="display:flex;align-items:center;gap:8px;padding:6px 4px;cursor:pointer;font-size:13.5px">
@@ -4357,11 +4419,15 @@ function buildModalPbList() {
           <input type="checkbox" class="modal-pb" value="${it.value}" ${it.exclusive?`data-exclusive="${it.exclusive}"`:''} ${it.excludesValue?`data-excludes-value="${it.excludesValue}"`:''} data-subgroup-child="${it.exclusive||''}" ${state.selectedPbs.has(it.value)?'checked':''}> ${it.label}
         </label>${(it.children||[]).map(ch=>`<label style="display:flex;align-items:center;gap:8px;padding:4px 4px 4px 48px;cursor:pointer;font-size:11px;font-style:italic;color:#999"><input type="checkbox" class="modal-pb" value="${ch.value}" ${ch.excludesValue?`data-excludes-value="${ch.excludesValue}"`:''} ${ch.autoParent?`data-auto-parent="${ch.autoParent}"`:''} ${state.selectedPbs.has(ch.value)?'checked':''}> ${ch.label}</label>`).join('')}`).join('');
       }).join('')}
+      ${(cat.consequences||[]).map(cq=>`<label style="display:flex;align-items:center;gap:8px;padding:4px 4px;cursor:pointer;font-size:11px;font-style:italic;color:#999"><input type="checkbox" class="modal-pb" value="${cq.value}" ${state.selectedPbs.has(cq.value)?'checked':''}> ${cq.label}</label>`).join('')}
+      </div>
     </div>`).join('');
+  // Initialiser les menus déroulants dans le modal
+  initPbCategoryToggles();
 }
 
 function catHasCheckedModal(cat) {
-  return cat.items.some(it => state.selectedPbs.has(it.value)) || (cat.subgroups||[]).some(sg => sg.items.some(it => state.selectedPbs.has(it.value)));
+  return cat.items.some(it => state.selectedPbs.has(it.value)) || (cat.subgroups||[]).some(sg => sg.items.some(it => state.selectedPbs.has(it.value))) || (cat.consequences||[]).some(cq => state.selectedPbs.has(cq.value));
 }
 
 function modalSelectAll(checked) {
@@ -4727,6 +4793,42 @@ document.addEventListener('change', function(e) {
     }
   }
 });
+
+// Menus déroulants pour catégories de problématiques
+function initPbCategoryToggles() {
+  document.querySelectorAll('.pb-category').forEach(cat => {
+    const title = cat.querySelector('.pb-category-title');
+    const items = cat.querySelector('.pb-items');
+    if (!title || !items) return;
+    // Ajouter flèche si pas déjà présente
+    if (!title.querySelector('.pb-cat-arrow')) {
+      const arrow = document.createElement('span');
+      arrow.className = 'pb-cat-arrow';
+      arrow.textContent = '▸';
+      title.insertBefore(arrow, title.firstChild);
+    }
+    // Si des cases sont cochées, ouvrir
+    const hasChecked = [...items.querySelectorAll('input[type="checkbox"]')].some(cb => cb.checked);
+    if (hasChecked) {
+      items.classList.remove('collapsed');
+      const arrow = title.querySelector('.pb-cat-arrow');
+      if (arrow) { arrow.textContent = '▾'; arrow.classList.add('open'); }
+    } else {
+      items.classList.add('collapsed');
+    }
+    // Clic sur le titre pour ouvrir/fermer (mais pas sur la checkbox)
+    title.addEventListener('click', function(e) {
+      if (e.target.type === 'checkbox') return;
+      e.preventDefault();
+      items.classList.toggle('collapsed');
+      const arrow = title.querySelector('.pb-cat-arrow');
+      const isOpen = !items.classList.contains('collapsed');
+      if (arrow) { arrow.textContent = isOpen ? '▾' : '▸'; arrow.classList.toggle('open', isOpen); }
+    });
+  });
+}
+// Initialiser au chargement
+document.addEventListener('DOMContentLoaded', initPbCategoryToggles);
 
 function newConsultation() {
   if (confirm('Revenir à l\'écran de setup ?')) {
@@ -5263,9 +5365,14 @@ function generateCRHtml(s) {
   const parents = [c.prenomParent1, c.prenomParent2].filter(Boolean).join(' & ');
   const pbLabels = {
     'rgo_allergie':'RGO douloureux + Allergie (APLV)', 'allergie_seule':'Suspicion allergie', 'rgo_seul':'RGO',
-    'nutrition_courbe':'Courbe de poids déclinante', 'nutrition_espacement_long':'Espacements trop longs',
-    'nutrition_espacement_court':'Espacements trop courts', 'nutrition_inversion_jour_nuit':'Inversion jour/nuit',
-    'nutrition_jus_vegetaux':'Jus végétaux / lait inadapté',
+    'nutri_courbe_declinante':'Courbe déclinante', 'nutri_courbe_inferieur':'Percentile inférieur', 'nutri_courbe_trop_apport':"Trop d'apport",
+    'nutri_esp_long':'Espacement trop long', 'nutri_esp_court':'Espacement trop court',
+    'nutri_vol_petit':'Petit bib', 'nutri_vol_gros':'Gros bib', 'nutri_vol_longtemps':'Boit bib longtemps',
+    'nutri_tetee':'Tétée baisse lactation', 'nutri_tetee_longue':'Longue tétée', 'nutri_tetee_greve':'Grève des tétées', 'nutri_tetee_mode_garde':'Mode de garde',
+    'nutri_inversion_jour_nuit':'Inversion Jour/Nuit', 'nutri_inversion_lait_solide':'Inversion lait/solide',
+    'nutri_tetine_coupe_faim':'Tétine coupe-faim',
+    'nutri_autre_feculents':'Pas assez féculents', 'nutri_autre_lait_important':'Lait trop important', 'nutri_autre_solide_important':'Solide trop important', 'nutri_autre_jus_vegetal':'Jus végétal', 'nutri_autre_lait_animal':'Lait animal',
+    'nutri_conseq_inconfort':'Conséquence : Inconfort', 'nutri_conseq_greve_tetees':'Conséquence : Grève tétées', 'nutri_conseq_mange_nuit':'Conséquence : Mange la nuit',
     'rythme_te_trop_long':'TE trop long', 'rythme_te_long_siestes_courtes':'TE long - Siestes courtes', 'rythme_te_long_reveils_matinaux':'TE long - Réveils matinaux', 'rythme_te_trop_court':'TE trop court', 'rythme_te_court_siestes_courtes':'TE court - Siestes courtes', 'rythme_siestes_courtes':'Siestes courtes', 'rythme_horaires_aleatoires':'Horaires aléatoires', 'rythme_reveil_decalage':'Décalage horaire', 'rythme_reveil_fatigue':'Fatigue accumulée', 'rythme_reveil_relationnel':'Enjeu relationnel', 'rythme_reveil_mange':'Mange et ne peut pas se rendormir', 'rythme_reveil_faim':'Faim et n\'a pas le sein/bib', 'rythme_reveil_dependance':'Dépendance', 'rythme_reveil_bruit':'Bruit extérieur/lumière',
     'rythme_activite_physique':"Manque d'activité physique",
     'strategie_rendormissement':'Rendormissement difficile', 'strategie_enjeu_relationnel':'Enjeu relationnel', 'strategie_tetine':'Dépendance tétine',
