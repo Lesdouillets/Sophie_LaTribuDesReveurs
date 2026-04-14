@@ -1383,12 +1383,14 @@
               <label>Mode d'alimentation <span style="color:#aaa;font-size:11px">(plusieurs choix)</span></label>
               <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
                 <label class="pb-item"><input type="checkbox" name="alim" value="Allaitement maternel"> <span>🤱 Allaitement maternel</span></label>
-                <label class="pb-item"><input type="checkbox" name="alim" value="Biberon lait infantile"> <span>🍼 Biberon lait infantile</span></label>
+                <label class="pb-item"><input type="checkbox" name="alim" value="Biberon lait infantile" onchange="toggleTypeLait()"> <span>🍼 Biberon lait infantile</span></label>
                 <label class="pb-item"><input type="checkbox" name="alim" value="Allaitement mixte"> <span>🔀 Allaitement mixte</span></label>
                 <label class="pb-item"><input type="checkbox" name="alim" value="Diversification"> <span>🥑 Diversification</span></label>
+                <label class="pb-item"><input type="checkbox" name="alim" value="Jus végétal"> <span>🧃 Jus végétal</span></label>
+                <label class="pb-item"><input type="checkbox" name="alim" value="Lait animal"> <span>🥛 Lait animal</span></label>
               </div>
             </div>
-            <div class="form-group full">
+            <div class="form-group full" id="type-lait-group" style="display:none">
               <label>Type de lait</label>
               <select id="type-lait">
                 <option value="">–</option>
@@ -1400,8 +1402,6 @@
                 <option value="Lait acides aminés PLV AR">Lait à base d'acides aminés de PLV Anti-Reflux</option>
                 <option value="Lait protéines de riz">Lait aux protéines de riz</option>
                 <option value="Lait protéines de riz AR">Lait aux protéines de riz Anti-Reflux</option>
-                <option value="Jus végétal">Jus végétal</option>
-                <option value="Lait animal">Lait animal</option>
               </select>
             </div>
           </div>
@@ -2689,6 +2689,11 @@ function toggleAutreAllergie() {
   const cb = document.getElementById('medical-autre-allergie');
   document.getElementById('autre-allergie-row').style.display = cb?.checked ? 'block' : 'none';
 }
+function toggleTypeLait() {
+  const cb = document.querySelector('input[name="alim"][value="Biberon lait infantile"]');
+  const group = document.getElementById('type-lait-group');
+  if (group) group.style.display = cb?.checked ? 'block' : 'none';
+}
 
 function showSetupTab(tabId, btn) {
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
@@ -2799,6 +2804,7 @@ function populateFormFromClient(c) {
   setChk('medical-autre-allergie', c.autreAllergie);
   if (c.autreAllergie) { const r = document.getElementById('autre-allergie-row'); if (r) r.style.display = ''; }
   (c.alimentation||[]).forEach(v => { const el = document.querySelector(`input[name="alim"][value="${v}"]`); if (el) el.checked = true; });
+  toggleTypeLait();
   document.querySelectorAll('input[name="pb"]').forEach(cb => cb.checked = false);
   (c.pbs||[]).forEach(pb => { const el = document.querySelector(`input[name="pb"][value="${pb}"]`); if (el) el.checked = true; });
   document.querySelectorAll('.pb-item').forEach(el => el.classList.toggle('checked', el.querySelector('input')?.checked));
