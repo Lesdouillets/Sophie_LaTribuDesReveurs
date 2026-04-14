@@ -1528,9 +1528,10 @@
                 <div class="pb-category-title">🎯 Souhaits</div>
                 <div class="pb-items">
                   <label class="pb-item"><input type="checkbox" name="pb" value="souhait_tetine"> <span>Suppression de la tétine</span></label>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="souhait_changement_lit" data-exclusive="souhait_changement"> <span>Changement de lit</span></label>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="souhait_changement_chambre" data-exclusive="souhait_changement"> <span>Changement de chambre</span></label>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="souhait_changement_lit_chambre" data-exclusive="souhait_changement"> <span>Changement de lit/chambre</span></label>
+                  <div style="font-size:12px;font-weight:600;color:#555;margin:6px 0 2px 0">Changement chambre/lit <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span></div>
+                  <label class="pb-item" style="padding-left:16px"><input type="checkbox" name="pb" value="souhait_changement_lit" data-exclusive="souhait_changement"> <span>Changement de lit</span></label>
+                  <label class="pb-item" style="padding-left:16px"><input type="checkbox" name="pb" value="souhait_changement_chambre" data-exclusive="souhait_changement"> <span>Changement de chambre</span></label>
+                  <label class="pb-item" style="padding-left:16px"><input type="checkbox" name="pb" value="souhait_changement_lit_chambre" data-exclusive="souhait_changement"> <span>Changement de lit/chambre</span></label>
                 </div>
               </div>
             </div>
@@ -3660,6 +3661,8 @@ function renderCurrentSection() {
 
 function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
   return (blocks||[]).map((b,i) => {
+    // Cacher le bloc si la problématique indiquée dans hideIfPb est cochée
+    if (b.hideIfPb && state.selectedPbs.has(b.hideIfPb)) return '';
     const path = parentPath ? parentPath + '.' + i : '' + i;
     return renderBlock(b, i, sectionId, depth, path);
   }).join('');
@@ -4298,7 +4301,10 @@ document.addEventListener('change', function(e) {
   if (cb.type !== 'checkbox' || !cb.dataset.exclusive || !cb.checked) return;
   const group = cb.dataset.exclusive;
   document.querySelectorAll(`input[data-exclusive="${group}"]`).forEach(other => {
-    if (other !== cb) other.checked = false;
+    if (other !== cb) {
+      other.checked = false;
+      other.closest('.pb-item')?.classList.remove('checked');
+    }
   });
 });
 
