@@ -4627,6 +4627,15 @@ document.addEventListener('change', function(e) {
       return;
     }
   }
+  // 5b. Empêcher de décocher un sub-parent si un subgroup-child est encore coché
+  if (!cb.checked && cb.dataset.subgroup) {
+    const group = cb.dataset.subgroup;
+    const hasCheckedChild = [...document.querySelectorAll(`input[data-subgroup-child="${group}"]`)].some(c => c.checked);
+    if (hasCheckedChild) {
+      cb.checked = true;
+      return;
+    }
+  }
   // 6. Re-sync sub-parents après toutes les modifications
   document.querySelectorAll('.pb-sub-parent[data-subgroup], .modal-pb-sub-parent[data-subgroup], .diag-sub-parent[data-subgroup]').forEach(sp => {
     const group = sp.dataset.subgroup;
