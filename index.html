@@ -3774,7 +3774,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     // Afficher checkboxes synchronisées (identiques à la fiche client)
     const cats = ALL_PB_CATS;
     let html = '<div class="block block-conseil" style="padding:12px 16px"><strong>⚙️ Leviers identifiés :</strong>';
-    html += '<div class="problematiques-grid" style="margin-top:10px" onchange="onDiagnosticPbChange()">';
+    html += '<div style="display:flex;gap:8px;margin-top:10px;margin-bottom:10px"><button style="flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--primary-light);background:#d8f3dc;color:var(--primary-dark);font-weight:700;cursor:pointer;font-size:13px" onclick="diagSelectAll(true)">✅ Tout sélectionner</button><button style="flex:1;padding:7px;border-radius:8px;border:1.5px solid #e74c3c;background:#ffeaea;color:#c0392b;font-weight:700;cursor:pointer;font-size:13px" onclick="diagSelectAll(false)">❌ Tout désélectionner</button></div>';
+    html += '<div class="problematiques-grid" onchange="onDiagnosticPbChange()">';
     function renderDiagCat(cat) {
       let h = `<div class="pb-category" style="margin-bottom:10px"><label class="pb-category-title" style="margin-bottom:4px"><input type="checkbox" class="diag-cat-checkbox"${catHasChecked(cat)?'checked':''}> ${cat.cat}</label><div class="pb-items">`;
       cat.items.forEach(it => {
@@ -4338,6 +4339,13 @@ function onFicheClientPbChange() {
 }
 
 // Synchronise checkboxes diagnostic → state.selectedPbs + sections
+function diagSelectAll(checked) {
+  document.querySelectorAll('.diag-pb').forEach(cb => cb.checked = checked);
+  document.querySelectorAll('.diag-cat-checkbox').forEach(cb => cb.checked = checked);
+  document.querySelectorAll('.diag-sub-parent').forEach(cb => cb.checked = checked);
+  onDiagnosticPbChange();
+}
+
 function onDiagnosticPbChange() {
   state.selectedPbs = new Set([...document.querySelectorAll('.diag-pb:checked')].map(cb=>cb.value));
   syncPbsToFicheClient();
