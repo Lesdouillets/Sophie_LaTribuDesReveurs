@@ -4497,6 +4497,14 @@ document.addEventListener('change', function(e) {
       other.closest('.pb-item')?.classList.remove('checked');
     });
   }
+  // Empêcher de décocher un parent si un enfant est encore coché
+  if (!cb.checked && cb.value) {
+    const hasCheckedChild = [...document.querySelectorAll(`input[data-auto-parent="${cb.value}"]`)].some(c => c.checked);
+    if (hasCheckedChild) {
+      cb.checked = true;
+      return;
+    }
+  }
   // Auto-cocher le parent quand un enfant est coché (data-auto-parent)
   if (cb.checked && cb.dataset.autoParent) {
     const parentVal = cb.dataset.autoParent;
