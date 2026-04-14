@@ -1490,11 +1490,22 @@
                 </div>
               </div>
               <div class="pb-category">
-                <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="rythme"> ⏰ Rythme</label>
+                <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="rythme"> ⏰ Organisation de la journée</label>
                 <div class="pb-items">
-                  <label class="pb-item"><input type="checkbox" name="pb" value="rythme_dette_sommeil"> <span>Dette de sommeil</span></label>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="rythme_reveil_matinal"> <span>Réveil matinal précoce</span></label>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="rythme_activite_physique"> <span>Manque d'activité physique</span></label>
+                  <label class="pb-item"><input type="checkbox" class="pb-sub-parent" data-subgroup="rythme_te"> <span>Temps d'éveil</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_te_trop_long" data-exclusive="rythme_te" data-subgroup-child="rythme_te"> <span>Trop long</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_te_trop_court" data-exclusive="rythme_te" data-subgroup-child="rythme_te"> <span>Trop court</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="rythme_siestes_courtes"> <span>Siestes courtes (TE OK)</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="rythme_horaires_aleatoires"> <span>Horaires aléatoires</span></label>
+                  <label class="pb-item"><input type="checkbox" class="pb-sub-parent" data-subgroup="rythme_reveil_mat"> <span>Réveils matinaux</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_reveil_decalage" data-subgroup-child="rythme_reveil_mat"> <span>Décalage horaire (mais nuit 12h OK)</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_reveil_fatigue" data-subgroup-child="rythme_reveil_mat"> <span>Fatigue accumulée</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_reveil_relationnel" data-subgroup-child="rythme_reveil_mat"> <span>Enjeu relationnel</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_reveil_mange" data-subgroup-child="rythme_reveil_mat"> <span>Mange et ne peut pas se rendormir</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_reveil_faim" data-subgroup-child="rythme_reveil_mat"> <span>Faim et n'a pas le sein/bib</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_reveil_dependance" data-subgroup-child="rythme_reveil_mat"> <span>Dépendance</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_reveil_bruit" data-subgroup-child="rythme_reveil_mat"> <span>Bruit extérieur/lumière</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="rythme_activite_physique"> <span>Pas d'activité physique</span></label>
                 </div>
               </div>
             </div>
@@ -3569,7 +3580,7 @@ function buildSidebarPbPanel() {
   const ALL_PBS = [
     {value:'rgo_allergie',label:'🩺 RGO + Allergie'},{value:'allergie_seule',label:'🌿 Allergie seule'},{value:'rgo_seul',label:'😣 RGO seul'},
     {value:'nutrition_courbe',label:'📉 Courbe déclinante'},{value:'nutrition_espacement_long',label:'⏱️ Espacement long'},{value:'nutrition_espacement_court',label:'🔄 Espacement court'},{value:'nutrition_inversion_jour_nuit',label:'🌛 Inversion J/N'},{value:'nutrition_jus_vegetaux',label:'🐄 Jus végétaux'},
-    {value:'rythme_dette_sommeil',label:'😴 Dette sommeil'},{value:'rythme_reveil_matinal',label:'🌅 Réveil matinal'},{value:'rythme_activite_physique',label:'🏃 Manque activité'},
+    {value:'rythme_te_trop_long',label:'⏰ TE trop long'},{value:'rythme_te_trop_court',label:'⏰ TE trop court'},{value:'rythme_siestes_courtes',label:'⏰ Siestes courtes'},{value:'rythme_horaires_aleatoires',label:'⏰ Horaires aléatoires'},{value:'rythme_reveil_decalage',label:'🌅 Réveil - Décalage'},{value:'rythme_reveil_fatigue',label:'🌅 Réveil - Fatigue'},{value:'rythme_reveil_relationnel',label:'🌅 Réveil - Relationnel'},{value:'rythme_reveil_mange',label:'🌅 Réveil - Mange'},{value:'rythme_reveil_faim',label:'🌅 Réveil - Faim'},{value:'rythme_reveil_dependance',label:'🌅 Réveil - Dépendance'},{value:'rythme_reveil_bruit',label:'🌅 Réveil - Bruit/lumière'},{value:'rythme_activite_physique',label:'🏃 Pas activité physique'},
     {value:'strategie_rendormissement',label:'😴 Rendormissement difficile'},{value:'strategie_enjeu_relationnel',label:'😴 Enjeu relationnel'},{value:'strategie_tetine',label:'🍭 Dépendance tétine'},
     {value:'env_obscurite',label:'🌑 Obscurité'},{value:'env_temperature',label:'🌡️ Température'},{value:'env_lit_ouvert',label:'🛏️ Lit ouvert'},{value:'env_rituel',label:'🌙 Rituel'},{value:'env_cadre',label:'🗺️ Cadre clair'},{value:'env_stimulations',label:'👀 Stimulations'},{value:'env_ecrans',label:'📱 Ecrans'},
     {value:'relationnel_lit_parental',label:'💬 Vient dans le lit parental'},{value:'relationnel_conflit_autres',label:'💬 Conflit autres sujets'},{value:'relationnel_rappels',label:'📢 Rappels multiples'},{value:'souhait_tetine',label:'🎯 Suppression tétine'},{value:'souhait_position_dorsale',label:'🎯 Position dorsale'},{value:'souhait_changement_lit',label:'🎯 Changement de lit'},{value:'souhait_changement_chambre',label:'🎯 Changement de chambre'},{value:'souhait_changement_lit_chambre',label:'🎯 Changement lit/chambre'},
@@ -3756,8 +3767,17 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       'nutrition_espacement_court':'🔄 Nutrition — Espacements trop courts (inconfort)',
       'nutrition_inversion_jour_nuit':'🌛 Nutrition — Inversion jour/nuit',
       'nutrition_jus_vegetaux':'🐄 Nutrition — Lait inadapté (jus végétaux)',
-      'rythme_dette_sommeil':'😴 Rythme — Dette de sommeil',
-      'rythme_reveil_matinal':'🌅 Rythme — Réveil matinal précoce',
+      'rythme_te_trop_long':'⏰ Organisation — TE trop long',
+      'rythme_te_trop_court':'⏰ Organisation — TE trop court',
+      'rythme_siestes_courtes':'⏰ Organisation — Siestes courtes',
+      'rythme_horaires_aleatoires':'⏰ Organisation — Horaires aléatoires',
+      'rythme_reveil_decalage':'🌅 Réveil matinal — Décalage horaire',
+      'rythme_reveil_fatigue':'🌅 Réveil matinal — Fatigue accumulée',
+      'rythme_reveil_relationnel':'🌅 Réveil matinal — Enjeu relationnel',
+      'rythme_reveil_mange':'🌅 Réveil matinal — Mange et ne peut pas se rendormir',
+      'rythme_reveil_faim':'🌅 Réveil matinal — Faim et n\'a pas le sein/bib',
+      'rythme_reveil_dependance':'🌅 Réveil matinal — Dépendance',
+      'rythme_reveil_bruit':'🌅 Réveil matinal — Bruit extérieur/lumière',
       'rythme_activite_physique':"🏃 Rythme — Manque d'activité physique",
       'strategie_rendormissement':'😴 Stratégie — Rendormissement difficile',
       'strategie_enjeu_relationnel':'😴 Stratégie — Enjeu relationnel',
@@ -4263,7 +4283,7 @@ function togglePbModal() {
 const ALL_PB_CATS = [
   {cat:'🩺 Confort physique <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span>', exclusive:true, items:[{value:'rgo_allergie',label:'RGO douloureux + Suspicion allergie (APLV)'},{value:'allergie_seule',label:'Suspicion allergie seule'},{value:'rgo_seul',label:'RGO seul'}]},
   {cat:'🍽️ Nutrition', items:[{value:'nutrition_courbe',label:'Courbe de poids déclinante'},{value:'nutrition_espacement_long',label:'Espacement trop long'},{value:'nutrition_espacement_court',label:'Espacement trop court'},{value:'nutrition_inversion_jour_nuit',label:'Inversion jour/nuit'},{value:'nutrition_jus_vegetaux',label:'Jus végétaux / lait inadapté'}]},
-  {cat:'⏰ Rythme', items:[{value:'rythme_dette_sommeil',label:'Dette de sommeil'},{value:'rythme_reveil_matinal',label:'Réveil matinal précoce'},{value:'rythme_activite_physique',label:"Manque d'activité physique"}]},
+  {cat:'⏰ Organisation de la journée', items:[{value:'rythme_siestes_courtes',label:'Siestes courtes (TE OK)'},{value:'rythme_horaires_aleatoires',label:'Horaires aléatoires'},{value:'rythme_activite_physique',label:"Pas d'activité physique"}], subgroups:[{label:"Temps d'éveil",hint:'(1 option possible)',items:[{value:'rythme_te_trop_long',label:'Trop long',exclusive:'rythme_te'},{value:'rythme_te_trop_court',label:'Trop court',exclusive:'rythme_te'}]},{label:'Réveils matinaux',hint:'',items:[{value:'rythme_reveil_decalage',label:'Décalage horaire (mais nuit 12h OK)'},{value:'rythme_reveil_fatigue',label:'Fatigue accumulée'},{value:'rythme_reveil_relationnel',label:'Enjeu relationnel'},{value:'rythme_reveil_mange',label:'Mange et ne peut pas se rendormir'},{value:'rythme_reveil_faim',label:"Faim et n'a pas le sein/bib"},{value:'rythme_reveil_dependance',label:'Dépendance'},{value:'rythme_reveil_bruit',label:'Bruit extérieur/lumière'}]}]},
   {cat:"😴 Stratégie de sommeil", items:[{value:'strategie_rendormissement',label:'Rendormissement difficile'},{value:'strategie_enjeu_relationnel',label:'Enjeu relationnel'},{value:'strategie_tetine',label:'Dépendance tétine'}]},
   {cat:'🏠 Environnement de sommeil', items:[{value:'env_obscurite',label:'Obscurité insuffisante'},{value:'env_temperature',label:'Température trop élevée'},{value:'env_lit_ouvert',label:'Lit ouvert trop tôt'},{value:'env_rituel',label:'Rituel absent ou trop court'},{value:'env_cadre',label:'Cadre non clair'},{value:'env_stimulations',label:'Stimulations visuelles'},{value:'env_ecrans',label:'Ecrans'}]},
   {cat:'💬 Enjeux relationnels', items:[{value:'relationnel_rappels',label:'Multiples rappels après le coucher'},{value:'relationnel_lit_parental',label:'Vient dans le lit parental'},{value:'relationnel_conflit_autres',label:'En « conflit » sur d\'autres sujets que le sommeil'}]},
@@ -4993,7 +5013,7 @@ function generateCRHtml(s) {
     'nutrition_courbe':'Courbe de poids déclinante', 'nutrition_espacement_long':'Espacements trop longs',
     'nutrition_espacement_court':'Espacements trop courts', 'nutrition_inversion_jour_nuit':'Inversion jour/nuit',
     'nutrition_jus_vegetaux':'Jus végétaux / lait inadapté',
-    'rythme_dette_sommeil':'Dette de sommeil', 'rythme_reveil_matinal':'Réveil matinal précoce',
+    'rythme_te_trop_long':'TE trop long', 'rythme_te_trop_court':'TE trop court', 'rythme_siestes_courtes':'Siestes courtes', 'rythme_horaires_aleatoires':'Horaires aléatoires', 'rythme_reveil_decalage':'Décalage horaire', 'rythme_reveil_fatigue':'Fatigue accumulée', 'rythme_reveil_relationnel':'Enjeu relationnel', 'rythme_reveil_mange':'Mange et ne peut pas se rendormir', 'rythme_reveil_faim':'Faim et n\'a pas le sein/bib', 'rythme_reveil_dependance':'Dépendance', 'rythme_reveil_bruit':'Bruit extérieur/lumière',
     'rythme_activite_physique':"Manque d'activité physique",
     'strategie_rendormissement':'Rendormissement difficile', 'strategie_enjeu_relationnel':'Enjeu relationnel', 'strategie_tetine':'Dépendance tétine',
     'env_obscurite':'Obscurité insuffisante', 'env_temperature':'Température élevée',
