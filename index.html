@@ -305,10 +305,12 @@
     .problematiques-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
     .pb-category { margin-bottom: 16px; }
     .pb-category-title {
-      font-size: 12px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.8px; color: var(--text-light);
-      margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+      font-size: 13.5px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.8px; color: var(--primary-dark);
+      margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+      padding: 7px 10px; border-radius: 8px; background: #eef2f7;
     }
+    .pb-category-title input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
     .pb-items { display: flex; flex-direction: column; gap: 4px; }
     .pb-item {
       display: flex; align-items: center; gap: 8px; cursor: pointer;
@@ -3771,30 +3773,32 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const cats = ALL_PB_CATS;
     let html = '<div class="block block-conseil" style="padding:12px 16px"><strong>⚙️ Leviers identifiés :</strong>';
     html += '<div class="problematiques-grid" style="margin-top:10px" onchange="onDiagnosticPbChange()">';
+    function renderDiagCat(cat) {
+      let h = `<div class="pb-category" style="margin-bottom:10px"><label class="pb-category-title" style="margin-bottom:4px"><input type="checkbox" class="diag-cat-checkbox"${catHasChecked(cat)?'checked':''}> ${cat.cat}</label><div class="pb-items">`;
+      cat.items.forEach(it => {
+        const exc = cat.exclusive ? `data-exclusive="confort"` : (it.exclusive ? `data-exclusive="${it.exclusive}"` : '');
+        h += `<label class="pb-item${state.selectedPbs.has(it.value)?' checked':''}"><input type="checkbox" class="diag-pb" value="${it.value}" ${exc} ${state.selectedPbs.has(it.value)?'checked':''}> <span>${it.label}</span></label>`;
+      });
+      (cat.subgroups||[]).forEach(sg => {
+        const anyChecked = sg.items.some(it=>state.selectedPbs.has(it.value));
+        h += `<label class="pb-item${anyChecked?' checked':''}"><input type="checkbox" class="diag-sub-parent" data-subgroup="${sg.items[0].exclusive}"${anyChecked?' checked':''}> <span>${sg.label} <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">${sg.hint||''}</span></span></label>`;
+        sg.items.forEach(it => {
+          h += `<label class="pb-item${state.selectedPbs.has(it.value)?' checked':''}" style="padding-left:16px"><input type="checkbox" class="diag-pb" value="${it.value}" ${it.exclusive?`data-exclusive="${it.exclusive}"`:''} data-subgroup-child="${it.exclusive}" ${state.selectedPbs.has(it.value)?'checked':''}> <span>${it.label}</span></label>`;
+        });
+      });
+      h += '</div></div>';
+      return h;
+    }
     html += '<div>';
-    cats.slice(0, Math.ceil(cats.length/2)).forEach(cat => {
-      html += `<div class="pb-category" style="margin-bottom:10px"><label class="pb-category-title" style="margin-bottom:4px"><input type="checkbox" class="diag-cat-checkbox"${catHasChecked(cat)?'checked':''}> ${cat.cat}</label><div class="pb-items">`;
-      cat.items.forEach(it => {
-        const exc = cat.exclusive ? `data-exclusive="confort"` : (it.exclusive ? `data-exclusive="${it.exclusive}"` : '');
-        html += `<label class="pb-item${state.selectedPbs.has(it.value)?' checked':''}"><input type="checkbox" class="diag-pb" value="${it.value}" ${exc} ${state.selectedPbs.has(it.value)?'checked':''}> <span>${it.label}</span></label>`;
-      });
-      html += '</div></div>';
-    });
+    cats.slice(0, Math.ceil(cats.length/2)).forEach(cat => { html += renderDiagCat(cat); });
     html += '</div><div>';
-    cats.slice(Math.ceil(cats.length/2)).forEach(cat => {
-      html += `<div class="pb-category" style="margin-bottom:10px"><label class="pb-category-title" style="margin-bottom:4px"><input type="checkbox" class="diag-cat-checkbox"${catHasChecked(cat)?'checked':''}> ${cat.cat}</label><div class="pb-items">`;
-      cat.items.forEach(it => {
-        const exc = cat.exclusive ? `data-exclusive="confort"` : (it.exclusive ? `data-exclusive="${it.exclusive}"` : '');
-        html += `<label class="pb-item${state.selectedPbs.has(it.value)?' checked':''}"><input type="checkbox" class="diag-pb" value="${it.value}" ${exc} ${state.selectedPbs.has(it.value)?'checked':''}> <span>${it.label}</span></label>`;
-      });
-      html += '</div></div>';
-    });
+    cats.slice(Math.ceil(cats.length/2)).forEach(cat => { html += renderDiagCat(cat); });
     html += '</div></div></div>';
     return html;
   }
 
   function catHasChecked(cat) {
-    return cat.items.some(it => state.selectedPbs.has(it.value));
+    return cat.items.some(it => state.selectedPbs.has(it.value)) || (cat.subgroups||[]).some(sg => sg.items.some(it => state.selectedPbs.has(it.value)));
   }
 
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
@@ -4260,11 +4264,11 @@ const ALL_PB_CATS = [
   {cat:"😴 Stratégie de sommeil", items:[{value:'strategie_rendormissement',label:'Rendormissement difficile'},{value:'strategie_enjeu_relationnel',label:'Enjeu relationnel'},{value:'strategie_tetine',label:'Dépendance tétine'}]},
   {cat:'🏠 Environnement de sommeil', items:[{value:'env_obscurite',label:'Obscurité insuffisante'},{value:'env_temperature',label:'Température trop élevée'},{value:'env_lit_ouvert',label:'Lit ouvert trop tôt'},{value:'env_rituel',label:'Rituel absent ou trop court'},{value:'env_cadre',label:'Cadre non clair'},{value:'env_stimulations',label:'Stimulations visuelles'},{value:'env_ecrans',label:'Ecrans'}]},
   {cat:'💬 Enjeux relationnels', items:[{value:'relationnel_rappels',label:'Multiples rappels après le coucher'},{value:'relationnel_lit_parental',label:'Vient dans le lit parental'},{value:'relationnel_conflit_autres',label:'En « conflit » sur d\'autres sujets que le sommeil'}]},
-  {cat:'🎯 Souhaits', items:[{value:'souhait_tetine',label:'Suppression de la tétine'},{value:'souhait_changement_lit',label:'Changement de lit',exclusive:'souhait_changement'},{value:'souhait_changement_chambre',label:'Changement de chambre',exclusive:'souhait_changement'},{value:'souhait_changement_lit_chambre',label:'Changement de lit/chambre',exclusive:'souhait_changement'}]},
+  {cat:'🎯 Souhaits', items:[{value:'souhait_tetine',label:'Suppression de la tétine'}], subgroups:[{label:'Changement chambre/lit',hint:'(1 option possible)',items:[{value:'souhait_changement_lit',label:'Changement de lit',exclusive:'souhait_changement'},{value:'souhait_changement_chambre',label:'Changement de chambre',exclusive:'souhait_changement'},{value:'souhait_changement_lit_chambre',label:'Changement de lit/chambre',exclusive:'souhait_changement'}]}]},
 ];
 
 function buildModalPbList() {
-  const allValues = ALL_PB_CATS.flatMap(c => c.items.map(i => i.value));
+  const allValues = ALL_PB_CATS.flatMap(c => [...c.items.map(i => i.value), ...(c.subgroups||[]).flatMap(sg => sg.items.map(i => i.value))]);
   const allChecked = allValues.every(v => state.selectedPbs.has(v));
   document.getElementById('modal-pb-list').innerHTML =
     `<div style="display:flex;gap:8px;margin-bottom:14px">
@@ -4288,6 +4292,15 @@ function buildModalPbList() {
         <label style="display:flex;align-items:center;gap:8px;padding:6px 4px;cursor:pointer;font-size:13.5px">
           <input type="checkbox" class="modal-pb" value="${it.value}" ${cat.exclusive?'data-exclusive="confort"':''}${it.exclusive?`data-exclusive="${it.exclusive}"`:''} ${state.selectedPbs.has(it.value)?'checked':''}> ${it.label}
         </label>`).join('')}
+      ${(cat.subgroups||[]).map(sg=>{
+        const anyChecked = sg.items.some(it=>state.selectedPbs.has(it.value));
+        return `<label style="display:flex;align-items:center;gap:8px;padding:6px 4px;cursor:pointer;font-size:13.5px">
+          <input type="checkbox" class="modal-pb-sub-parent" data-subgroup="${sg.items[0].exclusive}" ${anyChecked?'checked':''}> ${sg.label} <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">${sg.hint||''}</span>
+        </label>` +
+        sg.items.map(it=>`<label style="display:flex;align-items:center;gap:8px;padding:6px 4px 6px 24px;cursor:pointer;font-size:13.5px">
+          <input type="checkbox" class="modal-pb" value="${it.value}" ${it.exclusive?`data-exclusive="${it.exclusive}"`:''} data-subgroup-child="${it.exclusive}" ${state.selectedPbs.has(it.value)?'checked':''}> ${it.label}
+        </label>`).join('');
+      }).join('')}
     </div>`).join('');
 }
 
@@ -4354,8 +4367,8 @@ function rebuildAfterPbChange() {
 document.addEventListener('change', function(e) {
   const cb = e.target;
   if (cb.type !== 'checkbox') return;
-  // Sync sous-groupe parent ↔ enfants
-  if (cb.classList.contains('pb-sub-parent')) {
+  // Sync sous-groupe parent ↔ enfants (fiche client + modal)
+  if (cb.classList.contains('pb-sub-parent') || cb.classList.contains('modal-pb-sub-parent') || cb.classList.contains('diag-sub-parent')) {
     const group = cb.dataset.subgroup;
     if (!cb.checked) {
       document.querySelectorAll(`input[data-subgroup-child="${group}"]`).forEach(child => {
@@ -4366,11 +4379,11 @@ document.addEventListener('change', function(e) {
   }
   if (cb.dataset.subgroupChild) {
     const group = cb.dataset.subgroupChild;
-    const parent = document.querySelector(`.pb-sub-parent[data-subgroup="${group}"]`);
-    if (parent) {
+    // Sync tous les parents (fiche client + modal)
+    document.querySelectorAll(`.pb-sub-parent[data-subgroup="${group}"], .modal-pb-sub-parent[data-subgroup="${group}"], .diag-sub-parent[data-subgroup="${group}"]`).forEach(parent => {
       parent.checked = [...document.querySelectorAll(`input[data-subgroup-child="${group}"]`)].some(c => c.checked);
       parent.closest('.pb-item')?.classList.toggle('checked', parent.checked);
-    }
+    });
   }
   // Exclusivité
   if (cb.dataset.exclusive && cb.checked) {
