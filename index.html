@@ -4824,8 +4824,17 @@ document.addEventListener('change', function(e) {
       dep.closest('.pb-item')?.classList.remove('checked');
     });
   }
-  // 6. Re-sync auto-parents : décocher si aucun enfant n'est coché (dans le même contexte/grille)
+  // 6. Décocher les conséquences si aucun frère n'est coché (data-requires-sibling)
   const grid = cb.closest('.problematiques-grid') || document;
+  grid.querySelectorAll('input[data-requires-sibling]').forEach(conseq => {
+    const parentVal = conseq.dataset.requiresSibling;
+    const hasSiblingChecked = [...grid.querySelectorAll(`input[data-auto-parent="${parentVal}"]`)].some(c => c.checked && !c.dataset.requiresSibling);
+    if (!hasSiblingChecked && conseq.checked) {
+      conseq.checked = false;
+      conseq.closest('.pb-item')?.classList.remove('checked');
+    }
+  });
+  // 7. Re-sync auto-parents : décocher si aucun enfant n'est coché (dans le même contexte/grille)
   const autoParentValues = new Set();
   grid.querySelectorAll('input[data-auto-parent]').forEach(c => autoParentValues.add(c.dataset.autoParent));
   autoParentValues.forEach(parentVal => {
@@ -4837,16 +4846,7 @@ document.addEventListener('change', function(e) {
       });
     }
   });
-  // 6b. Décocher les conséquences si aucun frère n'est coché (data-requires-sibling)
-  grid.querySelectorAll('input[data-requires-sibling]').forEach(conseq => {
-    const parentVal = conseq.dataset.requiresSibling;
-    const hasSiblingChecked = [...grid.querySelectorAll(`input[data-auto-parent="${parentVal}"]`)].some(c => c.checked && !c.dataset.requiresSibling);
-    if (!hasSiblingChecked && conseq.checked) {
-      conseq.checked = false;
-      conseq.closest('.pb-item')?.classList.remove('checked');
-    }
-  });
-  // 7. Re-sync sub-parents après toutes les modifications (dans le même contexte/grille)
+  // 8. Re-sync sub-parents après toutes les modifications (dans le même contexte/grille)
   document.querySelectorAll('.pb-sub-parent[data-subgroup], .modal-pb-sub-parent[data-subgroup], .diag-pb-sub-parent[data-subgroup]').forEach(sp => {
     const group = sp.dataset.subgroup;
     const spGrid = sp.closest('.problematiques-grid') || document;
