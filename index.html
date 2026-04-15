@@ -4472,8 +4472,16 @@ function clonePbGridFor(targetId, cbClass, onchangeFunc) {
   clone.querySelectorAll('.pb-category').forEach(cat => {
     const catCb = cat.querySelector('.' + cbClass + '-cat');
     if (catCb) {
+      const isStrategie = catCb.dataset.cat === 'strategie';
       const anyChecked = [...cat.querySelectorAll('.' + cbClass)].some(c => c.checked);
-      catCb.checked = anyChecked;
+      // Stratégie : ne cocher que si enfants cochés, ne jamais décocher automatiquement
+      // Vérifier aussi si Stratégie est cochée dans la fiche client
+      const ficheStrategie = document.querySelector('.pb-cat-checkbox[data-cat="strategie"]');
+      if (isStrategie) {
+        catCb.checked = anyChecked || (ficheStrategie?.checked || false);
+      } else {
+        catCb.checked = anyChecked;
+      }
     }
     const subParents = cat.querySelectorAll('.' + cbClass + '-sub-parent');
     subParents.forEach(sp => {
