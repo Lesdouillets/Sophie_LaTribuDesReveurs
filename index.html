@@ -4916,15 +4916,18 @@ function initPbCategoryToggles() {
     } else {
       items.classList.add('collapsed');
     }
-    // Clic sur le titre pour ouvrir/fermer (mais pas sur la checkbox)
-    title.addEventListener('click', function(e) {
-      if (e.target.type === 'checkbox') return;
-      e.preventDefault();
-      items.classList.toggle('collapsed');
-      const arrow = title.querySelector('.pb-cat-arrow');
-      const isOpen = !items.classList.contains('collapsed');
-      if (arrow) { arrow.textContent = isOpen ? '▾' : '▸'; arrow.classList.toggle('open', isOpen); }
-    });
+    // Clic sur le titre pour ouvrir/fermer — éviter les doublons de listeners
+    if (!title.dataset.toggleInit) {
+      title.dataset.toggleInit = 'true';
+      title.addEventListener('click', function(e) {
+        if (e.target.type === 'checkbox') return;
+        e.preventDefault();
+        items.classList.toggle('collapsed');
+        const arrow = title.querySelector('.pb-cat-arrow');
+        const isOpen = !items.classList.contains('collapsed');
+        if (arrow) { arrow.textContent = isOpen ? '▾' : '▸'; arrow.classList.toggle('open', isOpen); }
+      });
+    }
   });
 }
 // Initialiser au chargement
