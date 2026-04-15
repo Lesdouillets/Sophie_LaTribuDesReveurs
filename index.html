@@ -3817,17 +3817,14 @@ function renderCurrentSection() {
   if (diagContainer) {
     clonePbGridFor('diag-pb-container', 'diag-pb', 'onDiagnosticPbChange()');
   }
-  // Rendre tous les blocs et contenus d'options éditables
+  // Rendre tous les blocs et contenus d'options éditables (sauf le bloc diagnostic)
+  const diagEl = document.getElementById('diag-pb-container');
   area.querySelectorAll('.block, .q-text').forEach(el => {
+    if (diagEl && el.contains(diagEl)) return;
     el.setAttribute('contenteditable', 'true');
     el.style.cursor = 'text';
     el.addEventListener('click', function(e) { e.stopPropagation(); });
   });
-  // Désactiver contenteditable sur le conteneur diagnostic pour que les checkboxes fonctionnent
-  const diagEl = document.getElementById('diag-pb-container');
-  if (diagEl) {
-    diagEl.setAttribute('contenteditable', 'false');
-  }
 }
 
 function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
