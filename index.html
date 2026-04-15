@@ -4876,10 +4876,15 @@ document.addEventListener('change', function(e) {
   });
   // Sync catégorie modal ↔ sous-items
   const modalCatDiv = cb.closest('div[style*="margin-bottom:14px"]');
-  if (cb.classList.contains('modal-cat-checkbox')) {
+  if (cb.classList.contains('modal-pb-cat')) {
     if (!cb.checked && modalCatDiv) {
       modalCatDiv.querySelectorAll('.modal-pb').forEach(item => { item.checked = false; });
       modalCatDiv.querySelectorAll('.modal-pb-sub-parent').forEach(sp => { sp.checked = false; });
+    }
+    // Sync vers la fiche client pour Stratégie
+    if (cb.dataset.cat) {
+      const ficheCat = document.querySelector(`.pb-cat-checkbox[data-cat="${cb.dataset.cat}"]`);
+      if (ficheCat) ficheCat.checked = cb.checked;
     }
     return;
   } else if (cb.classList.contains('modal-pb') && modalCatDiv) {
@@ -4915,7 +4920,7 @@ document.addEventListener('change', function(e) {
       });
     }
     return; // Ne pas continuer pour éviter que le sync auto re-décoche
-  } else if (cb.classList.contains('diag-cat-checkbox')) {
+  } else if (cb.classList.contains('diag-pb-cat')) {
     // Clic sur catégorie diagnostic → décocher tous les sous-items si on décoche
     const diagItems = category.querySelectorAll('.diag-pb');
     if (!cb.checked) {
@@ -4927,6 +4932,11 @@ document.addEventListener('change', function(e) {
         sp.checked = false;
         sp.closest('.pb-item')?.classList.remove('checked');
       });
+    }
+    // Sync vers la fiche client pour Stratégie
+    if (cb.dataset.cat) {
+      const ficheCat = document.querySelector(`.pb-cat-checkbox[data-cat="${cb.dataset.cat}"]`);
+      if (ficheCat) ficheCat.checked = cb.checked;
     }
     return;
   } else if (cb.name === 'pb' || cb.classList.contains('diag-pb')) {
