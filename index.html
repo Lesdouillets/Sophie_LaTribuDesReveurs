@@ -4924,7 +4924,7 @@ function initPbCategoryToggles() {
       arrow.textContent = '▸';
       title.insertBefore(arrow, title.firstChild);
     }
-    // Si des cases sont cochées, ouvrir
+    // Si des cases sont cochées, ouvrir. Sinon fermer.
     const hasChecked = [...items.querySelectorAll('input[type="checkbox"]')].some(cb => cb.checked);
     if (hasChecked) {
       items.classList.remove('collapsed');
@@ -4932,12 +4932,22 @@ function initPbCategoryToggles() {
       if (arrow) { arrow.textContent = '▾'; arrow.classList.add('open'); }
     } else {
       items.classList.add('collapsed');
+      const arrow = title.querySelector('.pb-cat-arrow');
+      if (arrow) { arrow.textContent = '▸'; arrow.classList.remove('open'); }
     }
     // Clic sur le titre pour ouvrir/fermer — éviter les doublons de listeners
     if (!title.dataset.toggleInit) {
       title.dataset.toggleInit = 'true';
       title.addEventListener('click', function(e) {
-        if (e.target.type === 'checkbox') return;
+        if (e.target.type === 'checkbox') {
+          // Quand on coche une checkbox, ouvrir le menu automatiquement
+          if (e.target.checked) {
+            items.classList.remove('collapsed');
+            const arrow = title.querySelector('.pb-cat-arrow');
+            if (arrow) { arrow.textContent = '▾'; arrow.classList.add('open'); }
+          }
+          return;
+        }
         e.preventDefault();
         items.classList.toggle('collapsed');
         const arrow = title.querySelector('.pb-cat-arrow');
