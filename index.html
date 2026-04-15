@@ -4590,6 +4590,17 @@ function syncPbsHighlights() {
     sp.checked = anyChecked;
     sp.closest('.pb-item')?.classList.toggle('checked', anyChecked);
   });
+  // Ouvrir les menus déroulants de la fiche client qui ont des cases cochées
+  document.querySelectorAll('.problematiques-grid[onchange="onFicheClientPbChange()"] .pb-category').forEach(cat => {
+    const items = cat.querySelector('.pb-items');
+    if (!items) return;
+    const hasChecked = [...items.querySelectorAll('input[type="checkbox"]')].some(cb => cb.checked);
+    const arrow = cat.querySelector('.pb-category-title .pb-cat-arrow');
+    if (hasChecked) {
+      items.classList.remove('collapsed');
+      if (arrow) { arrow.textContent = '▾'; arrow.classList.add('open'); }
+    }
+  });
 }
 
 function rebuildAfterPbChange() {
