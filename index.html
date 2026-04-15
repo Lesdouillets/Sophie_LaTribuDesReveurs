@@ -1520,7 +1520,7 @@
                     <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_courbes" data-auto-only="true"> Courbes pas OK</label>
                     <div class="pb-items">
                       <div class="pb-category pb-level-2">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_declinante" data-subgroup-child="nutri_courbes" data-auto-uncheck="true"> Courbe de poids déclinante</label>
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_declinante" data-subgroup-child="nutri_courbes" data-auto-only="true"> Courbe de poids déclinante</label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_espacement" data-auto-only="true"> Espacement</label>
@@ -4710,7 +4710,13 @@ document.addEventListener('change', function(e) {
   if (cb.dataset.autoOnly) {
     const group = cb.dataset.subgroup;
     const grid = cb.closest('.problematiques-grid') || document;
-    const shouldBeChecked = group ? [...grid.querySelectorAll(`input[data-subgroup-child="${group}"]`)].some(c => c.checked) : false;
+    let shouldBeChecked = false;
+    if (group) {
+      shouldBeChecked = [...grid.querySelectorAll(`input[data-subgroup-child="${group}"]`)].some(c => c.checked);
+    }
+    if (!shouldBeChecked && cb.value) {
+      shouldBeChecked = [...grid.querySelectorAll(`input[data-auto-parent="${cb.value}"]`)].some(c => c.checked);
+    }
     cb.checked = shouldBeChecked;
     return;
   }
@@ -5006,7 +5012,7 @@ function initPbCategoryToggles() {
     if (!title.dataset.toggleInit) {
       title.dataset.toggleInit = 'true';
       const titleCb = title.querySelector('input[type="checkbox"]');
-      const isCochable = titleCb && titleCb.hasAttribute('value');
+      const isCochable = titleCb && titleCb.hasAttribute('value') && !titleCb.dataset.autoOnly;
       title.addEventListener('click', function(e) {
         if (isCochable) {
           // Menu cochable (Trop long, Trop court, Courbe déclinante...)
