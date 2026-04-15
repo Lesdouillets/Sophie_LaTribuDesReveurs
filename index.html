@@ -4989,16 +4989,12 @@ function initPbCategoryToggles() {
       arrow.textContent = '▸';
       title.insertBefore(arrow, title.firstChild);
     }
-    // Si des cases sont cochées, ouvrir. Sinon fermer seulement si pas encore initialisé.
+    // Si des cases sont cochées, ouvrir. Ne jamais refermer automatiquement.
     const hasChecked = [...items.querySelectorAll('input[type="checkbox"]')].some(cb => cb.checked);
     if (hasChecked) {
       items.classList.remove('collapsed');
       const arrow = title.querySelector('.pb-cat-arrow');
       if (arrow) { arrow.textContent = '▾'; arrow.classList.add('open'); }
-    } else if (!title.dataset.toggleInit) {
-      items.classList.add('collapsed');
-      const arrow = title.querySelector('.pb-cat-arrow');
-      if (arrow) { arrow.textContent = '▸'; arrow.classList.remove('open'); }
     }
     // Clic sur le titre pour ouvrir/fermer — éviter les doublons de listeners
     if (!title.dataset.toggleInit) {
