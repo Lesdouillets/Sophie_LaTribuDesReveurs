@@ -4862,8 +4862,8 @@ document.addEventListener('change', function(e) {
     const anyChildChecked = [...grid.querySelectorAll(`input[data-auto-parent="${parentVal}"]`)].some(c => c.checked);
     if (!anyChildChecked) {
       grid.querySelectorAll(`input[value="${parentVal}"]`).forEach(p => {
-        // Décocher si auto-only OU si marqué auto-uncheck
-        if (p.dataset.autoOnly || p.dataset.autoUncheck) {
+        // Décocher si auto-only OU si marqué auto-uncheck (mais pas si c'est la case qu'on vient de cliquer)
+        if ((p.dataset.autoOnly || p.dataset.autoUncheck) && p !== cb) {
           p.checked = false;
           p.closest('.pb-item')?.classList.remove('checked');
         }
