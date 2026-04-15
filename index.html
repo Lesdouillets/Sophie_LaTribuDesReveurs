@@ -3361,8 +3361,8 @@ function updateDiversifN1Visibility() {
     const diff = new Date(consultDate) - new Date(refDate);
     ageMois = diff / (1000 * 60 * 60 * 24 * 30.44);
   }
-  // Visible si âge < 12 mois ou si pas d'âge renseigné
-  divN1Group.style.display = (ageMois === null || ageMois < 12) ? '' : 'none';
+  // Visible si âge >= 12 mois. Caché si âge < 12 mois ou âge négatif (prématuré terme non atteint)
+  divN1Group.style.display = (ageMois !== null && ageMois >= 12) ? '' : 'none';
 }
 
 function showSetupTab(tabId, btn) {
