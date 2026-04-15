@@ -5125,14 +5125,17 @@ document.addEventListener('change', function(e) {
       });
     }
   });
-  // 8. Re-sync sub-parents après toutes les modifications (dans le même contexte/grille)
-  document.querySelectorAll('.pb-sub-parent[data-subgroup], .modal-pb-sub-parent[data-subgroup], .diag-pb-sub-parent[data-subgroup]').forEach(sp => {
-    const group = sp.dataset.subgroup;
-    const spGrid = sp.closest('.problematiques-grid') || document;
-    const anyChecked = [...spGrid.querySelectorAll(`input[data-subgroup-child="${group}"]`)].some(c => c.checked);
-    sp.checked = anyChecked;
-    sp.closest('.pb-item')?.classList.toggle('checked', anyChecked);
-  });
+  // 8. Re-sync sub-parents après toutes les modifications (du plus profond au moins profond, 2 passes)
+  for (let pass = 0; pass < 2; pass++) {
+    const allSp = [...document.querySelectorAll('.pb-sub-parent[data-subgroup], .modal-pb-sub-parent[data-subgroup], .diag-pb-sub-parent[data-subgroup]')];
+    allSp.reverse().forEach(sp => {
+      const group = sp.dataset.subgroup;
+      const spGrid = sp.closest('.problematiques-grid') || document;
+      const anyChecked = [...spGrid.querySelectorAll(`input[data-subgroup-child="${group}"]`)].some(c => c.checked);
+      sp.checked = anyChecked;
+      sp.closest('.pb-item')?.classList.toggle('checked', anyChecked);
+    });
+  }
   // 9. Re-sync toutes les catégories principales (pb-cat-checkbox)
   grid.querySelectorAll('.pb-cat-checkbox, .modal-pb-cat, .diag-pb-cat').forEach(catCb => {
     const cat = catCb.closest('.pb-category');
