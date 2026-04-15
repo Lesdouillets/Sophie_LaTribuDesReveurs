@@ -4854,6 +4854,18 @@ document.addEventListener('change', function(e) {
     sp.checked = anyChecked;
     sp.closest('.pb-item')?.classList.toggle('checked', anyChecked);
   });
+  // 9. Re-sync toutes les catégories principales (pb-cat-checkbox)
+  grid.querySelectorAll('.pb-cat-checkbox, .modal-pb-cat, .diag-pb-cat').forEach(catCb => {
+    const cat = catCb.closest('.pb-category');
+    if (!cat) return;
+    const isStrategie = catCb.dataset.cat === 'strategie';
+    const anyChecked = [...cat.querySelectorAll('input[name="pb"], .modal-pb, .diag-pb')].some(c => c.checked);
+    if (isStrategie) {
+      if (anyChecked) catCb.checked = true;
+    } else {
+      catCb.checked = anyChecked;
+    }
+  });
   // Sync catégorie modal ↔ sous-items
   const modalCatDiv = cb.closest('div[style*="margin-bottom:14px"]');
   if (cb.classList.contains('modal-cat-checkbox')) {
