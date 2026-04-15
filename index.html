@@ -311,7 +311,7 @@
       padding: 7px 10px; border-radius: 8px; background: #eef2f7;
     }
     .pb-category-title input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
-    .pb-items { display: flex; flex-direction: column; gap: 4px; }
+    .pb-items { display: flex; flex-direction: column; gap: 2px; }
     .pb-items.collapsed { display: none; }
     .pb-category-title .pb-cat-arrow { font-size: 11px; transition: transform 0.2s; display: inline-block; margin-left: 4px; }
     .pb-category-title .pb-cat-arrow.open { transform: rotate(90deg); }
@@ -5009,17 +5009,14 @@ function initPbCategoryToggles() {
       title.addEventListener('click', function(e) {
         if (isCochable) {
           // Menu cochable (Trop long, Trop court, Courbe déclinante...)
-          // Clic partout = toggle checkbox + ouvrir menu
-          e.preventDefault();
-          if (e.target.type !== 'checkbox') {
-            titleCb.checked = !titleCb.checked;
-          }
-          titleCb.dispatchEvent(new Event('change', {bubbles: true}));
-          if (titleCb.checked) {
-            items.classList.remove('collapsed');
-            const arrow = title.querySelector('.pb-cat-arrow');
-            if (arrow) { arrow.textContent = '▾'; arrow.classList.add('open'); }
-          }
+          // Laisser le label toggler la checkbox naturellement, puis ouvrir le menu
+          setTimeout(function() {
+            if (titleCb.checked) {
+              items.classList.remove('collapsed');
+              const arrow = title.querySelector('.pb-cat-arrow');
+              if (arrow) { arrow.textContent = '▾'; arrow.classList.add('open'); }
+            }
+          }, 0);
         } else {
           // Menu non-cochable (Nutrition, Organisation, Temps d'éveil...)
           if (e.target.type === 'checkbox') {
