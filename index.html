@@ -4822,6 +4822,19 @@ document.addEventListener('change', function(e) {
     sp.checked = anyChecked;
     sp.closest('.pb-item')?.classList.toggle('checked', anyChecked);
   });
+  // 7. Re-sync auto-parents : décocher si aucun enfant n'est coché (dans le même contexte/grille)
+  const grid = cb.closest('.problematiques-grid') || document;
+  const autoParentValues = new Set();
+  grid.querySelectorAll('input[data-auto-parent]').forEach(c => autoParentValues.add(c.dataset.autoParent));
+  autoParentValues.forEach(parentVal => {
+    const anyChildChecked = [...grid.querySelectorAll(`input[data-auto-parent="${parentVal}"]`)].some(c => c.checked);
+    if (!anyChildChecked) {
+      grid.querySelectorAll(`input[value="${parentVal}"]`).forEach(p => {
+        p.checked = false;
+        p.closest('.pb-item')?.classList.remove('checked');
+      });
+    }
+  });
   // Sync catégorie modal ↔ sous-items
   const modalCatDiv = cb.closest('div[style*="margin-bottom:14px"]');
   if (cb.classList.contains('modal-cat-checkbox')) {
