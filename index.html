@@ -5015,11 +5015,19 @@ function initPbCategoryToggles() {
           if (arrow) { arrow.textContent = isOpen ? '▾' : '▸'; arrow.classList.toggle('open', isOpen); }
           return;
         }
-        // Clic sur le texte → si checkbox cochable avec value, laisser le label toggler la checkbox
+        // Clic sur le texte → si checkbox cochable avec value, laisser le label toggler la checkbox + ouvrir le menu
         // sinon toggle le menu
         const titleCb = title.querySelector('input[type="checkbox"]');
         if (titleCb && titleCb.value) {
           // Laisser le comportement par défaut du label (toggle checkbox)
+          // et ouvrir le menu après un micro-délai (la checkbox est togglée par le label)
+          setTimeout(function() {
+            if (titleCb.checked) {
+              items.classList.remove('collapsed');
+              const arrow = title.querySelector('.pb-cat-arrow');
+              if (arrow) { arrow.textContent = '▾'; arrow.classList.add('open'); }
+            }
+          }, 0);
           return;
         }
         e.preventDefault();
