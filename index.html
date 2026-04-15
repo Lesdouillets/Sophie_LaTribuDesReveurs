@@ -3361,8 +3361,8 @@ function updateDiversifN1Visibility() {
     const diff = new Date(consultDate) - new Date(refDate);
     ageMois = diff / (1000 * 60 * 60 * 24 * 30.44);
   }
-  // Diversification N°1 : visible si âge >= 12 mois
-  divN1Group.style.display = (ageMois !== null && ageMois >= 12) ? '' : 'none';
+  // Diversification N°1 : visible si âge >= 12 mois ou si pas d'âge renseigné
+  divN1Group.style.display = (ageMois === null || ageMois >= 12) ? '' : 'none';
   // Lait N°1 : caché si âge >= 12 mois
   const laitN1Group = document.getElementById('nutri-lok-n1-group');
   if (laitN1Group) laitN1Group.style.display = (ageMois === null || ageMois < 12) ? '' : 'none';
