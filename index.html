@@ -1614,6 +1614,42 @@
                           <label class="pb-item pb-consequence-style"><span class="pb-cat-arrow" style="visibility:hidden">▸</span><input type="checkbox" name="pb" value="nutri_inf_conseq_mange_nuit" data-auto-parent="nutri_courbe_inferieur" data-requires-sibling="nutri_courbe_inferieur"> <span>Conséquences : Mange la nuit mais ne devrait pas</span></label>
                         </div>
                       </div>
+                      <div class="pb-category pb-level-2">
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_trop_apport" data-subgroup-child="nutri_courbes" data-auto-only="true"> Trop d'apport</label>
+                        <div class="pb-items">
+                          <div class="pb-category pb-level-3">
+                            <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_ta_espacement" data-auto-only="true"> Espacement</label>
+                            <div class="pb-items">
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_ta_esp_long" data-exclusive="nutri_ta_espacement" data-subgroup-child="nutri_ta_espacement" data-auto-parent="nutri_trop_apport"> <span>Trop long</span></label>
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_ta_esp_court" data-exclusive="nutri_ta_espacement" data-subgroup-child="nutri_ta_espacement" data-auto-parent="nutri_trop_apport"> <span>Trop court</span></label>
+                            </div>
+                          </div>
+                          <div class="pb-category pb-level-3" id="nutri-ta-volume-group">
+                            <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_ta_volume" data-auto-only="true"> Volume/durée des bib</label>
+                            <div class="pb-items">
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_ta_vol_petit" data-subgroup-child="nutri_ta_volume" data-exclusive="nutri_ta_vol_taille" data-auto-parent="nutri_trop_apport"> <span>Petit bib</span></label>
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_ta_vol_gros" data-subgroup-child="nutri_ta_volume" data-exclusive="nutri_ta_vol_taille" data-auto-parent="nutri_trop_apport"> <span>Gros bib</span></label>
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_ta_vol_longtemps" data-subgroup-child="nutri_ta_volume" data-auto-parent="nutri_trop_apport"> <span>Boit bib longtemps</span></label>
+                            </div>
+                          </div>
+                          <div class="pb-category pb-level-3">
+                            <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_ta_inversion" data-auto-only="true"> Inversion</label>
+                            <div class="pb-items">
+                              <label class="pb-item"><input type="checkbox" name="pb" value="nutri_ta_inversion_jour_nuit" data-subgroup-child="nutri_ta_inversion" data-auto-parent="nutri_trop_apport"> <span>Inversion Jour/Nuit</span></label>
+                              <label class="pb-item nutri-diversif-only" style="display:none"><input type="checkbox" name="pb" value="nutri_ta_inversion_lait_solide" data-subgroup-child="nutri_ta_inversion" data-auto-parent="nutri_trop_apport"> <span>Inversion lait/solide</span></label>
+                            </div>
+                          </div>
+                          <div class="pb-category pb-level-3" id="nutri-ta-autre-group" style="display:none">
+                            <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_ta_autre" data-auto-only="true"> Autre</label>
+                            <div class="pb-items">
+                              <label class="pb-item nutri-diversif-only" style="display:none"><input type="checkbox" name="pb" value="nutri_ta_autre_feculents" data-subgroup-child="nutri_ta_autre" data-auto-parent="nutri_trop_apport"> <span>Trop de féculents</span></label>
+                              <label class="pb-item nutri-diversif-only" style="display:none"><input type="checkbox" name="pb" value="nutri_ta_autre_lait_solide_important" data-subgroup-child="nutri_ta_autre" data-auto-parent="nutri_trop_apport"> <span>Lait/solides trop important</span></label>
+                              <label class="pb-item nutri-jus-vegetal-only" style="display:none"><input type="checkbox" name="pb" value="nutri_ta_autre_jus_vegetal" data-subgroup-child="nutri_ta_autre" data-auto-parent="nutri_trop_apport"> <span>Jus végétal</span></label>
+                              <label class="pb-item nutri-lait-animal-only" style="display:none"><input type="checkbox" name="pb" value="nutri_ta_autre_lait_animal" data-subgroup-child="nutri_ta_autre" data-auto-parent="nutri_trop_apport"> <span>Lait animal</span></label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2881,6 +2917,14 @@ function toggleTypeLait() {
     const hasVisibleChild = diversif?.checked || jusVegetal?.checked || laitAnimal?.checked;
     autreGroupInf.style.display = hasVisibleChild ? '' : 'none';
   }
+  // Mêmes règles pour Trop d'apport
+  const volGroupTa = document.getElementById('nutri-ta-volume-group');
+  if (volGroupTa) volGroupTa.style.display = allaitement?.checked ? 'none' : '';
+  const autreGroupTa = document.getElementById('nutri-ta-autre-group');
+  if (autreGroupTa) {
+    const hasVisibleChild = diversif?.checked || jusVegetal?.checked || laitAnimal?.checked;
+    autreGroupTa.style.display = hasVisibleChild ? '' : 'none';
+  }
 }
 
 function showSetupTab(tabId, btn) {
@@ -3799,7 +3843,7 @@ function buildSidebar() {
 function buildSidebarPbPanel() {
   const ALL_PBS = [
     {value:'rgo_allergie',label:'🩺 RGO + Allergie'},{value:'allergie_seule',label:'🌿 Allergie seule'},{value:'rgo_seul',label:'🤮 RGO seul'},
-    {value:'nutri_courbe_declinante',label:'📉 Courbe déclinante'},{value:'nutri_courbe_inferieur',label:'📉 Percentile inf.'},{value:'nutri_courbe_trop_apport',label:"📉 Trop d'apport"},{value:'nutri_esp_long',label:'⏱️ Esp. long'},{value:'nutri_esp_court',label:'🔄 Esp. court'},{value:'nutri_vol_petit',label:'🍼 Petit bib'},{value:'nutri_vol_gros',label:'🍼 Gros bib'},{value:'nutri_vol_longtemps',label:'🍼 Bib longtemps'},{value:'nutri_tetee',label:'🤱 Tétée'},{value:'nutri_tetee_longue',label:'🤱 Longue tétée'},{value:'nutri_tetee_greve',label:'🤱 Grève tétées'},{value:'nutri_tetee_mode_garde',label:'🤱 Mode garde'},{value:'nutri_inversion_jour_nuit',label:'🌛 Inversion J/N'},{value:'nutri_inversion_lait_solide',label:'🌛 Inversion lait/solide'},{value:'nutri_tetine_coupe_faim',label:'🍭 Tétine cache-faim'},{value:'nutri_autre_feculents',label:'🍽️ Féculents'},{value:'nutri_autre_lait_solide_important',label:'🍽️ Lait/solides important'},{value:'nutri_autre_jus_vegetal',label:'🍽️ Jus végétal'},{value:'nutri_autre_lait_animal',label:'🍽️ Lait animal'},{value:'nutri_conseq_inconfort',label:'🍽️ Inconfort'},{value:'nutri_conseq_mange_nuit',label:'🍽️ Mange nuit'},{value:'nutri_inf_esp_long',label:'📉 Inf. Esp. long'},{value:'nutri_inf_esp_court',label:'📉 Inf. Esp. court'},{value:'nutri_inf_vol_petit',label:'📉 Inf. Petit bib'},{value:'nutri_inf_vol_gros',label:'📉 Inf. Gros bib'},{value:'nutri_inf_vol_longtemps',label:'📉 Inf. Bib longtemps'},{value:'nutri_inf_tetee',label:'📉 Inf. Tétée'},{value:'nutri_inf_tetee_longue',label:'📉 Inf. Longue tétée'},{value:'nutri_inf_tetee_greve',label:'📉 Inf. Grève tétées'},{value:'nutri_inf_tetee_mode_garde',label:'📉 Inf. Mode garde'},{value:'nutri_inf_inversion_jour_nuit',label:'📉 Inf. Inversion J/N'},{value:'nutri_inf_inversion_lait_solide',label:'📉 Inf. Inversion lait/solide'},{value:'nutri_inf_tetine_coupe_faim',label:'📉 Inf. Tétine cache-faim'},{value:'nutri_inf_autre_feculents',label:'📉 Inf. Féculents'},{value:'nutri_inf_autre_lait_solide_important',label:'📉 Inf. Lait/solides'},{value:'nutri_inf_autre_jus_vegetal',label:'📉 Inf. Jus végétal'},{value:'nutri_inf_autre_lait_animal',label:'📉 Inf. Lait animal'},{value:'nutri_inf_conseq_inconfort',label:'📉 Inf. Inconfort'},{value:'nutri_inf_conseq_mange_nuit',label:'📉 Inf. Mange nuit'},
+    {value:'nutri_courbe_declinante',label:'📉 Courbe déclinante'},{value:'nutri_courbe_inferieur',label:'📉 Percentile inf.'},{value:'nutri_courbe_trop_apport',label:"📉 Trop d'apport"},{value:'nutri_esp_long',label:'⏱️ Esp. long'},{value:'nutri_esp_court',label:'🔄 Esp. court'},{value:'nutri_vol_petit',label:'🍼 Petit bib'},{value:'nutri_vol_gros',label:'🍼 Gros bib'},{value:'nutri_vol_longtemps',label:'🍼 Bib longtemps'},{value:'nutri_tetee',label:'🤱 Tétée'},{value:'nutri_tetee_longue',label:'🤱 Longue tétée'},{value:'nutri_tetee_greve',label:'🤱 Grève tétées'},{value:'nutri_tetee_mode_garde',label:'🤱 Mode garde'},{value:'nutri_inversion_jour_nuit',label:'🌛 Inversion J/N'},{value:'nutri_inversion_lait_solide',label:'🌛 Inversion lait/solide'},{value:'nutri_tetine_coupe_faim',label:'🍭 Tétine cache-faim'},{value:'nutri_autre_feculents',label:'🍽️ Féculents'},{value:'nutri_autre_lait_solide_important',label:'🍽️ Lait/solides important'},{value:'nutri_autre_jus_vegetal',label:'🍽️ Jus végétal'},{value:'nutri_autre_lait_animal',label:'🍽️ Lait animal'},{value:'nutri_conseq_inconfort',label:'🍽️ Inconfort'},{value:'nutri_conseq_mange_nuit',label:'🍽️ Mange nuit'},{value:'nutri_inf_esp_long',label:'📉 Inf. Esp. long'},{value:'nutri_inf_esp_court',label:'📉 Inf. Esp. court'},{value:'nutri_inf_vol_petit',label:'📉 Inf. Petit bib'},{value:'nutri_inf_vol_gros',label:'📉 Inf. Gros bib'},{value:'nutri_inf_vol_longtemps',label:'📉 Inf. Bib longtemps'},{value:'nutri_inf_tetee',label:'📉 Inf. Tétée'},{value:'nutri_inf_tetee_longue',label:'📉 Inf. Longue tétée'},{value:'nutri_inf_tetee_greve',label:'📉 Inf. Grève tétées'},{value:'nutri_inf_tetee_mode_garde',label:'📉 Inf. Mode garde'},{value:'nutri_inf_inversion_jour_nuit',label:'📉 Inf. Inversion J/N'},{value:'nutri_inf_inversion_lait_solide',label:'📉 Inf. Inversion lait/solide'},{value:'nutri_inf_tetine_coupe_faim',label:'📉 Inf. Tétine cache-faim'},{value:'nutri_inf_autre_feculents',label:'📉 Inf. Féculents'},{value:'nutri_inf_autre_lait_solide_important',label:'📉 Inf. Lait/solides'},{value:'nutri_inf_autre_jus_vegetal',label:'📉 Inf. Jus végétal'},{value:'nutri_inf_autre_lait_animal',label:'📉 Inf. Lait animal'},{value:'nutri_inf_conseq_inconfort',label:'📉 Inf. Inconfort'},{value:'nutri_inf_conseq_mange_nuit',label:'📉 Inf. Mange nuit'},{value:'nutri_trop_apport',label:"📉 Trop d'apport"},{value:'nutri_ta_esp_long',label:'📉 TA Esp. long'},{value:'nutri_ta_esp_court',label:'📉 TA Esp. court'},{value:'nutri_ta_vol_petit',label:'📉 TA Petit bib'},{value:'nutri_ta_vol_gros',label:'📉 TA Gros bib'},{value:'nutri_ta_vol_longtemps',label:'📉 TA Bib longtemps'},{value:'nutri_ta_inversion_jour_nuit',label:'📉 TA Inversion J/N'},{value:'nutri_ta_inversion_lait_solide',label:'📉 TA Inversion lait/solide'},{value:'nutri_ta_autre_feculents',label:'📉 TA Trop féculents'},{value:'nutri_ta_autre_lait_solide_important',label:'📉 TA Lait/solides'},{value:'nutri_ta_autre_jus_vegetal',label:'📉 TA Jus végétal'},{value:'nutri_ta_autre_lait_animal',label:'📉 TA Lait animal'},
     {value:'rythme_te_trop_long',label:'⏰ TE trop long'},{value:'rythme_te_long_siestes_courtes',label:'⏰ TE long - Siestes courtes'},{value:'rythme_te_long_reveils_matinaux',label:'⏰ TE long - Réveils matinaux'},{value:'rythme_te_trop_court',label:'⏰ TE trop court'},{value:'rythme_te_court_siestes_courtes',label:'⏰ TE court - Siestes courtes'},{value:'rythme_siestes_courtes',label:'⏰ Siestes courtes'},{value:'rythme_horaires_aleatoires',label:'⏰ Horaires aléatoires'},{value:'rythme_reveil_decalage',label:'🌅 Réveil - Décalage'},{value:'rythme_reveil_fatigue',label:'🌅 Réveil - Fatigue'},{value:'rythme_reveil_relationnel',label:'🌅 Réveil - Relationnel'},{value:'rythme_reveil_mange',label:'🌅 Réveil - Mange'},{value:'rythme_reveil_faim',label:'🌅 Réveil - Faim'},{value:'rythme_reveil_dependance',label:'🌅 Réveil - Dépendance'},{value:'rythme_reveil_bruit',label:'🌅 Réveil - Bruit/lumière'},{value:'rythme_activite_physique',label:'🏃 Pas activité physique'},
     {value:'strategie_rendormissement',label:'😴 Rendormissement difficile'},{value:'strategie_enjeu_relationnel',label:'😴 Enjeu relationnel'},{value:'strategie_tetine',label:'🍭 Dépendance tétine'},
     {value:'env_obscurite',label:'🌑 Obscurité'},{value:'env_temperature',label:'🌡️ Température'},{value:'env_lit_ouvert',label:'🛏️ Lit ouvert'},{value:'env_rituel',label:'🌙 Rituel'},{value:'env_cadre',label:'🗺️ Cadre clair'},{value:'env_stimulations',label:'👀 Stimulations'},{value:'env_ecrans',label:'📱 Ecrans'},
@@ -4034,6 +4078,18 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       'nutri_inf_autre_lait_animal':'📉 Nutrition Inf. — Lait animal',
       'nutri_inf_conseq_inconfort':'📉 Nutrition Inf. — Conséquence : Inconfort',
       'nutri_inf_conseq_mange_nuit':'📉 Nutrition Inf. — Conséquence : Mange la nuit',
+      'nutri_trop_apport':"📉 Nutrition — Trop d'apport",
+      'nutri_ta_esp_long':'📉 Nutrition TA — Espacement trop long',
+      'nutri_ta_esp_court':'📉 Nutrition TA — Espacement trop court',
+      'nutri_ta_vol_petit':'📉 Nutrition TA — Petit bib',
+      'nutri_ta_vol_gros':'📉 Nutrition TA — Gros bib',
+      'nutri_ta_vol_longtemps':'📉 Nutrition TA — Boit bib longtemps',
+      'nutri_ta_inversion_jour_nuit':'📉 Nutrition TA — Inversion Jour/Nuit',
+      'nutri_ta_inversion_lait_solide':'📉 Nutrition TA — Inversion lait/solide',
+      'nutri_ta_autre_feculents':'📉 Nutrition TA — Trop de féculents',
+      'nutri_ta_autre_lait_solide_important':'📉 Nutrition TA — Lait/solides trop important',
+      'nutri_ta_autre_jus_vegetal':'📉 Nutrition TA — Jus végétal',
+      'nutri_ta_autre_lait_animal':'📉 Nutrition TA — Lait animal',
       'rythme_te_trop_long':'⏰ Organisation — TE trop long',
       'rythme_te_long_siestes_courtes':'⏰ Organisation — TE long → Siestes courtes',
       'rythme_te_long_reveils_matinaux':'⏰ Organisation — TE long → Réveils matinaux',
@@ -5671,7 +5727,7 @@ function generateCRHtml(s) {
     'nutri_tetine_coupe_faim':'Tétine cache-faim',
     'nutri_autre_feculents':'Pas assez féculents', 'nutri_autre_lait_solide_important':'Lait/solides trop important', 'nutri_autre_jus_vegetal':'Jus végétal', 'nutri_autre_lait_animal':'Lait animal',
     'nutri_conseq_inconfort':'Conséquence : Inconfort', 'nutri_conseq_mange_nuit':'Conséquence : Mange la nuit',
-    'nutri_courbe_inferieur':'Courbe percentile inférieur', 'nutri_inf_esp_long':'Inf. Esp. trop long', 'nutri_inf_esp_court':'Inf. Esp. trop court', 'nutri_inf_vol_petit':'Inf. Petit bib', 'nutri_inf_vol_gros':'Inf. Gros bib', 'nutri_inf_vol_longtemps':'Inf. Boit bib longtemps', 'nutri_inf_tetee':'Inf. Tétée', 'nutri_inf_tetee_longue':'Inf. Longue tétée', 'nutri_inf_tetee_greve':'Inf. Grève tétées', 'nutri_inf_tetee_mode_garde':'Inf. Mode garde', 'nutri_inf_inversion_jour_nuit':'Inf. Inversion J/N', 'nutri_inf_inversion_lait_solide':'Inf. Inversion lait/solide', 'nutri_inf_tetine_coupe_faim':'Inf. Tétine cache-faim', 'nutri_inf_autre_feculents':'Inf. Féculents', 'nutri_inf_autre_lait_solide_important':'Inf. Lait/solides', 'nutri_inf_autre_jus_vegetal':'Inf. Jus végétal', 'nutri_inf_autre_lait_animal':'Inf. Lait animal', 'nutri_inf_conseq_inconfort':'Inf. Inconfort', 'nutri_inf_conseq_mange_nuit':'Inf. Mange la nuit',
+    'nutri_courbe_inferieur':'Courbe percentile inférieur', 'nutri_trop_apport':"Trop d'apport", 'nutri_ta_esp_long':'TA Esp. trop long', 'nutri_ta_esp_court':'TA Esp. trop court', 'nutri_ta_vol_petit':'TA Petit bib', 'nutri_ta_vol_gros':'TA Gros bib', 'nutri_ta_vol_longtemps':'TA Boit bib longtemps', 'nutri_ta_inversion_jour_nuit':'TA Inversion J/N', 'nutri_ta_inversion_lait_solide':'TA Inversion lait/solide', 'nutri_ta_autre_feculents':'TA Trop de féculents', 'nutri_ta_autre_lait_solide_important':'TA Lait/solides', 'nutri_ta_autre_jus_vegetal':'TA Jus végétal', 'nutri_ta_autre_lait_animal':'TA Lait animal', 'nutri_inf_esp_long':'Inf. Esp. trop long', 'nutri_inf_esp_court':'Inf. Esp. trop court', 'nutri_inf_vol_petit':'Inf. Petit bib', 'nutri_inf_vol_gros':'Inf. Gros bib', 'nutri_inf_vol_longtemps':'Inf. Boit bib longtemps', 'nutri_inf_tetee':'Inf. Tétée', 'nutri_inf_tetee_longue':'Inf. Longue tétée', 'nutri_inf_tetee_greve':'Inf. Grève tétées', 'nutri_inf_tetee_mode_garde':'Inf. Mode garde', 'nutri_inf_inversion_jour_nuit':'Inf. Inversion J/N', 'nutri_inf_inversion_lait_solide':'Inf. Inversion lait/solide', 'nutri_inf_tetine_coupe_faim':'Inf. Tétine cache-faim', 'nutri_inf_autre_feculents':'Inf. Féculents', 'nutri_inf_autre_lait_solide_important':'Inf. Lait/solides', 'nutri_inf_autre_jus_vegetal':'Inf. Jus végétal', 'nutri_inf_autre_lait_animal':'Inf. Lait animal', 'nutri_inf_conseq_inconfort':'Inf. Inconfort', 'nutri_inf_conseq_mange_nuit':'Inf. Mange la nuit',
     'rythme_te_trop_long':'TE trop long', 'rythme_te_long_siestes_courtes':'TE long - Siestes courtes', 'rythme_te_long_reveils_matinaux':'TE long - Réveils matinaux', 'rythme_te_trop_court':'TE trop court', 'rythme_te_court_siestes_courtes':'TE court - Siestes courtes', 'rythme_siestes_courtes':'Siestes courtes', 'rythme_horaires_aleatoires':'Horaires aléatoires', 'rythme_reveil_decalage':'Décalage horaire', 'rythme_reveil_fatigue':'Fatigue accumulée', 'rythme_reveil_relationnel':'Enjeu relationnel', 'rythme_reveil_mange':'Mange et ne peut pas se rendormir', 'rythme_reveil_faim':'Faim et n\'a pas le sein/bib', 'rythme_reveil_dependance':'Dépendance', 'rythme_reveil_bruit':'Bruit extérieur/lumière',
     'rythme_activite_physique':"Manque d'activité physique",
     'strategie_rendormissement':'Rendormissement difficile', 'strategie_enjeu_relationnel':'Enjeu relationnel', 'strategie_tetine':'Dépendance tétine',
