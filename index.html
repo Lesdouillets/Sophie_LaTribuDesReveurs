@@ -328,6 +328,8 @@
     .pb-category > .pb-items > .pb-item:not(.pb-title-style):not(.pb-consequence-style) { margin-left: 40px; }
     /* Supprimer l'espace entre les level-3 quand fermés */
     .pb-category.pb-level-3 + .pb-category.pb-level-3 { margin-top: 2px; }
+    /* Style titre sans déroulant level-1 (même look que pb-level-1 category-title) */
+    .pb-item.pb-title-style-l1 { background: #eef2f7; border-radius: 8px; padding: 7px 10px; font-weight: 700; font-size: 13.5px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--primary-dark); margin-left: 40px; margin-bottom: 0; }
     /* Style titre sans déroulant (même look que level-3 mais pas cliquable pour déplier) */
     .pb-item.pb-title-style { background: #f0f6ff; border-radius: 8px; padding: 7px 10px; font-weight: 600; font-size: 12px; margin-left: 40px; margin-bottom: 0; text-transform: none; letter-spacing: 0; }
     .pb-item.pb-consequence-style { background: #fdf0f0; border-radius: 8px; padding: 7px 10px; font-weight: 600; font-size: 12px; margin-left: 40px; margin-bottom: 0; text-transform: none; letter-spacing: 0; font-style: italic; color: #999; }
@@ -1584,8 +1586,8 @@
                       </div>
                     </div>
                   </div>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="rythme_siestes_courtes" data-excludes="rythme_te"> <span>Siestes courtes <span style="color:#999;font-size:11px">(TE OK)</span></span></label>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="rythme_horaires_aleatoires"> <span>Horaires aléatoires</span></label>
+                  <label class="pb-item pb-title-style-l1"><span class="pb-cat-arrow" style="visibility:hidden">▸</span><input type="checkbox" name="pb" value="rythme_siestes_courtes" data-excludes="rythme_te"> <span>Siestes courtes <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(TE OK)</span></span></label>
+                  <label class="pb-item pb-title-style-l1"><span class="pb-cat-arrow" style="visibility:hidden">▸</span><input type="checkbox" name="pb" value="rythme_horaires_aleatoires"> <span>Horaires aléatoires</span></label>
                   <div class="pb-category pb-level-1">
                     <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="rythme_reveil_mat"> Réveils matinaux</label>
                     <div class="pb-items">
@@ -1598,7 +1600,7 @@
                       <label class="pb-item"><input type="checkbox" name="pb" value="rythme_reveil_bruit" data-subgroup-child="rythme_reveil_mat"> <span>Bruit extérieur/lumière</span></label>
                     </div>
                   </div>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="rythme_activite_physique"> <span>Pas d'activité physique</span></label>
+                  <label class="pb-item pb-title-style-l1"><span class="pb-cat-arrow" style="visibility:hidden">▸</span><input type="checkbox" name="pb" value="rythme_activite_physique"> <span>Pas d'activité physique</span></label>
                 </div>
               </div>
             </div>
