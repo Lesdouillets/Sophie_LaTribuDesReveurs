@@ -1866,7 +1866,7 @@
                           <label class="pb-item pb-consequence-style"><span class="pb-cat-arrow" style="visibility:hidden">▸</span><input type="checkbox" name="pb" value="nutri_lok_ijn_conseq_inconfort" data-auto-parent="nutri_lok_inv_jn" data-requires-sibling="nutri_lok_inv_jn"> <span>Conséquences : Inconfort</span></label>
                         </div>
                       </div>
-                      <div class="pb-category pb-level-2">
+                      <div class="pb-category pb-level-2" id="nutri-lok-n1-group">
                         <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_lok_lait_n1" data-subgroup-child="nutri_lait_ok" data-auto-only="true"> Lait N°1</label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3">
@@ -3361,8 +3361,11 @@ function updateDiversifN1Visibility() {
     const diff = new Date(consultDate) - new Date(refDate);
     ageMois = diff / (1000 * 60 * 60 * 24 * 30.44);
   }
-  // Visible si âge >= 12 mois. Caché si âge < 12 mois ou âge négatif (prématuré terme non atteint)
+  // Diversification N°1 : visible si âge >= 12 mois
   divN1Group.style.display = (ageMois !== null && ageMois >= 12) ? '' : 'none';
+  // Lait N°1 : caché si âge >= 12 mois
+  const laitN1Group = document.getElementById('nutri-lok-n1-group');
+  if (laitN1Group) laitN1Group.style.display = (ageMois === null || ageMois < 12) ? '' : 'none';
 }
 
 function showSetupTab(tabId, btn) {
