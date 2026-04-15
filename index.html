@@ -1566,22 +1566,30 @@
               <div class="pb-category">
                 <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="rythme"> ⏰ Organisation de la journée</label>
                 <div class="pb-items">
-                  <label class="pb-item"><input type="checkbox" class="pb-sub-parent" data-subgroup="rythme_te" data-auto-only="true"> <span>Temps d'éveil</span></label>
-                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_te_trop_long" data-exclusive="rythme_te" data-subgroup-child="rythme_te" data-excludes-value="rythme_siestes_courtes"> <span>Trop long</span></label>
-                  <label class="pb-item" style="padding-left:40px;font-size:11px;font-style:italic;color:#999"><input type="checkbox" name="pb" value="rythme_te_long_siestes_courtes" data-auto-parent="rythme_te_trop_long"> <span>Conséquences : Siestes courtes</span></label>
-                  <label class="pb-item" style="padding-left:40px;font-size:11px;font-style:italic;color:#999"><input type="checkbox" name="pb" value="rythme_te_long_reveils_matinaux" data-excludes-value="rythme_reveil_fatigue" data-auto-parent="rythme_te_trop_long"> <span>Conséquences : Réveils matinaux</span></label>
-                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_te_trop_court" data-exclusive="rythme_te" data-subgroup-child="rythme_te" data-excludes-value="rythme_siestes_courtes"> <span>Trop court</span></label>
-                  <label class="pb-item" style="padding-left:40px;font-size:11px;font-style:italic;color:#999"><input type="checkbox" name="pb" value="rythme_te_court_siestes_courtes" data-auto-parent="rythme_te_trop_court"> <span>Conséquences : Siestes courtes</span></label>
+                  <div class="pb-category pb-level-1">
+                    <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="rythme_te" data-auto-only="true"> Temps d'éveil</label>
+                    <div class="pb-items">
+                      <label class="pb-item"><input type="checkbox" name="pb" value="rythme_te_trop_long" data-exclusive="rythme_te" data-subgroup-child="rythme_te" data-excludes-value="rythme_siestes_courtes"> <span>Trop long</span></label>
+                      <label class="pb-item" style="padding-left:16px;font-size:11px;font-style:italic;color:#999"><input type="checkbox" name="pb" value="rythme_te_long_siestes_courtes" data-auto-parent="rythme_te_trop_long"> <span>Conséquences : Siestes courtes</span></label>
+                      <label class="pb-item" style="padding-left:16px;font-size:11px;font-style:italic;color:#999"><input type="checkbox" name="pb" value="rythme_te_long_reveils_matinaux" data-excludes-value="rythme_reveil_fatigue" data-auto-parent="rythme_te_trop_long"> <span>Conséquences : Réveils matinaux</span></label>
+                      <label class="pb-item"><input type="checkbox" name="pb" value="rythme_te_trop_court" data-exclusive="rythme_te" data-subgroup-child="rythme_te" data-excludes-value="rythme_siestes_courtes"> <span>Trop court</span></label>
+                      <label class="pb-item" style="padding-left:16px;font-size:11px;font-style:italic;color:#999"><input type="checkbox" name="pb" value="rythme_te_court_siestes_courtes" data-auto-parent="rythme_te_trop_court"> <span>Conséquences : Siestes courtes</span></label>
+                    </div>
+                  </div>
                   <label class="pb-item"><input type="checkbox" name="pb" value="rythme_siestes_courtes" data-excludes="rythme_te"> <span>Siestes courtes <span style="color:#999;font-size:11px">(TE OK)</span></span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="rythme_horaires_aleatoires"> <span>Horaires aléatoires</span></label>
-                  <label class="pb-item"><input type="checkbox" class="pb-sub-parent" data-subgroup="rythme_reveil_mat"> <span>Réveils matinaux</span></label>
-                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_reveil_decalage" data-subgroup-child="rythme_reveil_mat"> <span>Décalage horaire <span style="color:#999;font-size:11px">(mais nuit 12h OK)</span></span></label>
-                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_reveil_fatigue" data-subgroup-child="rythme_reveil_mat" data-excludes-value="rythme_te_long_reveils_matinaux"> <span>Fatigue accumulée</span></label>
-                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_reveil_relationnel" data-subgroup-child="rythme_reveil_mat"> <span>Enjeu relationnel</span></label>
-                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_reveil_mange" data-subgroup-child="rythme_reveil_mat"> <span>Mange et ne peut pas se rendormir</span></label>
-                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_reveil_faim" data-subgroup-child="rythme_reveil_mat"> <span>Faim et n'a pas le sein/bib</span></label>
-                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_reveil_dependance" data-subgroup-child="rythme_reveil_mat"> <span>Dépendance</span></label>
-                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="rythme_reveil_bruit" data-subgroup-child="rythme_reveil_mat"> <span>Bruit extérieur/lumière</span></label>
+                  <div class="pb-category pb-level-1">
+                    <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="rythme_reveil_mat"> Réveils matinaux</label>
+                    <div class="pb-items">
+                      <label class="pb-item"><input type="checkbox" name="pb" value="rythme_reveil_decalage" data-subgroup-child="rythme_reveil_mat"> <span>Décalage horaire <span style="color:#999;font-size:11px">(mais nuit 12h OK)</span></span></label>
+                      <label class="pb-item"><input type="checkbox" name="pb" value="rythme_reveil_fatigue" data-subgroup-child="rythme_reveil_mat" data-excludes-value="rythme_te_long_reveils_matinaux"> <span>Fatigue accumulée</span></label>
+                      <label class="pb-item"><input type="checkbox" name="pb" value="rythme_reveil_relationnel" data-subgroup-child="rythme_reveil_mat"> <span>Enjeu relationnel</span></label>
+                      <label class="pb-item"><input type="checkbox" name="pb" value="rythme_reveil_mange" data-subgroup-child="rythme_reveil_mat"> <span>Mange et ne peut pas se rendormir</span></label>
+                      <label class="pb-item"><input type="checkbox" name="pb" value="rythme_reveil_faim" data-subgroup-child="rythme_reveil_mat"> <span>Faim et n'a pas le sein/bib</span></label>
+                      <label class="pb-item"><input type="checkbox" name="pb" value="rythme_reveil_dependance" data-subgroup-child="rythme_reveil_mat"> <span>Dépendance</span></label>
+                      <label class="pb-item"><input type="checkbox" name="pb" value="rythme_reveil_bruit" data-subgroup-child="rythme_reveil_mat"> <span>Bruit extérieur/lumière</span></label>
+                    </div>
+                  </div>
                   <label class="pb-item"><input type="checkbox" name="pb" value="rythme_activite_physique"> <span>Pas d'activité physique</span></label>
                 </div>
               </div>
