@@ -5576,6 +5576,17 @@ document.addEventListener('change', function(e) {
       }
     });
   });
+  // 8c. Re-sync sub-parents après exclusivité (pour refléter le bon état)
+  for (let pass = 0; pass < 2; pass++) {
+    const allSp2 = [...document.querySelectorAll('.pb-sub-parent[data-subgroup], .modal-pb-sub-parent[data-subgroup], .diag-pb-sub-parent[data-subgroup]')];
+    allSp2.reverse().forEach(sp => {
+      const group = sp.dataset.subgroup;
+      const spGrid = sp.closest('.problematiques-grid') || document;
+      const anyChecked = [...spGrid.querySelectorAll(`input[data-subgroup-child="${group}"]`)].some(c => c.checked);
+      sp.checked = anyChecked;
+      sp.closest('.pb-item')?.classList.toggle('checked', anyChecked);
+    });
+  }
   // 9. Re-sync toutes les catégories principales (pb-cat-checkbox)
   grid.querySelectorAll('.pb-cat-checkbox, .modal-pb-cat, .diag-pb-cat').forEach(catCb => {
     const cat = catCb.closest('.pb-category');
