@@ -311,12 +311,12 @@
       padding: 7px 10px; border-radius: 8px; background: #eef2f7;
     }
     .pb-category-title input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
-    .pb-items { display: flex; flex-direction: column; gap: 2px; }
+    .pb-items { display: flex; flex-direction: column; gap: 0; }
     .pb-items.collapsed { display: none; }
     .pb-category-title .pb-cat-arrow { font-size: 11px; transition: transform 0.2s; display: inline-block; margin-left: 4px; }
     .pb-category-title .pb-cat-arrow.open { transform: rotate(90deg); }
     /* Niveaux hiérarchiques */
-    .pb-category.pb-level-1 { margin-left: 40px; margin-top: 2px; }
+    .pb-category.pb-level-1 { margin-left: 40px; margin-top: 0; }
     .pb-category.pb-level-1 > .pb-items > .pb-item { margin-left: 40px; }
     .pb-category.pb-level-2 { margin-left: 40px; margin-top: 6px; }
     .pb-category.pb-level-2 > .pb-category-title { background: #e8f0fa; font-size: 12.5px; text-transform: none; letter-spacing: 0; }
@@ -327,13 +327,13 @@
     /* Retrait général des items sous une catégorie */
     .pb-category > .pb-items > .pb-item:not(.pb-title-style):not(.pb-consequence-style) { margin-left: 40px; }
     /* Supprimer l'espace entre les level-3 quand fermés */
-    .pb-category.pb-level-3 + .pb-category.pb-level-3 { margin-top: 2px; }
+    .pb-category.pb-level-3 + .pb-category.pb-level-3 { margin-top: 0; }
     /* Style titre sans déroulant level-1 (même look que pb-level-1 category-title) */
     .pb-item.pb-title-style-l1 { background: #eef2f7; border-radius: 8px; padding: 7px 10px; font-weight: 700; font-size: 13.5px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--primary-dark); margin-left: 40px; margin-bottom: 0; margin-top: 0; }
     /* Supprimer l'espace entre level-1 et title-style-l1 */
-    .pb-category.pb-level-1 + .pb-item.pb-title-style-l1 { margin-top: -2px; }
-    .pb-item.pb-title-style-l1 + .pb-category.pb-level-1 { margin-top: 2px; }
-    .pb-item.pb-title-style-l1 + .pb-item.pb-title-style-l1 { margin-top: -2px; }
+    .pb-category.pb-level-1 + .pb-item.pb-title-style-l1 { margin-top: 0; }
+    .pb-item.pb-title-style-l1 + .pb-category.pb-level-1 { margin-top: 0; }
+    .pb-item.pb-title-style-l1 + .pb-item.pb-title-style-l1 { margin-top: 0; }
     /* Style titre sans déroulant (même look que level-3 mais pas cliquable pour déplier) */
     .pb-item.pb-title-style { background: #f0f6ff; border-radius: 8px; padding: 7px 10px; font-weight: 600; font-size: 12px; margin-left: 40px; margin-bottom: 0; text-transform: none; letter-spacing: 0; }
     .pb-item.pb-consequence-style { background: #fdf0f0; border-radius: 8px; padding: 7px 10px; font-weight: 600; font-size: 12px; margin-left: 40px; margin-bottom: 0; text-transform: none; letter-spacing: 0; font-style: italic; color: #999; }
