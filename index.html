@@ -5004,45 +5004,38 @@ function initPbCategoryToggles() {
     // Clic sur le titre pour ouvrir/fermer — éviter les doublons de listeners
     if (!title.dataset.toggleInit) {
       title.dataset.toggleInit = 'true';
+      const titleCb = title.querySelector('input[type="checkbox"]');
+      const isCochable = titleCb && titleCb.hasAttribute('value');
       title.addEventListener('click', function(e) {
-        if (e.target.type === 'checkbox') {
-          // Quand on coche une checkbox, ouvrir le menu automatiquement
-          if (e.target.checked) {
+        if (isCochable) {
+          // Menu cochable (Trop long, Trop court, Courbe déclinante...)
+          // Clic partout = toggle checkbox + ouvrir menu
+          e.preventDefault();
+          if (e.target.type !== 'checkbox') {
+            titleCb.checked = !titleCb.checked;
+          }
+          titleCb.dispatchEvent(new Event('change', {bubbles: true}));
+          if (titleCb.checked) {
             items.classList.remove('collapsed');
             const arrow = title.querySelector('.pb-cat-arrow');
             if (arrow) { arrow.textContent = '▾'; arrow.classList.add('open'); }
           }
-          return;
-        }
-        // Clic sur la flèche → toggle le menu
-        if (e.target.classList.contains('pb-cat-arrow')) {
+        } else {
+          // Menu non-cochable (Nutrition, Organisation, Temps d'éveil...)
+          if (e.target.type === 'checkbox') {
+            if (e.target.checked) {
+              items.classList.remove('collapsed');
+              const arrow = title.querySelector('.pb-cat-arrow');
+              if (arrow) { arrow.textContent = '▾'; arrow.classList.add('open'); }
+            }
+            return;
+          }
           e.preventDefault();
           items.classList.toggle('collapsed');
           const arrow = title.querySelector('.pb-cat-arrow');
           const isOpen = !items.classList.contains('collapsed');
           if (arrow) { arrow.textContent = isOpen ? '▾' : '▸'; arrow.classList.toggle('open', isOpen); }
-          return;
         }
-        // Clic sur le texte → si checkbox cochable avec value, laisser le label toggler la checkbox + ouvrir le menu
-        // sinon toggle le menu
-        const titleCb = title.querySelector('input[type="checkbox"]');
-        if (titleCb && titleCb.hasAttribute('value')) {
-          // Laisser le comportement par défaut du label (toggle checkbox)
-          // et ouvrir le menu après un micro-délai (la checkbox est togglée par le label)
-          setTimeout(function() {
-            if (titleCb.checked) {
-              items.classList.remove('collapsed');
-              const arrow = title.querySelector('.pb-cat-arrow');
-              if (arrow) { arrow.textContent = '▾'; arrow.classList.add('open'); }
-            }
-          }, 0);
-          return;
-        }
-        e.preventDefault();
-        items.classList.toggle('collapsed');
-        const arrow = title.querySelector('.pb-cat-arrow');
-        const isOpen = !items.classList.contains('collapsed');
-        if (arrow) { arrow.textContent = isOpen ? '▾' : '▸'; arrow.classList.toggle('open', isOpen); }
       });
     }
   });
