@@ -1656,7 +1656,10 @@
                     <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_lait_ok" data-auto-only="true"> Lait (courbes OK)</label>
                     <div class="pb-items">
                       <div class="pb-category pb-level-2">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_lok_esp_long" data-exclusive="nutri_lok_espacement" data-subgroup-child="nutri_lait_ok"> Espacement trop long</label>
+                        <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_lok_espacement" data-auto-only="true"> Espacement</label>
+                        <div class="pb-items">
+                      <div class="pb-category pb-level-3">
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_lok_esp_long" data-exclusive="nutri_lok_espacement" data-subgroup-child="nutri_lok_espacement"> Espacement trop long</label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3" id="nutri-lok-long-volume-group">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_lok_long_volume" data-auto-only="true"> Volume/durée des bib</label>
@@ -1695,8 +1698,8 @@
                           <label class="pb-item pb-consequence-style"><span class="pb-cat-arrow" style="visibility:hidden">▸</span><input type="checkbox" name="pb" value="nutri_lok_long_conseq_mange_nuit" data-auto-parent="nutri_lok_esp_long" data-requires-sibling="nutri_lok_esp_long"> <span>Conséquences : Mange la nuit mais ne devrait pas</span></label>
                         </div>
                       </div>
-                      <div class="pb-category pb-level-2">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_lok_esp_court" data-exclusive="nutri_lok_espacement" data-subgroup-child="nutri_lait_ok"> Espacement trop court</label>
+                      <div class="pb-category pb-level-3">
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_lok_esp_court" data-exclusive="nutri_lok_espacement" data-subgroup-child="nutri_lok_espacement"> Espacement trop court</label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3" id="nutri-lok-court-volume-group">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_lok_court_volume" data-auto-only="true"> Volume/durée des bib</label>
@@ -1724,6 +1727,8 @@
                           </div>
                           <label class="pb-item pb-consequence-style"><span class="pb-cat-arrow" style="visibility:hidden">▸</span><input type="checkbox" name="pb" value="nutri_lok_court_conseq_inconfort" data-auto-parent="nutri_lok_esp_court" data-requires-sibling="nutri_lok_esp_court"> <span>Conséquences : Inconfort</span></label>
                           <label class="pb-item pb-consequence-style"><span class="pb-cat-arrow" style="visibility:hidden">▸</span><input type="checkbox" name="pb" value="nutri_lok_court_conseq_mange_nuit" data-auto-parent="nutri_lok_esp_court" data-requires-sibling="nutri_lok_esp_court"> <span>Conséquences : Mange la nuit mais ne devrait pas</span></label>
+                        </div>
+                      </div>
                         </div>
                       </div>
                     </div>
