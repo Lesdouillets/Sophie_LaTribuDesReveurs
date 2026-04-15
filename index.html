@@ -5018,7 +5018,7 @@ function initPbCategoryToggles() {
         // Clic sur le texte → si checkbox cochable avec value, laisser le label toggler la checkbox + ouvrir le menu
         // sinon toggle le menu
         const titleCb = title.querySelector('input[type="checkbox"]');
-        if (titleCb && titleCb.value) {
+        if (titleCb && titleCb.hasAttribute('value')) {
           // Laisser le comportement par défaut du label (toggle checkbox)
           // et ouvrir le menu après un micro-délai (la checkbox est togglée par le label)
           setTimeout(function() {
