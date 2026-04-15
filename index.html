@@ -4620,17 +4620,6 @@ function syncPbsHighlights() {
     sp.checked = anyChecked;
     sp.closest('.pb-item')?.classList.toggle('checked', anyChecked);
   });
-  // Ouvrir les menus déroulants de la fiche client qui ont des cases cochées
-  document.querySelectorAll('.problematiques-grid[onchange="onFicheClientPbChange()"] .pb-category').forEach(cat => {
-    const items = cat.querySelector('.pb-items');
-    if (!items) return;
-    const hasChecked = [...items.querySelectorAll('input[type="checkbox"]')].some(cb => cb.checked);
-    const arrow = cat.querySelector('.pb-category-title .pb-cat-arrow');
-    if (hasChecked) {
-      items.classList.remove('collapsed');
-      if (arrow) { arrow.textContent = '▾'; arrow.classList.add('open'); }
-    }
-  });
 }
 
 function rebuildAfterPbChange() {
@@ -4991,12 +4980,18 @@ function initPbCategoryToggles() {
       arrow.textContent = '▸';
       title.insertBefore(arrow, title.firstChild);
     }
-    // Si des cases sont cochées, ouvrir. Ne jamais refermer automatiquement.
-    const hasChecked = [...items.querySelectorAll('input[type="checkbox"]')].some(cb => cb.checked);
-    if (hasChecked) {
-      items.classList.remove('collapsed');
-      const arrow = title.querySelector('.pb-cat-arrow');
-      if (arrow) { arrow.textContent = '▾'; arrow.classList.add('open'); }
+    // Fermer par défaut lors de la première initialisation, ouvrir si cases cochées
+    if (!title.dataset.toggleInit) {
+      const hasChecked = [...items.querySelectorAll('input[type="checkbox"]')].some(cb => cb.checked);
+      if (hasChecked) {
+        items.classList.remove('collapsed');
+        const arrow = title.querySelector('.pb-cat-arrow');
+        if (arrow) { arrow.textContent = '▾'; arrow.classList.add('open'); }
+      } else {
+        items.classList.add('collapsed');
+        const arrow = title.querySelector('.pb-cat-arrow');
+        if (arrow) { arrow.textContent = '▸'; arrow.classList.remove('open'); }
+      }
     }
     // Clic sur le titre pour ouvrir/fermer — éviter les doublons de listeners
     if (!title.dataset.toggleInit) {
