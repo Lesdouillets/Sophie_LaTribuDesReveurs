@@ -5002,6 +5002,7 @@ function initPbCategoryToggles() {
     if (!title.dataset.toggleInit) {
       title.dataset.toggleInit = 'true';
       title.addEventListener('click', function(e) {
+        const titleCb = title.querySelector('input[type="checkbox"]');
         if (e.target.type === 'checkbox') {
           // Quand on coche une checkbox, ouvrir le menu automatiquement
           if (e.target.checked) {
@@ -5011,11 +5012,26 @@ function initPbCategoryToggles() {
           }
           return;
         }
+        // Si le titre contient une checkbox cochable (input[name="pb"] ou similaire avec value),
+        // le clic sur le texte doit aussi toggler la checkbox
+        const hasCochableCb = titleCb && titleCb.value;
+        if (hasCochableCb) {
+          // Toggle la checkbox manuellement puis ouvrir le menu
+          titleCb.checked = !titleCb.checked;
+          titleCb.dispatchEvent(new Event('change', {bubbles: true}));
+          if (titleCb.checked) {
+            items.classList.remove('collapsed');
+            const arrow = title.querySelector('.pb-cat-arrow');
+            if (arrow) { arrow.textContent = '▾'; arrow.classList.add('open'); }
+          }
+        } else {
+          // Toggle le menu seulement
+          items.classList.toggle('collapsed');
+          const arrow = title.querySelector('.pb-cat-arrow');
+          const isOpen = !items.classList.contains('collapsed');
+          if (arrow) { arrow.textContent = isOpen ? '▾' : '▸'; arrow.classList.toggle('open', isOpen); }
+        }
         e.preventDefault();
-        items.classList.toggle('collapsed');
-        const arrow = title.querySelector('.pb-cat-arrow');
-        const isOpen = !items.classList.contains('collapsed');
-        if (arrow) { arrow.textContent = isOpen ? '▾' : '▸'; arrow.classList.toggle('open', isOpen); }
       });
     }
   });
