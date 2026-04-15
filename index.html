@@ -4868,13 +4868,16 @@ function syncPbsHighlights() {
       }
     }
   });
-  // Sync sub-parents fiche client
-  document.querySelectorAll('.pb-sub-parent[data-subgroup]').forEach(sp => {
-    const group = sp.dataset.subgroup;
-    const anyChecked = [...document.querySelectorAll(`input[name="pb"][data-subgroup-child="${group}"]`)].some(c => c.checked);
-    sp.checked = anyChecked;
-    sp.closest('.pb-item')?.classList.toggle('checked', anyChecked);
-  });
+  // Sync sub-parents fiche client (du plus profond au moins profond, 2 passes)
+  for (let pass = 0; pass < 2; pass++) {
+    const allSp = [...document.querySelectorAll('.pb-sub-parent[data-subgroup]')];
+    allSp.reverse().forEach(sp => {
+      const group = sp.dataset.subgroup;
+      const anyChecked = [...document.querySelectorAll(`input[data-subgroup-child="${group}"]`)].some(c => c.checked);
+      sp.checked = anyChecked;
+      sp.closest('.pb-item')?.classList.toggle('checked', anyChecked);
+    });
+  }
 }
 
 function rebuildAfterPbChange() {
