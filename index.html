@@ -4849,15 +4849,19 @@ document.addEventListener('change', function(e) {
       conseq.closest('.pb-item')?.classList.remove('checked');
     }
   });
-  // 7. Re-sync auto-parents : décocher si aucun enfant n'est coché (dans le même contexte/grille)
+  // 7. Re-sync auto-parents : décocher si aucun enfant n'est coché (seulement les parents auto-only sans attribut value propre)
   const autoParentValues = new Set();
   grid.querySelectorAll('input[data-auto-parent]').forEach(c => autoParentValues.add(c.dataset.autoParent));
   autoParentValues.forEach(parentVal => {
     const anyChildChecked = [...grid.querySelectorAll(`input[data-auto-parent="${parentVal}"]`)].some(c => c.checked);
     if (!anyChildChecked) {
       grid.querySelectorAll(`input[value="${parentVal}"]`).forEach(p => {
-        p.checked = false;
-        p.closest('.pb-item')?.classList.remove('checked');
+        // Ne pas décocher si le parent est cochable manuellement (a data-auto-only)
+        // OU si c'est un item avec value qui peut être coché seul
+        if (p.dataset.autoOnly) {
+          p.checked = false;
+          p.closest('.pb-item')?.classList.remove('checked');
+        }
       });
     }
   });
