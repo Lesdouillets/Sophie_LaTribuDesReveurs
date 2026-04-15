@@ -1520,7 +1520,7 @@
                     <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_courbes" data-auto-only="true"> Courbes pas OK</label>
                     <div class="pb-items">
                       <div class="pb-category pb-level-2">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_declinante" data-subgroup-child="nutri_courbes"> Courbe de poids déclinante</label>
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_declinante" data-subgroup-child="nutri_courbes" data-auto-uncheck="true"> Courbe de poids déclinante</label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_espacement" data-auto-only="true"> Espacement</label>
@@ -4862,9 +4862,8 @@ document.addEventListener('change', function(e) {
     const anyChildChecked = [...grid.querySelectorAll(`input[data-auto-parent="${parentVal}"]`)].some(c => c.checked);
     if (!anyChildChecked) {
       grid.querySelectorAll(`input[value="${parentVal}"]`).forEach(p => {
-        // Ne pas décocher si le parent est cochable manuellement (a data-auto-only)
-        // OU si c'est un item avec value qui peut être coché seul
-        if (p.dataset.autoOnly) {
+        // Décocher si auto-only OU si marqué auto-uncheck
+        if (p.dataset.autoOnly || p.dataset.autoUncheck) {
           p.checked = false;
           p.closest('.pb-item')?.classList.remove('checked');
         }
