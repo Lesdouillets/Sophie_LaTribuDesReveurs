@@ -4599,7 +4599,13 @@ function onDiagnosticPbChange() {
     state.selectedPbs = new Set([...document.querySelectorAll('.diag-pb:checked')].map(cb=>cb.value));
     syncPbsToFicheClient();
     syncPbsHighlights();
-    rebuildAfterPbChange();
+    // Ne pas re-rendre la section pour ne pas détruire/recréer le diagnostic
+    const savedId = state.sections[state.currentIdx]?.id;
+    buildSidebarPbPanel();
+    buildSections();
+    const newIdx = state.sections.findIndex(s=>s.id===savedId);
+    state.currentIdx = newIdx>=0 ? newIdx : Math.min(state.currentIdx, state.sections.length-1);
+    buildSidebar();
   }, 0);
 }
 
