@@ -1517,7 +1517,7 @@
                 <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="nutrition"> 🍽️ Nutrition</label>
                 <div class="pb-items">
                   <div class="pb-category pb-level-1">
-                    <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_courbes" data-auto-only="true"> Courbes pas OK</label>
+                    <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_courbes" data-exclusive="nutri_top_level" data-auto-only="true"> Courbes pas OK</label>
                     <div class="pb-items">
                       <div class="pb-category pb-level-2">
                         <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_declinante" data-subgroup-child="nutri_courbes" data-auto-only="true"> Courbe de poids déclinante</label>
@@ -1653,7 +1653,7 @@
                     </div>
                   </div>
                   <div class="pb-category pb-level-1">
-                    <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_lait_ok" data-auto-only="true"> Lait (courbes OK)</label>
+                    <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_lait_ok" data-exclusive="nutri_top_level" data-auto-only="true"> Lait <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(courbes OK)</span></label>
                     <div class="pb-items">
                       <div class="pb-category pb-level-2">
                         <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_lok_espacement" data-subgroup-child="nutri_lait_ok" data-auto-only="true"> Espacement</label>
@@ -1914,7 +1914,7 @@
                     </div>
                   </div>
                   <div class="pb-category pb-level-1">
-                    <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_diversif_ok" data-auto-only="true"> Diversification (si courbes OK)</label>
+                    <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_diversif_ok" data-exclusive="nutri_top_level" data-auto-only="true"> Diversification <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(courbes OK)</span></label>
                     <div class="pb-items">
                       <!-- Diversification N°1 — visible si âge < 12 mois -->
                       <div class="pb-category pb-level-2" id="nutri-diversif-n1-group">
@@ -5527,6 +5527,32 @@ document.addEventListener('change', function(e) {
       sp.closest('.pb-item')?.classList.toggle('checked', anyChecked);
     });
   }
+  // 8b. Exclusivité entre sub-parents (ex: Courbes pas OK / Lait OK / Diversification OK)
+  document.querySelectorAll('.pb-sub-parent[data-exclusive]:checked, .modal-pb-sub-parent[data-exclusive]:checked, .diag-pb-sub-parent[data-exclusive]:checked').forEach(sp => {
+    const exGroup = sp.dataset.exclusive;
+    const spGrid = sp.closest('.problematiques-grid') || document;
+    spGrid.querySelectorAll(`input[data-exclusive="${exGroup}"]`).forEach(other => {
+      if (other !== sp && other.checked) {
+        // Décocher l'autre sub-parent et tous ses enfants
+        other.checked = false;
+        other.closest('.pb-item')?.classList.remove('checked');
+        const otherGroup = other.dataset.subgroup;
+        if (otherGroup) {
+          spGrid.querySelectorAll(`input[data-subgroup-child="${otherGroup}"]`).forEach(child => {
+            child.checked = false;
+            child.closest('.pb-item')?.classList.remove('checked');
+            // Décocher aussi les auto-parent children
+            if (child.value) {
+              spGrid.querySelectorAll(`input[data-auto-parent="${child.value}"]`).forEach(gc => {
+                gc.checked = false;
+                gc.closest('.pb-item')?.classList.remove('checked');
+              });
+            }
+          });
+        }
+      }
+    });
+  });
   // 9. Re-sync toutes les catégories principales (pb-cat-checkbox)
   grid.querySelectorAll('.pb-cat-checkbox, .modal-pb-cat, .diag-pb-cat').forEach(catCb => {
     const cat = catCb.closest('.pb-category');
