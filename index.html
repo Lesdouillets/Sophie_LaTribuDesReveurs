@@ -4561,10 +4561,18 @@ function diagSelectAll(checked) {
 }
 
 function onDiagnosticPbChange() {
-  state.selectedPbs = new Set([...document.querySelectorAll('.diag-pb:checked')].map(cb=>cb.value));
-  syncPbsToFicheClient();
-  syncPbsHighlights();
-  rebuildAfterPbChange();
+  setTimeout(function() {
+    state.selectedPbs = new Set([...document.querySelectorAll('.diag-pb:checked')].map(cb=>cb.value));
+    syncPbsToFicheClient();
+    syncPbsHighlights();
+    // Ne pas re-rendre la section courante pour ne pas détruire le diagnostic en cours d'utilisation
+    const savedId = state.sections[state.currentIdx]?.id;
+    buildSidebarPbPanel();
+    buildSections();
+    const newIdx = state.sections.findIndex(s=>s.id===savedId);
+    state.currentIdx = newIdx>=0 ? newIdx : Math.min(state.currentIdx, state.sections.length-1);
+    buildSidebar();
+  }, 0);
 }
 
 // Sync le surlignage vert sur fiche client
