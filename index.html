@@ -5531,28 +5531,48 @@ document.addEventListener('change', function(e) {
     });
   }
   // 8b. Exclusivité entre sub-parents (ex: Courbes pas OK / Lait OK / Diversification OK)
-  document.querySelectorAll('.pb-sub-parent[data-exclusive]:checked, .modal-pb-sub-parent[data-exclusive]:checked, .diag-pb-sub-parent[data-exclusive]:checked').forEach(sp => {
-    const exGroup = sp.dataset.exclusive;
-    const spGrid = sp.closest('.problematiques-grid') || document;
-    spGrid.querySelectorAll(`input[data-exclusive="${exGroup}"]`).forEach(other => {
-      if (other !== sp && other.checked) {
-        // Décocher l'autre sub-parent et tous ses enfants
-        other.checked = false;
-        other.closest('.pb-item')?.classList.remove('checked');
-        const otherGroup = other.dataset.subgroup;
-        if (otherGroup) {
-          spGrid.querySelectorAll(`input[data-subgroup-child="${otherGroup}"]`).forEach(child => {
+  // Trouver quel sub-parent exclusif contient le cb cliqué — c'est celui qui doit rester
+  const cbGrid = cb.closest('.problematiques-grid') || document;
+  const exclusiveGroups = new Set();
+  cbGrid.querySelectorAll('.pb-sub-parent[data-exclusive]:checked, .modal-pb-sub-parent[data-exclusive]:checked, .diag-pb-sub-parent[data-exclusive]:checked').forEach(sp => {
+    if (sp.dataset.exclusive) exclusiveGroups.add(sp.dataset.exclusive);
+  });
+  exclusiveGroups.forEach(exGroup => {
+    const checkedInGroup = [...cbGrid.querySelectorAll(`input[data-exclusive="${exGroup}"]:checked`)];
+    if (checkedInGroup.length <= 1) return;
+    // Trouver le sub-parent "actif" = celui qui contient cb ou un ancêtre de cb
+    let activeSp = null;
+    checkedInGroup.forEach(sp => {
+      const spCategory = sp.closest('.pb-category');
+      if (spCategory && spCategory.contains(cb)) activeSp = sp;
+    });
+    if (!activeSp) activeSp = checkedInGroup[checkedInGroup.length - 1];
+    // Décocher tous les autres
+    checkedInGroup.forEach(sp => {
+      if (sp === activeSp) return;
+      sp.checked = false;
+      sp.closest('.pb-item')?.classList.remove('checked');
+      const otherGroup = sp.dataset.subgroup;
+      if (otherGroup) {
+        function uncheckAllInSubgroup(grp) {
+          cbGrid.querySelectorAll(`input[data-subgroup-child="${grp}"]`).forEach(child => {
             child.checked = false;
             child.closest('.pb-item')?.classList.remove('checked');
-            // Décocher aussi les auto-parent children
             if (child.value) {
-              spGrid.querySelectorAll(`input[data-auto-parent="${child.value}"]`).forEach(gc => {
+              cbGrid.querySelectorAll(`input[data-auto-parent="${child.value}"]`).forEach(gc => {
                 gc.checked = false;
                 gc.closest('.pb-item')?.classList.remove('checked');
               });
             }
+            // Récursif pour les sub-parents imbriqués
+            if (child.dataset.subgroup) uncheckAllInSubgroup(child.dataset.subgroup);
+          });
+          // Aussi décocher les sub-parents internes
+          cbGrid.querySelectorAll(`input[data-subgroup="${grp}"]`).forEach(innerSp => {
+            innerSp.checked = false;
           });
         }
+        uncheckAllInSubgroup(otherGroup);
       }
     });
   });
