@@ -1569,11 +1569,19 @@
                   <div class="pb-category pb-level-1">
                     <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="rythme_te" data-auto-only="true"> Temps d'éveil</label>
                     <div class="pb-items">
-                      <label class="pb-item"><input type="checkbox" name="pb" value="rythme_te_trop_long" data-exclusive="rythme_te" data-subgroup-child="rythme_te" data-excludes-value="rythme_siestes_courtes"> <span>Trop long</span></label>
-                      <label class="pb-item" style="padding-left:16px;font-size:11px;font-style:italic;color:#999"><input type="checkbox" name="pb" value="rythme_te_long_siestes_courtes" data-auto-parent="rythme_te_trop_long"> <span>Conséquences : Siestes courtes</span></label>
-                      <label class="pb-item" style="padding-left:16px;font-size:11px;font-style:italic;color:#999"><input type="checkbox" name="pb" value="rythme_te_long_reveils_matinaux" data-excludes-value="rythme_reveil_fatigue" data-auto-parent="rythme_te_trop_long"> <span>Conséquences : Réveils matinaux</span></label>
-                      <label class="pb-item"><input type="checkbox" name="pb" value="rythme_te_trop_court" data-exclusive="rythme_te" data-subgroup-child="rythme_te" data-excludes-value="rythme_siestes_courtes"> <span>Trop court</span></label>
-                      <label class="pb-item" style="padding-left:16px;font-size:11px;font-style:italic;color:#999"><input type="checkbox" name="pb" value="rythme_te_court_siestes_courtes" data-auto-parent="rythme_te_trop_court"> <span>Conséquences : Siestes courtes</span></label>
+                      <div class="pb-category pb-level-2">
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="rythme_te_trop_long" data-exclusive="rythme_te" data-subgroup-child="rythme_te" data-excludes-value="rythme_siestes_courtes"> Trop long</label>
+                        <div class="pb-items">
+                          <label class="pb-item pb-consequence-style"><input type="checkbox" name="pb" value="rythme_te_long_siestes_courtes" data-auto-parent="rythme_te_trop_long"> <span>Conséquences : Siestes courtes</span></label>
+                          <label class="pb-item pb-consequence-style"><input type="checkbox" name="pb" value="rythme_te_long_reveils_matinaux" data-excludes-value="rythme_reveil_fatigue" data-auto-parent="rythme_te_trop_long"> <span>Conséquences : Réveils matinaux</span></label>
+                        </div>
+                      </div>
+                      <div class="pb-category pb-level-2">
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="rythme_te_trop_court" data-exclusive="rythme_te" data-subgroup-child="rythme_te" data-excludes-value="rythme_siestes_courtes"> Trop court</label>
+                        <div class="pb-items">
+                          <label class="pb-item pb-consequence-style"><input type="checkbox" name="pb" value="rythme_te_court_siestes_courtes" data-auto-parent="rythme_te_trop_court"> <span>Conséquences : Siestes courtes</span></label>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <label class="pb-item"><input type="checkbox" name="pb" value="rythme_siestes_courtes" data-excludes="rythme_te"> <span>Siestes courtes <span style="color:#999;font-size:11px">(TE OK)</span></span></label>
