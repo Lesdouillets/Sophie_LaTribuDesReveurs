@@ -3197,7 +3197,7 @@ async function resumeConsultation() {
 }
 
 document.querySelectorAll('input[name="pb"], input[name="alim"]').forEach(cb => {
-  cb.addEventListener('change', function() { this.closest('.pb-item').classList.toggle('checked', this.checked); });
+  cb.addEventListener('change', function() { this.closest('.pb-item')?.classList.toggle('checked', this.checked); });
 });
 
 // ═══════════════════════════════════════════════════
