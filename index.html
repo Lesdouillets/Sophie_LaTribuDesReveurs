@@ -565,56 +565,109 @@
     }
 
     /* Bandeau ENFANT (option conditionnelle à l'intérieur d'une section)
-       Même style visuel que le bandeau parent mais avec un bleu gris mat, et un léger retrait */
+       Aspect "bouton" comme le bandeau parent, mais en bleu plus clair + léger retrait */
     .block-option-banner {
       display: flex; align-items: center; gap: 10px;
-      padding: 10px 14px;
-      margin: 14px 0 10px 24px;
-      background: linear-gradient(90deg, #6e81a3, #8496b4);
+      padding: 12px 18px;
+      margin: 18px 0 12px 24px;
+      background: linear-gradient(135deg, #44567a, #7387a9);
       color: white;
-      border-radius: 10px;
+      border-radius: 12px;
       font-weight: 900;
-      font-size: 15px;
-      letter-spacing: 0.3px;
+      font-size: 15.5px;
+      letter-spacing: 0.4px;
       border: none !important;
-      box-shadow: 0 2px 6px rgba(110,129,163,0.25);
+      box-shadow: 0 4px 12px rgba(44,70,110,0.30), inset 0 1px 0 rgba(255,255,255,0.15);
       line-height: 1.3;
+      transition: filter 0.15s, box-shadow 0.15s;
     }
+    .block-option-banner:hover { filter: brightness(1.08); box-shadow: 0 5px 14px rgba(44,70,110,0.38), inset 0 1px 0 rgba(255,255,255,0.2); }
     /* Les blocs à la suite d'un bandeau enfant (contenu de l'option) héritent du même retrait à droite.
        La classe "after-option-banner" est appliquée en JS par markAfterOptionBanner(). */
     .edit-block-wrap.after-option-banner {
       margin-left: 24px;
     }
-    /* Annule l'indentation pour les blocs marqués _parentLevel (ex. question de synthèse à la fin) */
+    /* Annule l'indentation pour les blocs marqués _parentLevel (ex. question de synthèse à la fin)
+       + ajoute un espace visuel pour le séparer du bloc d'option précédent */
     .edit-block-wrap.reset-indent {
       margin-left: 0 !important;
+      margin-top: 32px !important;
     }
 
-    /* Sections conditionnelles injectées inline dans V. Diagnostic (à la suite) */
+    /* Sections conditionnelles injectées inline dans V. Diagnostic — conteneur englobant avec couleur par catégorie */
     .inline-conditional-section {
-      margin-top: 28px;
-      padding-top: 20px;
-      border-top: 2px dashed var(--border);
+      margin-top: 24px;
+      margin-bottom: 8px;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: white;
     }
     .inline-conditional-header {
       display: flex; align-items: center; gap: 10px;
-      margin-bottom: 14px;
-      padding: 10px 14px;
+      margin-bottom: 0;
+      padding: 12px 18px;
       background: linear-gradient(90deg, var(--primary-dark), var(--primary));
       color: white;
-      border-radius: 10px;
+      border-radius: 0;
       cursor: pointer;
       user-select: none;
       transition: filter 0.15s;
     }
-    .inline-conditional-header:hover { filter: brightness(1.1); }
+    .inline-conditional-header:hover { filter: brightness(1.08); }
     .inline-conditional-emoji { font-size: 22px; }
     .inline-conditional-title { flex: 1; font-size: 16px; font-weight: 800; letter-spacing: 0.3px; }
     .inline-conditional-arrow { font-size: 14px; transition: transform 0.2s; flex-shrink: 0; }
+    .inline-conditional-content {
+      padding: 18px 20px 16px;
+    }
     /* État replié : masquer le contenu, faire pivoter la flèche */
     .inline-conditional-section.collapsed .inline-conditional-content { display: none; }
-    .inline-conditional-section.collapsed .inline-conditional-header { margin-bottom: 0; }
     .inline-conditional-section.collapsed .inline-conditional-arrow { transform: rotate(-90deg); }
+
+    /* ═══ Couleurs par catégorie parente ═══ */
+    .inline-conditional-section[data-category="confort_physique"] {
+      border-color: #fca5a5; background: #fef5f5;
+    }
+    .inline-conditional-section[data-category="confort_physique"] > .inline-conditional-header {
+      background: linear-gradient(90deg, #b91c1c, #ef4444);
+    }
+    .inline-conditional-section[data-category="nutrition"] {
+      border-color: #86efac; background: #f0fdf4;
+    }
+    .inline-conditional-section[data-category="nutrition"] > .inline-conditional-header {
+      background: linear-gradient(90deg, #047857, #10b981);
+    }
+    .inline-conditional-section[data-category="rythme"] {
+      border-color: #fcd34d; background: #fffbeb;
+    }
+    .inline-conditional-section[data-category="rythme"] > .inline-conditional-header {
+      background: linear-gradient(90deg, #b45309, #f59e0b);
+    }
+    .inline-conditional-section[data-category="strategie"] {
+      border-color: #93c5fd; background: #eff6ff;
+    }
+    .inline-conditional-section[data-category="strategie"] > .inline-conditional-header {
+      background: linear-gradient(90deg, #1e40af, #3b82f6);
+    }
+    .inline-conditional-section[data-category="env"] {
+      border-color: #c4b5fd; background: #f5f3ff;
+    }
+    .inline-conditional-section[data-category="env"] > .inline-conditional-header {
+      background: linear-gradient(90deg, #6d28d9, #8b5cf6);
+    }
+    .inline-conditional-section[data-category="relationnel"] {
+      border-color: #f9a8d4; background: #fdf2f8;
+    }
+    .inline-conditional-section[data-category="relationnel"] > .inline-conditional-header {
+      background: linear-gradient(90deg, #be185d, #ec4899);
+    }
+    .inline-conditional-section[data-category="souhait"] {
+      border-color: #5eead4; background: #f0fdfa;
+    }
+    .inline-conditional-section[data-category="souhait"] > .inline-conditional-header {
+      background: linear-gradient(90deg, #0f766e, #14b8a6);
+    }
     /* Bouton "Fermer cette section" à la fin de chaque section parente affichée inline */
     .btn-close-conditional {
       display: inline-flex; align-items: center; gap: 6px;
@@ -5522,8 +5575,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     // Affiche le contenu des sections conditionnelles dont la problématique est cochée, à la suite de V. Diagnostic
     const checkedSections = SCRIPT_DATA.conditional.filter(s => s.problematiqueId && isProblematiqueMatched(s.problematiqueId, state.selectedPbs));
     if (checkedSections.length === 0) return '';
-    return checkedSections.map(s => `
-      <div class="inline-conditional-section" data-section-id="${s.id}">
+    return checkedSections.map(s => {
+      const cat = getPbCategoryFromValue(s.problematiqueId) || 'autre';
+      return `
+      <div class="inline-conditional-section" data-section-id="${s.id}" data-category="${cat}">
         <div class="inline-conditional-header" onclick="toggleConditionalSection('${s.id}')">
           <span class="inline-conditional-emoji">${s.emoji || '📄'}</span>
           <span class="inline-conditional-title">${s.title}</span>
@@ -5533,7 +5588,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
           ${renderBlocks(getOverrideBlocks(s), s.id)}
           <button type="button" class="btn-close-conditional" onclick="toggleConditionalSection('${s.id}')">✕ Fermer cette section</button>
         </div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
   }
 
   if (b.type === 'grouped_checklist') {
@@ -6337,7 +6393,16 @@ function onDiagnosticPbChange() {
 // Ne modifie PAS state.selectedPbs ni les cases cochées dans le modal/fiche/diagnostic.
 function toggleConditionalSection(sectionId) {
   const el = document.querySelector(`.inline-conditional-section[data-section-id="${sectionId}"]`);
-  if (el) el.classList.toggle('collapsed');
+  if (!el) return;
+  const wasCollapsed = el.classList.contains('collapsed');
+  el.classList.toggle('collapsed');
+  // Si on vient de replier (passage non-replié → replié), scroller en haut de la section
+  // pour que l'utilisateur retrouve naturellement la section suivante juste en dessous
+  if (!wasCollapsed) {
+    requestAnimationFrame(() => {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
 }
 
 // Re-calcule le contenu des sections conditionnelles affichées inline à la suite de V. Diagnostic
@@ -6354,8 +6419,10 @@ function refreshInlineConditionalSections() {
     s.problematiqueId && isProblematiqueMatched(s.problematiqueId, state.selectedPbs)
   );
   if (!checkedSections.length) return;
-  const html = checkedSections.map(s => `
-    <div class="inline-conditional-section" data-section-id="${s.id}">
+  const html = checkedSections.map(s => {
+    const cat = getPbCategoryFromValue(s.problematiqueId) || 'autre';
+    return `
+    <div class="inline-conditional-section" data-section-id="${s.id}" data-category="${cat}">
       <div class="inline-conditional-header" onclick="toggleConditionalSection('${s.id}')">
         <span class="inline-conditional-emoji">${s.emoji || '📄'}</span>
         <span class="inline-conditional-title">${s.title}</span>
@@ -6365,7 +6432,8 @@ function refreshInlineConditionalSections() {
         ${renderBlocks(getOverrideBlocks(s), s.id)}
         <button type="button" class="btn-close-conditional" onclick="toggleConditionalSection('${s.id}')">✕ Fermer cette section</button>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
   const navButtons = area.querySelector('.nav-buttons');
   if (navButtons) {
     navButtons.insertAdjacentHTML('beforebegin', html);
