@@ -845,6 +845,117 @@
       50%      { box-shadow: inset 0 0 0 4px rgba(200,0,0,0.4), inset 0 0 40px rgba(200,0,0,0.10); }
     }
 
+    /* ═══ REMINDER "FIN DES OBJECTIFS" ═══ */
+    #objectifs-reminder {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #ffffff;
+      border: 2px solid #6366f1;
+      border-left: 6px solid #6366f1;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(99,102,241,0.25), 0 2px 8px rgba(0,0,0,0.08);
+      max-width: 360px;
+      font-family: inherit;
+      animation: reminder-enter 0.45s cubic-bezier(0.2, 1, 0.3, 1) both, reminder-pulse-blue 3s ease-in-out 0.5s infinite;
+    }
+    #objectifs-reminder.escalated {
+      border-color: #f59e0b;
+      border-left-color: #f59e0b;
+      box-shadow: 0 10px 30px rgba(245,158,11,0.30), 0 2px 8px rgba(0,0,0,0.08);
+      animation: reminder-enter 0.45s cubic-bezier(0.2, 1, 0.3, 1) both, reminder-pulse-orange 2s ease-in-out infinite;
+    }
+    #objectifs-reminder.very-escalated {
+      border-color: #dc2626;
+      border-left-color: #dc2626;
+      box-shadow: 0 10px 30px rgba(220,38,38,0.35), 0 2px 8px rgba(0,0,0,0.08);
+      animation: reminder-enter 0.45s cubic-bezier(0.2, 1, 0.3, 1) both, reminder-pulse-red 1.3s ease-in-out infinite;
+    }
+    #objectifs-reminder .reminder-icon {
+      font-size: 28px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    #objectifs-reminder .reminder-body { flex: 1; min-width: 0; }
+    #objectifs-reminder .reminder-title {
+      font-weight: 800;
+      font-size: 14px;
+      color: #1e1b4b;
+      letter-spacing: 0.2px;
+    }
+    #objectifs-reminder.escalated .reminder-title { color: #78350f; }
+    #objectifs-reminder.very-escalated .reminder-title { color: #7f1d1d; }
+    #objectifs-reminder .reminder-sub {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+    #objectifs-reminder .reminder-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    #objectifs-reminder .reminder-btn {
+      border: none;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 0.1s, box-shadow 0.15s, background 0.15s;
+      font-family: inherit;
+    }
+    #objectifs-reminder .reminder-btn:hover { transform: translateY(-1px); }
+    #objectifs-reminder .reminder-btn:active { transform: translateY(0); }
+    #objectifs-reminder .reminder-go {
+      background: #6366f1;
+      color: white;
+    }
+    #objectifs-reminder .reminder-go:hover { background: #4f46e5; }
+    #objectifs-reminder.escalated .reminder-go { background: #f59e0b; }
+    #objectifs-reminder.escalated .reminder-go:hover { background: #d97706; }
+    #objectifs-reminder.very-escalated .reminder-go { background: #dc2626; }
+    #objectifs-reminder.very-escalated .reminder-go:hover { background: #b91c1c; }
+    #objectifs-reminder .reminder-ack {
+      background: transparent;
+      color: #64748b;
+      border: 1px solid #cbd5e1;
+    }
+    #objectifs-reminder .reminder-ack:hover {
+      background: #f1f5f9;
+      color: #334155;
+    }
+    #objectifs-reminder.hiding {
+      animation: reminder-exit 0.3s ease-in both;
+    }
+    @keyframes reminder-enter {
+      from { opacity: 0; transform: translateY(20px) scale(0.92); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes reminder-exit {
+      from { opacity: 1; transform: translateY(0) scale(1); }
+      to   { opacity: 0; transform: translateY(10px) scale(0.95); }
+    }
+    @keyframes reminder-pulse-blue {
+      0%, 100% { box-shadow: 0 10px 30px rgba(99,102,241,0.25), 0 2px 8px rgba(0,0,0,0.08); }
+      50%      { box-shadow: 0 10px 36px rgba(99,102,241,0.45), 0 2px 8px rgba(0,0,0,0.08); }
+    }
+    @keyframes reminder-pulse-orange {
+      0%, 100% { box-shadow: 0 10px 30px rgba(245,158,11,0.30), 0 2px 8px rgba(0,0,0,0.08); transform: scale(1); }
+      50%      { box-shadow: 0 10px 40px rgba(245,158,11,0.55), 0 2px 8px rgba(0,0,0,0.08); transform: scale(1.015); }
+    }
+    @keyframes reminder-pulse-red {
+      0%, 100% { box-shadow: 0 10px 30px rgba(220,38,38,0.35), 0 2px 8px rgba(0,0,0,0.08); transform: scale(1); }
+      50%      { box-shadow: 0 10px 44px rgba(220,38,38,0.65), 0 2px 8px rgba(0,0,0,0.08); transform: scale(1.03); }
+    }
+
     /* OPTION PLEURS (bleu pâle) */
     .block-option.pleurs {
       background: #e8f4fb;
@@ -2664,6 +2775,19 @@
     </div><!-- /sos-panel -->
 
   </div><!-- /app-body -->
+
+  <!-- REMINDER "FIN DES OBJECTIFS" (flotte en bas à droite, visible uniquement si pas encore arrivé à V. Diagnostic) -->
+  <div id="objectifs-reminder" style="display:none" role="status" aria-live="polite">
+    <div class="reminder-icon">⏳</div>
+    <div class="reminder-body">
+      <div class="reminder-title">Fin des objectifs</div>
+      <div class="reminder-sub" id="reminder-elapsed">1 min écoulée</div>
+    </div>
+    <div class="reminder-actions">
+      <button type="button" class="reminder-btn reminder-go" onclick="goToDiagnosticSection()">Aller à V. Diagnostic</button>
+      <button type="button" class="reminder-btn reminder-ack" onclick="dismissObjectifsReminder()">OK, je note</button>
+    </div>
+  </div>
 </div><!-- /app-screen -->
 
 <!-- PANNEAU NOTES FLOTTANT (visible pendant consultation) -->
@@ -2929,6 +3053,7 @@ async function doLogout() {
   localStorage.removeItem('tdr_offline_user');
   document.getElementById('notes-panel').style.display = 'none';
   if (state.timerInterval) clearInterval(state.timerInterval);
+  stopObjectifsReminder();
   showLogin();
 }
 
@@ -3039,6 +3164,11 @@ let state = {
   timerInterval: null,
   scriptOverrides: {},
   editMode: false,
+  // Reminder "Fin des objectifs" (se déclenche 1 min après le démarrage si pas arrivé à V. Diagnostic)
+  reminderStartTs: null,
+  reminderDismissed: false,
+  reminderResolved: false,
+  reminderInterval: null,
 };
 
 // Nettoyage des overrides — supprimer TOUT pour forcer la re-sync
@@ -4071,6 +4201,91 @@ function startConsultation() {
 }
 
 // ═══════════════════════════════════════════════════
+// REMINDER "FIN DES OBJECTIFS"
+// Affiche un badge flottant si, 1 min après le démarrage de la consultation,
+// l'utilisateur n'est pas encore arrivé à la section V. Diagnostic.
+// Escalade visuelle : bleu (1min) → orange (2min) → rouge (3min).
+// ═══════════════════════════════════════════════════
+function isOnDiagnosticSection() {
+  const cur = state.sections && state.sections[state.currentIdx];
+  return !!(cur && cur.id === 'diagnostic');
+}
+
+function startObjectifsReminder() {
+  stopObjectifsReminder(); // sécurité
+  state.reminderStartTs = Date.now();
+  state.reminderDismissed = false;
+  state.reminderResolved = false;
+  // Si l'utilisateur démarre déjà sur V. Diagnostic, on résout direct
+  if (isOnDiagnosticSection()) { state.reminderResolved = true; return; }
+  // Tick toutes les secondes (léger, pas besoin de haute fréquence)
+  state.reminderInterval = setInterval(tickObjectifsReminder, 1000);
+}
+
+function stopObjectifsReminder() {
+  if (state.reminderInterval) { clearInterval(state.reminderInterval); state.reminderInterval = null; }
+  const el = document.getElementById('objectifs-reminder');
+  if (el) el.style.display = 'none';
+}
+
+function tickObjectifsReminder() {
+  const el = document.getElementById('objectifs-reminder');
+  if (!el || !state.reminderStartTs) return;
+
+  // Auto-résolution : on est arrivé à V. Diagnostic
+  if (isOnDiagnosticSection()) {
+    state.reminderResolved = true;
+    hideObjectifsReminder();
+    if (state.reminderInterval) { clearInterval(state.reminderInterval); state.reminderInterval = null; }
+    return;
+  }
+  // Déjà acquitté manuellement : on ne fait rien (reste masqué jusqu'à la fin)
+  if (state.reminderDismissed) return;
+
+  const elapsedSec = Math.floor((Date.now() - state.reminderStartTs) / 1000);
+
+  // Avant 60s : rien
+  if (elapsedSec < 60) { el.style.display = 'none'; return; }
+
+  // Afficher le badge
+  if (el.style.display === 'none') el.style.display = 'flex';
+
+  // Escalade
+  el.classList.remove('escalated', 'very-escalated');
+  if (elapsedSec >= 180) el.classList.add('very-escalated');
+  else if (elapsedSec >= 120) el.classList.add('escalated');
+
+  // Mettre à jour le temps écoulé affiché
+  const elapsedMin = Math.floor(elapsedSec / 60);
+  const subEl = document.getElementById('reminder-elapsed');
+  if (subEl) subEl.textContent = `${elapsedMin} min écoulée${elapsedMin > 1 ? 's' : ''} — pensez à clôturer`;
+}
+
+function hideObjectifsReminder() {
+  const el = document.getElementById('objectifs-reminder');
+  if (!el) return;
+  el.classList.add('hiding');
+  setTimeout(() => {
+    el.classList.remove('hiding');
+    el.style.display = 'none';
+  }, 300);
+}
+
+function dismissObjectifsReminder() {
+  state.reminderDismissed = true;
+  hideObjectifsReminder();
+  if (state.reminderInterval) { clearInterval(state.reminderInterval); state.reminderInterval = null; }
+}
+
+function goToDiagnosticSection() {
+  const idx = (state.sections || []).findIndex(s => s && s.id === 'diagnostic');
+  if (idx >= 0) {
+    if (typeof navigateTo === 'function') navigateTo(idx);
+    // tickObjectifsReminder détectera le changement au prochain tick et résoudra
+  }
+}
+
+// ═══════════════════════════════════════════════════
 // BUILD SECTIONS
 // ═══════════════════════════════════════════════════
 function adaptSectionsToClient() {
@@ -4110,6 +4325,7 @@ function initUI() {
   buildSidebarPbPanel();
   renderCurrentSection();
   startTimer();
+  startObjectifsReminder();
   // Affiche le panneau de notes
   const notesPanel = document.getElementById('notes-panel');
   if (notesPanel) {
@@ -4360,6 +4576,12 @@ function navigateTo(idx) {
   buildSidebar();
   renderCurrentSection();
   document.getElementById('content-area').scrollTop = 0;
+  // Résolution immédiate du reminder "Fin des objectifs" si on arrive sur V. Diagnostic
+  if (typeof isOnDiagnosticSection === 'function' && isOnDiagnosticSection() && !state.reminderResolved) {
+    state.reminderResolved = true;
+    hideObjectifsReminder();
+    if (state.reminderInterval) { clearInterval(state.reminderInterval); state.reminderInterval = null; }
+  }
 }
 function prevSection() { if (state.currentIdx>0) navigateTo(state.currentIdx-1); }
 function nextSection() {
@@ -5780,6 +6002,7 @@ document.addEventListener('DOMContentLoaded', initPbCategoryToggles);
 function newConsultation() {
   if (confirm('Revenir à l\'écran de setup ?')) {
     if (state.timerInterval) clearInterval(state.timerInterval);
+    stopObjectifsReminder();
     document.getElementById('notes-panel').style.display = 'none';
     document.getElementById('app-screen').style.display = 'none';
     document.getElementById('setup-screen').style.display = 'flex';
