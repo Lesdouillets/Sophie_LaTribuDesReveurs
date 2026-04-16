@@ -1010,6 +1010,26 @@
     .block-option.action.open-action .block-empathie { border: none !important; box-shadow: none !important; background: #ffffff !important; }
     .block-option.action.open-action .block-question { background: #fdf0f0 !important; }
     .block-option.action.open-action .block-conseil { background: #f0fdf4 !important; border: 1px solid #bbf7d0 !important; }
+
+    /* OPTION ACTION — variante VERTE (bouton fermé uniquement) */
+    .block-option.action.action-green:not(.open-action) {
+      background: linear-gradient(135deg, #14532d, #22c55e);
+      box-shadow: 0 4px 15px rgba(34,197,94,0.40);
+    }
+
+    /* 2 boutons ACTION imbriqués dans un action ouvert : côte-à-côte, centrés */
+    .block-option.action.open-action > .option-content > .edit-block-wrap:has(> .block-option.action:not(.open-action)) {
+      display: inline-block;
+      vertical-align: top;
+      margin: 6px 4px;
+    }
+    .block-option.action.open-action > .option-content:has(> .edit-block-wrap > .block-option.action:not(.open-action)) {
+      text-align: center;
+    }
+    /* Restaurer l'alignement texte par défaut pour le contenu des autres blocs */
+    .block-option.action.open-action > .option-content:has(> .edit-block-wrap > .block-option.action:not(.open-action)) > .edit-block-wrap:not(:has(> .block-option.action)) {
+      text-align: left;
+    }
     .action-close-btn {
       display: block; margin: 8px auto 12px; padding: 6px 20px;
       background: var(--primary); color: #fff; border: none; border-radius: 8px;
@@ -4814,10 +4834,11 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const dangerClass = b.style === 'danger' ? ' danger' : '';
     const pleursClass = b.style === 'pleurs' ? ' pleurs' : '';
     const purpleClass = b.style === 'purple' ? ' purple' : '';
-    const actionClass = b.style === 'action' ? ' action' : '';
+    const actionClass = (b.style === 'action' || b.style === 'action-green') ? ' action' : '';
+    const actionGreenClass = b.style === 'action-green' ? ' action-green' : '';
     const cardClass = b.style === 'card' ? ' card' : '';
     const emojiHtml = b.emoji ? `<span class="option-emoji">${b.emoji}</span>` : '';
-    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${actionClass}${cardClass}">
+    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${actionClass}${actionGreenClass}${cardClass}">
       <div class="option-header" onclick="toggleOption(this)">
         <span style="display:flex;align-items:center;gap:6px">
           ${emojiHtml}

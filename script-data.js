@@ -69,7 +69,7 @@ const SCRIPT_DATA = {
           blocks: [
             { type: "question", text: "Est-ce que vous êtes **accompagnée** du coup?" },
             {
-              type: "option", label: "✅ Accompagnée avec un psy", style: "pleurs",
+              type: "option", label: "Accompagnée avec un psy", emoji: "✅", style: "action-green",
               blocks: [
                 { type: "empathie", text: "- **Super !**\n- **Je comprends…** ce que vous vivez, c'est **vraiment pas simple.**\n- Après une naissance, c'est **NORMAL** de se sentir **fatiguée**, et de se sentir un peu **perdue** par moments.\n- Vous êtes **LOIN** d'être la **SEULE** à passer par là" },
                 { type: "conseil", text: "- 👏 Et j'ai envie de vous dire **quelque chose d'important** :\n- vous faites déjà **énormément** pour votre BB\n- Même si parfois, vous avez l'impression **DE NE pas y arriver** ⇒ **EN RÉALITÉ**, vous vous en occupez **très bien**" },
@@ -77,7 +77,7 @@ const SCRIPT_DATA = {
               ]
             },
             {
-              type: "option", label: "❌ PAS accompagnée avec un psy", style: "pleurs",
+              type: "option", label: "PAS accompagnée avec un psy", emoji: "❌", style: "action",
               blocks: [
                 { type: "empathie", text: "- D'accord. **Je comprends…** ce que vous vivez, c'est **vraiment pas simple.**\n- Après une naissance, c'est **NORMAL** de se sentir **fatiguée** et un peu **perdue** par moments.\n- Vous êtes **LOIN** d'être la **SEULE** à passer par là." },
                 { type: "conseil", text: "- 👏 Vous faites déjà **énormément** pour votre BB\n- Même si parfois, vous avez l'impression **DE NE pas y arriver** ⇒ **EN RÉALITÉ**, vous vous en occupez **très bien**" },
@@ -279,7 +279,7 @@ const SCRIPT_DATA = {
         { type: "conseil_vert", text: "- 👏 … et avec **TOUT** ce que vous avez **déjà mis en place**,\n- …vous êtes **sur la bonne voie**" },
         { type: "question", text: "Est-ce que vous êtes **à l'aise avec ça, avec les émotions?**" },
         {
-          type: "option", label: "Si PAS OK avec les émotions 😭", style: "pleurs",
+          type: "option", label: "Si PAS OK avec les émotions", emoji: "😭", style: "action",
           blocks: [
             { type: "normal", text: "- **Merci** de me le dire, c'est **vraiment important pour MOI** de le savoir.\n- **Je comprends…** c'est **difficile d'entendre son enfant pleurer**\n- Et franchement, **personne n'aime ça**\n\n- Et **CE QUE** je peux vous **dire TOUT DE SUITE**\n  ⇒ c'est qu'**ON NE** va **PAS laisser** [prénom_enfant] **seul** avec ses pleurs.\n\n- **Par contre**, il y a **quelque chose d'important** à comprendre :\n  - Les **pleurs chez l'enfant**, c'est surtout une **façon de communiquer.**\n\n- Aujourd'hui, on va **lui demander de changer une habitude** … et **comme pour nous,**\n  - **le changement**\n  - **personne n'aime ça !**\n\n- Donc oui, c'est **possible** qu'**il réagisse**,\n  - qu'il **proteste**\n  - ou qu'il **pleure**\n  - pour dire **\"*je préférais avant*\"**\n  ⇒ Et ça… c'est une **réaction normale**\n\n- L'idée, encore une fois, c'est vraiment de **VOUS respecter**\n- On va simplement :\n  - **adapter l'accompagnement**\n  - pour que ce soit le **+ confortable** possible **POUR VOUS**.\n\n- On pourra aller vers quelque chose :\n  - de **+ progressif**\n  - avec des **ajustements tout en douceur**\n  - et vous **POURREZ avancer à VOTRE rythme**\n\n- Et surtout, **vous ne SEREZ PAS SEULE**\n- On va **LE faire ensemble**\n- … ET LUI il aura **SURTOUT besoin** :\n  - de sentir que **VOUS êtes là**\n  - et CE QUE **vous SAVEZ ce que vous faites**" }
           ]
