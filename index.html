@@ -4692,16 +4692,23 @@ const PB_CATEGORY_LABELS = {
   souhait: '🎯 Souhaits',
 };
 
+// Un problematiqueId peut être une string OU un tableau. On vérifie si au moins une case cochée correspond.
+function isProblematiqueMatched(problematiqueId, selectedPbs) {
+  if (!problematiqueId) return true;
+  if (Array.isArray(problematiqueId)) return problematiqueId.some(id => selectedPbs.has(id));
+  return selectedPbs.has(problematiqueId);
+}
+
 function buildSections() {
   state.sections = [];
   SCRIPT_DATA.required.forEach(s => state.sections.push({...s, sectionType:'required'}));
   // On inclut TOUTES les sections conditionnelles (cochées ou non) ; on tag si elles sont actives
   SCRIPT_DATA.conditional.forEach(s => {
-    const isActive = !s.problematiqueId || state.selectedPbs.has(s.problematiqueId);
+    const isActive = isProblematiqueMatched(s.problematiqueId, state.selectedPbs);
     state.sections.push({...s, sectionType:'conditional', isActiveLevier: isActive});
   });
   SCRIPT_DATA.planAction.forEach(s => {
-    if (!s.problematiqueId || state.selectedPbs.has(s.problematiqueId))
+    if (isProblematiqueMatched(s.problematiqueId, state.selectedPbs))
       state.sections.push({...s, sectionType:'plan'});
   });
   const alwaysShown = ['plan_rythme','plan_environnement','plan_strategie_accompagnement'];
@@ -5397,7 +5404,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
 
   if (b.type === 'conditional_sections_inline') {
     // Affiche le contenu des sections conditionnelles dont la problématique est cochée, à la suite de V. Diagnostic
-    const checkedSections = SCRIPT_DATA.conditional.filter(s => s.problematiqueId && state.selectedPbs.has(s.problematiqueId));
+    const checkedSections = SCRIPT_DATA.conditional.filter(s => s.problematiqueId && isProblematiqueMatched(s.problematiqueId, state.selectedPbs));
     if (checkedSections.length === 0) return '';
     return checkedSections.map(s => `
       <div class="inline-conditional-section">
