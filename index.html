@@ -565,20 +565,24 @@
     }
 
     /* Bandeau ENFANT (option conditionnelle à l'intérieur d'une section)
-       Même style visuel que le bandeau parent (.inline-conditional-header) mais en bleu plus clair, avec un léger retrait */
+       Même style visuel que le bandeau parent mais avec un bleu gris mat, et un léger retrait */
     .block-option-banner {
       display: flex; align-items: center; gap: 10px;
       padding: 10px 14px;
       margin: 14px 0 10px 24px;
-      background: linear-gradient(90deg, #3b82f6, #60a5fa);
+      background: linear-gradient(90deg, #6e81a3, #8496b4);
       color: white;
       border-radius: 10px;
       font-weight: 800;
       font-size: 15px;
       letter-spacing: 0.3px;
       border: none !important;
-      box-shadow: 0 2px 6px rgba(59,130,246,0.25);
+      box-shadow: 0 2px 6px rgba(110,129,163,0.25);
       line-height: 1.3;
+    }
+    /* Les blocs à la suite d'un bandeau enfant (contenu de l'option) héritent du même retrait à droite */
+    .block-option-banner ~ .block {
+      margin-left: 24px;
     }
 
     /* Sections conditionnelles injectées inline dans V. Diagnostic (à la suite) */
