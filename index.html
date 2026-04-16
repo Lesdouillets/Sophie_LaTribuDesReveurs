@@ -4929,6 +4929,7 @@ function togglePobBar() {
 }
 
 function buildSidebar() {
+  try {
   ['nav-required','nav-conditional','nav-plan'].forEach(id => document.getElementById(id).innerHTML='');
   // Collecter les sections conditionnelles par catégorie parente (pour le grouping)
   const conditionalByCategory = {};
@@ -4977,6 +4978,9 @@ function buildSidebar() {
     condContainer.appendChild(groupDiv);
   });
   updateTimeProgress();
+  } catch (err) {
+    console.error('[buildSidebar] Erreur :', err);
+  }
 }
 
 // Expand/collapse d'une catégorie parente dans la sidebar "Par problématique"
