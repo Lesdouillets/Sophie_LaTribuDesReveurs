@@ -467,6 +467,40 @@
     .nav-title { flex: 1; font-weight: 500; line-height: 1.3; }
     .nav-check { font-size: 11px; color: #74c69d; flex-shrink: 0; }
 
+    /* Sidebar "Par problématique" — groupes par catégorie parente avec expand/collapse */
+    .nav-group { margin-bottom: 2px; }
+    .nav-group-header {
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 18px; cursor: pointer;
+      font-size: 12.5px; font-weight: 600;
+      color: rgba(255,255,255,0.78);
+      transition: background 0.15s, color 0.15s;
+      user-select: none;
+    }
+    .nav-group-header:hover { background: var(--sidebar-hover); color: white; }
+    .nav-group-arrow {
+      font-size: 10px;
+      width: 12px; text-align: center;
+      color: rgba(255,255,255,0.55);
+      flex-shrink: 0;
+    }
+    .nav-group-label { flex: 1; line-height: 1.3; }
+    .nav-group.all-inactive > .nav-group-header { color: rgba(255,255,255,0.4); }
+    .nav-group.all-inactive > .nav-group-header .nav-group-arrow { color: rgba(255,255,255,0.3); }
+    .nav-group-children { }
+    .nav-item.nav-child { padding-left: 38px; font-size: 12.5px; }
+    /* Grisage des sections dont la problématique n'est pas cochée */
+    .nav-item.inactive-levier {
+      color: rgba(255,255,255,0.4);
+      font-style: italic;
+    }
+    .nav-item.inactive-levier .nav-emoji { opacity: 0.5; }
+    .nav-item.inactive-levier:hover { color: rgba(255,255,255,0.75); }
+    .nav-item.inactive-levier.active {
+      color: white;
+      font-style: normal;
+    }
+
     /* Sidebar pb toggle */
     .sidebar-pb-toggle {
       display: flex; align-items: center; gap: 6px;
@@ -488,6 +522,23 @@
       flex: 1; overflow-y: auto; padding: 28px 36px 340px;
       background: var(--bg);
     }
+    /* Bouton "Retour à la consultation" en haut des sections conditionnelles */
+    .btn-return-to-diag {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px;
+      margin-bottom: 14px;
+      background: #eef2ff;
+      color: #3730a3;
+      border: 1.5px solid #a5b4fc;
+      border-radius: 10px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      font-family: inherit;
+    }
+    .btn-return-to-diag:hover { background: #e0e7ff; border-color: #818cf8; }
+    .btn-return-to-diag:active { transform: translateY(1px); }
     .content-area::-webkit-scrollbar { width: 6px; }
     .content-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
@@ -3263,6 +3314,9 @@ let state = {
   solutionsReminderDismissed: false,
   solutionsReminderResolved: false,
   solutionsReminderInterval: null,
+  // Sidebar "Par problématique" : scroll mémorisé de V. Diagnostic + catégories développées
+  diagScrollTop: 0,
+  pbSidebarExpanded: new Set(),
 };
 
 // Nettoyage des overrides — supprimer TOUT pour forcer la re-sync
@@ -4482,11 +4536,39 @@ function adaptSectionsToClient() {
   // Pas besoin de toucher aux overrides → le formatage persiste entre clients
 }
 
+// Retourne la catégorie parente (top-level) pour un problematiqueId donné
+// Mappe "rgo_*", "allergie_*" → confort_physique ; "nutrition_*" → nutrition ; etc.
+function getPbCategoryFromValue(pbValue) {
+  if (!pbValue) return null;
+  if (pbValue.startsWith('rgo_') || pbValue.startsWith('allergie_')) return 'confort_physique';
+  if (pbValue.startsWith('nutrition_') || pbValue.startsWith('nutri_')) return 'nutrition';
+  if (pbValue.startsWith('rythme_')) return 'rythme';
+  if (pbValue.startsWith('strategie_')) return 'strategie';
+  if (pbValue.startsWith('env_')) return 'env';
+  if (pbValue.startsWith('relationnel_')) return 'relationnel';
+  if (pbValue.startsWith('souhait_')) return 'souhait';
+  return null;
+}
+
+// Libellés des catégories parentes (pour les headers de groupe dans la sidebar)
+const PB_CATEGORY_LABELS = {
+  confort_physique: '🩺 Confort physique',
+  nutrition: '🍽️ Nutrition',
+  rythme: '⏰ Organisation de la journée',
+  strategie: '😴 Stratégie de sommeil',
+  env: '🏠 Environnement de sommeil',
+  relationnel: '💬 Enjeux relationnels',
+  souhait: '🎯 Souhaits',
+};
+
 function buildSections() {
   state.sections = [];
   SCRIPT_DATA.required.forEach(s => state.sections.push({...s, sectionType:'required'}));
-  SCRIPT_DATA.conditional.filter(s => !s.problematiqueId || state.selectedPbs.has(s.problematiqueId))
-    .forEach(s => state.sections.push({...s, sectionType:'conditional'}));
+  // On inclut TOUTES les sections conditionnelles (cochées ou non) ; on tag si elles sont actives
+  SCRIPT_DATA.conditional.forEach(s => {
+    const isActive = !s.problematiqueId || state.selectedPbs.has(s.problematiqueId);
+    state.sections.push({...s, sectionType:'conditional', isActiveLevier: isActive});
+  });
   SCRIPT_DATA.planAction.forEach(s => {
     if (!s.problematiqueId || state.selectedPbs.has(s.problematiqueId))
       state.sections.push({...s, sectionType:'plan'});
@@ -4700,15 +4782,60 @@ function togglePobBar() {
 
 function buildSidebar() {
   ['nav-required','nav-conditional','nav-plan'].forEach(id => document.getElementById(id).innerHTML='');
+  // Collecter les sections conditionnelles par catégorie parente (pour le grouping)
+  const conditionalByCategory = {};
   state.sections.forEach((s, idx) => {
+    if (s.sectionType === 'conditional') {
+      const cat = getPbCategoryFromValue(s.problematiqueId) || 'autre';
+      if (!conditionalByCategory[cat]) conditionalByCategory[cat] = [];
+      conditionalByCategory[cat].push({section: s, idx});
+      return;
+    }
+    // Required et plan : rendu plat comme avant
     const div = document.createElement('div');
     div.className = 'nav-item' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'');
     div.innerHTML = `<span class="nav-emoji">${s.emoji||'📄'}</span><span class="nav-title">${s.title}</span>${state.completedSet.has(idx)?'<span class="nav-check">✓</span>':''}`;
     div.onclick = () => navigateTo(idx);
-    const target = s.sectionType==='required' ? 'nav-required' : s.sectionType==='conditional' ? 'nav-conditional' : 'nav-plan';
+    const target = s.sectionType==='required' ? 'nav-required' : 'nav-plan';
     document.getElementById(target).appendChild(div);
   });
+  // Rendu groupé pour les conditionnelles (dans l'ordre défini par PB_CATEGORY_LABELS)
+  const condContainer = document.getElementById('nav-conditional');
+  const catOrder = ['confort_physique', 'nutrition', 'rythme', 'strategie', 'env', 'relationnel', 'souhait', 'autre'];
+  catOrder.forEach(cat => {
+    const items = conditionalByCategory[cat];
+    if (!items || items.length === 0) return;
+    const isExpanded = state.pbSidebarExpanded.has(cat);
+    const anyActive = items.some(it => it.section.isActiveLevier);
+    const groupDiv = document.createElement('div');
+    groupDiv.className = 'nav-group' + (isExpanded ? ' expanded' : '') + (anyActive ? '' : ' all-inactive');
+    const header = document.createElement('div');
+    header.className = 'nav-group-header';
+    const label = PB_CATEGORY_LABELS[cat] || '❓ Autre';
+    header.innerHTML = `<span class="nav-group-arrow">${isExpanded ? '▾' : '▸'}</span><span class="nav-group-label">${label}</span>`;
+    header.onclick = () => toggleSidebarPbCategory(cat);
+    groupDiv.appendChild(header);
+    const childrenDiv = document.createElement('div');
+    childrenDiv.className = 'nav-group-children';
+    if (!isExpanded) childrenDiv.style.display = 'none';
+    items.forEach(({section, idx}) => {
+      const div = document.createElement('div');
+      div.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'') + (section.isActiveLevier ? '' : ' inactive-levier');
+      div.innerHTML = `<span class="nav-emoji">${section.emoji||'📄'}</span><span class="nav-title">${section.title}</span>${state.completedSet.has(idx)?'<span class="nav-check">✓</span>':''}`;
+      div.onclick = () => navigateTo(idx);
+      childrenDiv.appendChild(div);
+    });
+    groupDiv.appendChild(childrenDiv);
+    condContainer.appendChild(groupDiv);
+  });
   updateTimeProgress();
+}
+
+// Expand/collapse d'une catégorie parente dans la sidebar "Par problématique"
+function toggleSidebarPbCategory(cat) {
+  if (state.pbSidebarExpanded.has(cat)) state.pbSidebarExpanded.delete(cat);
+  else state.pbSidebarExpanded.add(cat);
+  buildSidebar();
 }
 
 function buildSidebarPbPanel() {
@@ -4761,10 +4888,23 @@ function togglePb(value, checked) {
 // NAVIGATION
 // ═══════════════════════════════════════════════════
 function navigateTo(idx) {
+  // Sauvegarder le scroll de V. Diagnostic AVANT de changer de section (pour permettre le retour "à l'endroit où on était")
+  const currentSection = state.sections[state.currentIdx];
+  const contentArea = document.getElementById('content-area');
+  if (currentSection && currentSection.id === 'diagnostic' && contentArea) {
+    state.diagScrollTop = contentArea.scrollTop;
+  }
   state.currentIdx = Math.max(0, Math.min(idx, state.sections.length-1));
   buildSidebar();
   renderCurrentSection();
-  document.getElementById('content-area').scrollTop = 0;
+  // Restaurer le scroll si on revient sur V. Diagnostic ; sinon remettre à 0
+  const newSection = state.sections[state.currentIdx];
+  if (newSection && newSection.id === 'diagnostic' && state.diagScrollTop > 0 && contentArea) {
+    // setTimeout pour attendre que le DOM soit rendu
+    setTimeout(() => { contentArea.scrollTop = state.diagScrollTop; }, 0);
+  } else if (contentArea) {
+    contentArea.scrollTop = 0;
+  }
   // Résolution immédiate du reminder "Fin des objectifs" si on arrive sur V. Diagnostic
   if (typeof isOnDiagnosticSection === 'function' && isOnDiagnosticSection() && !state.reminderResolved) {
     state.reminderResolved = true;
@@ -4777,6 +4917,12 @@ function navigateTo(idx) {
     hideSolutionsReminder();
     if (state.solutionsReminderInterval) { clearInterval(state.solutionsReminderInterval); state.solutionsReminderInterval = null; }
   }
+}
+
+// Retour à V. Diagnostic depuis une section conditionnelle, en restaurant le scroll
+function returnToDiagnostic() {
+  const idx = (state.sections || []).findIndex(s => s && s.id === 'diagnostic');
+  if (idx >= 0) navigateTo(idx);
 }
 function prevSection() { if (state.currentIdx>0) navigateTo(state.currentIdx-1); }
 function nextSection() {
@@ -4800,7 +4946,12 @@ function renderCurrentSection() {
   const area = document.getElementById('content-area');
   area.classList.toggle('edit-mode-on', state.editMode);
   const hasOverride = !!state.scriptOverrides[section.id];
-  let html = `<div class="section-header">
+  let html = '';
+  // Bouton "Retour à la consultation" sur les sections conditionnelles
+  if (section.sectionType === 'conditional') {
+    html += `<button class="btn-return-to-diag" onclick="returnToDiagnostic()">↩ Retour à la consultation (V. Diagnostic)</button>`;
+  }
+  html += `<div class="section-header">
     <span class="section-emoji">${section.emoji||'📄'}</span>
     <h1 class="section-title">${section.title}</h1>
   </div>`;
