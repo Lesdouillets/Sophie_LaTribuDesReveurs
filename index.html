@@ -3614,6 +3614,15 @@ function syncMedicalToConfort() {
   }
   // Mettre à jour state.selectedPbs
   state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
+  // Propager aux autres containers (modal + diag V.) pour que les 3 vues restent synchronisées
+  if (typeof syncPbsToFicheClient === 'function') syncPbsToFicheClient();
+  if (typeof syncPbsHighlights === 'function') syncPbsHighlights();
+  // Si on est déjà en consultation, rebuild les sections + sidebar pour refléter isActiveLevier
+  const appScreen = document.getElementById('app-screen');
+  if (appScreen && getComputedStyle(appScreen).display !== 'none') {
+    if (typeof buildSections === 'function') buildSections();
+    if (typeof buildSidebar === 'function') buildSidebar();
+  }
 }
 function toggleTypeLait() {
   const bib = document.querySelector('input[name="alim"][value="Biberon lait infantile"]');
