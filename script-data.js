@@ -582,7 +582,7 @@ const SCRIPT_DATA = {
           ]
         },
         { type: "normal", text: "- **CES conditions** **pour s'endormir** sont **devenus** ⇒ SES **stratégies d'endormissement**\n- Et le **problème**, c'est que SES stratégies, il ne peut **PAS les reproduire TOUT SEUL**<br>⇒ On appelle ça une **stratégie d'endormissement DÉPENDANTE**, car elle **dépend d'une aide extérieure, c'est-à-dire de VOUS**" },
-        { type: "option_banner", label: "Si rendormissements difficiles", showIfPb: "strategie_rendormissement" },
+        { type: "option_banner", label: "Rendormissements difficiles", showIfPb: "strategie_rendormissement" },
         { type: "normal", text: "- Et quand il se réveille, **l'environnement a parfois changé** :", showIfPb: "strategie_rendormissement" },
         {
           type: "checklist", label: "Changements à l'environnement", showIfPb: "strategie_rendormissement",
