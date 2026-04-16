@@ -1277,7 +1277,7 @@
             </div>
             <div class="form-group">
               <label>Âge réel <span style="color:#aaa;font-size:11px">(au jour de la consultation)</span></label>
-              <input type="text" id="age-enfant" placeholder="ex. 8 mois 12 jours" autocomplete="off"
+              <input type="text" id="age-enfant" placeholder="ex. 6 semaines ou 8 mois 12 jours" autocomplete="off"
                 oninput="computeClientFields()">
             </div>
             <div class="form-group">
@@ -1286,7 +1286,7 @@
             </div>
             <div class="form-group">
               <label>Âge corrigé <span style="color:#aaa;font-size:11px">(au jour de la consultation)</span></label>
-              <input type="text" id="age-corrige-manuel" placeholder="ex. 6 mois 5 jours" autocomplete="off"
+              <input type="text" id="age-corrige-manuel" placeholder="ex. 6 semaines ou 6 mois 5 jours" autocomplete="off"
                 oninput="computeClientFields()">
             </div>
           </div>
@@ -3867,10 +3867,11 @@ function computeClientFields() {
       // Fallback: parser l'âge manuel (ex: "4 ans 11 mois" ou "3 mois 5 jours")
       const tryParse = (s) => {
         if (!s) return null;
-        let y=0, m=0;
+        let y=0, m=0, w=0;
         const ym = s.match(/(\d+)\s*an/i); if(ym) y=parseInt(ym[1]);
         const mm = s.match(/(\d+)\s*mois/i); if(mm) m=parseInt(mm[1]);
-        return (y*12+m) || null;
+        const wm = s.match(/(\d+)\s*sem/i); if(wm) w=parseInt(wm[1]);
+        return (y*12+m+Math.floor(w/4)) || null;
       };
       agePourLait = tryParse(ageCorrigeManuel) ?? tryParse(ageManuel);
     }
@@ -4766,16 +4767,19 @@ function renderBesoinsSommeil(tranches) {
   const reel = state.client.ageReelMois;
   function parseAgeToMonths(s) {
     if (!s) return NaN;
-    let y = 0, m = 0, d = 0;
+    let y = 0, m = 0, w = 0, d = 0;
     const ym = s.match(/(\d+)\s*an/i); if (ym) y = parseInt(ym[1]);
     // Supporter les décimales : "7,5 mois" ou "7.5 mois"
     const mm = s.match(/([\d]+[.,]?\d*)\s*mois/i); if (mm) m = Math.floor(parseFloat(mm[1].replace(',', '.')));
-    const dm = s.match(/(\d+)\s*jour/i); if (dm) d = parseInt(dm[1]);
-    if (y === 0 && m === 0 && d === 0) {
+    // Semaines : "6 semaines", "6 sem", "6 sem." (avant "mois" pour éviter collision "sem"/"mois")
+    const wm = s.match(/(\d+)\s*sem/i); if (wm) w = parseInt(wm[1]);
+    const dm = s.match(/(\d+)\s*(?:jour|j\b)/i); if (dm) d = parseInt(dm[1]);
+    if (y === 0 && m === 0 && w === 0 && d === 0) {
       const num = parseFloat(s.replace(',', '.'));
       return isNaN(num) ? NaN : Math.floor(num);
     }
-    return y * 12 + m;
+    // 4 semaines ≈ 1 mois ; les jours isolés ne basculent pas de tranche
+    return y * 12 + m + Math.floor(w / 4);
   }
   // Priorité : âge corrigé calculé > âge réel calculé > âge corrigé manuel > âge réel manuel
   const months = (corrige !== '' && corrige !== undefined && corrige !== null)
