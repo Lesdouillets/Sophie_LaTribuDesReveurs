@@ -581,12 +581,8 @@
       line-height: 1.3;
     }
     /* Les blocs à la suite d'un bandeau enfant (contenu de l'option) héritent du même retrait à droite.
-       Le retrait est appliqué au wrapper .edit-block-wrap car les .block ne sont pas siblings directs. */
-    .edit-block-wrap:has(> .block-option-banner) ~ .edit-block-wrap {
-      margin-left: 24px;
-    }
-    /* Sans le wrapper (rendu inline sans sectionId), fallback sur les siblings directs */
-    .block-option-banner ~ .block {
+       La classe "after-option-banner" est appliquée en JS par markAfterOptionBanner(). */
+    .edit-block-wrap.after-option-banner {
       margin-left: 24px;
     }
     /* Annule l'indentation pour les blocs marqués _parentLevel (ex. question de synthèse à la fin) */
@@ -610,6 +606,24 @@
     }
     .inline-conditional-emoji { font-size: 22px; }
     .inline-conditional-title { font-size: 16px; font-weight: 800; letter-spacing: 0.3px; }
+    /* Bouton "Fermer cette section" à la fin de chaque section parente affichée inline */
+    .btn-close-conditional {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 18px; padding: 8px 16px;
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1.5px solid #fca5a5;
+      border-radius: 10px;
+      font-size: 13px; font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    }
+    .btn-close-conditional:hover {
+      background: #fee2e2;
+      border-color: #f87171;
+    }
+    .btn-close-conditional:active { transform: translateY(1px); }
 
     /* ═══ INFO PANEL (panneau latéral pour les boutons "💡 Plus d'infos") ═══ */
     .info-panel {
@@ -5233,6 +5247,8 @@ function renderCurrentSection() {
   area.innerHTML = html;
   // Marquer les parents qui contiennent 2+ boutons action frères (pour le centrage CSS)
   markActionSiblingContainers(area);
+  // Marquer les wrappers qui suivent un bandeau enfant pour appliquer le retrait à droite
+  markAfterOptionBanner(area);
   // Remplir le diagnostic avec le clone des checkboxes si la section contient le container
   const diagContainer = document.getElementById('diag-pb-container');
   if (diagContainer) {
@@ -5504,6 +5520,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
           <span class="inline-conditional-title">${s.title}</span>
         </div>
         ${renderBlocks(getOverrideBlocks(s), s.id)}
+        <button type="button" class="btn-close-conditional" onclick="closeConditionalSection('${s.id}')">✕ Fermer cette section</button>
       </div>`).join('');
   }
 
@@ -5815,6 +5832,36 @@ function toggleOption(header) {
     toggle.textContent = isOpen ? 'Réduire' : 'Dérouler';
     arrow.textContent = isOpen ? '▾' : '▸';
   }
+}
+
+// Marquer les wrappers (.edit-block-wrap) qui se trouvent APRÈS un wrapper contenant un bandeau enfant (option_banner)
+// → applique un retrait à gauche pour aligner le contenu avec leur bandeau
+function markAfterOptionBanner(root) {
+  if (!root) return;
+  // Un wrapper déjà marqué _parentLevel (classe reset-indent) remet le niveau au parent
+  const wrappers = root.querySelectorAll('.edit-block-wrap');
+  let afterBanner = false;
+  wrappers.forEach(w => {
+    // Si ce wrapper est un bandeau enfant → commencer l'indentation
+    const isBanner = !!w.querySelector(':scope > .block-option-banner');
+    const isResetIndent = w.classList.contains('reset-indent');
+    if (isResetIndent) {
+      afterBanner = false;
+      w.classList.remove('after-option-banner');
+      return;
+    }
+    if (isBanner) {
+      afterBanner = true;
+      // Le banner lui-même n'est pas indenté par wrapper (son margin interne le fait)
+      w.classList.remove('after-option-banner');
+      return;
+    }
+    if (afterBanner) {
+      w.classList.add('after-option-banner');
+    } else {
+      w.classList.remove('after-option-banner');
+    }
+  });
 }
 
 // Marquer les parents contenant 2+ wrappers-action comme frères directs (pour centrage CSS)
@@ -6274,6 +6321,39 @@ function onDiagnosticPbChange() {
   }, 0);
 }
 
+// Ferme une section conditionnelle affichée inline : décoche les problématiques associées,
+// propage le changement à toutes les vues (fiche client, modal, diag), et rafraîchit l'affichage
+function closeConditionalSection(sectionId) {
+  const section = (window.SCRIPT_DATA || SCRIPT_DATA).conditional.find(s => s.id === sectionId);
+  if (!section) return;
+  // Déterminer les pbs à décocher
+  let pbsToUncheck = [];
+  if (Array.isArray(section.problematiqueId)) {
+    pbsToUncheck = [...section.problematiqueId];
+  } else if (typeof section.problematiqueId === 'string') {
+    pbsToUncheck = [section.problematiqueId];
+    // Cas particulier : strategie_rendormissement regroupe les 3 pbs stratégie + la case parente
+    if (section.problematiqueId === 'strategie_rendormissement') {
+      pbsToUncheck.push('strategie_tetine', 'strategie_enjeu_relationnel');
+    }
+  }
+  // Retirer ces pbs de state.selectedPbs
+  pbsToUncheck.forEach(pb => state.selectedPbs.delete(pb));
+  // Pour strategie_rendormissement, décocher aussi la case parente "Stratégie de sommeil"
+  if (section.problematiqueId === 'strategie_rendormissement') {
+    document.querySelectorAll('.pb-cat-checkbox[data-cat="strategie"], .modal-pb-cat[data-cat="strategie"], .diag-pb-cat[data-cat="strategie"]').forEach(cb => { cb.checked = false; });
+  }
+  // Propager aux 3 containers (fiche client + modal + diag)
+  if (typeof syncPbsToFicheClient === 'function') syncPbsToFicheClient();
+  if (typeof syncPbsHighlights === 'function') syncPbsHighlights();
+  // Reconstruire sections + sidebar + rafraîchir l'inline + le compteur
+  if (typeof buildSidebarPbPanel === 'function') buildSidebarPbPanel();
+  if (typeof buildSections === 'function') buildSections();
+  if (typeof buildSidebar === 'function') buildSidebar();
+  if (typeof refreshInlineConditionalSections === 'function') refreshInlineConditionalSections();
+  if (typeof updateDiagLeviersCount === 'function') updateDiagLeviersCount();
+}
+
 // Re-calcule le contenu des sections conditionnelles affichées inline à la suite de V. Diagnostic
 // sans reconstruire tout le diagnostic (on préserve le diag-pb-container)
 function refreshInlineConditionalSections() {
@@ -6295,6 +6375,7 @@ function refreshInlineConditionalSections() {
         <span class="inline-conditional-title">${s.title}</span>
       </div>
       ${renderBlocks(getOverrideBlocks(s), s.id)}
+      <button type="button" class="btn-close-conditional" onclick="closeConditionalSection('${s.id}')">✕ Fermer cette section</button>
     </div>`).join('');
   const navButtons = area.querySelector('.nav-buttons');
   if (navButtons) {
@@ -6302,6 +6383,8 @@ function refreshInlineConditionalSections() {
   } else {
     area.insertAdjacentHTML('beforeend', html);
   }
+  // Re-marquer les wrappers après option_banner pour que le retrait s'applique dans les sections inline
+  markAfterOptionBanner(area);
 }
 
 // Compter les catégories top-level cochées dans le diagnostic (excluant "souhait")
