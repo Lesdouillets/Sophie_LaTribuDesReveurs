@@ -845,12 +845,20 @@
       50%      { box-shadow: inset 0 0 0 4px rgba(200,0,0,0.4), inset 0 0 40px rgba(200,0,0,0.10); }
     }
 
-    /* ═══ REMINDER "FIN DES OBJECTIFS" ═══ */
-    #objectifs-reminder {
+    /* ═══ REMINDERS (stack en bas-droite) ═══ */
+    #reminders-stack {
       position: fixed;
       bottom: 20px;
       right: 20px;
       z-index: 9999;
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 10px;
+      align-items: flex-end;
+      pointer-events: none; /* le conteneur laisse passer les clics ; les toasts les récupèrent */
+    }
+    .reminder-toast {
+      pointer-events: auto;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -864,44 +872,44 @@
       font-family: inherit;
       animation: reminder-enter 0.45s cubic-bezier(0.2, 1, 0.3, 1) both, reminder-pulse-blue 3s ease-in-out 0.5s infinite;
     }
-    #objectifs-reminder.escalated {
+    .reminder-toast.escalated {
       border-color: #f59e0b;
       border-left-color: #f59e0b;
       box-shadow: 0 10px 30px rgba(245,158,11,0.30), 0 2px 8px rgba(0,0,0,0.08);
       animation: reminder-enter 0.45s cubic-bezier(0.2, 1, 0.3, 1) both, reminder-pulse-orange 2s ease-in-out infinite;
     }
-    #objectifs-reminder.very-escalated {
+    .reminder-toast.very-escalated {
       border-color: #dc2626;
       border-left-color: #dc2626;
       box-shadow: 0 10px 30px rgba(220,38,38,0.35), 0 2px 8px rgba(0,0,0,0.08);
       animation: reminder-enter 0.45s cubic-bezier(0.2, 1, 0.3, 1) both, reminder-pulse-red 1.3s ease-in-out infinite;
     }
-    #objectifs-reminder .reminder-icon {
+    .reminder-toast .reminder-icon {
       font-size: 28px;
       line-height: 1;
       flex-shrink: 0;
     }
-    #objectifs-reminder .reminder-body { flex: 1; min-width: 0; }
-    #objectifs-reminder .reminder-title {
+    .reminder-toast .reminder-body { flex: 1; min-width: 0; }
+    .reminder-toast .reminder-title {
       font-weight: 800;
       font-size: 14px;
       color: #1e1b4b;
       letter-spacing: 0.2px;
     }
-    #objectifs-reminder.escalated .reminder-title { color: #78350f; }
-    #objectifs-reminder.very-escalated .reminder-title { color: #7f1d1d; }
-    #objectifs-reminder .reminder-sub {
+    .reminder-toast.escalated .reminder-title { color: #78350f; }
+    .reminder-toast.very-escalated .reminder-title { color: #7f1d1d; }
+    .reminder-toast .reminder-sub {
       font-size: 12px;
       color: #64748b;
       margin-top: 2px;
     }
-    #objectifs-reminder .reminder-actions {
+    .reminder-toast .reminder-actions {
       display: flex;
       flex-direction: column;
       gap: 4px;
       flex-shrink: 0;
     }
-    #objectifs-reminder .reminder-btn {
+    .reminder-toast .reminder-btn {
       border: none;
       border-radius: 8px;
       padding: 6px 10px;
@@ -912,27 +920,27 @@
       transition: transform 0.1s, box-shadow 0.15s, background 0.15s;
       font-family: inherit;
     }
-    #objectifs-reminder .reminder-btn:hover { transform: translateY(-1px); }
-    #objectifs-reminder .reminder-btn:active { transform: translateY(0); }
-    #objectifs-reminder .reminder-go {
+    .reminder-toast .reminder-btn:hover { transform: translateY(-1px); }
+    .reminder-toast .reminder-btn:active { transform: translateY(0); }
+    .reminder-toast .reminder-go {
       background: #6366f1;
       color: white;
     }
-    #objectifs-reminder .reminder-go:hover { background: #4f46e5; }
-    #objectifs-reminder.escalated .reminder-go { background: #f59e0b; }
-    #objectifs-reminder.escalated .reminder-go:hover { background: #d97706; }
-    #objectifs-reminder.very-escalated .reminder-go { background: #dc2626; }
-    #objectifs-reminder.very-escalated .reminder-go:hover { background: #b91c1c; }
-    #objectifs-reminder .reminder-ack {
+    .reminder-toast .reminder-go:hover { background: #4f46e5; }
+    .reminder-toast.escalated .reminder-go { background: #f59e0b; }
+    .reminder-toast.escalated .reminder-go:hover { background: #d97706; }
+    .reminder-toast.very-escalated .reminder-go { background: #dc2626; }
+    .reminder-toast.very-escalated .reminder-go:hover { background: #b91c1c; }
+    .reminder-toast .reminder-ack {
       background: transparent;
       color: #64748b;
       border: 1px solid #cbd5e1;
     }
-    #objectifs-reminder .reminder-ack:hover {
+    .reminder-toast .reminder-ack:hover {
       background: #f1f5f9;
       color: #334155;
     }
-    #objectifs-reminder.hiding {
+    .reminder-toast.hiding {
       animation: reminder-exit 0.3s ease-in both;
     }
     @keyframes reminder-enter {
@@ -2776,16 +2784,32 @@
 
   </div><!-- /app-body -->
 
-  <!-- REMINDER "FIN DES OBJECTIFS" (flotte en bas à droite, visible uniquement si pas encore arrivé à V. Diagnostic) -->
-  <div id="objectifs-reminder" style="display:none" role="status" aria-live="polite">
-    <div class="reminder-icon">⏳</div>
-    <div class="reminder-body">
-      <div class="reminder-title">Fin des objectifs</div>
-      <div class="reminder-sub" id="reminder-elapsed">1 min écoulée</div>
+  <!-- REMINDERS FLOTTANTS (stack en bas à droite) -->
+  <div id="reminders-stack">
+    <!-- "Fin des objectifs" — 1 min après démarrage si pas arrivé à V. Diagnostic -->
+    <div id="objectifs-reminder" class="reminder-toast" style="display:none" role="status" aria-live="polite">
+      <div class="reminder-icon">⏳</div>
+      <div class="reminder-body">
+        <div class="reminder-title">Fin des objectifs</div>
+        <div class="reminder-sub" id="reminder-elapsed">30 min écoulées — pensez à clôturer</div>
+      </div>
+      <div class="reminder-actions">
+        <button type="button" class="reminder-btn reminder-go" onclick="goToDiagnosticSection()">Aller à V. Diagnostic</button>
+        <button type="button" class="reminder-btn reminder-ack" onclick="dismissObjectifsReminder()">OK, je note</button>
+      </div>
     </div>
-    <div class="reminder-actions">
-      <button type="button" class="reminder-btn reminder-go" onclick="goToDiagnosticSection()">Aller à V. Diagnostic</button>
-      <button type="button" class="reminder-btn reminder-ack" onclick="dismissObjectifsReminder()">OK, je note</button>
+
+    <!-- "Fin des solutions" — 15 min avant la fin si pas arrivé à IX. Reformulation -->
+    <div id="solutions-reminder" class="reminder-toast" style="display:none" role="status" aria-live="polite">
+      <div class="reminder-icon">⏳</div>
+      <div class="reminder-body">
+        <div class="reminder-title">Fin des solutions</div>
+        <div class="reminder-sub" id="solutions-reminder-sub">15 min restantes — pensez à clôturer</div>
+      </div>
+      <div class="reminder-actions">
+        <button type="button" class="reminder-btn reminder-go" onclick="goToReformulationSection()">Aller à IX. Reformulation</button>
+        <button type="button" class="reminder-btn reminder-ack" onclick="dismissSolutionsReminder()">OK, je note</button>
+      </div>
     </div>
   </div>
 </div><!-- /app-screen -->
@@ -3054,6 +3078,7 @@ async function doLogout() {
   document.getElementById('notes-panel').style.display = 'none';
   if (state.timerInterval) clearInterval(state.timerInterval);
   stopObjectifsReminder();
+  stopSolutionsReminder();
   showLogin();
 }
 
@@ -3169,6 +3194,10 @@ let state = {
   reminderDismissed: false,
   reminderResolved: false,
   reminderInterval: null,
+  // Reminder "Fin des solutions" (se déclenche 15 min avant la fin si pas arrivé à IX. Reformulation)
+  solutionsReminderDismissed: false,
+  solutionsReminderResolved: false,
+  solutionsReminderInterval: null,
 };
 
 // Nettoyage des overrides — supprimer TOUT pour forcer la re-sync
@@ -4244,16 +4273,16 @@ function tickObjectifsReminder() {
 
   const elapsedSec = Math.floor((Date.now() - state.reminderStartTs) / 1000);
 
-  // Avant 60s : rien
-  if (elapsedSec < 60) { el.style.display = 'none'; return; }
+  // Avant 30 min : rien
+  if (elapsedSec < 1800) { el.style.display = 'none'; return; }
 
   // Afficher le badge
   if (el.style.display === 'none') el.style.display = 'flex';
 
-  // Escalade
+  // Escalade : 30 min (bleu) → 33 min (orange) → 36 min (rouge)
   el.classList.remove('escalated', 'very-escalated');
-  if (elapsedSec >= 180) el.classList.add('very-escalated');
-  else if (elapsedSec >= 120) el.classList.add('escalated');
+  if (elapsedSec >= 2160) el.classList.add('very-escalated');
+  else if (elapsedSec >= 1980) el.classList.add('escalated');
 
   // Mettre à jour le temps écoulé affiché
   const elapsedMin = Math.floor(elapsedSec / 60);
@@ -4282,6 +4311,100 @@ function goToDiagnosticSection() {
   if (idx >= 0) {
     if (typeof navigateTo === 'function') navigateTo(idx);
     // tickObjectifsReminder détectera le changement au prochain tick et résoudra
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// REMINDER "FIN DES SOLUTIONS"
+// Affiche un badge flottant 15 min avant la fin de consultation
+// si l'utilisateur n'est pas encore arrivé à la section IX. Reformulation.
+// Escalade visuelle basée sur le TEMPS RESTANT :
+//   ≤ 15 min : bleu · ≤ 10 min : orange · ≤ 5 min (ou dépassé) : rouge
+// ═══════════════════════════════════════════════════
+function isOnReformulationSection() {
+  const cur = state.sections && state.sections[state.currentIdx];
+  return !!(cur && cur.id === 'reformulation');
+}
+
+function startSolutionsReminder() {
+  stopSolutionsReminder(); // sécurité
+  state.solutionsReminderDismissed = false;
+  state.solutionsReminderResolved = false;
+  // Si l'utilisateur démarre déjà sur IX. Reformulation, on résout direct
+  if (isOnReformulationSection()) { state.solutionsReminderResolved = true; return; }
+  // Tick toutes les secondes (léger)
+  state.solutionsReminderInterval = setInterval(tickSolutionsReminder, 1000);
+}
+
+function stopSolutionsReminder() {
+  if (state.solutionsReminderInterval) { clearInterval(state.solutionsReminderInterval); state.solutionsReminderInterval = null; }
+  const el = document.getElementById('solutions-reminder');
+  if (el) el.style.display = 'none';
+}
+
+function tickSolutionsReminder() {
+  const el = document.getElementById('solutions-reminder');
+  if (!el || !state.heureFin) return;
+
+  // Auto-résolution : on est arrivé à IX. Reformulation
+  if (isOnReformulationSection()) {
+    state.solutionsReminderResolved = true;
+    hideSolutionsReminder();
+    if (state.solutionsReminderInterval) { clearInterval(state.solutionsReminderInterval); state.solutionsReminderInterval = null; }
+    return;
+  }
+  // Déjà acquitté manuellement : on ne fait rien
+  if (state.solutionsReminderDismissed) return;
+
+  const endTs = state.heureFin instanceof Date ? state.heureFin.getTime() : Number(state.heureFin);
+  const remainingMs = endTs - Date.now();
+  const remainingMin = Math.floor(remainingMs / 60000);
+
+  // Avant les 15 dernières minutes : rien
+  if (remainingMs > 15 * 60 * 1000) { el.style.display = 'none'; return; }
+
+  // Afficher le badge
+  if (el.style.display === 'none') el.style.display = 'flex';
+
+  // Escalade selon le temps restant
+  el.classList.remove('escalated', 'very-escalated');
+  if (remainingMs <= 5 * 60 * 1000) el.classList.add('very-escalated');
+  else if (remainingMs <= 10 * 60 * 1000) el.classList.add('escalated');
+
+  // Mettre à jour le texte
+  const subEl = document.getElementById('solutions-reminder-sub');
+  if (subEl) {
+    if (remainingMs <= 0) {
+      subEl.textContent = 'Temps écoulé — pensez à clôturer';
+    } else if (remainingMin < 1) {
+      const remainingSec = Math.max(0, Math.floor(remainingMs / 1000));
+      subEl.textContent = `${remainingSec}s restantes — pensez à clôturer`;
+    } else {
+      subEl.textContent = `${remainingMin} min restante${remainingMin > 1 ? 's' : ''} — pensez à clôturer`;
+    }
+  }
+}
+
+function hideSolutionsReminder() {
+  const el = document.getElementById('solutions-reminder');
+  if (!el) return;
+  el.classList.add('hiding');
+  setTimeout(() => {
+    el.classList.remove('hiding');
+    el.style.display = 'none';
+  }, 300);
+}
+
+function dismissSolutionsReminder() {
+  state.solutionsReminderDismissed = true;
+  hideSolutionsReminder();
+  if (state.solutionsReminderInterval) { clearInterval(state.solutionsReminderInterval); state.solutionsReminderInterval = null; }
+}
+
+function goToReformulationSection() {
+  const idx = (state.sections || []).findIndex(s => s && s.id === 'reformulation');
+  if (idx >= 0) {
+    if (typeof navigateTo === 'function') navigateTo(idx);
   }
 }
 
@@ -4326,6 +4449,7 @@ function initUI() {
   renderCurrentSection();
   startTimer();
   startObjectifsReminder();
+  startSolutionsReminder();
   // Affiche le panneau de notes
   const notesPanel = document.getElementById('notes-panel');
   if (notesPanel) {
@@ -4581,6 +4705,12 @@ function navigateTo(idx) {
     state.reminderResolved = true;
     hideObjectifsReminder();
     if (state.reminderInterval) { clearInterval(state.reminderInterval); state.reminderInterval = null; }
+  }
+  // Résolution immédiate du reminder "Fin des solutions" si on arrive sur IX. Reformulation
+  if (typeof isOnReformulationSection === 'function' && isOnReformulationSection() && !state.solutionsReminderResolved) {
+    state.solutionsReminderResolved = true;
+    hideSolutionsReminder();
+    if (state.solutionsReminderInterval) { clearInterval(state.solutionsReminderInterval); state.solutionsReminderInterval = null; }
   }
 }
 function prevSection() { if (state.currentIdx>0) navigateTo(state.currentIdx-1); }
@@ -6003,6 +6133,7 @@ function newConsultation() {
   if (confirm('Revenir à l\'écran de setup ?')) {
     if (state.timerInterval) clearInterval(state.timerInterval);
     stopObjectifsReminder();
+    stopSolutionsReminder();
     document.getElementById('notes-panel').style.display = 'none';
     document.getElementById('app-screen').style.display = 'none';
     document.getElementById('setup-screen').style.display = 'flex';
