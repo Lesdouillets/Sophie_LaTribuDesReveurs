@@ -324,9 +324,9 @@ const SCRIPT_DATA = {
                 "Douleurs",
                 "Eczéma / peau atopique / psoriasis",
                 "Régurgitations :",
-                "&nbsp;&nbsp;&nbsp;&nbsp;↳ en jet",
-                "&nbsp;&nbsp;&nbsp;&nbsp;↳ sur tout le tps d'éveil",
-                "&nbsp;&nbsp;&nbsp;&nbsp;↳ lait caillé",
+                "&nbsp;&nbsp;&nbsp;&nbsp;en jet",
+                "&nbsp;&nbsp;&nbsp;&nbsp;sur tout le tps d'éveil",
+                "&nbsp;&nbsp;&nbsp;&nbsp;lait caillé",
               ]
             },
             {
