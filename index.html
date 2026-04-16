@@ -3900,6 +3900,8 @@ function populateFormFromClient(c) {
   });
   if (c.enseigne) { setEnseigne(c.enseigne); const sel = document.getElementById('enseigne-select'); if (sel) sel.value = c.enseigne; }
   computeClientFields();
+  // Sync medical → confort après chargement : si RGO/APLV médicaux sont cochés, la case pb "confort" correspondante doit l'être aussi
+  if (typeof syncMedicalToConfort === 'function') syncMedicalToConfort();
 }
 
 function loadClient(idx) {
