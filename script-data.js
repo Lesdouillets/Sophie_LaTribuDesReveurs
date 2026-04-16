@@ -145,7 +145,7 @@ const SCRIPT_DATA = {
         },
         { type: "separator", text: "📋 Difficultés identifiées" },
         {
-          type: "option", label: "Pas de dette de sommeil", emoji: "✅", style: "action-green",
+          type: "option", label: "Pas de dette de sommeil", emoji: "✅", style: "action-green", _purpleContent: true,
           blocks: [
             { type: "conseil", text: "- La **bonne nouvelle** c'est qu'aujourd'hui [prénom_enfant] n'est **PAS en dette de sommeil**" },
             { type: "conseil_vert", text: "👏 Vous faites **TOUT** pour que ça ne **soit pas le cas**!" },
@@ -154,7 +154,7 @@ const SCRIPT_DATA = {
           ]
         },
         {
-          type: "option", label: "Difficultés de sommeil identifiées", emoji: "❌", style: "action",
+          type: "option", label: "Difficultés de sommeil identifiées", emoji: "❌", style: "action", _purpleContent: true,
           blocks: [
             { type: "normal", text: "- Au vu de ce qu'on s'est dit\n- En effet, vous aviez **BIEN identifié** que votre enfant a des **difficultés de sommeil**.", _noBorder: true },
             { type: "normal", text: "**<u>⏱ Temps d'endormissement trop long :</u>** Il y a une **petite problématique** au niveau des **durées d'endormissement**… qui sont **très longues**", _purpleDark: true },

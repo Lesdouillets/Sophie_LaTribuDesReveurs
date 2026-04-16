@@ -1017,6 +1017,23 @@
       box-shadow: 0 4px 15px rgba(34,197,94,0.40);
     }
 
+    /* OPTION ACTION — intérieur VIOLET (quand le bouton est ouvert) */
+    .block-option.action.action-purple-inside.open-action {
+      background: #f5f0ff;
+      border-color: #7c3aed;
+    }
+    .block-option.action.action-purple-inside.open-action > .option-content {
+      background: #f5f0ff;
+    }
+    .block-option.action.action-purple-inside.open-action .block-normal {
+      background: #f5f0ff !important;
+      border-color: #d4c4f0 !important;
+    }
+    .block-option.action.action-purple-inside.open-action .block-empathie {
+      background: #f5f0ff !important;
+      border-color: #d4c4f0 !important;
+    }
+
     /* 2+ boutons ACTION frères (top-level ou imbriqués) : côte-à-côte
        Ne s'applique QUE si le wrapper a un wrapper-action frère (avant ou après), pour ne pas affecter un bouton action isolé. */
     .edit-block-wrap:has(> .block-option.action:not(.open-action)):has(~ .edit-block-wrap > .block-option.action:not(.open-action)),
@@ -4839,9 +4856,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const purpleClass = b.style === 'purple' ? ' purple' : '';
     const actionClass = (b.style === 'action' || b.style === 'action-green') ? ' action' : '';
     const actionGreenClass = b.style === 'action-green' ? ' action-green' : '';
+    const actionPurpleInsideClass = b._purpleContent ? ' action-purple-inside' : '';
     const cardClass = b.style === 'card' ? ' card' : '';
     const emojiHtml = b.emoji ? `<span class="option-emoji">${b.emoji}</span>` : '';
-    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${actionClass}${actionGreenClass}${cardClass}">
+    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${actionClass}${actionGreenClass}${actionPurpleInsideClass}${cardClass}">
       <div class="option-header" onclick="toggleOption(this)">
         <span style="display:flex;align-items:center;gap:6px">
           ${emojiHtml}
