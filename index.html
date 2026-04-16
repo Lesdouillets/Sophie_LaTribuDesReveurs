@@ -1294,16 +1294,16 @@
           <!-- Âges calculés -->
           <div id="ages-calcules" style="display:none;margin-top:16px;border-radius:12px;overflow:hidden;border:2px solid var(--border);box-shadow:0 4px 16px rgba(45,63,92,0.12)">
             <div style="background:linear-gradient(90deg,var(--primary-dark),var(--primary));color:white;font-size:11px;font-weight:800;padding:8px 16px;letter-spacing:0.8px;text-transform:uppercase">
-              📊 Âges calculés automatiquement
+              📊 Âges calculés <span style="font-weight:600;text-transform:none;letter-spacing:0.3px" id="ages-calcules-date-header">à la date de consultation</span>
             </div>
             <div style="background:white;padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
               <div style="background:#f5f7fc;border-radius:10px;padding:10px 14px;border:1.5px solid var(--border)">
-                <div style="font-size:10px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px">🎂 Âge réel aujourd'hui</div>
+                <div style="font-size:10px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px">🎂 Âge réel <span style="font-weight:400;text-transform:none;letter-spacing:0.3px">à la date de consultation</span></div>
                 <div style="font-size:16px;font-weight:800;color:var(--primary-dark)" id="age-reel-calc">–</div>
                 <div style="font-size:12px;color:var(--text-light);margin-top:2px" id="age-reel-mois">–</div>
               </div>
               <div style="background:#eaeff8;border-radius:10px;padding:10px 14px;border:1.5px solid #7a95b5">
-                <div style="font-size:10px;font-weight:700;color:#2d3f5c;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px">✏️ Âge corrigé aujourd'hui <span style="font-weight:400;font-style:italic">(si né à terme)</span></div>
+                <div style="font-size:10px;font-weight:700;color:#2d3f5c;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px">✏️ Âge corrigé <span style="font-weight:400;text-transform:none;letter-spacing:0.3px">à la date de consultation</span> <span style="font-weight:400;font-style:italic">(si né à terme)</span></div>
                 <div style="font-size:16px;font-weight:800;color:#2d3f5c" id="age-corrige-calc">–</div>
                 <div style="font-size:12px;color:#5e7194;margin-top:2px" id="age-corrige-mois">–</div>
               </div>
@@ -1469,7 +1469,7 @@
           <div class="form-grid">
             <div class="form-group">
               <label>Date</label>
-              <input type="date" id="consult-date">
+              <input type="date" id="consult-date" oninput="computeClientFields()">
             </div>
             <div class="form-group">
               <label>Heure de début</label>
@@ -3808,6 +3808,21 @@ function computeClientFields() {
 
   const ageReel = calcAge(dateNaiss, consultDate);
   const ageCorrige = (dateTerme && dateNaiss && new Date(dateTerme) > new Date(dateNaiss)) ? calcAge(dateTerme, consultDate) : calcAge(dateNaiss, consultDate);
+
+  // Afficher la date de consultation utilisée pour les calculs dans le header du bloc
+  const headerDateEl = document.getElementById('ages-calcules-date-header');
+  if (headerDateEl) {
+    if (consultDate) {
+      const [yy, mm, dd] = consultDate.split('-').map(Number);
+      const dLocal = new Date(yy, mm - 1, dd);
+      const todayLocal = new Date();
+      const isToday = todayLocal.getFullYear() === yy && (todayLocal.getMonth() + 1) === mm && todayLocal.getDate() === dd;
+      const dateStr = dLocal.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+      headerDateEl.textContent = isToday ? `au ${dateStr} (aujourd'hui)` : `au ${dateStr}`;
+    } else {
+      headerDateEl.textContent = 'à la date de consultation';
+    }
+  }
 
   const agesDiv = document.getElementById('ages-calcules');
   // Reset des affichages pour éviter les résidus d'anciens calculs
