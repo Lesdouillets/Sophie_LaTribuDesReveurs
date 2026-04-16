@@ -1025,6 +1025,16 @@
       vertical-align: top;
       margin: 6px 4px;
     }
+    /* Centrer la paire de boutons dans leur parent, SANS affecter le reste du contenu */
+    .content-area:has(> .edit-block-wrap:has(> .block-option.action:not(.open-action)) ~ .edit-block-wrap:has(> .block-option.action:not(.open-action))),
+    .block-option.action.open-action > .option-content:has(> .edit-block-wrap:has(> .block-option.action:not(.open-action)) ~ .edit-block-wrap:has(> .block-option.action:not(.open-action))) {
+      text-align: center;
+    }
+    /* Restaurer l'alignement texte gauche pour TOUS les enfants directs qui ne sont PAS des wrappers-action inline-block */
+    .content-area:has(> .edit-block-wrap:has(> .block-option.action:not(.open-action)) ~ .edit-block-wrap:has(> .block-option.action:not(.open-action))) > *:not(.edit-block-wrap:has(> .block-option.action:not(.open-action))),
+    .block-option.action.open-action > .option-content:has(> .edit-block-wrap:has(> .block-option.action:not(.open-action)) ~ .edit-block-wrap:has(> .block-option.action:not(.open-action))) > *:not(.edit-block-wrap:has(> .block-option.action:not(.open-action))) {
+      text-align: left;
+    }
 
     /* Mutex : masquer les boutons action frères quand un est ouvert */
     .action-sibling-hidden { display: none !important; }
