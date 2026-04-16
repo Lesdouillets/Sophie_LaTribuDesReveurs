@@ -1025,16 +1025,9 @@
       vertical-align: top;
       margin: 6px 4px;
     }
-    /* Centrer la paire de boutons dans leur parent, SANS affecter le reste du contenu */
-    .content-area:has(> .edit-block-wrap:has(> .block-option.action:not(.open-action)) ~ .edit-block-wrap:has(> .block-option.action:not(.open-action))),
-    .block-option.action.open-action > .option-content:has(> .edit-block-wrap:has(> .block-option.action:not(.open-action)) ~ .edit-block-wrap:has(> .block-option.action:not(.open-action))) {
-      text-align: center;
-    }
-    /* Restaurer l'alignement texte gauche pour TOUS les enfants directs qui ne sont PAS des wrappers-action inline-block */
-    .content-area:has(> .edit-block-wrap:has(> .block-option.action:not(.open-action)) ~ .edit-block-wrap:has(> .block-option.action:not(.open-action))) > *:not(.edit-block-wrap:has(> .block-option.action:not(.open-action))),
-    .block-option.action.open-action > .option-content:has(> .edit-block-wrap:has(> .block-option.action:not(.open-action)) ~ .edit-block-wrap:has(> .block-option.action:not(.open-action))) > *:not(.edit-block-wrap:has(> .block-option.action:not(.open-action))) {
-      text-align: left;
-    }
+    /* Centrer la paire de boutons quand le parent est marqué .has-action-siblings (ajouté par JS) */
+    .has-action-siblings { text-align: center; }
+    .has-action-siblings > * { text-align: left; }
 
     /* Mutex : masquer les boutons action frères quand un est ouvert */
     .action-sibling-hidden { display: none !important; }
@@ -4783,6 +4776,8 @@ function renderCurrentSection() {
     <button class="btn-nav btn-next" title="Aller à la section suivante" onclick="nextSection()" ${state.currentIdx===state.sections.length-1?'disabled':''}>Suivant →</button>
   </div>`;
   area.innerHTML = html;
+  // Marquer les parents qui contiennent 2+ boutons action frères (pour le centrage CSS)
+  markActionSiblingContainers(area);
   // Remplir le diagnostic avec le clone des checkboxes si la section contient le container
   const diagContainer = document.getElementById('diag-pb-container');
   if (diagContainer) {
@@ -5274,11 +5269,30 @@ function toggleOption(header) {
     }
     toggle.textContent = willOpen ? 'Réduire' : 'Dérouler';
     arrow.textContent = willOpen ? '▾' : '▸';
+    // Re-marquer les conteneurs (l'état open-action a pu changer)
+    markActionSiblingContainers(document.getElementById('content-area'));
   } else {
     const isOpen = content.classList.toggle('open');
     toggle.textContent = isOpen ? 'Réduire' : 'Dérouler';
     arrow.textContent = isOpen ? '▾' : '▸';
   }
+}
+
+// Marquer les parents contenant 2+ wrappers-action comme frères directs (pour centrage CSS)
+function markActionSiblingContainers(root) {
+  if (!root) return;
+  // Parents possibles : .content-area (top-level) ou .option-content (imbriqué)
+  const candidates = root.matches && root.matches('.content-area, .option-content')
+    ? [root, ...root.querySelectorAll('.content-area, .option-content')]
+    : [...root.querySelectorAll('.content-area, .option-content')];
+  candidates.forEach(parent => {
+    const actionChildren = parent.querySelectorAll(':scope > .edit-block-wrap > .block-option.action:not(.open-action)');
+    if (actionChildren.length >= 2) {
+      parent.classList.add('has-action-siblings');
+    } else {
+      parent.classList.remove('has-action-siblings');
+    }
+  });
 }
 
 // Masquer les boutons action frères (même parent, au même niveau) quand on en ouvre un
