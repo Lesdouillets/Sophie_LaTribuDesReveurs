@@ -3427,15 +3427,22 @@ function _renderClientsList(filtered, allSaved) {
   list.innerHTML = '';
   if (!filtered.length) { noSaved.style.display = 'block'; return; }
   noSaved.style.display = 'none';
+  const todayStr = new Date().toISOString().slice(0, 10);
   filtered.slice().reverse().slice(0, 10).forEach((c, i) => {
     const realIdx = allSaved.indexOf(c);
     // realIdx already computed above
+    // Âge RÉEL aujourd'hui (jamais corrigé) si date de naissance connue, sinon fallback sur la valeur enregistrée
+    let ageDisplay = c.ageEnfant || '';
+    if (c.dateNaissance) {
+      const a = calcAge(c.dateNaissance, todayStr);
+      if (a) ageDisplay = a.str;
+    }
     const div = document.createElement('div');
     div.className = 'saved-client-item';
     div.innerHTML = `
       <div onclick="loadClient(${realIdx})" style="flex:1;cursor:pointer">
         <div class="saved-client-name">👶 ${c.prenomEnfant || ''} ${c.nomFamille || ''}</div>
-        <div class="saved-client-info">${c.ageEnfant || ''} — ${c.prenomParent1 || ''}${c.prenomParent2 ? ' & '+c.prenomParent2 : ''} — ${new Date(c.savedAt).toLocaleDateString('fr-FR')}</div>
+        <div class="saved-client-info">${ageDisplay} — ${c.prenomParent1 || ''}${c.prenomParent2 ? ' & '+c.prenomParent2 : ''} — ${new Date(c.savedAt).toLocaleDateString('fr-FR')}</div>
       </div>
       <button class="btn-delete-client" onclick="deleteClient(event,${realIdx})">🗑</button>`;
     list.appendChild(div);
