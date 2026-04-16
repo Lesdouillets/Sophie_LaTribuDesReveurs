@@ -163,7 +163,7 @@ const SCRIPT_DATA = {
           ]
         },
         {
-          type: "option", label: "Difficultés alimentaires identifiées (courbes en déclin)", emoji: "🍼", style: "action-yellow", _purpleContent: true,
+          type: "option", label: "Difficultés alimentaires IDENTIFIÉES (courbes en déclin)", emoji: "🍼", style: "action-yellow", _purpleContent: true,
           blocks: [
             { type: "normal", text: "- Je valide **AUSSI des difficultés alimentaires** parce que…\n- En effet,", _noBorder: true },
             { type: "normal", text: "**<u>Au niveau des courbes qu'on a vues ensemble,</u>** il y a quelque chose qui se joue", _purpleDark: true },
