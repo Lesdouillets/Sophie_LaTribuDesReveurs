@@ -1300,6 +1300,9 @@
     }
     .gcl-item { padding: 3px 0 !important; border-bottom: none !important; align-items: flex-start; }
     .gcl-item > span { line-height: 1.4; }
+    /* Sous-item (décalé à droite + police plus petite) */
+    .gcl-item.gcl-sub-item { margin-left: 24px; }
+    .gcl-item.gcl-sub-item > span { font-size: 12.5px; }
 
     /* LEVIERS */
     .leviers-list { list-style: none; padding: 0; margin: 8px 0 0; }
@@ -5413,11 +5416,16 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       ${groups.map((g, gi) => `
         <div class="gcl-group">
           ${g.title ? `<div class="gcl-group-title">${substituteVars(g.title)}</div>` : ''}
-          ${(g.items || []).map((item, ii) => `
-            <label class="checklist-item gcl-item">
+          ${(g.items || []).map((item, ii) => {
+            // Item peut être une string OU un objet { text, subItem: true }
+            const isObj = item && typeof item === 'object';
+            const text = isObj ? (item.text || '') : item;
+            const subCls = (isObj && item.subItem) ? ' gcl-sub-item' : '';
+            return `<label class="checklist-item gcl-item${subCls}">
               <input type="checkbox" onchange="this.closest('.checklist-item').classList.toggle('checked', this.checked)">
-              <span>${substituteVars(item)}</span>
-            </label>`).join('')}
+              <span>${substituteVars(text)}</span>
+            </label>`;
+          }).join('')}
         </div>`).join('')}
     </div>`;
   }
