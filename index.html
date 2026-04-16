@@ -5711,6 +5711,10 @@ function syncPbsToFicheClient() {
     cb.closest('.pb-item')?.classList.toggle('checked', cb.checked);
   });
   // 2. Cases catégories parentes (top-level) : cochées si ≥ 1 enfant coché dans leur bloc
+  //    EXCEPTION "strategie" : reste cochée tant que l'utilisateur ne la décoche pas manuellement
+  //    (peut être cochée sans enfants cochés — comportement voulu, cf. clonePbGridFor).
+  const ficheStrategie = document.querySelector('.pb-cat-checkbox[data-cat="strategie"]');
+  const strategieUserChecked = !!ficheStrategie?.checked;
   document.querySelectorAll('.pb-cat-checkbox, .modal-pb-cat, .diag-pb-cat').forEach(catCb => {
     const cat = catCb.closest('.pb-category');
     if (!cat) return;
@@ -5718,7 +5722,12 @@ function syncPbsToFicheClient() {
     if (catCb.classList.contains('modal-pb-cat')) childSel = '.modal-pb';
     else if (catCb.classList.contains('diag-pb-cat')) childSel = '.diag-pb';
     const anyChecked = [...cat.querySelectorAll(childSel)].some(c => c.checked);
-    catCb.checked = anyChecked;
+    if (catCb.dataset.cat === 'strategie') {
+      // Cochée si : enfants cochés OU strategie cochée manuellement dans la fiche client OU déjà cochée ici
+      catCb.checked = anyChecked || strategieUserChecked || catCb.checked;
+    } else {
+      catCb.checked = anyChecked;
+    }
   });
   // 3. Sub-parents (intermédiaires) : cochés si ≥ 1 enfant direct du subgroup coché
   document.querySelectorAll('.pb-sub-parent, .modal-pb-sub-parent, .diag-pb-sub-parent').forEach(sp => {
