@@ -176,7 +176,7 @@ const SCRIPT_DATA = {
         { type: "separator", text: "⚙️ Leviers identifiés" },
         { type: "leviers_dynamiques" },
         { type: "leviers_count" },
-        { type: "normal", text: "On aura PEUT-ÊTRE pas le temps de tout voir aujourd'hui :\nmais on pourra toujours reprendre un RDV plus tard pour discuter des points que l'on n'aura pas eu le temps de voir aujourd'hui.\n\nDonc, CE QUE je vois en 1er, je vois quelque chose au niveau de…\n[→ enchaîner avec les sections conditionnelles correspondantes]" },
+        { type: "normal", text: "- On aura **PEUT-ÊTRE pas le temps** de tout voir aujourd'hui :\n- mais on pourra **toujours reprendre un RDV plus tard** pour **discuter des points** que l'on n'aura **pas eu le temps de voir aujourd'hui.**\n\n- Donc, **CE QUE je vois en 1er**, c'est **quelque chose au niveau de**…" },
       ]
     },
 
