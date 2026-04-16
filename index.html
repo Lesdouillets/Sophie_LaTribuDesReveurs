@@ -603,9 +603,18 @@
       background: linear-gradient(90deg, var(--primary-dark), var(--primary));
       color: white;
       border-radius: 10px;
+      cursor: pointer;
+      user-select: none;
+      transition: filter 0.15s;
     }
+    .inline-conditional-header:hover { filter: brightness(1.1); }
     .inline-conditional-emoji { font-size: 22px; }
-    .inline-conditional-title { font-size: 16px; font-weight: 800; letter-spacing: 0.3px; }
+    .inline-conditional-title { flex: 1; font-size: 16px; font-weight: 800; letter-spacing: 0.3px; }
+    .inline-conditional-arrow { font-size: 14px; transition: transform 0.2s; flex-shrink: 0; }
+    /* État replié : masquer le contenu, faire pivoter la flèche */
+    .inline-conditional-section.collapsed .inline-conditional-content { display: none; }
+    .inline-conditional-section.collapsed .inline-conditional-header { margin-bottom: 0; }
+    .inline-conditional-section.collapsed .inline-conditional-arrow { transform: rotate(-90deg); }
     /* Bouton "Fermer cette section" à la fin de chaque section parente affichée inline */
     .btn-close-conditional {
       display: inline-flex; align-items: center; gap: 6px;
@@ -5514,13 +5523,16 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const checkedSections = SCRIPT_DATA.conditional.filter(s => s.problematiqueId && isProblematiqueMatched(s.problematiqueId, state.selectedPbs));
     if (checkedSections.length === 0) return '';
     return checkedSections.map(s => `
-      <div class="inline-conditional-section">
-        <div class="inline-conditional-header">
+      <div class="inline-conditional-section" data-section-id="${s.id}">
+        <div class="inline-conditional-header" onclick="toggleConditionalSection('${s.id}')">
           <span class="inline-conditional-emoji">${s.emoji || '📄'}</span>
           <span class="inline-conditional-title">${s.title}</span>
+          <span class="inline-conditional-arrow">▾</span>
         </div>
-        ${renderBlocks(getOverrideBlocks(s), s.id)}
-        <button type="button" class="btn-close-conditional" onclick="closeConditionalSection('${s.id}')">✕ Fermer cette section</button>
+        <div class="inline-conditional-content">
+          ${renderBlocks(getOverrideBlocks(s), s.id)}
+          <button type="button" class="btn-close-conditional" onclick="toggleConditionalSection('${s.id}')">✕ Fermer cette section</button>
+        </div>
       </div>`).join('');
   }
 
@@ -6321,37 +6333,11 @@ function onDiagnosticPbChange() {
   }, 0);
 }
 
-// Ferme une section conditionnelle affichée inline : décoche les problématiques associées,
-// propage le changement à toutes les vues (fiche client, modal, diag), et rafraîchit l'affichage
-function closeConditionalSection(sectionId) {
-  const section = (window.SCRIPT_DATA || SCRIPT_DATA).conditional.find(s => s.id === sectionId);
-  if (!section) return;
-  // Déterminer les pbs à décocher
-  let pbsToUncheck = [];
-  if (Array.isArray(section.problematiqueId)) {
-    pbsToUncheck = [...section.problematiqueId];
-  } else if (typeof section.problematiqueId === 'string') {
-    pbsToUncheck = [section.problematiqueId];
-    // Cas particulier : strategie_rendormissement regroupe les 3 pbs stratégie + la case parente
-    if (section.problematiqueId === 'strategie_rendormissement') {
-      pbsToUncheck.push('strategie_tetine', 'strategie_enjeu_relationnel');
-    }
-  }
-  // Retirer ces pbs de state.selectedPbs
-  pbsToUncheck.forEach(pb => state.selectedPbs.delete(pb));
-  // Pour strategie_rendormissement, décocher aussi la case parente "Stratégie de sommeil"
-  if (section.problematiqueId === 'strategie_rendormissement') {
-    document.querySelectorAll('.pb-cat-checkbox[data-cat="strategie"], .modal-pb-cat[data-cat="strategie"], .diag-pb-cat[data-cat="strategie"]').forEach(cb => { cb.checked = false; });
-  }
-  // Propager aux 3 containers (fiche client + modal + diag)
-  if (typeof syncPbsToFicheClient === 'function') syncPbsToFicheClient();
-  if (typeof syncPbsHighlights === 'function') syncPbsHighlights();
-  // Reconstruire sections + sidebar + rafraîchir l'inline + le compteur
-  if (typeof buildSidebarPbPanel === 'function') buildSidebarPbPanel();
-  if (typeof buildSections === 'function') buildSections();
-  if (typeof buildSidebar === 'function') buildSidebar();
-  if (typeof refreshInlineConditionalSections === 'function') refreshInlineConditionalSections();
-  if (typeof updateDiagLeviersCount === 'function') updateDiagLeviersCount();
+// Replie / déplie une section conditionnelle inline — UNIQUEMENT visuel.
+// Ne modifie PAS state.selectedPbs ni les cases cochées dans le modal/fiche/diagnostic.
+function toggleConditionalSection(sectionId) {
+  const el = document.querySelector(`.inline-conditional-section[data-section-id="${sectionId}"]`);
+  if (el) el.classList.toggle('collapsed');
 }
 
 // Re-calcule le contenu des sections conditionnelles affichées inline à la suite de V. Diagnostic
@@ -6369,13 +6355,16 @@ function refreshInlineConditionalSections() {
   );
   if (!checkedSections.length) return;
   const html = checkedSections.map(s => `
-    <div class="inline-conditional-section">
-      <div class="inline-conditional-header">
+    <div class="inline-conditional-section" data-section-id="${s.id}">
+      <div class="inline-conditional-header" onclick="toggleConditionalSection('${s.id}')">
         <span class="inline-conditional-emoji">${s.emoji || '📄'}</span>
         <span class="inline-conditional-title">${s.title}</span>
+        <span class="inline-conditional-arrow">▾</span>
       </div>
-      ${renderBlocks(getOverrideBlocks(s), s.id)}
-      <button type="button" class="btn-close-conditional" onclick="closeConditionalSection('${s.id}')">✕ Fermer cette section</button>
+      <div class="inline-conditional-content">
+        ${renderBlocks(getOverrideBlocks(s), s.id)}
+        <button type="button" class="btn-close-conditional" onclick="toggleConditionalSection('${s.id}')">✕ Fermer cette section</button>
+      </div>
     </div>`).join('');
   const navButtons = area.querySelector('.nav-buttons');
   if (navButtons) {
