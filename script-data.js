@@ -299,7 +299,7 @@ const SCRIPT_DATA = {
     {
       id: "rgo_allergie",
       problematiqueId: "rgo_allergie",
-      title: "Confort – RGO + Allergie (APLV)",
+      title: "RGO + Allergie (APLV)",
       emoji: "🩺",
       blocks: [
         { type: "normal", text: "- Avant de **commencer à parler \"sommeil\"**<br>j'aimerais, si vous êtes d'accord, qu'on **prenne un petit moment**<br>pour **revenir** sur CE QUE **vous m'avez partagé**\n\n- Parce que dans tout ce que vous décrivez, **on sent** :\n  - qu'il y a **beaucoup de choses à gérer**\n  - et que ça peut parfois être **un peu lourd au quotidien**\n  - parce que c'est **pas simple à vivre**\n\nEntre :" },
@@ -379,7 +379,7 @@ const SCRIPT_DATA = {
     {
       id: "allergie_seule",
       problematiqueId: "allergie_seule",
-      title: "Confort – Suspicion Allergie (APLV)",
+      title: "Suspicion Allergie (APLV)",
       emoji: "🌿",
       blocks: [
         { type: "normal", text: "- Avant de **commencer à parler \"sommeil\"**<br>j'aimerais, si vous êtes d'accord, qu'on **prenne un petit moment**<br>pour **revenir** sur CE QUE **vous m'avez partagé**\n\n- Parce que DANS CE QUE **vous m'avez décrit**…<br>il y a **plusieurs petites choses** qui ONT **attiré mon attention**\n\n- Vous **m'avez parlé** :" },
@@ -438,8 +438,8 @@ const SCRIPT_DATA = {
     {
       id: "rgo_seul",
       problematiqueId: "rgo_seul",
-      title: "Confort – RGO",
-      emoji: "😣",
+      title: "RGO",
+      emoji: "🤮",
       blocks: [
         { type: "normal", text: "- Avant de **commencer à parler \"sommeil\"**<br>j'aimerais, si vous êtes d'accord, qu'on **prenne un petit moment**<br>pour **revenir** sur CE QUE **vous m'avez partagé** ….sur son reflux\n\n- Parce que dans TOUT ce que **vous décrivez,** on sent :\n  - qu'il y a **beaucoup de choses à gérer**\n  - et que ça peut parfois être **un peu lourd au quotidien**\n  - parce que c'est **pas simple à vivre**\n\nEntre :" },
         {
