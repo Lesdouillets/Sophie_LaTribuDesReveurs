@@ -582,45 +582,17 @@ const SCRIPT_DATA = {
           ]
         },
         { type: "normal", text: "- **CES conditions** **pour s'endormir** sont **devenus** ⇒ SES **stratégies d'endormissement**\n- Et le **problème**, c'est que SES stratégies, il ne peut **PAS les reproduire TOUT SEUL**<br>⇒ On appelle ça une **stratégie d'endormissement DÉPENDANTE**, car elle **dépend d'une aide extérieure, c'est-à-dire de VOUS**" },
+        { type: "normal", text: "- Et quand il se réveille, **l'environnement a parfois changé** :", showIfPb: "strategie_rendormissement" },
         {
-          type: "option", label: "Si rendormissements difficiles", showIfPb: "strategie_rendormissement",
-          blocks: [
-            { type: "normal", text: "- Et quand il se réveille, **l'environnement a parfois changé** :" },
-            {
-              type: "checklist", label: "Changements à l'environnement",
-              items: [
-                "Il est <strong>seul</strong>",
-                "Dans <strong>son lit</strong>",
-                "Vous <strong>n'êtes plus là</strong>",
-                "Il n'a <strong>plus ses éléments rassurants</strong>",
-              ]
-            },
-            { type: "normal", text: "- Pour **comprendre ce qui se passe** avec ses **rendormissements difficiles** ⇒ il faut **comprendre la structure du sommeil** :\n  - Son sommeil est **composé de cycles**\n  - et **entre chaque cycle,** on fait tous des **micro-réveils (tout à fait normaux)**\n  - le **cerveau va faire :**\n    - un léger **retour à la surface**\n    - **\"vérifier\"** que **tout va bien**\n    - **puis va se rendormir** de manière inconsciente\n\n- Chez la **plupart des enfants,** ces **micro-réveils** passent **inaperçus**, car ils **arrivent à se rendormir seuls.**\n- Mais pour **[prénom_enfant]**, ça **devient + compliqué** :\n  - A CHACUN de ses **micro-réveils NATURELS** :\n    - il va **se réveiller**\n    - il va **vouloir chercher à se rendormir**\n    - **SAUF** qu'il **NE trouvera PLUS les mêmes conditions**\n    - ⇒ Et donc **il VOUS appellera** pour :\n      - **se rassurer** car l'**environnement aura changé**\n      - et pour **reproduire les mêmes conditions** pour **pouvoir s'endormir**\n- Et **CES micro-réveils**, qui **normalement passent inaperçus**, se transforment en **véritables réveils**\n- Et c'est la **MÊME CHOSE** avec les **endormissements difficiles**<br>⇒ Il **cherche JUSTE** à **s'endormir AVEC** les **conditions qu'il connaît**\n\n- 💭 *Imaginez : vous vous endormez dans votre lit, et vous vous réveillez… dans la cuisine*<br>***⇒ Pas très rassurant, n'est-ce pas ?***" },
+          type: "checklist", label: "Changements à l'environnement", showIfPb: "strategie_rendormissement",
+          items: [
+            "Il est <strong>seul</strong>",
+            "Dans <strong>son lit</strong>",
+            "Vous <strong>n'êtes plus là</strong>",
+            "Il n'a <strong>plus ses éléments rassurants</strong>",
           ]
         },
-        {
-          type: "option", label: "Enjeu relationnel 💬💬💬", showIfPb: "strategie_enjeu_relationnel",
-          blocks: [
-            { type: "normal", text: "- Un **autre point important**\n- surtout pour **les + grands**\n- c'est que PARFOIS, la **séparation du coucher** peut **être difficile** pour lui :\n  - Il n'a **pas envie** de **couper ce lien** avec vous,<br>⇒ donc il essaye de le PROLONGER **comme il peut** :" },
-            {
-              type: "checklist", label: "Signes de prolongation du lien",
-              items: [
-                "en <strong>gardant</strong> un <strong>contact physique</strong> ☝️",
-                "en vous <strong>appelant</strong> 💬💬",
-                "en faisant <strong>durer le coucher</strong> 🕰️",
-                "ou en se <strong>réveillant la nuit pour aller vous voir</strong> 🌛",
-                "En se <strong>réveillant tôt</strong> le matin",
-              ]
-            },
-            { type: "normal", text: "- Il est dépendant à **VOTRE PRÉSENCE**" },
-          ]
-        },
-        {
-          type: "option", label: "Tétine = stratégie dépendante 🍭", showIfPb: "strategie_tetine",
-          blocks: [
-            { type: "normal", text: "- Concernant la **tétine**, elle peut aussi **jouer un RÔLE dans ces réveils.**\n  - Aujourd'hui, **[prénom_enfant]** en a **BESOIN pour s'endormir,** mais comme il est encore **trop jeune** pour la **remettre seul**\n  - **⇒** il va **vous appeler** à **CHAQUE FOIS** qu'elle n'est **plus dans sa bouche**\n\n- Je vais vous **expliquer simplement pourquoi :**\n  - Le **sommeil** fonctionne **par cycles.**\n  - Et dans ces cycles, il y a **différentes phases de sommeil**\n  - **L'une d'elles** s'appelle le **sommeil paradoxal**, c'est le **sommeil des rêves**\n  - **Pendant** le **sommeil paradoxal**, le corps est **comme paralysé** *(peut-être justement pour éviter qu'on mette nos rêves à exécution !)*\n  - Et c'est souvent **à ce moment-là** que la **bouche s'ouvre**… et que la **tétine peut tomber**\n\n  - Et DONC à la **fin d'un cycle** de sommeil, il y a **CE fameux** \"**micro-réveil**\"\n  - Le **cerveau remonte** un peu **à la surface**, vérifie que **tout va bien** ……\n  - ⇒ Sauf que là…, **[prénom_enfant]** va se **rendre compte** que sa **tétine n'est plus là.**\n\n- Et comme, la **tétine** fait **partie de sa stratégie** pour s'endormir<br>⇒ Il va **vous appeler** pour que vous :\n  - **veniez la lui remettre**\n  - pour **pouvoir se rendormir**\n- Et ça, c'est **qqch de très fréquent**" },
-          ]
-        },
+        { type: "normal", text: "- Pour **comprendre ce qui se passe** avec ses **rendormissements difficiles** ⇒ il faut **comprendre la structure du sommeil** :\n  - Son sommeil est **composé de cycles**\n  - et **entre chaque cycle,** on fait tous des **micro-réveils (tout à fait normaux)**\n  - le **cerveau va faire :**\n    - un léger **retour à la surface**\n    - **\"vérifier\"** que **tout va bien**\n    - **puis va se rendormir** de manière inconsciente\n\n- Chez la **plupart des enfants,** ces **micro-réveils** passent **inaperçus**, car ils **arrivent à se rendormir seuls.**\n- Mais pour **[prénom_enfant]**, ça **devient + compliqué** :\n  - A CHACUN de ses **micro-réveils NATURELS** :\n    - il va **se réveiller**\n    - il va **vouloir chercher à se rendormir**\n    - **SAUF** qu'il **NE trouvera PLUS les mêmes conditions**\n    - ⇒ Et donc **il VOUS appellera** pour :\n      - **se rassurer** car l'**environnement aura changé**\n      - et pour **reproduire les mêmes conditions** pour **pouvoir s'endormir**\n- Et **CES micro-réveils**, qui **normalement passent inaperçus**, se transforment en **véritables réveils**\n- Et c'est la **MÊME CHOSE** avec les **endormissements difficiles**<br>⇒ Il **cherche JUSTE** à **s'endormir AVEC** les **conditions qu'il connaît**\n\n- 💭 *Imaginez : vous vous endormez dans votre lit, et vous vous réveillez… dans la cuisine*<br>***⇒ Pas très rassurant, n'est-ce pas ?***", showIfPb: "strategie_rendormissement" },
       ]
     },
 

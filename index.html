@@ -4700,11 +4700,15 @@ function isProblematiqueMatched(problematiqueId, selectedPbs) {
   if (!problematiqueId) return true;
   if (Array.isArray(problematiqueId)) return problematiqueId.some(id => selectedPbs.has(id));
   // Cas particulier : la section "Stratégie – Rendormissement difficile" est aussi active
-  // si l'une des autres cases Stratégie (tétine, enjeu relationnel) est cochée.
+  // si la case parente "Stratégie de sommeil" est cochée (dans n'importe quel container),
+  // OU si l'une des 3 sous-cases stratégie est cochée.
   if (problematiqueId === 'strategie_rendormissement') {
-    return selectedPbs.has('strategie_rendormissement')
-        || selectedPbs.has('strategie_tetine')
-        || selectedPbs.has('strategie_enjeu_relationnel');
+    if (selectedPbs.has('strategie_rendormissement')
+     || selectedPbs.has('strategie_tetine')
+     || selectedPbs.has('strategie_enjeu_relationnel')) return true;
+    // Vérifier aussi l'état de la case parente "Stratégie de sommeil"
+    const stratCat = document.querySelector('.pb-cat-checkbox[data-cat="strategie"]:checked, .modal-pb-cat[data-cat="strategie"]:checked, .diag-pb-cat[data-cat="strategie"]:checked');
+    return !!stratCat;
   }
   return selectedPbs.has(problematiqueId);
 }
