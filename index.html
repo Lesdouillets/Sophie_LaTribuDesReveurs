@@ -3556,7 +3556,10 @@ function showLastConsultInfo(c) {
     const a = calcAge(c.dateNaissance, today.toISOString().slice(0,10));
     if (a) ageNow = a.str;
   }
-  const daysDiff = Math.floor((today - lastDate) / (1000*60*60*24));
+  // Comparer les jours calendaires (et non les ms) pour éviter "aujourd'hui" à cheval sur minuit
+  const lastDay = new Date(lastDate.getFullYear(), lastDate.getMonth(), lastDate.getDate());
+  const todayDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const daysDiff = Math.round((todayDay - lastDay) / (1000*60*60*24));
   const diffStr = daysDiff === 0 ? 'aujourd\'hui' : daysDiff === 1 ? 'hier' : `il y a ${daysDiff} jours`;
   section.style.display = 'block';
   info.innerHTML = `
