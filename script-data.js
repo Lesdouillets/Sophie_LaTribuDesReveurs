@@ -314,41 +314,50 @@ const SCRIPT_DATA = {
             "Qu'il <strong>se cambre</strong>",
           ]
         },
-        { type: "normal", text: "⇒ c'est **normal** que ce soit **difficile pour vous.**\n\n- Et **dans ces moments-là**,<br>**mon rôle**, c'est vraiment de **prendre un peu de recul sur l'ensemble**.<br>Parce que **chez les bébés**, très souvent, **tout est un peu lié**.\n\n- Et JUSTEMENT… dans ce que **vous m'avez décrit**…<br>il y a **plusieurs petites choses** qui **attirent mon attention**" },
-        { type: "normal", text: "- Vous **m'avez parlé** :" },
+        { type: "normal", text: "⇒ c'est **normal** que ce soit **difficile pour vous.**\n\n- Et **dans ces moments-là**,<br>**mon rôle**, c'est vraiment de **prendre un peu de recul sur l'ensemble**.<br>Parce que **chez les bébés**, très souvent, **tout est un peu lié**.\n\n- Et JUSTEMENT… dans ce que **vous m'avez décrit**…<br>il y a **plusieurs petites choses** qui **attirent mon attention**\n\n- Vous **m'avez parlé** :" },
         {
-          type: "checklist", label: "Symptômes rapportés",
-          items: [
-            "Refus de s'alimenter (+ se cambre)",
-            "Douleurs",
-            "Eczéma / peau atopique / psoriasis",
-            "Régurgitations :",
-            "&nbsp;&nbsp;&nbsp;&nbsp;↳ en jet",
-            "&nbsp;&nbsp;&nbsp;&nbsp;↳ sur tout le tps d'éveil",
-            "&nbsp;&nbsp;&nbsp;&nbsp;↳ lait caillé",
-            "Respiration sifflante / bruits de dinosaure",
-            "Ronflements (amygdales enflammées)",
-            "Dort la bouche ouverte",
-          ]
-        },
-        { type: "normal", text: "**Sphère ORL :**" },
-        {
-          type: "checklist", label: "Sphère ORL",
-          items: [
-            "Otites à répétition",
-            "Toux chronique",
-            "Bronchite à répétition",
-            "Qu'il soit enrhumé très souvent",
-          ]
-        },
-        {
-          type: "checklist", label: "Autres symptômes",
-          items: [
-            "Selles diarrhéiques",
-            "Selles glaireuses",
-            "Selles avec des traces de sang",
-            "Terrain allergique dans la famille",
-            "Le fait qu'il ait eu des <strong>compléments de lait artificiel contenant des PLV entières</strong> à la naissance, puis qu'il n'a plus été en contact direct avec les PLV (allaitement = PLV moins en contact direct)",
+          type: "grouped_checklist",
+          groups: [
+            {
+              items: [
+                "Refus de s'alimenter (+ se cambre)",
+                "Douleurs",
+                "Eczéma / peau atopique / psoriasis",
+                "Régurgitations :",
+                "&nbsp;&nbsp;&nbsp;&nbsp;↳ en jet",
+                "&nbsp;&nbsp;&nbsp;&nbsp;↳ sur tout le tps d'éveil",
+                "&nbsp;&nbsp;&nbsp;&nbsp;↳ lait caillé",
+              ]
+            },
+            {
+              items: [
+                "Respiration sifflante / bruits de dinosaure",
+                "Ronflements (amygdales enflammées)",
+                "Dort la bouche ouverte",
+              ]
+            },
+            {
+              title: "Sphère ORL :",
+              items: [
+                "Otites à répétition",
+                "Toux chronique",
+                "Bronchite à répétition",
+                "Qu'il soit enrhumé très souvent",
+              ]
+            },
+            {
+              items: [
+                "Selles diarrhéiques",
+                "Selles glaireuses",
+                "Selles avec des traces de sang",
+              ]
+            },
+            {
+              items: [
+                "Terrain allergique dans la famille",
+                "Le fait qu'il ait eu des <strong>compléments de lait artificiel contenant des PLV entières</strong> à la naissance, puis qu'il n'a plus été en contact direct avec les PLV (allaitement = PLV moins en contact direct)",
+              ]
+            },
           ]
         },
         { type: "normal", text: "- **Pris séparément**, CE SONT des **choses** qu'on **peut voir assez souvent**<br>mais QUAND on peut **lister au moins 2 symptômes,**<br>là, **ça me fait me dire** qu'il y a **peut-être autre chose derrière**\n\n⇒ pour moi, ça me **met la puce à l'oreille** :\n⇒ il **POURRAIT** s'**agir d'une possible allergie** (notamment aux Protéines de Lait de Vache = APLV)" },
@@ -360,6 +369,8 @@ const SCRIPT_DATA = {
             { type: "normal", text: "- Il peut y avoir **différentes causes** :\n  - **Mécanique** :\n    - Système digestif immature : **Sphincter Inférieur de l'œsophage (SIO) immature** *(anneau musculaire entre l'œsophage et l'estomac pas assez développé pour se contracter efficacement et maintenir le contenu du bol gastrique dans l'estomac)*\n    - Tensions corporelles\n    - Freins restrictifs\n    - Pb de succion\n  - **Alimentaire** :\n    - Allergie\n    - Œsophage court\n    - Bcp d'horizontalité\n    - Bcp d'alimentation liquide *(ex : bouteille d'eau à l'horizontal)*\n    - Trop d'alimentation\n    - Système digestif immature : microbiote immature" }
           ]
         },
+        { type: "normal", text: "- C'est une **allergie** qui est de **plus en plus diagnostiqué chez les enfants**\n\n- Alors ATTENTION, hein,<br>ça **ne veut pas dire** que c'est **forcément CA**\n  - et moi je ne suis **pas médecin**\n  - je ne **pose pas de diagnostic**\n\n- Mais ça **peut être intéressant** d'en **parler avec votre médecin**\n  - **Pour qu'il explore cette piste**\n    - simplement pour **confirmer**\n    - ou pour **écarter cette hypothèse**\n\n- Et puis :\n  - **si ce n'est pas cette piste là**,\n  - c'est **pas grave,**\n  - on **l'écartera du schéma,**\n  - et on **regardera autre chose**\n\n- Voilà\n- Je ne sais pas **si ça vous parle**, ce que je vous dit ?\n- Si vous aviez :\n  - des **petits soupçons**\n  - ….ou **pas du tout** ?\n\n- **En attendant**, CE QUE je peux vous dire, c'est **ce qu'on va faire AU MIEUX pour comprendre ce qui se passe**.\n- Moi, je **peux vous expliquer simplement** :\n  - ce qu'on FAIT **…. QUAND on soupçonne une allergie**\n  - JUSTE pour que **vous soyez au courant**\n\n- L'idée, ce n'est **PAS DU TOUT de vous inquiéter**<br>mais PLUTÔT de **vous accompagner** ET de **vous soutenir**." },
+        { type: "question", text: "Qu'est ce que **vous pensez** de cette **suspicion d'allergie** ?" },
       ]
     },
 

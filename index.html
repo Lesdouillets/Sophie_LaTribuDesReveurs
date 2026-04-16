@@ -1267,7 +1267,27 @@
     }
     .checklist-item:last-child { border-bottom: none; }
     .checklist-item input[type="checkbox"] { margin-top: 3px; accent-color: var(--primary); flex-shrink: 0; width: 15px; height: 15px; cursor: pointer; }
-    .checklist-item.checked span { text-decoration: line-through; color: #aaa; }
+    .checklist-item.checked span { font-weight: 700; color: var(--text); }
+
+    /* ═══ GROUPED CHECKLIST (layout multi-colonnes avec groupes) ═══ */
+    .block-grouped-checklist {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 18px 20px;
+      padding: 10px 4px;
+    }
+    .gcl-group {
+      display: flex; flex-direction: column; gap: 6px;
+      min-width: 0;
+    }
+    .gcl-group-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--primary-dark);
+      margin-bottom: 4px;
+    }
+    .gcl-item { padding: 3px 0 !important; border-bottom: none !important; align-items: flex-start; }
+    .gcl-item > span { line-height: 1.4; }
 
     /* LEVIERS */
     .leviers-list { list-style: none; padding: 0; margin: 8px 0 0; }
@@ -3307,7 +3327,7 @@ function cleanStaleOverrides() {
     ...(SCRIPT_DATA.planAction || []),
     SCRIPT_DATA.conclusion
   ].filter(Boolean);
-  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','tarifs_tableau'];
+  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','tarifs_tableau'];
   let changed = false;
   for (const sectionId of Object.keys(state.scriptOverrides)) {
     const src = allSections.find(s => s.id === sectionId);
@@ -3422,7 +3442,7 @@ function saveScriptOverrides() {
 function getOverrideBlocks(section) {
   const ov = state.scriptOverrides[section.id];
   if (!ov) return section.blocks || [];
-  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'tarifs_tableau'];
+  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'tarifs_tableau'];
   const liveBlocks = section.blocks || [];
 
   // Pour problematique/objectifs, ov.blocks est déjà nettoyé par ensureOverride
@@ -5118,7 +5138,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','tarifs_tableau'].includes(b.type);
+    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','tarifs_tableau'].includes(b.type);
     const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
@@ -5352,6 +5372,22 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         </div>
         ${renderBlocks(getOverrideBlocks(s), s.id)}
       </div>`).join('');
+  }
+
+  if (b.type === 'grouped_checklist') {
+    const sid = sectionId || 'nosec';
+    const groups = Array.isArray(b.groups) ? b.groups : [];
+    return `<div class="block-grouped-checklist">
+      ${groups.map((g, gi) => `
+        <div class="gcl-group">
+          ${g.title ? `<div class="gcl-group-title">${substituteVars(g.title)}</div>` : ''}
+          ${(g.items || []).map((item, ii) => `
+            <label class="checklist-item gcl-item">
+              <input type="checkbox" onchange="this.closest('.checklist-item').classList.toggle('checked', this.checked)">
+              <span>${substituteVars(item)}</span>
+            </label>`).join('')}
+        </div>`).join('')}
+    </div>`;
   }
 
   if (b.type === 'info_button') {
