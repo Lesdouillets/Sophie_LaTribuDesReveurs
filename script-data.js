@@ -598,24 +598,24 @@ const SCRIPT_DATA = {
     },
 
     {
-      id: "strategie_tetine",
-      problematiqueId: "strategie_tetine",
-      title: "Tétine (cause de réveils)",
-      emoji: "🍭",
-      blocks: [
-        { type: "normal", text: "Concernant la tétine, elle peut jouer un RÔLE dans ces réveils.\n\nAujourd'hui, [prénom_enfant] s'endort avec la tétine\nEt DONC à la fin d'un cycle de sommeil, il y a CE fameux 'micro-réveil'\nLe cerveau remonte un peu à la surface, vérifie que tout va bien…\n⇒ Sauf que là… [prénom_enfant] va se rendre compte que sa tétine n'est plus là.\n\nEt comme, la tétine fait partie de sa stratégie pour s'endormir\n⇒ Il va vous appeler pour que vous veniez la lui remettre\n\nEt ça, c'est quelque chose de très fréquent !" },
-        { type: "question", text: "Du coup, il y a 2 chemins possibles… et les 2 sont tout à fait valables :\n\n→ La 1ère option : GARDER la tétine\n→ La 2ème option : la supprimer définitivement\n→ Option hybride : la supprimer durant les temps de sommeil uniquement\n\n⇒ Vers quoi vous voudriez aller ?" },
-      ]
-    },
-
-    {
       id: "strategie_enjeu_relationnel",
       problematiqueId: "strategie_enjeu_relationnel",
       title: "Enjeu relationnel",
       emoji: "😴",
       blocks: [
-        { type: "normal", text: "Aujourd'hui, [prénom_enfant] s'endort avec le biberon / en tétant\n\nC'est une stratégie d'endormissement qui est très confortable pour lui\nMais le problème, c'est que :\n→ son cerveau associe le fait de manger avec le fait de s'endormir\n→ et donc, à chaque micro-réveil entre deux cycles de sommeil,\n→ son cerveau va chercher cette même condition pour se rendormir\n⇒ Et il va vous appeler !" },
-        { type: "question", text: "L'objectif va être d'aider [prénom_enfant] à dissocier le moment de l'alimentation du moment de l'endormissement\n\n⇒ Est-ce que ça fait sens pour vous ?" },
+        { type: "normal", text: "- Aujourd'hui, **[prénom_enfant]** s'endort **avec le biberon / en tétant**\n- C'est une **stratégie d'endormissement** qui est **très confortable** pour lui\n- Mais le **problème**, c'est que :\n  - son **cerveau associe** le fait de **manger** avec le fait de **s'endormir**\n  - et donc, à chaque **micro-réveil** entre deux cycles de sommeil,\n  - son cerveau va **chercher cette même condition** pour **se rendormir**\n  - ⇒ Et il va **vous appeler** !" },
+        { type: "question", text: "L'objectif va être d'**aider [prénom_enfant]** à **dissocier** le **moment de l'alimentation** du **moment de l'endormissement**\n\n⇒ Est-ce que ça fait sens pour vous ?" },
+      ]
+    },
+
+    {
+      id: "strategie_tetine",
+      problematiqueId: "strategie_tetine",
+      title: "Tétine (cause de réveils)",
+      emoji: "🍭",
+      blocks: [
+        { type: "normal", text: "- Concernant la **tétine**, elle peut **jouer un RÔLE** dans ces réveils.\n- Aujourd'hui, **[prénom_enfant]** s'endort avec la **tétine**\n- Et DONC à la **fin d'un cycle** de sommeil, il y a **CE fameux « micro-réveil »**\n- Le cerveau remonte un peu à la surface, vérifie que **tout va bien**…<br>⇒ Sauf que là… **[prénom_enfant]** va se rendre compte que sa **tétine n'est plus là**.\n\n- Et comme, la **tétine** fait **partie de sa stratégie** pour s'endormir<br>⇒ Il va **vous appeler** pour que vous **veniez la lui remettre**\n- Et ça, c'est quelque chose de **très fréquent** !" },
+        { type: "question", text: "Du coup, il y a **2 chemins possibles**… et les 2 sont **tout à fait valables** :\n- La **1ère option** : **GARDER** la tétine\n- La **2ème option** : la **supprimer définitivement**\n- **Option hybride** : la **supprimer durant les temps de sommeil** uniquement\n\n⇒ Vers quoi vous voudriez aller ?" },
       ]
     },
 
