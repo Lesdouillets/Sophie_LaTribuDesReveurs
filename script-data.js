@@ -567,6 +567,7 @@ const SCRIPT_DATA = {
       title: "Stratégie de sommeil",
       emoji: "😴",
       blocks: [
+        { type: "parent_banner", label: "😴 Stratégie de sommeil" },
         { type: "normal", text: "- Aujourd'hui, **[prénom_enfant]** ne s'endort que :" },
         {
           type: "checklist", label: "Stratégies d'endormissement",

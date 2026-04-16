@@ -522,18 +522,34 @@
       flex: 1; overflow-y: auto; padding: 28px 36px 340px;
       background: var(--bg);
     }
-    /* Bandeau pour les "options" conditionnelles à l'intérieur d'une section (distinct du bandeau parent) */
-    .block-option-banner {
-      background: linear-gradient(90deg, #5b21b6, #7c3aed);
+    /* Bandeau PARENT (catégorie parente) — style le plus marqué */
+    .block-parent-banner {
+      background: linear-gradient(90deg, #0c4a6e, #0284c7);
       color: white;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-weight: 900;
+      font-size: 16px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin: 20px 0 14px;
+      box-shadow: 0 3px 12px rgba(12,74,110,0.35);
+      border: none !important;
+      line-height: 1.3;
+    }
+
+    /* Bandeau ENFANT (option conditionnelle à l'intérieur d'une section) — plus discret que le parent */
+    .block-option-banner {
+      background: linear-gradient(90deg, #eff6ff, #f0f9ff);
+      color: #1e40af;
       padding: 10px 18px;
       border-radius: 10px;
       font-weight: 800;
       font-size: 14.5px;
       letter-spacing: 0.3px;
-      margin: 18px 0 10px;
-      box-shadow: 0 2px 8px rgba(124,58,237,0.25);
-      border: none !important;
+      margin: 18px 0 10px 24px;
+      box-shadow: 0 2px 6px rgba(191,219,254,0.4);
+      border: 1px solid #bfdbfe;
       line-height: 1.3;
     }
 
@@ -3357,7 +3373,7 @@ function cleanStaleOverrides() {
     ...(SCRIPT_DATA.planAction || []),
     SCRIPT_DATA.conclusion
   ].filter(Boolean);
-  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','tarifs_tableau'];
+  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau'];
   let changed = false;
   for (const sectionId of Object.keys(state.scriptOverrides)) {
     const src = allSections.find(s => s.id === sectionId);
@@ -3472,7 +3488,7 @@ function saveScriptOverrides() {
 function getOverrideBlocks(section) {
   const ov = state.scriptOverrides[section.id];
   if (!ov) return section.blocks || [];
-  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'option_banner', 'tarifs_tableau'];
+  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'option_banner', 'parent_banner', 'tarifs_tableau'];
   const liveBlocks = section.blocks || [];
 
   // Pour problematique/objectifs, ov.blocks est déjà nettoyé par ensureOverride
@@ -5213,7 +5229,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','tarifs_tableau'].includes(b.type);
+    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau'].includes(b.type);
     const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
@@ -5468,6 +5484,11 @@ function renderBlockInner(b, i, sectionId, depth, path) {
           }).join('')}
         </div>`).join('')}
     </div>`;
+  }
+
+  if (b.type === 'parent_banner') {
+    const label = substituteVars(b.label || b.text || '');
+    return `<div class="block block-parent-banner">${label}</div>`;
   }
 
   if (b.type === 'option_banner') {
@@ -6205,7 +6226,40 @@ function onDiagnosticPbChange() {
     state.currentIdx = newIdx>=0 ? newIdx : Math.min(state.currentIdx, state.sections.length-1);
     buildSidebar();
     updateDiagLeviersCount();
+    // Mettre à jour le contenu "conditional_sections_inline" (sections cochées affichées à la suite de V. Diagnostic)
+    // sans recréer le diagnostic lui-même
+    refreshInlineConditionalSections();
   }, 0);
+}
+
+// Re-calcule le contenu des sections conditionnelles affichées inline à la suite de V. Diagnostic
+// sans reconstruire tout le diagnostic (on préserve le diag-pb-container)
+function refreshInlineConditionalSections() {
+  const area = document.getElementById('content-area');
+  if (!area) return;
+  // Supprimer les anciennes sections inline
+  area.querySelectorAll('.inline-conditional-section').forEach(el => el.remove());
+  // Trouver le bloc conditional_sections_inline dans le DOM via un marqueur
+  // Puisqu'on ne le wrappe pas dans un conteneur spécifique, on insère les nouvelles sections
+  // juste après le dernier bloc "normal" de V. Diagnostic (avant les nav-buttons)
+  const checkedSections = (window.SCRIPT_DATA || SCRIPT_DATA).conditional.filter(s =>
+    s.problematiqueId && isProblematiqueMatched(s.problematiqueId, state.selectedPbs)
+  );
+  if (!checkedSections.length) return;
+  const html = checkedSections.map(s => `
+    <div class="inline-conditional-section">
+      <div class="inline-conditional-header">
+        <span class="inline-conditional-emoji">${s.emoji || '📄'}</span>
+        <span class="inline-conditional-title">${s.title}</span>
+      </div>
+      ${renderBlocks(getOverrideBlocks(s), s.id)}
+    </div>`).join('');
+  const navButtons = area.querySelector('.nav-buttons');
+  if (navButtons) {
+    navButtons.insertAdjacentHTML('beforebegin', html);
+  } else {
+    area.insertAdjacentHTML('beforeend', html);
+  }
 }
 
 // Compter les catégories top-level cochées dans le diagnostic (excluant "souhait")
