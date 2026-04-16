@@ -351,10 +351,6 @@ const SCRIPT_DATA = {
             "Le fait qu'il ait eu des <strong>compléments de lait artificiel contenant des PLV entières</strong> à la naissance, puis qu'il n'a plus été en contact direct avec les PLV (allaitement = PLV moins en contact direct)",
           ]
         },
-        { type: "normal", text: "Pris séparément, CE SONT des choses qu'on peut voir assez souvent\nMAIS QUAND on peut lister au moins 2 symptômes,\nlà, ça me fait me dire qu'il y a peut-être autre chose derrière" },
-        { type: "important", text: "⇒ Pour moi, ça me met la puce à l'oreille :\n⇒ il POURRAIT s'agir d'une possible allergie (notamment aux Protéines de Lait de Vache = APLV)\n\nC'est une allergie qui est de plus en plus diagnostiquée chez les enfants\nD'ailleurs, chez les BB présentant un RGO, on estime qu'environ 40% sont concernés\n\n⚠️ ATTENTION : ça ne veut pas dire que c'est forcément CA\net moi je ne suis pas médecin, je ne pose pas de diagnostic\n\nMais ça peut être intéressant d'en parler avec votre médecin\npour qu'il explore cette piste, simplement pour confirmer ou pour écarter cette hypothèse" },
-        { type: "question", text: "Je ne sais pas si ça vous parle, ce que je vous dis ?\nSi vous aviez des petits soupçons… ou pas du tout ?" },
-        { type: "question", text: "Est-ce que ça vous irait qu'on en parle un peu… tout à l'heure?" },
       ]
     },
 
