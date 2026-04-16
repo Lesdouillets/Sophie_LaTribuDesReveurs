@@ -572,31 +572,37 @@
     }
     .info-body ul { padding-left: 22px; margin: 6px 0; }
     .info-body li { margin-bottom: 4px; line-height: 1.6; }
-    .info-body strong { font-weight: 700; color: #78350f; }
-    .info-body em { color: #7c5200; }
+    .info-body strong { font-weight: 700; color: var(--text); }
+    .info-body em { color: var(--text); }
+    .info-body u { text-decoration: underline; }
 
     /* Bouton INLINE "💡 Plus d'infos" dans le contenu du script */
     .info-btn {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 16px;
-      background: #fef9c3;
-      color: #713f12;
-      border: 1.5px solid #fde047;
+      padding: 8px 14px;
+      background: #faf3dd;
+      color: var(--text);
+      border: 1.5px solid #e8dca8;
       border-radius: 10px;
       font-size: 13px; font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(234,179,8,0.15);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
       transition: background 0.15s, border-color 0.15s, transform 0.1s, box-shadow 0.15s;
       font-family: inherit;
       margin: 6px 0;
     }
     .info-btn:hover {
-      background: #fef08a;
-      border-color: #facc15;
-      box-shadow: 0 3px 8px rgba(234,179,8,0.25);
+      background: #f4e9c6;
+      border-color: #d4c27e;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
     }
     .info-btn:active { transform: translateY(1px); }
     .info-btn-emoji { font-size: 16px; }
+    /* Variante : bouton flottant à droite DANS un bloc texte (inline-right) */
+    .info-btn.inline-right {
+      float: right;
+      margin: 0 0 8px 14px;
+    }
 
     /* Bouton "Retour à la consultation" en haut des sections conditionnelles */
     .btn-return-to-diag {
@@ -5037,23 +5043,32 @@ function returnToDiagnostic() {
 
 // Stockage global des contenus des boutons "💡 Plus d'infos" (rempli par renderBlockInner)
 window.__infoButtons = window.__infoButtons || {};
+window.__activeInfoBtnId = null;
 
 // Ouvre le panneau latéral "Infos" et y charge le contenu du bouton cliqué
+// Comportement toggle : re-cliquer sur le même bouton actif ferme le panneau
 function openInfoPanel(btnId) {
+  const panel = document.getElementById('info-panel');
+  // Toggle : re-clic sur le bouton actif → fermer
+  if (window.__activeInfoBtnId === btnId && panel && panel.classList.contains('open')) {
+    closeInfoPanel();
+    return;
+  }
   const data = (window.__infoButtons || {})[btnId];
   if (!data) return;
-  const panel = document.getElementById('info-panel');
   const titleEl = document.getElementById('info-header-title');
   const bodyEl = document.getElementById('info-body');
   if (!panel || !titleEl || !bodyEl) return;
   titleEl.innerHTML = '💡 ' + (data.title || 'Informations');
   bodyEl.innerHTML = data.content || '';
   panel.classList.add('open');
+  window.__activeInfoBtnId = btnId;
 }
 
 function closeInfoPanel() {
   const panel = document.getElementById('info-panel');
   if (panel) panel.classList.remove('open');
+  window.__activeInfoBtnId = null;
 }
 function prevSection() { if (state.currentIdx>0) navigateTo(state.currentIdx-1); }
 function nextSection() {
@@ -5543,7 +5558,19 @@ function renderBlockInner(b, i, sectionId, depth, path) {
 
   const cls = { normal:'block-normal', important:'block-important', conseil:'block-conseil', conseil_vert:'block-conseil-vert', empathie:'block-empathie' }[b.type] || 'block-normal';
   const extraCls = (b._purpleDark ? ' block-purple-dark' : '') + (b._noBorder ? ' block-no-border' : '');
-  return `<div class="block ${cls}${extraCls}" contenteditable="true">${text}</div>`;
+  // Bouton "💡 Plus d'infos" flottant à droite DANS le bloc (optionnel, via trailingInfoButton)
+  let trailingBtnHtml = '';
+  if (b.trailingInfoButton) {
+    const tb = b.trailingInfoButton;
+    const btnId = `info-btn-${sectionId||'x'}-${String(path||i).replace(/\./g,'-')}-trail`;
+    const label = substituteVars(tb.label || 'Plus d\'infos');
+    const title = substituteVars(tb.title || tb.label || 'Informations');
+    const contentHtml = renderBlocks(Array.isArray(tb.blocks) ? tb.blocks : [], sectionId, (depth||0)+1, path||String(i));
+    window.__infoButtons = window.__infoButtons || {};
+    window.__infoButtons[btnId] = { title, content: contentHtml };
+    trailingBtnHtml = `<button type="button" class="info-btn inline-right" contenteditable="false" onclick="openInfoPanel('${btnId}')"><span class="info-btn-emoji">💡</span><span>${label}</span></button>`;
+  }
+  return `<div class="block ${cls}${extraCls}" contenteditable="true">${trailingBtnHtml}${text}</div>`;
 }
 
 function renderBesoinsSommeil(tranches) {
