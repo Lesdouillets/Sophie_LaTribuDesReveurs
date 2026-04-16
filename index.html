@@ -3307,7 +3307,7 @@ function cleanStaleOverrides() {
     ...(SCRIPT_DATA.planAction || []),
     SCRIPT_DATA.conclusion
   ].filter(Boolean);
-  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','tarifs_tableau'];
+  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','tarifs_tableau'];
   let changed = false;
   for (const sectionId of Object.keys(state.scriptOverrides)) {
     const src = allSections.find(s => s.id === sectionId);
@@ -3422,7 +3422,7 @@ function saveScriptOverrides() {
 function getOverrideBlocks(section) {
   const ov = state.scriptOverrides[section.id];
   if (!ov) return section.blocks || [];
-  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'tarifs_tableau'];
+  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'tarifs_tableau'];
   const liveBlocks = section.blocks || [];
 
   // Pour problematique/objectifs, ov.blocks est déjà nettoyé par ensureOverride
@@ -5118,7 +5118,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','tarifs_tableau'].includes(b.type);
+    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','tarifs_tableau'].includes(b.type);
     const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
@@ -5352,6 +5352,19 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         </div>
         ${renderBlocks(getOverrideBlocks(s), s.id)}
       </div>`).join('');
+  }
+
+  if (b.type === 'info_button') {
+    // Bouton jaune pâle "💡 <label>" qui ouvre le panneau latéral Infos avec le contenu du bouton
+    const btnId = `info-btn-${sectionId||'x'}-${String(path||i).replace(/\./g,'-')}`;
+    const label = substituteVars(b.label || 'Plus d\'infos');
+    const title = substituteVars(b.title || b.label || 'Informations');
+    const innerBlocks = Array.isArray(b.blocks) ? b.blocks : [];
+    // Générer le HTML du contenu en passant par renderBlocks (conserve bullets, gras, etc.)
+    const contentHtml = renderBlocks(innerBlocks, sectionId, (depth||0)+1, path||String(i));
+    window.__infoButtons = window.__infoButtons || {};
+    window.__infoButtons[btnId] = { title, content: contentHtml };
+    return `<button type="button" class="info-btn" onclick="openInfoPanel('${btnId}')"><span class="info-btn-emoji">💡</span><span>${label}</span></button>`;
   }
 
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);

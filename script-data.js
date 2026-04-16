@@ -351,6 +351,15 @@ const SCRIPT_DATA = {
             "Le fait qu'il ait eu des <strong>compléments de lait artificiel contenant des PLV entières</strong> à la naissance, puis qu'il n'a plus été en contact direct avec les PLV (allaitement = PLV moins en contact direct)",
           ]
         },
+        { type: "normal", text: "- **Pris séparément**, CE SONT des **choses** qu'on **peut voir assez souvent**<br>mais QUAND on peut **lister au moins 2 symptômes,**<br>là, **ça me fait me dire** qu'il y a **peut-être autre chose derrière**\n\n⇒ pour moi, ça me **met la puce à l'oreille** :\n⇒ il **POURRAIT** s'**agir d'une possible allergie** (notamment aux Protéines de Lait de Vache = APLV)" },
+        {
+          type: "info_button",
+          label: "Causes du RGO",
+          title: "Causes du RGO",
+          blocks: [
+            { type: "normal", text: "- Il peut y avoir **différentes causes** :\n  - **Mécanique** :\n    - Système digestif immature : **Sphincter Inférieur de l'œsophage (SIO) immature** *(anneau musculaire entre l'œsophage et l'estomac pas assez développé pour se contracter efficacement et maintenir le contenu du bol gastrique dans l'estomac)*\n    - Tensions corporelles\n    - Freins restrictifs\n    - Pb de succion\n  - **Alimentaire** :\n    - Allergie\n    - Œsophage court\n    - Bcp d'horizontalité\n    - Bcp d'alimentation liquide *(ex : bouteille d'eau à l'horizontal)*\n    - Trop d'alimentation\n    - Système digestif immature : microbiote immature" }
+          ]
+        },
       ]
     },
 
