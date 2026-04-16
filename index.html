@@ -522,26 +522,30 @@
       flex: 1; overflow-y: auto; padding: 28px 36px 340px;
       background: var(--bg);
     }
-    /* Bloc "Leviers identifiés" dans V. Diagnostic — plus visible pour le démarquer */
+    /* Bloc "Leviers identifiés" dans V. Diagnostic — plus visible pour le démarquer
+       (fond blanc à l'intérieur pour préserver la hiérarchie des couleurs des catégories) */
     .block-leviers-identifies {
-      background: linear-gradient(135deg, #eef2ff, #f5f3ff);
-      border: 2px solid #a78bfa !important;
-      border-radius: 14px;
-      padding: 18px 22px !important;
+      background: white;
+      border: 1.5px solid var(--border) !important;
+      border-radius: var(--radius);
+      padding: 0 !important;
       margin-bottom: 16px;
-      box-shadow: 0 4px 14px rgba(167,139,250,0.25);
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
     .leviers-identifies-header {
-      font-size: 16px;
+      background: linear-gradient(90deg, #3b4e72, #6c82a8);
+      color: white;
+      font-size: 15px;
       font-weight: 800;
-      color: #5b21b6;
-      letter-spacing: 0.3px;
-      margin-bottom: 14px;
-      padding-bottom: 10px;
-      border-bottom: 1.5px solid #c4b5fd;
+      letter-spacing: 0.4px;
+      padding: 12px 20px;
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+    .block-leviers-identifies > #diag-pb-container {
+      padding: 16px 20px;
     }
 
     /* Bandeau PARENT (catégorie parente) — style le plus marqué */
