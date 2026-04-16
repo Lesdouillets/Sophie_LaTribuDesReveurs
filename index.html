@@ -5072,7 +5072,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
 
   if (b.type === 'leviers_count') {
-    return `<div class="block block-normal" style="padding:12px 16px">• Je peux voir <strong id="diag-leviers-count-num" style="color:#dc2626">0</strong> <strong>leviers que l'on pourrait identifier</strong></div>`;
+    return `<div class="block block-normal" style="padding:12px 16px">• Je peux voir <strong id="diag-leviers-count-num" style="color:#dc2626">0</strong> <strong>leviers que l'on pourrait actionner</strong></div>`;
   }
 
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
