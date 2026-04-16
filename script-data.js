@@ -172,7 +172,7 @@ const SCRIPT_DATA = {
             { type: "normal", text: "Du coup il y a BIEN quelque chose qui NE VA PAS du côté de la nutrition", _noBorder: true },
           ]
         },
-        { type: "conseil_vert", text: "👏 MAIS la **bonne nouvelle** c'est que :\n- **TOUT** ce que vous m'avez partagé a du sens, est **explicable**\n- Mais **SURTOUT** que c'est **solutionnable** !\n- ET que je peux vous **accompagner** pour les troubles du sommeil de [prénom_enfant]" },
+        { type: "normal", text: "- MAIS la **bonne nouvelle** c'est que :\n- **TOUT** ce que vous m'avez partagé a du sens, est **explicable**\n- Mais **SURTOUT** que c'est **solutionnable** !\n- ET que je peux vous **accompagner** pour les troubles du sommeil de [prénom_enfant]" },
         { type: "separator", text: "⚙️ Leviers identifiés" },
         { type: "leviers_dynamiques" },
         { type: "normal", text: "On aura PEUT-ÊTRE pas le temps de tout voir aujourd'hui :\nmais on pourra toujours reprendre un RDV plus tard pour discuter des points que l'on n'aura pas eu le temps de voir aujourd'hui.\n\nDonc, CE QUE je vois en 1er, je vois quelque chose au niveau de…\n[→ enchaîner avec les sections conditionnelles correspondantes]" },
