@@ -1017,19 +1017,15 @@
       box-shadow: 0 4px 15px rgba(34,197,94,0.40);
     }
 
-    /* 2 boutons ACTION imbriqués dans un action ouvert : côte-à-côte, centrés */
+    /* 2 boutons ACTION imbriqués dans un action ouvert : côte-à-côte */
     .block-option.action.open-action > .option-content > .edit-block-wrap:has(> .block-option.action:not(.open-action)) {
       display: inline-block;
       vertical-align: top;
       margin: 6px 4px;
     }
-    .block-option.action.open-action > .option-content:has(> .edit-block-wrap > .block-option.action:not(.open-action)) {
-      text-align: center;
-    }
-    /* Restaurer l'alignement texte par défaut pour le contenu des autres blocs */
-    .block-option.action.open-action > .option-content:has(> .edit-block-wrap > .block-option.action:not(.open-action)) > .edit-block-wrap:not(:has(> .block-option.action)) {
-      text-align: left;
-    }
+
+    /* Mutex : masquer les boutons action frères quand un est ouvert */
+    .action-sibling-hidden { display: none !important; }
     .action-close-btn {
       display: block; margin: 8px auto 12px; padding: 6px 20px;
       background: var(--primary); color: #fff; border: none; border-radius: 8px;
@@ -5256,9 +5252,13 @@ function toggleOption(header) {
         btn.onclick = function() { toggleOption(header); };
         content.insertBefore(btn, content.firstChild);
       }
+      // Masquer les boutons action frères (mutex : un seul ouvert à la fois parmi les frères)
+      hideSiblingActionButtons(optionDiv);
     } else {
       content.classList.remove('open');
       optionDiv.classList.remove('open-action');
+      // Restaurer les boutons action frères
+      showSiblingActionButtons(optionDiv);
     }
     toggle.textContent = willOpen ? 'Réduire' : 'Dérouler';
     arrow.textContent = willOpen ? '▾' : '▸';
@@ -5267,6 +5267,33 @@ function toggleOption(header) {
     toggle.textContent = isOpen ? 'Réduire' : 'Dérouler';
     arrow.textContent = isOpen ? '▾' : '▸';
   }
+}
+
+// Masquer les boutons action frères (même parent, au même niveau) quand on en ouvre un
+function hideSiblingActionButtons(optionDiv) {
+  const wrapper = optionDiv.closest('.edit-block-wrap');
+  const parent = wrapper ? wrapper.parentElement : optionDiv.parentElement;
+  if (!parent) return;
+  parent.querySelectorAll(':scope > .edit-block-wrap').forEach(sib => {
+    if (sib === wrapper) return;
+    const sibAction = sib.querySelector(':scope > .block-option.action');
+    if (sibAction) sib.classList.add('action-sibling-hidden');
+  });
+  // Cas où les boutons action ne sont pas dans des edit-block-wrap (ex. contexte sans section)
+  parent.querySelectorAll(':scope > .block-option.action').forEach(sib => {
+    if (sib === optionDiv) return;
+    sib.classList.add('action-sibling-hidden');
+  });
+}
+
+// Restaurer les boutons action frères à la fermeture
+function showSiblingActionButtons(optionDiv) {
+  const wrapper = optionDiv.closest('.edit-block-wrap');
+  const parent = wrapper ? wrapper.parentElement : optionDiv.parentElement;
+  if (!parent) return;
+  parent.querySelectorAll(':scope > .edit-block-wrap.action-sibling-hidden, :scope > .block-option.action.action-sibling-hidden').forEach(el => {
+    el.classList.remove('action-sibling-hidden');
+  });
 }
 
 // ═══════════════════════════════════════════════════
