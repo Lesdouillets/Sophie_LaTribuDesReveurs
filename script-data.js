@@ -147,7 +147,7 @@ const SCRIPT_DATA = {
         {
           type: "option", label: "Pas de dette de sommeil", emoji: "✅", style: "action-green", _purpleContent: true,
           blocks: [
-            { type: "conseil", text: "- La **bonne nouvelle** c'est qu'aujourd'hui [prénom_enfant] n'est **PAS en dette de sommeil**" },
+            { type: "normal", text: "- La **bonne nouvelle** c'est qu'aujourd'hui [prénom_enfant] n'est **PAS en dette de sommeil**" },
             { type: "conseil_vert", text: "👏 Vous faites **TOUT** pour que ça ne **soit pas le cas**!" },
             { type: "normal", text: "**<u>Au niveau du tps d'endormissement :</u>** Par contre, je vois des **difficultés** sur la **durée d'endormissement** … qui est **très long**", _purpleDark: true },
             { type: "normal", text: "**<u>Au niveau du nombre de siestes …</u>** Par contre, je peux voir que le **nombre de siestes** … ne **correspond PAS** aux **besoins** d'un enfant de **cet âge**", _purpleDark: true },

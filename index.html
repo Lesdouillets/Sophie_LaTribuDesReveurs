@@ -1020,10 +1020,14 @@
     /* OPTION ACTION — variante avec petits blocs violets distincts à l'intérieur (quand ouvert)
        Fond du déroulé reste BLANC (comportement par défaut de .open-action).
        Restaure uniquement la couleur violet foncé des blocs marqués _purpleDark. */
-    .block-option.action.action-purple-inside.open-action .block-normal.block-purple-dark {
+    .block-option.action.action-purple-inside.open-action .block.block-normal.block-purple-dark,
+    .block-option.action.action-purple-inside.open-action .edit-block-wrap > .block.block-normal.block-purple-dark {
       background: #ddd3f8 !important;
-      border-color: #c4b5e0 !important;
+      border: 1px solid #c4b5e0 !important;
+      border-radius: var(--radius) !important;
       box-shadow: none !important;
+      padding: 12px 16px !important;
+      margin-bottom: 10px !important;
     }
 
     /* 2+ boutons ACTION frères (top-level ou imbriqués) : côte-à-côte
