@@ -567,7 +567,6 @@ const SCRIPT_DATA = {
       title: "Stratégie de sommeil",
       emoji: "😴",
       blocks: [
-        { type: "parent_banner", label: "😴 Stratégie de sommeil" },
         { type: "normal", text: "- Aujourd'hui, **[prénom_enfant]** ne s'endort que :" },
         {
           type: "checklist", label: "Stratégies d'endormissement",
@@ -601,7 +600,7 @@ const SCRIPT_DATA = {
     {
       id: "strategie_tetine",
       problematiqueId: "strategie_tetine",
-      title: "Stratégie – Tétine (cause de réveils)",
+      title: "Tétine (cause de réveils)",
       emoji: "🍭",
       blocks: [
         { type: "normal", text: "Concernant la tétine, elle peut jouer un RÔLE dans ces réveils.\n\nAujourd'hui, [prénom_enfant] s'endort avec la tétine\nEt DONC à la fin d'un cycle de sommeil, il y a CE fameux 'micro-réveil'\nLe cerveau remonte un peu à la surface, vérifie que tout va bien…\n⇒ Sauf que là… [prénom_enfant] va se rendre compte que sa tétine n'est plus là.\n\nEt comme, la tétine fait partie de sa stratégie pour s'endormir\n⇒ Il va vous appeler pour que vous veniez la lui remettre\n\nEt ça, c'est quelque chose de très fréquent !" },
@@ -612,7 +611,7 @@ const SCRIPT_DATA = {
     {
       id: "strategie_enjeu_relationnel",
       problematiqueId: "strategie_enjeu_relationnel",
-      title: "Stratégie – Enjeu relationnel",
+      title: "Enjeu relationnel",
       emoji: "😴",
       blocks: [
         { type: "normal", text: "Aujourd'hui, [prénom_enfant] s'endort avec le biberon / en tétant\n\nC'est une stratégie d'endormissement qui est très confortable pour lui\nMais le problème, c'est que :\n→ son cerveau associe le fait de manger avec le fait de s'endormir\n→ et donc, à chaque micro-réveil entre deux cycles de sommeil,\n→ son cerveau va chercher cette même condition pour se rendormir\n⇒ Et il va vous appeler !" },
