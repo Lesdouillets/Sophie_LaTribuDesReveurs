@@ -5696,10 +5696,32 @@ function onModalPbChange() {
   setTimeout(applyPbChanges, 0);
 }
 
-// Synchronise state.selectedPbs → checkboxes fiche client
+// Synchronise state.selectedPbs → toutes les cases à cocher (fiche client + modal + diagnostic V.)
 function syncPbsToFicheClient() {
-  document.querySelectorAll('input[name="pb"]').forEach(cb => {
+  // 1. Cases feuilles (items)
+  const leafSelectors = 'input[name="pb"], .modal-pb, .diag-pb';
+  document.querySelectorAll(leafSelectors).forEach(cb => {
     cb.checked = state.selectedPbs.has(cb.value);
+    cb.closest('.pb-item')?.classList.toggle('checked', cb.checked);
+  });
+  // 2. Cases catégories parentes (top-level) : cochées si ≥ 1 enfant coché dans leur bloc
+  document.querySelectorAll('.pb-cat-checkbox, .modal-pb-cat, .diag-pb-cat').forEach(catCb => {
+    const cat = catCb.closest('.pb-category');
+    if (!cat) return;
+    let childSel = 'input[name="pb"]';
+    if (catCb.classList.contains('modal-pb-cat')) childSel = '.modal-pb';
+    else if (catCb.classList.contains('diag-pb-cat')) childSel = '.diag-pb';
+    const anyChecked = [...cat.querySelectorAll(childSel)].some(c => c.checked);
+    catCb.checked = anyChecked;
+  });
+  // 3. Sub-parents (intermédiaires) : cochés si ≥ 1 enfant direct du subgroup coché
+  document.querySelectorAll('.pb-sub-parent, .modal-pb-sub-parent, .diag-pb-sub-parent').forEach(sp => {
+    if (!sp.dataset.subgroup) return;
+    // Chercher les enfants dans le MÊME container que le sub-parent (fiche/modal/diag)
+    const container = sp.closest('.problematiques-grid, #modal-pb-list, #diag-pb-container');
+    if (!container) return;
+    const anyChild = [...container.querySelectorAll(`input[data-subgroup-child="${sp.dataset.subgroup}"]`)].some(c => c.checked);
+    sp.checked = anyChild;
   });
 }
 
