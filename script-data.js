@@ -428,17 +428,7 @@ const SCRIPT_DATA = {
             },
           ]
         },
-        {
-          type: "normal",
-          text: "- **Pris séparément**, CE SONT des **choses** qu'on **peut voir assez souvent**<br>mais QUAND on peut **lister au moins 2 symptômes,**<br>là, **ça me fait me dire** qu'il y a **peut-être autre chose derrière**\n\n⇒ pour moi, ça me **met la puce à l'oreille** :\n⇒ il **POURRAIT** s'**agir d'une possible allergie** (notamment aux Protéines de Lait de Vache = APLV)",
-          trailingInfoButton: {
-            label: "Causes du RGO",
-            title: "Causes du RGO",
-            blocks: [
-              { type: "normal", text: "- Il peut y avoir **différentes causes** :\n  - <u>**Mécanique**</u> :\n    - Système digestif immature : **Sphincter Inférieur de l'œsophage (SIO) immature** *(anneau musculaire entre l'œsophage et l'estomac pas assez développé pour se contracter efficacement et maintenir le contenu du bol gastrique dans l'estomac)*\n    - Tensions corporelles\n    - Freins restrictifs\n    - Pb de succion\n  - <u>**Alimentaire**</u> :\n    - Allergie\n    - Œsophage court\n    - Bcp d'horizontalité\n    - Bcp d'alimentation liquide *(ex : bouteille d'eau à l'horizontal)*\n    - Trop d'alimentation\n    - Système digestif immature : microbiote immature" }
-            ]
-          }
-        },
+        { type: "normal", text: "- **Pris séparément**, CE SONT des **choses** qu'on **peut voir assez souvent**<br>mais QUAND on peut **lister au moins 2 symptômes,**<br>là, **ça me fait me dire** qu'il y a **peut-être autre chose derrière**\n\n⇒ pour moi, ça me **met la puce à l'oreille** :\n⇒ il **POURRAIT** s'**agir d'une possible allergie** (notamment aux Protéines de Lait de Vache = APLV)" },
         { type: "normal", text: "- C'est une **allergie** qui est de **plus en plus diagnostiqué chez les enfants**\n\n- Alors ATTENTION, hein,<br>ça **ne veut pas dire** que c'est **forcément ça**\n  - et moi je ne suis **pas médecin**\n  - je ne **pose pas de diagnostic**\n\n- Mais ça **peut être intéressant** d'en **parler avec votre médecin**\n  - **Pour qu'il explore cette piste**\n    - simplement pour confirmer\n    - ou pour écarter cette hypothèse\n\n- Et puis :\n  - **si ce n'est pas cette piste là**,\n  - c'est **pas grave,**\n  - on **l'écartera du schéma,**\n  - et on **regardera autre chose**" },
         { type: "normal", text: "- Voilà\n- Je ne sais pas **si ça vous parle**, ce que je vous dit ?\n- Si vous aviez :\n  - des **petits soupçons**\n  - ….ou **pas du tout** ?\n\n- **En attendant**, CE QUE je peux vous dire, c'est **ce qu'on va faire AU MIEUX pour comprendre ce qui se passe**.\n- Moi, je **peux vous expliquer simplement** :\n  - ce qu'on FAIT **…. QUAND on soupçonne une allergie**\n  - JUSTE pour que **vous soyez au courant**\n\n- L'idée, ce n'est PAS DU TOUT de vous inquiéter<br>mais PLUTÔT de **vous accompagner** ET de **vous soutenir**\n\n- Et une fois qu'on aura **remis du confort dans son quotidien**<br>**tout le reste** devient **beaucoup + simple**, et surtout + **durable pour son sommeil**" },
         { type: "question", text: "Est-ce que ça **vous irait** qu'on **en parle un peu** …tout à l'heure ?" },
@@ -451,25 +441,32 @@ const SCRIPT_DATA = {
       title: "Confort – RGO",
       emoji: "😣",
       blocks: [
-        { type: "normal", text: "Avant de commencer à parler 'sommeil'\nj'aimerais, si vous êtes d'accord, qu'on prenne un petit moment\npour revenir sur CE QUE vous m'avez partagé… sur son reflux" },
-        { type: "separator", text: "✅ Cochez les symptômes présents" },
+        { type: "normal", text: "- Avant de **commencer à parler \"sommeil\"**<br>j'aimerais, si vous êtes d'accord, qu'on **prenne un petit moment**<br>pour **revenir** sur CE QUE **vous m'avez partagé** ….sur son reflux\n\n- Parce que dans TOUT ce que **vous décrivez,** on sent :\n  - qu'il y a **beaucoup de choses à gérer**\n  - et que ça peut parfois être **un peu lourd au quotidien**\n  - parce que c'est **pas simple à vivre**\n\nEntre :" },
         {
-          type: "checklist", label: "Ce que vous m'avez décrit",
+          type: "checklist", label: "Symptômes rapportés",
           items: [
-            "Il régurgite beaucoup",
-            "Il a du mal à rester allongé",
-            "Il a un sommeil très agité",
-            "Les repas sont parfois compliqués",
-            "On sent qu'il est souvent gêné ou inconfortable",
-            "Il se cambre",
+            "Le fait qu'il <strong>régurgite beaucoup</strong>",
+            "Qu'il a du <strong>mal à rester allongé</strong>",
+            "Qu'il a un <strong>sommeil très agité</strong>",
+            "Que les <strong>repas sont parfois compliqués</strong>",
+            "Qu'on sent qu'il est souvent <strong>gêné ou inconfortable</strong>",
+            "Qu'il <strong>se cambre</strong>",
           ]
         },
-        { type: "empathie", text: "⇒ c'est normal que ce soit difficile pour vous.\n\nLe reflux, même si des fois il peut être discret, va impacter sur énormément de choses du quotidien" },
-        { type: "important", text: "Alors, on aura BEAU tout mettre en œuvre au niveau du sommeil,\n⇒ si il y a toujours ce petit caillou, cet inconfort\n⇒ malheureusement, le sommeil sera toujours perturbé." },
-        { type: "separator", text: "Causes du RGO" },
-        { type: "normal", text: "Il peut y avoir différentes causes :\n\nMécanique :\n→ Système digestif immature (Sphincter Inférieur de l'œsophage immature)\n→ Tensions corporelles\n→ Freins restrictifs\n→ Problème de succion\n\nAlimentaire :\n→ Allergie\n→ Œsophage court\n→ Beaucoup d'horizontalité\n→ Trop d'alimentation\n→ Système digestif immature (microbiote immature)" },
-        { type: "normal", text: "Donc, l'idée ici n'est pas de se focaliser uniquement sur le reflux, mais d'avoir une lecture globale de la situation :\n→ Essayer de trouver la cause, avant de s'attaquer aux symptômes\n→ Est-ce que les apports sont suffisants et bien répartis ?\n→ Est-ce que le rythme est adapté à son âge ?\n→ Y a-t-il des signes d'inconfort digestif au quotidien ?\n\nMon rôle, ce n'est pas d'étiqueter ou de poser un diagnostic\nMAIS de NE PAS passer à côté de quelque chose qui pourrait expliquer ces troubles du sommeil\n\nEt une fois qu'on aura remis du confort dans son quotidien, tout le reste deviendra beaucoup + simple, et surtout + durable pour son sommeil" },
-        { type: "question", text: "Est-ce que ça vous irait qu'on parle de conseils concrets pour soulager son RGO ?" },
+        { type: "normal", text: "⇒ c'est **normal** que ce soit **difficile pour vous.**" },
+        {
+          type: "normal",
+          text: "- Le **reflux,** même si des fois il **peut être discret**, **va impacter** sur énormément de **choses du quotidien**\n\n- Alors, on aura BEAU **tout mettre en œuvre** au niveau du **sommeil,**<br>⇒ si il y a **toujours :**\n  - **ce petit cailloux**\n  - cet inconfort\n  - malheureusement, le **sommeil** sera **toujours perturbé.**",
+          trailingInfoButton: {
+            label: "Causes du RGO",
+            title: "Causes du RGO",
+            blocks: [
+              { type: "normal", text: "- Il peut y avoir **différentes causes** :\n  - <u>**Mécanique**</u> :\n    - Système digestif immature : **Sphincter Inférieur de l'œsophage (SIO) immature** *(anneau musculaire entre l'œsophage et l'estomac pas assez développé pour se contracter efficacement et maintenir le contenu du bol gastrique dans l'estomac)*\n    - Tensions corporelles\n    - Freins restrictifs\n    - Pb de succion\n  - <u>**Alimentaire**</u> :\n    - Allergie\n    - Œsophage court\n    - Bcp d'horizontalité\n    - Bcp d'alimentation liquide *(ex : bouteille d'eau à l'horizontal)*\n    - Trop d'alimentation\n    - Système digestif immature : microbiote immature" }
+            ]
+          }
+        },
+        { type: "normal", text: "- Donc, l'idée ici **n'est pas de se focaliser uniquement sur le reflux**, mais d'avoir une **lecture globale de la situation** :\n- Essayer de trouver la cause, avant de s'attaquer aux symptômes :\n  - *est-ce que les **apports sont** :*\n    - ***suffisants***\n    - *et **bien répartis** ?*\n  - *est-ce que le **rythme est adapté à son âge** ?*\n  - *y a-t-il des **signes d'inconfort digestif** au quotidien ?*\n\n- **Mon rôle**, ce n'est :\n  - **pas d'étiqueter**\n  - ou de **poser un diagnostic**\n  - MAIS de **NE PAS passer** à **côté de qqch** qui pourrait **expliquer ces troubles du sommeil**\n\n- Et une fois qu'on aura **remis du confort** dans son quotidien, **tout le reste** deviendra :\n  - **beaucoup + simple**,\n  - et surtout + **durable pour son sommeil**" },
+        { type: "question", text: "Est-ce que ça **vous irait** qu'on **parle de conseils concrets** pour **soulager son RGO** ?" },
       ]
     },
 
