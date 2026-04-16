@@ -1017,8 +1017,10 @@
       box-shadow: 0 4px 15px rgba(34,197,94,0.40);
     }
 
-    /* 2 boutons ACTION imbriqués dans un action ouvert : côte-à-côte */
-    .block-option.action.open-action > .option-content > .edit-block-wrap:has(> .block-option.action:not(.open-action)) {
+    /* 2+ boutons ACTION frères (top-level ou imbriqués) : côte-à-côte
+       Ne s'applique QUE si le wrapper a un wrapper-action frère (avant ou après), pour ne pas affecter un bouton action isolé. */
+    .edit-block-wrap:has(> .block-option.action:not(.open-action)):has(~ .edit-block-wrap > .block-option.action:not(.open-action)),
+    .edit-block-wrap:has(> .block-option.action:not(.open-action)) ~ .edit-block-wrap:has(> .block-option.action:not(.open-action)) {
       display: inline-block;
       vertical-align: top;
       margin: 6px 4px;
