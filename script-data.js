@@ -563,7 +563,7 @@ const SCRIPT_DATA = {
     // ─── STRATÉGIE ───────────────────────────────────────
     {
       id: "strategie_rendormissement",
-      problematiqueId: ["strategie_rendormissement", "strategie_tetine", "strategie_enjeu_relationnel"],
+      problematiqueId: "strategie_rendormissement",
       title: "Stratégie – Rendormissement difficile",
       emoji: "😴",
       blocks: [

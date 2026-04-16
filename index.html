@@ -4671,6 +4671,9 @@ function adaptSectionsToClient() {
 // Mappe "rgo_*", "allergie_*" → confort_physique ; "nutrition_*" → nutrition ; etc.
 function getPbCategoryFromValue(pbValue) {
   if (!pbValue) return null;
+  // Si c'est un tableau (ex. section active pour plusieurs pbs), prendre le 1er élément pour déterminer la catégorie
+  if (Array.isArray(pbValue)) pbValue = pbValue[0];
+  if (!pbValue || typeof pbValue !== 'string') return null;
   if (pbValue.startsWith('rgo_') || pbValue.startsWith('allergie_')) return 'confort_physique';
   if (pbValue.startsWith('nutrition_') || pbValue.startsWith('nutri_')) return 'nutrition';
   if (pbValue.startsWith('rythme_')) return 'rythme';
@@ -4696,6 +4699,13 @@ const PB_CATEGORY_LABELS = {
 function isProblematiqueMatched(problematiqueId, selectedPbs) {
   if (!problematiqueId) return true;
   if (Array.isArray(problematiqueId)) return problematiqueId.some(id => selectedPbs.has(id));
+  // Cas particulier : la section "Stratégie – Rendormissement difficile" est aussi active
+  // si l'une des autres cases Stratégie (tétine, enjeu relationnel) est cochée.
+  if (problematiqueId === 'strategie_rendormissement') {
+    return selectedPbs.has('strategie_rendormissement')
+        || selectedPbs.has('strategie_tetine')
+        || selectedPbs.has('strategie_enjeu_relationnel');
+  }
   return selectedPbs.has(problematiqueId);
 }
 
@@ -6124,10 +6134,14 @@ function syncPbsToFicheClient() {
 // Synchronise checkboxes fiche client → state.selectedPbs + sections
 function onFicheClientPbChange() {
   setTimeout(function() {
-    state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
-    syncPbsToFicheClient();
-    syncPbsHighlights();
-    rebuildAfterPbChange();
+    try {
+      state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
+      syncPbsToFicheClient();
+      syncPbsHighlights();
+      rebuildAfterPbChange();
+    } catch (err) {
+      console.error('[onFicheClientPbChange] Erreur :', err);
+    }
   }, 0);
 }
 
@@ -6237,13 +6251,17 @@ function syncPbsHighlights() {
 }
 
 function rebuildAfterPbChange() {
-  const savedId = state.sections[state.currentIdx]?.id;
-  buildSidebarPbPanel();
-  buildSections();
-  const newIdx = state.sections.findIndex(s=>s.id===savedId);
-  state.currentIdx = newIdx>=0 ? newIdx : Math.min(state.currentIdx, state.sections.length-1);
-  buildSidebar();
-  renderCurrentSection();
+  try {
+    const savedId = state.sections[state.currentIdx]?.id;
+    buildSidebarPbPanel();
+    buildSections();
+    const newIdx = state.sections.findIndex(s=>s.id===savedId);
+    state.currentIdx = newIdx>=0 ? newIdx : Math.min(state.currentIdx, state.sections.length-1);
+    buildSidebar();
+    renderCurrentSection();
+  } catch (err) {
+    console.error('[rebuildAfterPbChange] Erreur :', err);
+  }
 }
 
 // Appliquer les règles d'exclusion après un "tout cocher"
