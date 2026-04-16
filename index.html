@@ -5072,7 +5072,13 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
 
   if (b.type === 'leviers_count') {
-    return `<div class="block block-normal" style="padding:12px 16px">• Je peux voir <strong id="diag-leviers-count-num" style="color:#dc2626">0</strong> <strong>leviers que l'on pourrait actionner</strong></div>`;
+    return `<div class="block block-normal" style="padding:12px 16px">
+      <div>• Je peux voir <strong id="diag-leviers-count-num" style="color:#dc2626">0</strong> <strong>leviers que l'on pourrait actionner</strong></div>
+      <div id="diag-leviers-details" style="margin-top:10px;display:none">
+        Je <strong>vois quelque chose</strong> au niveau :
+        <ul id="diag-leviers-list" style="margin:6px 0 0 40px;padding:0;list-style:disc"></ul>
+      </div>
+    </div>`;
   }
 
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
@@ -5771,18 +5777,42 @@ function onDiagnosticPbChange() {
 }
 
 // Compter les catégories top-level cochées dans le diagnostic (excluant "souhait")
+// + mettre à jour la liste détaillée des catégories cochées
 function updateDiagLeviersCount() {
   const countEl = document.getElementById('diag-leviers-count-num');
   if (!countEl) return;
   const container = document.getElementById('diag-pb-container');
   if (!container) { countEl.textContent = '0'; return; }
+  const catLabels = {
+    confort_physique: '🩺 Confort physique',
+    nutrition: '🍽️ Nutrition',
+    rythme: '⏰ Organisation de la journée',
+    strategie: '😴 Stratégie de sommeil',
+    env: '🏠 Environnement de sommeil',
+    relationnel: '💬 Enjeux relationnels',
+    // souhait : volontairement exclu
+  };
   // .diag-pb-cat est la version renommée de .pb-cat-checkbox dans le clone du diagnostic
   const catCbs = container.querySelectorAll('.diag-pb-cat[data-cat]');
-  let count = 0;
+  const checkedCats = [];
   catCbs.forEach(cb => {
-    if (cb.checked && cb.dataset.cat !== 'souhait') count++;
+    if (cb.checked && cb.dataset.cat !== 'souhait' && catLabels[cb.dataset.cat]) {
+      checkedCats.push(catLabels[cb.dataset.cat]);
+    }
   });
-  countEl.textContent = count;
+  countEl.textContent = checkedCats.length;
+  // Mettre à jour la liste détaillée
+  const detailsEl = document.getElementById('diag-leviers-details');
+  const listEl = document.getElementById('diag-leviers-list');
+  if (detailsEl && listEl) {
+    if (checkedCats.length === 0) {
+      detailsEl.style.display = 'none';
+      listEl.innerHTML = '';
+    } else {
+      detailsEl.style.display = '';
+      listEl.innerHTML = checkedCats.map(name => `<li>${name}</li>`).join('');
+    }
+  }
 }
 
 // Sync le surlignage vert sur fiche client
