@@ -315,6 +315,42 @@ const SCRIPT_DATA = {
           ]
         },
         { type: "normal", text: "⇒ c'est **normal** que ce soit **difficile pour vous.**\n\n- Et **dans ces moments-là**,<br>**mon rôle**, c'est vraiment de **prendre un peu de recul sur l'ensemble**.<br>Parce que **chez les bébés**, très souvent, **tout est un peu lié**.\n\n- Et JUSTEMENT… dans ce que **vous m'avez décrit**…<br>il y a **plusieurs petites choses** qui **attirent mon attention**" },
+        { type: "normal", text: "- Vous **m'avez parlé** :" },
+        {
+          type: "checklist", label: "Symptômes rapportés",
+          items: [
+            "Refus de s'alimenter (+ se cambre)",
+            "Douleurs",
+            "Eczéma / peau atopique / psoriasis",
+            "Régurgitations :",
+            "&nbsp;&nbsp;&nbsp;&nbsp;↳ en jet",
+            "&nbsp;&nbsp;&nbsp;&nbsp;↳ sur tout le tps d'éveil",
+            "&nbsp;&nbsp;&nbsp;&nbsp;↳ lait caillé",
+            "Respiration sifflante / bruits de dinosaure",
+            "Ronflements (amygdales enflammées)",
+            "Dort la bouche ouverte",
+          ]
+        },
+        { type: "normal", text: "**Sphère ORL :**" },
+        {
+          type: "checklist", label: "Sphère ORL",
+          items: [
+            "Otites à répétition",
+            "Toux chronique",
+            "Bronchite à répétition",
+            "Qu'il soit enrhumé très souvent",
+          ]
+        },
+        {
+          type: "checklist", label: "Autres symptômes",
+          items: [
+            "Selles diarrhéiques",
+            "Selles glaireuses",
+            "Selles avec des traces de sang",
+            "Terrain allergique dans la famille",
+            "Le fait qu'il ait eu des <strong>compléments de lait artificiel contenant des PLV entières</strong> à la naissance, puis qu'il n'a plus été en contact direct avec les PLV (allaitement = PLV moins en contact direct)",
+          ]
+        },
         { type: "normal", text: "Pris séparément, CE SONT des choses qu'on peut voir assez souvent\nMAIS QUAND on peut lister au moins 2 symptômes,\nlà, ça me fait me dire qu'il y a peut-être autre chose derrière" },
         { type: "important", text: "⇒ Pour moi, ça me met la puce à l'oreille :\n⇒ il POURRAIT s'agir d'une possible allergie (notamment aux Protéines de Lait de Vache = APLV)\n\nC'est une allergie qui est de plus en plus diagnostiquée chez les enfants\nD'ailleurs, chez les BB présentant un RGO, on estime qu'environ 40% sont concernés\n\n⚠️ ATTENTION : ça ne veut pas dire que c'est forcément CA\net moi je ne suis pas médecin, je ne pose pas de diagnostic\n\nMais ça peut être intéressant d'en parler avec votre médecin\npour qu'il explore cette piste, simplement pour confirmer ou pour écarter cette hypothèse" },
         { type: "question", text: "Je ne sais pas si ça vous parle, ce que je vous dis ?\nSi vous aviez des petits soupçons… ou pas du tout ?" },
