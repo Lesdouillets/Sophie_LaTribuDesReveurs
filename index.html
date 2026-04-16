@@ -1017,21 +1017,13 @@
       box-shadow: 0 4px 15px rgba(34,197,94,0.40);
     }
 
-    /* OPTION ACTION — intérieur VIOLET (quand le bouton est ouvert) */
-    .block-option.action.action-purple-inside.open-action {
-      background: #f5f0ff;
-      border-color: #7c3aed;
-    }
-    .block-option.action.action-purple-inside.open-action > .option-content {
-      background: #f5f0ff;
-    }
-    .block-option.action.action-purple-inside.open-action .block-normal {
-      background: #f5f0ff !important;
-      border-color: #d4c4f0 !important;
-    }
-    .block-option.action.action-purple-inside.open-action .block-empathie {
-      background: #f5f0ff !important;
-      border-color: #d4c4f0 !important;
+    /* OPTION ACTION — variante avec petits blocs violets distincts à l'intérieur (quand ouvert)
+       Fond du déroulé reste BLANC (comportement par défaut de .open-action).
+       Restaure uniquement la couleur violet foncé des blocs marqués _purpleDark. */
+    .block-option.action.action-purple-inside.open-action .block-normal.block-purple-dark {
+      background: #ddd3f8 !important;
+      border-color: #c4b5e0 !important;
+      box-shadow: none !important;
     }
 
     /* 2+ boutons ACTION frères (top-level ou imbriqués) : côte-à-côte
