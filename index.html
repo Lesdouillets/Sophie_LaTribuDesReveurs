@@ -522,6 +522,23 @@
       flex: 1; overflow-y: auto; padding: 28px 36px 340px;
       background: var(--bg);
     }
+    /* Sections conditionnelles injectées inline dans V. Diagnostic (à la suite) */
+    .inline-conditional-section {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 2px dashed var(--border);
+    }
+    .inline-conditional-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 14px;
+      padding: 10px 14px;
+      background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+      color: white;
+      border-radius: 10px;
+    }
+    .inline-conditional-emoji { font-size: 22px; }
+    .inline-conditional-title { font-size: 16px; font-weight: 800; letter-spacing: 0.3px; }
+
     /* Bouton "Retour à la consultation" en haut des sections conditionnelles */
     .btn-return-to-diag {
       display: inline-flex; align-items: center; gap: 6px;
@@ -3222,7 +3239,7 @@ function cleanStaleOverrides() {
     ...(SCRIPT_DATA.planAction || []),
     SCRIPT_DATA.conclusion
   ].filter(Boolean);
-  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','tarifs_tableau'];
+  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','tarifs_tableau'];
   let changed = false;
   for (const sectionId of Object.keys(state.scriptOverrides)) {
     const src = allSections.find(s => s.id === sectionId);
@@ -3337,7 +3354,7 @@ function saveScriptOverrides() {
 function getOverrideBlocks(section) {
   const ov = state.scriptOverrides[section.id];
   if (!ov) return section.blocks || [];
-  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'tarifs_tableau'];
+  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'tarifs_tableau'];
   const liveBlocks = section.blocks || [];
 
   // Pour problematique/objectifs, ov.blocks est déjà nettoyé par ensureOverride
@@ -4960,15 +4977,17 @@ function renderCurrentSection() {
   }
   html += `<button class="add-block-row" style="margin-bottom:8px" onclick="openAddBlockModal('${section.id}',-1)">➕ Ajouter un bloc au début</button>`;
   html += renderBlocks(getOverrideBlocks(section), section.id);
+  // Masquer les boutons Précédent / Suivant sur les sections conditionnelles (accessibles via sidebar + bouton retour)
+  const showPrevNext = section.sectionType !== 'conditional';
   html += `<div class="nav-buttons">
-    <button class="btn-nav btn-prev" title="Aller à la section précédente" onclick="prevSection()" ${state.currentIdx===0?'disabled':''}>← Précédent</button>
+    ${showPrevNext ? `<button class="btn-nav btn-prev" title="Aller à la section précédente" onclick="prevSection()" ${state.currentIdx===0?'disabled':''}>← Précédent</button>` : '<div></div>'}
     <div style="display:flex;align-items:center;gap:10px">
       <span class="section-progress">${state.currentIdx+1} / ${state.sections.length}</span>
       <button class="btn-done ${state.completedSet.has(state.currentIdx)?'done':''}" id="btn-done" onclick="markDone()">
         ${state.completedSet.has(state.currentIdx)?'✅ Validée':'☑️ Marquer comme vue'}
       </button>
     </div>
-    <button class="btn-nav btn-next" title="Aller à la section suivante" onclick="nextSection()" ${state.currentIdx===state.sections.length-1?'disabled':''}>Suivant →</button>
+    ${showPrevNext ? `<button class="btn-nav btn-next" title="Aller à la section suivante" onclick="nextSection()" ${state.currentIdx===state.sections.length-1?'disabled':''}>Suivant →</button>` : '<div></div>'}
   </div>`;
   area.innerHTML = html;
   // Marquer les parents qui contiennent 2+ boutons action frères (pour le centrage CSS)
@@ -5010,7 +5029,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','tarifs_tableau'].includes(b.type);
+    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','tarifs_tableau'].includes(b.type);
     const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
@@ -5224,12 +5243,26 @@ function renderBlockInner(b, i, sectionId, depth, path) {
 
   if (b.type === 'leviers_count') {
     return `<div class="block block-normal" style="padding:12px 16px">
-      <div>• Je peux voir <strong id="diag-leviers-count-num" style="color:#dc2626">0</strong> <strong>leviers que l'on pourrait actionner</strong></div>
+      <div>• Je peux voir <strong id="diag-leviers-count-num" style="color:#dc2626">0</strong> <strong>levier<span id="diag-leviers-s"></span> que l'on pourrait actionner</strong></div>
       <div id="diag-leviers-details" style="margin-top:10px;display:none">
         Je <strong>vois quelque chose</strong> au niveau :
         <ul id="diag-leviers-list" style="margin:6px 0 0 40px;padding:0;list-style:disc"></ul>
       </div>
     </div>`;
+  }
+
+  if (b.type === 'conditional_sections_inline') {
+    // Affiche le contenu des sections conditionnelles dont la problématique est cochée, à la suite de V. Diagnostic
+    const checkedSections = SCRIPT_DATA.conditional.filter(s => s.problematiqueId && state.selectedPbs.has(s.problematiqueId));
+    if (checkedSections.length === 0) return '';
+    return checkedSections.map(s => `
+      <div class="inline-conditional-section">
+        <div class="inline-conditional-header">
+          <span class="inline-conditional-emoji">${s.emoji || '📄'}</span>
+          <span class="inline-conditional-title">${s.title}</span>
+        </div>
+        ${renderBlocks(getOverrideBlocks(s), s.id)}
+      </div>`).join('');
   }
 
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
@@ -5961,6 +5994,9 @@ function updateDiagLeviersCount() {
     }
   });
   countEl.textContent = checkedCats.length;
+  // Pluriel de "levier" : "s" seulement si > 1
+  const sEl = document.getElementById('diag-leviers-s');
+  if (sEl) sEl.textContent = checkedCats.length > 1 ? 's' : '';
   // Mettre à jour la liste détaillée
   const detailsEl = document.getElementById('diag-leviers-details');
   const listEl = document.getElementById('diag-leviers-list');
