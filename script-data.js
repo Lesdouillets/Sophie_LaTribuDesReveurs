@@ -163,18 +163,19 @@ const SCRIPT_DATA = {
           ]
         },
         {
-          type: "option", label: "🍼 Difficultés alimentaires identifiées (courbes en déclin)", style: "purple",
+          type: "option", label: "Difficultés alimentaires identifiées (courbes en déclin)", emoji: "🍼", style: "action-yellow", _purpleContent: true,
           blocks: [
-            { type: "normal", text: "Je valide AUSSI des difficultés alimentaires parce que… En effet,", _noBorder: true },
+            { type: "normal", text: "- Je valide **AUSSI des difficultés alimentaires** parce que…\n- En effet,", _noBorder: true },
             { type: "normal", text: "**<u>Au niveau des courbes qu'on a vues ensemble,</u>** il y a quelque chose qui se joue", _purpleDark: true },
             { type: "normal", text: "**<u>Au niveau des différents symptômes que vous m'avez partagé,</u>** il y a quelque chose à creuser", _purpleDark: true },
             { type: "normal", text: "**<u>Au niveau de son inconfort,</u>** pour [prénom_enfant] il faudrait comprendre pourquoi il est ainsi", _purpleDark: true },
-            { type: "normal", text: "Du coup il y a BIEN quelque chose qui NE VA PAS du côté de la nutrition", _noBorder: true },
+            { type: "normal", text: "- Du coup, il y a **BIEN quelque chose** qui **NE VA PAS** du côté de la **nutrition**", _noBorder: true },
           ]
         },
         { type: "normal", text: "- MAIS la **bonne nouvelle** c'est que :\n- **TOUT** ce que vous m'avez partagé a du sens, est **explicable**\n- Mais **SURTOUT** que c'est **solutionnable** !\n- ET que je peux vous **accompagner** pour les troubles du sommeil de [prénom_enfant]" },
         { type: "separator", text: "⚙️ Leviers identifiés" },
         { type: "leviers_dynamiques" },
+        { type: "leviers_count" },
         { type: "normal", text: "On aura PEUT-ÊTRE pas le temps de tout voir aujourd'hui :\nmais on pourra toujours reprendre un RDV plus tard pour discuter des points que l'on n'aura pas eu le temps de voir aujourd'hui.\n\nDonc, CE QUE je vois en 1er, je vois quelque chose au niveau de…\n[→ enchaîner avec les sections conditionnelles correspondantes]" },
       ]
     },

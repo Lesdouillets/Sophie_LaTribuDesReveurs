@@ -3140,7 +3140,7 @@ function cleanStaleOverrides() {
     ...(SCRIPT_DATA.planAction || []),
     SCRIPT_DATA.conclusion
   ].filter(Boolean);
-  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','tarifs_tableau'];
+  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','tarifs_tableau'];
   let changed = false;
   for (const sectionId of Object.keys(state.scriptOverrides)) {
     const src = allSections.find(s => s.id === sectionId);
@@ -3252,7 +3252,7 @@ function saveScriptOverrides() {
 function getOverrideBlocks(section) {
   const ov = state.scriptOverrides[section.id];
   if (!ov) return section.blocks || [];
-  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'tarifs_tableau'];
+  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'tarifs_tableau'];
   const liveBlocks = section.blocks || [];
 
   // Pour problematique/objectifs, ov.blocks est déjà nettoyé par ensureOverride
@@ -4795,6 +4795,7 @@ function renderCurrentSection() {
   const diagContainer = document.getElementById('diag-pb-container');
   if (diagContainer) {
     clonePbGridFor('diag-pb-container', 'diag-pb', 'onDiagnosticPbChange()');
+    updateDiagLeviersCount();
   }
   // Rendre tous les blocs et contenus d'options éditables (sauf le bloc diagnostic)
   const diagEl = document.getElementById('diag-pb-container');
@@ -4827,7 +4828,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','tarifs_tableau'].includes(b.type);
+    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','tarifs_tableau'].includes(b.type);
     const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
@@ -4850,12 +4851,13 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const dangerClass = b.style === 'danger' ? ' danger' : '';
     const pleursClass = b.style === 'pleurs' ? ' pleurs' : '';
     const purpleClass = b.style === 'purple' ? ' purple' : '';
-    const actionClass = (b.style === 'action' || b.style === 'action-green') ? ' action' : '';
+    const actionClass = (b.style === 'action' || b.style === 'action-green' || b.style === 'action-yellow') ? ' action' : '';
     const actionGreenClass = b.style === 'action-green' ? ' action-green' : '';
+    const actionYellowClass = b.style === 'action-yellow' ? ' action-yellow' : '';
     const actionPurpleInsideClass = b._purpleContent ? ' action-purple-inside' : '';
     const cardClass = b.style === 'card' ? ' card' : '';
     const emojiHtml = b.emoji ? `<span class="option-emoji">${b.emoji}</span>` : '';
-    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${actionClass}${actionGreenClass}${actionPurpleInsideClass}${cardClass}">
+    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionPurpleInsideClass}${cardClass}">
       <div class="option-header" onclick="toggleOption(this)">
         <span style="display:flex;align-items:center;gap:6px">
           ${emojiHtml}
@@ -5036,6 +5038,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     };
     // Afficher checkboxes synchronisées (identiques à la fiche client) via clone
     return `<div class="block block-normal" style="padding:12px 16px"><strong>⚙️ Leviers identifiés :</strong><div id="diag-pb-container" style="margin-top:10px"></div></div>`;
+  }
+
+  if (b.type === 'leviers_count') {
+    return `<div class="block block-normal" style="padding:12px 16px">• Je peux voir <strong id="diag-leviers-count-num" style="color:#dc2626">0</strong> <strong>leviers que l'on pourrait identifier</strong></div>`;
   }
 
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
@@ -5707,7 +5713,23 @@ function onDiagnosticPbChange() {
     const newIdx = state.sections.findIndex(s=>s.id===savedId);
     state.currentIdx = newIdx>=0 ? newIdx : Math.min(state.currentIdx, state.sections.length-1);
     buildSidebar();
+    updateDiagLeviersCount();
   }, 0);
+}
+
+// Compter les catégories top-level cochées dans le diagnostic (excluant "souhait")
+function updateDiagLeviersCount() {
+  const countEl = document.getElementById('diag-leviers-count-num');
+  if (!countEl) return;
+  const container = document.getElementById('diag-pb-container');
+  if (!container) { countEl.textContent = '0'; return; }
+  // .diag-pb-cat est la version renommée de .pb-cat-checkbox dans le clone du diagnostic
+  const catCbs = container.querySelectorAll('.diag-pb-cat[data-cat]');
+  let count = 0;
+  catCbs.forEach(cb => {
+    if (cb.checked && cb.dataset.cat !== 'souhait') count++;
+  });
+  countEl.textContent = count;
 }
 
 // Sync le surlignage vert sur fiche client
