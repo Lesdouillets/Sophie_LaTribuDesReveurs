@@ -5916,16 +5916,17 @@ function toggleOption(header) {
   const optionDiv = header.parentElement.classList.contains('action') ? header.parentElement : null;
   if (optionDiv) {
     // Bouton action : soit carré, soit pleine largeur
+    // EXCEPTION : le bouton JAUNE (action-yellow, "Difficultés alimentaires") est indépendant
+    //             du mutex — il ne ferme pas les autres et n'est pas fermé par les autres.
+    const isIndependent = optionDiv.classList.contains('action-yellow');
     const willOpen = !content.classList.contains('open');
     if (willOpen) {
-      // Avant d'ouvrir : fermer tout bouton action frère qui serait déjà ouvert
-      // (sinon le wrapper du frère conserve action-sibling-hidden et devient invisible
-      // alors qu'il est open-action — cf. cas du bouton jaune qui perd sa règle override).
-      closeOpenSiblingActionButtons(optionDiv);
-      // Nettoyer toute classe action-sibling-hidden laissée par un précédent état
-      // (p. ex. cas du bouton jaune dont la règle CSS override avait masqué l'effet
-      // de action-sibling-hidden, laissant la classe accrochée à son wrapper).
-      showSiblingActionButtons(optionDiv);
+      if (!isIndependent) {
+        // Avant d'ouvrir : fermer tout bouton action frère NON-indépendant déjà ouvert
+        closeOpenSiblingActionButtons(optionDiv);
+        // Nettoyer toute classe action-sibling-hidden résiduelle
+        showSiblingActionButtons(optionDiv);
+      }
       optionDiv.classList.add('open-action');
       optionDiv.offsetWidth; // forcer reflow
       content.classList.add('open');
@@ -5936,13 +5937,17 @@ function toggleOption(header) {
         btn.onclick = function() { toggleOption(header); };
         content.insertBefore(btn, content.firstChild);
       }
-      // Masquer les boutons action frères (mutex : un seul ouvert à la fois parmi les frères)
-      hideSiblingActionButtons(optionDiv);
+      if (!isIndependent) {
+        // Masquer les boutons action frères NON-indépendants (mutex)
+        hideSiblingActionButtons(optionDiv);
+      }
     } else {
       content.classList.remove('open');
       optionDiv.classList.remove('open-action');
-      // Restaurer les boutons action frères
-      showSiblingActionButtons(optionDiv);
+      if (!isIndependent) {
+        // Restaurer les boutons action frères
+        showSiblingActionButtons(optionDiv);
+      }
     }
     toggle.textContent = willOpen ? 'Réduire' : 'Dérouler';
     arrow.textContent = willOpen ? '▾' : '▸';
@@ -6010,11 +6015,15 @@ function hideSiblingActionButtons(optionDiv) {
   parent.querySelectorAll(':scope > .edit-block-wrap').forEach(sib => {
     if (sib === wrapper) return;
     const sibAction = sib.querySelector(':scope > .block-option.action');
-    if (sibAction) sib.classList.add('action-sibling-hidden');
+    if (!sibAction) return;
+    // Ne pas masquer le wrapper d'un bouton action-yellow (indépendant du mutex)
+    if (sibAction.classList.contains('action-yellow')) return;
+    sib.classList.add('action-sibling-hidden');
   });
   // Cas où les boutons action ne sont pas dans des edit-block-wrap (ex. contexte sans section)
   parent.querySelectorAll(':scope > .block-option.action').forEach(sib => {
     if (sib === optionDiv) return;
+    if (sib.classList.contains('action-yellow')) return;
     sib.classList.add('action-sibling-hidden');
   });
 }
@@ -6022,10 +6031,13 @@ function hideSiblingActionButtons(optionDiv) {
 // Fermer TOUT bouton action actuellement ouvert (mutex strict sur toute l'arborescence)
 // Appelé AVANT d'ouvrir un nouveau bouton pour éviter qu'un frère reste open-action
 // tout en portant la classe action-sibling-hidden (→ wrapper invisible).
+// EXCEPTION : ne ferme JAMAIS un bouton .action-yellow (indépendant du mutex).
 function closeOpenSiblingActionButtons(optionDiv) {
   const root = document.getElementById('content-area') || document;
   root.querySelectorAll('.block-option.action.open-action').forEach(sibOpen => {
     if (sibOpen === optionDiv) return;
+    // Ne jamais fermer un bouton action-yellow (indépendant du mutex)
+    if (sibOpen.classList.contains('action-yellow')) return;
     const sibHeader = sibOpen.querySelector(':scope > .option-header');
     const sibContent = sibOpen.querySelector(':scope > .option-content');
     if (sibContent) sibContent.classList.remove('open');
@@ -6040,8 +6052,6 @@ function closeOpenSiblingActionButtons(optionDiv) {
     if (closeBtn) closeBtn.remove();
   });
   // Nettoyer toute classe action-sibling-hidden résiduelle sur TOUT le DOM
-  // (sinon un wrapper dont la règle CSS override avait masqué l'effet
-  // conserve la classe et devient invisible au prochain open-action)
   root.querySelectorAll('.action-sibling-hidden').forEach(el => {
     el.classList.remove('action-sibling-hidden');
   });
