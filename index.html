@@ -1466,22 +1466,36 @@
     .block-tickbox-choice .tbc-opt {
       display: flex; align-items: center; gap: 10px;
       padding: 10px 18px;
-      background: white;
-      border: 2px solid #d4d4d8;
+      border: 2px solid;
       border-radius: 10px;
       font-size: 14.5px; font-weight: 700;
-      color: #374151;
       cursor: pointer;
       transition: all 0.15s ease;
       user-select: none;
     }
-    .block-tickbox-choice .tbc-opt:hover {
-      border-color: #a1a1aa;
-      background: #f9fafb;
+    /* État NON-SELECTIONNÉ — fond vert pâle pour positive, rouge pâle pour negative */
+    .block-tickbox-choice .tbc-opt[data-variant="positive"] {
+      background: #f0fdf4;
+      border-color: #bbf7d0;
+      color: #166534;
+    }
+    .block-tickbox-choice .tbc-opt[data-variant="positive"]:hover {
+      background: #dcfce7;
+      border-color: #86efac;
+    }
+    .block-tickbox-choice .tbc-opt[data-variant="negative"] {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: #991b1b;
+    }
+    .block-tickbox-choice .tbc-opt[data-variant="negative"]:hover {
+      background: #fee2e2;
+      border-color: #fca5a5;
     }
     .block-tickbox-choice .tbc-opt .tbc-icon {
       font-size: 18px; line-height: 1;
     }
+    /* État SÉLECTIONNÉ — couleurs plus marquées + bordure plus épaisse */
     .block-tickbox-choice .tbc-opt.tbc-selected {
       border-width: 2.5px;
     }
