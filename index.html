@@ -5722,26 +5722,25 @@ function buildSidebar() {
     items.forEach(({section, idx}) => {
       // Trouver les bandeaux internes (option_banner avec leverId) pour les lister comme sous-items
       const innerBanners = collectSectionInnerBanners(section);
-      // Logique GRISAGE (inversée) : un levier COCHÉ est grisé (déjà adressé), un levier
-      // NON-COCHÉ est normal (à traiter) — pour que le sidebar mette en avant les pbs à voir.
+      // Affichage UNIFORME : tous les items apparaissent avec le même style, qu'ils
+      // soient cochés ou non. Le sidebar est une vue d'ensemble exhaustive des leviers.
       if (innerBanners.length > 0) {
         // Rendu : entrée de section parent + sous-items pour chaque bandeau levier
         const sectionDiv = document.createElement('div');
-        sectionDiv.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'') + (section.isActiveLevier ? ' inactive-levier' : '');
+        sectionDiv.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'');
         sectionDiv.innerHTML = `<span class="nav-emoji">${section.emoji||'📄'}</span><span class="nav-title">${getSectionDisplayTitle(section)}</span>${state.completedSet.has(idx)?'<span class="nav-check">✓</span>':''}`;
         sectionDiv.onclick = () => navigateTo(idx);
         childrenDiv.appendChild(sectionDiv);
         innerBanners.forEach(b => {
-          const isChecked = b.leverId && state.selectedPbs.has(b.leverId);
           const leverLabel = (typeof PB_LABELS !== 'undefined' && PB_LABELS[b.leverId]) ? PB_LABELS[b.leverId] : (b.label || b.leverId);
           const leverEmoji = b.emoji || '•';
           const subDiv = document.createElement('div');
-          subDiv.className = 'nav-item nav-child nav-sub-child' + (isChecked ? ' inactive-levier' : '');
+          subDiv.className = 'nav-item nav-child nav-sub-child';
           subDiv.innerHTML = `<span class="nav-emoji">${leverEmoji}</span><span class="nav-title">${leverLabel}</span>`;
           subDiv.onclick = (e) => {
             e.stopPropagation();
             navigateTo(idx);
-            // Attendre le rendu de la section puis scroll au bandeau
+            // Attendre le rendu de la section puis scroll au bandeau (si présent dans le DOM)
             requestAnimationFrame(() => {
               setTimeout(() => {
                 const area = document.getElementById('content-area');
@@ -5753,9 +5752,9 @@ function buildSidebar() {
           childrenDiv.appendChild(subDiv);
         });
       } else {
-        // Cas classique : une seule ligne pour la section (logique inversée idem)
+        // Cas classique : une seule ligne pour la section
         const div = document.createElement('div');
-        div.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'') + (section.isActiveLevier ? ' inactive-levier' : '');
+        div.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'');
         div.innerHTML = `<span class="nav-emoji">${section.emoji||'📄'}</span><span class="nav-title">${getSectionDisplayTitle(section)}</span>${state.completedSet.has(idx)?'<span class="nav-check">✓</span>':''}`;
         div.onclick = () => navigateTo(idx);
         childrenDiv.appendChild(div);
@@ -6051,15 +6050,7 @@ function getEffectiveAgeMonths() {
   return null;
 }
 
-// Sections "parent fusionné" : env_general, relationnel_general, rythme_general,
-// strategie_rendormissement regroupent plusieurs leviers avec des bandeaux et blocs
-// filtrés par showIfPb. Dans ces sections, on affiche TOUT le contenu (peu importe
-// si la pb est cochée), pour que le sidebar puisse naviguer vers chaque levier
-// et voir son contenu même sans avoir coché la pb.
-const MERGED_PARENT_SECTIONS = ['env_general', 'relationnel_general', 'rythme_general', 'strategie_rendormissement'];
-
 function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
-  const isMergedParent = MERGED_PARENT_SECTIONS.includes(sectionId);
   return (blocks||[]).map((b,i) => {
     // Cacher le bloc si une des problématiques indiquées dans hideIfPb est cochée
     if (b.hideIfPb) {
@@ -6067,14 +6058,9 @@ function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
       if (pbs.some(pb => state.selectedPbs.has(pb))) return '';
     }
     // Afficher le bloc uniquement si la problématique indiquée dans showIfPb est cochée
-    // EXCEPTION 1 : les option_banner sont TOUJOURS rendus (grisés si pb inactive)
-    // EXCEPTION 2 : dans une section "parent fusionné", tout le contenu reste visible
-    //              (pour pouvoir consulter chaque levier depuis le sidebar)
-    if (b.showIfPb && !isMergedParent) {
+    if (b.showIfPb) {
       const pbs = Array.isArray(b.showIfPb) ? b.showIfPb : [b.showIfPb];
-      if (!pbs.some(pb => state.selectedPbs.has(pb))) {
-        if (b.type !== 'option_banner') return '';
-      }
+      if (!pbs.some(pb => state.selectedPbs.has(pb))) return '';
     }
     // Conditions d'âge (utilise âge corrigé si dispo, sinon âge réel)
     if (b.showIfAgeMinMonths != null || b.showIfAgeMaxMonths != null) {
@@ -6374,16 +6360,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const label = substituteVars(rawLabel);
     const variantCls = b.variant ? ` variant-${b.variant}` : '';
     const leverAttr = b.leverId ? ` data-lever-id="${String(b.leverId).replace(/"/g, '&quot;')}"` : '';
-    // Bandeau dans le contenu : normal si pb cochée (c'est ce qu'on discute),
-    // grisé si pb non cochée (non pertinent actuellement mais toujours visible
-    // comme repère pour le sidebar "Par problématique" qui peut scroller ici).
-    let inactiveCls = '';
-    if (b.showIfPb) {
-      const pbs = Array.isArray(b.showIfPb) ? b.showIfPb : [b.showIfPb];
-      if (!pbs.some(pb => state.selectedPbs.has(pb))) inactiveCls = ' banner-inactive';
-    }
     // Cliquable : toggle du groupe de blocs qui suit jusqu'au prochain bandeau
-    return `<div class="block block-option-banner${variantCls}${inactiveCls}"${leverAttr} onclick="toggleOptionBannerGroup(this)">
+    return `<div class="block block-option-banner${variantCls}"${leverAttr} onclick="toggleOptionBannerGroup(this)">
       <span class="ob-label">${label}</span>
       <span class="ob-arrow">▾</span>
     </div>`;
