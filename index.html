@@ -4895,6 +4895,8 @@ function computeClientFields() {
     if (percEl) percEl.style.display = 'none';
   }
   updateDiversifN1Visibility();
+  // Masquer "Lit ouvert trop tôt" dans les 3 containers si ≥ 3 ans
+  if (typeof applyEnvLitOuvertVisibility === 'function') applyEnvLitOuvertVisibility();
 }
 
 // ═══════════════════════════════════════════════════
