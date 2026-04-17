@@ -5918,6 +5918,10 @@ function toggleOption(header) {
     // Bouton action : soit carré, soit pleine largeur
     const willOpen = !content.classList.contains('open');
     if (willOpen) {
+      // Avant d'ouvrir : fermer tout bouton action frère qui serait déjà ouvert
+      // (sinon le wrapper du frère conserve action-sibling-hidden et devient invisible
+      // alors qu'il est open-action — cf. cas du bouton jaune qui perd sa règle override).
+      closeOpenSiblingActionButtons(optionDiv);
       optionDiv.classList.add('open-action');
       optionDiv.offsetWidth; // forcer reflow
       content.classList.add('open');
@@ -6008,6 +6012,31 @@ function hideSiblingActionButtons(optionDiv) {
   parent.querySelectorAll(':scope > .block-option.action').forEach(sib => {
     if (sib === optionDiv) return;
     sib.classList.add('action-sibling-hidden');
+  });
+}
+
+// Fermer tout bouton action frère actuellement ouvert (mutex strict)
+// Appelé AVANT d'ouvrir un nouveau bouton pour éviter qu'un frère reste open-action
+// tout en portant la classe action-sibling-hidden (→ wrapper invisible).
+function closeOpenSiblingActionButtons(optionDiv) {
+  const wrapper = optionDiv.closest('.edit-block-wrap');
+  const parent = wrapper ? wrapper.parentElement : optionDiv.parentElement;
+  if (!parent) return;
+  parent.querySelectorAll(':scope > .edit-block-wrap > .block-option.action.open-action, :scope > .block-option.action.open-action').forEach(sibOpen => {
+    if (sibOpen === optionDiv) return;
+    const sibHeader = sibOpen.querySelector(':scope > .option-header');
+    const sibContent = sibOpen.querySelector(':scope > .option-content');
+    if (sibContent) sibContent.classList.remove('open');
+    sibOpen.classList.remove('open-action');
+    if (sibHeader) {
+      const tog = sibHeader.querySelector('.option-toggle');
+      const arr = sibHeader.querySelector('.option-arrow');
+      if (tog) tog.textContent = 'Dérouler';
+      if (arr) arr.textContent = '▸';
+    }
+    // Supprimer le bouton de fermeture inséré précédemment pour qu'il soit recréé à la prochaine ouverture
+    const closeBtn = sibContent && sibContent.querySelector(':scope > .action-close-btn');
+    if (closeBtn) closeBtn.remove();
   });
 }
 
@@ -7074,6 +7103,11 @@ function autoSaveActiveConsultation() {
       }
       // Aligner state.client.pbs sur state.selectedPbs
       state.client.pbs = [...(state.selectedPbs || [])];
+      // 1. Sauvegarde LONG-TERME du client (tdr_clients + Supabase, sans expiration)
+      //    → pour retrouver le client + ses problématiques des mois plus tard
+      try { saveClient(); } catch(e) { console.warn('[auto-save client]', e); }
+      // 2. Snapshot COURT-TERME de la consultation active (position, notes, timer)
+      //    → pour survivre à un hard refresh pendant la consultation (expire à 24h)
       const heureFinMs = state.heureFin
         ? (state.heureFin instanceof Date ? state.heureFin.getTime() : Number(state.heureFin))
         : null;
