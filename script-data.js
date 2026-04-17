@@ -69,7 +69,7 @@ const SCRIPT_DATA = {
           blocks: [
             { type: "question", text: "Est-ce que vous êtes **accompagnée** du coup?" },
             {
-              type: "option", label: "Accompagnée avec un psy", emoji: "✅", style: "action-green",
+              type: "option", label: "Accompagnée avec un psy", emoji: "✅", style: "action-green", mutexGroup: "decouverte-psy",
               blocks: [
                 { type: "empathie", text: "- **Super !**\n- **Je comprends…** ce que vous vivez, c'est **vraiment pas simple.**\n- Après une naissance, c'est **NORMAL** de se sentir **fatiguée**, et de se sentir un peu **perdue** par moments.\n- Vous êtes **LOIN** d'être la **SEULE** à passer par là" },
                 { type: "conseil", text: "- 👏 Et j'ai envie de vous dire **quelque chose d'important** :\n- vous faites déjà **énormément** pour votre BB\n- Même si parfois, vous avez l'impression **DE NE pas y arriver** ⇒ **EN RÉALITÉ**, vous vous en occupez **très bien**" },
@@ -77,7 +77,7 @@ const SCRIPT_DATA = {
               ]
             },
             {
-              type: "option", label: "PAS accompagnée avec un psy", emoji: "❌", style: "action",
+              type: "option", label: "PAS accompagnée avec un psy", emoji: "❌", style: "action", mutexGroup: "decouverte-psy",
               blocks: [
                 { type: "empathie", text: "- D'accord. **Je comprends…** ce que vous vivez, c'est **vraiment pas simple.**\n- Après une naissance, c'est **NORMAL** de se sentir **fatiguée** et un peu **perdue** par moments.\n- Vous êtes **LOIN** d'être la **SEULE** à passer par là." },
                 { type: "conseil", text: "- 👏 Vous faites déjà **énormément** pour votre BB\n- Même si parfois, vous avez l'impression **DE NE pas y arriver** ⇒ **EN RÉALITÉ**, vous vous en occupez **très bien**" },
@@ -145,7 +145,7 @@ const SCRIPT_DATA = {
         },
         { type: "separator", text: "📋 Difficultés identifiées" },
         {
-          type: "option", label: "Pas de dette de sommeil", emoji: "✅", style: "action-green", _purpleContent: true,
+          type: "option", label: "Pas de dette de sommeil", emoji: "✅", style: "action-green", _purpleContent: true, mutexGroup: "diag-sommeil",
           blocks: [
             { type: "normal", text: "- La **bonne nouvelle** c'est qu'aujourd'hui [prénom_enfant] n'est **PAS en dette de sommeil**" },
             { type: "conseil_vert", text: "👏 Vous faites **TOUT** pour que ça ne **soit pas le cas**!" },
@@ -154,7 +154,7 @@ const SCRIPT_DATA = {
           ]
         },
         {
-          type: "option", label: "Difficultés de sommeil identifiées", emoji: "❌", style: "action", _purpleContent: true,
+          type: "option", label: "Difficultés de sommeil identifiées", emoji: "❌", style: "action", _purpleContent: true, mutexGroup: "diag-sommeil",
           blocks: [
             { type: "normal", text: "- Au vu de ce qu'on s'est dit\n- En effet, vous aviez **BIEN identifié** que votre enfant a des **difficultés de sommeil**.", _noBorder: true },
             { type: "normal", text: "**<u>⏱ Temps d'endormissement trop long :</u>** Il y a une **petite problématique** au niveau des **durées d'endormissement**… qui sont **très longues**", _purpleDark: true },
@@ -188,13 +188,13 @@ const SCRIPT_DATA = {
       emoji: "🎯",
       blocks: [
         {
-          type: "option", label: "Objectifs faisables", emoji: "✅", style: "action-green",
+          type: "option", label: "Objectifs faisables", emoji: "✅", style: "action-green", mutexGroup: "objectifs-revus",
           blocks: [
             { type: "normal", text: "- Par rapport aux **objectifs que vous avez donné**\n- ⇒ moi ce que **je pense** c'est que c'est **tout à fait COHÉRENT et FAISABLES**" }
           ]
         },
         {
-          type: "option", label: "Objectifs PAS faisables", emoji: "⚠️", style: "action",
+          type: "option", label: "Objectifs PAS faisables", emoji: "⚠️", style: "action", mutexGroup: "objectifs-revus",
           blocks: [
             { type: "normal", text: "- Par rapport aux **objectifs que vous avez donné**\n- ⇒ Il y a **certains points** que je **voudrais re-discuter avec vous**" },
             {

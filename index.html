@@ -1364,6 +1364,89 @@
     }
     .action-close-btn:hover { background: var(--primary-dark); }
 
+    /* ═══ Liste des sessions passées pour un client ═══ */
+    .client-sessions-list {
+      margin-top: 14px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .client-sessions-list .csl-empty {
+      font-size: 12.5px; color: var(--text-light);
+      font-style: italic; padding: 10px 0 4px;
+    }
+    .client-sessions-list .csl-header {
+      font-size: 11px; font-weight: 800; text-transform: uppercase;
+      color: var(--text-light); letter-spacing: 0.6px;
+      margin: 6px 0 2px;
+    }
+    .client-sessions-list .csl-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px;
+      background: #faf9ff;
+      border: 1px solid #e7deff;
+      border-radius: 10px;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .client-sessions-list .csl-item:hover {
+      background: #f2ecff;
+      border-color: #c9b7ff;
+    }
+    .client-sessions-list .csl-date {
+      font-size: 13px; font-weight: 700; color: var(--primary-dark);
+      min-width: 140px;
+    }
+    .client-sessions-list .csl-meta {
+      flex: 1;
+      font-size: 12px; color: var(--text-light);
+      line-height: 1.45;
+    }
+    .client-sessions-list .csl-meta strong { color: var(--text); font-weight: 700; }
+    .client-sessions-list .csl-actions {
+      display: flex; gap: 6px; flex-shrink: 0;
+    }
+    .client-sessions-list .csl-btn {
+      padding: 6px 12px;
+      font-size: 12px; font-weight: 600;
+      border: none; border-radius: 7px;
+      background: var(--primary); color: #fff;
+      cursor: pointer;
+    }
+    .client-sessions-list .csl-btn:hover { background: var(--primary-dark); }
+    .client-sessions-list .csl-btn.secondary {
+      background: #ece4ff; color: var(--primary-dark);
+    }
+    .client-sessions-list .csl-btn.secondary:hover { background: #ddd0ff; }
+
+    /* ═══ Indicateur auto-sauvegarde ═══ */
+    .autosave-indicator {
+      position: fixed;
+      top: 14px; right: 18px;
+      z-index: 9999;
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 14px;
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.3px;
+      border-radius: 999px;
+      background: rgba(16,185,129,0.96);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(16,185,129,0.30);
+      opacity: 0;
+      transform: translateY(-6px);
+      pointer-events: none;
+      transition: opacity 0.28s ease, transform 0.28s ease;
+    }
+    .autosave-indicator.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .autosave-indicator.offline {
+      background: rgba(234,88,12,0.96);
+      box-shadow: 0 4px 14px rgba(234,88,12,0.35);
+    }
+    .autosave-indicator.error {
+      background: rgba(185,28,28,0.96);
+      box-shadow: 0 4px 14px rgba(185,28,28,0.35);
+    }
+
     /* OPTION CARD (carte cliquable) */
     .block-option.card {
       background: #f5f0ff; border: 2px solid #7c3aed; border-radius: 14px;
@@ -2000,6 +2083,7 @@
         <div class="setup-section" id="last-consult-section" style="display:none">
           <h3>🕐 Historique</h3>
           <div id="last-consult-info" style="font-size:13px;line-height:1.8;color:var(--text)"></div>
+          <div id="client-sessions-list" class="client-sessions-list"></div>
         </div>
         <div class="setup-section">
           <h3>📅 Paramètres de la consultation</h3>
@@ -2708,6 +2792,9 @@
 
     <!-- CONTENT -->
     <div class="content-area" id="content-area"></div>
+
+    <!-- Indicateur d'auto-sauvegarde (toast discret) -->
+    <div id="autosave-indicator" class="autosave-indicator"></div>
 
     <script>
       // Sauvegarde/restauration globale de la sélection pour les color pickers
@@ -4198,6 +4285,134 @@ function showLastConsultInfo(c) {
         <div style="font-size:15px;font-weight:700;color:#16a34a">${ageNow}</div>
       </div>
     </div>`;
+  // Afficher la liste des consultations passées pour ce client
+  renderClientSessionHistory(c);
+}
+
+// ═══════════════════════════════════════════════════
+// Historique des consultations pour le client courant
+// Liste toutes les sessions (tdr_sessions + Supabase) matchant ce client
+// et permet de visualiser un CR ou de reprendre la session.
+// ═══════════════════════════════════════════════════
+function sessionMatchesClient(s, c) {
+  if (!s || !s.client || !c) return false;
+  // Match par _id si présent, sinon par prenomEnfant + nomFamille
+  if (s.client._id && c._id && s.client._id === c._id) return true;
+  const prenomA = (s.client.prenomEnfant || '').trim().toLowerCase();
+  const prenomB = (c.prenomEnfant || '').trim().toLowerCase();
+  const nomA = (s.client.nomFamille || '').trim().toLowerCase();
+  const nomB = (c.nomFamille || '').trim().toLowerCase();
+  if (!prenomA || !prenomB) return false;
+  return prenomA === prenomB && nomA === nomB;
+}
+
+// Cache en mémoire des dernières sessions chargées (pour la recherche par ID)
+let _clientSessionsCache = [];
+
+// Labels lisibles des pbs (mapping partiel : catégories principales + sommeil/env)
+// Couvre ce qui est susceptible d'apparaître en aperçu dans l'historique.
+function getPbLabels() {
+  return {
+    'rgo_allergie': 'RGO + APLV',
+    'allergie_seule': 'Suspicion allergie',
+    'rgo_seul': 'RGO',
+    'nutri_courbe_declinante': 'Courbe déclinante',
+    'nutri_courbe_inferieur': 'Percentile inférieur',
+    'nutri_courbe_trop_apport': "Trop d'apport",
+    'strategie_rendormissement': 'Rendormissement difficile',
+    'strategie_enjeu_relationnel': 'Enjeu relationnel (sommeil)',
+    'strategie_tetine': 'Dépendance tétine',
+    'rythme_te_trop_long': 'TE trop long',
+    'rythme_te_trop_court': 'TE trop court',
+    'rythme_siestes_courtes': 'Siestes courtes',
+    'rythme_horaires_aleatoires': 'Horaires aléatoires',
+    'env_obscurite': 'Obscurité insuffisante',
+    'env_temperature': 'Température élevée',
+    'env_rituel': 'Rituel absent / court',
+    'env_cadre': 'Cadre non clair',
+    'env_ecrans': 'Écrans',
+    'relationnel_lit_parental': 'Lit parental',
+    'souhait_tetine': 'Supprimer tétine',
+    'souhait_changement_lit': 'Changer de lit',
+    'souhait_changement_chambre': 'Changer de chambre',
+  };
+}
+
+async function renderClientSessionHistory(c) {
+  const container = document.getElementById('client-sessions-list');
+  if (!container) return;
+  container.innerHTML = '<div class="csl-empty">Chargement…</div>';
+  // Récupérer les sessions : merge remote + local (déduplication par id)
+  let all = [];
+  try {
+    const remote = await loadSessionsFromSupabase();
+    const local = JSON.parse(localStorage.getItem('tdr_sessions') || '[]');
+    const byId = new Map();
+    [...(remote || []), ...local].forEach(s => {
+      if (!s || !s.id) return;
+      // Remote (chargé en premier) est prioritaire sauf si local est plus récent
+      const existing = byId.get(s.id);
+      if (!existing || (s.savedAt || '') > (existing.savedAt || '')) byId.set(s.id, s);
+    });
+    all = [...byId.values()];
+  } catch (e) {
+    all = JSON.parse(localStorage.getItem('tdr_sessions') || '[]');
+  }
+  _clientSessionsCache = all;
+  // Filtrer les sessions de ce client et trier par date décroissante
+  const mine = all
+    .filter(s => sessionMatchesClient(s, c))
+    .sort((a, b) => (b.savedAt || '').localeCompare(a.savedAt || ''));
+  if (!mine.length) {
+    container.innerHTML = '<div class="csl-empty">Aucune session enregistrée pour ce client.</div>';
+    return;
+  }
+  const pbLabels = (typeof getPbLabels === 'function') ? getPbLabels() : {};
+  container.innerHTML = `<div class="csl-header">📜 Consultations précédentes (${mine.length})</div>` + mine.map((s, i) => {
+    const d = s.savedAt ? new Date(s.savedAt) : null;
+    const dateStr = d ? d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' }) : '–';
+    const heureStr = d ? d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : '';
+    const pbCount = (s.selectedPbs || []).length;
+    const pbsPreview = (s.selectedPbs || []).slice(0, 4).map(pb => pbLabels[pb] || pb).join(', ');
+    const more = pbCount > 4 ? ` +${pbCount - 4}` : '';
+    const currentSec = s.currentSection ? `<br>📍 <strong>${s.currentSection}</strong>` : '';
+    const sid = (s.id || '').replace(/'/g, '');
+    return `<div class="csl-item">
+      <div class="csl-date">${dateStr}<br><span style="font-weight:500;color:var(--text-light);font-size:11px">${heureStr}</span></div>
+      <div class="csl-meta">
+        <strong>${pbCount}</strong> problématique${pbCount > 1 ? 's' : ''}${pbsPreview ? ` : ${pbsPreview}${more}` : ''}
+        ${currentSec}
+      </div>
+      <div class="csl-actions">
+        <button class="csl-btn secondary" onclick="showClientSessionCRById('${sid}')">📄 CR</button>
+        <button class="csl-btn" onclick="resumeClientSessionById('${sid}')">▶ Ouvrir</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Wrappers ID-based qui cherchent dans le cache + localStorage avant d'ouvrir
+function _findSessionById(id) {
+  const local = JSON.parse(localStorage.getItem('tdr_sessions') || '[]');
+  return _clientSessionsCache.find(s => s.id === id) || local.find(s => s.id === id) || null;
+}
+function showClientSessionCRById(id) {
+  const s = _findSessionById(id);
+  if (!s) { alert('Session introuvable.'); return; }
+  if (typeof openCrModal === 'function') openCrModal(s);
+}
+function resumeClientSessionById(id) {
+  const s = _findSessionById(id);
+  if (!s) { alert('Session introuvable.'); return; }
+  // Si la session n'est pas dans localStorage, l'y ajouter d'abord (pour que resumeSession fonctionne)
+  const local = JSON.parse(localStorage.getItem('tdr_sessions') || '[]');
+  let idx = local.findIndex(x => x.id === id);
+  if (idx < 0) {
+    local.push(s);
+    localStorage.setItem('tdr_sessions', JSON.stringify(local));
+    idx = local.length - 1;
+  }
+  if (typeof resumeSession === 'function') resumeSession(idx);
 }
 
 async function deleteClient(e, idx) {
@@ -5436,7 +5651,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const actionPurpleInsideClass = b._purpleContent ? ' action-purple-inside' : '';
     const cardClass = b.style === 'card' ? ' card' : '';
     const emojiHtml = b.emoji ? `<span class="option-emoji">${b.emoji}</span>` : '';
-    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionPurpleInsideClass}${cardClass}">
+    const mutexAttr = b.mutexGroup ? ` data-mutex-group="${String(b.mutexGroup).replace(/"/g, '&quot;')}"` : '';
+    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionPurpleInsideClass}${cardClass}"${mutexAttr}>
       <div class="option-header" onclick="toggleOption(this)">
         <span style="display:flex;align-items:center;gap:6px">
           ${emojiHtml}
@@ -5921,24 +6137,25 @@ function calcSommeilTotal() {
   if (el) el.textContent = h + 'h' + (m > 0 ? m.toString().padStart(2, '0') : '');
 }
 
-// ──► FIX toggleOption ◄──
+// ──► toggleOption : mutex par data-mutex-group ◄──
+// Logique :
+//   - Si le bouton a un data-mutex-group "X" → ferme tout autre ouvert du même groupe,
+//     masque les frères fermés du même groupe, puis s'ouvre.
+//   - Si pas de data-mutex-group → indépendant, n'affecte rien d'autre.
 function toggleOption(header) {
   const content = header.nextElementSibling;
   const toggle = header.querySelector('.option-toggle');
   const arrow = header.querySelector('.option-arrow');
   const optionDiv = header.parentElement.classList.contains('action') ? header.parentElement : null;
   if (optionDiv) {
-    // Bouton action : soit carré, soit pleine largeur
-    // EXCEPTION : le bouton JAUNE (action-yellow, "Difficultés alimentaires") est indépendant
-    //             du mutex — il ne ferme pas les autres et n'est pas fermé par les autres.
-    const isIndependent = optionDiv.classList.contains('action-yellow');
+    const mutexGroup = optionDiv.dataset.mutexGroup || null;
     const willOpen = !content.classList.contains('open');
     if (willOpen) {
-      if (!isIndependent) {
-        // Avant d'ouvrir : fermer tout bouton action frère NON-indépendant déjà ouvert
-        closeOpenSiblingActionButtons(optionDiv);
-        // Nettoyer toute classe action-sibling-hidden résiduelle
-        showSiblingActionButtons(optionDiv);
+      if (mutexGroup) {
+        // Fermer tout autre bouton ouvert du même groupe
+        closeOpenMutexSiblings(mutexGroup, optionDiv);
+        // Nettoyer les masquages pour garantir un état propre
+        showHiddenMutexSiblings(mutexGroup);
       }
       optionDiv.classList.add('open-action');
       optionDiv.offsetWidth; // forcer reflow
@@ -5950,27 +6167,69 @@ function toggleOption(header) {
         btn.onclick = function() { toggleOption(header); };
         content.insertBefore(btn, content.firstChild);
       }
-      if (!isIndependent) {
-        // Masquer les boutons action frères NON-indépendants (mutex)
-        hideSiblingActionButtons(optionDiv);
+      if (mutexGroup) {
+        // Masquer les frères fermés du même groupe
+        hideClosedMutexSiblings(mutexGroup, optionDiv);
       }
     } else {
       content.classList.remove('open');
       optionDiv.classList.remove('open-action');
-      if (!isIndependent) {
-        // Restaurer les boutons action frères
-        showSiblingActionButtons(optionDiv);
+      if (mutexGroup) {
+        // Restaurer la visibilité des frères du même groupe
+        showHiddenMutexSiblings(mutexGroup);
       }
     }
     toggle.textContent = willOpen ? 'Réduire' : 'Dérouler';
     arrow.textContent = willOpen ? '▾' : '▸';
-    // Re-marquer les conteneurs (l'état open-action a pu changer)
     markActionSiblingContainers(document.getElementById('content-area'));
   } else {
     const isOpen = content.classList.toggle('open');
     toggle.textContent = isOpen ? 'Réduire' : 'Dérouler';
     arrow.textContent = isOpen ? '▾' : '▸';
   }
+}
+
+// Ferme tout bouton ouvert (open-action) appartenant au même groupe mutex, sauf celui donné.
+function closeOpenMutexSiblings(mutexGroup, exceptDiv) {
+  if (!mutexGroup) return;
+  const sel = `.block-option.action.open-action[data-mutex-group="${CSS.escape(mutexGroup)}"]`;
+  document.querySelectorAll(sel).forEach(sibOpen => {
+    if (sibOpen === exceptDiv) return;
+    const sibHeader = sibOpen.querySelector(':scope > .option-header');
+    const sibContent = sibOpen.querySelector(':scope > .option-content');
+    if (sibContent) sibContent.classList.remove('open');
+    sibOpen.classList.remove('open-action');
+    if (sibHeader) {
+      const tog = sibHeader.querySelector('.option-toggle');
+      const arr = sibHeader.querySelector('.option-arrow');
+      if (tog) tog.textContent = 'Dérouler';
+      if (arr) arr.textContent = '▸';
+    }
+    const closeBtn = sibContent && sibContent.querySelector(':scope > .action-close-btn');
+    if (closeBtn) closeBtn.remove();
+  });
+}
+
+// Masque les wrappers des boutons FERMÉS du même groupe mutex (sauf celui donné).
+function hideClosedMutexSiblings(mutexGroup, exceptDiv) {
+  if (!mutexGroup) return;
+  const sel = `.block-option.action[data-mutex-group="${CSS.escape(mutexGroup)}"]`;
+  document.querySelectorAll(sel).forEach(sib => {
+    if (sib === exceptDiv) return;
+    if (sib.classList.contains('open-action')) return; // on ne masque que les fermés
+    const wrap = sib.closest('.edit-block-wrap');
+    (wrap || sib).classList.add('action-sibling-hidden');
+  });
+}
+
+// Retire action-sibling-hidden sur tous les boutons du groupe mutex.
+function showHiddenMutexSiblings(mutexGroup) {
+  if (!mutexGroup) return;
+  const sel = `.block-option.action[data-mutex-group="${CSS.escape(mutexGroup)}"]`;
+  document.querySelectorAll(sel).forEach(sib => {
+    const wrap = sib.closest('.edit-block-wrap');
+    (wrap || sib).classList.remove('action-sibling-hidden');
+  });
 }
 
 // Marquer les wrappers (.edit-block-wrap) qui se trouvent APRÈS un wrapper contenant un bandeau enfant (option_banner)
@@ -6017,66 +6276,6 @@ function markActionSiblingContainers(root) {
     } else {
       parent.classList.remove('has-action-siblings');
     }
-  });
-}
-
-// Masquer les boutons action frères (même parent, au même niveau) quand on en ouvre un
-function hideSiblingActionButtons(optionDiv) {
-  const wrapper = optionDiv.closest('.edit-block-wrap');
-  const parent = wrapper ? wrapper.parentElement : optionDiv.parentElement;
-  if (!parent) return;
-  parent.querySelectorAll(':scope > .edit-block-wrap').forEach(sib => {
-    if (sib === wrapper) return;
-    const sibAction = sib.querySelector(':scope > .block-option.action');
-    if (!sibAction) return;
-    // Ne pas masquer le wrapper d'un bouton action-yellow (indépendant du mutex)
-    if (sibAction.classList.contains('action-yellow')) return;
-    sib.classList.add('action-sibling-hidden');
-  });
-  // Cas où les boutons action ne sont pas dans des edit-block-wrap (ex. contexte sans section)
-  parent.querySelectorAll(':scope > .block-option.action').forEach(sib => {
-    if (sib === optionDiv) return;
-    if (sib.classList.contains('action-yellow')) return;
-    sib.classList.add('action-sibling-hidden');
-  });
-}
-
-// Fermer TOUT bouton action actuellement ouvert (mutex strict sur toute l'arborescence)
-// Appelé AVANT d'ouvrir un nouveau bouton pour éviter qu'un frère reste open-action
-// tout en portant la classe action-sibling-hidden (→ wrapper invisible).
-// EXCEPTION : ne ferme JAMAIS un bouton .action-yellow (indépendant du mutex).
-function closeOpenSiblingActionButtons(optionDiv) {
-  const root = document.getElementById('content-area') || document;
-  root.querySelectorAll('.block-option.action.open-action').forEach(sibOpen => {
-    if (sibOpen === optionDiv) return;
-    // Ne jamais fermer un bouton action-yellow (indépendant du mutex)
-    if (sibOpen.classList.contains('action-yellow')) return;
-    const sibHeader = sibOpen.querySelector(':scope > .option-header');
-    const sibContent = sibOpen.querySelector(':scope > .option-content');
-    if (sibContent) sibContent.classList.remove('open');
-    sibOpen.classList.remove('open-action');
-    if (sibHeader) {
-      const tog = sibHeader.querySelector('.option-toggle');
-      const arr = sibHeader.querySelector('.option-arrow');
-      if (tog) tog.textContent = 'Dérouler';
-      if (arr) arr.textContent = '▸';
-    }
-    const closeBtn = sibContent && sibContent.querySelector(':scope > .action-close-btn');
-    if (closeBtn) closeBtn.remove();
-  });
-  // Nettoyer toute classe action-sibling-hidden résiduelle sur TOUT le DOM
-  root.querySelectorAll('.action-sibling-hidden').forEach(el => {
-    el.classList.remove('action-sibling-hidden');
-  });
-}
-
-// Restaurer les boutons action frères à la fermeture
-function showSiblingActionButtons(optionDiv) {
-  const wrapper = optionDiv.closest('.edit-block-wrap');
-  const parent = wrapper ? wrapper.parentElement : optionDiv.parentElement;
-  if (!parent) return;
-  parent.querySelectorAll(':scope > .edit-block-wrap.action-sibling-hidden, :scope > .block-option.action.action-sibling-hidden').forEach(el => {
-    el.classList.remove('action-sibling-hidden');
   });
 }
 
@@ -7125,7 +7324,7 @@ function newConsultation() {
 let _autoSaveConsultTimer = null;
 function autoSaveActiveConsultation() {
   clearTimeout(_autoSaveConsultTimer);
-  _autoSaveConsultTimer = setTimeout(() => {
+  _autoSaveConsultTimer = setTimeout(async () => {
     try {
       if (!state || !state.client || !state.client.prenomEnfant) {
         localStorage.removeItem('tdr_active_consultation');
@@ -7135,7 +7334,7 @@ function autoSaveActiveConsultation() {
       state.client.pbs = [...(state.selectedPbs || [])];
       // 1. Sauvegarde LONG-TERME du client (tdr_clients + Supabase, sans expiration)
       //    → pour retrouver le client + ses problématiques des mois plus tard
-      try { saveClient(); } catch(e) { console.warn('[auto-save client]', e); }
+      try { await saveClient(); } catch(e) { console.warn('[auto-save client]', e); }
       // 2. Snapshot COURT-TERME de la consultation active (position, notes, timer)
       //    → pour survivre à un hard refresh pendant la consultation (expire à 24h)
       const heureFinMs = state.heureFin
@@ -7155,8 +7354,41 @@ function autoSaveActiveConsultation() {
         savedAt: Date.now()
       };
       localStorage.setItem('tdr_active_consultation', JSON.stringify(snapshot));
-    } catch (e) { console.warn('[auto-save consult]', e); }
+      // Notifier l'utilisateur de la sauvegarde
+      showAutosaveIndicator(navigator.onLine ? 'saved' : 'offline');
+    } catch (e) {
+      console.warn('[auto-save consult]', e);
+      showAutosaveIndicator('error');
+    }
   }, 300);
+}
+
+// ═══════════════════════════════════════════════════
+// Indicateur discret "Sauvegardé ✓" / "Hors-ligne" / "Erreur"
+// Apparaît brièvement en haut à droite après chaque auto-save.
+// ═══════════════════════════════════════════════════
+let _autosaveIndicatorTimer = null;
+function showAutosaveIndicator(mode) {
+  const el = document.getElementById('autosave-indicator');
+  if (!el) return;
+  // Ne pas afficher si l'app-screen est masqué (pas en consultation)
+  const app = document.getElementById('app-screen');
+  if (app && getComputedStyle(app).display === 'none') return;
+  el.classList.remove('offline', 'error');
+  if (mode === 'offline') {
+    el.textContent = '⚠ Hors-ligne — sauvegarde locale uniquement';
+    el.classList.add('offline');
+  } else if (mode === 'error') {
+    el.textContent = '✕ Erreur de sauvegarde';
+    el.classList.add('error');
+  } else {
+    el.textContent = '💾 Sauvegardé';
+  }
+  el.classList.add('visible');
+  clearTimeout(_autosaveIndicatorTimer);
+  _autosaveIndicatorTimer = setTimeout(() => {
+    el.classList.remove('visible');
+  }, mode === 'offline' || mode === 'error' ? 3200 : 1600);
 }
 
 function clearActiveConsultation() {
