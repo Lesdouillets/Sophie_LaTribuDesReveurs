@@ -1535,6 +1535,26 @@
       border: none;
     }
 
+    /* ═══ Actions embarquées à l'intérieur d'un bloc texte ═══ */
+    /* Les boutons action (vert/rouge/etc.) rendus à l'intérieur d'un bloc normal,
+       affichés côte-à-côte et centrés, sans marge entre le texte et les boutons. */
+    .embedded-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .embedded-actions > .block-option.action:not(.open-action) {
+      margin: 0;
+    }
+    /* Quand un bouton embarqué s'ouvre, qu'il prenne toute la largeur disponible */
+    .embedded-actions > .block-option.action.open-action {
+      flex: 1 1 100%;
+      margin: 0;
+    }
+
     /* ═══ Indicateur auto-sauvegarde ═══ */
     .autosave-indicator {
       position: fixed;
@@ -6339,7 +6359,17 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     window.__infoButtons[btnId] = { title, content: contentHtml };
     trailingBtnHtml = `<button type="button" class="info-btn inline-right" contenteditable="false" onclick="openInfoPanel('${btnId}')"><span class="info-btn-emoji">💡</span><span>${label}</span></button>`;
   }
-  return `<div class="block ${cls}${extraCls}" contenteditable="true">${trailingBtnHtml}${text}</div>`;
+  // Boutons action embarqués à l'intérieur du bloc texte (via embeddedActions)
+  let embeddedHtml = '';
+  if (Array.isArray(b.embeddedActions) && b.embeddedActions.length) {
+    embeddedHtml = `<div class="embedded-actions" contenteditable="false">` +
+      b.embeddedActions.map((opt, oi) => {
+        const sub = { type: 'option', ...opt };
+        return renderBlockInner(sub, oi, sectionId, (depth||0)+1, `${path||i}.ea.${oi}`);
+      }).join('') +
+    `</div>`;
+  }
+  return `<div class="block ${cls}${extraCls}" contenteditable="true">${trailingBtnHtml}${text}${embeddedHtml}</div>`;
 }
 
 function renderBesoinsSommeil(tranches) {
@@ -6493,12 +6523,19 @@ function closeOpenMutexSiblings(mutexGroup, exceptDiv) {
 }
 
 // Masque les wrappers des boutons FERMÉS du même groupe mutex (sauf celui donné).
+// Si le bouton est dans un container .embedded-actions, masquer le bouton lui-même
+// plutôt que son wrapper externe (sinon on masquerait le bloc texte parent entier).
 function hideClosedMutexSiblings(mutexGroup, exceptDiv) {
   if (!mutexGroup) return;
   const sel = `.block-option.action[data-mutex-group="${CSS.escape(mutexGroup)}"]`;
   document.querySelectorAll(sel).forEach(sib => {
     if (sib === exceptDiv) return;
     if (sib.classList.contains('open-action')) return; // on ne masque que les fermés
+    const isEmbedded = !!sib.closest('.embedded-actions');
+    if (isEmbedded) {
+      sib.classList.add('action-sibling-hidden');
+      return;
+    }
     const wrap = sib.closest('.edit-block-wrap');
     (wrap || sib).classList.add('action-sibling-hidden');
   });
@@ -6509,6 +6546,11 @@ function showHiddenMutexSiblings(mutexGroup) {
   if (!mutexGroup) return;
   const sel = `.block-option.action[data-mutex-group="${CSS.escape(mutexGroup)}"]`;
   document.querySelectorAll(sel).forEach(sib => {
+    const isEmbedded = !!sib.closest('.embedded-actions');
+    if (isEmbedded) {
+      sib.classList.remove('action-sibling-hidden');
+      return;
+    }
     const wrap = sib.closest('.edit-block-wrap');
     (wrap || sib).classList.remove('action-sibling-hidden');
   });
