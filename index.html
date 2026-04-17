@@ -1413,18 +1413,33 @@
     .block-checklist {
       position: relative;
       background: #faf9f7;
-      border: 1.5px dashed #cfcabf !important;
+      border: 1.5px dashed #a78bfa !important;
       border-radius: 12px;
-      padding: 34px 20px 16px; margin-bottom: 14px;
+      padding: 28px 20px 16px; margin-top: 18px; margin-bottom: 14px;
     }
     .block-checklist::before {
       content: "🖊️ À cocher avec les parents";
       position: absolute;
-      top: 10px; left: 16px;
-      font-size: 11px; font-weight: 700;
-      color: #78716c;
-      letter-spacing: 0.4px;
+      top: -12px; left: 16px;
+      font-size: 11px; font-weight: 800;
+      color: #4c1d95;
+      background: white;
+      padding: 5px 12px;
+      border: 1.5px solid #8b5cf6;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
+      white-space: nowrap;
+    }
+    /* Texte des cases à cocher (blocs "à remplir en live") : en violet pour signaler l'action à faire */
+    .block-checklist .checklist-item span,
+    .block-grouped-checklist .checklist-item span {
+      color: #6d28d9;
+    }
+    .block-checklist .checklist-item.checked span,
+    .block-grouped-checklist .checklist-item.checked span {
+      color: #6d28d9 !important;
+      font-weight: 700;
     }
     .checklist-title { font-weight: 700; margin-bottom: 10px; color: var(--primary-dark); font-size: 14px; }
     .checklist-item {
@@ -1442,22 +1457,27 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 18px 20px;
-      padding: 34px 20px 16px;
+      padding: 28px 20px 16px;
+      margin-top: 18px;
       margin-bottom: 14px;
       background: #faf9f7;
-      border: 1.5px dashed #cfcabf !important;
+      border: 1.5px dashed #a78bfa !important;
       border-radius: 12px;
       box-shadow: none;
     }
     .block-grouped-checklist::before {
       content: "🖊️ À cocher avec les parents";
       position: absolute;
-      top: 10px; left: 16px;
-      font-size: 11px; font-weight: 700;
-      color: #78716c;
-      letter-spacing: 0.4px;
+      top: -12px; left: 16px;
+      font-size: 11px; font-weight: 800;
+      color: #4c1d95;
+      background: white;
+      padding: 5px 12px;
+      border: 1.5px solid #8b5cf6;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
-      grid-column: 1 / -1;
+      white-space: nowrap;
     }
     .gcl-group {
       display: flex; flex-direction: column; gap: 6px;
@@ -5628,7 +5648,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
             const text = isObj ? (item.text || '') : item;
             const subCls = (isObj && item.subItem) ? ' gcl-sub-item' : '';
             return `<label class="checklist-item gcl-item${subCls}">
-              <input type="checkbox" onchange="this.closest('.checklist-item').classList.toggle('checked', this.checked)">
+              <input type="checkbox" onchange="this.closest('.checklist-item').classList.toggle('checked', this.checked); if (this.checked && this.closest('.gcl-item').classList.contains('gcl-sub-item')) { let prev = this.closest('.gcl-item').previousElementSibling; while (prev && prev.classList.contains('gcl-sub-item')) prev = prev.previousElementSibling; if (prev) { const pcb = prev.querySelector('input[type=checkbox]'); if (pcb && !pcb.checked) { pcb.checked = true; prev.classList.add('checked'); } } }">
               <span>${substituteVars(text)}</span>
             </label>`;
           }).join('')}

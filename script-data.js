@@ -325,7 +325,7 @@ const SCRIPT_DATA = {
                 "Eczéma / peau atopique / psoriasis",
                 "Régurgitations :",
                 { text: "en jet", subItem: true },
-                { text: "sur tout le tps d'éveil", subItem: true },
+                { text: "sur tout le temps d'éveil", subItem: true },
                 { text: "lait caillé", subItem: true },
               ]
             },
@@ -393,7 +393,7 @@ const SCRIPT_DATA = {
                 "Eczéma / peau atopique / psoriasis",
                 "Régurgitations :",
                 { text: "en jet", subItem: true },
-                { text: "sur tout le tps d'éveil", subItem: true },
+                { text: "sur tout le temps d'éveil", subItem: true },
                 { text: "lait caillé", subItem: true },
               ]
             },
