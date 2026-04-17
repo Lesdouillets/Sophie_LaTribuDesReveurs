@@ -646,6 +646,49 @@
         inset 0 1px 0 rgba(255,255,255,0.30);
     }
 
+    /* Bandeau ENFANT — variante VERT PASTEL (pour Organisation de la journée) */
+    .block-option-banner.variant-green {
+      background: linear-gradient(135deg, #8fc8a6, #a9d7bd);
+      color: #ffffff;
+      font-weight: 800;
+      text-shadow: 0 1px 2px rgba(21,94,46,0.25);
+      box-shadow:
+        0 0 0 1px rgba(143,200,166,0.18),
+        0 3px 10px rgba(34,197,94,0.20),
+        0 1px 3px rgba(34,197,94,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.22);
+    }
+    .block-option-banner.variant-green:hover {
+      filter: brightness(1.04);
+      box-shadow:
+        0 0 0 1px rgba(143,200,166,0.28),
+        0 5px 14px rgba(34,197,94,0.28),
+        0 1px 3px rgba(34,197,94,0.14),
+        inset 0 1px 0 rgba(255,255,255,0.30);
+    }
+
+    /* Bandeau ENFANT — variante ORANGE/AMBRE PASTEL (réservée pour Nutrition)
+       Ambre doux, un peu plus clair que le bandeau parent (#b45309→#f59e0b) */
+    .block-option-banner.variant-orange {
+      background: linear-gradient(135deg, #e5a875, #eec49c);
+      color: #ffffff;
+      font-weight: 800;
+      text-shadow: 0 1px 2px rgba(124,45,18,0.25);
+      box-shadow:
+        0 0 0 1px rgba(229,168,117,0.18),
+        0 3px 10px rgba(245,158,11,0.20),
+        0 1px 3px rgba(245,158,11,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.22);
+    }
+    .block-option-banner.variant-orange:hover {
+      filter: brightness(1.04);
+      box-shadow:
+        0 0 0 1px rgba(229,168,117,0.28),
+        0 5px 14px rgba(245,158,11,0.28),
+        0 1px 3px rgba(245,158,11,0.14),
+        inset 0 1px 0 rgba(255,255,255,0.30);
+    }
+
     /* Bandeau ENFANT — variante ROSE (pour Enjeux relationnels)
        Rose CLAIR, un peu plus clair que le bandeau parent (#be185d→#ec4899) */
     .block-option-banner.variant-pink {
@@ -5374,6 +5417,21 @@ function isProblematiqueMatched(problematiqueId, selectedPbs) {
     const relCat = document.querySelector('.pb-cat-checkbox[data-cat="relationnel"]:checked, .modal-pb-cat[data-cat="relationnel"]:checked, .diag-pb-cat[data-cat="relationnel"]:checked');
     return !!relCat;
   }
+  // Cas particulier : la section "Organisation de la journée" est active
+  // si la case parente est cochée OU l'une des sous-cases rythme_*.
+  if (problematiqueId === 'rythme_general') {
+    const rythmePbs = [
+      'rythme_te_trop_long','rythme_te_long_siestes_courtes','rythme_te_long_reveils_matinaux',
+      'rythme_te_trop_court','rythme_te_court_siestes_courtes',
+      'rythme_siestes_courtes','rythme_horaires_aleatoires',
+      'rythme_reveil_decalage','rythme_reveil_fatigue','rythme_reveil_relationnel',
+      'rythme_reveil_mange','rythme_reveil_faim','rythme_reveil_dependance','rythme_reveil_bruit',
+      'rythme_activite_physique'
+    ];
+    if (rythmePbs.some(id => selectedPbs.has(id))) return true;
+    const rythmeCat = document.querySelector('.pb-cat-checkbox[data-cat="rythme"]:checked, .modal-pb-cat[data-cat="rythme"]:checked, .diag-pb-cat[data-cat="rythme"]:checked');
+    return !!rythmeCat;
+  }
   return selectedPbs.has(problematiqueId);
 }
 
@@ -6829,6 +6887,7 @@ function substituteVars(text) {
     .replace(/\[le_la\]/g, isFille ? 'la' : 'le')
     .replace(/\[Le_La\]/g, isFille ? 'La' : 'Le')
     .replace(/\[eveille_eveillee\]/g, isFille ? 'éveillée' : 'éveillé')
+    .replace(/\[fatigue_fatiguee\]/g, isFille ? 'fatiguée' : 'fatigué')
     .replace(/\[pb_text\]/g, pb)
     .replace(/\[obj_text\]/g, obj)
     .replace(/\[XXX – rappeler ici la problématique écrite par les parents\]/g, pb)

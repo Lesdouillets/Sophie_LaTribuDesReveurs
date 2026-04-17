@@ -525,36 +525,18 @@ const SCRIPT_DATA = {
       ]
     },
 
-    // ─── RYTHME ──────────────────────────────────────────
+    // ─── ORGANISATION DE LA JOURNÉE ──────────────────────
     {
-      id: "rythme_dette_sommeil",
-      problematiqueId: "rythme_dette_sommeil",
-      title: "Rythme – Dette de sommeil",
-      emoji: "😴",
+      id: "rythme_general",
+      problematiqueId: "rythme_general",
+      title: "Organisation de la journée",
+      emoji: "⏰",
       blocks: [
-        { type: "normal", text: "Aujourd'hui, [prénom_enfant] a un total de sommeil sur 24h plutôt bas pour son âge.\n\n⇒ Du coup :\n→ la fatigue s'accumule au fur et à mesure de la journée\n→ et son corps va réagir en sécrétant du cortisol (hormone de l'éveil)\n→ (💭 un peu comme nous avec le café !) pour 'tenir éveillé'\n\nSAUF qu'en fin de nuit, SI ce cortisol accumulé EN JOURNÉE est trop élevé\n⇒ Il va prendre le dessus sur la mélatonine (hormone du sommeil)… QUI ELLE est en train de diminuer\n\n💭 Le sommeil c'est comme une balance : si le cortisol est trop important, ça va faire pencher la balance du côté de l'éveil" },
-      ]
-    },
-
-    {
-      id: "rythme_reveil_matinal",
-      problematiqueId: "rythme_reveil_matinal",
-      title: "Rythme – Réveil matinal précoce 🌄",
-      emoji: "🌅",
-      blocks: [
-        { type: "normal", text: "Je peux voir que [prénom_enfant] se réveille tôt le matin\n\nEn fin de nuit, le sommeil devient naturellement + léger\n🎓 C'est une phase où le cerveau est beaucoup + sensible à ce qui se passe autour\n\nDu coup, certains enfants vont réduire leur nuit au strict minimum et se réveiller tôt matin :\n→ PAS parce qu'ils n'ont PLUS besoin de dormir\n→ MAIS parce que leur cerveau est déjà en mode 'allez, on démarre !'" },
-        { type: "question", text: "CE QUE je vous propose, c'est qu'on discute ensemble\nde COMMENT sortir doucement de ce petit 'jeu' qui s'est installé\nen vous proposant des manières concrètes de réagir\npour que la fin de nuit se passe + calmement\net que [prénom_enfant] puisse se rendormir + facilement\n\n⇒ Est-ce que vous sentez que ça a du sens pour vous ?" },
-      ]
-    },
-
-    {
-      id: "rythme_activite_physique",
-      problematiqueId: "rythme_activite_physique",
-      title: "Rythme – Manque d'activité physique",
-      emoji: "🏃",
-      blocks: [
-        { type: "normal", text: "Ce que je remarque aussi, c'est que [prénom_enfant] a des moments dans la journée où il est plutôt calme, où il bouge un peu moins.\n\nCependant, à cet âge-là, les enfants ont AUSSI besoin de bouger !\n\n💭 Imaginez : si vous passiez une journée entière assis sans bouger et qu'on vous demandait de bien dormir le soir…\nCe serait difficile ! Parce que votre corps n'a pas accumulé assez de fatigue physique.\n\nPour [prénom_enfant], c'est un peu la même chose :\n→ s'il a eu PEU d'occasions de bouger,\n→ il accumule MOINS de pression de sommeil\n→ et l'endormissement peut être + difficile" },
-        { type: "question", text: "Donc l'objectif serait de lui proposer DAVANTAGE de moments pour bouger et explorer…\n⇒ pour favoriser son endormissement.\n\n⇒ Est-ce que ça vous parle jusque là?" },
+        { type: "option_banner", leverId: "rythme_te_trop_long", emoji: "⏱", showIfPb: "rythme_te_trop_long", variant: "green" },
+        { type: "normal", showIfPb: "rythme_te_trop_long", text: "- Ce que j'observe, c'est que parfois, les **temps d'éveil de [prénom_enfant]** sont un **peu longs**.\n- Et ça, c'est **qqch de très fréquent**\n  ⇒ ce n'est PAS **toujours évident** de **trouver le bon rythme.**\n\n- Mais quand un **temps d'éveil** est **trop long** :\n  - le **cerveau** passe en **sur-stimulation**\n  - c'est-à-dire qu'il n'arrivera **pas à traiter toutes les informations** après la **fin de son tps d'éveil**\n\n*💭 C'est comme si vous étiez dans une **boîte de nuit à 3h du matin** : il y a du bruit, des lumières, du monde…*\n\n- Du coup :\n  - le **corps va réagir**\n  - et **sécréter du cortisol** (hormone de l'éveil)\n  - pour **« rester éveillé »**\n  - *(💭 un peu **comme nous avec le café !**)*\n\n- **MAIS tant** que ce **taux de cortisol restera élevé** :\n  - ça sera **difficile de s'endormir**\n  - et **difficile de RESTER endormi**\n  ⇒ On **rentre alors** dans un **cercle vicieux** *(tps d'éveil long → fatigue → sécrétion du cortisol → difficulté à l'endormissement → fatigue → cortisol élevé…)*\n\n- Grosso modo, MÊME SI ÇA peut **paraître un peu paradoxal** :\n  - **PLUS** les **temps d'éveil sont longs**\n  - **PLUS** **[prénom_enfant]** est **[fatigue_fatiguee]**,\n  - **PLUS** son **corps VA [le_la] AIDER** à **rester [eveille_eveillee]**" },
+        { type: "normal", showIfPb: "rythme_te_long_siestes_courtes", text: "  - ⇒ d'où la **problématique** des **siestes courtes**" },
+        { type: "normal", showIfPb: "rythme_te_long_reveils_matinaux", text: "  - ⇒ d'où la **problématique** des **réveils matinaux**" },
+        { type: "question", showIfPb: "rythme_te_trop_long", text: "- L'**idée serait donc** de **RACCOURCIR un peu** les **temps d'éveil** pour **retrouver un rythme** qui soit **+ en lien** avec :\n  - ses **besoins**\n  - et **son âge**\n- Et les **choses** vont se **mettre NATURELLEMENT EN PLACE** au niveau de **SON sommeil**\n\n⇒ Est-ce que **ça vous parle** jusque là ?" },
       ]
     },
 
