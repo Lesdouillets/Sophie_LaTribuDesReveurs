@@ -6778,6 +6778,32 @@ const ALL_PB_CATS = [
   {cat:'🎯 Souhaits', items:[{value:'souhait_tetine',label:'Suppression de la tétine'},{value:'souhait_position_dorsale',label:'Vers une position dorsale'}], subgroups:[{label:'Changement chambre/lit',hint:'(1 option possible)',items:[{value:'souhait_changement_lit',label:'Changement de lit',exclusive:'souhait_changement'},{value:'souhait_changement_chambre',label:'Changement de chambre',exclusive:'souhait_changement'},{value:'souhait_changement_lit_chambre',label:'Changement de lit + chambre',exclusive:'souhait_changement'}]}]},
 ];
 
+// Masque la case "Lit ouvert trop tôt" dans la fiche client, le modal et V. Diagnostic
+// quand l'enfant a ≥ 3 ans (36 mois). Si elle était cochée, la décoche automatiquement.
+// Utilise l'âge corrigé en priorité, sinon l'âge réel, via getEffectiveAgeMonths().
+function applyEnvLitOuvertVisibility() {
+  const age = getEffectiveAgeMonths();
+  const shouldHide = age != null && age >= 36;
+  // Tous les checkboxes "env_lit_ouvert" dans les 3 containers (fiche, modal, diag)
+  const allCbs = document.querySelectorAll(
+    'input[name="pb"][value="env_lit_ouvert"], .modal-pb[value="env_lit_ouvert"], .diag-pb[value="env_lit_ouvert"]'
+  );
+  let uncheckedOne = false;
+  allCbs.forEach(cb => {
+    const item = cb.closest('.pb-item');
+    if (item) item.style.display = shouldHide ? 'none' : '';
+    if (shouldHide && cb.checked) {
+      cb.checked = false;
+      uncheckedOne = true;
+    }
+  });
+  if (shouldHide && (state.selectedPbs?.has('env_lit_ouvert') || uncheckedOne)) {
+    state.selectedPbs?.delete('env_lit_ouvert');
+    if (typeof syncPbsToFicheClient === 'function') syncPbsToFicheClient();
+    if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+  }
+}
+
 function clonePbGridFor(targetId, cbClass, onchangeFunc) {
   const source = document.querySelector('.problematiques-grid[onchange="onFicheClientPbChange()"]');
   if (!source) return;
@@ -6830,6 +6856,8 @@ function clonePbGridFor(targetId, cbClass, onchangeFunc) {
   document.getElementById(targetId).appendChild(clone);
   // Re-init les menus déroulants
   initPbCategoryToggles();
+  // Appliquer la visibilité de "Lit ouvert trop tôt" selon l'âge (≥ 3 ans → masqué)
+  applyEnvLitOuvertVisibility();
 }
 
 function buildModalPbList() {
