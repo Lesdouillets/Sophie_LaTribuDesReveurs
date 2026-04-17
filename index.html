@@ -767,10 +767,10 @@
       background: linear-gradient(90deg, #047857, #10b981);
     }
     .inline-conditional-section[data-category="rythme"] {
-      border-color: #fcd34d; background: #fffbeb;
+      border-color: #86efac; background: #f0fdf4;
     }
     .inline-conditional-section[data-category="rythme"] > .inline-conditional-header {
-      background: linear-gradient(90deg, #b45309, #f59e0b);
+      background: linear-gradient(90deg, #166534, #22c55e);
     }
     .inline-conditional-section[data-category="strategie"] {
       border-color: #93c5fd; background: #eff6ff;
@@ -5658,8 +5658,9 @@ function togglePobBar() {
 
 // Récupère la liste des option_banner "levier" à l'intérieur d'une section conditionnelle.
 // Utilisé pour afficher les leviers comme sous-items navigables dans le sidebar.
-// Un bandeau n'est listé que s'il a un leverId + qu'il serait visible dans l'état courant
-// (conditions showIfPb/showIfAgeMin/Max respectées).
+// On liste TOUS les leviers (peu importe si leur pb est cochée) → ils apparaissent grisés
+// si inactifs, comme les sections filles de Confort physique. Filtre seulement sur l'âge
+// (pour éviter les doublons des 2 versions d'env_lit_ouvert avant/après 1 an).
 function collectSectionInnerBanners(section) {
   const blocks = getOverrideBlocks(section) || [];
   const out = [];
@@ -5667,15 +5668,14 @@ function collectSectionInnerBanners(section) {
   const seen = new Set();
   for (const b of blocks) {
     if (!b || b.type !== 'option_banner' || !b.leverId) continue;
-    // Éviter les doublons (p.ex. env_lit_ouvert a 2 bandeaux pour < 1 an / ≥ 1 an)
+    // Éviter les doublons (p.ex. env_lit_ouvert a 2 bandeaux pour < 1 an / ≥ 1 an) :
+    // on garde la première occurrence qui passe le filtre d'âge (ou la première tout court).
     if (seen.has(b.leverId)) continue;
-    // Respecter les conditions d'affichage sur le bandeau lui-même
-    if (b.showIfPb) {
-      const pbs = Array.isArray(b.showIfPb) ? b.showIfPb : [b.showIfPb];
-      if (!pbs.some(pb => state.selectedPbs.has(pb))) continue;
+    // Filtre d'âge : si une condition d'âge est définie et l'âge est connu et hors plage → skip
+    if (age != null) {
+      if (b.showIfAgeMinMonths != null && age < b.showIfAgeMinMonths) continue;
+      if (b.showIfAgeMaxMonths != null && age > b.showIfAgeMaxMonths) continue;
     }
-    if (b.showIfAgeMinMonths != null && (age == null || age < b.showIfAgeMinMonths)) continue;
-    if (b.showIfAgeMaxMonths != null && (age == null || age > b.showIfAgeMaxMonths)) continue;
     seen.add(b.leverId);
     out.push(b);
   }
