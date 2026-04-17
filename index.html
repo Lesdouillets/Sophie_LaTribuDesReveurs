@@ -1416,6 +1416,64 @@
     }
     .client-sessions-list .csl-btn.secondary:hover { background: #ddd0ff; }
 
+    /* ═══ Tick-box choice (binaire obligatoire, ex : Garder/Supprimer) ═══ */
+    .block-tickbox-choice {
+      margin: 10px 0 16px;
+      padding: 14px 16px;
+      background: #fafaff;
+      border: 2px dashed #c7d2fe;
+      border-radius: 12px;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .block-tickbox-choice[data-answered="true"] {
+      border-style: solid;
+      border-color: #a5b4fc;
+      background: #eef2ff;
+    }
+    .block-tickbox-choice .tbc-required {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11.5px; font-weight: 800;
+      color: #b91c1c;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+    .block-tickbox-choice[data-answered="true"] .tbc-required { display: none; }
+    .block-tickbox-choice .tbc-options {
+      display: flex; gap: 10px; flex-wrap: wrap;
+    }
+    .block-tickbox-choice .tbc-opt {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 18px;
+      background: white;
+      border: 2px solid #d4d4d8;
+      border-radius: 10px;
+      font-size: 14.5px; font-weight: 700;
+      color: #374151;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .block-tickbox-choice .tbc-opt:hover {
+      border-color: #a1a1aa;
+      background: #f9fafb;
+    }
+    .block-tickbox-choice .tbc-opt .tbc-icon {
+      font-size: 18px; line-height: 1;
+    }
+    .block-tickbox-choice .tbc-opt.tbc-selected {
+      border-width: 2.5px;
+    }
+    .block-tickbox-choice .tbc-opt.tbc-selected[data-variant="positive"] {
+      background: #dcfce7;
+      border-color: #16a34a;
+      color: #14532d;
+    }
+    .block-tickbox-choice .tbc-opt.tbc-selected[data-variant="negative"] {
+      background: #fee2e2;
+      border-color: #dc2626;
+      color: #7f1d1d;
+    }
+
     /* ═══ Indicateur auto-sauvegarde ═══ */
     .autosave-indicator {
       position: fixed;
@@ -3620,7 +3678,7 @@ function cleanStaleOverrides() {
     ...(SCRIPT_DATA.planAction || []),
     SCRIPT_DATA.conclusion
   ].filter(Boolean);
-  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau'];
+  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice'];
   let changed = false;
   for (const sectionId of Object.keys(state.scriptOverrides)) {
     const src = allSections.find(s => s.id === sectionId);
@@ -5129,6 +5187,14 @@ function isProblematiqueMatched(problematiqueId, selectedPbs) {
     const stratCat = document.querySelector('.pb-cat-checkbox[data-cat="strategie"]:checked, .modal-pb-cat[data-cat="strategie"]:checked, .diag-pb-cat[data-cat="strategie"]:checked');
     return !!stratCat;
   }
+  // Cas particulier : la section "Environnement de sommeil" est active
+  // si la case parente "Environnement de sommeil" est cochée OU l'une des sous-cases env_*.
+  if (problematiqueId === 'env_general') {
+    const envPbs = ['env_obscurite','env_temperature','env_lit_ouvert','env_rituel','env_cadre','env_stimulations','env_ecrans'];
+    if (envPbs.some(id => selectedPbs.has(id))) return true;
+    const envCat = document.querySelector('.pb-cat-checkbox[data-cat="env"]:checked, .modal-pb-cat[data-cat="env"]:checked, .diag-pb-cat[data-cat="env"]:checked');
+    return !!envCat;
+  }
   return selectedPbs.has(problematiqueId);
 }
 
@@ -5144,7 +5210,7 @@ function buildSections() {
     if (isProblematiqueMatched(s.problematiqueId, state.selectedPbs))
       state.sections.push({...s, sectionType:'plan'});
   });
-  const alwaysShown = ['plan_rythme','plan_environnement','plan_strategie_accompagnement'];
+  const alwaysShown = ['plan_rythme','plan_strategie_accompagnement'];
   alwaysShown.forEach(id => {
     if (!state.sections.find(s=>s.id===id)) {
       const s = SCRIPT_DATA.planAction.find(p=>p.id===id);
@@ -5584,6 +5650,8 @@ function renderCurrentSection() {
   markActionSiblingContainers(area);
   // Marquer les wrappers qui suivent un bandeau enfant pour appliquer le retrait à droite
   markAfterOptionBanner(area);
+  // Restaurer les tick-box choices déjà renseignés
+  if (typeof restoreTickboxChoices === 'function') restoreTickboxChoices(area);
   // Remplir le diagnostic avec le clone des checkboxes si la section contient le container
   const diagContainer = document.getElementById('diag-pb-container');
   if (diagContainer) {
@@ -5600,6 +5668,15 @@ function renderCurrentSection() {
   });
 }
 
+// Renvoie l'âge en mois à utiliser pour les conditions d'âge :
+// âge corrigé si disponible, sinon âge réel. Null si aucun n'est défini.
+function getEffectiveAgeMonths() {
+  const c = state && state.client ? state.client : {};
+  const v = c.ageCorrigeMois !== '' && c.ageCorrigeMois != null ? c.ageCorrigeMois : c.ageReelMois;
+  const n = typeof v === 'number' ? v : parseFloat(v);
+  return isNaN(n) ? null : n;
+}
+
 function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
   return (blocks||[]).map((b,i) => {
     // Cacher le bloc si une des problématiques indiquées dans hideIfPb est cochée
@@ -5612,6 +5689,13 @@ function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
       const pbs = Array.isArray(b.showIfPb) ? b.showIfPb : [b.showIfPb];
       if (!pbs.some(pb => state.selectedPbs.has(pb))) return '';
     }
+    // Conditions d'âge (utilise âge corrigé si dispo, sinon âge réel)
+    if (b.showIfAgeMinMonths != null || b.showIfAgeMaxMonths != null) {
+      const age = getEffectiveAgeMonths();
+      if (age == null) return ''; // pas d'âge → on cache par prudence
+      if (b.showIfAgeMinMonths != null && age < b.showIfAgeMinMonths) return '';
+      if (b.showIfAgeMaxMonths != null && age > b.showIfAgeMaxMonths) return '';
+    }
     const path = parentPath ? parentPath + '.' + i : '' + i;
     return renderBlock(b, i, sectionId, depth, path);
   }).join('');
@@ -5621,7 +5705,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau'].includes(b.type);
+    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice'].includes(b.type);
     const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
@@ -6036,6 +6120,28 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   if (b.type === 'question') {
     return `<div class="block block-question">
       <div class="q-text" contenteditable="true">❓ ${text}</div>
+    </div>`;
+  }
+
+  if (b.type === 'tickbox_choice') {
+    const cid = (b.id || ('tbc-' + (sectionId||'x') + '-' + (path||i))).replace(/[^\w-]/g, '-');
+    const required = b.required !== false;
+    const opts = (b.options || []).map((o, oi) => {
+      const icon = o.icon || '';
+      const label = substituteVars(o.label || '');
+      const value = o.value || ('opt' + oi);
+      const variant = o.variant || (oi === 0 ? 'positive' : 'negative');
+      return `<div class="tbc-opt" data-variant="${variant}" data-value="${value}" onclick="selectTickboxChoice(this)">
+        <span class="tbc-icon">${icon}</span>
+        <span>${label}</span>
+      </div>`;
+    }).join('');
+    const reqLabel = required
+      ? '<div class="tbc-required">⚠️ Réponse obligatoire</div>'
+      : '';
+    return `<div class="block block-tickbox-choice" data-choice-id="${cid}" data-required="${required}">
+      ${reqLabel}
+      <div class="tbc-options">${opts}</div>
     </div>`;
   }
 
@@ -6695,6 +6801,49 @@ function onDiagnosticPbChange() {
   }, 0);
 }
 
+// Sélection exclusive d'une tick-box dans un block-tickbox-choice.
+// Un seul choix actif à la fois. Cliquer sur la case déjà active la désélectionne.
+// Persiste la valeur dans state.tickboxChoices (sauvegardé avec la session).
+function selectTickboxChoice(el) {
+  const group = el.closest('.block-tickbox-choice');
+  if (!group) return;
+  const cid = group.dataset.choiceId || '';
+  const wasSelected = el.classList.contains('tbc-selected');
+  // Désélectionner toutes les options du groupe
+  group.querySelectorAll('.tbc-opt').forEach(o => o.classList.remove('tbc-selected'));
+  if (!wasSelected) {
+    el.classList.add('tbc-selected');
+    group.dataset.answered = 'true';
+  } else {
+    // Re-clic = désélection (la réponse redevient manquante)
+    delete group.dataset.answered;
+  }
+  // Persister le choix
+  if (!state.tickboxChoices) state.tickboxChoices = {};
+  if (!wasSelected) {
+    state.tickboxChoices[cid] = el.dataset.value || '';
+  } else {
+    delete state.tickboxChoices[cid];
+  }
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+
+// Restaurer les tick-boxes déjà cochées après un (re)render de section
+function restoreTickboxChoices(root) {
+  if (!state.tickboxChoices) return;
+  const scope = root || document;
+  scope.querySelectorAll('.block-tickbox-choice').forEach(group => {
+    const cid = group.dataset.choiceId;
+    const val = state.tickboxChoices[cid];
+    if (!val) return;
+    const opt = group.querySelector(`.tbc-opt[data-value="${CSS.escape(val)}"]`);
+    if (opt) {
+      opt.classList.add('tbc-selected');
+      group.dataset.answered = 'true';
+    }
+  });
+}
+
 // Replie / déplie une section conditionnelle inline — UNIQUEMENT visuel.
 // Ne modifie PAS state.selectedPbs ni les cases cochées dans le modal/fiche/diagnostic.
 function toggleConditionalSection(sectionId) {
@@ -7351,6 +7500,7 @@ function autoSaveActiveConsultation() {
         notes: state._notes || '',
         completedSet: state.completedSet ? [...state.completedSet] : [],
         currentSessionId: state.currentSessionId || null,
+        tickboxChoices: state.tickboxChoices || {},
         savedAt: Date.now()
       };
       localStorage.setItem('tdr_active_consultation', JSON.stringify(snapshot));
@@ -7421,6 +7571,7 @@ function restoreActiveConsultation() {
     state._notes = snap.notes || '';
     state.completedSet = new Set(snap.completedSet || []);
     state.currentSessionId = snap.currentSessionId || null;
+    state.tickboxChoices = snap.tickboxChoices || {};
     // Re-peupler le formulaire + reconstruire l'UI
     populateFormFromClient(state.client);
     buildSections();

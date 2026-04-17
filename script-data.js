@@ -259,13 +259,6 @@ const SCRIPT_DATA = {
             },
           ]
         },
-        {
-          type: "option", label: "🛌 Objectif lit ouvert MAIS enfant trop petit (1 à 2,5 ans)",
-          blocks: [
-            { type: "normal", text: "J'aimerais aussi revenir sur votre objectif d'aller vers un lit ouvert.\n\nAller vers un lit ouvert, c'est une étape naturelle du développement et de l'autonomie d'un enfant\nMais avec un lit ouvert, il y a quelques éléments importants à avoir en tête.\n\n1. La sécurité : il a la possibilité de se lever et de se promener dans toute la maison\n   Parfois, il peut aller dans des endroits dangereux\n\n2. Le sentiment de sécurité : le lit est + grand, ouvert sur toute la chambre…\n\n⇒ C'est pour ces raisons que je ne recommande pas le lit ouvert AVANT l'âge de 2,5-3 ans\n\nMais dans tous les cas, ça reste un choix parental.\nC'est VOUS qui décidez ce qui vous semble le + juste pour votre enfant et pour votre famille." },
-            { type: "question", text: "Qu'est-ce qui vous semble le + juste pour vous, aujourd'hui :\n→ Garder le lit ouvert\n→ Retourner vers un lit à barreaux/parapluie ?\n\n(Ce n'est PAS DU TOUT une régression — c'est simplement un outil TEMPORAIRE pour un sommeil de grand !)" }
-          ]
-        },
       ]
     },
 
@@ -614,65 +607,28 @@ const SCRIPT_DATA = {
       ]
     },
 
-    // ─── ENVIRONNEMENT ────────────────────────────────────
+    // ─── ENVIRONNEMENT DE SOMMEIL ────────────────────────
     {
-      id: "env_obscurite",
-      problematiqueId: "env_obscurite",
-      title: "Environnement – Obscurité insuffisante",
-      emoji: "🌑",
+      id: "env_general",
+      problematiqueId: "env_general",
+      title: "Environnement de sommeil",
+      emoji: "🏠",
       blocks: [
-        { type: "normal", text: "Ce que je vois, c'est que la chambre de [prénom_enfant] n'est pas complètement dans le noir…\n\nEn journée, l'obscurité va permettre de couper les stimulations visuelles :\n→ quand il n'y a rien à voir, il n'y a rien à faire… à part dormir !\n\net le soir, elle joue un rôle important puisqu'elle va aider à la sécrétion de la mélatonine\n\n💭 C'est un peu comme si, en allant vous coucher ce soir, vous voyiez une tache au plafond\n⇒ vous allez cogiter, votre cerveau va être stimulé, et vous allez avoir du mal à vous endormir\n\nPour [prénom_enfant], c'est exactement la même chose !\n⇒ La chambre idéale : obscurité totale (note 10/10), rideaux occultants ou store blackout" },
-      ]
-    },
-
-    {
-      id: "env_temperature",
-      problematiqueId: "env_temperature",
-      title: "Environnement – Température trop élevée",
-      emoji: "🌡️",
-      blocks: [
-        { type: "normal", text: "Aujourd'hui, on est un peu au-dessus des 19 degrés… et ça peut jouer, mine de rien, sur le sommeil de [prénom_enfant].\n\nParce que pour bien dormir, le corps a besoin de diminuer légèrement sa température corporelle…\n⇒ et la température de la chambre va nous aider\n\n💭 On l'a TOUS déjà vécu : quand il fait très chaud l'été, même quand on est fatigué…\n⇒ on va beaucoup moins bien dormir !\n\nPour [prénom_enfant], c'est exactement la même chose.\nSi la chambre est un peu trop chaude, ça peut rendre :\n→ l'endormissement + difficile, le sommeil moins profond\n→ …et donc des réveils multiples !\n\n⇒ Température idéale : entre 18 et 20°C" },
-      ]
-    },
-
-    {
-      id: "env_lit_ouvert",
-      problematiqueId: "env_lit_ouvert",
-      title: "Environnement – Lit ouvert trop tôt",
-      emoji: "🛏️",
-      blocks: [
-        { type: "normal", text: "J'aimerais AUSSI revenir sur le lit ouvert de [prénom_enfant]\n\nAvoir un lit ouvert, c'est une étape importante du développement et de l'autonomie d'un enfant\nMais avec un lit ouvert, il y a quelques éléments importants à avoir en tête :\n\n1. La sécurité : il peut se lever et se promener dans toute la maison, parfois dans des endroits dangereux\n\n2. La règle 'tu dois rester dans ton lit' :\nPour un enfant de cet âge, c'est une responsabilité très lourde.\nLe désir d'explorer est NORMAL\net rester dans son lit toute la nuit peut être très difficile pour lui.\n\n⇒ C'est pour ces raisons que je ne recommande pas le lit ouvert AVANT l'âge de 2,5-3 ans\n\nMais dans tous les cas, ça reste un choix parental.\nC'est VOUS qui décidez ce qui vous semble le + juste pour votre enfant et pour votre famille." },
-        { type: "question", text: "Qu'est-ce qui vous semble le + juste pour vous, aujourd'hui :\n→ Garder le lit ouvert\n→ Retourner vers un lit à barreaux/parapluie ?\n\n(Ce n'est PAS DU TOUT une régression — c'est simplement un outil TEMPORAIRE pour un sommeil de grand !)" },
-      ]
-    },
-
-    {
-      id: "env_rituel",
-      problematiqueId: "env_rituel",
-      title: "Environnement – Rituel absent / trop court",
-      emoji: "🌙",
-      blocks: [
-        { type: "normal", text: "Aujourd'hui, [prénom_enfant] n'a pas vraiment de rituel du soir, ou alors il est assez court\n\nEn fait, les enfants ont besoin d'un moment rassurant et prévisible avant de dormir\n\n💭 Pour vous donner une image :\nEn prenant l'avion, vous avez des rituels avant de décoller :\n1. on attache les ceintures\n2. on écoute les consignes de sécurité\n3. on vérifie que le réservoir est plein.\n⇒ Ces gestes répétés nous rassurent et nous préparent à partir.\n\nPour [prénom_enfant], le rituel du soir, c'est exactement pareil : ça le rassure et prépare doucement son cerveau à la nuit.\n\nUn bon rituel :\n→ 20 à 30 minutes de rituel calme\n→ Toujours dans le même ordre\n→ Dans la chambre ou au moins finir dans la chambre\n→ Sans écran\n→ Avec des éléments constants : bain, histoire, chanson, massage…" },
-      ]
-    },
-
-    {
-      id: "env_cadre",
-      problematiqueId: "env_cadre",
-      title: "Environnement – Cadre non clair",
-      emoji: "🗺️",
-      blocks: [
-        { type: "normal", text: "Là, ce que je vois, c'est que parfois, pour [prénom_enfant], ce n'est pas toujours la même réponse selon les moments.\n\nMais les enfants ont besoin de savoir à QUOI s'attendre pour se sentir en sécurité et se rassurer\n\n💭 Pour vous donner une image :\nC'est comme si vous deviez aller manger chez Tata Martine.\nS'il y a plusieurs chemins possibles, vous en choisissez 1.\nEt au bout d'un moment, vous connaissez ce chemin par cœur — Ça devient automatique.\n\nPour [prénom_enfant], c'est pareil :\nquand c'est clair et toujours pareil,\nil sait à quoi s'attendre\net ça rend les choses plus faciles… pour lui… et pour vous aussi" },
-      ]
-    },
-
-    {
-      id: "env_stimulations",
-      problematiqueId: "env_stimulations",
-      title: "Environnement – Stimulations visuelles",
-      emoji: "👀",
-      blocks: [
-        { type: "normal", text: "Aujourd'hui, [prénom_enfant] s'endort dans une chambre où il y a pas mal de choses autour qui peuvent attirer son regard et le maintenir éveillé + longtemps.\n\nEt ce n'est PAS un reproche… c'est JUSTE une observation\n\nL'environnement joue un vrai rôle dans la façon dont on se détend et dont on s'endort\n\n💭 C'est comme aller au cinéma :\nsi la salle est pleine de lumières et de bruits ⇒ on aura du mal à rentrer dans le film\nsi au contraire tout est calme et feutré ⇒ on plonge beaucoup plus facilement\n\nPour [prénom_enfant], le fait de simplifier l'environnement visuel de sa chambre\nva lui envoyer un signal clair : 'c'est le moment de se poser'" },
+        { type: "normal", text: "- Aujourd'hui je vois **une /plusieurs petite(s) chose(s)** QU'ON **pourrait ré-ajuster** dans l'**environnement de sommeil** de **[prénom_enfant]**.\n- L'environnement de sommeil, c'est **qqch:**\n  - **SUR LEQUEL** on PEUT **agir ASSEZ facilement**\n  - mais qu'on a **souvent tendance à négliger**\n  - … POURTANT ça **joue un rôle clé** dans la **qualité du sommeil.**\n\n- Je vois des choses au niveau de :" },
+        { type: "normal", showIfPb: "env_obscurite", text: "- **Obscurité**\n\n  - Car aujourd'hui, la chambre de **[prénom_enfant]** n'est **pas complètement dans le noir…**\n    ⇒ Vous ne **mettriez pas une note de 10/10**\n    - En **journée,** DEJA, l'obscurité va **permettre de couper les stimulations visuelles** : *quand il n'y a rien à voir, il n'y a rien à faire… à part dormir !*\n    - et le **soir,** elle joue un rôle important puisqu'elle va **aider à la sécrétion** de l'hormone du sommeil : **la mélatonine**\n\n  *💭 C'est un peu comme si :*\n  - en allant **vous coucher ce soir,**\n  - ***Vous voyez une tache au plafond***\n    *⇒ vous allez cogiter*\n    *⇒ vous allez vous imaginer une fuite au dessus,*\n    *⇒ et vous n'allez pas dormir de suite…*\n    *⇒ c'est NORMAL…*\n    *⇒ je ferais pareil ! 🤣*\n  - Et ben pour **[prénom_enfant]** **c'est pareil**\n  - S'il **peut voir** TOUT **ce qu'il y a autour** :\n    - il sera **happé par l'éveil**\n    - et **l'endormissement sera + difficile !**\n  - Tandis que **s'il fait noir** :\n    - il ne **verra rien**…\n    - et ça sera **beaucoup + facile DE lâcher prise !**\n  - (À noter que la **peur du noir** apparaît généralement plus tard, **autour de 2–2,5 ans**, voire jamais !)" },
+        { type: "normal", showIfPb: "env_temperature", text: "- **Température**\n\n  - Aujourd'hui, **on est** un peu **au-dessus des 19 degrés**… et **ça peut jouer, mine de rien,** sur le sommeil de **[prénom_enfant]**.\n  - Parce que **pour bien dormir**, le **corps** a besoin de diminuer **légèrement sa température corporelle**…\n    ⇒ et la **température de la chambre** va **nous aider**\n\n  💭 On l'a **TOUS déjà vécu** : quand il fait **très chaud l'été,** même quand on est fatigué…\n  **⇒ on va beaucoup moins bien dormir !**\n\n  - Pour **[prénom_enfant]**, c'est **exactement la même chose.**\n  - Si la **chambre est un peu trop chaude**, ça peut rendre :\n    - l'**endormissement + difficile**\n    - le **sommeil moins profond**\n    - …et donc des **réveils multiples !**\n\n  ⇒ Donc on **peut jouer sur ça** !" },
+        { type: "normal", showIfPb: "env_lit_ouvert", showIfAgeMinMonths: 12, text: "- J'aimerais AUSSI **revenir sur le lit ouvert** de **[prénom_enfant]**\n\n- Aujourd'hui, **[prénom_enfant]** **a un lit ouvert**\n- Avoir vers un lit ouvert, c'est une **étape importante** :\n  - du **développement**\n  - et de l'**autonomie d'un enfant**\n- Mais **avec un lit ouvert**, il y a quelques **éléments importants** à **avoir en tête.**\n\n- Le 1er, c'est la **sécurité**\n- Il a la **possibilité de se lever** et se **promener** dans toute la maison.\n- Parfois, il **peut aller** dans des **endroits dangereux**,\n  *comme la cuisine avec les produits ménagers ou le garage rempli d'outils.*\n\n- Le 2ème, c'est le **sentiment de sécurité**\n- Le **lit** est :\n  - **+ grand**\n  - **ouvert** sur **TOUTE la chambre**…\n\n⇒ et certains enfants peuvent **se sentir un peu moins rassurés**,\ncar ils n'ont plus ce **petit côté \"nid cosy\"** pour **se nicher**\n⇒ ils **sont + \"exposés\"** face à leur **grande chambre**\n\n*💭 Imaginez-vous dans une **grande chambre d'un château**, vous vous **sentiriez un peu vulnérable**…*\n\n- Le 3ème, ce sont les **allers-retours**.\n- Comme il **peut sortir du lit**\n  **⇒** vous pouvez **intervenir** pour le **remettre dans son lit,**\n  ⇒ et ça peut parfois **créer de la fatigue** ET même des **conflits** qui **pourraient être évités**.\n\n- Et enfin le **dernier point**, peut-être le **+ important** :\n  c'est la **règle** \"tu dois rester dans ton lit\".\n- Pour un enfant de cet âge, c'est une **responsabilité très lourde.**\n- Le **désir d'explorer** est **NORMAL**\n  et **rester dans son lit** toute la nuit **peut être très difficile** pour lui.\n\n⇒ Et c'est souvent **pour ces raisons** que **certains parents** :\n- choisissent de REVENIR **à un lit fermé**\n- qui **crée** un **cadre PHYSIQUE autour du sommeil**\n- Et c'est aussi **pour ces raisons** que MOI, **je ne recommande pas** de passer à un **lit ouvert AVANT l'âge de 2,5-3 ans**\n\n⇒ Du coup **par rapport à ça**, il y a **2 chemins possibles**, et les **2 sont tout à fait valables**\n\n- La **1ère option ⇒** c'est de **garder le lit ouvert**\n- Dans ce cas, votre enfant **garde cette liberté** de **pouvoir se lever.**\n- **Mais** cela veut dire que vous **serez parfois amenés à** :\n  - **intervenir**\n  - pour **le ramener dans son lit**,\n  - y **compris la nuit.**\n  ⇒ C'est-à-dire que ces **allers-retours** feront donc **ENCORE partie du fonctionnement** pour le moment.\n\n- **Si** vous **choisissez cette option** :\n  - on **travaillera ensemble** dans ce cadre-là,\n  - pour que ça se **passe le + sereinement possible.**\n\n- La **2nde option ⇒** c'est de REVENIR **à un lit fermé** (à barreaux ou lit parapluie)\n\n- L'**objectif** ici est simplement de **remettre un cadre physique autour du sommeil**\n- Les **barreaux** font **office de limite naturelle** :\n  - votre enfant **reste dans son lit**,\n  - **peut se nicher**\n  - se **sentir protégé,**\n  - et vous **n'avez PLUS ces allers-retours** pour le remettre dans son lit.\n\n- Et c'est **important de dire** que ce n'est **PAS DU TOUT une régression.**\n  ⇒ C'est **simplement** un **outil TEMPORAIRE** pour un **sommeil de grand !**\n\n- Si je **me base** sur ce qu'on a **vu ensemble**,\n  **mon conseil** serait plutôt **d'envisager de revenir à un lit fermé** : à barreaux ou lit parapluie\n- Mais dans **tous les cas**, ça **reste un choix parental.**\n- C'est VOUS **qui décidez** ce qui vous **semble le + juste** pour votre enfant et pour votre famille,\n  et **ensuite** on **ajustera ensemble** en **fonction** de **votre décision.**" },
+        { type: "question", showIfPb: "env_lit_ouvert", showIfAgeMinMonths: 12, text: "Alors dites-moi,\nqu'est-ce qui vous **semble le + juste pour vous**, aujourd'hui :\n- **Garder** le **lit ouvert**\n- **Retourner** vers un **lit à barreaux / parapluie** ?" },
+        { type: "tickbox_choice", id: "env_lit_ouvert_apres_1an", showIfPb: "env_lit_ouvert", showIfAgeMinMonths: 12, required: true, options: [
+          { icon: "✅", label: "Garder", value: "garder", variant: "positive" },
+          { icon: "❌", label: "Supprimer", value: "supprimer", variant: "negative" }
+        ]},
+        { type: "normal", showIfPb: "env_lit_ouvert", showIfAgeMaxMonths: 11, text: "- J'aimerais AUSSI **revenir sur le lit ouvert** de **[prénom_enfant]**\n\n- Aujourd'hui, **[prénom_enfant]** **a un lit ouvert**\n  - Avoir vers un lit ouvert, c'est une **étape importante** :\n    - du **développement**\n    - et de l'**autonomie d'un enfant**\n- Mais **avec un lit ouvert**, il y a quelques **éléments importants** à **avoir en tête.**\n\n- Le 1er, c'est la **sécurité**\n- Il a la **possibilité de se lever** et se **promener** dans toute la maison.\n- Parfois, il **peut aller** dans des **endroits dangereux**,\n  *comme la cuisine avec les produits ménagers ou le garage rempli d'outils.*\n\n- Le 2ème, c'est le **sentiment de sécurité**\n- Le **lit** est :\n  - **+ grand**\n  - **ouvert** sur **TOUTE la chambre**…\n\n⇒ et certains enfants peuvent **se sentir un peu moins rassurés**,\ncar ils n'ont plus ce **petit côté \"nid cosy\"** pour **se nicher**\n⇒ ils **sont + \"exposés\"** face à leur **grande chambre**\n\n*💭 Imaginez-vous dans une **grande chambre d'un château**, vous vous **sentiriez un peu vulnérable**…*\n\n⇒ Et c'est souvent **pour ces raisons (et d'autres quand votre enfant pourra marcher)** que **certains parents** :\n- choisissent de REVENIR **à un lit fermé**\n- qui **crée** un **cadre PHYSIQUE autour du sommeil**\n- Et c'est aussi **pour ces raisons** que MOI, **je ne recommande pas** de passer à un **lit ouvert AVANT l'âge de 2,5-3 ans**\n\n⇒ Du coup **par rapport à ça**, il y a **2 chemins possibles**, et les **2 sont tout à fait valables**\n\n- La **1ère option ⇒** c'est de **garder le lit ouvert**\n- En ayant en tête ce que je viens de citer\n\n- **Et si** vous **choisissez cette option** :\n  - on **travaillera ensemble** dans ce cadre-là,\n  - pour que ça se **passe le + sereinement possible.**\n\n- La **2nde option ⇒** c'est d'aller vers **un lit fermé** (à barreaux ou lit parapluie)\n\n- L'**objectif** ici est simplement de **remettre un cadre physique autour du sommeil**\n- Les **barreaux** font **office de limite naturelle** :\n  - votre enfant **reste dans son lit**,\n  - **peut se nicher**\n  - se **sentir protégé,**\n  - et vous **n'avez PLUS ces allers-retours** pour le remettre dans son lit.\n\n- Et c'est **important de dire** que ce n'est **PAS DU TOUT une régression.**\n  ⇒ C'est **simplement** un **outil TEMPORAIRE** pour un **sommeil de grand !**\n\n- Si je **me base** sur ce qu'on a **vu ensemble**,\n  **mon conseil** serait plutôt **d'envisager de revenir à un lit fermé** : à barreaux ou lit parapluie\n- Mais dans **tous les cas**, ça **reste un choix parental.**\n- C'est VOUS **qui décidez** ce qui vous **semble le + juste** pour votre enfant et pour votre famille,\n  et **ensuite** on **ajustera ensemble** en **fonction** de **votre décision.**" },
+        { type: "question", showIfPb: "env_lit_ouvert", showIfAgeMaxMonths: 11, text: "Alors dites-moi,\nqu'est-ce qui vous **semble le + juste pour vous**, aujourd'hui :\n- **Garder** le **lit ouvert**\n- **Aller** vers un **lit à barreaux / parapluie** ?" },
+        { type: "tickbox_choice", id: "env_lit_ouvert_avant_1an", showIfPb: "env_lit_ouvert", showIfAgeMaxMonths: 11, required: true, options: [
+          { icon: "✅", label: "Garder", value: "garder", variant: "positive" },
+          { icon: "❌", label: "Supprimer", value: "supprimer", variant: "negative" }
+        ]},
       ]
     },
 
@@ -774,17 +730,6 @@ const SCRIPT_DATA = {
       blocks: [
         { type: "normal", text: "On va donner à [prénom_enfant] des repères cohérents :\n→ Des moments qui vont se répéter TOUS LES JOURS,\n→ des manières d'agir similaires, que ce soit à la maison, chez la nounou ou à la crèche\n\n💡 Un TE (Temps d'Éveil) commence à partir du moment où l'enfant s'est réveillé\n(donc un rallongement de sieste qui n'a pas fonctionné FAIT PARTIE du TE)\nSAUF pour le 1er TE : il commence à partir de la sortie du lit, pour donner un tempo à la journée\n\n⚠️ Tout ce qui va se passer AVANT l'heure du réveil le matin sera considéré comme un réveil nocturne" },
         { type: "important", text: "🔥 Proposition d'un nouvel emploi du temps adapté à [prénom_enfant] :\n[→ À compléter en live pendant la consultation selon l'âge et le rythme de l'enfant]" },
-      ]
-    },
-
-    {
-      id: "plan_environnement",
-      problematiqueId: null,
-      title: "Plan – Environnement de sommeil",
-      emoji: "🏠",
-      blocks: [
-        { type: "normal", text: "Maintenant, je vous propose d'aborder le levier 'environnement de sommeil' de [prénom_enfant]\n\nC'est quelque chose sur lequel on PEUT agir ASSEZ facilement, mais qu'on a souvent tendance à négliger…\nalors qu'il joue un rôle clé dans la qualité du sommeil." },
-        { type: "conseil", text: "✅ Checklist environnement de sommeil optimal :\n\n🌑 Obscurité totale\n   → Rideaux occultants ou store blackout\n   → Vérifier fenêtres, LED, veilleuses\n\n🌡️ Température idéale : 18-20°C\n   → Pas de surchauffe — adapter tenue/turbulette\n\n🔇 Bruit blanc si nécessaire (temporaire)\n   → Utile si bruits extérieurs ponctuels — sur tout le temps de la nuit/sieste\n\n🛏️ Lit adapté à l'âge\n   → Avant 2,5-3 ans : lit fermé (barreaux ou parapluie)\n   → Pas de coussin/couverture avant 2 ans\n   ⚠️ Attention aux éléments DANS et AUTOUR du lit (risque d'étouffement)\n\n🌙 Rituel régulier\n   → 20-30 minutes de rituel calme\n   → Toujours dans le même ordre\n   → Sans écran\n\n👁️ Stimulations visuelles réduites\n   → Chambre sobre — pas de lumières/jouets lumineux pendant le sommeil\n\n📷 Photos de la chambre\n   → [Voir les photos envoyées par les parents]" },
       ]
     },
 
