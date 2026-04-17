@@ -1492,6 +1492,18 @@
       border-color: #dc2626;
       color: #7f1d1d;
     }
+    /* Variante INLINE : utilisée à l'intérieur d'un bloc question — retire le cadre,
+       le fond et les marges pour s'intégrer proprement au cadre du bloc parent. */
+    .block-tickbox-choice.tbc-inline {
+      margin: 12px 0 0;
+      padding: 0;
+      background: transparent;
+      border: none;
+    }
+    .block-tickbox-choice.tbc-inline[data-answered="true"] {
+      background: transparent;
+      border: none;
+    }
 
     /* ═══ Indicateur auto-sauvegarde ═══ */
     .autosave-indicator {
@@ -5703,32 +5715,61 @@ function parseAgeStringToMonths(s) {
   return y * 12 + m + Math.floor(w / 4);
 }
 
-// Renvoie l'âge en mois ENTIER à utiliser pour les conditions d'âge :
-// priorité : ageCorrigeMois > ageReelMois > ageCorrigeManuel parsé > ageEnfant parsé.
-// Toujours Math.floor pour garantir un entier (évite les trous sur des valeurs fractionnaires).
-// Null si aucune source n'est exploitable.
+// Renvoie l'âge en mois ENTIER à utiliser pour les conditions d'âge.
+// Priorité : valeurs ACTUELLES du DOM (formulaire) > state.client (valeurs sauvegardées).
+// Cela permet de prendre en compte une saisie manuelle avant même d'avoir "Save/Start".
+// Ordre : date de terme → date de naissance → texte corrigé manuel → texte âge enfant.
+// Toujours Math.floor pour garantir un entier.
 function getEffectiveAgeMonths() {
   const c = state && state.client ? state.client : {};
   const toInt = v => {
     const n = typeof v === 'number' ? v : parseFloat(v);
     return isNaN(n) ? null : Math.floor(n);
   };
-  // 1) âge corrigé calculé
+  // Lire les valeurs DOM si disponibles (formulaire setup)
+  const domGet = (id) => {
+    const el = (typeof document !== 'undefined') ? document.getElementById(id) : null;
+    return el ? (el.value || '').trim() : '';
+  };
+  const domDateNaiss = domGet('date-naissance');
+  const domDateTerme = domGet('date-terme');
+  const domAgeManuel = domGet('age-enfant');
+  const domAgeCorrManuel = domGet('age-corrige-manuel');
+  const consultDate = domGet('consult-date') || new Date().toISOString().slice(0,10);
+
+  // 1) Âge corrigé depuis DOM (via date de terme si prématuré, sinon date de naissance)
+  if (typeof calcAge === 'function') {
+    if (domDateTerme && domDateNaiss && new Date(domDateTerme) > new Date(domDateNaiss)) {
+      const a = calcAge(domDateTerme, consultDate);
+      if (a && typeof a.totalMois === 'number') return Math.floor(a.totalMois);
+    } else if (domDateNaiss) {
+      const a = calcAge(domDateNaiss, consultDate);
+      if (a && typeof a.totalMois === 'number') return Math.floor(a.totalMois);
+    }
+  }
+  // 2) Texte âge corrigé manuel depuis DOM
+  if (domAgeCorrManuel) {
+    const n = parseAgeStringToMonths(domAgeCorrManuel);
+    if (!isNaN(n)) return Math.floor(n);
+  }
+  // 3) Texte âge enfant manuel depuis DOM
+  if (domAgeManuel) {
+    const n = parseAgeStringToMonths(domAgeManuel);
+    if (!isNaN(n)) return Math.floor(n);
+  }
+  // 4) Fallback sur state.client si DOM est vide
   if (c.ageCorrigeMois !== '' && c.ageCorrigeMois != null) {
     const n = toInt(c.ageCorrigeMois);
     if (n != null) return n;
   }
-  // 2) âge réel calculé
   if (c.ageReelMois !== '' && c.ageReelMois != null) {
     const n = toInt(c.ageReelMois);
     if (n != null) return n;
   }
-  // 3) âge corrigé manuel (texte)
   if (c.ageCorrigeManuel) {
     const n = parseAgeStringToMonths(c.ageCorrigeManuel);
     if (!isNaN(n)) return Math.floor(n);
   }
-  // 4) âge réel manuel (texte)
   if (c.ageEnfant) {
     const n = parseAgeStringToMonths(c.ageEnfant);
     if (!isNaN(n)) return Math.floor(n);
@@ -6178,8 +6219,31 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
 
   if (b.type === 'question') {
+    // Tick-box optionnel embarqué dans le cadre du bloc question (via b.choice)
+    let choiceHtml = '';
+    if (b.choice) {
+      const ch = b.choice;
+      const cid = (ch.id || ('tbc-' + (sectionId||'x') + '-' + (path||i))).replace(/[^\w-]/g, '-');
+      const required = ch.required !== false;
+      const opts = (ch.options || []).map((o, oi) => {
+        const icon = o.icon || '';
+        const label = substituteVars(o.label || '');
+        const value = o.value || ('opt' + oi);
+        const variant = o.variant || (oi === 0 ? 'positive' : 'negative');
+        return `<div class="tbc-opt" data-variant="${variant}" data-value="${value}" onclick="selectTickboxChoice(this)">
+          <span class="tbc-icon">${icon}</span>
+          <span>${label}</span>
+        </div>`;
+      }).join('');
+      const reqLabel = required ? '<div class="tbc-required">⚠️ Réponse obligatoire</div>' : '';
+      choiceHtml = `<div class="block-tickbox-choice tbc-inline" data-choice-id="${cid}" data-required="${required}">
+        ${reqLabel}
+        <div class="tbc-options">${opts}</div>
+      </div>`;
+    }
     return `<div class="block block-question">
       <div class="q-text" contenteditable="true">❓ ${text}</div>
+      ${choiceHtml}
     </div>`;
   }
 
