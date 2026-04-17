@@ -582,6 +582,19 @@
       transition: filter 0.15s, box-shadow 0.15s;
     }
     .block-option-banner:hover { filter: brightness(1.08); box-shadow: 0 5px 14px rgba(44,70,110,0.38), inset 0 1px 0 rgba(255,255,255,0.2); }
+    /* Bandeau enfant cliquable : cursor + flèche animée + espacement label/flèche */
+    .block-option-banner { cursor: pointer; justify-content: space-between; }
+    .block-option-banner .ob-label { flex: 1; }
+    .block-option-banner .ob-arrow {
+      display: inline-block;
+      transition: transform 0.18s ease;
+      font-size: 14px;
+      margin-left: 10px;
+      opacity: 0.9;
+    }
+    .block-option-banner.ob-collapsed .ob-arrow {
+      transform: rotate(-90deg);
+    }
 
     /* Bandeau ENFANT — variante VIOLETTE (pour Environnement de sommeil)
        Violet CLAIR + effet glowy + titre en gras */
@@ -6114,7 +6127,11 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     }
     const label = substituteVars(rawLabel);
     const variantCls = b.variant ? ` variant-${b.variant}` : '';
-    return `<div class="block block-option-banner${variantCls}">${label}</div>`;
+    // Cliquable : toggle du groupe de blocs qui suit jusqu'au prochain bandeau
+    return `<div class="block block-option-banner${variantCls}" onclick="toggleOptionBannerGroup(this)">
+      <span class="ob-label">${label}</span>
+      <span class="ob-arrow">▾</span>
+    </div>`;
   }
 
   if (b.type === 'info_button') {
@@ -6601,6 +6618,12 @@ function substituteVars(text) {
     .replace(/\[un_une\]/g, isFille ? 'une' : 'un')
     .replace(/\[petit_petite\]/g, isFille ? 'petite' : 'petit')
     .replace(/\[fille_garcon\]/g, isFille ? 'fille' : 'garçon')
+    .replace(/\[il_elle\]/g, isFille ? 'elle' : 'il')
+    .replace(/\[Il_Elle\]/g, isFille ? 'Elle' : 'Il')
+    .replace(/\[lui_elle\]/g, isFille ? 'elle' : 'lui')
+    .replace(/\[dependant_dependante\]/g, isFille ? 'dépendante' : 'dépendant')
+    .replace(/\[TOUT_SEUL\]/g, isFille ? 'TOUTE SEULE' : 'TOUT SEUL')
+    .replace(/\[tout_seul\]/g, isFille ? 'toute seule' : 'tout seul')
     .replace(/\[pb_text\]/g, pb)
     .replace(/\[obj_text\]/g, obj)
     .replace(/\[XXX – rappeler ici la problématique écrite par les parents\]/g, pb)
@@ -7029,6 +7052,30 @@ function restoreTickboxChoices(root) {
       group.dataset.answered = 'true';
     }
   });
+}
+
+// Replie / déplie le groupe de blocs qui suit un bandeau enfant (option_banner).
+// S'arrête au prochain bandeau (ou au marqueur reset-indent = remonte au niveau parent).
+// Purement visuel — ne modifie aucun état (cases, pb, notes).
+function toggleOptionBannerGroup(bannerEl) {
+  if (!bannerEl) return;
+  const wrapper = bannerEl.closest('.edit-block-wrap');
+  if (!wrapper) return;
+  const collapsed = bannerEl.classList.toggle('ob-collapsed');
+  let sib = wrapper.nextElementSibling;
+  while (sib) {
+    // Stop quand on rencontre un autre wrapper contenant un bandeau enfant OU un reset-indent
+    if (sib.classList && sib.classList.contains('edit-block-wrap')) {
+      const isNextBanner = !!sib.querySelector(':scope > .block-option-banner');
+      const isReset = sib.classList.contains('reset-indent');
+      if (isNextBanner || isReset) break;
+      sib.style.display = collapsed ? 'none' : '';
+    } else if (sib.classList && sib.classList.contains('add-block-row')) {
+      // Masquer aussi les boutons "insérer un bloc ici" pour la cohérence visuelle
+      sib.style.display = collapsed ? 'none' : '';
+    }
+    sib = sib.nextElementSibling;
+  }
 }
 
 // Replie / déplie une section conditionnelle inline — UNIQUEMENT visuel.
