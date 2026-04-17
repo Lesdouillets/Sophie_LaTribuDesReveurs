@@ -5922,6 +5922,10 @@ function toggleOption(header) {
       // (sinon le wrapper du frère conserve action-sibling-hidden et devient invisible
       // alors qu'il est open-action — cf. cas du bouton jaune qui perd sa règle override).
       closeOpenSiblingActionButtons(optionDiv);
+      // Nettoyer toute classe action-sibling-hidden laissée par un précédent état
+      // (p. ex. cas du bouton jaune dont la règle CSS override avait masqué l'effet
+      // de action-sibling-hidden, laissant la classe accrochée à son wrapper).
+      showSiblingActionButtons(optionDiv);
       optionDiv.classList.add('open-action');
       optionDiv.offsetWidth; // forcer reflow
       content.classList.add('open');
@@ -6015,14 +6019,12 @@ function hideSiblingActionButtons(optionDiv) {
   });
 }
 
-// Fermer tout bouton action frère actuellement ouvert (mutex strict)
+// Fermer TOUT bouton action actuellement ouvert (mutex strict sur toute l'arborescence)
 // Appelé AVANT d'ouvrir un nouveau bouton pour éviter qu'un frère reste open-action
 // tout en portant la classe action-sibling-hidden (→ wrapper invisible).
 function closeOpenSiblingActionButtons(optionDiv) {
-  const wrapper = optionDiv.closest('.edit-block-wrap');
-  const parent = wrapper ? wrapper.parentElement : optionDiv.parentElement;
-  if (!parent) return;
-  parent.querySelectorAll(':scope > .edit-block-wrap > .block-option.action.open-action, :scope > .block-option.action.open-action').forEach(sibOpen => {
+  const root = document.getElementById('content-area') || document;
+  root.querySelectorAll('.block-option.action.open-action').forEach(sibOpen => {
     if (sibOpen === optionDiv) return;
     const sibHeader = sibOpen.querySelector(':scope > .option-header');
     const sibContent = sibOpen.querySelector(':scope > .option-content');
@@ -6034,9 +6036,14 @@ function closeOpenSiblingActionButtons(optionDiv) {
       if (tog) tog.textContent = 'Dérouler';
       if (arr) arr.textContent = '▸';
     }
-    // Supprimer le bouton de fermeture inséré précédemment pour qu'il soit recréé à la prochaine ouverture
     const closeBtn = sibContent && sibContent.querySelector(':scope > .action-close-btn');
     if (closeBtn) closeBtn.remove();
+  });
+  // Nettoyer toute classe action-sibling-hidden résiduelle sur TOUT le DOM
+  // (sinon un wrapper dont la règle CSS override avait masqué l'effet
+  // conserve la classe et devient invisible au prochain open-action)
+  root.querySelectorAll('.action-sibling-hidden').forEach(el => {
+    el.classList.remove('action-sibling-hidden');
   });
 }
 
