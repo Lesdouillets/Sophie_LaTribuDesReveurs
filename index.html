@@ -4005,6 +4005,7 @@ async function loadSessionsFromSupabase() {
 let state = {
   client: { prenomEnfant:'', ageEnfant:'', rituel:'', prenomParent1:'', prenomParent2:'', nomFamille:'', roleParents:'les deux parents', problematique:'', objectifs:'' },
   selectedPbs: new Set(),
+  revealedLever: null,
   sections: [],
   currentIdx: 0,
   completedSet: new Set(),
@@ -5783,8 +5784,11 @@ function buildSidebar() {
           subDiv.innerHTML = `<span class="nav-emoji">${leverEmoji}</span><span class="nav-title">${leverLabel}</span>`;
           subDiv.onclick = (e) => {
             e.stopPropagation();
+            // Mode "révélation" : on force l'affichage du bandeau + contenu de ce levier
+            // même si la pb n'est pas cochée, pour permettre la consultation
+            state.revealedLever = b.leverId;
             navigateTo(idx);
-            // Attendre le rendu de la section puis scroll au bandeau (si présent dans le DOM)
+            // Attendre le rendu de la section puis scroll au bandeau
             requestAnimationFrame(() => {
               setTimeout(() => {
                 const area = document.getElementById('content-area');
@@ -5936,8 +5940,9 @@ function closeInfoPanel() {
   if (panel) panel.classList.remove('open');
   window.__activeInfoBtnId = null;
 }
-function prevSection() { if (state.currentIdx>0) navigateTo(state.currentIdx-1); }
+function prevSection() { state.revealedLever = null; if (state.currentIdx>0) navigateTo(state.currentIdx-1); }
 function nextSection() {
+  state.revealedLever = null;
   if (state.currentIdx < state.sections.length-1) {
     state.completedSet.add(state.currentIdx);
     navigateTo(state.currentIdx+1);
@@ -6116,9 +6121,13 @@ function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
       if (pbs.some(pb => state.selectedPbs.has(pb))) return '';
     }
     // Afficher le bloc uniquement si la problématique indiquée dans showIfPb est cochée
+    // EXCEPTION : si state.revealedLever correspond à une pb de showIfPb, on rend
+    // quand même (mode "révélation" déclenché par clic sur un levier dans le sidebar).
     if (b.showIfPb) {
       const pbs = Array.isArray(b.showIfPb) ? b.showIfPb : [b.showIfPb];
-      if (!pbs.some(pb => state.selectedPbs.has(pb))) return '';
+      const isChecked = pbs.some(pb => state.selectedPbs.has(pb));
+      const isRevealed = state.revealedLever && pbs.includes(state.revealedLever);
+      if (!isChecked && !isRevealed) return '';
     }
     // Conditions d'âge (utilise âge corrigé si dispo, sinon âge réel)
     if (b.showIfAgeMinMonths != null || b.showIfAgeMaxMonths != null) {
