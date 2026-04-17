@@ -581,7 +581,7 @@ const SCRIPT_DATA = {
             "Dans <strong>VOTRE lit/chambre</strong> 🛌",
           ]
         },
-        { type: "normal", text: "- **CES conditions** **pour s'endormir** sont **devenus** ⇒ SES **stratégies d'endormissement**\n- Et le **problème**, c'est que SES stratégies, il ne peut **PAS les reproduire TOUT SEUL**<br>⇒ On appelle ça une **stratégie d'endormissement DÉPENDANTE**, car elle **dépend d'une aide extérieure, c'est-à-dire de VOUS**" },
+        { type: "normal", text: "- **CES conditions** **pour s'endormir** sont **devenues** ⇒ SES **stratégies d'endormissement**\n- Et le **problème**, c'est que SES stratégies, il ne peut **PAS les reproduire TOUT SEUL**<br>⇒ On appelle ça une **stratégie d'endormissement DÉPENDANTE**, car elle **dépend d'une aide extérieure, c'est-à-dire de VOUS**" },
         { type: "option_banner", label: "Rendormissements difficiles", showIfPb: "strategie_rendormissement" },
         { type: "normal", text: "- Et quand il se réveille, **l'environnement a parfois changé** :", showIfPb: "strategie_rendormissement" },
         {
