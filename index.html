@@ -4094,6 +4094,19 @@ function populateFormFromClient(c) {
   });
   if (c.enseigne) { setEnseigne(c.enseigne); const sel = document.getElementById('enseigne-select'); if (sel) sel.value = c.enseigne; }
   computeClientFields();
+  // Avant syncMedicalToConfort : synchroniser medical DEPUIS les pbs confort sauvegardés
+  // (sinon si l'utilisateur a coché rgo_seul/rgo_allergie/allergie_seule directement
+  //  dans V. Diagnostic ou le modal — sans passer par les cases médicales —
+  //  syncMedicalToConfort décochera la pb confort car il la voit inconsistante avec medical).
+  const loadedPbs = c.pbs || [];
+  if (loadedPbs.includes('rgo_allergie')) {
+    setChk('medical-rgo', true);
+    setChk('medical-aplv-susp', true);
+  } else if (loadedPbs.includes('allergie_seule')) {
+    setChk('medical-aplv-susp', true);
+  } else if (loadedPbs.includes('rgo_seul')) {
+    setChk('medical-rgo', true);
+  }
   // Sync medical → confort après chargement : si RGO/APLV médicaux sont cochés, la case pb "confort" correspondante doit l'être aussi
   if (typeof syncMedicalToConfort === 'function') syncMedicalToConfort();
 }
