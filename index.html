@@ -2278,7 +2278,7 @@
               <label>Taille cible estimée</label>
               <div id="taille-cible-calc" style="padding:12px 14px;background:#eaeff8;border:2px solid var(--border);border-radius:10px;font-size:28px;font-weight:800;color:var(--primary-dark);text-align:center;display:flex;align-items:center;justify-content:center;min-height:70px">–</div>
               <div id="taille-cible-percentile" style="display:none;margin-top:8px;border-radius:8px;overflow:hidden;border:1px solid var(--border);font-size:11px"></div>
-              <button type="button" class="info-btn" style="min-width:0;width:100%;margin-top:10px;padding:10px 14px;font-size:14px" onclick="openInfoPanel('taille-cible-formulas')">
+              <button type="button" class="info-btn" style="min-width:0;width:100%;margin-top:10px;padding:10px 14px;font-size:14px" onclick="showTailleCibleFormulas()">
                 <span class="info-btn-emoji">💡</span><span>Formules taille cible</span>
               </button>
             </div>
@@ -5760,14 +5760,14 @@ function buildSidebar() {
     if (!items || items.length === 0) return;
     const isExpanded = state.pbSidebarExpanded.has(cat);
     const anyActive = items.some(it => it.section.isActiveLevier);
-    // Grisage de GROUPE : si AUCUN item de la catégorie n'a sa pb cochée,
-    // le header + tous les items + sous-items sont grisés. Dès qu'un est coché,
-    // TOUT le groupe (header + items + sous-items) passe en non-grisé.
-    const groupInactiveCls = anyActive ? '' : ' inactive-levier';
+    // Grisage PAR ITEM : chaque item (section, sous-item bandeau) est grisé
+    // individuellement selon sa propre pb. Le header est grisé seulement si
+    // AUCUN item de la catégorie n'est coché.
+    const headerInactiveCls = anyActive ? '' : ' inactive-levier';
     const groupDiv = document.createElement('div');
     groupDiv.className = 'nav-group' + (isExpanded ? ' expanded' : '') + (anyActive ? '' : ' all-inactive');
     const header = document.createElement('div');
-    header.className = 'nav-group-header' + groupInactiveCls;
+    header.className = 'nav-group-header' + headerInactiveCls;
     const label = PB_CATEGORY_LABELS[cat] || '❓ Autre';
     header.innerHTML = `<span class="nav-group-arrow">${isExpanded ? '▾' : '▸'}</span><span class="nav-group-label">${label}</span>`;
     header.onclick = () => toggleSidebarPbCategory(cat);
@@ -5781,7 +5781,7 @@ function buildSidebar() {
       if (innerBanners.length > 0) {
         // Rendu : entrée de section parent + sous-items pour chaque bandeau levier
         const sectionDiv = document.createElement('div');
-        sectionDiv.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'') + groupInactiveCls;
+        sectionDiv.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'') + (section.isActiveLevier ? '' : ' inactive-levier');
         sectionDiv.innerHTML = `<span class="nav-emoji">${section.emoji||'📄'}</span><span class="nav-title">${getSectionDisplayTitle(section)}</span>${state.completedSet.has(idx)?'<span class="nav-check">✓</span>':''}`;
         sectionDiv.onclick = () => navigateTo(idx);
         childrenDiv.appendChild(sectionDiv);
@@ -5789,7 +5789,7 @@ function buildSidebar() {
           const leverLabel = (typeof PB_LABELS !== 'undefined' && PB_LABELS[b.leverId]) ? PB_LABELS[b.leverId] : (b.label || b.leverId);
           const leverEmoji = b.emoji || '•';
           const subDiv = document.createElement('div');
-          subDiv.className = 'nav-item nav-child nav-sub-child' + groupInactiveCls;
+          subDiv.className = 'nav-item nav-child nav-sub-child' + (state.selectedPbs.has(b.leverId) ? '' : ' inactive-levier');
           subDiv.innerHTML = `<span class="nav-emoji">${leverEmoji}</span><span class="nav-title">${leverLabel}</span>`;
           subDiv.onclick = (e) => {
             e.stopPropagation();
@@ -5811,7 +5811,7 @@ function buildSidebar() {
       } else {
         // Cas classique : une seule ligne pour la section
         const div = document.createElement('div');
-        div.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'') + groupInactiveCls;
+        div.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'') + (section.isActiveLevier ? '' : ' inactive-levier');
         div.innerHTML = `<span class="nav-emoji">${section.emoji||'📄'}</span><span class="nav-title">${getSectionDisplayTitle(section)}</span>${state.completedSet.has(idx)?'<span class="nav-check">✓</span>':''}`;
         div.onclick = () => navigateTo(idx);
         childrenDiv.appendChild(div);
@@ -5924,18 +5924,36 @@ function returnToDiagnostic() {
 window.__infoButtons = window.__infoButtons || {};
 window.__activeInfoBtnId = null;
 
-// Contenu statique du bouton "💡 Formules taille cible" (onglet BB)
-window.__infoButtons['taille-cible-formulas'] = {
-  title: 'Formules taille cible',
-  content: `
-    <p>La taille cible estimée se calcule à partir de la taille des 2 parents :</p>
-    <h3 style="margin-top:14px">👦 Garçon</h3>
-    <p style="font-size:16px;font-weight:700;color:#1e3a8a">(taille père + taille mère + 13) / 2</p>
-    <h3 style="margin-top:14px">👧 Fille</h3>
-    <p style="font-size:16px;font-weight:700;color:#be185d">(taille père + taille mère − 13) / 2</p>
-    <p style="margin-top:18px;color:#666;font-size:13px"><em>Tailles en cm. Marge d'erreur d'environ ±5 à 10 cm.</em></p>
-  `
-};
+// Popover autonome "💡 Formules taille cible" (onglet BB, marche setup + app-screen)
+// Toggle : re-clic sur le bouton ou clic sur ✕ / fond → ferme le popover
+function showTailleCibleFormulas() {
+  const existing = document.getElementById('taille-cible-popover-bg');
+  if (existing) { existing.remove(); return; }
+  const bg = document.createElement('div');
+  bg.id = 'taille-cible-popover-bg';
+  bg.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:9998;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.15s ease';
+  bg.onclick = (e) => { if (e.target === bg) bg.remove(); };
+  bg.innerHTML = `
+    <div style="background:#fffbeb;border:2px solid #f59e0b;border-radius:14px;padding:22px 26px;max-width:480px;width:90vw;box-shadow:0 10px 40px rgba(0,0,0,0.30);font-family:inherit;color:#422006">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1.5px solid #fde68a;padding-bottom:10px">
+        <div style="font-size:16px;font-weight:800">💡 Formules taille cible</div>
+        <button type="button" onclick="document.getElementById('taille-cible-popover-bg')?.remove()" style="background:transparent;border:none;font-size:20px;cursor:pointer;color:#422006;padding:0 4px;line-height:1">✕</button>
+      </div>
+      <p style="margin:0 0 12px;color:#422006">La taille cible estimée se calcule à partir de la taille des 2 parents :</p>
+      <div style="margin-top:10px">
+        <div style="font-size:14px;font-weight:700;color:#1e3a8a;margin-bottom:4px">👦 Garçon</div>
+        <div style="font-size:15px;font-weight:800;background:#dbeafe;padding:8px 12px;border-radius:8px;color:#1e3a8a">(taille père + taille mère + 13) / 2</div>
+      </div>
+      <div style="margin-top:10px">
+        <div style="font-size:14px;font-weight:700;color:#be185d;margin-bottom:4px">👧 Fille</div>
+        <div style="font-size:15px;font-weight:800;background:#fce7f3;padding:8px 12px;border-radius:8px;color:#be185d">(taille père + taille mère − 13) / 2</div>
+      </div>
+      <p style="margin-top:16px;color:#78716c;font-size:12.5px"><em>Tailles en cm. Marge d'erreur d'environ ±5 à 10 cm.</em></p>
+    </div>
+  `;
+  document.body.appendChild(bg);
+}
+window.showTailleCibleFormulas = showTailleCibleFormulas;
 
 // Ouvre le panneau latéral "Infos" et y charge le contenu du bouton cliqué
 // Comportement toggle : re-cliquer sur le même bouton actif ferme le panneau
