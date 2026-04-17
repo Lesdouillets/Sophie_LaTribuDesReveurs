@@ -5735,19 +5735,21 @@ function buildSidebar() {
     items.forEach(({section, idx}) => {
       // Trouver les bandeaux internes (option_banner avec leverId) pour les lister comme sous-items
       const innerBanners = collectSectionInnerBanners(section);
+      // Logique GRISAGE (inversée) : un levier COCHÉ est grisé (déjà adressé), un levier
+      // NON-COCHÉ est normal (à traiter) — pour que le sidebar mette en avant les pbs à voir.
       if (innerBanners.length > 0) {
         // Rendu : entrée de section parent + sous-items pour chaque bandeau levier
         const sectionDiv = document.createElement('div');
-        sectionDiv.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'') + (section.isActiveLevier ? '' : ' inactive-levier');
+        sectionDiv.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'') + (section.isActiveLevier ? ' inactive-levier' : '');
         sectionDiv.innerHTML = `<span class="nav-emoji">${section.emoji||'📄'}</span><span class="nav-title">${getSectionDisplayTitle(section)}</span>${state.completedSet.has(idx)?'<span class="nav-check">✓</span>':''}`;
         sectionDiv.onclick = () => navigateTo(idx);
         childrenDiv.appendChild(sectionDiv);
         innerBanners.forEach(b => {
-          const isActive = b.leverId && state.selectedPbs.has(b.leverId);
+          const isChecked = b.leverId && state.selectedPbs.has(b.leverId);
           const leverLabel = (typeof PB_LABELS !== 'undefined' && PB_LABELS[b.leverId]) ? PB_LABELS[b.leverId] : (b.label || b.leverId);
           const leverEmoji = b.emoji || '•';
           const subDiv = document.createElement('div');
-          subDiv.className = 'nav-item nav-child nav-sub-child' + (isActive ? '' : ' inactive-levier');
+          subDiv.className = 'nav-item nav-child nav-sub-child' + (isChecked ? ' inactive-levier' : '');
           subDiv.innerHTML = `<span class="nav-emoji">${leverEmoji}</span><span class="nav-title">${leverLabel}</span>`;
           subDiv.onclick = (e) => {
             e.stopPropagation();
@@ -5764,9 +5766,9 @@ function buildSidebar() {
           childrenDiv.appendChild(subDiv);
         });
       } else {
-        // Cas classique : une seule ligne pour la section
+        // Cas classique : une seule ligne pour la section (logique inversée idem)
         const div = document.createElement('div');
-        div.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'') + (section.isActiveLevier ? '' : ' inactive-levier');
+        div.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'') + (section.isActiveLevier ? ' inactive-levier' : '');
         div.innerHTML = `<span class="nav-emoji">${section.emoji||'📄'}</span><span class="nav-title">${getSectionDisplayTitle(section)}</span>${state.completedSet.has(idx)?'<span class="nav-check">✓</span>':''}`;
         div.onclick = () => navigateTo(idx);
         childrenDiv.appendChild(div);
@@ -6376,7 +6378,9 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const label = substituteVars(rawLabel);
     const variantCls = b.variant ? ` variant-${b.variant}` : '';
     const leverAttr = b.leverId ? ` data-lever-id="${String(b.leverId).replace(/"/g, '&quot;')}"` : '';
-    // Détecter si la pb associée n'est pas cochée → grisage visuel
+    // Bandeau dans le contenu : normal si pb cochée (c'est ce qu'on discute),
+    // grisé si pb non cochée (non pertinent actuellement mais toujours visible
+    // comme repère pour le sidebar "Par problématique" qui peut scroller ici).
     let inactiveCls = '';
     if (b.showIfPb) {
       const pbs = Array.isArray(b.showIfPb) ? b.showIfPb : [b.showIfPb];
