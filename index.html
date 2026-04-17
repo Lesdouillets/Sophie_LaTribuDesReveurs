@@ -1319,7 +1319,45 @@
       width: 100%; border-radius: var(--radius); margin-left: 0; margin-right: 0;
       background: #ffffff; border: 1.5px solid var(--primary);
     }
-    .block-option.action.open-action > .option-header { display: none; }
+    /* Quand ouvert : garder le header visible comme bandeau-titre en haut du bloc
+       pour que l'utilisateur voie sur quel bouton il se trouve (rouge/vert/jaune).
+       Layout compact en ligne (emoji + label), sans "Dérouler". */
+    .block-option.action.open-action > .option-header {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      min-height: auto;
+      padding: 10px 14px;
+      gap: 10px;
+      border-radius: var(--radius) var(--radius) 0 0;
+      cursor: default;
+      /* Par défaut (variante rouge = action sans action-green/yellow) */
+      background: linear-gradient(135deg, #8b0000, #c0392b);
+    }
+    .block-option.action.open-action > .option-header > span {
+      flex-direction: row !important;
+    }
+    .block-option.action.open-action > .option-header .option-emoji { font-size: 20px; }
+    .block-option.action.open-action > .option-header .option-label-text {
+      font-size: 13.5px; font-weight: 800;
+    }
+    .block-option.action.open-action > .option-header .option-toggle { display: none; }
+    /* Variante VERTE ouverte : bande-titre verte */
+    .block-option.action.action-green.open-action > .option-header {
+      background: linear-gradient(135deg, #14532d, #22c55e);
+    }
+    /* Variante JAUNE ouverte : bande-titre jaune + texte foncé (pour lisibilité) */
+    .block-option.action.action-yellow.open-action > .option-header {
+      background: linear-gradient(135deg, #f59e0b, #fde047);
+    }
+    .block-option.action.action-yellow.open-action > .option-header .option-label-text {
+      color: #422006;
+      text-shadow: none;
+    }
+    .block-option.action.action-yellow.open-action > .option-header .option-emoji {
+      filter: none;
+    }
     .block-option.action.open-action > .option-content {
       background: #ffffff; padding: 0 16px 14px;
     }
