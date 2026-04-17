@@ -582,6 +582,25 @@
       transition: filter 0.15s, box-shadow 0.15s;
     }
     .block-option-banner:hover { filter: brightness(1.08); box-shadow: 0 5px 14px rgba(44,70,110,0.38), inset 0 1px 0 rgba(255,255,255,0.2); }
+
+    /* Bandeau ENFANT — variante VIOLETTE (pour Environnement de sommeil)
+       Match la couleur du bandeau parent env + effet glowy */
+    .block-option-banner.variant-violet {
+      background: linear-gradient(135deg, #6d28d9, #8b5cf6);
+      box-shadow:
+        0 0 0 1px rgba(139,92,246,0.25),
+        0 6px 18px rgba(109,40,217,0.45),
+        0 2px 6px rgba(109,40,217,0.25),
+        inset 0 1px 0 rgba(255,255,255,0.22);
+    }
+    .block-option-banner.variant-violet:hover {
+      filter: brightness(1.10);
+      box-shadow:
+        0 0 0 1px rgba(139,92,246,0.35),
+        0 8px 24px rgba(109,40,217,0.55),
+        0 2px 6px rgba(109,40,217,0.30),
+        inset 0 1px 0 rgba(255,255,255,0.28);
+    }
     /* Les blocs à la suite d'un bandeau enfant (contenu de l'option) héritent du même retrait à droite.
        La classe "after-option-banner" est appliquée en JS par markAfterOptionBanner(). */
     .edit-block-wrap.after-option-banner {
@@ -5668,13 +5687,53 @@ function renderCurrentSection() {
   });
 }
 
-// Renvoie l'âge en mois à utiliser pour les conditions d'âge :
-// âge corrigé si disponible, sinon âge réel. Null si aucun n'est défini.
+// Parse une chaîne d'âge libre ("6 mois", "2 ans 3 mois", "6 semaines", "12 jours", "7,5 mois")
+// et renvoie l'âge total en mois (Math.floor). NaN si non reconnu.
+function parseAgeStringToMonths(s) {
+  if (!s || typeof s !== 'string') return NaN;
+  let y = 0, m = 0, w = 0, d = 0;
+  const ym = s.match(/(\d+)\s*an/i); if (ym) y = parseInt(ym[1]);
+  const mm = s.match(/([\d]+[.,]?\d*)\s*mois/i); if (mm) m = Math.floor(parseFloat(mm[1].replace(',', '.')));
+  const wm = s.match(/(\d+)\s*sem/i); if (wm) w = parseInt(wm[1]);
+  const dm = s.match(/(\d+)\s*(?:jour|j\b)/i); if (dm) d = parseInt(dm[1]);
+  if (y === 0 && m === 0 && w === 0 && d === 0) {
+    const num = parseFloat(s.replace(',', '.'));
+    return isNaN(num) ? NaN : Math.floor(num);
+  }
+  return y * 12 + m + Math.floor(w / 4);
+}
+
+// Renvoie l'âge en mois ENTIER à utiliser pour les conditions d'âge :
+// priorité : ageCorrigeMois > ageReelMois > ageCorrigeManuel parsé > ageEnfant parsé.
+// Toujours Math.floor pour garantir un entier (évite les trous sur des valeurs fractionnaires).
+// Null si aucune source n'est exploitable.
 function getEffectiveAgeMonths() {
   const c = state && state.client ? state.client : {};
-  const v = c.ageCorrigeMois !== '' && c.ageCorrigeMois != null ? c.ageCorrigeMois : c.ageReelMois;
-  const n = typeof v === 'number' ? v : parseFloat(v);
-  return isNaN(n) ? null : n;
+  const toInt = v => {
+    const n = typeof v === 'number' ? v : parseFloat(v);
+    return isNaN(n) ? null : Math.floor(n);
+  };
+  // 1) âge corrigé calculé
+  if (c.ageCorrigeMois !== '' && c.ageCorrigeMois != null) {
+    const n = toInt(c.ageCorrigeMois);
+    if (n != null) return n;
+  }
+  // 2) âge réel calculé
+  if (c.ageReelMois !== '' && c.ageReelMois != null) {
+    const n = toInt(c.ageReelMois);
+    if (n != null) return n;
+  }
+  // 3) âge corrigé manuel (texte)
+  if (c.ageCorrigeManuel) {
+    const n = parseAgeStringToMonths(c.ageCorrigeManuel);
+    if (!isNaN(n)) return Math.floor(n);
+  }
+  // 4) âge réel manuel (texte)
+  if (c.ageEnfant) {
+    const n = parseAgeStringToMonths(c.ageEnfant);
+    if (!isNaN(n)) return Math.floor(n);
+  }
+  return null;
 }
 
 function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
@@ -5978,7 +6037,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
 
   if (b.type === 'option_banner') {
     const label = substituteVars(b.label || b.text || '');
-    return `<div class="block block-option-banner">${label}</div>`;
+    const variantCls = b.variant ? ` variant-${b.variant}` : '';
+    return `<div class="block block-option-banner${variantCls}">${label}</div>`;
   }
 
   if (b.type === 'info_button') {
