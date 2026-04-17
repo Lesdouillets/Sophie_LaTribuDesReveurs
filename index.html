@@ -602,6 +602,17 @@
     .block-option-banner.ob-collapsed .ob-arrow {
       transform: rotate(-90deg);
     }
+    /* Bandeau enfant INACTIF (pb non cochée) : grisé, moins saillant.
+       Toujours cliquable (scroll depuis le sidebar). */
+    .block-option-banner.banner-inactive {
+      opacity: 0.45;
+      filter: grayscale(0.3);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.10);
+    }
+    .block-option-banner.banner-inactive:hover {
+      opacity: 0.75;
+      filter: grayscale(0.15);
+    }
 
     /* Bandeau ENFANT — variante VIOLETTE PASTEL (pour Environnement de sommeil)
        Un violet/lavande doux, plus clair que le bandeau parent, moins saturé */
@@ -6059,9 +6070,13 @@ function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
       if (pbs.some(pb => state.selectedPbs.has(pb))) return '';
     }
     // Afficher le bloc uniquement si la problématique indiquée dans showIfPb est cochée
+    // EXCEPTION : les option_banner sont TOUJOURS rendus (grisés si pb inactive), pour
+    // permettre au sidebar de scroller vers chaque bandeau même sans pb cochée.
     if (b.showIfPb) {
       const pbs = Array.isArray(b.showIfPb) ? b.showIfPb : [b.showIfPb];
-      if (!pbs.some(pb => state.selectedPbs.has(pb))) return '';
+      if (!pbs.some(pb => state.selectedPbs.has(pb))) {
+        if (b.type !== 'option_banner') return '';
+      }
     }
     // Conditions d'âge (utilise âge corrigé si dispo, sinon âge réel)
     if (b.showIfAgeMinMonths != null || b.showIfAgeMaxMonths != null) {
@@ -6361,8 +6376,14 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const label = substituteVars(rawLabel);
     const variantCls = b.variant ? ` variant-${b.variant}` : '';
     const leverAttr = b.leverId ? ` data-lever-id="${String(b.leverId).replace(/"/g, '&quot;')}"` : '';
+    // Détecter si la pb associée n'est pas cochée → grisage visuel
+    let inactiveCls = '';
+    if (b.showIfPb) {
+      const pbs = Array.isArray(b.showIfPb) ? b.showIfPb : [b.showIfPb];
+      if (!pbs.some(pb => state.selectedPbs.has(pb))) inactiveCls = ' banner-inactive';
+    }
     // Cliquable : toggle du groupe de blocs qui suit jusqu'au prochain bandeau
-    return `<div class="block block-option-banner${variantCls}"${leverAttr} onclick="toggleOptionBannerGroup(this)">
+    return `<div class="block block-option-banner${variantCls}${inactiveCls}"${leverAttr} onclick="toggleOptionBannerGroup(this)">
       <span class="ob-label">${label}</span>
       <span class="ob-arrow">▾</span>
     </div>`;
