@@ -6092,13 +6092,7 @@ function getEffectiveAgeMonths() {
   return null;
 }
 
-// Sections "parent fusionné" : regroupent plusieurs leviers avec des bandeaux et blocs
-// conditionnels. Dans ces sections, on affiche TOUT le contenu même si les pbs ne sont
-// pas cochées — pour que le sidebar puisse naviguer vers chaque levier et voir son contenu.
-const MERGED_PARENT_SECTIONS = ['env_general', 'relationnel_general', 'rythme_general', 'strategie_rendormissement'];
-
 function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
-  const isMergedParent = MERGED_PARENT_SECTIONS.includes(sectionId);
   return (blocks||[]).map((b,i) => {
     // Cacher le bloc si une des problématiques indiquées dans hideIfPb est cochée
     if (b.hideIfPb) {
@@ -6106,9 +6100,7 @@ function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
       if (pbs.some(pb => state.selectedPbs.has(pb))) return '';
     }
     // Afficher le bloc uniquement si la problématique indiquée dans showIfPb est cochée
-    // EXCEPTION : dans une section "parent fusionné", tout le contenu reste visible
-    //             (pour pouvoir consulter chaque levier depuis le sidebar sans cocher)
-    if (b.showIfPb && !isMergedParent) {
+    if (b.showIfPb) {
       const pbs = Array.isArray(b.showIfPb) ? b.showIfPb : [b.showIfPb];
       if (!pbs.some(pb => state.selectedPbs.has(pb))) return '';
     }
