@@ -870,6 +870,36 @@
       transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .info-panel.open { width: 600px; }
+
+    /* ═══ SETUP INFO PANEL (même comportement, pour la fiche client) ═══ */
+    .setup-info-panel {
+      width: 0; flex-shrink: 0;
+      display: flex; flex-direction: column; overflow: hidden;
+      background: #fffbeb;
+      border-left: 1.5px solid #fde68a;
+      transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .setup-info-panel.open { width: 500px; }
+    .setup-info-header {
+      background: linear-gradient(135deg, #f59e0b, #fde047);
+      color: #422006;
+      padding: 14px 18px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .setup-info-title { font-weight: 900; font-size: 16px; letter-spacing: 0.3px; }
+    .setup-info-close {
+      background: rgba(255,255,255,0.4); border: none; color: #422006;
+      font-size: 16px; cursor: pointer; border-radius: 8px;
+      width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-weight: 700;
+      transition: background 0.15s;
+    }
+    .setup-info-close:hover { background: rgba(255,255,255,0.7); }
+    .setup-info-body {
+      overflow-y: auto; padding: 16px 20px; flex: 1;
+      font-size: 14px; line-height: 1.6; color: var(--text);
+    }
     .info-header {
       background: linear-gradient(135deg, #f59e0b, #fde047);
       color: #422006;
@@ -3031,6 +3061,15 @@
     </div>
 
   </div><!-- /setup-right -->
+
+  <!-- SETUP INFO PANEL — panneau latéral "💡 Formules taille cible" (même style que info-panel) -->
+  <div class="setup-info-panel" id="setup-info-panel">
+    <div class="setup-info-header">
+      <div class="setup-info-title" id="setup-info-title">💡 Informations</div>
+      <button class="setup-info-close" onclick="closeSetupInfoPanel()" title="Fermer">✕</button>
+    </div>
+    <div class="setup-info-body" id="setup-info-body"></div>
+  </div>
 
 </div><!-- /setup-screen -->
 
@@ -5924,36 +5963,44 @@ function returnToDiagnostic() {
 window.__infoButtons = window.__infoButtons || {};
 window.__activeInfoBtnId = null;
 
-// Popover autonome "💡 Formules taille cible" (onglet BB, marche setup + app-screen)
-// Toggle : re-clic sur le bouton ou clic sur ✕ / fond → ferme le popover
+// Panneau latéral "💡 Formules taille cible" (onglet BB / fiche client)
+// Même comportement que le bouton "Causes du RGO" : panel qui slide in et réduit le contenu central.
+// Toggle : re-clic sur le bouton ou clic sur ✕ → ferme le panneau
 function showTailleCibleFormulas() {
-  const existing = document.getElementById('taille-cible-popover-bg');
-  if (existing) { existing.remove(); return; }
-  const bg = document.createElement('div');
-  bg.id = 'taille-cible-popover-bg';
-  bg.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:9998;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.15s ease';
-  bg.onclick = (e) => { if (e.target === bg) bg.remove(); };
-  bg.innerHTML = `
-    <div style="background:#fffbeb;border:2px solid #f59e0b;border-radius:14px;padding:22px 26px;max-width:480px;width:90vw;box-shadow:0 10px 40px rgba(0,0,0,0.30);font-family:inherit;color:#422006">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1.5px solid #fde68a;padding-bottom:10px">
-        <div style="font-size:16px;font-weight:800">💡 Formules taille cible</div>
-        <button type="button" onclick="document.getElementById('taille-cible-popover-bg')?.remove()" style="background:transparent;border:none;font-size:20px;cursor:pointer;color:#422006;padding:0 4px;line-height:1">✕</button>
-      </div>
-      <p style="margin:0 0 12px;color:#422006">La taille cible estimée se calcule à partir de la taille des 2 parents :</p>
-      <div style="margin-top:10px">
-        <div style="font-size:14px;font-weight:700;color:#1e3a8a;margin-bottom:4px">👦 Garçon</div>
-        <div style="font-size:15px;font-weight:800;background:#dbeafe;padding:8px 12px;border-radius:8px;color:#1e3a8a">(taille père + taille mère + 13) / 2</div>
-      </div>
-      <div style="margin-top:10px">
-        <div style="font-size:14px;font-weight:700;color:#be185d;margin-bottom:4px">👧 Fille</div>
-        <div style="font-size:15px;font-weight:800;background:#fce7f3;padding:8px 12px;border-radius:8px;color:#be185d">(taille père + taille mère − 13) / 2</div>
-      </div>
-      <p style="margin-top:16px;color:#78716c;font-size:12.5px"><em>Tailles en cm. Marge d'erreur d'environ ±5 à 10 cm.</em></p>
+  const panel = document.getElementById('setup-info-panel');
+  const titleEl = document.getElementById('setup-info-title');
+  const bodyEl = document.getElementById('setup-info-body');
+  if (!panel || !titleEl || !bodyEl) return;
+  // Toggle : si déjà ouvert sur ce contenu, on ferme
+  if (panel.classList.contains('open') && panel.dataset.source === 'taille-cible') {
+    closeSetupInfoPanel();
+    return;
+  }
+  titleEl.innerHTML = '💡 Formules taille cible';
+  bodyEl.innerHTML = `
+    <p style="margin:0 0 12px;color:#422006">La taille cible estimée se calcule à partir de la taille des 2 parents :</p>
+    <div style="margin-top:10px">
+      <div style="font-size:14px;font-weight:700;color:#1e3a8a;margin-bottom:4px">👦 Garçon</div>
+      <div style="font-size:15px;font-weight:800;background:#dbeafe;padding:8px 12px;border-radius:8px;color:#1e3a8a">(taille père + taille mère + 13) / 2</div>
     </div>
+    <div style="margin-top:10px">
+      <div style="font-size:14px;font-weight:700;color:#be185d;margin-bottom:4px">👧 Fille</div>
+      <div style="font-size:15px;font-weight:800;background:#fce7f3;padding:8px 12px;border-radius:8px;color:#be185d">(taille père + taille mère − 13) / 2</div>
+    </div>
+    <p style="margin-top:16px;color:#78716c;font-size:12.5px"><em>Tailles en cm. Marge d'erreur d'environ ±5 à 10 cm.</em></p>
   `;
-  document.body.appendChild(bg);
+  panel.dataset.source = 'taille-cible';
+  panel.classList.add('open');
+}
+function closeSetupInfoPanel() {
+  const panel = document.getElementById('setup-info-panel');
+  if (panel) {
+    panel.classList.remove('open');
+    delete panel.dataset.source;
+  }
 }
 window.showTailleCibleFormulas = showTailleCibleFormulas;
+window.closeSetupInfoPanel = closeSetupInfoPanel;
 
 // Ouvre le panneau latéral "Infos" et y charge le contenu du bouton cliqué
 // Comportement toggle : re-cliquer sur le même bouton actif ferme le panneau
