@@ -584,22 +584,25 @@
     .block-option-banner:hover { filter: brightness(1.08); box-shadow: 0 5px 14px rgba(44,70,110,0.38), inset 0 1px 0 rgba(255,255,255,0.2); }
 
     /* Bandeau ENFANT — variante VIOLETTE (pour Environnement de sommeil)
-       Match la couleur du bandeau parent env + effet glowy */
+       Violet CLAIR + effet glowy + titre en gras */
     .block-option-banner.variant-violet {
-      background: linear-gradient(135deg, #6d28d9, #8b5cf6);
+      background: linear-gradient(135deg, #a78bfa, #c4b5fd);
+      color: #ffffff;
+      font-weight: 800;
+      text-shadow: 0 1px 2px rgba(79,38,162,0.35);
       box-shadow:
-        0 0 0 1px rgba(139,92,246,0.25),
-        0 6px 18px rgba(109,40,217,0.45),
-        0 2px 6px rgba(109,40,217,0.25),
-        inset 0 1px 0 rgba(255,255,255,0.22);
+        0 0 0 1px rgba(167,139,250,0.25),
+        0 4px 14px rgba(139,92,246,0.32),
+        0 2px 6px rgba(139,92,246,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.35);
     }
     .block-option-banner.variant-violet:hover {
-      filter: brightness(1.10);
+      filter: brightness(1.06);
       box-shadow:
-        0 0 0 1px rgba(139,92,246,0.35),
-        0 8px 24px rgba(109,40,217,0.55),
-        0 2px 6px rgba(109,40,217,0.30),
-        inset 0 1px 0 rgba(255,255,255,0.28);
+        0 0 0 1px rgba(167,139,250,0.35),
+        0 6px 20px rgba(139,92,246,0.40),
+        0 2px 6px rgba(139,92,246,0.22),
+        inset 0 1px 0 rgba(255,255,255,0.45);
     }
     /* Les blocs à la suite d'un bandeau enfant (contenu de l'option) héritent du même retrait à droite.
        La classe "after-option-banner" est appliquée en JS par markAfterOptionBanner(). */
@@ -5492,7 +5495,7 @@ function buildSidebar() {
     items.forEach(({section, idx}) => {
       const div = document.createElement('div');
       div.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'') + (section.isActiveLevier ? '' : ' inactive-levier');
-      div.innerHTML = `<span class="nav-emoji">${section.emoji||'📄'}</span><span class="nav-title">${section.title}</span>${state.completedSet.has(idx)?'<span class="nav-check">✓</span>':''}`;
+      div.innerHTML = `<span class="nav-emoji">${section.emoji||'📄'}</span><span class="nav-title">${getSectionDisplayTitle(section)}</span>${state.completedSet.has(idx)?'<span class="nav-check">✓</span>':''}`;
       div.onclick = () => navigateTo(idx);
       childrenDiv.appendChild(div);
     });
@@ -5645,6 +5648,15 @@ function markDone() {
 // ═══════════════════════════════════════════════════
 // RENDER
 // ═══════════════════════════════════════════════════
+// Renvoie le titre d'affichage d'une section : priorité à PB_LABELS[section.leverId] si défini,
+// sinon au champ section.title classique. Permet de garder les titres synchronisés
+// avec "Leviers identifiés" via un simple leverId.
+function getSectionDisplayTitle(s) {
+  if (!s) return '';
+  if (s.leverId && typeof PB_LABELS !== 'undefined' && PB_LABELS[s.leverId]) return PB_LABELS[s.leverId];
+  return s.title || '';
+}
+
 function renderCurrentSection() {
   const section = state.sections[state.currentIdx]; if (!section) return;
   const area = document.getElementById('content-area');
@@ -5657,7 +5669,7 @@ function renderCurrentSection() {
   }
   html += `<div class="section-header">
     <span class="section-emoji">${section.emoji||'📄'}</span>
-    <h1 class="section-title">${section.title}</h1>
+    <h1 class="section-title">${getSectionDisplayTitle(section)}</h1>
   </div>`;
   if (hasOverride) {
     html += `<button class="restore-section-btn" onclick="restoreSection('${section.id}')">↩️ Restaurer le contenu original de cette section</button>`;
@@ -6039,7 +6051,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       <div class="inline-conditional-section" data-section-id="${s.id}" data-category="${cat}">
         <div class="inline-conditional-header" onclick="toggleConditionalSection('${s.id}')">
           <span class="inline-conditional-emoji">${s.emoji || '📄'}</span>
-          <span class="inline-conditional-title">${s.title}</span>
+          <span class="inline-conditional-title">${getSectionDisplayTitle(s)}</span>
           <span class="inline-conditional-arrow">▾</span>
         </div>
         <div class="inline-conditional-content">
@@ -6077,7 +6089,14 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
 
   if (b.type === 'option_banner') {
-    const label = substituteVars(b.label || b.text || '');
+    // Si leverId est fourni et qu'il existe dans PB_LABELS, on l'utilise en priorité
+    // (source unique = labels des cases cochées dans "Leviers identifiés")
+    let rawLabel = b.label || b.text || '';
+    if (b.leverId && typeof PB_LABELS !== 'undefined' && PB_LABELS[b.leverId]) {
+      const prefix = b.emoji ? b.emoji + ' ' : '';
+      rawLabel = prefix + PB_LABELS[b.leverId];
+    }
+    const label = substituteVars(rawLabel);
     const variantCls = b.variant ? ` variant-${b.variant}` : '';
     return `<div class="block block-option-banner${variantCls}">${label}</div>`;
   }
@@ -7004,7 +7023,7 @@ function refreshInlineConditionalSections() {
     <div class="inline-conditional-section" data-section-id="${s.id}" data-category="${cat}">
       <div class="inline-conditional-header" onclick="toggleConditionalSection('${s.id}')">
         <span class="inline-conditional-emoji">${s.emoji || '📄'}</span>
-        <span class="inline-conditional-title">${s.title}</span>
+        <span class="inline-conditional-title">${getSectionDisplayTitle(s)}</span>
         <span class="inline-conditional-arrow">▾</span>
       </div>
       <div class="inline-conditional-content">

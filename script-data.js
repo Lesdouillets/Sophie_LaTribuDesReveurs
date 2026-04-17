@@ -3,6 +3,38 @@
 // Sophie Douesneau – La tribu des rêveurs
 // ============================================================
 
+// ─── LABELS DES LEVIERS (= labels des cases à cocher) ─────────
+// Utilisés pour synchroniser les titres des sections / bandeaux enfant
+// avec ce qui apparaît dans "Leviers identifiés". Source de vérité unique.
+const PB_LABELS = {
+  // Confort physique
+  'rgo_allergie': 'RGO douloureux + Suspicion allergie (APLV)',
+  'allergie_seule': 'Suspicion allergie seule',
+  'rgo_seul': 'RGO seul',
+  // Stratégie de sommeil
+  'strategie_rendormissement': 'Rendormissement difficile',
+  'strategie_enjeu_relationnel': 'Enjeu relationnel',
+  'strategie_tetine': 'Dépendance tétine',
+  // Environnement de sommeil
+  'env_obscurite': 'Obscurité insuffisante',
+  'env_temperature': 'Température trop élevée',
+  'env_lit_ouvert': 'Lit ouvert trop tôt',
+  'env_rituel': 'Rituel absent ou trop court',
+  'env_cadre': 'Cadre non clair',
+  'env_stimulations': 'Stimulations visuelles',
+  'env_ecrans': 'Ecrans',
+  // Enjeux relationnels
+  'relationnel_lit_parental': 'Vient dans le lit parental',
+  'relationnel_conflit_autres': "En « conflit » sur d'autres sujets que le sommeil",
+  'relationnel_rappels': 'Multiples rappels après le coucher',
+  // Souhaits
+  'souhait_tetine': 'Suppression de la tétine',
+  'souhait_position_dorsale': 'Vers une position dorsale',
+  'souhait_changement_lit': 'Changement de lit',
+  'souhait_changement_chambre': 'Changement de chambre',
+  'souhait_changement_lit_chambre': 'Changement de lit + chambre',
+};
+
 const SCRIPT_DATA = {
 
   required: [
@@ -292,6 +324,7 @@ const SCRIPT_DATA = {
     {
       id: "rgo_allergie",
       problematiqueId: "rgo_allergie",
+      leverId: "rgo_allergie",
       title: "RGO + Allergie (APLV)",
       emoji: "🩺",
       blocks: [
@@ -372,6 +405,7 @@ const SCRIPT_DATA = {
     {
       id: "allergie_seule",
       problematiqueId: "allergie_seule",
+      leverId: "allergie_seule",
       title: "Suspicion Allergie (APLV)",
       emoji: "🌿",
       blocks: [
@@ -431,6 +465,7 @@ const SCRIPT_DATA = {
     {
       id: "rgo_seul",
       problematiqueId: "rgo_seul",
+      leverId: "rgo_seul",
       title: "RGO",
       emoji: "🤮",
       blocks: [
@@ -575,7 +610,7 @@ const SCRIPT_DATA = {
           ]
         },
         { type: "normal", text: "- **CES conditions** **pour s'endormir** sont **devenues** ⇒ SES **stratégies d'endormissement**\n- Et le **problème**, c'est que SES stratégies, il ne peut **PAS les reproduire TOUT SEUL**<br>⇒ On appelle ça une **stratégie d'endormissement DÉPENDANTE**, car elle **dépend d'une aide extérieure, c'est-à-dire de VOUS**" },
-        { type: "option_banner", label: "Rendormissements difficiles", showIfPb: "strategie_rendormissement" },
+        { type: "option_banner", leverId: "strategie_rendormissement", emoji: "😴", showIfPb: "strategie_rendormissement" },
         { type: "normal", text: "- Et quand il se réveille, **l'environnement a parfois changé** :", showIfPb: "strategie_rendormissement" },
         {
           type: "checklist", label: "Changements à l'environnement", showIfPb: "strategie_rendormissement",
@@ -587,7 +622,7 @@ const SCRIPT_DATA = {
           ]
         },
         { type: "normal", text: "- Pour **comprendre ce qui se passe** avec ses **rendormissements difficiles** ⇒ il faut **comprendre la structure du sommeil** :\n  - Son sommeil est **composé de cycles**\n  - et **entre chaque cycle,** on fait tous des **micro-réveils (tout à fait normaux)**\n  - le **cerveau va faire :**\n    - un léger **retour à la surface**\n    - **\"vérifier\"** que **tout va bien**\n    - **puis va se rendormir** de manière inconsciente\n\n- Chez la **plupart des enfants,** ces **micro-réveils** passent **inaperçus**, car ils **arrivent à se rendormir seuls.**\n- Mais pour **[prénom_enfant]**, ça **devient + compliqué** :\n  - A CHACUN de ses **micro-réveils NATURELS** :\n    - il va **se réveiller**\n    - il va **vouloir chercher à se rendormir**\n    - **SAUF** qu'il **NE trouvera PLUS les mêmes conditions**\n    - ⇒ Et donc **il VOUS appellera** pour :\n      - **se rassurer** car l'**environnement aura changé**\n      - et pour **reproduire les mêmes conditions** pour **pouvoir s'endormir**\n- Et **CES micro-réveils**, qui **normalement passent inaperçus**, se transforment en **véritables réveils**\n- Et c'est la **MÊME CHOSE** avec les **endormissements difficiles**<br>⇒ Il **cherche JUSTE** à **s'endormir AVEC** les **conditions qu'il connaît**\n\n- 💭 *Imaginez : vous vous endormez dans votre lit, et vous vous réveillez… dans la cuisine*<br>***⇒ Pas très rassurant, n'est-ce pas ?***", showIfPb: "strategie_rendormissement" },
-        { type: "option_banner", label: "Enjeu relationnel", showIfPb: "strategie_enjeu_relationnel" },
+        { type: "option_banner", leverId: "strategie_enjeu_relationnel", emoji: "😴", showIfPb: "strategie_enjeu_relationnel" },
         { type: "normal", text: "- Un **autre point important**\n- surtout pour **les + grands**\n- c'est que PARFOIS, la **séparation du coucher** peut **être difficile** pour lui :\n  - Il n'a **pas envie** de **couper ce lien** avec vous,\n  - ⇒ donc il essaye de le PROLONGER **comme il peut** :", showIfPb: "strategie_enjeu_relationnel" },
         {
           type: "checklist", label: "Signes de prolongation du lien", showIfPb: "strategie_enjeu_relationnel",
@@ -600,7 +635,7 @@ const SCRIPT_DATA = {
           ]
         },
         { type: "normal", text: "- Il est dépendant à **VOTRE PRÉSENCE**", showIfPb: "strategie_enjeu_relationnel" },
-        { type: "option_banner", label: "Tétine (cause de réveils)", showIfPb: "strategie_tetine" },
+        { type: "option_banner", leverId: "strategie_tetine", emoji: "🍭", showIfPb: "strategie_tetine" },
         { type: "normal", text: "- Concernant la **tétine**, elle peut aussi **jouer un RÔLE dans ces réveils.**\n  - Aujourd'hui, **[prénom_enfant]** en a **BESOIN pour s'endormir,**<br>mais comme il est encore **trop jeune** pour la **remettre seul**\n  - **⇒** il va **vous appeler** à **CHAQUE FOIS** qu'elle n'est **plus dans sa bouche**\n\n  - Je vais vous **expliquer simplement pourquoi :**\n    - Le **sommeil** fonctionne **par cycles.**\n    - Et dans ces cycles, il y a **différentes phases de sommeil**\n    - **L'une d'elles** s'appelle le **sommeil paradoxal**, c'est le **sommeil des rêves**\n    - **Pendant** le **sommeil paradoxal**, le corps est **comme paralysé** *(peut-être justement pour éviter qu'on mette nos rêves à exécution !)*\n    - Et c'est souvent **à ce moment-là** que la **bouche s'ouvre**… et que la **tétine peut tomber**\n\n    - Et DONC à la **fin d'un cycle** de sommeil, il y a **CE fameux** « **micro-réveil** »\n    - Le **cerveau remonte** un peu **à la surface**, vérifie que **tout va bien** …….\n    - ⇒ Sauf que là…, **[prénom_enfant]** va se **rendre compte** que sa **tétine n'est plus là.**\n\n- Et comme, la **tétine** fait **partie de sa stratégie** pour s'endormir<br>⇒ Il va **vous appeler** pour que vous :\n  - **veniez la lui remettre**\n  - pour **pouvoir se rendormir**\n- Et ça, c'est **qqch de très fréquent**", showIfPb: "strategie_tetine" },
         { type: "question", text: "Du coup, il y a **2 chemins possibles**… et les 2 sont **tout à fait valables** :\n- La **1ère option** : **GARDER** la tétine\n- La **2ème option** : la **supprimer définitivement**\n- **Option hybride** : la **supprimer durant les temps de sommeil** uniquement\n\n⇒ Vers **QUOI vous voudriez aller** ?", showIfPb: "strategie_tetine" },
         { type: "question", _parentLevel: true, text: "Donc si **on résume tout ça** :\n- Ce n'est **PAS** que **[prénom_enfant]** **refuse de dormir**\n- C'est tout simplement qu'il **ne SAIT PAS encore COMMENT s'endormir autrement**.\n- L'**objectif** va être de **l'accompagner** pour :\n  - qu'il **découvre** SES PROPRES **stratégies d'endormissement autonomes**\n  - ⇒ pour qu'il puisse :\n    - **S'endormir seul**\n    - **Enchaîner** plusieurs **cycles de sommeil**\n\n⇒ Est-ce que **ça vous parle** comme ça ?" },
@@ -615,11 +650,11 @@ const SCRIPT_DATA = {
       emoji: "🏠",
       blocks: [
         { type: "normal", text: "- Aujourd'hui je vois **une /plusieurs petite(s) chose(s)** QU'ON **pourrait ré-ajuster** dans l'**environnement de sommeil** de **[prénom_enfant]**.\n- L'environnement de sommeil, c'est **qqch:**\n  - **SUR LEQUEL** on PEUT **agir ASSEZ facilement**\n  - mais qu'on a **souvent tendance à négliger**\n  - … POURTANT ça **joue un rôle clé** dans la **qualité du sommeil.**\n\n- Je vois des choses au niveau de :" },
-        { type: "option_banner", showIfPb: "env_obscurite", variant: "violet", label: "🌑 Obscurité" },
+        { type: "option_banner", leverId: "env_obscurite", emoji: "🌑", showIfPb: "env_obscurite", variant: "violet" },
         { type: "normal", showIfPb: "env_obscurite", text: "  - Car aujourd'hui, la chambre de **[prénom_enfant]** n'est **pas complètement dans le noir…**\n    ⇒ Vous ne **mettriez pas une note de 10/10**\n    - En **journée,** DEJA, l'obscurité va **permettre de couper les stimulations visuelles** : *quand il n'y a rien à voir, il n'y a rien à faire… à part dormir !*\n    - et le **soir,** elle joue un rôle important puisqu'elle va **aider à la sécrétion** de l'hormone du sommeil : **la mélatonine**\n\n  *💭 C'est un peu comme si :*\n  - en allant **vous coucher ce soir,**\n  - ***Vous voyez une tache au plafond***\n    *⇒ vous allez cogiter*\n    *⇒ vous allez vous imaginer une fuite au dessus,*\n    *⇒ et vous n'allez pas dormir de suite…*\n    *⇒ c'est NORMAL…*\n    *⇒ je ferais pareil ! 🤣*\n  - Et ben pour **[prénom_enfant]** **c'est pareil**\n  - S'il **peut voir** TOUT **ce qu'il y a autour** :\n    - il sera **happé par l'éveil**\n    - et **l'endormissement sera + difficile !**\n  - Tandis que **s'il fait noir** :\n    - il ne **verra rien**…\n    - et ça sera **beaucoup + facile DE lâcher prise !**\n  - (À noter que la **peur du noir** apparaît généralement plus tard, **autour de 2–2,5 ans**, voire jamais !)" },
-        { type: "option_banner", showIfPb: "env_temperature", variant: "violet", label: "🌡️ Température" },
+        { type: "option_banner", leverId: "env_temperature", emoji: "🌡", showIfPb: "env_temperature", variant: "violet" },
         { type: "normal", showIfPb: "env_temperature", text: "  - Aujourd'hui, **on est** un peu **au-dessus des 19 degrés**… et **ça peut jouer, mine de rien,** sur le sommeil de **[prénom_enfant]**.\n  - Parce que **pour bien dormir**, le **corps** a besoin de diminuer **légèrement sa température corporelle**…\n    ⇒ et la **température de la chambre** va **nous aider**\n\n  💭 On l'a **TOUS déjà vécu** : quand il fait **très chaud l'été,** même quand on est fatigué…\n  **⇒ on va beaucoup moins bien dormir !**\n\n  - Pour **[prénom_enfant]**, c'est **exactement la même chose.**\n  - Si la **chambre est un peu trop chaude**, ça peut rendre :\n    - l'**endormissement + difficile**\n    - le **sommeil moins profond**\n    - …et donc des **réveils multiples !**\n\n  ⇒ Donc on **peut jouer sur ça** !" },
-        { type: "option_banner", showIfPb: "env_lit_ouvert", showIfAgeMinMonths: 12, variant: "violet", label: "🛏️ Lit ouvert" },
+        { type: "option_banner", leverId: "env_lit_ouvert", emoji: "🛏", showIfPb: "env_lit_ouvert", showIfAgeMinMonths: 12, variant: "violet" },
         { type: "normal", showIfPb: "env_lit_ouvert", showIfAgeMinMonths: 12, text: "- J'aimerais AUSSI **revenir sur le lit ouvert** de **[prénom_enfant]**\n\n- Aujourd'hui, **[prénom_enfant]** **a un lit ouvert**\n- Avoir vers un lit ouvert, c'est une **étape importante** :\n  - du **développement**\n  - et de l'**autonomie d'un enfant**\n- Mais **avec un lit ouvert**, il y a quelques **éléments importants** à **avoir en tête.**\n\n- Le 1er, c'est la **sécurité**\n- Il a la **possibilité de se lever** et se **promener** dans toute la maison.\n- Parfois, il **peut aller** dans des **endroits dangereux**,\n  *comme la cuisine avec les produits ménagers ou le garage rempli d'outils.*\n\n- Le 2ème, c'est le **sentiment de sécurité**\n- Le **lit** est :\n  - **+ grand**\n  - **ouvert** sur **TOUTE la chambre**…\n\n⇒ et certains enfants peuvent **se sentir un peu moins rassurés**,\ncar ils n'ont plus ce **petit côté \"nid cosy\"** pour **se nicher**\n⇒ ils **sont + \"exposés\"** face à leur **grande chambre**\n\n*💭 Imaginez-vous dans une **grande chambre d'un château**, vous vous **sentiriez un peu vulnérable**…*\n\n- Le 3ème, ce sont les **allers-retours**.\n- Comme il **peut sortir du lit**\n  **⇒** vous pouvez **intervenir** pour le **remettre dans son lit,**\n  ⇒ et ça peut parfois **créer de la fatigue** ET même des **conflits** qui **pourraient être évités**.\n\n- Et enfin le **dernier point**, peut-être le **+ important** :\n  c'est la **règle** \"tu dois rester dans ton lit\".\n- Pour un enfant de cet âge, c'est une **responsabilité très lourde.**\n- Le **désir d'explorer** est **NORMAL**\n  et **rester dans son lit** toute la nuit **peut être très difficile** pour lui.\n\n⇒ Et c'est souvent **pour ces raisons** que **certains parents** :\n- choisissent de REVENIR **à un lit fermé**\n- qui **crée** un **cadre PHYSIQUE autour du sommeil**\n- Et c'est aussi **pour ces raisons** que MOI, **je ne recommande pas** de passer à un **lit ouvert AVANT l'âge de 2,5-3 ans**\n\n⇒ Du coup **par rapport à ça**, il y a **2 chemins possibles**, et les **2 sont tout à fait valables**\n\n- La **1ère option ⇒** c'est de **garder le lit ouvert**\n- Dans ce cas, votre enfant **garde cette liberté** de **pouvoir se lever.**\n- **Mais** cela veut dire que vous **serez parfois amenés à** :\n  - **intervenir**\n  - pour **le ramener dans son lit**,\n  - y **compris la nuit.**\n  ⇒ C'est-à-dire que ces **allers-retours** feront donc **ENCORE partie du fonctionnement** pour le moment.\n\n- **Si** vous **choisissez cette option** :\n  - on **travaillera ensemble** dans ce cadre-là,\n  - pour que ça se **passe le + sereinement possible.**\n\n- La **2nde option ⇒** c'est de REVENIR **à un lit fermé** (à barreaux ou lit parapluie)\n\n- L'**objectif** ici est simplement de **remettre un cadre physique autour du sommeil**\n- Les **barreaux** font **office de limite naturelle** :\n  - votre enfant **reste dans son lit**,\n  - **peut se nicher**\n  - se **sentir protégé,**\n  - et vous **n'avez PLUS ces allers-retours** pour le remettre dans son lit.\n\n- Et c'est **important de dire** que ce n'est **PAS DU TOUT une régression.**\n  ⇒ C'est **simplement** un **outil TEMPORAIRE** pour un **sommeil de grand !**\n\n- Si je **me base** sur ce qu'on a **vu ensemble**,\n  **mon conseil** serait plutôt **d'envisager de revenir à un lit fermé** : à barreaux ou lit parapluie\n- Mais dans **tous les cas**, ça **reste un choix parental.**\n- C'est VOUS **qui décidez** ce qui vous **semble le + juste** pour votre enfant et pour votre famille,\n  et **ensuite** on **ajustera ensemble** en **fonction** de **votre décision.**" },
         { type: "question", showIfPb: "env_lit_ouvert", showIfAgeMinMonths: 12, text: "Alors dites-moi,\nqu'est-ce qui vous **semble le + juste pour vous**, aujourd'hui :\n- **Garder** le **lit ouvert**\n- **Retourner** vers un **lit à barreaux / parapluie** ?", choice: {
           id: "env_lit_ouvert_apres_1an",
@@ -629,7 +664,7 @@ const SCRIPT_DATA = {
             { icon: "❌", label: "Supprimer", value: "supprimer", variant: "negative" }
           ]
         }},
-        { type: "option_banner", showIfPb: "env_lit_ouvert", showIfAgeMaxMonths: 11, variant: "violet", label: "🛏️ Lit ouvert" },
+        { type: "option_banner", leverId: "env_lit_ouvert", emoji: "🛏", showIfPb: "env_lit_ouvert", showIfAgeMaxMonths: 11, variant: "violet" },
         { type: "normal", showIfPb: "env_lit_ouvert", showIfAgeMaxMonths: 11, text: "- J'aimerais AUSSI **revenir sur le lit ouvert** de **[prénom_enfant]**\n\n- Aujourd'hui, **[prénom_enfant]** **a un lit ouvert**\n  - Avoir vers un lit ouvert, c'est une **étape importante** :\n    - du **développement**\n    - et de l'**autonomie d'un enfant**\n- Mais **avec un lit ouvert**, il y a quelques **éléments importants** à **avoir en tête.**\n\n- Le 1er, c'est la **sécurité**\n- Il a la **possibilité de se lever** et se **promener** dans toute la maison.\n- Parfois, il **peut aller** dans des **endroits dangereux**,\n  *comme la cuisine avec les produits ménagers ou le garage rempli d'outils.*\n\n- Le 2ème, c'est le **sentiment de sécurité**\n- Le **lit** est :\n  - **+ grand**\n  - **ouvert** sur **TOUTE la chambre**…\n\n⇒ et certains enfants peuvent **se sentir un peu moins rassurés**,\ncar ils n'ont plus ce **petit côté \"nid cosy\"** pour **se nicher**\n⇒ ils **sont + \"exposés\"** face à leur **grande chambre**\n\n*💭 Imaginez-vous dans une **grande chambre d'un château**, vous vous **sentiriez un peu vulnérable**…*\n\n⇒ Et c'est souvent **pour ces raisons (et d'autres quand votre enfant pourra marcher)** que **certains parents** :\n- choisissent de REVENIR **à un lit fermé**\n- qui **crée** un **cadre PHYSIQUE autour du sommeil**\n- Et c'est aussi **pour ces raisons** que MOI, **je ne recommande pas** de passer à un **lit ouvert AVANT l'âge de 2,5-3 ans**\n\n⇒ Du coup **par rapport à ça**, il y a **2 chemins possibles**, et les **2 sont tout à fait valables**\n\n- La **1ère option ⇒** c'est de **garder le lit ouvert**\n- En ayant en tête ce que je viens de citer\n\n- **Et si** vous **choisissez cette option** :\n  - on **travaillera ensemble** dans ce cadre-là,\n  - pour que ça se **passe le + sereinement possible.**\n\n- La **2nde option ⇒** c'est d'aller vers **un lit fermé** (à barreaux ou lit parapluie)\n\n- L'**objectif** ici est simplement de **remettre un cadre physique autour du sommeil**\n- Les **barreaux** font **office de limite naturelle** :\n  - votre enfant **reste dans son lit**,\n  - **peut se nicher**\n  - se **sentir protégé,**\n  - et vous **n'avez PLUS ces allers-retours** pour le remettre dans son lit.\n\n- Et c'est **important de dire** que ce n'est **PAS DU TOUT une régression.**\n  ⇒ C'est **simplement** un **outil TEMPORAIRE** pour un **sommeil de grand !**\n\n- Si je **me base** sur ce qu'on a **vu ensemble**,\n  **mon conseil** serait plutôt **d'envisager de revenir à un lit fermé** : à barreaux ou lit parapluie\n- Mais dans **tous les cas**, ça **reste un choix parental.**\n- C'est VOUS **qui décidez** ce qui vous **semble le + juste** pour votre enfant et pour votre famille,\n  et **ensuite** on **ajustera ensemble** en **fonction** de **votre décision.**" },
         { type: "question", showIfPb: "env_lit_ouvert", showIfAgeMaxMonths: 11, text: "Alors dites-moi,\nqu'est-ce qui vous **semble le + juste pour vous**, aujourd'hui :\n- **Garder** le **lit ouvert**\n- **Aller** vers un **lit à barreaux / parapluie** ?", choice: {
           id: "env_lit_ouvert_avant_1an",
