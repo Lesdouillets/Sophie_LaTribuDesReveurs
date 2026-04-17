@@ -5316,6 +5316,14 @@ function isProblematiqueMatched(problematiqueId, selectedPbs) {
     const envCat = document.querySelector('.pb-cat-checkbox[data-cat="env"]:checked, .modal-pb-cat[data-cat="env"]:checked, .diag-pb-cat[data-cat="env"]:checked');
     return !!envCat;
   }
+  // Cas particulier : la section "Enjeux relationnels" est active
+  // si la case parente est cochée OU l'une des sous-cases relationnel_*.
+  if (problematiqueId === 'relationnel_general') {
+    const relPbs = ['relationnel_lit_parental','relationnel_conflit_autres','relationnel_rappels'];
+    if (relPbs.some(id => selectedPbs.has(id))) return true;
+    const relCat = document.querySelector('.pb-cat-checkbox[data-cat="relationnel"]:checked, .modal-pb-cat[data-cat="relationnel"]:checked, .diag-pb-cat[data-cat="relationnel"]:checked');
+    return !!relCat;
+  }
   return selectedPbs.has(problematiqueId);
 }
 

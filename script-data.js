@@ -684,36 +684,16 @@ const SCRIPT_DATA = {
       ]
     },
 
-    // ─── RELATIONNEL ─────────────────────────────────────
+    // ─── ENJEUX RELATIONNELS ─────────────────────────────
     {
-      id: "relationnel_lit_parental",
-      problematiqueId: "relationnel_lit_parental",
-      title: "Enjeux relationnels – Vient dans le lit parental",
+      id: "relationnel_general",
+      problematiqueId: "relationnel_general",
+      title: "Enjeux relationnels",
       emoji: "💬",
       blocks: [
-        { type: "normal", text: "Aujourd'hui [prénom_enfant] :\n→ Vient souvent vous rejoindre dans votre lit 🛏️\n\nÀ son âge, il commence à comprendre qu'il peut influencer les choses autour de lui\n→ Et il découvre que certains comportements peuvent lui permettre d'avoir PLUS de temps avec vous\n\nCe n'est PAS de la manipulation — c'est tout à fait normal !" },
-        { type: "question", text: "CE QUE je vous propose, c'est qu'on discute ensemble\nde COMMENT sortir doucement de ce petit 'jeu relationnel' qui s'est installé\nen vous proposant des manières concrètes de réagir\npour que le coucher puisse se passer beaucoup + sereinement… pour tout le monde\n\n⇒ Est-ce que vous reconnaissez VOTRE situation… dans ce que je vous dis là?" },
-      ]
-    },
-    {
-      id: "relationnel_conflit_autres",
-      problematiqueId: "relationnel_conflit_autres",
-      title: "Enjeux relationnels – Conflit sur d'autres sujets",
-      emoji: "💬",
-      blocks: [
-        { type: "normal", text: "Aujourd'hui [prénom_enfant] :\n→ semble parfois en 'conflit' avec vous sur différents sujets\n⇒ Alors qu'à la crèche/chez Papy et Mamie, ça ne se passe pas comme ça !\n\nÀ son âge, il commence à comprendre qu'il peut influencer les choses autour de lui\n→ Et il découvre que certains comportements peuvent lui permettre d'avoir PLUS de temps avec vous\n\nCe n'est PAS de la manipulation — c'est tout à fait normal !" },
-        { type: "question", text: "CE QUE je vous propose, c'est qu'on discute ensemble\nde COMMENT sortir doucement de ce petit 'jeu relationnel' qui s'est installé\nen vous proposant des manières concrètes de réagir\npour que le coucher puisse se passer beaucoup + sereinement… pour tout le monde\n\n⇒ Est-ce que vous reconnaissez VOTRE situation… dans ce que je vous dis là?" },
-      ]
-    },
-
-    {
-      id: "relationnel_rappels",
-      problematiqueId: "relationnel_rappels",
-      title: "Enjeux relationnels – Rappels multiples après coucher",
-      emoji: "📢",
-      blocks: [
-        { type: "normal", text: "Aujourd'hui [prénom_enfant] fait de nombreux rappels…après l'avoir couché\n⇒ Alors qu'à la crèche/chez Papy et Mamie, ça ne se passe pas comme ça !\n\nÀ son âge, il n'y a rien de plus excitant que de jouer ou de rester avec vous !\nEt le coucher, c'est une séparation qu'il n'a pas forcément envie de faire.\n\nDu coup, il va tout faire pour retarder ce moment :\n→ il a soif, il a faim, il a chaud, il a froid…\n→ il a perdu son doudou, il veut un câlin, il a besoin d'aller aux toilettes\n→ …ou il a juste 'peur'\n\nMais en réalité : ce n'est PAS forcément une difficulté liée au sommeil\nmais c'est surtout un besoin de relation qui s'exprime — c'est tout à fait normal !" },
-        { type: "question", text: "CE QUE je vous propose, c'est qu'on discute ensemble\nde COMMENT sortir doucement de ce petit 'jeu relationnel' qui s'est installé\npour que le coucher puisse se passer beaucoup + sereinement… pour tout le monde\n\n⇒ Est-ce que vous reconnaissez VOTRE situation… dans ce que je vous dis là?" },
+        { type: "option_banner", leverId: "relationnel_lit_parental", emoji: "🛏️", showIfPb: "relationnel_lit_parental", variant: "violet" },
+        { type: "normal", showIfPb: "relationnel_lit_parental", text: "- Aujourd'hui **[prénom_enfant]** :\n  - Vient souvent vous **rejoindre dans votre lit** 🛏️\n    ⇒ Alors que **chez Papy et Mamie**, ça ne se **passe pas comme ça** !\n\n- À son âge, il n'y a **rien de plus excitant** que de **communiquer avec Papa et Maman.**\n- Et pour [lui_elle], **toute attention… EST** une **attention** :\nque ce soit **un câlin, un rire**… ou **même** un **petit conflit.**\n  ⇒ Parce que, **dans TOUS les cas,** C'EST un **moment de relation avec vous.**\n\n- Et au **moment du coucher…** c'est un **petit peu particulier** :\n  - c'est le **moment** où le **lien physique se coupe**\n  - où il y a une **VRAIE et LONGUE séparation avec vous**\n    ⇒ Et ça peut être un peu **difficile pour [lui_elle]**\n    parce qu'[il_elle] a simplement **envie de prolonger le moment** **…encore un peu plus longtemps**\n\n- Donc ce que je vois ici :\n  - c'est **PAS forcément** une **difficulté liée au sommeil**\n    - mais c'est surtout **un besoin de relation qui s'exprime**\n    - Un **moyen** pour [lui_elle] **de prolonger le lien** avec vous.\n    ⇒ Et c'est **qqch** qui **arrive très souvent** chez les enfants de cet âge\n    ⇒ et qui est **tout à fait normal !**" },
+        { type: "question", showIfPb: "relationnel_lit_parental", text: "- CE QUE **je vous propose,** c'est qu'**on discute ensemble**\n  - de COMMENT **sortir doucement de ce petit « jeu relationnel »** qui s'est installé\n  - en vous proposant des **manières concrètes de réagir**\n  - pour que **le coucher** puisse **se passer beaucoup + sereinement…** pour tout le monde\n\n⇒ Est-ce que **vous reconnaissez** VOTRE **situation**… dans ce que je vous dis là ?" },
       ]
     },
 
