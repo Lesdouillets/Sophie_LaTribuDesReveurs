@@ -481,63 +481,6 @@ const SCRIPT_DATA = {
       ]
     },
 
-    // ─── NUTRITION ────────────────────────────────────────
-    {
-      id: "nutrition_courbe",
-      problematiqueId: "nutrition_courbe",
-      title: "Nutrition – Courbe déclinante (Faim)",
-      emoji: "📉",
-      blocks: [
-        { type: "normal", text: "Je peux voir qu'il y a quelque chose au niveau des apports alimentaires.\n\nAvant de travailler le sommeil, on vient toujours s'assurer que les besoins nutritionnels d'un enfant sont bien couverts car un corps qui manque d'énergie aura + de mal à s'apaiser et à enchaîner ses cycles" },
-        { type: "normal", text: "On peut voir les courbes un peu comme notre tableau de bord : elles nous aident à savoir si le corps reçoit assez d'énergie pour soutenir un sommeil de qualité\n\n🔥 [prénom_enfant] est né autour du XXème percentile\nPuis progressivement, il s'est stabilisé autour du XXème percentile.\n⇒ Concrètement, il a perdu XX couloirs depuis sa naissance.\n\nEn général, un enfant suit plutôt le couloir dans LEQUEL il est né ⇒ c'est son couloir de référence" },
-        { type: "question", text: "Pour moi, l'explication la + probable :\n⇒ c'est que [prénom_enfant] a encore faim ENTRE ses prises alimentaires\n\nEt quand les besoins d'un enfant ne sont pas complètement couverts\n→ Ça se reflète très souvent par un sommeil fragmenté\n\n🎯 L'objectif serait donc d'adapter progressivement la répartition de ses apports\n\n⇒ Est-ce que ça fait sens pour vous ?" },
-      ]
-    },
-
-    {
-      id: "nutrition_espacement_long",
-      problematiqueId: "nutrition_espacement_long",
-      title: "Nutrition – Espacement trop long",
-      emoji: "⏱️",
-      blocks: [
-        { type: "normal", text: "🔥 Aujourd'hui, les prises alimentaires de [prénom_enfant] sont espacées d'environ XX h\n\nC'est un espacement relativement LONG pour un enfant de cet âge\nÀ cet âge, les enfants ont besoin de prises + rapprochées pour s'adapter à leurs signaux de faim et à leur digestion\n\n🎓 On devrait normalement leur donner : 'à la demande'\nEt se défaire complètement du mythe des espacements de 4h… qui n'est basé sur RIEN DU TOUT !" },
-        { type: "question", text: "Pour moi, l'explication la + probable :\n⇒ c'est que [prénom_enfant] a encore faim ENTRE ses prises alimentaires car elles sont trop espacées\n\nEt quand les besoins d'un enfant ne sont pas complètement couverts → Ça se reflète très souvent par un sommeil fragmenté\n\n🎯 L'objectif serait d'adapter progressivement la répartition de ses apports :\n→ avec des prises + rapprochées\n→ des volumes + adaptés\n\n⇒ Est-ce que ça fait sens pour vous ?" },
-      ]
-    },
-
-    {
-      id: "nutrition_espacement_court",
-      problematiqueId: "nutrition_espacement_court",
-      title: "Nutrition – Espacement trop court (Inconfort)",
-      emoji: "🔄",
-      blocks: [
-        { type: "normal", text: "🔥 Aujourd'hui, les prises de [prénom_enfant] sont espacées d'environ XX h\nC'est un espacement relativement COURT — c'est plutôt un rythme de nourrisson, avec des prises très rapprochées\n\n⇒ Son estomac est constamment sollicité\n⇒ Ce qui peut provoquer un certain inconfort digestif" },
-        { type: "question", text: "Pour moi, l'explication la + probable :\n⇒ c'est que [prénom_enfant] a un vrai inconfort digestif\nSon système digestif travaille presque en continu, SANS véritable temps de repos.\n\n🎯 L'objectif serait d'adapter progressivement la répartition de ses apports :\n→ avec des prises - rapprochées pour mieux respecter sa digestion\n→ des volumes + adaptés\n\n⇒ Est-ce que ça fait sens pour vous ?" },
-      ]
-    },
-
-    {
-      id: "nutrition_inversion_jour_nuit",
-      problematiqueId: "nutrition_inversion_jour_nuit",
-      title: "Nutrition – Inversion Jour/Nuit 🌞🌛",
-      emoji: "🌛",
-      blocks: [
-        { type: "normal", text: "Nous observons que la majorité des apports alimentaires se fait la NUIT\n\nEn journée, [prénom_enfant] se nourrit relativement peu — et le soir, il semble chercher à 'rattraper' ses besoins\n\nOr, la nuit n'est PAS un moment optimal pour se nourrir :\n→ le corps est programmé pour dormir\n→ les prises alimentaires peuvent être moins efficaces" },
-        { type: "question", text: "Pour moi, l'explication la + probable :\n⇒ c'est que [prénom_enfant] a encore faim pendant la nuit car il n'a pas suffisamment mangé en JOURNÉE.\n\nSon corps a appris que la nuit était faite pour manger — et que la journée n'était que secondaire.\nLes nombreux réveils nocturnes ne sont donc pas forcément dus à un 'problème de sommeil'.\n⇒ Ils sont la conséquence logique d'apports caloriques majoritairement nocturnes.\n\n⇒ Est-ce que ça fait sens pour vous ?" },
-      ]
-    },
-
-    {
-      id: "nutrition_jus_vegetaux",
-      problematiqueId: "nutrition_jus_vegetaux",
-      title: "Nutrition – Jus végétaux / Lait animal inadapté",
-      emoji: "🐄",
-      blocks: [
-        { type: "normal", text: "Aujourd'hui, [prénom_enfant] boit des biberons de jus végétal/lait animal en quantité importante\n\nLes jus végétaux et laits animaux ne sont pas TOUJOURS adaptés aux besoins des enfants — ils sont soit trop pauvres, soit trop riches en certains nutriments essentiels à leur croissance\n\nCes boissons PEUVENT faire partie de l'alimentation familiale\nmais elles ne couvrent PAS les besoins nutritionnels d'un jeune enfant\n\nJusqu'à au moins 3 ans, Le lait (infantile ou maternel) reste INDISPENSABLE dans l'alimentation des enfants\n(source : Haute Autorité de Santé, et le PNNS)" },
-        { type: "question", text: "Pour moi, l'explication la + probable :\n⇒ c'est que [prénom_enfant] a faim — il a CERTES souvent l'estomac rempli\nMAIS PAS forcément avec les bons apports pour grandir et être rassasié\n\n⇒ 🎯 L'idée serait d'adapter la QUALITÉ de ses apports nutritionnels\n\n⇒ Est-ce que ça fait sens pour vous ?" },
-      ]
-    },
-
     // ─── ORGANISATION DE LA JOURNÉE ──────────────────────
     {
       id: "rythme_general",
@@ -794,38 +737,6 @@ const SCRIPT_DATA = {
       blocks: [
         { type: "normal", text: "On va maintenant aborder un levier important : l'organisation de la journée de [prénom_enfant]\n\nParce qu'en réalité, le sommeil de jour ☀️ et le sommeil de nuit 🌛 sont étroitement liés…\n⇒ ce qui se passe la journée ☀️ A UN IMPACT sur les nuits 🌛 …et inversement !\n\nDonc ici, il y a un vrai équilibre à trouver entre les temps d'éveil, les siestes, leur durée…\ncar sinon, ça peut vite déséquilibrer la machine…" },
         { type: "conseil", text: "Concernant l'alimentation de [prénom_enfant] :\n\n→ Adapter la répartition des apports sur la journée\n→ Respecter les signaux de faim (alimentation à la demande)\n→ Ajuster les volumes à l'âge et aux besoins\n→ Veiller à l'équilibre lait/diversification selon l'âge :\n   → Avant 1 an : le lait reste l'apport n°1\n   → Après 1 an : la diversification devient l'apport n°1, donner lait APRÈS la diversification\n\n💉 Consultante en lactation IBCLC : Fanny Rieusec (Objectif Tétées) – 95€\n💉 Diététicienne nutritionniste pédiatrique : Tiffany Deroyer – 75€ (Réseau Fée Dodo)" },
-      ]
-    },
-
-    {
-      id: "plan_rythme",
-      problematiqueId: null,
-      title: "Plan – Organisation de la journée",
-      emoji: "⏰",
-      blocks: [
-        { type: "normal", text: "On va donner à [prénom_enfant] des repères cohérents :\n→ Des moments qui vont se répéter TOUS LES JOURS,\n→ des manières d'agir similaires, que ce soit à la maison, chez la nounou ou à la crèche\n\n💡 Un TE (Temps d'Éveil) commence à partir du moment où l'enfant s'est réveillé\n(donc un rallongement de sieste qui n'a pas fonctionné FAIT PARTIE du TE)\nSAUF pour le 1er TE : il commence à partir de la sortie du lit, pour donner un tempo à la journée\n\n⚠️ Tout ce qui va se passer AVANT l'heure du réveil le matin sera considéré comme un réveil nocturne" },
-        { type: "important", text: "🔥 Proposition d'un nouvel emploi du temps adapté à [prénom_enfant] :\n[→ À compléter en live pendant la consultation selon l'âge et le rythme de l'enfant]" },
-      ]
-    },
-
-    {
-      id: "plan_strategie_accompagnement",
-      problematiqueId: null,
-      title: "Plan – Stratégie d'accompagnement",
-      emoji: "😴",
-      blocks: [
-        { type: "normal", text: "Maintenant, on va parler de COMMENT accompagner les émotions\n\n🎯 Objectif de l'enfant :\nDécouvrir PAR LUI-MÊME de nouvelles manières de s'endormir\nC'est en EXPÉRIMENTANT seulement qu'il pourra se sentir fier d'avoir réussi\n\n🎯 Objectif du parent :\nVotre objectif ne sera PAS de stopper la colère mais de l'accueillir\nVotre travail c'est d'avoir confiance en votre enfant et de le lui dire" },
-        { type: "normal", text: "Il y a 2 grands chemins possibles :\n→ Le chemin PROGRESSIF : plus doux, génère peut-être moins d'émotions, mais les changements arrivent plus lentement\n→ Le chemin DIRECT : peut générer + d'émotions mais les changements arrivent + rapidement\n\nC'est vraiment vous qui choisissez en fonction de :\n→ ce que vous préférez\n→ de ce que vous attendez en terme de rapidité\n→ et de gestion des émotions." },
-        { type: "question", text: "Avec tout ça en tête, qu'est-ce qui vous semblerait le plus juste pour vous et pour [prénom_enfant] :\n→ Quelque chose de plutôt progressif,\n→ ou quelque chose de + rapide?" },
-        { type: "separator", text: "Étapes progressives possibles" },
-        { type: "conseil", text: "Étape 1 : L'accompagner dans son lit\n→ Le mettre dans son lit ÉVEILLÉ\n→ Garder une main immobile sur lui\n→ En cas d'émotions : Bercer de la main temporairement\n→ Rester jusqu'à l'endormissement\n\nÉtape 2 : L'accompagner depuis le milieu de la chambre\n→ Positionner une chaise au milieu de la chambre\n→ Supprimer le contact physique en continu\n→ En cas d'émotions : Poser une main immobile sur lui temporairement\n→ Rester jusqu'à l'endormissement\n\nÉtape 3 : Sortir une fois posé dans son lit\n→ Sortir de la chambre une fois déposé\n\nÉtape 4 : Accompagner depuis l'entrebâillement\n→ Accompagner les émotions depuis l'entrebâillement de la porte\n→ Fermer la porte quand il est calme\n→ Recommencer si besoin 20 fois… ou plus !" },
-        { type: "important", text: "💭 En cas de pleurs difficiles :\nLes pleurs chez l'enfant, c'est surtout une façon de communiquer.\nAujourd'hui, on va lui demander de changer une habitude — et le changement, personne n'aime ça !\nDonc oui, c'est possible qu'il réagisse, qu'il proteste — mais vous serez là pour l'accompagner.\n\n💖 Si envie d'un câlin ?\nN'hésitez pas à vous écouter et à écouter votre enfant\nEssayez néanmoins de garder ses pieds qui touchent le matelas\n⚠️ À ne PAS le bercer mais RESTER STATIQUE\n⚠️ Il faudrait éviter qu'il ne s'endorme dans vos bras\n\n💖💖💖 Difficile d'entendre pleurer ?\nN'hésitez pas à le reprendre dans vos bras MAIS dans une POSITION DIFFÉRENTE de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n\n🥱 Fatigué ?\nN'hésitez pas à vous relayer. Dites simplement à votre enfant : 'maintenant Maman s'en va mais c'est Papa qui va venir. Et que vous l'aimez toujours'\n\n⚠️ L'OMS recommande sur le DOS ⇒ Il existe des alarmes de respiration pour se rassurer\nmais ne prévient pas à 100% de la Mort Inattendue du Nourrisson" },
-        {
-          type: "option", label: "💬💬💬 Multiples rappels après le coucher",
-          blocks: [
-            { type: "conseil", text: "Pour les rappels multiples, je vous invite à :\n\n→ Mettre en place un tableau de rituel visuel\n→ Répondre 1 SEULE fois\n→ Anticiper les rappels :\n   Nez qui coule → boîte de mouchoirs à disposition de l'enfant\n   Couette mal mise → surpyjama ou couette zippée\n   Doudou perdu → mettre un 2ème doudou, rendre le doudou visible la nuit (ruban phosphorescent)\n   Bouton qui gratte → pendant le rituel, proposer de la pommade anti-démangeaisons\n   Dernier câlin → pendant le rituel, bien verbaliser ce dernier câlin\n   Soif → gourde à proximité\n\n→ Donner 3 cartes pour 3 rappels ⇒ au-delà : le parent ne revient pas\n   (diminuer le nombre de cartes au fil du temps)\n\n→ Mettre en place un tableau de récompenses :\n   Chaque nuit SANS rappel → le matin : chocolat/bonbon, élément d'un kit playmobil…\n\n→ Faire des jeux de rôle en journée (ex: avec une poupée)\n\n→ Les livres de Caroline Ferriol pour les + grands (6,99€) :\n   → Arthur met du temps à s'endormir\n   → Jade veut dormir avec Papa et Maman\n   → Louise ne veut pas aller se coucher" }
-          ]
-        },
       ]
     },
 

@@ -513,12 +513,16 @@
     }
     .nav-item.nav-sub-child .nav-emoji { font-size: 12px; }
     /* Grisage des sections dont la problématique n'est pas cochée */
-    .nav-item.inactive-levier {
+    .nav-item.inactive-levier,
+    .nav-group-header.inactive-levier {
       color: rgba(255,255,255,0.4);
       font-style: italic;
     }
-    .nav-item.inactive-levier .nav-emoji { opacity: 0.5; }
-    .nav-item.inactive-levier:hover { color: rgba(255,255,255,0.75); }
+    .nav-item.inactive-levier .nav-emoji,
+    .nav-group-header.inactive-levier .nav-group-arrow,
+    .nav-group-header.inactive-levier .nav-group-label { opacity: 0.55; }
+    .nav-item.inactive-levier:hover,
+    .nav-group-header.inactive-levier:hover { color: rgba(255,255,255,0.75); }
     .nav-item.inactive-levier.active {
       color: white;
       font-style: normal;
@@ -2274,6 +2278,9 @@
               <label>Taille cible estimée</label>
               <div id="taille-cible-calc" style="padding:12px 14px;background:#eaeff8;border:2px solid var(--border);border-radius:10px;font-size:28px;font-weight:800;color:var(--primary-dark);text-align:center;display:flex;align-items:center;justify-content:center;min-height:70px">–</div>
               <div id="taille-cible-percentile" style="display:none;margin-top:8px;border-radius:8px;overflow:hidden;border:1px solid var(--border);font-size:11px"></div>
+              <button type="button" class="info-btn" style="min-width:0;width:100%;margin-top:10px;padding:10px 14px;font-size:14px" onclick="openInfoPanel('taille-cible-formulas')">
+                <span class="info-btn-emoji">💡</span><span>Formules taille cible</span>
+              </button>
             </div>
           </div>
         </div>
@@ -5490,7 +5497,7 @@ function buildSections() {
     if (isProblematiqueMatched(s.problematiqueId, state.selectedPbs))
       state.sections.push({...s, sectionType:'plan'});
   });
-  const alwaysShown = ['plan_rythme','plan_strategie_accompagnement'];
+  const alwaysShown = [];
   alwaysShown.forEach(id => {
     if (!state.sections.find(s=>s.id===id)) {
       const s = SCRIPT_DATA.planAction.find(p=>p.id===id);
@@ -5753,10 +5760,14 @@ function buildSidebar() {
     if (!items || items.length === 0) return;
     const isExpanded = state.pbSidebarExpanded.has(cat);
     const anyActive = items.some(it => it.section.isActiveLevier);
+    // Grisage de GROUPE : si AUCUN item de la catégorie n'a sa pb cochée,
+    // le header + tous les items + sous-items sont grisés. Dès qu'un est coché,
+    // TOUT le groupe (header + items + sous-items) passe en non-grisé.
+    const groupInactiveCls = anyActive ? '' : ' inactive-levier';
     const groupDiv = document.createElement('div');
     groupDiv.className = 'nav-group' + (isExpanded ? ' expanded' : '') + (anyActive ? '' : ' all-inactive');
     const header = document.createElement('div');
-    header.className = 'nav-group-header';
+    header.className = 'nav-group-header' + groupInactiveCls;
     const label = PB_CATEGORY_LABELS[cat] || '❓ Autre';
     header.innerHTML = `<span class="nav-group-arrow">${isExpanded ? '▾' : '▸'}</span><span class="nav-group-label">${label}</span>`;
     header.onclick = () => toggleSidebarPbCategory(cat);
@@ -5767,12 +5778,10 @@ function buildSidebar() {
     items.forEach(({section, idx}) => {
       // Trouver les bandeaux internes (option_banner avec leverId) pour les lister comme sous-items
       const innerBanners = collectSectionInnerBanners(section);
-      // Affichage UNIFORME : tous les items apparaissent avec le même style, qu'ils
-      // soient cochés ou non. Le sidebar est une vue d'ensemble exhaustive des leviers.
       if (innerBanners.length > 0) {
         // Rendu : entrée de section parent + sous-items pour chaque bandeau levier
         const sectionDiv = document.createElement('div');
-        sectionDiv.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'');
+        sectionDiv.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'') + groupInactiveCls;
         sectionDiv.innerHTML = `<span class="nav-emoji">${section.emoji||'📄'}</span><span class="nav-title">${getSectionDisplayTitle(section)}</span>${state.completedSet.has(idx)?'<span class="nav-check">✓</span>':''}`;
         sectionDiv.onclick = () => navigateTo(idx);
         childrenDiv.appendChild(sectionDiv);
@@ -5780,7 +5789,7 @@ function buildSidebar() {
           const leverLabel = (typeof PB_LABELS !== 'undefined' && PB_LABELS[b.leverId]) ? PB_LABELS[b.leverId] : (b.label || b.leverId);
           const leverEmoji = b.emoji || '•';
           const subDiv = document.createElement('div');
-          subDiv.className = 'nav-item nav-child nav-sub-child';
+          subDiv.className = 'nav-item nav-child nav-sub-child' + groupInactiveCls;
           subDiv.innerHTML = `<span class="nav-emoji">${leverEmoji}</span><span class="nav-title">${leverLabel}</span>`;
           subDiv.onclick = (e) => {
             e.stopPropagation();
@@ -5802,7 +5811,7 @@ function buildSidebar() {
       } else {
         // Cas classique : une seule ligne pour la section
         const div = document.createElement('div');
-        div.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'');
+        div.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'') + groupInactiveCls;
         div.innerHTML = `<span class="nav-emoji">${section.emoji||'📄'}</span><span class="nav-title">${getSectionDisplayTitle(section)}</span>${state.completedSet.has(idx)?'<span class="nav-check">✓</span>':''}`;
         div.onclick = () => navigateTo(idx);
         childrenDiv.appendChild(div);
@@ -5914,6 +5923,19 @@ function returnToDiagnostic() {
 // Stockage global des contenus des boutons "💡 Plus d'infos" (rempli par renderBlockInner)
 window.__infoButtons = window.__infoButtons || {};
 window.__activeInfoBtnId = null;
+
+// Contenu statique du bouton "💡 Formules taille cible" (onglet BB)
+window.__infoButtons['taille-cible-formulas'] = {
+  title: 'Formules taille cible',
+  content: `
+    <p>La taille cible estimée se calcule à partir de la taille des 2 parents :</p>
+    <h3 style="margin-top:14px">👦 Garçon</h3>
+    <p style="font-size:16px;font-weight:700;color:#1e3a8a">(taille père + taille mère + 13) / 2</p>
+    <h3 style="margin-top:14px">👧 Fille</h3>
+    <p style="font-size:16px;font-weight:700;color:#be185d">(taille père + taille mère − 13) / 2</p>
+    <p style="margin-top:18px;color:#666;font-size:13px"><em>Tailles en cm. Marge d'erreur d'environ ±5 à 10 cm.</em></p>
+  `
+};
 
 // Ouvre le panneau latéral "Infos" et y charge le contenu du bouton cliqué
 // Comportement toggle : re-cliquer sur le même bouton actif ferme le panneau
