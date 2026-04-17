@@ -261,36 +261,6 @@ const SCRIPT_DATA = {
             },
           ]
         },
-        {
-          type: "option", label: "🍭 Tétine = stratégie dépendante", showIfPb: "strategie_tetine",
-          blocks: [
-            { type: "normal", text: "Et j'aimerais aussi qu'on prenne un moment pour REPARLER de la tétine.\n\nAu vu de ce qu'on s'est dit ensemble, aujourd'hui la tétine FAIT PARTIE de la stratégie d'endormissement de [prénom_enfant]\nMais elle fait AUSSI partie des éléments qui contribuent à ses réveils\n\n⇒ Et c'est pour ça qu'il va vous appeler pour :\n- venir la lui remettre\n- pour pouvoir se rendormir\n\nEt ça, c'est quelque chose qu'on voit très fréquemment\n\n⇒ Du coup par rapport à ça, il y a 2 chemins possibles… et les 2 sont tout à fait valables" },
-            {
-              type: "option", label: "Option 1 : GARDER la tétine",
-              blocks: [
-                {
-                  type: "option", label: "Bébé PAS assez moteur (moins de 6 mois)",
-                  blocks: [
-                    { type: "normal", text: "Comme [prénom_enfant] est encore petit et n'a pas encore la capacité motrice pour la remettre seul\n\nDans ce cas, ce sera VOUS qui viendrez la lui remettre lorsqu'elle tombera pendant son sommeil\n\nDonc au départ, il dépend encore de vous pour ça\n\nEn lui remettant sa tétine À CHAQUE FOIS ⇒ Vous allez garder la cohérence dans ses stratégies d'endormissement ET de rendormissement.\n\nMais on peut progressivement lui apprendre comment il peut la remettre dans la bouche\n\nC'est vraiment vers 6-7 mois qu'il aura la capacité motrice pour la chercher ET la remettre SEUL\n⇒ Et comme ça, il pourra gérer SEUL ses micro-réveils avec sa tétine" }
-                  ]
-                },
-                {
-                  type: "option", label: "Bébé assez moteur (plus de 6 mois)",
-                  blocks: [
-                    { type: "normal", text: "Et comme [prénom_enfant] il est assez grand et moteur\n\nOn peut progressivement lui apprendre à la retrouver ET à la remettre seul\n\nL'objectif est qu'il gère SEUL ses micro-réveils avec sa tétine" }
-                  ]
-                },
-              ]
-            },
-            {
-              type: "option", label: "Option 2 : SUPPRIMER la tétine",
-              blocks: [
-                { type: "normal", text: "L'objectif est de faire disparaître les réveils liés à la tétine\n\nQuand on évoque cette idée, ça peut parfois faire un peu peur aux parents, parce que la tétine a souvent une grande place dans l'apaisement d'un bébé.\n\nMais MON expérience montre qu'en général, les BB s'adaptent très vite,\net en quelques jours, la tétine devient souvent un lointain souvenir !" },
-                { type: "question", text: "Alors dites-moi :\n→ Souhaitez-vous la garder MAIS avec les conséquences que ça implique\n→ ou souhaitez-vous la supprimer définitivement ?\n→ Option hybride : la supprimer durant les temps de sommeil (et pas la journée)\n\n⇒ Vers quoi vous voudriez aller ?" }
-              ]
-            },
-          ]
-        },
       ]
     },
 
@@ -637,7 +607,29 @@ const SCRIPT_DATA = {
         { type: "normal", text: "- [Il_Elle] est [dependant_dependante] à **VOTRE PRÉSENCE**", showIfPb: "strategie_enjeu_relationnel" },
         { type: "option_banner", leverId: "strategie_tetine", emoji: "🍭", showIfPb: "strategie_tetine" },
         { type: "normal", text: "- Concernant la **tétine**, elle peut aussi **jouer un RÔLE dans ces réveils.**\n  - Aujourd'hui, **[prénom_enfant]** en a **BESOIN pour s'endormir,**<br>mais comme il est encore **trop jeune** pour la **remettre seul**\n  - **⇒** il va **vous appeler** à **CHAQUE FOIS** qu'elle n'est **plus dans sa bouche**\n\n  - Je vais vous **expliquer simplement pourquoi :**\n    - Le **sommeil** fonctionne **par cycles.**\n    - Et dans ces cycles, il y a **différentes phases de sommeil**\n    - **L'une d'elles** s'appelle le **sommeil paradoxal**, c'est le **sommeil des rêves**\n    - **Pendant** le **sommeil paradoxal**, le corps est **comme paralysé** *(peut-être justement pour éviter qu'on mette nos rêves à exécution !)*\n    - Et c'est souvent **à ce moment-là** que la **bouche s'ouvre**… et que la **tétine peut tomber**\n\n    - Et DONC à la **fin d'un cycle** de sommeil, il y a **CE fameux** « **micro-réveil** »\n    - Le **cerveau remonte** un peu **à la surface**, vérifie que **tout va bien** …….\n    - ⇒ Sauf que là…, **[prénom_enfant]** va se **rendre compte** que sa **tétine n'est plus là.**\n\n- Et comme, la **tétine** fait **partie de sa stratégie** pour s'endormir<br>⇒ Il va **vous appeler** pour que vous :\n  - **veniez la lui remettre**\n  - pour **pouvoir se rendormir**\n- Et ça, c'est **qqch de très fréquent**", showIfPb: "strategie_tetine" },
-        { type: "question", text: "Du coup, il y a **2 chemins possibles**… et les 2 sont **tout à fait valables** :\n- La **1ère option** : **GARDER** la tétine\n- La **2ème option** : la **supprimer définitivement**\n- **Option hybride** : la **supprimer durant les temps de sommeil** uniquement\n\n⇒ Vers **QUOI vous voudriez aller** ?", showIfPb: "strategie_tetine" },
+        { type: "normal", text: "- Du coup, il y a **2 chemins possibles**… et les 2 sont **tout à fait valables** :\n  - La **1ère option** : **GARDER** la tétine", showIfPb: "strategie_tetine" },
+        {
+          type: "option", label: "Peut remettre la tétine", emoji: "✅", style: "action-green", mutexGroup: "tetine-remettre", showIfPb: "strategie_tetine",
+          blocks: [
+            { type: "normal", text: "- Et comme **[prénom_enfant]** [il_elle] est **assez [grand_grande] et [moteur_motrice]**\n\n- On peut **progressivement lui apprendre** à la **retrouver ET à la remettre [seul_seule]**\n\n- L'**objectif** est qu'[il_elle] **gère [SEUL] ses micro-réveils** avec sa tétine" }
+          ]
+        },
+        {
+          type: "option", label: "Ne peut pas remettre la tétine", emoji: "❌", style: "action", mutexGroup: "tetine-remettre", showIfPb: "strategie_tetine",
+          blocks: [
+            { type: "normal", text: "- Comme **[prénom_enfant]** est **encore [petit_petite]** et n'a **pas encore la capacité motrice** pour la **remettre [seul_seule]**\n\n- **Dans ce cas,** ce sera **VOUS qui viendrez** la lui **remettre** lorsqu'**elle tombera** pendant son sommeil\n\n- Donc **au départ,** [il_elle] **dépend encore de vous** pour ça ⛔\n\n- En lui **remettant sa tétine A CHAQUE FOIS ⇒** Vous allez **garder** la **cohérence** dans ses **stratégies d'endormissement** ET de **rendormissement.**\n\n- Mais on peut progressivement **lui apprendre** comment [il_elle] **peut la remettre** dans la bouche\n\n- Mais c'est **VRAIMENT vers 6-7 mois**, qu'[il_elle] **aura la capacité motrice** pour la **chercher ET la remettre [SEUL]**\n\n- ⇒ Et comme ça, [il_elle] **pourra gérer [SEUL]** ses micro-réveils **avec sa tétine**" }
+          ]
+        },
+        { type: "normal", showIfPb: "strategie_tetine", text: "- La **2ème possibilité**, c'est de **supprimer la tétine** dès maintenant.\n\n- L'**objectif** est de **faire disparaître les réveils** **liés à la tétine**\n\n- Quand on **évoque cette idée**, ça peut **parfois faire un peu peur aux parents**, parce que la **tétine** a souvent une **grande place** dans l'**apaisement d'un bébé.**\n\n- Mais **MON expérience** montre qu'**en général**, les BB **s'adaptent très vite**,\n- et en **qq jours**, la tétine devient souvent un **lointain souvenir** !" },
+        { type: "normal", showIfPb: "strategie_tetine", text: "- Si je me base sur **ce qu'on a vu ensemble,**\n\n- **mon conseil** serait plutôt de la **supprimer maintenant**, car ça permettrait de **réduire les réveils \"tétine\"**.\n\n- Et bien sûr, **si vous choisissez cette option**, je serai là pour **vous accompagner** pour que ça se fasse le **+ en douceur possible.**\n\n- Mais dans tous les cas, ça **reste un choix parental.**\n\n- C'est **VOUS qui décidez**, ce qui **vous semble le + juste** pour votre enfant et pour votre famille,\n- et ensuite **on ajustera ensemble** en **fonction de VOTRE décision**" },
+        { type: "question", showIfPb: "strategie_tetine", text: "Alors dites-moi,\n\n⇒ qu'est-ce qui vous semble **le + juste pour vous**, par **rapport à cette tétine** :\n- souhaitez-vous **la garder** MAIS avec les **conséquences que ça implique**\n- ou souhaitez-vous **la supprimer définitivement** ?\n- Après on peut AUSSI faire « **un hybride** » :\n  - la **supprimer** durant les **tps de sommeil** et **PAS la journée**\n  - ou JUSTE **sur la sieste** et **PAS la nuit**…\n  ⇒ ça sera un peu **+ compliqué** pour **[prénom_enfant]**, c'est **une option envisageable**\n\n⇒ vers quoi **vous voudriez aller** ?", choice: {
+          id: "strategie_tetine_choice",
+          required: true,
+          options: [
+            { icon: "✅", label: "Garder", value: "garder", variant: "positive" },
+            { icon: "❌", label: "Supprimer", value: "supprimer", variant: "negative" }
+          ]
+        }},
         { type: "question", _parentLevel: true, text: "Donc si **on résume tout ça** :\n- Ce n'est **PAS** que **[prénom_enfant]** **refuse de dormir**\n- C'est tout simplement qu'il **ne SAIT PAS encore COMMENT s'endormir autrement**.\n- L'**objectif** va être de **l'accompagner** pour :\n  - qu'il **découvre** SES PROPRES **stratégies d'endormissement autonomes**\n  - ⇒ pour qu'il puisse :\n    - **S'endormir seul**\n    - **Enchaîner** plusieurs **cycles de sommeil**\n\n⇒ Est-ce que **ça vous parle** comme ça ?" },
       ]
     },
