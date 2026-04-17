@@ -4975,6 +4975,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (body) {
     body.addEventListener('input', () => { clearTimeout(body._saveTimer); body._saveTimer = setTimeout(saveSosContent, 500); });
   }
+  // Tentative de restauration d'une consultation active après hard refresh
+  try { if (typeof restoreActiveConsultation === 'function') restoreActiveConsultation(); } catch(e) { console.warn('[restore on load]', e); }
 });
 
 function updateTimeProgress() {
@@ -6335,6 +6337,7 @@ function applyPbChanges() {
   syncPbsToFicheClient();
   syncPbsHighlights();
   rebuildAfterPbChange();
+  autoSaveActiveConsultation();
 }
 
 function onModalPbChange() {
@@ -6388,6 +6391,7 @@ function onFicheClientPbChange() {
       syncPbsToFicheClient();
       syncPbsHighlights();
       rebuildAfterPbChange();
+      autoSaveActiveConsultation();
     } catch (err) {
       console.error('[onFicheClientPbChange] Erreur :', err);
     }
@@ -6429,6 +6433,7 @@ function onDiagnosticPbChange() {
     // Mettre à jour le contenu "conditional_sections_inline" (sections cochées affichées à la suite de V. Diagnostic)
     // sans recréer le diagnostic lui-même
     refreshInlineConditionalSections();
+    autoSaveActiveConsultation();
   }, 0);
 }
 
@@ -7048,7 +7053,89 @@ function newConsultation() {
     document.getElementById('notes-panel').style.display = 'none';
     document.getElementById('app-screen').style.display = 'none';
     document.getElementById('setup-screen').style.display = 'flex';
+    clearActiveConsultation();
     loadSavedClients();
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// AUTO-SAVE de la consultation active
+// Permet de retrouver ses cases cochées + sa position après un hard refresh.
+// Stocké dans localStorage sous "tdr_active_consultation", expire après 24h.
+// ═══════════════════════════════════════════════════
+let _autoSaveConsultTimer = null;
+function autoSaveActiveConsultation() {
+  clearTimeout(_autoSaveConsultTimer);
+  _autoSaveConsultTimer = setTimeout(() => {
+    try {
+      if (!state || !state.client || !state.client.prenomEnfant) {
+        localStorage.removeItem('tdr_active_consultation');
+        return;
+      }
+      // Aligner state.client.pbs sur state.selectedPbs
+      state.client.pbs = [...(state.selectedPbs || [])];
+      const heureFinMs = state.heureFin
+        ? (state.heureFin instanceof Date ? state.heureFin.getTime() : Number(state.heureFin))
+        : null;
+      const snapshot = {
+        client: state.client,
+        selectedPbs: [...(state.selectedPbs || [])],
+        consultStart: state.consultStart || null,
+        heureFin: heureFinMs,
+        heureFinStr: state.heureFinStr || '',
+        consultDuree: state.consultDuree || 75,
+        currentIdx: state.currentIdx || 0,
+        notes: state._notes || '',
+        completedSet: state.completedSet ? [...state.completedSet] : [],
+        currentSessionId: state.currentSessionId || null,
+        savedAt: Date.now()
+      };
+      localStorage.setItem('tdr_active_consultation', JSON.stringify(snapshot));
+    } catch (e) { console.warn('[auto-save consult]', e); }
+  }, 300);
+}
+
+function clearActiveConsultation() {
+  try { localStorage.removeItem('tdr_active_consultation'); } catch(e) {}
+}
+
+function restoreActiveConsultation() {
+  try {
+    const raw = localStorage.getItem('tdr_active_consultation');
+    if (!raw) return false;
+    const snap = JSON.parse(raw);
+    if (!snap || !snap.client || !snap.client.prenomEnfant) return false;
+    // Expiration 24h
+    if (snap.savedAt && (Date.now() - snap.savedAt) > 24 * 60 * 60 * 1000) {
+      localStorage.removeItem('tdr_active_consultation');
+      return false;
+    }
+    const prenom = snap.client.prenomEnfant;
+    if (!confirm(`Reprendre la consultation en cours pour ${prenom} ?`)) {
+      localStorage.removeItem('tdr_active_consultation');
+      return false;
+    }
+    state.client = snap.client;
+    state.selectedPbs = new Set(snap.selectedPbs || []);
+    state.consultStart = snap.consultStart || Date.now();
+    state.heureFin = snap.heureFin ? new Date(snap.heureFin) : null;
+    state.heureFinStr = snap.heureFinStr || '';
+    state.consultDuree = snap.consultDuree || 75;
+    state.currentIdx = snap.currentIdx || 0;
+    state._notes = snap.notes || '';
+    state.completedSet = new Set(snap.completedSet || []);
+    state.currentSessionId = snap.currentSessionId || null;
+    // Re-peupler le formulaire + reconstruire l'UI
+    populateFormFromClient(state.client);
+    buildSections();
+    adaptSectionsToClient();
+    initUI();
+    document.getElementById('setup-screen').style.display = 'none';
+    document.getElementById('app-screen').style.display = 'flex';
+    return true;
+  } catch (e) {
+    console.warn('[restore consult]', e);
+    return false;
   }
 }
 
