@@ -6015,6 +6015,20 @@ function parseAgeStringToMonths(s) {
   return y * 12 + m + Math.floor(w / 4);
 }
 
+// Renvoie la durée de nuit recommandée (texte) selon l'âge de l'enfant.
+// Basé sur les tranches du tableau "Besoins de sommeil" de V. Diagnostic.
+// Vide si l'âge n'est pas connu.
+function getBesoinNuit() {
+  const mois = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
+  if (mois == null) return '';
+  if (mois < 2) return '8h-10h (entrecoupé de tps d\'alimentation)';
+  if (mois < 4) return '9h-12h (1 à 3 tps d\'alimentation)';
+  if (mois < 8) return '10h-13h (1 à 3 tps d\'alimentation)';
+  if (mois < 15) return '10h-13h (moy. 11-12h ininterrompue)';
+  if (mois < 36) return '10h-13h (moy. 11-12h ininterrompue)';
+  return '11h-13h (moy. 11-12h)';
+}
+
 // Renvoie l'âge en mois ENTIER à utiliser pour les conditions d'âge.
 // Priorité : valeurs ACTUELLES du DOM (formulaire) > state.client (valeurs sauvegardées).
 // Cela permet de prendre en compte une saisie manuelle avant même d'avoir "Save/Start".
@@ -6934,6 +6948,7 @@ function substituteVars(text) {
     .replace(/\[nourri_nourrie\]/g, isFille ? 'nourrie' : 'nourri')
     .replace(/\[couche_couchee\]/g, isFille ? 'couchée' : 'couché')
     .replace(/\[enthousiaste_enthousiaste\]/g, 'enthousiaste')
+    .replace(/\[besoin_nuit\]/g, getBesoinNuit())
     .replace(/\[pb_text\]/g, pb)
     .replace(/\[obj_text\]/g, obj)
     .replace(/\[XXX – rappeler ici la problématique écrite par les parents\]/g, pb)
