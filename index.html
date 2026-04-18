@@ -832,26 +832,16 @@
       border-color: #2980b9;
       box-shadow: 0 4px 14px rgba(41,128,185,0.20);
     }
-    /* Titres en pilule bleue (même style que le bouton "Pleurs difficiles") */
     .decouverte-steps .dec-step-title {
-      background: #e6f2fb !important;
-      border: 3px dashed #2980b9;
-      border-radius: 999px !important;
-      color: #1a5276 !important;
-      font-weight: 800 !important;
-      font-size: 14px !important;
-      min-height: 60px !important;
-      padding: 10px 16px !important;
-      box-shadow: 0 2px 8px rgba(41,128,185,0.18);
-      align-self: center;
-      width: auto;
-      min-width: 60%;
+      background: #d1d5db;
+      color: #6b7280;
     }
     .decouverte-steps[data-active-step="1"] .dec-step-col[data-step="1"] .dec-step-title,
     .decouverte-steps[data-active-step="2"] .dec-step-col[data-step="2"] .dec-step-title,
     .decouverte-steps[data-active-step="3"] .dec-step-col[data-step="3"] .dec-step-title {
-      background: #d3e9f7 !important;
-      box-shadow: 0 4px 14px rgba(41,128,185,0.28);
+      background: linear-gradient(90deg, #1a2a42, #4a5f82);
+      color: white;
+      box-shadow: 0 3px 10px rgba(26,42,66,0.28);
     }
 
     /* Calculateur Appert : retirer les flèches du input number */
@@ -6872,7 +6862,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       return `<div class="block block-normal"><ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Alors maintenant, j'aimerais <strong>savoir</strong> quels sont vos <strong>objectifs aujourd'hui</strong></li><li style="margin-bottom:3px;line-height:1.65">Je vais <strong>relire CE QUE vous m'avez marqué</strong>… pour être <strong>sûre qu'on est bien alignés</strong>.</li></ul></div>`;
     } else {
       const prenom = state.client.prenomEnfant || '[prénom]';
-      return `<div class="block block-question"><div class="q-text">❓ J'aimerais maintenant <strong>savoir quels sont vos objectifs</strong> aujourd'hui pour ${prenom}.<br>Qu'est-ce que vous <strong>souhaitez idéalement mettre en place</strong> ?</div></div>`;
+      return `<div class="block block-question"><div class="q-text"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start"><span>❓</span><span>•</span><span>J'aimerais maintenant <strong>savoir quels sont vos objectifs</strong> aujourd'hui pour ${prenom}.</span><span></span><span>•</span><span>Qu'est-ce que vous <strong>souhaitez idéalement mettre en place</strong> ?</span></div></div></div>`;
     }
   }
 
