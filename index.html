@@ -1553,7 +1553,7 @@
 
     /* OPTION PLEURS — pill centré, plus large et compact */
     .block-option.pleurs {
-      width: 280px;
+      width: 560px;
       background: #e6f2fb;
       border: 3px solid #2980b9;
       border-radius: 999px;
@@ -7127,7 +7127,7 @@ function toggleOption(header) {
   const content = header.nextElementSibling;
   const toggle = header.querySelector('.option-toggle');
   const arrow = header.querySelector('.option-arrow');
-  const optionDiv = header.parentElement.classList.contains('action') ? header.parentElement : null;
+  const optionDiv = (header.parentElement.classList.contains('action') || header.parentElement.classList.contains('pleurs')) ? header.parentElement : null;
   if (optionDiv) {
     const mutexGroup = optionDiv.dataset.mutexGroup || null;
     const willOpen = !content.classList.contains('open');
