@@ -2086,6 +2086,19 @@
       background: #f5f0ff !important;
     }
 
+    /* NON (action rouge) du mutex "conclusion-obj" — les 3 purple options en 3 colonnes */
+    .block-option.action[data-mutex-group="conclusion-obj"] .option-content .edit-block-wrap:has(> .block-option.purple:not(:has(> .option-content.open))) {
+      display: inline-block;
+      width: calc(33.33% - 8px);
+      vertical-align: top;
+      margin-right: 4px;
+    }
+    .block-option.action[data-mutex-group="conclusion-obj"] .option-content > .edit-block-wrap > .block-option.purple {
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
     /* OPTION DANGER (orange vif) */
     .block-option.danger {
       background: #fff3e0;
@@ -4148,7 +4161,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=212"></script>
+<script src="script-data.js?v=213"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
