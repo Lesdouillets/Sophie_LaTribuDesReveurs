@@ -1972,14 +1972,19 @@
     .block-option.purple .option-content .block-option.purple .option-content .block:not(.block-question) { background: #ddd3f8; border-color: #c4b5e0; }
     .block-option.purple .block-question { background: #fdf0f0 !important; border-color: #e8a0a0 !important; }
 
-    /* OPTION PURPLE-BTN — bouton pill violet, même esprit que le bouton pleurs */
+    /* OPTION PURPLE-BTN — rectangle arrondi violet, 2 par ligne */
+    .edit-block-wrap:has(> .block-option.purple-btn:not(.open-action)) {
+      display: inline-block;
+      width: calc(50% - 10px);
+      vertical-align: top;
+      margin-right: 8px;
+    }
     .block-option.purple-btn {
-      width: 280px;
+      width: 100%;
       background: #f5f0ff;
       border: 3px dashed #7c3aed;
-      border-radius: 999px;
+      border-radius: 16px;
       box-shadow: 0 2px 8px rgba(124,58,237,0.18);
-      margin-left: auto; margin-right: auto;
       transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
     }
     .block-option.purple-btn > .option-header {
@@ -1992,14 +1997,14 @@
     .block-option.purple-btn > .option-header .option-toggle { display: none; }
     .block-option.purple-btn > .option-header .option-label-text {
       color: #5b21b6; font-weight: 800; font-size: 14px; text-align: center; line-height: 1.3; order: 1;
-      white-space: nowrap;
+      white-space: normal;
     }
     .block-option.purple-btn:hover {
       background: #ebdffd;
       transform: translateY(-1px);
       box-shadow: 0 4px 14px rgba(124,58,237,0.28);
     }
-    /* Ouvert : plein écran (100% largeur) + carte violet */
+    /* Ouvert : plein écran (100% largeur) + carte BLANCHE (plus de fond violet) */
     .block-option.purple-btn.open-action {
       width: auto !important;
       max-width: none !important;
@@ -2007,15 +2012,19 @@
       display: block !important;
       border-radius: var(--radius);
       margin: 10px 0 !important;
-      background: #f5f0ff;
+      background: #ffffff !important;
       border: 2px dashed #7c3aed;
       box-sizing: border-box;
     }
     .block-option.purple-btn.open-action > .option-content {
       width: auto !important;
       max-width: none !important;
+      background: #ffffff !important;
     }
-    .block-option.purple-btn .option-content { background: #f5f0ff; padding: 10px 16px 14px; }
+    .block-option.purple-btn.open-action > .option-header {
+      background: #ffffff !important;
+    }
+    .block-option.purple-btn .option-content { padding: 10px 16px 14px; }
 
     /* OPTION DANGER (orange vif) */
     .block-option.danger {
@@ -4079,7 +4088,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=205"></script>
+<script src="script-data.js?v=206"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7042,13 +7051,22 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const inlineFmt = s => substituteVars(s).replace(/<br>$/g, '');
       let rows = '';
       firstLines.forEach((line, idx) => {
+        // Continuation : la ligne commence par "…" / "..." OU par minuscule,
+        // OU la ligne précédente ne se termine PAS par "?" (donc pas une vraie nouvelle question).
+        const startsLower = /^[a-zàâäéèêëïîôöùûüÿ]/.test(line);
+        const startsEllipsis = /^(?:…|\.{3})/.test(line);
+        const prev = idx > 0 ? firstLines[idx - 1].trim() : '';
+        const prevEndsQuestion = /\?\s*$/.test(prev);
+        const isContinuation = idx > 0 && (startsEllipsis || startsLower || !prevEndsQuestion);
         if (idx === 0) {
           rows += `<span>❓</span><span>•</span><span>${inlineFmt(line)}</span>`;
+        } else if (isContinuation) {
+          rows += `<span></span><span></span><span style="padding-left:24px">${inlineFmt(line)}</span>`;
         } else {
           rows += `<span></span><span>•</span><span>${inlineFmt(line)}</span>`;
         }
       });
-      const restHtml = restPara.trim() ? `<div style="margin-top:10px">${substituteVars(restPara)}</div>` : '';
+      const restHtml = restPara.trim() ? `<div style="margin-top:22px;padding-left:46px">${substituteVars(restPara)}</div>` : '';
       return `<div class="block block-question">
         <div class="q-text" contenteditable="true"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start">${rows}</div>${restHtml}</div>
         ${choiceHtml}
