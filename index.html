@@ -1522,21 +1522,37 @@
       50%      { box-shadow: 0 10px 44px rgba(220,38,38,0.65), 0 2px 8px rgba(0,0,0,0.08); transform: scale(1.03); }
     }
 
-    /* OPTION PLEURS — style "note / tip" avec barre d'accent latérale bleue */
+    /* OPTION PLEURS — bouton pill (ovale) bleu clair avec bordure épaisse */
     .block-option.pleurs {
-      background: #f0f7fc;
-      border: 1px solid #d6e8f3;
-      border-left: 5px solid #2980b9;
-      border-radius: 8px;
-      box-shadow: 0 1px 3px rgba(41,128,185,0.08);
+      display: inline-block;
+      width: auto;
+      background: #e6f2fb;
+      border: 3px solid #2980b9;
+      border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(41,128,185,0.18);
+      margin-left: auto; margin-right: auto;
+      padding: 0;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
     }
-    .block-option.pleurs .option-header {
-      padding-left: 14px;
+    .block-option.pleurs > .option-header {
+      padding: 10px 22px;
+      gap: 10px;
     }
-    .block-option.pleurs .option-header:hover { background: rgba(41,128,185,0.08); }
+    .block-option.pleurs:hover {
+      background: #d3e9f7;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(41,128,185,0.28);
+    }
     .block-option.pleurs .option-arrow { color: #1a5276; }
-    .block-option.pleurs .option-label-text { color: #1a5276; font-weight: 700; font-style: italic; }
-    .block-option.pleurs .option-content { background: #f0f7fc; }
+    .block-option.pleurs .option-label-text { color: #1a5276; font-weight: 800; }
+    /* Quand le bouton est ouvert, on revient à une carte rectangulaire pour le contenu */
+    .block-option.pleurs.open-action {
+      display: block;
+      width: auto;
+      border-radius: 12px;
+      background: #f0f7fc;
+    }
+    .block-option.pleurs .option-content { background: #f0f7fc; padding: 10px 16px 14px; }
     .block-option.pleurs .block-empathie { border: none; box-shadow: none; background: transparent; }
     .block-option.pleurs .block-empathie strong { color: var(--text); }
     .block-option.pleurs .block-normal { border: none !important; box-shadow: none !important; background: transparent !important; }
@@ -3970,7 +3986,7 @@
   </div>
 </div>
 
-<script src="script-data.js?v=185"></script>
+<script src="script-data.js?v=186"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
