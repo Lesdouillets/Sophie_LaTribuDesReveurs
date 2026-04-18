@@ -815,29 +815,33 @@
     .inline-conditional-section.collapsed .inline-conditional-content { display: none; }
     .inline-conditional-section.collapsed .inline-conditional-arrow { transform: rotate(-90deg); }
 
-    /* III. Découverte — étapes avec état actif/grisé */
+    /* III. Découverte — étapes avec état actif/grisé (colonne entière cliquable) */
+    .decouverte-steps .dec-step-col {
+      opacity: 0.45;
+      filter: grayscale(0.6);
+    }
+    .decouverte-steps .dec-step-col:hover {
+      opacity: 0.75;
+      filter: grayscale(0.3);
+    }
+    .decouverte-steps[data-active-step="1"] .dec-step-col[data-step="1"],
+    .decouverte-steps[data-active-step="2"] .dec-step-col[data-step="2"],
+    .decouverte-steps[data-active-step="3"] .dec-step-col[data-step="3"] {
+      opacity: 1;
+      filter: none;
+      border-color: #2d3f5c;
+      box-shadow: 0 4px 14px rgba(45,63,92,0.20);
+    }
     .decouverte-steps .dec-step-title {
       background: #d1d5db;
       color: #6b7280;
-      opacity: 0.7;
     }
-    .decouverte-steps .dec-step-title:hover {
-      background: #b5bbc4;
-      opacity: 1;
-    }
-    .decouverte-steps[data-active-step="1"] .dec-step-title[data-step="1"],
-    .decouverte-steps[data-active-step="2"] .dec-step-title[data-step="2"],
-    .decouverte-steps[data-active-step="3"] .dec-step-title[data-step="3"] {
+    .decouverte-steps[data-active-step="1"] .dec-step-col[data-step="1"] .dec-step-title,
+    .decouverte-steps[data-active-step="2"] .dec-step-col[data-step="2"] .dec-step-title,
+    .decouverte-steps[data-active-step="3"] .dec-step-col[data-step="3"] .dec-step-title {
       background: linear-gradient(90deg, #1a2a42, #4a5f82);
       color: white;
-      opacity: 1;
       box-shadow: 0 3px 10px rgba(26,42,66,0.28);
-    }
-    .decouverte-steps .dec-step-content { opacity: 0.35; }
-    .decouverte-steps[data-active-step="1"] .dec-step-content[data-step="1"],
-    .decouverte-steps[data-active-step="2"] .dec-step-content[data-step="2"],
-    .decouverte-steps[data-active-step="3"] .dec-step-content[data-step="3"] {
-      opacity: 1;
     }
 
     /* Calculateur Appert : retirer les flèches du input number */
@@ -4023,7 +4027,7 @@
   </div>
 </div>
 
-<script src="script-data.js?v=192"></script>
+<script src="script-data.js?v=194"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
