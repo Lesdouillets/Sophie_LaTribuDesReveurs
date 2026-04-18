@@ -815,6 +815,14 @@
     .inline-conditional-section.collapsed .inline-conditional-content { display: none; }
     .inline-conditional-section.collapsed .inline-conditional-arrow { transform: rotate(-90deg); }
 
+    /* Calculateur Appert : retirer les flèches du input number */
+    #appert-poids-input::-webkit-outer-spin-button,
+    #appert-poids-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    #appert-poids-input { -moz-appearance: textfield; appearance: textfield; }
+
     /* Wrapper groupe par catégorie : encadré coloré qui contient le bandeau parent + les sections */
     .inline-conditional-category-group {
       margin: 22px 0 18px;
@@ -3956,7 +3964,7 @@
   </div>
 </div>
 
-<script src="script-data.js?v=180"></script>
+<script src="script-data.js?v=183"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -6741,7 +6749,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
         <label style="display:flex;align-items:center;gap:8px;font-size:14px">
           <span style="font-weight:700;color:#7c2d12">Poids :</span>
-          <input type="number" id="appert-poids-input" step="0.01" min="0" value="${initPoids}" oninput="updateAppertVolume()" style="width:90px;padding:6px 10px;border:1.5px solid #fcd34d;border-radius:8px;font-size:14px;font-weight:700;color:#7c2d12;background:white">
+          <input type="number" id="appert-poids-input" step="0.01" min="0" value="${initPoids}" oninput="updateAppertVolume()" style="width:90px;padding:6px 10px;border:1.5px solid #fcd34d;border-radius:8px;font-size:14px;font-weight:700;color:#7c2d12;background:white;-moz-appearance:textfield;appearance:textfield">
           <span style="font-weight:700;color:#7c2d12">kg</span>
         </label>
         <span style="color:#78716c;font-size:18px;font-weight:800">→</span>
@@ -6749,7 +6757,6 @@ function renderBlockInner(b, i, sectionId, depth, path) {
           Volume / 24h : <span id="appert-volume-result">${initResult}</span>
         </div>
       </div>
-      <div style="margin-top:8px;font-size:12px;color:#78716c;font-style:italic">Si poids &lt; 6 kg : (poids × 100) + 200 mL ± 100 mL — sinon + 250 mL ± 100 mL</div>
     </div>`;
   }
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
@@ -6808,7 +6815,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const pbHtml = pb.replace(/\n/g, '<br>');
     return `<div class="block block-normal" contenteditable="true">Maintenant, je vais reprendre votre problématique<br>et APRÈS vous allez m'expliquer ce qui se passe exactement pour le sommeil de ${prenom}.</div>
     <div class="block block-pb-recap">
-      <div class="pb-recap-intro"><u>Vous m'avez écrit :</u></div>
+      <div class="pb-recap-intro">• <u>Donc vous m'avez écrit :</u></div>
       <div class="pb-recap-text"><em>${pbHtml}</em></div>
       <div class="pb-recap-question"><span class="q-icon-inline">❓</span> Est-ce que c'est toujours d'actualité ?</div>
     </div>`;
@@ -7279,6 +7286,19 @@ function substituteVars(text) {
     .replace(/\[couche_couchee\]/g, isFille ? 'couchée' : 'couché')
     .replace(/\[ne_nee\]/g, isFille ? 'née' : 'né')
     .replace(/\[stabilise_stabilisee\]/g, isFille ? 'stabilisée' : 'stabilisé')
+    .replace(/\[aligne_alignee\]/g, (() => {
+      // Accord selon le(s) parent(s) présent(s) à la consultation
+      const p1 = (c.prenomParent1 || '').trim();
+      const p2 = (c.prenomParent2 || '').trim();
+      if (p1 && p2) return 'alignés'; // 2 parents → pluriel masculin
+      const sexe1 = (c.sexeParent1 || '').toLowerCase();
+      const sexe2 = (c.sexeParent2 || '').toLowerCase();
+      if (p1 && sexe1 === 'maman') return 'alignée';
+      if (p1 && sexe1 === 'papa') return 'aligné';
+      if (!p1 && p2 && sexe2 === 'maman') return 'alignée';
+      if (!p1 && p2 && sexe2 === 'papa') return 'aligné';
+      return 'aligné(e)'; // fallback inclusif
+    })())
     .replace(/\[poids\]/g, c.poids || 'XXX')
     .replace(/\[besoin_lait_volume\]/g, (() => {
       try {
@@ -7758,7 +7778,9 @@ function toggleConditionalSection(sectionId) {
   el.classList.toggle('collapsed');
   // Si on vient de replier (passage non-replié → replié), scroller en haut de la section
   // pour que l'utilisateur retrouve naturellement la section suivante juste en dessous
+  // et fermer le panneau info latéral pour éviter qu'il reste ouvert sur du contenu caché
   if (!wasCollapsed) {
+    if (typeof closeInfoPanel === 'function') closeInfoPanel();
     requestAnimationFrame(() => {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
@@ -7772,7 +7794,10 @@ function toggleConditionalCategoryGroup(bannerEl) {
   if (!group) return;
   const wasCollapsed = group.classList.contains('collapsed');
   group.classList.toggle('collapsed');
+  // Si on vient de replier, fermer aussi le panneau info latéral (pour éviter qu'il reste
+  // ouvert sur du contenu issu d'un bloc maintenant caché)
   if (!wasCollapsed) {
+    if (typeof closeInfoPanel === 'function') closeInfoPanel();
     requestAnimationFrame(() => {
       group.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
