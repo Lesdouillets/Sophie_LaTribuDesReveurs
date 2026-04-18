@@ -4315,11 +4315,12 @@ function toggleTypeLait() {
   const jusVegetal = document.querySelector('input[name="alim"][value="Jus végétal"]');
   const hasBib = bib?.checked || mixte?.checked;
   const group = document.getElementById('type-lait-group');
-  if (group) group.style.display = hasBib ? 'block' : 'none';
+  // On utilise 'flex' (pas 'block') pour préserver flex-direction:column du CSS .form-group
+  if (group) group.style.display = hasBib ? 'flex' : 'none';
   // Nouveau : groupe "Mode d'allaitement" visible si Allaitement maternel OU mixte coché
   const hasAllaitement = allaitement?.checked || mixte?.checked;
   const allaitGroup = document.getElementById('allaitement-mode-group');
-  if (allaitGroup) allaitGroup.style.display = hasAllaitement ? 'block' : 'none';
+  if (allaitGroup) allaitGroup.style.display = hasAllaitement ? 'flex' : 'none';
   const volGroup = document.getElementById('nutri-volume-group');
   if (volGroup) volGroup.style.display = allaitement?.checked ? 'none' : '';
   const teteeGroup = document.getElementById('nutri-tetee-group');
