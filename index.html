@@ -2026,19 +2026,18 @@
     }
     .block-option.purple-btn .option-content { padding: 10px 16px 14px; }
     /* Retirer tout liseré violet autour des blocs texte à l'intérieur d'un purple-btn ouvert */
-    .block-option.purple-btn .block-normal,
-    .block-option.purple-btn .block-important,
-    .block-option.purple-btn .block-conseil,
-    .block-option.purple-btn .block-empathie,
-    .block-option.purple-btn .block-option.purple .block-normal,
-    .block-option.purple-btn .block-option.purple .block-important,
-    .block-option.purple-btn .block-option.purple .block-conseil,
-    .block-option.purple-btn .block-option.purple .block-empathie,
-    .block-option.purple-btn .block-option.purple .option-content .block:not(.block-question):not(.block-conseil-vert):not(.block-fin-consultation) {
+    .block-option.purple-btn .option-content .block.block-normal,
+    .block-option.purple-btn .option-content .block.block-important,
+    .block-option.purple-btn .option-content .block.block-conseil,
+    .block-option.purple-btn .option-content .block.block-empathie,
+    .block-option.purple-btn .option-content .edit-block-wrap > .block.block-normal,
+    .block-option.purple-btn .option-content .edit-block-wrap > .block.block-important,
+    .block-option.purple-btn .option-content .edit-block-wrap > .block.block-conseil,
+    .block-option.purple-btn .option-content .edit-block-wrap > .block.block-empathie {
       border: 1px solid var(--border) !important;
+      border-color: var(--border) !important;
       box-shadow: var(--shadow) !important;
       background: #ffffff !important;
-      border-color: var(--border) !important;
     }
     /* Le container nested purple à l'intérieur d'un purple-btn :
        on veut un mini-bouton violet avec bordure dashed (comme le parent purple-btn),
