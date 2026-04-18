@@ -850,7 +850,6 @@ const SCRIPT_DATA = {
               }
             ]
           },
-          { type: "separator", text: "📅 Proposition de suivi" },
           { type: "question", text: "Moi, j'ai une **dernière question** pour VOUS qui est **très importante** :\n⇒ Comment vous **vous sentez LÀ,** à **l'idée de mettre** tout ceci **en place** ?" },
           { type: "normal", text: "- C'est super ! J'entends **plein de motivation** ! C'est génial !\n- Je vous **envoie** plein d'**énergie positive / bonnes ondes**\n- Je **vous souhaite** que les **nuits/siestes** de [prénom_enfant] **s'apaisent rapidement**, et que **les vôtres suivent** tout **aussi vite**.\n- Bonne journée !" },
           { type: "fin_consultation", text: "🏁 **FIN DE LA CONSULTATION** 🏁" },
