@@ -1555,7 +1555,7 @@
     .block-option.pleurs {
       width: 280px;
       background: #e6f2fb;
-      border: 3px solid #2980b9;
+      border: 3px dashed #2980b9;
       border-radius: 999px;
       box-shadow: 0 2px 8px rgba(41,128,185,0.18);
       margin-left: auto; margin-right: auto;
@@ -1565,12 +1565,12 @@
       flex-direction: row; align-items: center; justify-content: center;
       padding: 20px 20px; gap: 10px; min-height: 80px;
     }
-    .block-option.pleurs > .option-header > span { flex-direction: row; align-items: center; gap: 10px; }
-    .block-option.pleurs > .option-header .option-emoji { font-size: 22px; }
+    .block-option.pleurs > .option-header > span { flex-direction: row; align-items: center; gap: 14px; order: 0; }
+    .block-option.pleurs > .option-header .option-emoji { font-size: 32px; order: 0; }
     .block-option.pleurs > .option-header .option-arrow { display: none; }
     .block-option.pleurs > .option-header .option-toggle { display: none; }
     .block-option.pleurs > .option-header .option-label-text {
-      color: #1a5276; font-weight: 800; font-size: 14px; text-align: center; line-height: 1.3;
+      color: #1a5276; font-weight: 800; font-size: 18px; text-align: center; line-height: 1.3; order: 1;
     }
     .block-option.pleurs:hover {
       background: #d3e9f7;
@@ -1586,7 +1586,7 @@
       border-radius: var(--radius);
       margin: 10px 0 !important;
       background: #f0f7fc;
-      border: 1.5px solid #2980b9;
+      border: 2px dashed #2980b9;
       box-sizing: border-box;
     }
     .block-option.pleurs.open-action > .option-content {
@@ -6877,7 +6877,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     if (!pb) return '';
     const pbHtml = pb.replace(/\n/g, '<br>');
     return `<div class="block block-pb-recap">
-      <div class="pb-recap-intro"><u>Donc, vous m'avez écrit :</u></div>
+      <div class="pb-recap-intro">• <u>Donc, vous m'avez écrit :</u></div>
       <div class="pb-recap-text"><em>${pbHtml}</em></div>
     </div>`;
   }
