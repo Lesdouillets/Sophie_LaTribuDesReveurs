@@ -2004,7 +2004,7 @@
       transform: translateY(-1px);
       box-shadow: 0 4px 14px rgba(124,58,237,0.28);
     }
-    /* Ouvert : plein écran (100% largeur) + carte BLANCHE (plus de fond violet) */
+    /* Ouvert : plein écran (100% largeur) + carte BLANCHE sans bordure violet */
     .block-option.purple-btn.open-action {
       width: auto !important;
       max-width: none !important;
@@ -2013,7 +2013,7 @@
       border-radius: var(--radius);
       margin: 10px 0 !important;
       background: #ffffff !important;
-      border: 2px dashed #7c3aed;
+      border: 1px solid var(--border) !important;
       box-sizing: border-box;
     }
     .block-option.purple-btn.open-action > .option-content {

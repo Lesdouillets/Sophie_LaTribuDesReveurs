@@ -6,7 +6,8 @@
       "Bash(curl -s 'https://lesdouillets.github.io/Sophie_LaTribuDesReveurs/sw.js')",
       "Bash(curl -sI 'https://lesdouillets.github.io/Sophie_LaTribuDesReveurs/')",
       "Bash(curl -s 'https://lesdouillets.github.io/Sophie_LaTribuDesReveurs/script-data.js?v=171')",
-      "Bash(curl -s 'https://lesdouillets.github.io/Sophie_LaTribuDesReveurs/index.html')"
+      "Bash(curl -s 'https://lesdouillets.github.io/Sophie_LaTribuDesReveurs/index.html')",
+      "Bash(git -C '/c/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs' status --short)"
     ]
   }
 }
