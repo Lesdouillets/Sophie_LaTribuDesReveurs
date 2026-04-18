@@ -851,7 +851,7 @@ const SCRIPT_DATA = {
     blocks: [
       { type: "question", text: "Est-ce que **TOUT** ce que je **vous ai proposé** vous **correspond à vos valeurs**?" },
       { type: "obj_rappel" },
-      { type: "question", text: "Est-ce que j'ai **répondu à ces objectifs** ?" },
+      { type: "question", text: "Est-ce que j'ai **répondu à [ces_vos_objectifs]** ?" },
       {
         type: "option", label: "OUI", emoji: "✅", style: "action-green", mutexGroup: "conclusion-obj",
         blocks: [
