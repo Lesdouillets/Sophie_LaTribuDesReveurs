@@ -155,7 +155,14 @@ const SCRIPT_DATA = {
                 { type: "normal", text: "- Et plus précisément **dans VOTRE LIT**\n\n- De mon côté, je dois **quand même** vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à faire **dormir** les enfants dans **LEUR PROPRE LIT**…\n  - …car cela **diminue significativement le risque de Mort Inattendue du Nourrisson**\n\n- Mais **au-delà de ça**, l'idée, ce n'est **PAS de vous dire quoi faire.**\n- C'est surtout de **voir CE QUI vous convient** à vous, aujourd'hui.\n\n- Il n'y a **PAS** de **bonne** ou de **mauvaise réponse** :\n  - **certains parents** préfèrent **attendre** encore un peu,\n  - d'**autres** sont **prêts à faire la transition.**" },
               ]
             },
-            { type: "question", text: "Est-ce que c'est **quelque chose qui vous CONVIENT** pour l'instant,\n…OU est-ce que vous **aimeriez qu'elle passe dans SA chambre / dans SON lit** ?\n\n- Il n'y a **PAS** de **bonne ou de mauvaise réponse** :\n  - certains parents **préfèrent attendre** encore un peu,\n  - d'autres **sont prêts** à faire la **transition**.\n\n- L'**idée** est surtout de voir ce qui **correspond le mieux** à votre **famille**\n  - Pour que je puisse m**'adapter au mieux**" }
+            { type: "question", text: "Est-ce que c'est **quelque chose qui vous CONVIENT** pour l'instant,\n…OU est-ce que vous **aimeriez qu'elle passe dans SA chambre / dans SON lit** ?\n\n- Il n'y a **PAS** de **bonne ou de mauvaise réponse** :\n  - certains parents **préfèrent attendre** encore un peu,\n  - d'autres **sont prêts** à faire la **transition**.\n\n- L'**idée** est surtout de voir ce qui **correspond le mieux** à votre **famille**\n  - Pour que je puisse m**'adapter au mieux**", choice: {
+              id: "obj_lieu_sommeil",
+              required: true,
+              options: [
+                { icon: "✅", label: "Garder le lit", value: "garder", variant: "positive" },
+                { icon: "❌", label: "Changer le lit", value: "changer", variant: "negative" }
+              ]
+            }}
           ]
         },
         {
@@ -163,7 +170,28 @@ const SCRIPT_DATA = {
           blocks: [
             { type: "normal", text: "- J'ai également une **question** concernant la **position de sommeil** de [prénom_enfant].\n- Aujourd'hui, elle **semble s'endormir sur le ventre**… c'est devenu **SA stratégie** pour **trouver le sommeil**…\n  - c'est **quelque chose** que l'on **observe souvent** chez les BB car c'est la **position la + physiologique** pour le corps\n\n- **Néanmoins**, je dois aussi vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à **poser son enfant** sur le **DOS**…\n  - …car cette position **diminue significativement le risque de Mort Inattendue du Nourrisson**\n\n- Il n'y a **PAS** de **bonne ou mauvaise réponse**… SEULEMENT CELLE qui **correspond à vos besoins** !" },
             { type: "normal", text: "- **Mon rôle** c'est de vous **transmettre ces informations..**\n  - …tout en **restant à l'écoute** de **votre réalité**\n\n- Il n'y a **pas de bonne ou mauvaise réponse**..\n  - ...**SEULEMENT CELLE** qui **correspond à vos besoins** !" },
-            { type: "question", text: "J'**aimerais** beaucoup **connaître votre point de vue** sur ce sujet…\n- Souhaitez-vous **rester**\n  - **en position ventrale**\n  - ou changer **vers la position dorsale**?\n\n- Cela me **permettra** **d'adapter au mieux mon accompagnement** à votre famille\n  - ...et à **vos préférences.**" }
+            { type: "question", text: "J'**aimerais** beaucoup **connaître votre point de vue** sur ce sujet…\n- Souhaitez-vous **rester**\n  - **en position ventrale**\n  - ou changer **vers la position dorsale**?\n\n- Cela me **permettra** **d'adapter au mieux mon accompagnement** à votre famille\n  - ...et à **vos préférences.**", choice: {
+              id: "obj_position_sommeil",
+              required: true,
+              options: [
+                { icon: "✅", label: "Position ventrale", value: "ventrale", variant: "positive" },
+                { icon: "❌", label: "Position dorsale", value: "dorsale", variant: "negative" }
+              ]
+            }}
+          ]
+        },
+        {
+          type: "option", label: "Dépendance à la tétine\nSouhait de garder ou non ?", emoji: "🍭", style: "purple-btn", hideIfPb: "souhait_tetine",
+          blocks: [
+            { type: "normal", text: "- J'ai une **petite question** concernant la **tétine** de [prénom_enfant].\n- Aujourd'hui, [il_elle] a une **dépendance à la tétine** pour s'endormir.\n\n- **Il n'y a PAS de bonne ou de mauvaise réponse** :\n  - certains parents **préfèrent la garder** un peu plus longtemps,\n  - d'**autres** sont **prêts à faire la transition**.\n\n- L'**idée** est de voir ce qui **correspond le mieux** à votre **famille**." },
+            { type: "question", text: "Alors, qu'est-ce qui vous **semble le + juste pour vous**, aujourd'hui :\n- **Garder la tétine**\n- OU **supprimer la tétine** ?", choice: {
+              id: "obj_tetine",
+              required: true,
+              options: [
+                { icon: "✅", label: "Garder la tétine", value: "garder", variant: "positive" },
+                { icon: "❌", label: "Supprimer la tétine", value: "supprimer", variant: "negative" }
+              ]
+            }}
           ]
         },
       ]
