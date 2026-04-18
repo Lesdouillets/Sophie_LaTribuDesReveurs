@@ -3885,7 +3885,7 @@
   </div>
 </div>
 
-<script src="script-data.js?v=169"></script>
+<script src="script-data.js?v=170"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -5505,6 +5505,18 @@ function isProblematiqueMatched(problematiqueId, selectedPbs) {
     if (relPbs.some(id => selectedPbs.has(id))) return true;
     const relCat = document.querySelector('.pb-cat-checkbox[data-cat="relationnel"]:checked, .modal-pb-cat[data-cat="relationnel"]:checked, .diag-pb-cat[data-cat="relationnel"]:checked');
     return !!relCat;
+  }
+  // Cas particulier : la section "Courbe de poids qui diminue" est active
+  // si la case parente est cochée OU l'une des sous-cases nutri_*.
+  if (problematiqueId === 'nutri_courbe_declinante') {
+    const nutriPbs = [
+      'nutri_courbe_declinante',
+      'nutri_esp_long','nutri_esp_court',
+      'nutri_vol_petit','nutri_vol_gros','nutri_vol_longtemps',
+      'nutri_tetee','nutri_tetee_longue','nutri_tetee_greve','nutri_tetee_mode_garde'
+    ];
+    if (nutriPbs.some(id => selectedPbs.has(id))) return true;
+    return false;
   }
   // Cas particulier : la section "Organisation de la journée" est active
   // si la case parente est cochée OU l'une des sous-cases rythme_*.
