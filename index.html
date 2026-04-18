@@ -4097,7 +4097,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=208"></script>
+<script src="script-data.js?v=210"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7066,7 +7066,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         const startsEllipsis = /^(?:…|\.{3})/.test(line);
         const prev = idx > 0 ? firstLines[idx - 1].trim() : '';
         const prevEndsQuestion = /\?\s*$/.test(prev);
-        const isContinuation = idx > 0 && (startsEllipsis || startsLower || !prevEndsQuestion);
+        const prevEndsColon = /:\s*$/.test(prev);
+        // Continuation si ellipsis, minuscule, OU si prev ne finit ni par "?" ni par ":"
+        // (un ":" introduit une liste → la ligne suivante n'est pas une continuation, c'est un nouvel item)
+        const isContinuation = idx > 0 && (startsEllipsis || startsLower || (!prevEndsQuestion && !prevEndsColon));
         if (idx === 0) {
           rows += `<span>❓</span><span>•</span><span>${inlineFmt(line)}</span>`;
         } else if (isContinuation) {
