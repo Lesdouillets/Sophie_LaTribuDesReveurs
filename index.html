@@ -6569,6 +6569,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const dangerClass = b.style === 'danger' ? ' danger' : '';
     const pleursClass = b.style === 'pleurs' ? ' pleurs' : '';
     const purpleClass = b.style === 'purple' ? ' purple' : '';
+    const purpleBtnClass = b.style === 'purple-btn' ? ' purple-btn' : '';
     const actionClass = (b.style === 'action' || b.style === 'action-green' || b.style === 'action-yellow') ? ' action' : '';
     const actionGreenClass = b.style === 'action-green' ? ' action-green' : '';
     const actionYellowClass = b.style === 'action-yellow' ? ' action-yellow' : '';
@@ -6576,7 +6577,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const cardClass = b.style === 'card' ? ' card' : '';
     const emojiHtml = b.emoji ? `<span class="option-emoji">${b.emoji}</span>` : '';
     const mutexAttr = b.mutexGroup ? ` data-mutex-group="${String(b.mutexGroup).replace(/"/g, '&quot;')}"` : '';
-    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionPurpleInsideClass}${cardClass}"${mutexAttr}>
+    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${purpleBtnClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionPurpleInsideClass}${cardClass}"${mutexAttr}>
       <div class="option-header" onclick="toggleOption(this)">
         <span style="display:flex;align-items:center;gap:6px">
           ${emojiHtml}
@@ -6915,7 +6916,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   if (b.type === 'obj_question') {
     const obj = state.client.objectifs;
     if (!obj || !obj.trim()) return '';
-    return `<div class="block block-question"><div class="q-text">❓ <ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Est-ce que ça <strong>correspond toujours</strong> à ce que vous <strong>souhaitez aujourd'hui</strong> ?</li><li style="margin-bottom:3px;line-height:1.65">Est-ce que vous avez <strong>quelque chose</strong> à <strong>ajouter</strong> ou <strong>ajuster</strong> ?</li></ul></div></div>`;
+    return `<div class="block block-question"><div class="q-text"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start"><span>❓</span><span>•</span><span>Est-ce que ça <strong>correspond toujours</strong> à ce que vous <strong>souhaitez aujourd'hui</strong> ?</span><span></span><span>•</span><span>Est-ce que vous avez <strong>quelque chose</strong> à <strong>ajouter</strong> ou <strong>ajuster</strong> ?</span></div></div></div>`;
   }
 
   if (b.type === 'pb_recap') {
@@ -7027,6 +7028,30 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       choiceHtml = `<div class="block-tickbox-choice tbc-inline" data-choice-id="${cid}" data-required="${required}">
         ${reqLabel}
         <div class="tbc-options">${opts}</div>
+      </div>`;
+    }
+    // Si le texte brut contient une SEULE zone multi-lignes (avant double-saut / fin) avec plusieurs lignes,
+    // on rend sous forme de grille ❓ / • / texte pour alignement clair des multiples sous-questions.
+    const raw = b.text || '';
+    const paragraphs = raw.split(/\n\n+/);
+    const firstPara = (paragraphs[0] || '').trim();
+    const firstLines = firstPara.split(/\n+/).map(s => s.trim()).filter(Boolean);
+    const hasListMarker = firstLines.some(l => /^[-•]\s/.test(l));
+    if (firstLines.length >= 2 && !hasListMarker) {
+      const restPara = paragraphs.slice(1).join('\n\n');
+      const inlineFmt = s => substituteVars(s).replace(/<br>$/g, '');
+      let rows = '';
+      firstLines.forEach((line, idx) => {
+        if (idx === 0) {
+          rows += `<span>❓</span><span>•</span><span>${inlineFmt(line)}</span>`;
+        } else {
+          rows += `<span></span><span>•</span><span>${inlineFmt(line)}</span>`;
+        }
+      });
+      const restHtml = restPara.trim() ? `<div style="margin-top:10px">${substituteVars(restPara)}</div>` : '';
+      return `<div class="block block-question">
+        <div class="q-text" contenteditable="true"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start">${rows}</div>${restHtml}</div>
+        ${choiceHtml}
       </div>`;
     }
     return `<div class="block block-question">
