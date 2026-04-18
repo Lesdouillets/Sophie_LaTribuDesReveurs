@@ -826,7 +826,8 @@
     }
     .decouverte-steps[data-active-step="1"] .dec-step-col[data-step="1"],
     .decouverte-steps[data-active-step="2"] .dec-step-col[data-step="2"],
-    .decouverte-steps[data-active-step="3"] .dec-step-col[data-step="3"] {
+    .decouverte-steps[data-active-step="3"] .dec-step-col[data-step="3"],
+    .decouverte-steps[data-active-step="4"] .dec-step-col[data-step="4"] {
       opacity: 1;
       filter: none;
       border-color: #2980b9;
@@ -838,7 +839,8 @@
     }
     .decouverte-steps[data-active-step="1"] .dec-step-col[data-step="1"] .dec-step-title,
     .decouverte-steps[data-active-step="2"] .dec-step-col[data-step="2"] .dec-step-title,
-    .decouverte-steps[data-active-step="3"] .dec-step-col[data-step="3"] .dec-step-title {
+    .decouverte-steps[data-active-step="3"] .dec-step-col[data-step="3"] .dec-step-title,
+    .decouverte-steps[data-active-step="4"] .dec-step-col[data-step="4"] .dec-step-title {
       background: linear-gradient(90deg, #1a2a42, #4a5f82);
       color: white;
       box-shadow: 0 3px 10px rgba(26,42,66,0.28);
@@ -4222,7 +4224,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=227"></script>
+<script src="script-data.js?v=231"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7664,14 +7666,14 @@ function substituteVars(text) {
       /il convient\b/gi,
       /il existe\b/gi,
       /il reste\b/gi,
-      /qu['\u2019]?il vous reste\b/gi,
-      /qu['\u2019]?il nous reste\b/gi,
-      /qu['\u2019]?il me reste\b/gi,
-      /qu['\u2019]?il leur reste\b/gi,
-      /il vous reste\b/gi,
-      /il nous reste\b/gi,
-      /il me reste\b/gi,
-      /il leur reste\b/gi,
+      /qu['\u2019]?il(?:[\s*]+)vous(?:[\s*]+)reste\b/gi,
+      /qu['\u2019]?il(?:[\s*]+)nous(?:[\s*]+)reste\b/gi,
+      /qu['\u2019]?il(?:[\s*]+)me(?:[\s*]+)reste\b/gi,
+      /qu['\u2019]?il(?:[\s*]+)leur(?:[\s*]+)reste\b/gi,
+      /il(?:[\s*]+)vous(?:[\s*]+)reste\b/gi,
+      /il(?:[\s*]+)nous(?:[\s*]+)reste\b/gi,
+      /il(?:[\s*]+)me(?:[\s*]+)reste\b/gi,
+      /il(?:[\s*]+)leur(?:[\s*]+)reste\b/gi,
       /il va y avoir\b/gi,
       /il arrive\b/gi,
       /il importe\b/gi,
@@ -8045,6 +8047,36 @@ function selectTickboxChoice(el) {
     state.tickboxChoices[cid] = el.dataset.value || '';
   } else {
     delete state.tickboxChoices[cid];
+  }
+  // Synchronisation avec les problématiques (fiche client / modal / diag)
+  // obj_lieu_sommeil → souhait_changement_lit / souhait_changement_chambre / souhait_changement_lit_chambre
+  if (cid === 'obj_lieu_sommeil') {
+    const mapping = {
+      changer_lit: 'souhait_changement_lit',
+      changer_chambre: 'souhait_changement_chambre',
+      changer_lit_chambre: 'souhait_changement_lit_chambre'
+    };
+    const allTargets = Object.values(mapping);
+    // Retirer tous les souhait_changement_* avant d'ajouter le bon
+    allTargets.forEach(pb => {
+      state.selectedPbs.delete(pb);
+      document.querySelectorAll(`input[name="pb"][value="${pb}"], input.modal-pb[value="${pb}"], input.diag-pb[value="${pb}"]`).forEach(cb => {
+        cb.checked = false;
+        cb.closest('.pb-item')?.classList.toggle('checked', false);
+      });
+    });
+    const currentValue = wasSelected ? null : el.dataset.value;
+    const targetPb = currentValue ? mapping[currentValue] : null;
+    if (targetPb) {
+      state.selectedPbs.add(targetPb);
+      document.querySelectorAll(`input[name="pb"][value="${targetPb}"], input.modal-pb[value="${targetPb}"], input.diag-pb[value="${targetPb}"]`).forEach(cb => {
+        cb.checked = true;
+        cb.closest('.pb-item')?.classList.toggle('checked', true);
+      });
+    }
+    // Relancer la reconstruction des sections pour refléter le nouveau pb
+    if (typeof buildSections === 'function') buildSections();
+    if (typeof buildSidebar === 'function') buildSidebar();
   }
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
