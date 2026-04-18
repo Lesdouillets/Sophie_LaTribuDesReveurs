@@ -4148,7 +4148,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=211"></script>
+<script src="script-data.js?v=212"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7139,8 +7139,12 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         ${choiceHtml}
       </div>`;
     }
+    // Si le texte brut commence par "<" (HTML brut), on ne préfixe pas avec "❓ "
+    // — l'auteur du bloc gère lui-même le ❓ dans son HTML.
+    const isRawHtml = /^\s*<\w+/.test(raw);
+    const innerHtml = isRawHtml ? text : `❓ ${text}`;
     return `<div class="block block-question">
-      <div class="q-text" contenteditable="true">❓ ${text}</div>
+      <div class="q-text" contenteditable="true">${innerHtml}</div>
       ${choiceHtml}
     </div>`;
   }
