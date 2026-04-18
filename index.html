@@ -4224,7 +4224,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=232"></script>
+<script src="script-data.js?v=233"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7322,7 +7322,7 @@ function renderBesoinsSommeil(tranches) {
     return false;
   }
   const inputStyle = 'width:80px;padding:8px 6px;border:2px solid #e8a0a0;border-radius:8px;font-size:16px;font-weight:800;text-align:center;background:#fff';
-  return `<table class="besoins-table"><thead><tr><th>Tranche d'âge</th><th>Total / 24h</th><th>Nuit 🌙</th><th>Jour / Siestes ☀️</th><th style="background:#c0392b;color:white;font-size:14px">📝 ${prenom}</th></tr></thead><tbody>`
+  return `<table class="besoins-table"><thead><tr><th>Tranche d'âge</th><th>Total / 24h</th><th>Nuit 🌙</th><th>Jour / Siestes ☀️</th><th style="background:#c0392b;color:white;font-size:14px;text-align:center">📝 ${prenom}</th></tr></thead><tbody>`
     + tranches.map(t => {
       const active = matchAge(t);
       const inputCell = active
@@ -8049,6 +8049,15 @@ function selectTickboxChoice(el) {
     delete state.tickboxChoices[cid];
   }
   // Synchronisation avec les problématiques (fiche client / modal / diag)
+  // Helper : coche/décoche un pb dans les 3 containers + met à jour state.selectedPbs
+  const setPb = (pb, check) => {
+    if (check) state.selectedPbs.add(pb); else state.selectedPbs.delete(pb);
+    document.querySelectorAll(`input[name="pb"][value="${pb}"], input.modal-pb[value="${pb}"], input.diag-pb[value="${pb}"]`).forEach(cb => {
+      cb.checked = check;
+      cb.closest('.pb-item')?.classList.toggle('checked', check);
+    });
+  };
+  let syncChanged = false;
   // obj_lieu_sommeil → souhait_changement_lit / souhait_changement_chambre / souhait_changement_lit_chambre
   if (cid === 'obj_lieu_sommeil') {
     const mapping = {
@@ -8056,25 +8065,19 @@ function selectTickboxChoice(el) {
       changer_chambre: 'souhait_changement_chambre',
       changer_lit_chambre: 'souhait_changement_lit_chambre'
     };
-    const allTargets = Object.values(mapping);
-    // Retirer tous les souhait_changement_* avant d'ajouter le bon
-    allTargets.forEach(pb => {
-      state.selectedPbs.delete(pb);
-      document.querySelectorAll(`input[name="pb"][value="${pb}"], input.modal-pb[value="${pb}"], input.diag-pb[value="${pb}"]`).forEach(cb => {
-        cb.checked = false;
-        cb.closest('.pb-item')?.classList.toggle('checked', false);
-      });
-    });
+    Object.values(mapping).forEach(pb => setPb(pb, false));
     const currentValue = wasSelected ? null : el.dataset.value;
     const targetPb = currentValue ? mapping[currentValue] : null;
-    if (targetPb) {
-      state.selectedPbs.add(targetPb);
-      document.querySelectorAll(`input[name="pb"][value="${targetPb}"], input.modal-pb[value="${targetPb}"], input.diag-pb[value="${targetPb}"]`).forEach(cb => {
-        cb.checked = true;
-        cb.closest('.pb-item')?.classList.toggle('checked', true);
-      });
-    }
-    // Relancer la reconstruction des sections pour refléter le nouveau pb
+    if (targetPb) setPb(targetPb, true);
+    syncChanged = true;
+  }
+  // obj_position_sommeil → souhait_position_dorsale (cocher si "dorsale", décocher si "ventrale")
+  if (cid === 'obj_position_sommeil') {
+    const currentValue = wasSelected ? null : el.dataset.value;
+    setPb('souhait_position_dorsale', currentValue === 'dorsale');
+    syncChanged = true;
+  }
+  if (syncChanged) {
     if (typeof buildSections === 'function') buildSections();
     if (typeof buildSidebar === 'function') buildSidebar();
   }
