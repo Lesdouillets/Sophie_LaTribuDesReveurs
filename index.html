@@ -3927,7 +3927,7 @@
   </div>
 </div>
 
-<script src="script-data.js?v=171"></script>
+<script src="script-data.js?v=175"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -6287,6 +6287,15 @@ function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
       if (b.showIfAgeMinMonths != null && age < b.showIfAgeMinMonths) return '';
       if (b.showIfAgeMaxMonths != null && age > b.showIfAgeMaxMonths) return '';
     }
+    // Condition mode d'alimentation — match contre c.alimentation OU c.allaitementMode
+    if (b.showIfAlim) {
+      const vals = Array.isArray(b.showIfAlim) ? b.showIfAlim : [b.showIfAlim];
+      const c = (state && state.client) || {};
+      const alim = Array.isArray(c.alimentation) ? c.alimentation : [];
+      const allaitMode = Array.isArray(c.allaitementMode) ? c.allaitementMode : [];
+      const matches = vals.some(v => alim.includes(v) || allaitMode.includes(v));
+      if (!matches) return '';
+    }
     const path = parentPath ? parentPath + '.' + i : '' + i;
     return renderBlock(b, i, sectionId, depth, path);
   }).join('');
@@ -7140,6 +7149,15 @@ function substituteVars(text) {
     .replace(/\[couche_couchee\]/g, isFille ? 'couchée' : 'couché')
     .replace(/\[ne_nee\]/g, isFille ? 'née' : 'né')
     .replace(/\[stabilise_stabilisee\]/g, isFille ? 'stabilisée' : 'stabilisé')
+    .replace(/\[poids\]/g, c.poids || 'XXX')
+    .replace(/\[besoin_lait_volume\]/g, (() => {
+      try {
+        const ageM = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
+        if (ageM == null || !c.poids) return 'XX mL';
+        const bl = besoinLait(ageM, c.poids);
+        return bl.volume || 'XX mL';
+      } catch(_) { return 'XX mL'; }
+    })())
     .replace(/\[enthousiaste_enthousiaste\]/g, 'enthousiaste')
     .replace(/\[besoin_nuit\]/g, getBesoinNuit())
     .replace(/\[pb_text\]/g, pb)

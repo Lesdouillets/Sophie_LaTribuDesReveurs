@@ -505,6 +505,20 @@ const SCRIPT_DATA = {
         { type: "normal", text: "- **En général**, un enfant **suit plutôt le couloir** dans LEQUEL **il est né**\n  ⇒ c'est son **couloir de référence**\n- Dans **certains cas**, certains enfants **peuvent même DEPASSER** leur **couloir de référence :**\n  - Par exemple, lorsqu'ils ont un **fort potentiel génétique** (si les **parents sont grands**, par exemple),\n  - OU **lorsque les enfants sont nés** un peu en **dessous de leur potentiel.**\n    ⇒ On parle alors de **rattrapage de courbe**.\n- Donc, il est **tout à fait possible** que [prénom_enfant] :\n  - **atteigne un couloir supérieur** à son **couloir de référence**\n  - et fasse ce **rattrapage**," },
         { type: "normal", _purpleDark: true, text: "🔥 <em>OPTION</em> : il a voulu remonter : comme [il_elle] **l'a montré** lors de sa **tentative de remontée de courbe** !" },
         { type: "normal", text: "- Les courbes, ça va **nous donne** une **bonne indication**,\n  mais ça reste un **repère**.\n  ⇒ Le **+ important,** c'est vraiment d'ETRE **à l'écoute de son enfant**" },
+        { type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"], text: "- Il y a un **2nd repère qu'on utilise** pour **se guider** : c'est la **règle d'Appert**\n- Elle nous donne des **indications sur la quantité \"théorique\" par 24h** en **fonction du poids,**" },
+        {
+          type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"],
+          text: "- 🔥 Aujourd'hui, [prénom_enfant] pèse **[poids]** kg\n  et vous me dites qu'[il_elle] boit environ <strong style=\"color:#dc2626\">XX</strong> mL sur 24 heures.",
+          trailingInfoButton: {
+            label: "Calcul règle d'Appert",
+            title: "Calcul règle d'Appert",
+            blocks: [
+              { type: "normal", text: "- La **règle d'Appert** donne la **quantité théorique de lait sur 24h** selon le **poids** de l'enfant :" },
+              { type: "normal", text: "- **Si poids < 6 kg** :\n  - (poids × 100) + **200 mL** ± 100 mL\n- **Si poids ≥ 6 kg** :\n  - (poids × 100) + **250 mL** ± 100 mL" },
+            ]
+          }
+        },
+        { type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"], text: "- Si on se réfère à la **règle d'Appert**, ses besoins théoriques en lait seraient plutôt autour de **[besoin_lait_volume]** par jour (voire plus !)." },
         { type: "normal", text: "- Je pense notamment…" },
         { type: "option_banner", leverId: "nutri_esp_long", emoji: "⏱️", showIfPb: "nutri_esp_long", variant: "orange" },
         { type: "normal", showIfPb: "nutri_esp_long", text: "- 🔥 L'**intervalle entre 2 prises** alimentaires peut être parfois assez long (<strong style=\"color:#dc2626\">XX</strong> heures)\n- A cet âge, les enfants ont **besoin de prises + rapprochés** pour s'**adapter** à leur **signaux de faim.**\n- **🎓On devrait** normalement **leur donner** : \"***à la demande***\"\n- Et se **défaire** complètement du **mythe des espacements de 4h**, .. qui n'est **basé sur RIEN du TOUT**!\n- Avec des **espacements longs, [prénom_enfant]** a du **mal à \"TENIR\" jusqu'à la prochaine prise alimentaire**\n  ⇒ On **peut imaginer** qu'[il_elle] est **comme \"affamé\"** entre 2 prises alimentaires" },
