@@ -2415,8 +2415,15 @@
                 <label class="pb-item"><input type="checkbox" name="alim" value="Allaitement mixte" data-exclusive="alim_principal"> <span>🔀 Allaitement mixte</span></label>
                 <label class="pb-item" style="border:1.5px dashed #b0b0b0"><input type="checkbox" name="alim" value="Sevrage en cours"> <span>🔄 Sevrage en cours</span></label>
               </div>
+              <div class="form-group full" id="allaitement-mode-group" style="display:none;margin-top:8px">
+                <label>Mode d'allaitement <span style="color:#aaa;font-size:11px">(plusieurs choix possibles)</span></label>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
+                  <label class="pb-item"><input type="checkbox" name="allaitement_mode" value="Allaitement au sein"> <span>🤱 Allaitement au sein</span></label>
+                  <label class="pb-item"><input type="checkbox" name="allaitement_mode" value="Allaitement au biberon"> <span>🍼 Allaitement au biberon</span></label>
+                </div>
+              </div>
               <div class="form-group full" id="type-lait-group" style="display:none;margin-top:8px">
-                <label>Type de lait</label>
+                <label>Type de lait infantile</label>
                 <select id="type-lait">
                   <option value="">–</option>
                   <option value="Lait normal aux PLV">Lait « normal » aux PLV</option>
@@ -4309,6 +4316,10 @@ function toggleTypeLait() {
   const hasBib = bib?.checked || mixte?.checked;
   const group = document.getElementById('type-lait-group');
   if (group) group.style.display = hasBib ? 'block' : 'none';
+  // Nouveau : groupe "Mode d'allaitement" visible si Allaitement maternel OU mixte coché
+  const hasAllaitement = allaitement?.checked || mixte?.checked;
+  const allaitGroup = document.getElementById('allaitement-mode-group');
+  if (allaitGroup) allaitGroup.style.display = hasAllaitement ? 'block' : 'none';
   const volGroup = document.getElementById('nutri-volume-group');
   if (volGroup) volGroup.style.display = allaitement?.checked ? 'none' : '';
   const teteeGroup = document.getElementById('nutri-tetee-group');
@@ -4561,6 +4572,9 @@ function populateFormFromClient(c) {
   setChk('medical-autre-allergie', c.autreAllergie);
   if (c.autreAllergie) { const r = document.getElementById('autre-allergie-row'); if (r) r.style.display = ''; }
   (c.alimentation||[]).forEach(v => { const el = document.querySelector(`input[name="alim"][value="${v}"]`); if (el) el.checked = true; });
+  // Restaurer les checkboxes "Mode d'allaitement"
+  document.querySelectorAll('input[name="allaitement_mode"]').forEach(cb => cb.checked = false);
+  (c.allaitementMode||[]).forEach(v => { const el = document.querySelector(`input[name="allaitement_mode"][value="${v}"]`); if (el) el.checked = true; });
   toggleTypeLait();
   document.querySelectorAll('input[name="pb"]').forEach(cb => cb.checked = false);
   (c.pbs||[]).forEach(pb => { const el = document.querySelector(`input[name="pb"][value="${pb}"]`); if (el) el.checked = true; });
@@ -4900,6 +4914,7 @@ async function saveFicheOnly() {
     ageCorrigeMois: ageCorrigeMoisVal, ageCorrigeJours: ageCorrigeJoursVal,
     besoinLait: blObj.formula,
     alimentation: [...document.querySelectorAll('input[name="alim"]:checked')].map(c=>c.value),
+    allaitementMode: [...document.querySelectorAll('input[name="allaitement_mode"]:checked')].map(c=>c.value),
     typeLait: document.getElementById('type-lait')?.value || '',
     taillePere: isNaN(taillePere)?'':taillePere,
     tailleMere: isNaN(tailleMere)?'':tailleMere,
@@ -4970,7 +4985,7 @@ async function resumeConsultation() {
     </div>`;
 }
 
-document.querySelectorAll('input[name="pb"], input[name="alim"]').forEach(cb => {
+document.querySelectorAll('input[name="pb"], input[name="alim"], input[name="allaitement_mode"]').forEach(cb => {
   cb.addEventListener('change', function() { this.closest('.pb-item')?.classList.toggle('checked', this.checked); });
 });
 
@@ -5237,6 +5252,7 @@ function startConsultation() {
     ageCorrigeMois: ageCorrigeMoisVal2, ageCorrigeJours: ageCorrigeJoursVal2,
     besoinLait: besoinLait(ageCorrige?.totalMois ?? ageReel?.totalMois ?? null, document.getElementById('poids-enfant')?.value).formula,
     alimentation: [...document.querySelectorAll('input[name="alim"]:checked')].map(c=>c.value),
+    allaitementMode: [...document.querySelectorAll('input[name="allaitement_mode"]:checked')].map(c=>c.value),
     typeLait: document.getElementById('type-lait')?.value || '',
     taillePere: isNaN(taillePere)?'':taillePere,
     tailleMere: isNaN(tailleMere)?'':tailleMere,
