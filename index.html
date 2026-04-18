@@ -2025,6 +2025,15 @@
       background: #ffffff !important;
     }
     .block-option.purple-btn .option-content { padding: 10px 16px 14px; }
+    /* Retirer tout liseré violet autour des blocs texte à l'intérieur d'un purple-btn ouvert */
+    .block-option.purple-btn .block-normal,
+    .block-option.purple-btn .block-important,
+    .block-option.purple-btn .block-conseil,
+    .block-option.purple-btn .block-empathie {
+      border: 1px solid var(--border) !important;
+      box-shadow: var(--shadow) !important;
+      background: #ffffff !important;
+    }
 
     /* OPTION DANGER (orange vif) */
     .block-option.danger {
