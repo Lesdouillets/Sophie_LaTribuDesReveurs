@@ -234,7 +234,7 @@ const SCRIPT_DATA = {
             { type: "normal", text: "- Du coup, il y a **BIEN quelque chose** qui **NE VA PAS** du côté de la **nutrition**", _noBorder: true },
           ]
         },
-        { type: "normal", text: "<div style=\"max-width:320px;margin:0 auto;text-align:left\"><ul style=\"margin:0;padding-left:20px\"><li style=\"line-height:1.6\">MAIS la <strong>bonne nouvelle</strong> c'est que :</li><li style=\"line-height:1.6\"><strong>TOUT</strong> ce que vous m'avez partagé a du sens, est <strong>explicable</strong></li><li style=\"line-height:1.6\">Mais <strong>SURTOUT</strong> que c'est <strong>solutionnable</strong> !</li><li style=\"line-height:1.6\">ET que je peux vous <strong>accompagner</strong> pour les troubles du sommeil de [prénom_enfant]</li></ul></div>" },
+        { type: "normal", text: "<div style=\"max-width:640px;margin:0 auto;text-align:left\"><ul style=\"margin:0;padding-left:20px\"><li style=\"line-height:1.6\">MAIS la <strong>bonne nouvelle</strong> c'est que :</li><li style=\"line-height:1.6\"><strong>TOUT</strong> ce que vous m'avez partagé a du sens, est <strong>explicable</strong></li><li style=\"line-height:1.6\">Mais <strong>SURTOUT</strong> que c'est <strong>solutionnable</strong> !</li><li style=\"line-height:1.6\">ET que je peux vous <strong>accompagner</strong> pour les troubles du sommeil de [prénom_enfant]</li></ul></div>" },
         { type: "separator", text: "⚙️ Leviers identifiés" },
         { type: "leviers_dynamiques" },
         { type: "leviers_count" },
