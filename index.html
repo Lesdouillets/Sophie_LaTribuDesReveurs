@@ -815,6 +815,31 @@
     .inline-conditional-section.collapsed .inline-conditional-content { display: none; }
     .inline-conditional-section.collapsed .inline-conditional-arrow { transform: rotate(-90deg); }
 
+    /* III. Découverte — étapes avec état actif/grisé */
+    .decouverte-steps .dec-step-title {
+      background: #d1d5db;
+      color: #6b7280;
+      opacity: 0.7;
+    }
+    .decouverte-steps .dec-step-title:hover {
+      background: #b5bbc4;
+      opacity: 1;
+    }
+    .decouverte-steps[data-active-step="1"] .dec-step-title[data-step="1"],
+    .decouverte-steps[data-active-step="2"] .dec-step-title[data-step="2"],
+    .decouverte-steps[data-active-step="3"] .dec-step-title[data-step="3"] {
+      background: linear-gradient(90deg, #1a2a42, #4a5f82);
+      color: white;
+      opacity: 1;
+      box-shadow: 0 3px 10px rgba(26,42,66,0.28);
+    }
+    .decouverte-steps .dec-step-content { opacity: 0.35; }
+    .decouverte-steps[data-active-step="1"] .dec-step-content[data-step="1"],
+    .decouverte-steps[data-active-step="2"] .dec-step-content[data-step="2"],
+    .decouverte-steps[data-active-step="3"] .dec-step-content[data-step="3"] {
+      opacity: 1;
+    }
+
     /* Calculateur Appert : retirer les flèches du input number */
     #appert-poids-input::-webkit-outer-spin-button,
     #appert-poids-input::-webkit-inner-spin-button {
@@ -3998,7 +4023,7 @@
   </div>
 </div>
 
-<script src="script-data.js?v=191"></script>
+<script src="script-data.js?v=192"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -5155,6 +5180,15 @@ function calcAge(dateStr, referenceStr) {
 }
 
 // Calculateur interactif dans le panneau "Calcul règle d'Appert"
+// Sélection d'une étape dans la grille 3-colonnes de III. Découverte
+// L'étape active prend la couleur bleu marine, les autres sont grisées.
+function setDecouverteStep(el, step) {
+  const grid = el.closest('.decouverte-steps');
+  if (!grid) return;
+  grid.setAttribute('data-active-step', String(step));
+}
+window.setDecouverteStep = setDecouverteStep;
+
 function updateAppertVolume() {
   const input = document.getElementById('appert-poids-input');
   const resultEl = document.getElementById('appert-volume-result');
