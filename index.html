@@ -2103,6 +2103,18 @@
       border: 3px dashed #7c3aed !important;
       border-radius: 14px !important;
     }
+    /* Forcer le fond violet sur TOUS les .block-option.purple à l'intérieur d'un action ouvert
+       (couvre aussi "Si Pas pris de RDV" dans OUI) */
+    .block-option.action.open-action .block-option.purple {
+      background: #f5f0ff !important;
+      border: 2px solid #7c3aed !important;
+    }
+    .block-option.action.open-action .block-option.purple .option-content {
+      background: #f5f0ff !important;
+    }
+    .block-option.action.open-action .block-option.purple .option-header {
+      background: transparent !important;
+    }
     /* Quand fermé : header agrandi en pilule verticale (emoji + titre empilés) */
     .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap > .block-option.purple:not(:has(> .option-content.open)) > .option-header {
       flex-direction: column !important;
