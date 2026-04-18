@@ -2029,10 +2029,30 @@
     .block-option.purple-btn .block-normal,
     .block-option.purple-btn .block-important,
     .block-option.purple-btn .block-conseil,
-    .block-option.purple-btn .block-empathie {
+    .block-option.purple-btn .block-empathie,
+    .block-option.purple-btn .block-option.purple .block-normal,
+    .block-option.purple-btn .block-option.purple .block-important,
+    .block-option.purple-btn .block-option.purple .block-conseil,
+    .block-option.purple-btn .block-option.purple .block-empathie,
+    .block-option.purple-btn .block-option.purple .option-content .block:not(.block-question):not(.block-conseil-vert):not(.block-fin-consultation) {
       border: 1px solid var(--border) !important;
       box-shadow: var(--shadow) !important;
       background: #ffffff !important;
+      border-color: var(--border) !important;
+    }
+    /* Le container nested purple à l'intérieur d'un purple-btn :
+       on veut un mini-bouton violet avec bordure dashed (comme le parent purple-btn),
+       mais les blocs texte à l'intérieur restent en blanc/gris (déjà géré plus haut). */
+    .block-option.purple-btn .block-option.purple {
+      background: #f5f0ff !important;
+      border: 3px dashed #7c3aed !important;
+      border-radius: 12px !important;
+    }
+    .block-option.purple-btn .block-option.purple .option-content {
+      background: #f5f0ff !important;
+    }
+    .block-option.purple-btn .block-option.purple .option-header {
+      background: transparent !important;
     }
 
     /* OPTION DANGER (orange vif) */
@@ -4097,7 +4117,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=210"></script>
+<script src="script-data.js?v=211"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7078,7 +7098,11 @@ function renderBlockInner(b, i, sectionId, depth, path) {
           rows += `<span></span><span>•</span><span>${inlineFmt(line)}</span>`;
         }
       });
-      const restHtml = restPara.trim() ? `<div style="margin-top:22px;padding-left:46px">${substituteVars(restPara)}</div>` : '';
+      // Si la dernière ligne de la grille finit par ":", on réduit la marge (la suite est une liste introduite par ":")
+      const lastLine = firstLines[firstLines.length - 1] || '';
+      const lastEndsColon = /:\s*$/.test(lastLine.trim());
+      const restMarginTop = lastEndsColon ? 2 : 22;
+      const restHtml = restPara.trim() ? `<div style="margin-top:${restMarginTop}px;padding-left:46px">${substituteVars(restPara)}</div>` : '';
       return `<div class="block block-question">
         <div class="q-text" contenteditable="true"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start">${rows}</div>${restHtml}</div>
         ${choiceHtml}
