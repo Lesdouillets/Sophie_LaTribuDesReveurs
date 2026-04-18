@@ -515,6 +515,7 @@ const SCRIPT_DATA = {
             blocks: [
               { type: "normal", text: "- La **règle d'Appert** donne la **quantité théorique de lait sur 24h** selon le **poids** de l'enfant :" },
               { type: "normal", text: "- **Si poids < 6 kg** :\n  - (poids × 100) + **200 mL** ± 100 mL\n- **Si poids ≥ 6 kg** :\n  - (poids × 100) + **250 mL** ± 100 mL" },
+              { type: "appert_calculator" },
             ]
           }
         },
