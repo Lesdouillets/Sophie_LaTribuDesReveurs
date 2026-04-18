@@ -799,11 +799,26 @@
     .inline-conditional-section.collapsed .inline-conditional-content { display: none; }
     .inline-conditional-section.collapsed .inline-conditional-arrow { transform: rotate(-90deg); }
 
-    /* Bandeau parent "catégorie" (Nutrition, Rythme, etc.) affiché au-dessus du groupe de sections */
+    /* Wrapper groupe par catégorie : encadré coloré qui contient le bandeau parent + les sections */
+    .inline-conditional-category-group {
+      margin: 22px 0 18px;
+      border: 2px solid transparent;
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .inline-conditional-category-group[data-category="confort_physique"] { border-color: #fca5a5; background: #fef5f5; }
+    .inline-conditional-category-group[data-category="nutrition"]       { border-color: #fdba74; background: #fff7ed; }
+    .inline-conditional-category-group[data-category="rythme"]          { border-color: #86efac; background: #f0fdf4; }
+    .inline-conditional-category-group[data-category="strategie"]       { border-color: #93c5fd; background: #eff6ff; }
+    .inline-conditional-category-group[data-category="env"]             { border-color: #c4b5fd; background: #f5f3ff; }
+    .inline-conditional-category-group[data-category="relationnel"]     { border-color: #f9a8d4; background: #fdf2f8; }
+    .inline-conditional-category-group[data-category="souhait"]         { border-color: #5eead4; background: #f0fdfa; }
+
+    /* Bandeau parent "catégorie" (Nutrition, Rythme, etc.) placé EN HAUT du groupe, à l'intérieur */
     .inline-conditional-parent-banner {
-      margin: 22px 0 8px;
+      margin: 0 0 12px;
       padding: 14px 22px;
-      border-radius: 14px;
+      border-radius: 12px;
       color: white;
       font-weight: 900;
       font-size: 17px;
@@ -6519,7 +6534,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
           <button type="button" class="btn-close-conditional" onclick="toggleConditionalSection('${s.id}')">✕ Fermer cette section</button>
         </div>
       </div>`).join('');
-      return parentBannerHtml + sectionsHtml;
+      return `<div class="inline-conditional-category-group" data-category="${cat}">${parentBannerHtml}${sectionsHtml}</div>`;
     }).join('');
   }
 
