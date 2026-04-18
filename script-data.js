@@ -860,20 +860,20 @@ const SCRIPT_DATA = {
         blocks: [
           { type: "normal", text: "- Ok je **vous entends**\n- Et **merci de me le dire** !" },
           {
-            type: "option", label: "Si pas OK avec les valeurs/objectifs", style: "purple",
+            type: "option", label: "Si pas OK avec les valeurs/objectifs", emoji: "🤔", style: "purple",
             blocks: [
               { type: "question", text: "Qu'est-CE QUI… **dans ce que j'ai proposé, ne vous ressemble PAS / ne vous parle PAS** ?\nEt à **l'inverse**, qu'est-ce qui serait **+ juste pour vous** ?" }
             ]
           },
           {
-            type: "option", label: "Si c'est TROP ⇒ il faut reprendre", style: "purple",
+            type: "option", label: "Si c'est TROP ⇒ il faut reprendre", emoji: "😮‍💨", style: "purple",
             blocks: [
               { type: "normal", text: "- OK, on est parti sur **qqch d'un peu trop compliqué**\n- **Ce qui compte**, c'est que:\n  - vous vous **sentiez soutenu(e)**,\n  - **PAS sous pression**\n    - ⇒ On **va simplifier**" },
               { type: "question", text: "**Là**, qu'est-ce qui vous **semble faisable, même tout petit** ?\nEst-ce qu'il y a **besoin** de **mettre + de progressivité** ?" }
             ]
           },
           {
-            type: "option", label: "Si parent perdu", style: "purple",
+            type: "option", label: "Si parent perdu", emoji: "🌀", style: "purple",
             blocks: [
               { type: "question", text: "J'ai **l'impression que c'est flou** pour vous là ⇒ est-ce que **je me trompe** ?" },
               { type: "important", text: "- 🔥 Si je devais vous **proposer 1 seule chose** pour commencer, ce serait <strong style=\"color:#C0392B\">XXX</strong>" }
