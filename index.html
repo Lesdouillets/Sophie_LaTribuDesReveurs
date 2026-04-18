@@ -1522,18 +1522,24 @@
       50%      { box-shadow: 0 10px 44px rgba(220,38,38,0.65), 0 2px 8px rgba(0,0,0,0.08); transform: scale(1.03); }
     }
 
-    /* OPTION PLEURS (bleu pâle) */
+    /* OPTION PLEURS — style "note / tip" avec barre d'accent latérale bleue */
     .block-option.pleurs {
-      background: #ffffff;
-      border-color: #2980b9;
+      background: #f0f7fc;
+      border: 1px solid #d6e8f3;
+      border-left: 5px solid #2980b9;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(41,128,185,0.08);
     }
-    .block-option.pleurs .option-header:hover { background: rgba(41,128,185,0.15); }
+    .block-option.pleurs .option-header {
+      padding-left: 14px;
+    }
+    .block-option.pleurs .option-header:hover { background: rgba(41,128,185,0.08); }
     .block-option.pleurs .option-arrow { color: #1a5276; }
-    .block-option.pleurs .option-label-text { color: #1a5276; font-weight: 700; }
-    .block-option.pleurs .option-content { background: #ffffff; }
-    .block-option.pleurs .block-empathie { border: none; box-shadow: none; }
+    .block-option.pleurs .option-label-text { color: #1a5276; font-weight: 700; font-style: italic; }
+    .block-option.pleurs .option-content { background: #f0f7fc; }
+    .block-option.pleurs .block-empathie { border: none; box-shadow: none; background: transparent; }
     .block-option.pleurs .block-empathie strong { color: var(--text); }
-    .block-option.pleurs .block-normal { border: none !important; box-shadow: none !important; background: #ffffff !important; }
+    .block-option.pleurs .block-normal { border: none !important; box-shadow: none !important; background: transparent !important; }
     .option-emoji { font-size: 18px; line-height: 1; flex-shrink: 0; }
 
     /* OPTION ACTION (bouton carré — fermé) */
@@ -3964,7 +3970,7 @@
   </div>
 </div>
 
-<script src="script-data.js?v=183"></script>
+<script src="script-data.js?v=184"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
