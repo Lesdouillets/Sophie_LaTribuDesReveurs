@@ -2004,7 +2004,7 @@
       transform: translateY(-1px);
       box-shadow: 0 4px 14px rgba(124,58,237,0.28);
     }
-    /* Ouvert : plein écran (100% largeur) + carte BLANCHE + bordure dashed violet autour */
+    /* Ouvert : plein écran (100% largeur) + fond violet clair + bordure dashed violet autour */
     .block-option.purple-btn.open-action {
       width: auto !important;
       max-width: none !important;
@@ -2012,20 +2012,21 @@
       display: block !important;
       border-radius: var(--radius);
       margin: 10px 0 !important;
-      background: #ffffff !important;
+      background: #f5f0ff !important;
       border: 3px dashed #7c3aed !important;
       box-sizing: border-box;
     }
     .block-option.purple-btn.open-action > .option-content {
       width: auto !important;
       max-width: none !important;
-      background: #ffffff !important;
+      background: #f5f0ff !important;
     }
     .block-option.purple-btn.open-action > .option-header {
-      background: #ffffff !important;
+      background: #f5f0ff !important;
     }
     .block-option.purple-btn .option-content { padding: 10px 16px 14px; }
-    /* Retirer tout liseré violet autour des blocs texte à l'intérieur d'un purple-btn ouvert */
+    /* Retirer TOUT liseré et fond sur les blocs texte à l'intérieur d'un purple-btn ouvert
+       → ils deviennent transparents et laissent apparaître le fond violet clair de la carte */
     .block-option.purple-btn .option-content .block.block-normal,
     .block-option.purple-btn .option-content .block.block-important,
     .block-option.purple-btn .option-content .block.block-conseil,
@@ -2034,10 +2035,9 @@
     .block-option.purple-btn .option-content .edit-block-wrap > .block.block-important,
     .block-option.purple-btn .option-content .edit-block-wrap > .block.block-conseil,
     .block-option.purple-btn .option-content .edit-block-wrap > .block.block-empathie {
-      border: 1px solid var(--border) !important;
-      border-color: var(--border) !important;
-      box-shadow: var(--shadow) !important;
-      background: #ffffff !important;
+      border: none !important;
+      box-shadow: none !important;
+      background: transparent !important;
     }
     /* Le container nested purple à l'intérieur d'un purple-btn :
        mini-bouton violet compact, centré, avec bordure dashed (comme le parent purple-btn) */
