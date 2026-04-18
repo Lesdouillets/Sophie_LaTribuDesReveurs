@@ -234,7 +234,7 @@ const SCRIPT_DATA = {
             { type: "normal", text: "- Du coup, il y a **BIEN quelque chose** qui **NE VA PAS** du côté de la **nutrition**", _noBorder: true },
           ]
         },
-        { type: "normal", text: "<div style=\"width:fit-content;max-width:100%;margin:0 auto;text-align:left\"><ul style=\"margin:0;padding-left:20px\"><li style=\"line-height:1.6\">MAIS la <strong>bonne nouvelle</strong> c'est que :</li><li style=\"line-height:1.6\"><strong>TOUT</strong> ce que vous m'avez partagé a du sens, est <strong>explicable</strong></li><li style=\"line-height:1.6\">Mais <strong>SURTOUT</strong> que c'est <strong>solutionnable</strong> !</li><li style=\"line-height:1.6\">ET que je peux vous <strong>accompagner</strong> pour les troubles du sommeil de [prénom_enfant]</li></ul></div>" },
+        { type: "normal", _noBorder: true, text: "<div style=\"width:fit-content;max-width:100%;margin:0 auto;text-align:left;background:#ffffff;padding:16px 22px;border-radius:12px;border:1px solid #c8d3e5;box-shadow:0 2px 6px rgba(45,63,92,0.08)\"><ul style=\"margin:0;padding-left:20px\"><li style=\"line-height:1.6\">MAIS la <strong>bonne nouvelle</strong> c'est que :</li><li style=\"line-height:1.6\"><strong>TOUT</strong> ce que vous m'avez partagé a du sens, est <strong>explicable</strong></li><li style=\"line-height:1.6\">Mais <strong>SURTOUT</strong> que c'est <strong>solutionnable</strong> !</li><li style=\"line-height:1.6\">ET que je peux vous <strong>accompagner</strong> pour les troubles du sommeil de [prénom_enfant]</li></ul></div>" },
         { type: "separator", text: "⚙️ Leviers identifiés" },
         { type: "leviers_dynamiques" },
         { type: "leviers_count" },
