@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(node -e \"try { require\\('./script-data.js'\\); console.log\\('OK'\\); } catch\\(e\\) { console.log\\('ERROR:', e.message\\); }\")",
-      "Read(//c/c/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/**)"
+      "Read(//c/c/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/**)",
+      "Bash(curl -s 'https://lesdouillets.github.io/Sophie_LaTribuDesReveurs/sw.js')",
+      "Bash(curl -sI 'https://lesdouillets.github.io/Sophie_LaTribuDesReveurs/')",
+      "Bash(curl -s 'https://lesdouillets.github.io/Sophie_LaTribuDesReveurs/script-data.js?v=171')",
+      "Bash(curl -s 'https://lesdouillets.github.io/Sophie_LaTribuDesReveurs/index.html')"
     ]
   }
 }

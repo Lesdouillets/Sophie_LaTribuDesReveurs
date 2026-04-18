@@ -799,6 +799,26 @@
     .inline-conditional-section.collapsed .inline-conditional-content { display: none; }
     .inline-conditional-section.collapsed .inline-conditional-arrow { transform: rotate(-90deg); }
 
+    /* Bandeau parent "catégorie" (Nutrition, Rythme, etc.) affiché au-dessus du groupe de sections */
+    .inline-conditional-parent-banner {
+      margin: 22px 0 8px;
+      padding: 14px 22px;
+      border-radius: 14px;
+      color: white;
+      font-weight: 900;
+      font-size: 17px;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.18);
+    }
+    .inline-conditional-parent-banner[data-category="confort_physique"] { background: linear-gradient(90deg, #b91c1c, #ef4444); }
+    .inline-conditional-parent-banner[data-category="nutrition"]       { background: linear-gradient(90deg, #c2410c, #f97316); }
+    .inline-conditional-parent-banner[data-category="rythme"]          { background: linear-gradient(90deg, #166534, #22c55e); }
+    .inline-conditional-parent-banner[data-category="strategie"]       { background: linear-gradient(90deg, #1e40af, #3b82f6); }
+    .inline-conditional-parent-banner[data-category="env"]             { background: linear-gradient(90deg, #6d28d9, #8b5cf6); }
+    .inline-conditional-parent-banner[data-category="relationnel"]     { background: linear-gradient(90deg, #be185d, #ec4899); }
+    .inline-conditional-parent-banner[data-category="souhait"]         { background: linear-gradient(90deg, #0f766e, #14b8a6); }
+
     /* ═══ Couleurs par catégorie parente ═══ */
     .inline-conditional-section[data-category="confort_physique"] {
       border-color: #fca5a5; background: #fef5f5;
@@ -6472,9 +6492,22 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     // Affiche le contenu des sections conditionnelles dont la problématique est cochée, à la suite de V. Diagnostic
     const checkedSections = SCRIPT_DATA.conditional.filter(s => s.problematiqueId && isProblematiqueMatched(s.problematiqueId, state.selectedPbs));
     if (checkedSections.length === 0) return '';
-    return checkedSections.map(s => {
+    // Regrouper par catégorie parente (en préservant l'ordre d'apparition)
+    const groupsByCat = [];
+    const catIndexMap = {};
+    checkedSections.forEach(s => {
       const cat = getPbCategoryFromValue(s.problematiqueId) || 'autre';
-      return `
+      if (catIndexMap[cat] === undefined) {
+        catIndexMap[cat] = groupsByCat.length;
+        groupsByCat.push({ cat, sections: [] });
+      }
+      groupsByCat[catIndexMap[cat]].sections.push(s);
+    });
+    return groupsByCat.map(group => {
+      const { cat, sections } = group;
+      const catLabel = (typeof PB_CATEGORY_LABELS !== 'undefined' && PB_CATEGORY_LABELS[cat]) ? PB_CATEGORY_LABELS[cat] : cat;
+      const parentBannerHtml = `<div class="inline-conditional-parent-banner" data-category="${cat}">${catLabel}</div>`;
+      const sectionsHtml = sections.map(s => `
       <div class="inline-conditional-section" data-section-id="${s.id}" data-category="${cat}">
         <div class="inline-conditional-header" onclick="toggleConditionalSection('${s.id}')">
           <span class="inline-conditional-emoji">${s.emoji || '📄'}</span>
@@ -6485,7 +6518,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
           ${renderBlocks(getOverrideBlocks(s), s.id)}
           <button type="button" class="btn-close-conditional" onclick="toggleConditionalSection('${s.id}')">✕ Fermer cette section</button>
         </div>
-      </div>`;
+      </div>`).join('');
+      return parentBannerHtml + sectionsHtml;
     }).join('');
   }
 
@@ -7121,11 +7155,12 @@ function substituteVars(text) {
       /il va y avoir\b/gi,
       /il arrive\b/gi,
       /il importe\b/gi,
-      /il est (?:important|possible|nécessaire|conseillé|recommandé|préférable|normal|fréquent|rare|difficile|essentiel|utile|probable|certain|vrai|clair|évident|temps)\b/gi,
-      /il est (?:tout à fait|simplement|vraiment|plutôt|assez|souvent|parfois|bien|très|aussi|également)\s+(?:important|possible|nécessaire|conseillé|recommandé|préférable|normal|fréquent|rare|difficile|essentiel|utile|probable|certain|vrai|clair|évident)\b/gi,
-      // "il est né" / "il est nés" / "il est née" — référence générique à "un enfant" (non-impersonnel mais pas spécifique au bébé)
-      /\bun enfant\b[^.]*?\bil est né(?:e|s|es)?\b/gi,
-      /\ble couloir dans (?:LEQUEL|lequel) il est né(?:e|s|es)?\b/gi,
+      // Utilisation de (?:[\s*]+) pour accepter espaces ET asterisks markdown (**bold**)
+      /il est(?:[\s*]+)(?:important|possible|nécessaire|conseillé|recommandé|préférable|normal|fréquent|rare|difficile|essentiel|utile|probable|certain|vrai|clair|évident|temps)/gi,
+      /il est(?:[\s*]+)(?:tout à fait|simplement|vraiment|plutôt|assez|souvent|parfois|bien|très|aussi|également)(?:[\s*]+)(?:important|possible|nécessaire|conseillé|recommandé|préférable|normal|fréquent|rare|difficile|essentiel|utile|probable|certain|vrai|clair|évident)/gi,
+      // "il est né" / "il est nés" / "il est née" — référence générique à "un enfant"
+      /\bun enfant\b[^.]*?il est(?:[\s*]+)né(?:e|s|es)?(?![a-zA-Zàâäéèêëïîôöùûüÿ])/gi,
+      /le couloir dans (?:LEQUEL|lequel)(?:[\s*]+)il est(?:[\s*]+)né(?:e|s|es)?(?![a-zA-Zàâäéèêëïîôöùûüÿ])/gi,
       /il peut (?:être|arriver|sembler|y avoir)\b/gi,
       /il\b.{0,5}PEUT y avoir/gi,
       /il semble\b/gi,
