@@ -2047,7 +2047,7 @@
       border-radius: 12px !important;
       width: 260px !important;
       max-width: 260px !important;
-      margin: 14px auto !important;
+      margin: 14px 0 !important;
     }
     .block-option.purple-btn .block-option.purple:not(:has(> .option-content.open)) > .option-header {
       flex-direction: column !important;
@@ -7284,7 +7284,7 @@ function toggleOption(header) {
   const content = header.nextElementSibling;
   const toggle = header.querySelector('.option-toggle');
   const arrow = header.querySelector('.option-arrow');
-  const optionDiv = (header.parentElement.classList.contains('action') || header.parentElement.classList.contains('pleurs') || header.parentElement.classList.contains('purple-btn')) ? header.parentElement : null;
+  const optionDiv = (header.parentElement.classList.contains('action') || header.parentElement.classList.contains('pleurs') || header.parentElement.classList.contains('purple-btn') || header.parentElement.classList.contains('purple')) ? header.parentElement : null;
   if (optionDiv) {
     const mutexGroup = optionDiv.dataset.mutexGroup || null;
     const willOpen = !content.classList.contains('open');
