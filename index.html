@@ -2115,6 +2115,22 @@
     .block-option.action.open-action .block-option.purple .option-header {
       background: transparent !important;
     }
+    /* Les blocs texte à l'intérieur d'un nested purple (dans un action ouvert) → fond violet transparent */
+    .block-option.action.open-action .block-option.purple .block-normal,
+    .block-option.action.open-action .block-option.purple .block-empathie,
+    .block-option.action.open-action .block-option.purple .block-important,
+    .block-option.action.open-action .block-option.purple .block-conseil {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    /* Pour les 3 purple du mutex "conclusion-obj" ouverts : même hauteur min */
+    .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap > .block-option.purple:has(> .option-content.open) {
+      min-height: 260px;
+    }
+    .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap > .block-option.purple:has(> .option-content.open) > .option-content.open {
+      min-height: 180px;
+    }
     /* Quand fermé : header agrandi en pilule verticale (emoji + titre empilés) */
     .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap > .block-option.purple:not(:has(> .option-content.open)) > .option-header {
       flex-direction: column !important;
