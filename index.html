@@ -6904,7 +6904,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     if (!obj) return '';
     const objHtml = obj.replace(/\n/g, '<br>');
     return `<div class="block block-pb-recap">
-      <div class="pb-recap-intro"><u>Vous m'avez écrit :</u></div>
+      <div class="pb-recap-intro">• <u>Vous m'avez écrit :</u></div>
       <div class="pb-recap-text"><em>${objHtml}</em></div>
     </div>`;
   }
