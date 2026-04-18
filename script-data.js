@@ -40,6 +40,17 @@ const PB_LABELS = {
   'relationnel_lit_parental': 'Vient dans le lit parental',
   'relationnel_conflit_autres': "En « conflit » sur d'autres sujets que le sommeil",
   'relationnel_rappels': 'Multiples rappels après le coucher',
+  // Nutrition — Courbe de poids qui diminue
+  'nutri_courbe_declinante': 'Courbe de poids qui diminue',
+  'nutri_esp_long': 'Espacement trop long entre 2 prises',
+  'nutri_esp_court': 'Espacement trop court entre 2 prises',
+  'nutri_vol_petit': 'Volume de biberon trop petit',
+  'nutri_vol_gros': 'Volume de biberon trop gros',
+  'nutri_vol_longtemps': 'Biberon bu trop longtemps',
+  'nutri_tetee': 'Tétée — baisse de lactation',
+  'nutri_tetee_longue': 'Tétées longues',
+  'nutri_tetee_greve': 'Grève des tétées',
+  'nutri_tetee_mode_garde': 'Baisse de lactation — mode de garde',
   // Souhaits
   'souhait_tetine': 'Suppression de la tétine',
   'souhait_position_dorsale': 'Vers une position dorsale',
