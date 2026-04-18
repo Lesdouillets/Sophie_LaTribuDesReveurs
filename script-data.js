@@ -180,20 +180,6 @@ const SCRIPT_DATA = {
             }}
           ]
         },
-        {
-          type: "option", label: "Dépendance à la tétine\nSouhait de garder ou non ?", emoji: "🍭", style: "purple-btn", hideIfPb: "souhait_tetine",
-          blocks: [
-            { type: "normal", text: "- J'ai une **petite question** concernant la **tétine** de [prénom_enfant].\n- Aujourd'hui, [il_elle] a une **dépendance à la tétine** pour s'endormir.\n\n- **Il n'y a PAS de bonne ou de mauvaise réponse** :\n  - certains parents **préfèrent la garder** un peu plus longtemps,\n  - d'**autres** sont **prêts à faire la transition**.\n\n- L'**idée** est de voir ce qui **correspond le mieux** à votre **famille**." },
-            { type: "question", text: "Alors, qu'est-ce qui vous **semble le + juste pour vous**, aujourd'hui :\n- **Garder la tétine**\n- OU **supprimer la tétine** ?", choice: {
-              id: "obj_tetine",
-              required: true,
-              options: [
-                { icon: "✅", label: "Garder la tétine", value: "garder", variant: "positive" },
-                { icon: "❌", label: "Supprimer la tétine", value: "supprimer", variant: "negative" }
-              ]
-            }}
-          ]
-        },
       ]
     },
 
