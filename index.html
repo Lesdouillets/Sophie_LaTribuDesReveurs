@@ -1522,36 +1522,43 @@
       50%      { box-shadow: 0 10px 44px rgba(220,38,38,0.65), 0 2px 8px rgba(0,0,0,0.08); transform: scale(1.03); }
     }
 
-    /* OPTION PLEURS — bouton pill (ovale) bleu clair avec bordure épaisse */
+    /* OPTION PLEURS — pill centré (même largeur que le bouton action rouge) */
     .block-option.pleurs {
-      display: inline-block;
-      width: auto;
+      width: 150px;
       background: #e6f2fb;
       border: 3px solid #2980b9;
       border-radius: 999px;
       box-shadow: 0 2px 8px rgba(41,128,185,0.18);
       margin-left: auto; margin-right: auto;
-      padding: 0;
       transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
     }
     .block-option.pleurs > .option-header {
-      padding: 10px 22px;
-      gap: 10px;
+      flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px 12px; gap: 8px; min-height: 160px;
+    }
+    .block-option.pleurs > .option-header > span { flex-direction: column; align-items: center; }
+    .block-option.pleurs > .option-header .option-emoji { font-size: 36px; }
+    .block-option.pleurs > .option-header .option-arrow { display: none; }
+    .block-option.pleurs > .option-header .option-toggle { display: none; }
+    .block-option.pleurs > .option-header .option-label-text {
+      color: #1a5276; font-weight: 800; font-size: 12px; text-align: center; line-height: 1.3;
     }
     .block-option.pleurs:hover {
       background: #d3e9f7;
       transform: translateY(-1px);
       box-shadow: 0 4px 14px rgba(41,128,185,0.28);
     }
-    .block-option.pleurs .option-arrow { color: #1a5276; }
-    .block-option.pleurs .option-label-text { color: #1a5276; font-weight: 800; }
-    /* Quand le bouton est ouvert, on revient à une carte rectangulaire pour le contenu */
+    /* Quand le bouton est ouvert, s'étend en carte rectangulaire pour le contenu */
     .block-option.pleurs.open-action {
-      display: block;
-      width: auto;
-      border-radius: 12px;
-      background: #f0f7fc;
+      width: 100%; border-radius: var(--radius); margin-left: 0; margin-right: 0;
+      background: #f0f7fc; border: 1.5px solid #2980b9;
     }
+    .block-option.pleurs.open-action > .option-header {
+      flex-direction: row; min-height: 0; padding: 12px 16px;
+    }
+    .block-option.pleurs.open-action > .option-header > span { flex-direction: row; }
+    .block-option.pleurs.open-action > .option-header .option-emoji { font-size: 20px; }
+    .block-option.pleurs.open-action > .option-header .option-label-text { font-size: 14px; font-style: italic; }
     .block-option.pleurs .option-content { background: #f0f7fc; padding: 10px 16px 14px; }
     .block-option.pleurs .block-empathie { border: none; box-shadow: none; background: transparent; }
     .block-option.pleurs .block-empathie strong { color: var(--text); }
