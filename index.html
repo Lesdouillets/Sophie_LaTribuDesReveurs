@@ -3885,7 +3885,7 @@
   </div>
 </div>
 
-<script src="script-data.js?v=170"></script>
+<script src="script-data.js?v=171"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7072,6 +7072,8 @@ function substituteVars(text) {
     .replace(/\[sil_sielle\]/g, isFille ? 'si elle' : "s'il")
     .replace(/\[nourri_nourrie\]/g, isFille ? 'nourrie' : 'nourri')
     .replace(/\[couche_couchee\]/g, isFille ? 'couchée' : 'couché')
+    .replace(/\[ne_nee\]/g, isFille ? 'née' : 'né')
+    .replace(/\[stabilise_stabilisee\]/g, isFille ? 'stabilisée' : 'stabilisé')
     .replace(/\[enthousiaste_enthousiaste\]/g, 'enthousiaste')
     .replace(/\[besoin_nuit\]/g, getBesoinNuit())
     .replace(/\[pb_text\]/g, pb)
@@ -7120,6 +7122,10 @@ function substituteVars(text) {
       /il arrive\b/gi,
       /il importe\b/gi,
       /il est (?:important|possible|nécessaire|conseillé|recommandé|préférable|normal|fréquent|rare|difficile|essentiel|utile|probable|certain|vrai|clair|évident|temps)\b/gi,
+      /il est (?:tout à fait|simplement|vraiment|plutôt|assez|souvent|parfois|bien|très|aussi|également)\s+(?:important|possible|nécessaire|conseillé|recommandé|préférable|normal|fréquent|rare|difficile|essentiel|utile|probable|certain|vrai|clair|évident)\b/gi,
+      // "il est né" / "il est nés" / "il est née" — référence générique à "un enfant" (non-impersonnel mais pas spécifique au bébé)
+      /\bun enfant\b[^.]*?\bil est né(?:e|s|es)?\b/gi,
+      /\ble couloir dans (?:LEQUEL|lequel) il est né(?:e|s|es)?\b/gi,
       /il peut (?:être|arriver|sembler|y avoir)\b/gi,
       /il\b.{0,5}PEUT y avoir/gi,
       /il semble\b/gi,
