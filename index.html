@@ -646,6 +646,22 @@
         0 4px 10px rgba(100,160,120,0.15),
         inset 0 1px 0 rgba(255,255,255,0.65);
     }
+    /* Orange TRÈS CLAIR pour les sous-bandeaux nutrition */
+    .block-option-banner.variant-orange.banner-sublevel {
+      background: linear-gradient(135deg, #fef1e0, #fff6ea);
+      color: #7c2d12;
+      box-shadow:
+        0 0 0 1px rgba(253,186,116,0.20),
+        0 2px 6px rgba(245,158,11,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.50);
+    }
+    .block-option-banner.variant-orange.banner-sublevel:hover {
+      filter: brightness(1.02);
+      box-shadow:
+        0 0 0 1px rgba(253,186,116,0.30),
+        0 4px 10px rgba(245,158,11,0.14),
+        inset 0 1px 0 rgba(255,255,255,0.65);
+    }
     /* Retrait supplémentaire pour les wrappers après un sous-bandeau */
     .edit-block-wrap.after-sub-option-banner {
       margin-left: 48px;
@@ -3940,7 +3956,7 @@
   </div>
 </div>
 
-<script src="script-data.js?v=178"></script>
+<script src="script-data.js?v=179"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -4033,7 +4049,7 @@ function cleanStaleOverrides() {
     ...(SCRIPT_DATA.planAction || []),
     SCRIPT_DATA.conclusion
   ].filter(Boolean);
-  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice'];
+  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','appert_calculator'];
   let changed = false;
   for (const sectionId of Object.keys(state.scriptOverrides)) {
     const src = allSections.find(s => s.id === sectionId);
@@ -5095,6 +5111,19 @@ function calcAge(dateStr, referenceStr) {
   strCourt = strCourt.trim() || '0 j';
   return { totalMois, totalJours, str, strCourt };
 }
+
+// Calculateur interactif dans le panneau "Calcul règle d'Appert"
+function updateAppertVolume() {
+  const input = document.getElementById('appert-poids-input');
+  const resultEl = document.getElementById('appert-volume-result');
+  if (!input || !resultEl) return;
+  const p = parseFloat(input.value);
+  if (isNaN(p) || p <= 0) { resultEl.textContent = '–'; return; }
+  const add = p < 6 ? 200 : 250;
+  const vol = Math.round(p * 100 + add);
+  resultEl.textContent = vol + ' mL (± 100 mL)';
+}
+window.updateAppertVolume = updateAppertVolume;
 
 function besoinLait(mois, poids) {
   // Returns { formula, volume } — volume is the calculated value without ±100
@@ -6701,6 +6730,28 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     return `<button type="button" class="info-btn" onclick="openInfoPanel('${btnId}')"><span class="info-btn-emoji">💡</span><span>${label}</span></button>`;
   }
 
+  // Calculateur interactif règle d'Appert : input poids → volume 24h
+  if (b.type === 'appert_calculator') {
+    const initPoids = (state && state.client && state.client.poids) || '';
+    const initResult = initPoids && !isNaN(parseFloat(initPoids))
+      ? (() => { const p = parseFloat(initPoids); const add = p < 6 ? 200 : 250; return Math.round(p * 100 + add) + ' mL (± 100 mL)'; })()
+      : '–';
+    return `<div class="block block-normal appert-calc" style="background:#fffbeb;border:1.5px solid #fde68a;padding:14px 18px">
+      <div style="font-weight:800;color:#7c2d12;margin-bottom:8px;font-size:14px">🧮 Calculateur règle d'Appert</div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px">
+          <span style="font-weight:700;color:#7c2d12">Poids :</span>
+          <input type="number" id="appert-poids-input" step="0.01" min="0" value="${initPoids}" oninput="updateAppertVolume()" style="width:90px;padding:6px 10px;border:1.5px solid #fcd34d;border-radius:8px;font-size:14px;font-weight:700;color:#7c2d12;background:white">
+          <span style="font-weight:700;color:#7c2d12">kg</span>
+        </label>
+        <span style="color:#78716c;font-size:18px;font-weight:800">→</span>
+        <div style="font-size:16px;font-weight:900;color:#7c2d12;background:#fef3c7;padding:6px 14px;border-radius:8px;border:1.5px solid #fcd34d">
+          Volume / 24h : <span id="appert-volume-result">${initResult}</span>
+        </div>
+      </div>
+      <div style="margin-top:8px;font-size:12px;color:#78716c;font-style:italic">Si poids &lt; 6 kg : (poids × 100) + 200 mL ± 100 mL — sinon + 250 mL ± 100 mL</div>
+    </div>`;
+  }
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
   if (b.type === 'separator') return `<div class="block block-separator">${text}</div>`;
 
