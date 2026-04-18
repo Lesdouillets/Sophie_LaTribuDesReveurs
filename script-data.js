@@ -854,7 +854,7 @@ const SCRIPT_DATA = {
         type: "option", label: "OUI", emoji: "✅", style: "action-green", mutexGroup: "conclusion-obj",
         blocks: [
           { type: "question", text: "Est-ce qu'il vous **reste des questions** ?" },
-          { type: "question", text: "**QUAND** est-ce que vous pensez **pouvoir commencer** à **mettre ces changements en place** ?" },
+          { type: "question", text: "**QUAND** est-ce que vous **PENSEZ** **pouvoir commencer** à **mettre ces changements en place** ?" },
           {
             type: "option", label: "🔥 Si Pas pris de RDV", style: "purple",
             blocks: [
