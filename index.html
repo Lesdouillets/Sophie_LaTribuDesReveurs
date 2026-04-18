@@ -4874,6 +4874,58 @@ async function saveClient() {
   }
 }
 
+// Auto-sauvegarde silencieuse (debounced) — lit les champs DOM de la fiche client,
+// met à jour state.client et appelle saveClient() pour persister (localStorage + Supabase).
+// Déclenchée à chaque modif d'un champ BB/Parents/Santé via computeClientFields().
+let _autoSaveFicheTimer = null;
+function autoSaveFiche() {
+  if (_autoSaveFicheTimer) clearTimeout(_autoSaveFicheTimer);
+  _autoSaveFicheTimer = setTimeout(async () => {
+    const prenomEnfant = document.getElementById('prenom-enfant')?.value.trim();
+    if (!prenomEnfant) return; // pas de prénom = pas de sauvegarde
+    // Maj state.client avec les valeurs DOM courantes (champs modifiables fiche)
+    const c = state.client || {};
+    c.prenomEnfant = prenomEnfant;
+    c.nomFamille = document.getElementById('nom-famille-enfant')?.value.trim() || c.nomFamille || '';
+    c.sexe = document.getElementById('sexe-enfant')?.value || c.sexe || '';
+    c.fratrie = document.getElementById('fratrie-enfant')?.value.trim() || '';
+    c.dateNaissance = document.getElementById('date-naissance')?.value || '';
+    c.dateTerme = document.getElementById('date-terme')?.value || '';
+    c.ageEnfant = document.getElementById('age-enfant')?.value.trim() || c.ageEnfant || '';
+    c.ageCorrigeManuel = document.getElementById('age-corrige-manuel')?.value.trim() || '';
+    c.poids = document.getElementById('poids-enfant')?.value || '';
+    c.taillePere = document.getElementById('taille-pere')?.value || '';
+    c.tailleMere = document.getElementById('taille-mere')?.value || '';
+    c.typeLait = document.getElementById('type-lait')?.value || '';
+    c.alimentation = [...document.querySelectorAll('input[name="alim"]:checked')].map(x => x.value);
+    c.allaitementMode = [...document.querySelectorAll('input[name="allaitement_mode"]:checked')].map(x => x.value);
+    c.rgo = document.getElementById('medical-rgo')?.checked || false;
+    c.aplvSuspecte = document.getElementById('medical-aplv-susp')?.checked || false;
+    c.aplvConfirme = document.getElementById('medical-aplv-conf')?.checked || false;
+    c.autreAllergie = document.getElementById('medical-autre-allergie')?.checked || false;
+    c.autreAllergieText = document.getElementById('autre-allergie-text')?.value.trim() || '';
+    c.notesMedicales = document.getElementById('notes-medicales')?.value.trim() || '';
+    c.email = document.getElementById('email-famille')?.value.trim() || '';
+    c.telephone = document.getElementById('telephone-famille')?.value.trim() || '';
+    c.prenomParent1 = document.getElementById('prenom-parent1')?.value.trim() || '';
+    c.prenomParent2 = document.getElementById('prenom-parent2')?.value.trim() || '';
+    c.sexeParent1 = document.getElementById('sexe-parent1')?.value || 'maman';
+    c.sexeParent2 = document.getElementById('sexe-parent2')?.value || 'papa';
+    c.rituel = document.getElementById('rituel-enfant')?.value.trim() || '';
+    c.problematique = document.getElementById('problematique-text')?.value.trim() || '';
+    c.objectifs = document.getElementById('objectifs-text')?.value.trim() || '';
+    // Problématiques cochées (fiche client → input[name="pb"])
+    c.pbs = [...document.querySelectorAll('input[name="pb"]:checked')].map(x => x.value);
+    // Enseigne sélectionnée
+    if (typeof currentEnseigne !== 'undefined' && currentEnseigne) c.enseigne = currentEnseigne;
+    state.client = c;
+    try { await saveClient(); } catch(e) { console.warn('[autoSaveFiche]', e); }
+    // Mettre à jour aussi le snapshot de consultation active pour qu'un hard refresh
+    // pendant la consultation n'écrase pas les nouvelles valeurs.
+    if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+  }, 600); // debounce 600ms
+}
+
 async function saveFicheOnly() {
   const prenomEnfant = document.getElementById('prenom-enfant')?.value.trim();
   if (!prenomEnfant) { alert('Merci de renseigner le prénom de l\'enfant.'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
@@ -4940,6 +4992,9 @@ async function saveFicheOnly() {
   };
   await saveClient();
   await loadSavedClients();
+  // Mettre à jour le snapshot de consultation active pour qu'un hard refresh
+  // pendant la consultation n'écrase pas les nouvelles valeurs.
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
   const btn = document.getElementById('btn-save-fiche');
   if (btn) {
     btn.classList.add('saved'); btn.textContent = '✅ Sauvegardé !';
@@ -4989,6 +5044,15 @@ async function resumeConsultation() {
 document.querySelectorAll('input[name="pb"], input[name="alim"], input[name="allaitement_mode"]').forEach(cb => {
   cb.addEventListener('change', function() { this.closest('.pb-item')?.classList.toggle('checked', this.checked); });
 });
+
+// Auto-sauvegarde globale : tout changement dans le setup-screen déclenche autoSaveFiche (debounced)
+(function attachAutoSaveListeners() {
+  const setupScreen = document.getElementById('setup-screen');
+  if (!setupScreen) return;
+  const trigger = () => { if (typeof autoSaveFiche === 'function') autoSaveFiche(); };
+  setupScreen.addEventListener('input', trigger);
+  setupScreen.addEventListener('change', trigger);
+})();
 
 // ═══════════════════════════════════════════════════
 // CALCULS AUTOMATIQUES
@@ -5201,6 +5265,8 @@ function computeClientFields() {
   updateDiversifN1Visibility();
   // Masquer "Lit ouvert trop tôt" dans les 3 containers si ≥ 3 ans
   if (typeof applyEnvLitOuvertVisibility === 'function') applyEnvLitOuvertVisibility();
+  // Auto-sauvegarde silencieuse (debounced 600ms) pour persister les champs fiche
+  if (typeof autoSaveFiche === 'function') autoSaveFiche();
 }
 
 // ═══════════════════════════════════════════════════
