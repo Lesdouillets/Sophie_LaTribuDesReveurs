@@ -4224,7 +4224,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=272"></script>
+<script src="script-data.js?v=274"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -4317,7 +4317,7 @@ function cleanStaleOverrides() {
     ...(SCRIPT_DATA.planAction || []),
     SCRIPT_DATA.conclusion
   ].filter(Boolean);
-  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','appert_calculator'];
+  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','appert_calculator','potentiel_genetique_calculator'];
   let changed = false;
   for (const sectionId of Object.keys(state.scriptOverrides)) {
     const src = allSections.find(s => s.id === sectionId);
@@ -4433,7 +4433,7 @@ function saveScriptOverrides() {
 function getOverrideBlocks(section) {
   const ov = state.scriptOverrides[section.id];
   if (!ov) return section.blocks || [];
-  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'option_banner', 'parent_banner', 'tarifs_tableau', 'appert_calculator'];
+  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'option_banner', 'parent_banner', 'tarifs_tableau', 'appert_calculator','potentiel_genetique_calculator'];
   const liveBlocks = section.blocks || [];
 
   // Pour problematique/objectifs, ov.blocks est déjà nettoyé par ensureOverride
@@ -5401,6 +5401,33 @@ function updateAppertVolume() {
   resultEl.textContent = vol + ' mL (± 100 mL)';
 }
 window.updateAppertVolume = updateAppertVolume;
+
+// Calculateur potentiel génétique : taille cible adulte + tableau percentiles
+function updatePotentielGenetique() {
+  const pere = document.getElementById('pg-pere-input');
+  const mere = document.getElementById('pg-mere-input');
+  const resEl = document.getElementById('pg-cible-result');
+  const tbody = document.getElementById('pg-table-body');
+  if (!pere || !mere || !resEl || !tbody) return;
+  const p = parseFloat(pere.value);
+  const m = parseFloat(mere.value);
+  const sexe = (state && state.client && state.client.sexe) || '';
+  if (isNaN(p) || isNaN(m) || p <= 0 || m <= 0 || (sexe !== 'Fille' && sexe !== 'Garçon')) {
+    resEl.textContent = '–';
+    tbody.querySelectorAll('.pg-cell').forEach(c => c.textContent = '–');
+    return;
+  }
+  const adj = sexe === 'Fille' ? -13 : 13;
+  const cible = (p + m + adj) / 2;
+  resEl.textContent = cible.toFixed(1) + ' cm (± 8,5 cm)';
+  // 1 SD = 8,5 cm (approx. population SD pour la taille adulte)
+  tbody.querySelectorAll('tr').forEach(tr => {
+    const z = parseFloat(tr.dataset.z);
+    const cell = tr.querySelector('.pg-cell');
+    if (cell) cell.textContent = (cible + z * 8.5).toFixed(1) + ' cm';
+  });
+}
+window.updatePotentielGenetique = updatePotentielGenetique;
 
 function besoinLait(mois, poids) {
   // Returns { formula, volume } — volume is the calculated value without ±100
@@ -6708,7 +6735,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator'].includes(b.type);
+    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','potentiel_genetique_calculator'].includes(b.type);
     const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
@@ -7027,7 +7054,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
 
   // Calculateur interactif règle d'Appert : input poids → volume 24h
-  if (b.type === 'appert_calculator') {
+  if (b.type === 'appert_calculator','potentiel_genetique_calculator') {
     const initPoids = (state && state.client && state.client.poids) || '';
     const initResult = initPoids && !isNaN(parseFloat(initPoids))
       ? (() => { const p = parseFloat(initPoids); const add = p < 6 ? 200 : 250; return Math.round(p * 100 + add) + ' mL (± 100 mL)'; })()
@@ -7045,6 +7072,49 @@ function renderBlockInner(b, i, sectionId, depth, path) {
           Volume / 24h : <span id="appert-volume-result">${initResult}</span>
         </div>
       </div>
+    </div>`;
+  }
+  // Calculateur potentiel génétique (taille cible adulte)
+  if (b.type === 'potentiel_genetique_calculator') {
+    const sexe = (state && state.client && state.client.sexe) || '';
+    const isFille = sexe === 'Fille';
+    const sexeLabel = isFille ? 'Fille' : (sexe === 'Garçon' ? 'Garçon' : 'Non défini');
+    const formuleLabel = isFille
+      ? '(Taille père + Taille mère − 13) / 2'
+      : (sexe === 'Garçon' ? '(Taille père + Taille mère + 13) / 2' : '— sexe de l\'enfant non renseigné —');
+    const zRows = [
+      { p: '3ᵉ', z: -1.88 },
+      { p: '10ᵉ', z: -1.28 },
+      { p: '25ᵉ', z: -0.67 },
+      { p: '50ᵉ', z: 0 },
+      { p: '75ᵉ', z: 0.67 },
+      { p: '90ᵉ', z: 1.28 },
+      { p: '97ᵉ', z: 1.88 },
+    ];
+    const rowsHtml = zRows.map(r => `<tr data-z="${r.z}"><td style="padding:6px 10px;border:1px solid #fcd34d;font-weight:700;color:#7c2d12;text-align:center">${r.p} percentile</td><td class="pg-cell" style="padding:6px 10px;border:1px solid #fcd34d;text-align:center;font-weight:700;color:#7c2d12">–</td></tr>`).join('');
+    return `<div class="block block-normal pg-calc" data-sexe="${sexe}" style="background:#fffbeb;border:1.5px solid #fde68a;padding:14px 18px">
+      <div style="font-weight:800;color:#7c2d12;margin-bottom:8px;font-size:14px">🧬 Calculateur potentiel génétique</div>
+      <div style="font-size:13px;color:#7c2d12;margin-bottom:6px"><strong>Sexe de l'enfant :</strong> ${sexeLabel}</div>
+      <div style="font-size:13px;color:#7c2d12;margin-bottom:10px"><strong>Formule :</strong> ${formuleLabel}</div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px">
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px">
+          <span style="font-weight:700;color:#7c2d12">Taille père :</span>
+          <input type="number" id="pg-pere-input" step="1" min="0" oninput="updatePotentielGenetique()" style="width:90px;padding:6px 10px;border:1.5px solid #fcd34d;border-radius:8px;font-size:14px;font-weight:700;color:#7c2d12;background:white;-moz-appearance:textfield;appearance:textfield">
+          <span style="font-weight:700;color:#7c2d12">cm</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px">
+          <span style="font-weight:700;color:#7c2d12">Taille mère :</span>
+          <input type="number" id="pg-mere-input" step="1" min="0" oninput="updatePotentielGenetique()" style="width:90px;padding:6px 10px;border:1.5px solid #fcd34d;border-radius:8px;font-size:14px;font-weight:700;color:#7c2d12;background:white;-moz-appearance:textfield;appearance:textfield">
+          <span style="font-weight:700;color:#7c2d12">cm</span>
+        </label>
+      </div>
+      <div style="font-size:16px;font-weight:900;color:#7c2d12;background:#fef3c7;padding:8px 14px;border-radius:8px;border:1.5px solid #fcd34d;margin-bottom:10px">
+        Taille cible adulte : <span id="pg-cible-result">–</span>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px;background:white">
+        <thead><tr><th style="padding:6px 10px;border:1px solid #fcd34d;background:#fef3c7;color:#7c2d12">Percentile</th><th style="padding:6px 10px;border:1px solid #fcd34d;background:#fef3c7;color:#7c2d12">Taille estimée</th></tr></thead>
+        <tbody id="pg-table-body">${rowsHtml}</tbody>
+      </table>
     </div>`;
   }
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
