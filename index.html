@@ -4224,7 +4224,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=261"></script>
+<script src="script-data.js?v=263"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7786,13 +7786,20 @@ function renderMarkdown(text) {
       html += `<li style="margin-bottom:3px;line-height:1.65">${formatInline(bulletMatch[2])}`;
       needsLiClose = true;
     } else {
-      // Close all open lists
-      if (needsLiClose) { html += '</li>'; needsLiClose = false; }
-      closeLists(0);
-      if (line.trim() === '---' || line.trim() === '') {
-        html += '<br>';
+      // Ligne non-bullet après un bullet ouvert : on APPEND dans le <li> courant
+      // (le texte wrappe au niveau du texte du bullet, pas au left edge) —
+      // SAUF si c'est une ligne vide ou "---" qui ferme la liste
+      const isEmpty = line.trim() === '' || line.trim() === '---';
+      if (needsLiClose && !isEmpty) {
+        html += '<br>' + formatInline(line.replace(/^\s+/, ''));
       } else {
-        html += formatInline(line) + '<br>';
+        if (needsLiClose) { html += '</li>'; needsLiClose = false; }
+        closeLists(0);
+        if (isEmpty) {
+          html += '<br>';
+        } else {
+          html += formatInline(line) + '<br>';
+        }
       }
     }
   }
