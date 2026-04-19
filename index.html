@@ -7059,7 +7059,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
 
   // Calculateur interactif règle d'Appert : input poids → volume 24h
-  if (b.type === 'appert_calculator','potentiel_genetique_calculator') {
+  if (b.type === 'appert_calculator') {
     const initPoids = (state && state.client && state.client.poids) || '';
     const initResult = initPoids && !isNaN(parseFloat(initPoids))
       ? (() => { const p = parseFloat(initPoids); const add = p < 6 ? 200 : 250; return Math.round(p * 100 + add) + ' mL (± 100 mL)'; })()
