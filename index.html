@@ -4224,7 +4224,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=246"></script>
+<script src="script-data.js?v=252"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -6667,6 +6667,21 @@ function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
       const isChecked = pbs.some(pb => state.selectedPbs.has(pb));
       const isRevealed = state.revealedLever && pbs.includes(state.revealedLever);
       if (!isChecked && !isRevealed) return '';
+    }
+    // Condition "minutes restantes avant fin de consultation" — bloc affiché si au moins X min restent.
+    // Une fois rendu visible, on garde un flag pour ne plus cacher le bloc aux re-renders suivants
+    // (le parent ne doit pas le voir "disparaître" sous ses yeux pendant qu'il le lit).
+    if (b.showIfMinMinutesLeft != null) {
+      if (!state.timeBlocksShown) state.timeBlocksShown = new Set();
+      const blockKey = `${sectionId || 'x'}::${parentPath ? parentPath + '.' + i : i}`;
+      if (!state.timeBlocksShown.has(blockKey)) {
+        const endTs = state.heureFin ? (state.heureFin instanceof Date ? state.heureFin.getTime() : Number(state.heureFin)) : null;
+        if (!endTs) return '';
+        const minutesLeft = Math.floor((endTs - Date.now()) / 60000);
+        if (minutesLeft < b.showIfMinMinutesLeft) return '';
+        // Marque le bloc comme "déjà rendu visible" → ne se cachera plus aux re-renders
+        state.timeBlocksShown.add(blockKey);
+      }
     }
     // Conditions d'âge (utilise âge corrigé si dispo, sinon âge réel)
     if (b.showIfAgeMinMonths != null || b.showIfAgeMaxMonths != null) {

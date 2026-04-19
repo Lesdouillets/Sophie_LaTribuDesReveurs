@@ -510,9 +510,10 @@ const SCRIPT_DATA = {
         { type: "normal", _purpleDark: true, text: "🔥 <em>OPTION</em> : il a voulu remonter : comme [il_elle] **l'a montré** lors de sa **tentative de remontée de courbe** !" },
         { type: "normal", text: "- Les courbes, ça va **nous donne** une **bonne indication**,\n  mais ça reste un **repère**.\n  ⇒ Le **+ important,** c'est vraiment d'ETRE **à l'écoute de son enfant**" },
         { type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"], text: "- Il y a un **2nd repère qu'on utilise** pour **se guider** : c'est la **règle d'Appert**\n- Elle nous donne des **indications sur la quantité \"théorique\" par 24h** en **fonction du poids,**" },
+        { type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"], text: "- 🔥 Aujourd'hui, [prénom_enfant] pèse **[poids]** kg\n  et vous me dites qu'[il_elle] boit environ <strong style=\"color:#dc2626\">XX</strong> mL sur 24 heures." },
         {
           type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"],
-          text: "- 🔥 Aujourd'hui, [prénom_enfant] pèse **[poids]** kg\n  et vous me dites qu'[il_elle] boit environ <strong style=\"color:#dc2626\">XX</strong> mL sur 24 heures.",
+          text: "- Si on se réfère à la **règle d'Appert**, ses besoins théoriques en lait seraient plutôt autour de **[besoin_lait_volume]** par jour (voire plus !).",
           trailingInfoButton: {
             label: "Calcul règle d'Appert",
             title: "Calcul règle d'Appert",
@@ -523,7 +524,6 @@ const SCRIPT_DATA = {
             ]
           }
         },
-        { type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"], text: "- Si on se réfère à la **règle d'Appert**, ses besoins théoriques en lait seraient plutôt autour de **[besoin_lait_volume]** par jour (voire plus !)." },
         { type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"], text: "⇒ Ca veut dire que **là aussi,** il y a un **écart** ENTRE **ses besoins** et ses **apports actuels**\n- Mais **ce n'est pas une règle stricte**, c'est **juste un repère** pour nous aider.\n- On reste surtout sur **une logique d'*à la demande***, surtout chez les plus petits.\n- **Tous les BB** n'ont **pas :**\n  - **exactement le même rythme**\n  - et **leurs besoins** peuvent **varier d'un jour à l'autre.**\n  ⇒ On se fie surtout à leurs **signes de faim et de satiété**." },
         { type: "normal", text: "- Donc, si on **prend un peu de recul** sur tout ça…\n  on peut voir qu'il y a **AUSSI :**\n  - **d'AUTRES plusieurs petites choses**\n  - AUTOUR de son **alimentation**\n  - qui peuvent **jouer un rôle** sur son **sommeil**" },
         { type: "normal", text: "- Je pense notamment…" },
@@ -816,6 +816,7 @@ const SCRIPT_DATA = {
       title: "IX. Reformulation et statistiques",
       emoji: "📊",
       blocks: [
+        { type: "normal", text: "- **Donc si je résume ce qu'on s'est dit !**" },
         { type: "question", text: "C'est **bien ça** ?\nEst-ce **clair pour vous** ?" },
         {
           type: "option", label: "Pas eu le temps de tout discuter", style: "purple",
@@ -832,6 +833,11 @@ const SCRIPT_DATA = {
           ]
         },
         { type: "conseil", text: "👏 En tout cas, ON VOIT :\n  - que vous avez **essayé de mettre des choses en place**\n  - et AVEC CE QU'ON **vient de voir ensemble** :\n    - vous avez **toutes les bases**\n    - pour que ça **évolue dans le bon sens** !" },
+        { type: "normal", showIfMinMinutesLeft: 8, text: "- Je vous invite à **parler du sommeil régulièrement** à votre enfant\n- Tjs le **prévenir que c'est l'heure du dodo**, qu'il **va aller se reposer**, que ça va lui faire du bien.\n\n---\n\n- N'hésitez AUSSI pas à **remettre de la joie** et du **plaisir autour du sommeil**\n- Pour que, petit à petit dans sa tête se créent 2 nouvelles associations :\n\n  **Dormir = Plaisir**\n\n  **Fatigue = Dormir**\n\n---\n\n- Et pour que ces **nouveaux repères** puissent **vraiment s'installer**,\n- il est **important** que le **chemin que vous choisissez** reste **clair et cohérent**.\n\n- Si vous **êtes convaincus** que c'est :\n  - le **bon chemin**\n  - ET qu'**il n'y en a qu'1**…\n\n  ⇒ ...alors ce sera **+ facile pour vous**\n\n- Et **quand les parents** sont :\n  - **clairs**\n  - **et cohérents** dans **leur tête**…\n\n  ⇒ ...l'**enfant comprend :**\n\n  **+ facilement le cadre**\n\n  et **trouve naturellement** ses **nouveaux repères.**" },
+        { type: "normal", text: "- Voilà, en terme de **statistiques** :" },
+        { type: "normal", showIfMinMinutesLeft: 8, text: "Si le **1er soir** en revanche, ça **dure + de 1h30**\n\n- Ce n'est **PAS normal**\n- C'est y a **qqch qui ne va pas ⇒** Vous **arrêtez là**\n\n⇒ Il faut que l'on **re-prenne RDV**" },
+        { type: "normal", text: "- **Dans les 3 1ers jours**, vous devriez voir un **DEBUT d'amélioration**\n\n---\n\n- Normalement, dans les **2/3 1ères semaines** on peut s'attendre à une **vraie très belle amélioration**\n- Les **siestes,** par contre, peuvent **mettre + longtemps** à se mettre en place (**1-2 mois**)\n\n  ⇒ **TOUT** va **dépendre de chaque situation ET** de **chaque enfant**" },
+        { type: "normal", showIfMinMinutesLeft: 8, text: "- C'est vraiment **VOUS** qui **gardez la main** :\n  - Sur **le choix** de CE QUE vous **mettez en place OU NON**\n  - à quel **rythme**\n  - C'est **TRES important** que vous vous **sentiez acteur ET libre** dans vos choix" },
       ]
     },
 
