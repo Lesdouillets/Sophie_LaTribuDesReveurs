@@ -580,7 +580,7 @@ const SCRIPT_DATA = {
         { type: "normal", showIfPb: "nutri_conseq_mange_nuit", text: "- 🌛 L'**objectif** serait **aussi** de **réduire les réveils nocturnes** car il **semble utiliser la nuit** pour **compléter ce qu'**il ne **prend pas** encore en **journée**" },
         { type: "normal", text: "- Est-ce que **ça fait sens pour vous** quand je vous **l'explique comme ça** ?" },
         { type: "normal", text: "- Nous allons donc :\n  - **rétablir un rythme alimentaire + structuré**\n  - et **sécuriser les apports de lait** adaptés :\n    - à son âge\n    - et à son poids" },
-        { type: "normal", showIfPb: "nutri_conseq_mange_nuit", text: "- 🌛 Et **progressivement,** l'**objectif** sera de **supprimer cette compensation nocturne**,\n\n  **UNE FOIS** que **TOUS les apports de la journée** seront **bien sécurisées**" },
+        { type: "normal", showIfPb: "nutri_conseq_mange_nuit", text: "- 🌛 Et **progressivement,** l'**objectif** sera de **supprimer cette compensation nocturne**,\n  <u>**UNE FOIS**</u> que <u>**TOUS**</u> les apports de la journée seront **bien sécurisées**<br>&nbsp;" },
         { type: "normal", text: "- Et **avec ces ajustements**, **vous allez voir** que ça va **solutionner une partie** de ses **troubles du sommeil**" },
       ]
     },
