@@ -676,7 +676,8 @@ const SCRIPT_DATA = {
             { icon: "❌", label: "Supprimer", value: "supprimer", variant: "negative" }
           ]
         }},
-        { type: "question", _parentLevel: true, text: "Donc si **on résume tout ça** :\n- Ce n'est **PAS** que **[prénom_enfant]** **refuse de dormir**\n- C'est tout simplement qu'il **ne SAIT PAS encore COMMENT s'endormir autrement**.\n- L'**objectif** va être de **l'accompagner** pour :\n  - qu'il **découvre** SES PROPRES **stratégies d'endormissement autonomes**\n  - ⇒ pour qu'il puisse :\n    - **S'endormir seul**\n    - **Enchaîner** plusieurs **cycles de sommeil**\n\n⇒ Est-ce que **ça vous parle** comme ça ?" },
+        { type: "normal", _parentLevel: true, text: "- Donc si **on résume tout ça** :\n<div style=\"padding-left:24px\">\n<ul style=\"margin:4px 0 0 18px;padding:0;list-style:disc\">\n<li style=\"line-height:1.6\">Ce n'est <strong>PAS</strong> que <strong>[prénom_enfant]</strong> <strong>refuse de dormir</strong></li>\n<li style=\"line-height:1.6\">C'est tout simplement qu'il <strong>ne SAIT PAS encore COMMENT s'endormir autrement</strong>.</li>\n<li style=\"line-height:1.6\">L'<strong>objectif</strong> va être de <strong>l'accompagner</strong> pour :\n<ul style=\"margin:4px 0 0 18px;padding:0;list-style:disc\">\n<li>qu'il <strong>découvre</strong> SES PROPRES <strong>stratégies d'endormissement autonomes</strong></li>\n<li>⇒ pour qu'il puisse :\n<ul style=\"margin:4px 0 0 18px;padding:0;list-style:disc\">\n<li><strong>S'endormir seul</strong></li>\n<li><strong>Enchaîner</strong> plusieurs <strong>cycles de sommeil</strong></li>\n</ul>\n</li>\n</ul>\n</li>\n</ul>\n</div>" },
+        { type: "question", _parentLevel: true, text: "• Est-ce que **ça vous parle** comme ça ?" },
       ]
     },
 
