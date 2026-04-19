@@ -1056,13 +1056,14 @@
     .info-btn-emoji { font-size: 16px; }
     /* Variante : bouton flottant à droite DANS un bloc texte (inline-right) */
     .info-btn.inline-right {
-      float: right;
-      margin: 0 0 8px 14px;
+      float: none;
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      margin: 0;
     }
-    /* Quand un bloc contient un bouton trailing, on passe en flex pour centrer verticalement */
-    .block.has-trailing-btn { display: flex; align-items: center; gap: 14px; }
-    .block.has-trailing-btn .block-inner { flex: 1; min-width: 0; }
-    .block.has-trailing-btn .info-btn.inline-right { float: none; margin: 0; flex-shrink: 0; }
+    .block:has(> .info-btn.inline-right) { position: relative; padding-right: 210px; min-height: 68px; }
 
     /* Bouton "Retour à la consultation" en haut des sections conditionnelles */
     .btn-return-to-diag {
@@ -7369,10 +7370,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       }).join('') +
     `</div>`;
   }
-  if (trailingBtnHtml) {
-    return `<div class="block ${cls}${extraCls} has-trailing-btn"><div class="block-inner" contenteditable="true">${text}${embeddedHtml}</div>${trailingBtnHtml}</div>`;
-  }
-  return `<div class="block ${cls}${extraCls}" contenteditable="true">${text}${embeddedHtml}</div>`;
+  return `<div class="block ${cls}${extraCls}" contenteditable="true">${trailingBtnHtml}${text}${embeddedHtml}</div>`;
 }
 
 function renderBesoinsSommeil(tranches) {
