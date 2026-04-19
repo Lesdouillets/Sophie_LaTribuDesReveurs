@@ -6652,9 +6652,12 @@ function getEffectiveAgeMonths() {
 function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
   return (blocks||[]).map((b,i) => {
     // Cacher le bloc si une des problématiques indiquées dans hideIfPb est cochée
+    // EXCEPTION : si la pb a été cochée VIA un tickbox choice (state.tickboxSyncedPbs),
+    // on ne cache pas — l'utilisateur doit pouvoir changer sa réponse sans que le bloc disparaisse.
     if (b.hideIfPb) {
       const pbs = Array.isArray(b.hideIfPb) ? b.hideIfPb : [b.hideIfPb];
-      if (pbs.some(pb => state.selectedPbs.has(pb))) return '';
+      const syncedSet = state.tickboxSyncedPbs || new Set();
+      if (pbs.some(pb => state.selectedPbs.has(pb) && !syncedSet.has(pb))) return '';
     }
     // Afficher le bloc uniquement si la problématique indiquée dans showIfPb est cochée
     // EXCEPTION : si state.revealedLever correspond à une pb de showIfPb, on rend
@@ -8051,9 +8054,17 @@ function selectTickboxChoice(el) {
     delete state.tickboxChoices[cid];
   }
   // Synchronisation avec les problématiques (fiche client / modal / diag)
+  // Track quel pb a été modifié via tickbox (pour exempter du hideIfPb dans IV. Objectifs)
+  if (!state.tickboxSyncedPbs) state.tickboxSyncedPbs = new Set();
   // Helper : coche/décoche un pb dans les 3 containers + met à jour state.selectedPbs
   const setPb = (pb, check) => {
-    if (check) state.selectedPbs.add(pb); else state.selectedPbs.delete(pb);
+    if (check) {
+      state.selectedPbs.add(pb);
+      state.tickboxSyncedPbs.add(pb);
+    } else {
+      state.selectedPbs.delete(pb);
+      state.tickboxSyncedPbs.delete(pb);
+    }
     document.querySelectorAll(`input[name="pb"][value="${pb}"], input.modal-pb[value="${pb}"], input.diag-pb[value="${pb}"]`).forEach(cb => {
       cb.checked = check;
       cb.closest('.pb-item')?.classList.toggle('checked', check);
