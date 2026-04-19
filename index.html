@@ -4621,7 +4621,7 @@ function toggleTypeLait() {
   const volGroup = document.getElementById('nutri-volume-group');
   if (volGroup) volGroup.style.display = allaitement?.checked ? 'none' : '';
   const teteeGroup = document.getElementById('nutri-tetee-group');
-  if (teteeGroup) teteeGroup.style.display = bib?.checked ? 'none' : '';
+  if (teteeGroup) teteeGroup.style.display = (allaitement?.checked || mixte?.checked) ? '' : 'none';
   const diversif = document.querySelector('input[name="alim"][value="Diversification"]');
   document.querySelectorAll('.nutri-diversif-only').forEach(el => {
     el.style.display = diversif?.checked ? '' : 'none';
@@ -4642,7 +4642,7 @@ function toggleTypeLait() {
   const volGroupInf = document.getElementById('nutri-inf-volume-group');
   if (volGroupInf) volGroupInf.style.display = allaitement?.checked ? 'none' : '';
   const teteeGroupInf = document.getElementById('nutri-inf-tetee-group');
-  if (teteeGroupInf) teteeGroupInf.style.display = bib?.checked ? 'none' : '';
+  if (teteeGroupInf) teteeGroupInf.style.display = (allaitement?.checked || mixte?.checked) ? '' : 'none';
   const autreGroupInf = document.getElementById('nutri-inf-autre-group');
   if (autreGroupInf) {
     const hasVisibleChild = diversif?.checked || jusVegetal?.checked || laitAnimal?.checked;
