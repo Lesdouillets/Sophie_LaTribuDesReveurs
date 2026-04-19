@@ -4875,6 +4875,13 @@ function populateFormFromClient(c) {
   setChk('medical-autre-allergie', c.autreAllergie);
   if (c.autreAllergie) { const r = document.getElementById('autre-allergie-row'); if (r) r.style.display = ''; }
   (c.alimentation||[]).forEach(v => { const el = document.querySelector(`input[name="alim"][value="${v}"]`); if (el) el.checked = true; });
+  // Appliquer l'exclusivité sur les groupes alim_principal (garder uniquement la dernière cochée)
+  ['alim_principal'].forEach(group => {
+    const checked = [...document.querySelectorAll(`input[name="alim"][data-exclusive="${group}"]:checked`)];
+    if (checked.length > 1) {
+      checked.slice(0, -1).forEach(cb => { cb.checked = false; cb.closest('.pb-item')?.classList.remove('checked'); });
+    }
+  });
   // Restaurer les checkboxes "Mode d'allaitement"
   document.querySelectorAll('input[name="allaitement_mode"]').forEach(cb => cb.checked = false);
   (c.allaitementMode||[]).forEach(v => { const el = document.querySelector(`input[name="allaitement_mode"][value="${v}"]`); if (el) el.checked = true; });
