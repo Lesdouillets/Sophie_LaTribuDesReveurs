@@ -5412,25 +5412,56 @@ function updatePotentielGenetique() {
   const pere = document.getElementById('pg-pere-input');
   const mere = document.getElementById('pg-mere-input');
   const resEl = document.getElementById('pg-cible-result');
-  const tbody = document.getElementById('pg-table-body');
-  if (!pere || !mere || !resEl || !tbody) return;
+  const tableWrap = document.getElementById('pg-percentile-table');
+  if (!pere || !mere || !resEl || !tableWrap) return;
+  const sexe = (state && state.client && state.client.sexe) || '';
+  // Met à jour dynamiquement le sexe + la formule affichée (peut avoir changé depuis la fiche client)
+  const sexeLabelEl = document.getElementById('pg-sexe-label');
+  const formuleLabelEl = document.getElementById('pg-formule-label');
+  if (sexeLabelEl) sexeLabelEl.textContent = sexe === 'Fille' ? 'Fille' : (sexe === 'Garçon' ? 'Garçon' : 'Non défini');
+  if (formuleLabelEl) formuleLabelEl.textContent = sexe === 'Fille'
+    ? '(Taille père + Taille mère − 13) / 2'
+    : (sexe === 'Garçon' ? '(Taille père + Taille mère + 13) / 2' : "— sexe de l'enfant non renseigné —");
   const p = parseFloat(pere.value);
   const m = parseFloat(mere.value);
-  const sexe = (state && state.client && state.client.sexe) || '';
   if (isNaN(p) || isNaN(m) || p <= 0 || m <= 0 || (sexe !== 'Fille' && sexe !== 'Garçon')) {
     resEl.textContent = '–';
-    tbody.querySelectorAll('.pg-cell').forEach(c => c.textContent = '–');
+    tableWrap.innerHTML = '';
     return;
   }
   const adj = sexe === 'Fille' ? -13 : 13;
-  const cible = (p + m + adj) / 2;
-  resEl.textContent = cible.toFixed(1) + ' cm (± 8,5 cm)';
-  // 1 SD = 8,5 cm (approx. population SD pour la taille adulte)
-  tbody.querySelectorAll('tr').forEach(tr => {
-    const z = parseFloat(tr.dataset.z);
-    const cell = tr.querySelector('.pg-cell');
-    if (cell) cell.textContent = (cible + z * 8.5).toFixed(1) + ' cm';
-  });
+  const cible = Math.round((p + m + adj) / 2);
+  resEl.textContent = cible + ' cm';
+  // Tableau percentiles (mêmes valeurs que la fiche client)
+  const percFille = [{p:3,t:152},{p:5,t:154},{p:10,t:156},{p:25,t:160},{p:50,t:164},{p:75,t:168},{p:90,t:172},{p:95,t:174},{p:97,t:176}];
+  const percGarcon = [{p:3,t:166},{p:5,t:167},{p:10,t:169},{p:25,t:173},{p:50,t:177},{p:75,t:181},{p:90,t:185},{p:95,t:187},{p:97,t:188}];
+  const table = sexe === 'Fille' ? percFille : percGarcon;
+  let below = null, above = null;
+  for (let i = 0; i < table.length; i++) {
+    if (table[i].t <= cible) below = table[i];
+    if (table[i].t >= cible && !above) above = table[i];
+  }
+  const rows = table.map(r => {
+    const isBelow = below && r.p === below.p && r.t !== above?.t;
+    const isAbove = above && r.p === above.p;
+    const highlight = isBelow || isAbove;
+    const bg = highlight ? (isAbove ? '#dcfce7' : '#dbeafe') : 'white';
+    const fw = highlight ? '800' : '500';
+    const color = highlight ? '#1a3a1a' : '#7c2d12';
+    return `<tr style="background:${bg}">
+      <td style="padding:6px 10px;border:1px solid #fcd34d;text-align:center;font-weight:${fw};color:${color}">${r.p}ᵉ</td>
+      <td style="padding:6px 10px;border:1px solid #fcd34d;text-align:center;font-weight:${fw};color:${color}">${r.t} cm</td>
+      <td style="padding:6px 10px;border:1px solid #fcd34d;text-align:center;font-size:11px;color:#555">${highlight ? (isAbove ? '⬆ au-dessus' : '⬇ en-dessous') : ''}</td>
+    </tr>`;
+  }).join('');
+  tableWrap.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:13px;background:white">
+    <thead><tr>
+      <th style="padding:6px 10px;border:1px solid #fcd34d;background:#fef3c7;color:#7c2d12">Percentile</th>
+      <th style="padding:6px 10px;border:1px solid #fcd34d;background:#fef3c7;color:#7c2d12">Taille</th>
+      <th style="padding:6px 10px;border:1px solid #fcd34d;background:#fef3c7;color:#7c2d12"></th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
 }
 window.updatePotentielGenetique = updatePotentielGenetique;
 
@@ -6501,6 +6532,10 @@ function openInfoPanel(btnId) {
   bodyEl.innerHTML = data.content || '';
   panel.classList.add('open');
   window.__activeInfoBtnId = btnId;
+  // Initialise les widgets dynamiques (labels qui dépendent de state.client)
+  if (typeof updatePotentielGenetique === 'function' && bodyEl.querySelector('#pg-pere-input')) {
+    updatePotentielGenetique();
+  }
 }
 
 function closeInfoPanel() {
@@ -7087,20 +7122,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const formuleLabel = isFille
       ? '(Taille père + Taille mère − 13) / 2'
       : (sexe === 'Garçon' ? '(Taille père + Taille mère + 13) / 2' : '— sexe de l\'enfant non renseigné —');
-    const zRows = [
-      { p: '3ᵉ', z: -1.88 },
-      { p: '10ᵉ', z: -1.28 },
-      { p: '25ᵉ', z: -0.67 },
-      { p: '50ᵉ', z: 0 },
-      { p: '75ᵉ', z: 0.67 },
-      { p: '90ᵉ', z: 1.28 },
-      { p: '97ᵉ', z: 1.88 },
-    ];
-    const rowsHtml = zRows.map(r => `<tr data-z="${r.z}"><td style="padding:6px 10px;border:1px solid #fcd34d;font-weight:700;color:#7c2d12;text-align:center">${r.p} percentile</td><td class="pg-cell" style="padding:6px 10px;border:1px solid #fcd34d;text-align:center;font-weight:700;color:#7c2d12">–</td></tr>`).join('');
     return `<div class="block block-normal pg-calc" data-sexe="${sexe}" style="background:#fffbeb;border:1.5px solid #fde68a;padding:14px 18px">
       <div style="font-weight:800;color:#7c2d12;margin-bottom:8px;font-size:14px">🧬 Calculateur potentiel génétique</div>
-      <div style="font-size:13px;color:#7c2d12;margin-bottom:6px"><strong>Sexe de l'enfant :</strong> ${sexeLabel}</div>
-      <div style="font-size:13px;color:#7c2d12;margin-bottom:10px"><strong>Formule :</strong> ${formuleLabel}</div>
+      <div style="font-size:13px;color:#7c2d12;margin-bottom:6px"><strong>Sexe de l'enfant :</strong> <span id="pg-sexe-label">${sexeLabel}</span></div>
+      <div style="font-size:13px;color:#7c2d12;margin-bottom:10px"><strong>Formule :</strong> <span id="pg-formule-label">${formuleLabel}</span></div>
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px">
         <label style="display:flex;align-items:center;gap:8px;font-size:14px">
           <span style="font-weight:700;color:#7c2d12">Taille père :</span>
@@ -7116,10 +7141,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       <div style="font-size:16px;font-weight:900;color:#7c2d12;background:#fef3c7;padding:8px 14px;border-radius:8px;border:1.5px solid #fcd34d;margin-bottom:10px">
         Taille cible adulte : <span id="pg-cible-result">–</span>
       </div>
-      <table style="width:100%;border-collapse:collapse;font-size:13px;background:white">
-        <thead><tr><th style="padding:6px 10px;border:1px solid #fcd34d;background:#fef3c7;color:#7c2d12">Percentile</th><th style="padding:6px 10px;border:1px solid #fcd34d;background:#fef3c7;color:#7c2d12">Taille estimée</th></tr></thead>
-        <tbody id="pg-table-body">${rowsHtml}</tbody>
-      </table>
+      <div id="pg-percentile-table"></div>
     </div>`;
   }
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
