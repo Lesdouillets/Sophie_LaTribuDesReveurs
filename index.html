@@ -1977,7 +1977,8 @@
     .block-option.purple .option-content { background: #f5f0ff; }
     .block-option.purple .option-content .block:not(.block-question):not(.block-conseil-vert):not(.block-fin-consultation) { background: #f5f0ff; border-color: #d4c4f0; }
     .block-option.purple > .option-content > .edit-block-wrap:first-child .block { border: none; box-shadow: none; background: #f5f0ff; }
-    .block-purple-dark { background: #f5f0ff !important; border: 3px dashed #a78bfa !important; border-radius: 16px !important; box-shadow: 0 2px 8px rgba(167,139,250,0.18) !important; }
+    .block-purple-dark { background: #f5f0ff !important; border: 3px dashed #a78bfa !important; border-radius: 16px !important; box-shadow: 0 2px 8px rgba(167,139,250,0.18) !important; padding-left: 17px !important; }
+    .block-purple-dark ul { padding-left: 21px !important; }
     .block-no-border { border: none !important; box-shadow: none !important; background: transparent !important; padding: 0 !important; }
     .block-option.purple .option-content .block-option.purple .option-content .block:not(.block-question) { background: #ddd3f8; border-color: #c4b5e0; }
     .block-option.purple .block-question { background: #fdf0f0 !important; border-color: #e8a0a0 !important; }
@@ -2446,11 +2447,14 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
     .grouped-block .block-normal:not(.block-purple-dark) { background: transparent !important; border: none !important; box-shadow: none !important; padding: 4px 0 !important; margin-bottom: 4px !important; }
-    .grouped-block .block-purple-dark { margin: 8px 0 !important; padding: 6px 20px 6px 0 !important; }
+    .grouped-block .block-purple-dark { margin: 0 0 4px 0 !important; padding: 6px 20px 6px 0 !important; }
     .grouped-block .block-purple-dark ul { padding-left: 21px !important; margin-left: 0 !important; }
     .grouped-block .block-purple-dark > ul,
     .grouped-block .block-purple-dark > p,
     .grouped-block .block-purple-dark > li { margin-left: 0 !important; }
+    /* Même alignement des bullets pour les encadrés violet à l'intérieur d'une carte Courbe (contenu déplié) */
+    .courbe-card-content .block-purple-dark { padding: 6px 20px 6px 0 !important; }
+    .courbe-card-content .block-purple-dark ul { padding-left: 21px !important; margin-left: 0 !important; }
     .grouped-block .edit-block-wrap { margin-bottom: 0; }
     /* Bloc "Conclusion" — barre latérale épaisse orange (couleurs Nutrition) + fond orange pâle */
     .conclusion-nutrition {
