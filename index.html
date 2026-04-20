@@ -8676,6 +8676,11 @@ function openCourbeCard(cardEl) {
   state.courbeCardsTicked.add(cardId);
   renderCurrentSection();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+  // Scroller vers le contenu déplié pour qu'il soit en haut du panel central
+  setTimeout(() => {
+    const content = document.querySelector(`.courbe-card-content[data-card-id="${cardId}"]`);
+    if (content) content.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 60);
 }
 window.openCourbeCard = openCourbeCard;
 
