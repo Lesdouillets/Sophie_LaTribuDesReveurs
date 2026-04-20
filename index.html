@@ -4247,7 +4247,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=281"></script>
+<script src="script-data.js?v=282"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -6746,9 +6746,11 @@ function getEffectiveAgeMonths() {
 function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
   return (blocks||[]).map((b,i) => {
     // Cacher le bloc si une des problématiques indiquées dans hideIfPb est cochée
+    // EXCEPTION ciblée : souhait_tetine cochée VIA la tickbox de la carte → on garde la carte visible
     if (b.hideIfPb) {
       const pbs = Array.isArray(b.hideIfPb) ? b.hideIfPb : [b.hideIfPb];
-      if (pbs.some(pb => state.selectedPbs.has(pb))) return '';
+      const syncedSet = state.tickboxSyncedPbs || new Set();
+      if (pbs.some(pb => state.selectedPbs.has(pb) && !(pb === 'souhait_tetine' && syncedSet.has(pb)))) return '';
     }
     // Afficher le bloc uniquement si la problématique indiquée dans showIfPb est cochée
     // EXCEPTION : si state.revealedLever correspond à une pb de showIfPb, on rend
@@ -8267,6 +8269,13 @@ function selectTickboxChoice(el) {
   if (cid === 'obj_position_sommeil') {
     const currentValue = wasSelected ? null : el.dataset.value;
     setPb('souhait_position_dorsale', currentValue === 'dorsale');
+    syncChanged = true;
+  }
+  // obj_tetine_static → souhait_tetine (cocher si "supprimer", décocher si "garder")
+  // La carte reste visible grâce à l'exemption ciblée dans renderBlocks
+  if (cid === 'obj_tetine_static') {
+    const currentValue = wasSelected ? null : el.dataset.value;
+    setPb('souhait_tetine', currentValue === 'supprimer');
     syncChanged = true;
   }
   if (syncChanged) {
