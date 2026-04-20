@@ -7628,6 +7628,12 @@ function toggleOption(header) {
         // Masquer les frères fermés du même groupe
         hideClosedMutexSiblings(mutexGroup, optionDiv);
       }
+      // Pour les purple-btn (IV. Objectifs) : scroller la vue pour que le haut du bouton ouvert
+      // soit en haut du panel central, pas au milieu/en bas
+      if (optionDiv.classList.contains('purple-btn')) {
+        const wrap = optionDiv.closest('.edit-block-wrap') || optionDiv;
+        setTimeout(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+      }
     } else {
       content.classList.remove('open');
       optionDiv.classList.remove('open-action');
