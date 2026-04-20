@@ -1053,6 +1053,8 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.10);
     }
     .info-btn:active { transform: translateY(1px); }
+    .info-btn-wrap { display: block; margin: 8px 0; }
+    .info-btn-wrap.info-btn-align-right { text-align: right; }
     .info-btn-emoji { font-size: 16px; }
     /* Variante : bouton flottant à droite DANS un bloc texte (inline-right) */
     .info-btn.inline-right {
@@ -1987,6 +1989,14 @@
       vertical-align: top;
       margin-right: 8px;
     }
+    /* La carte Tétine statique se comporte comme un purple-btn fermé : inline-block 50% → remonte d'une ligne quand un bouton violet disparaît */
+    .edit-block-wrap:has(.obj-tetine-card) {
+      display: inline-block;
+      width: calc(50% - 10px);
+      vertical-align: top;
+      margin-right: 8px;
+    }
+    .edit-block-wrap:has(.obj-tetine-card) > .block { padding: 0 !important; }
     .block-option.purple-btn {
       width: 100%;
       background: #f5f0ff;
@@ -4247,7 +4257,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=282"></script>
+<script src="script-data.js?v=284"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7116,7 +7126,9 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const contentHtml = renderBlocks(innerBlocks, sectionId, (depth||0)+1, path||String(i));
     window.__infoButtons = window.__infoButtons || {};
     window.__infoButtons[btnId] = { title, content: contentHtml };
-    return `<button type="button" class="info-btn" onclick="openInfoPanel('${btnId}')"><span class="info-btn-emoji">💡</span><span>${label}</span></button>`;
+    const btnInlineStyle = b.width ? ` style="width:${b.width};min-width:0"` : '';
+    const alignCls = b.align === 'right' ? ' info-btn-align-right' : '';
+    return `<div class="info-btn-wrap${alignCls}"><button type="button" class="info-btn"${btnInlineStyle} onclick="openInfoPanel('${btnId}')"><span class="info-btn-emoji">💡</span><span>${label}</span></button></div>`;
   }
 
   // Calculateur interactif règle d'Appert : input poids → volume 24h
