@@ -7403,13 +7403,15 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   if (b.type === 'courbe_cards_grid') {
     const items = Array.isArray(b.items) ? b.items : [];
     if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+    if (!state.courbeCardsActiveByGrid) state.courbeCardsActiveByGrid = {};
     // Filtrer : ne garder que les items dont au moins une pb est cochée
     const visibleItems = items.filter(it => {
       const pbs = Array.isArray(it.pb) ? it.pb : [it.pb];
       return pbs.some(p => state.selectedPbs.has(p));
     });
     if (visibleItems.length === 0) return '';
-    const activeId = state.courbeCardsActive || null;
+    const gridPath = `${sectionId||'x'}__${path||'main'}`;
+    const activeId = state.courbeCardsActiveByGrid[gridPath] || null;
     const getActiveSublabels = (it) => {
       if (!it.sublabels) return [];
       return Object.entries(it.sublabels)
@@ -7444,14 +7446,14 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         const bannerLabel = `${activeItem.emoji || ''} ${substituteVars(activeItem.label || '')}${subsBannerHtml}`;
         contentHtml = `<div class="courbe-card-content" data-card-id="${activeId}">
           <div class="courbe-card-banner">${bannerLabel}</div>
-          <button type="button" class="courbe-card-close" onclick="closeCourbeCard()">✕ Fermer</button>
+          <button type="button" class="courbe-card-close" onclick="closeCourbeCard(this)">✕ Fermer</button>
           ${inner}
-          <button type="button" class="courbe-card-close courbe-card-close-bottom" onclick="closeCourbeCard()">✕ Fermer</button>
+          <button type="button" class="courbe-card-close courbe-card-close-bottom" onclick="closeCourbeCard(this)">✕ Fermer</button>
         </div>`;
       }
     }
     const themeCls = b.theme ? ` theme-${b.theme}` : '';
-    return `<div class="courbe-cards-grid-wrap${themeCls}">
+    return `<div class="courbe-cards-grid-wrap${themeCls}" data-grid-path="${gridPath}">
       <div class="courbe-cards-grid">${cardsHtml}</div>
       ${contentHtml}
     </div>`;
@@ -8719,11 +8721,13 @@ function openCourbeCard(cardEl) {
   const cardId = cardEl.dataset.cardId;
   if (!cardId) return;
   if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
-  // Toggle : si on re-clique sur la carte déjà active, on ferme
-  if (state.courbeCardsActive === cardId) {
-    state.courbeCardsActive = null;
+  if (!state.courbeCardsActiveByGrid) state.courbeCardsActiveByGrid = {};
+  const gridPath = cardEl.closest('.courbe-cards-grid-wrap')?.dataset.gridPath || 'main';
+  // Toggle : si on re-clique sur la carte déjà active de cette grille, on ferme
+  if (state.courbeCardsActiveByGrid[gridPath] === cardId) {
+    delete state.courbeCardsActiveByGrid[gridPath];
   } else {
-    state.courbeCardsActive = cardId;
+    state.courbeCardsActiveByGrid[gridPath] = cardId;
     state.courbeCardsTicked.add(cardId);
   }
   renderCurrentSection();
@@ -8738,13 +8742,26 @@ function openCourbeCard(cardEl) {
 }
 window.openCourbeCard = openCourbeCard;
 
-function closeCourbeCard() {
-  // Mémoriser l'id de la carte active pour retrouver la grille après re-render
-  const prevId = state.courbeCardsActive;
-  state.courbeCardsActive = null;
+function closeCourbeCard(btnEl) {
+  // Identifier la grille du bouton Fermer cliqué (pour supporter les grilles imbriquées)
+  let gridPath = null;
+  let prevId = null;
+  if (btnEl) {
+    const content = btnEl.closest('.courbe-card-content');
+    prevId = content?.dataset.cardId || null;
+    const wrap = content?.closest('.courbe-cards-grid-wrap');
+    gridPath = wrap?.dataset.gridPath || null;
+  }
+  if (!state.courbeCardsActiveByGrid) state.courbeCardsActiveByGrid = {};
+  if (gridPath) {
+    delete state.courbeCardsActiveByGrid[gridPath];
+  } else {
+    // Fallback : fermer toutes les grilles si on ne peut pas identifier
+    state.courbeCardsActiveByGrid = {};
+  }
   renderCurrentSection();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
-  // Scroller vers la grille (catégorie) dont venait la carte fermée
+  // Scroller vers la grille dont venait la carte fermée
   setTimeout(() => {
     if (!prevId) return;
     const card = document.querySelector(`.courbe-card[data-card-id="${prevId}"]`);
@@ -9494,7 +9511,7 @@ function autoSaveActiveConsultation() {
         currentSessionId: state.currentSessionId || null,
         tickboxChoices: state.tickboxChoices || {},
         decouverteNotes: state.decouverteNotes || {},
-        courbeCardsActive: state.courbeCardsActive || null,
+        courbeCardsActiveByGrid: state.courbeCardsActiveByGrid || {},
         courbeCardsTicked: state.courbeCardsTicked ? [...state.courbeCardsTicked] : [],
         savedAt: Date.now()
       };
@@ -9568,7 +9585,7 @@ function restoreActiveConsultation() {
     state.currentSessionId = snap.currentSessionId || null;
     state.tickboxChoices = snap.tickboxChoices || {};
     state.decouverteNotes = snap.decouverteNotes || {};
-    state.courbeCardsActive = snap.courbeCardsActive || null;
+    state.courbeCardsActiveByGrid = snap.courbeCardsActiveByGrid || {};
     state.courbeCardsTicked = new Set(snap.courbeCardsTicked || []);
     // Re-peupler le formulaire + reconstruire l'UI
     populateFormFromClient(state.client);
