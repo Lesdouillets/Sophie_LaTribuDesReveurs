@@ -1997,6 +1997,18 @@
       margin-right: 8px;
     }
     .edit-block-wrap:has(.obj-tetine-card) > .block { padding: 0 !important; }
+    /* Quand IV. Objectifs contient la carte Tétine, on centre les inline-block (purple-btn + Tétine)
+       sans affecter l'alignement du texte des autres blocs */
+    #content-area:has(.obj-tetine-card) { text-align: center; }
+    #content-area:has(.obj-tetine-card) > .edit-block-wrap > .block,
+    #content-area:has(.obj-tetine-card) > .edit-block-wrap > .block-question,
+    #content-area:has(.obj-tetine-card) > .edit-block-wrap .block-normal,
+    #content-area:has(.obj-tetine-card) .lieu-sommeil-intro-grid,
+    #content-area:has(.obj-tetine-card) .lieu-sommeil-intro-grid * { text-align: left; }
+    /* Réinitialiser le contenu à l'intérieur du purple-btn ouvert / de la Tétine */
+    #content-area:has(.obj-tetine-card) .block-option.purple-btn .option-content,
+    #content-area:has(.obj-tetine-card) .block-option.purple-btn .option-content * { text-align: left; }
+    #content-area:has(.obj-tetine-card) .obj-tetine-card { text-align: center; }
     .block-option.purple-btn {
       width: 100%;
       background: #f5f0ff;
@@ -2007,7 +2019,16 @@
     }
     .block-option.purple-btn > .option-header {
       flex-direction: column; align-items: center; justify-content: center;
-      padding: 18px 20px; gap: 6px; min-height: 140px;
+      padding: 18px 20px; gap: 6px; min-height: 180px;
+    }
+    /* Harmoniser la hauteur des 3 cartes (Lieu de sommeil, Position ventrale, Souhait Tétine) */
+    .edit-block-wrap:has(> .block-option.purple-btn:not(.open-action)) > .block-option,
+    .edit-block-wrap:has(.obj-tetine-card) > .block > .obj-tetine-card {
+      min-height: 180px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .block-option.purple-btn > .option-header > span { flex-direction: column; align-items: center; gap: 6px; order: 0; }
     .block-option.purple-btn > .option-header .option-emoji { font-size: 32px; order: 0; }
