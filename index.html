@@ -2007,7 +2007,7 @@
     }
     .block-option.purple-btn > .option-header {
       flex-direction: column; align-items: center; justify-content: center;
-      padding: 18px 20px; gap: 6px; min-height: 80px;
+      padding: 18px 20px; gap: 6px; min-height: 140px;
     }
     .block-option.purple-btn > .option-header > span { flex-direction: column; align-items: center; gap: 6px; order: 0; }
     .block-option.purple-btn > .option-header .option-emoji { font-size: 32px; order: 0; }
@@ -4257,7 +4257,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=284"></script>
+<script src="script-data.js?v=285"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -4350,7 +4350,7 @@ function cleanStaleOverrides() {
     ...(SCRIPT_DATA.planAction || []),
     SCRIPT_DATA.conclusion
   ].filter(Boolean);
-  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question'];
+  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid'];
   let changed = false;
   for (const sectionId of Object.keys(state.scriptOverrides)) {
     const src = allSections.find(s => s.id === sectionId);
@@ -4466,7 +4466,7 @@ function saveScriptOverrides() {
 function getOverrideBlocks(section) {
   const ov = state.scriptOverrides[section.id];
   if (!ov) return section.blocks || [];
-  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'option_banner', 'parent_banner', 'tarifs_tableau', 'appert_calculator','potentiel_genetique_calculator','decouverte_notes_question'];
+  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'option_banner', 'parent_banner', 'tarifs_tableau', 'appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid'];
   const liveBlocks = section.blocks || [];
 
   // Pour problematique/objectifs, ov.blocks est déjà nettoyé par ensureOverride
@@ -6811,7 +6811,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question'].includes(b.type);
+    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid'].includes(b.type);
     const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
@@ -7129,6 +7129,24 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const btnInlineStyle = b.width ? ` style="width:${b.width};min-width:0"` : '';
     const alignCls = b.align === 'right' ? ' info-btn-align-right' : '';
     return `<div class="info-btn-wrap${alignCls}"><button type="button" class="info-btn"${btnInlineStyle} onclick="openInfoPanel('${btnId}')"><span class="info-btn-emoji">💡</span><span>${label}</span></button></div>`;
+  }
+
+  // Rendu spécial IV. Objectifs — Lieu de sommeil : intro à gauche + 2 boutons jaunes à droite au même niveau
+  if (b.type === 'lieu_sommeil_intro_grid') {
+    const intro = substituteVars(b.text || '');
+    const buttons = Array.isArray(b.buttons) ? b.buttons : [];
+    window.__infoButtons = window.__infoButtons || {};
+    const btnsHtml = buttons.map((btn, bi) => {
+      const btnId = `info-btn-${sectionId||'x'}-${String(path||i).replace(/\./g,'-')}-grid-${bi}`;
+      const label = substituteVars(btn.label || 'Plus d\'infos');
+      const title = substituteVars(btn.title || btn.label || 'Informations');
+      const innerBlocks = Array.isArray(btn.blocks) ? btn.blocks : [];
+      const contentHtml = renderBlocks(innerBlocks, sectionId, (depth||0)+1, `${path||i}.gb.${bi}`);
+      window.__infoButtons[btnId] = { title, content: contentHtml };
+      const w = btn.width || '420px';
+      return `<button type="button" class="info-btn" style="width:${w};min-width:0;margin:0" onclick="openInfoPanel('${btnId}')"><span class="info-btn-emoji">💡</span><span>${label}</span></button>`;
+    }).join('');
+    return `<div class="lieu-sommeil-intro-grid" style="display:flex;align-items:flex-start;gap:20px;margin-bottom:14px"><div class="block block-normal" style="flex:1;margin-bottom:0">${intro}</div><div style="display:flex;flex-direction:column;gap:10px;flex-shrink:0">${btnsHtml}</div></div>`;
   }
 
   // Calculateur interactif règle d'Appert : input poids → volume 24h
