@@ -2336,6 +2336,18 @@
     .btn-edit-mode.active { background: #f0ad4e; color: #7c3000; border-color: transparent; }
 
     .edit-block-wrap { position: relative; }
+    /* Wrapper "bloc groupé" — englobe plusieurs sous-blocs dans un seul encadré blanc visuellement continu */
+    .grouped-block {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 14px 20px;
+      margin: 14px 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .grouped-block .block-normal:not(.block-purple-dark) { background: transparent !important; border: none !important; box-shadow: none !important; padding: 4px 0 !important; margin-bottom: 4px !important; }
+    .grouped-block .block-purple-dark { margin: 8px 0 !important; }
+    .grouped-block .edit-block-wrap { margin-bottom: 0; }
     /* Bloc "Conclusion" — barre latérale épaisse orange (couleurs Nutrition) + fond orange pâle */
     .conclusion-nutrition {
       display: flex;
@@ -4329,7 +4341,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=294"></script>
+<script src="script-data.js?v=295"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -4422,7 +4434,7 @@ function cleanStaleOverrides() {
     ...(SCRIPT_DATA.planAction || []),
     SCRIPT_DATA.conclusion
   ].filter(Boolean);
-  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition'];
+  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block'];
   let changed = false;
   for (const sectionId of Object.keys(state.scriptOverrides)) {
     const src = allSections.find(s => s.id === sectionId);
@@ -4538,7 +4550,7 @@ function saveScriptOverrides() {
 function getOverrideBlocks(section) {
   const ov = state.scriptOverrides[section.id];
   if (!ov) return section.blocks || [];
-  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'option_banner', 'parent_banner', 'tarifs_tableau', 'appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition'];
+  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'option_banner', 'parent_banner', 'tarifs_tableau', 'appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block'];
   const liveBlocks = section.blocks || [];
 
   // Pour problematique/objectifs, ov.blocks est déjà nettoyé par ensureOverride
@@ -6889,7 +6901,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition'].includes(b.type);
+    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block'].includes(b.type);
     const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
@@ -7207,6 +7219,13 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const btnInlineStyle = b.width ? ` style="width:${b.width};min-width:0"` : '';
     const alignCls = b.align === 'right' ? ' info-btn-align-right' : '';
     return `<div class="info-btn-wrap${alignCls}"><button type="button" class="info-btn"${btnInlineStyle} onclick="openInfoPanel('${btnId}')"><span class="info-btn-emoji">💡</span><span>${label}</span></button></div>`;
+  }
+
+  // Bloc groupé — wrapper blanc englobant plusieurs sous-blocs comme s'ils n'en formaient qu'un seul
+  if (b.type === 'grouped_block') {
+    const innerBlocks = Array.isArray(b.blocks) ? b.blocks : [];
+    const innerHtml = renderBlocks(innerBlocks, sectionId, (depth||0)+1, `${path||i}.gb`);
+    return `<div class="grouped-block">${innerHtml}</div>`;
   }
 
   // Bloc "Conclusion Nutrition" — barre latérale orange épaisse avec "Conclusion" horizontal + fond orange pâle

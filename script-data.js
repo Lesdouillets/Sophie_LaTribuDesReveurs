@@ -547,29 +547,32 @@ const SCRIPT_DATA = {
       title: "Courbe de poids qui diminue",
       emoji: "📉",
       blocks: [
-        { type: "normal", text: "- **Je peux voir** qu'il y a un **qqch au niveau** des **apports alimentaires**.\n\n- **Avant de travailler le sommeil**, on vient toujours **s'assurer que les besoins nutritionnels** d'un enfant **sont bien couverts**\n  car **un corps qui manque d'énergie** aura + **de mal :**\n  - **à s'apaiser**\n  - et **enchaîner ses cycles**\n\n- En **tant que consultantes,** on va s'**appuyer** sur des **repères fiables,** comme les **courbes** de poids, la taille, le périmètre crânien\n  *D'ailleurs **je vous invite** vivement à **demander** à votre médecin de **prendre les MESURES** à **chaque RDV***\n- On peut **voir les courbes** un peu comme **notre tableau de bord** : elles **nous aident à savoir** si le **corps** reçoit **assez d'énergie** pour **soutenir** un **sommeil de qualité**" },
-        { type: "normal", text: "- 🔥 Donc **quand on a lu les courbes**, on a **pu voir** que [prénom_enfant] est **[ne_nee] autour** du <strong style=\"color:#dc2626\">XX</strong>ᵉ percentile." },
-        { type: "normal", _purpleDark: true, text: "- 🔥 <em>OPTION</em> : S'il a voulu remonter : ET a **même réussi à monter** au <strong style=\"color:#dc2626\">XX</strong>ᵉ percentile" },
-        { type: "normal", text: "- 🔥 Puis progressivement, [il_elle] s'est **[stabilise_stabilisee] autour** du <strong style=\"color:#dc2626\">XX</strong>ᵉ percentile.\n  ⇒ **Concrètement**, cela signifie qu'[il_elle] a **perdu <strong style=\"color:#dc2626\">XX</strong> couloirs** depuis <strong style=\"color:#dc2626\">sa naissance / sa tentative de montée</strong>." },
         {
-          type: "normal", text: "- **En général**, un enfant **suit plutôt le couloir** dans LEQUEL **il est né**\n  ⇒ c'est son **couloir de référence**\n- Dans **certains cas**, certains enfants **peuvent même DEPASSER** leur **couloir de référence :**\n  - Par exemple, lorsqu'ils ont un **fort potentiel génétique** (si les **parents sont grands**, par exemple),\n  - OU **lorsque les enfants sont nés** un peu en **dessous de leur potentiel.**\n    ⇒ On parle alors de **rattrapage de courbe**.\n- Donc, il est **tout à fait possible** que [prénom_enfant] :\n  - **atteigne un couloir supérieur** à son **couloir de référence**\n  - et fasse ce **rattrapage**,",
-          trailingInfoButton: {
-            label: "Potentiel génétique",
-            title: "Potentiel génétique",
-            blocks: [
-              { type: "normal", text: "- **Définition :** Potentiel de croissance de l'enfant en fonction de la taille de ses parents." },
-              { type: "normal", text: "- **Formules** *(méthode de Tanner)* :\n  - 👧 **Fille** : (Taille père + Taille mère − 13) / 2\n  - 👦 **Garçon** : (Taille père + Taille mère + 13) / 2\n- Le résultat donne la **taille cible adulte** (± 8,5 cm)." },
-              { type: "potentiel_genetique_calculator" },
-            ]
-          }
+          type: "grouped_block",
+          blocks: [
+            { type: "normal", text: "- **Je peux voir** qu'il y a un **qqch au niveau** des **apports alimentaires**.\n\n- **Avant de travailler le sommeil**, on vient toujours **s'assurer que les besoins nutritionnels** d'un enfant **sont bien couverts**\n  car **un corps qui manque d'énergie** aura + **de mal :**\n  - **à s'apaiser**\n  - et **enchaîner ses cycles**\n\n- En **tant que consultantes,** on va s'**appuyer** sur des **repères fiables,** comme les **courbes** de poids, la taille, le périmètre crânien\n  *D'ailleurs **je vous invite** vivement à **demander** à votre médecin de **prendre les MESURES** à **chaque RDV***\n- On peut **voir les courbes** un peu comme **notre tableau de bord** : elles **nous aident à savoir** si le **corps** reçoit **assez d'énergie** pour **soutenir** un **sommeil de qualité**" },
+            { type: "normal", text: "- 🔥 Donc **quand on a lu les courbes**, on a **pu voir** que [prénom_enfant] est **[ne_nee] autour** du <strong style=\"color:#dc2626\">XX</strong>ᵉ percentile." },
+            { type: "normal", _purpleDark: true, text: "- 🔥 <em>OPTION</em> : S'il a voulu remonter : ET a **même réussi à monter** au <strong style=\"color:#dc2626\">XX</strong>ᵉ percentile" },
+            { type: "normal", text: "- 🔥 Puis progressivement, [il_elle] s'est **[stabilise_stabilisee] autour** du <strong style=\"color:#dc2626\">XX</strong>ᵉ percentile.\n  ⇒ **Concrètement**, cela signifie qu'[il_elle] a **perdu <strong style=\"color:#dc2626\">XX</strong> couloirs** depuis <strong style=\"color:#dc2626\">sa naissance / sa tentative de montée</strong>." },
+            {
+              type: "normal", text: "- **En général**, un enfant **suit plutôt le couloir** dans LEQUEL **il est né**\n  ⇒ c'est son **couloir de référence**\n- Dans **certains cas**, certains enfants **peuvent même DEPASSER** leur **couloir de référence :**\n  - Par exemple, lorsqu'ils ont un **fort potentiel génétique** (si les **parents sont grands**, par exemple),\n  - OU **lorsque les enfants sont nés** un peu en **dessous de leur potentiel.**\n    ⇒ On parle alors de **rattrapage de courbe**.\n- Donc, il est **tout à fait possible** que [prénom_enfant] :\n  - **atteigne un couloir supérieur** à son **couloir de référence**\n  - et fasse ce **rattrapage**,",
+              trailingInfoButton: {
+                label: "Potentiel génétique",
+                title: "Potentiel génétique",
+                blocks: [
+                  { type: "normal", text: "- **Définition :** Potentiel de croissance de l'enfant en fonction de la taille de ses parents." },
+                  { type: "normal", text: "- **Formules** *(méthode de Tanner)* :\n  - 👧 **Fille** : (Taille père + Taille mère − 13) / 2\n  - 👦 **Garçon** : (Taille père + Taille mère + 13) / 2\n- Le résultat donne la **taille cible adulte** (± 8,5 cm)." },
+                  { type: "potentiel_genetique_calculator" },
+                ]
+              }
+            },
+            { type: "normal", _purpleDark: true, text: "🔥 <em>OPTION</em> : il a voulu remonter : comme [il_elle] **l'a montré** lors de sa **tentative de remontée de courbe** !" },
+            { type: "normal", text: "- Les courbes, ça va **nous donne** une **bonne indication**,\n  mais ça reste un **repère**.\n  ⇒ Le **+ important,** c'est vraiment d'ETRE **à l'écoute de son enfant**" },
+          ]
         },
-        { type: "normal", _purpleDark: true, text: "🔥 <em>OPTION</em> : il a voulu remonter : comme [il_elle] **l'a montré** lors de sa **tentative de remontée de courbe** !" },
-        { type: "normal", text: "- Les courbes, ça va **nous donne** une **bonne indication**,\n  mais ça reste un **repère**.\n  ⇒ Le **+ important,** c'est vraiment d'ETRE **à l'écoute de son enfant**" },
-        { type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"], text: "- Il y a un **2nd repère qu'on utilise** pour **se guider** : c'est la **règle d'Appert**\n- Elle nous donne des **indications sur la quantité \"théorique\" par 24h** en **fonction du poids,**" },
-        { type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"], text: "- 🔥 Aujourd'hui, [prénom_enfant] pèse **[poids]** kg\n  et vous me dites qu'[il_elle] boit environ <strong style=\"color:#dc2626\">XX</strong> mL sur 24 heures." },
         {
           type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"],
-          text: "- Si on se réfère à la **règle d'Appert**, ses besoins théoriques en lait seraient plutôt autour de **[besoin_lait_volume]** par jour (voire plus !).",
+          text: "- Il y a un **2nd repère qu'on utilise** pour **se guider** : c'est la **règle d'Appert**\n- Elle nous donne des **indications sur la quantité \"théorique\" par 24h** en **fonction du poids,**<br><br>\n- 🔥 Aujourd'hui, [prénom_enfant] pèse **[poids]** kg\n  et vous me dites qu'[il_elle] boit environ <strong style=\"color:#dc2626\">XX</strong> mL sur 24 heures.<br><br>\n- Si on se réfère à la **règle d'Appert**, ses besoins théoriques en lait seraient plutôt autour de **[besoin_lait_volume]** par jour (voire plus !).<br><br>\n⇒ Ca veut dire que **là aussi,** il y a un **écart** ENTRE **ses besoins** et ses **apports actuels**\n- Mais **ce n'est pas une règle stricte**, c'est **juste un repère** pour nous aider.\n- On reste surtout sur **une logique d'*à la demande***, surtout chez les plus petits.<br><br>\n- **Tous les BB** n'ont **pas :**\n  - **exactement le même rythme**\n  - et **leurs besoins** peuvent **varier d'un jour à l'autre.**\n  ⇒ On se fie surtout à leurs **signes de faim et de satiété**.",
           trailingInfoButton: {
             label: "Calcul règle d'Appert",
             title: "Calcul règle d'Appert",
@@ -580,8 +583,7 @@ const SCRIPT_DATA = {
             ]
           }
         },
-        { type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"], text: "⇒ Ca veut dire que **là aussi,** il y a un **écart** ENTRE **ses besoins** et ses **apports actuels**\n<br>&nbsp;\n- Mais **ce n'est pas une règle stricte**, c'est **juste un repère** pour nous aider.\n- On reste surtout sur **une logique d'*à la demande***, surtout chez les plus petits.\n<br>&nbsp;\n- **Tous les BB** n'ont **pas :**\n  - **exactement le même rythme**\n  - et **leurs besoins** peuvent **varier d'un jour à l'autre.**\n  ⇒ On se fie surtout à leurs **signes de faim et de satiété**." },
-        { type: "normal", text: "- Donc, si on **prend un peu de recul** sur tout ça…\n  on peut voir qu'il y a **AUSSI :**\n  - **d'AUTRES plusieurs petites choses**\n  - AUTOUR de son **alimentation**\n  - qui peuvent **jouer un rôle** sur son **sommeil**<br>&nbsp;<br>&nbsp;" },
+        { type: "normal", text: "- Donc, si on **prend un peu de recul** sur tout ça…\n  on peut voir qu'il y a **AUSSI :**\n  - **d'AUTRES plusieurs petites choses**\n  - AUTOUR de son **alimentation**\n  - qui peuvent **jouer un rôle** sur son **sommeil**" },
         { type: "normal", text: "- Je pense notamment…" },
         { type: "option_banner", leverId: "nutri_esp_long", emoji: "⏱️", showIfPb: "nutri_esp_long", variant: "orange" },
         { type: "normal", showIfPb: "nutri_esp_long", text: "- 🔥 L'**intervalle entre 2 prises** alimentaires peut être parfois assez long (<strong style=\"color:#dc2626\">XX</strong> heures)<br><br>\n- A cet âge, les enfants ont **besoin de prises + rapprochés** pour s'**adapter** à leur **signaux de faim.**\n- **🎓On devrait** normalement **leur donner** : \"***à la demande***\"\n- Et se **défaire** complètement du **mythe des espacements de 4h**, .. qui n'est **basé sur RIEN du TOUT**!\n- Avec des **espacements longs, [prénom_enfant]** a du **mal à \"TENIR\" jusqu'à la prochaine prise alimentaire**\n  ⇒ On **peut imaginer** qu'[il_elle] est **comme \"affamé\"** entre 2 prises alimentaires" },
@@ -620,7 +622,7 @@ const SCRIPT_DATA = {
         { type: "normal", showIfPb: "nutri_autre_jus_vegetal", text: "- [prénom_enfant] boit une **grande quantité** de biberons de <strong style=\"color:#c52f26\">jus végétal</strong>\n- Or ils **n'apportent PAS les mêmes besoins nutritionnels** que le **lait maternel ou infantile**\n  ⇒ L'**estomac** est alors **rempli MAIS PAS** forcément **avec les bons apports** pour **grandir** ….. et **être rassasié**" },
         { type: "option_banner", leverId: "nutri_autre_lait_animal", emoji: "🥛", showIfPb: "nutri_autre_lait_animal", variant: "orange" },
         { type: "normal", showIfPb: "nutri_autre_lait_animal", text: "- [prénom_enfant] boit une **grande quantité** de biberons de <strong style=\"color:#c52f26\">lait animal</strong>\n- Or ils **n'apportent PAS les mêmes besoins nutritionnels** que le **lait maternel ou infantile**\n  ⇒ L'**estomac** est alors **rempli MAIS PAS** forcément **avec les bons apports** pour **grandir** ….. et **être rassasié**" },
-        { type: "normal", _parentLevel: true, text: "<div style=\"height:28px\"></div>\n- Voilà,\n- AVEC tous ces **petits indices,**\n- On commence à voir un **schéma qui se dessine** au **niveau de sa nutrition**<br><br>\n- Et **CE QUI est intéressant**, c'est que ça correspond à CE QUE **vous observez** :\n  - dans son comportement\n  - et dans son sommeil" },
+        { type: "normal", _parentLevel: true, text: "<div style=\"height:40px\"></div>\n- Voilà,\n- AVEC tous ces **petits indices,**\n- On commence à voir un **schéma qui se dessine** au **niveau de sa nutrition**<br><br>\n- Et **CE QUI est intéressant**, c'est que ça correspond à CE QUE **vous observez** :\n  - dans son comportement\n  - et dans son sommeil" },
         {
           type: "conclusion_nutrition",
           _parentLevel: true,
