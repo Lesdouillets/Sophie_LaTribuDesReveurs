@@ -2336,6 +2336,70 @@
     .btn-edit-mode.active { background: #f0ad4e; color: #7c3000; border-color: transparent; }
 
     .edit-block-wrap { position: relative; }
+    /* Grille de cartes "Courbe de poids qui diminue" — 3 colonnes, cartes même taille */
+    .courbe-cards-grid-wrap { margin: 18px 0; }
+    .courbe-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .courbe-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 120px;
+      padding: 16px 14px;
+      background: #fff7ed;
+      border: 2px solid #fdba74;
+      border-radius: 14px;
+      box-shadow: 0 2px 6px rgba(194,65,12,0.10);
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.12s, box-shadow 0.15s, opacity 0.2s, background 0.15s;
+      text-align: center;
+    }
+    .courbe-card:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(194,65,12,0.22); background: #ffedd5; }
+    .courbe-card.active { background: linear-gradient(135deg, #f97316, #fb923c); border-color: #c2410c; color: white; box-shadow: 0 4px 16px rgba(194,65,12,0.35); }
+    .courbe-card.active .ccc-title { color: white; }
+    .courbe-card.dimmed { opacity: 0.35; pointer-events: none; filter: grayscale(0.6); }
+    .courbe-card .ccc-emoji { font-size: 28px; line-height: 1; }
+    .courbe-card .ccc-title { font-weight: 800; font-size: 13.5px; color: #7c2d12; line-height: 1.25; }
+    .courbe-card .ccc-tick {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.12s;
+      padding: 2px;
+    }
+    .courbe-card .ccc-tick:hover { transform: scale(1.15); }
+    .courbe-card-content {
+      background: #fff7ed;
+      border: 2px solid #fdba74;
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin-top: 0;
+      box-shadow: 0 2px 10px rgba(194,65,12,0.12);
+    }
+    .courbe-card-close {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px;
+      margin-bottom: 12px;
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1.5px solid #fca5a5;
+      border-radius: 8px;
+      font-size: 13px; font-weight: 700;
+      cursor: pointer;
+    }
+    .courbe-card-close:hover { background: #fee2e2; }
     /* Wrapper "bloc groupé" — englobe plusieurs sous-blocs dans un seul encadré blanc visuellement continu */
     .grouped-block {
       background: #ffffff;
@@ -4345,7 +4409,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=297"></script>
+<script src="script-data.js?v=298"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -4438,7 +4502,7 @@ function cleanStaleOverrides() {
     ...(SCRIPT_DATA.planAction || []),
     SCRIPT_DATA.conclusion
   ].filter(Boolean);
-  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block'];
+  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid'];
   let changed = false;
   for (const sectionId of Object.keys(state.scriptOverrides)) {
     const src = allSections.find(s => s.id === sectionId);
@@ -4554,7 +4618,7 @@ function saveScriptOverrides() {
 function getOverrideBlocks(section) {
   const ov = state.scriptOverrides[section.id];
   if (!ov) return section.blocks || [];
-  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'option_banner', 'parent_banner', 'tarifs_tableau', 'appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block'];
+  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'option_banner', 'parent_banner', 'tarifs_tableau', 'appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid'];
   const liveBlocks = section.blocks || [];
 
   // Pour problematique/objectifs, ov.blocks est déjà nettoyé par ensureOverride
@@ -6918,7 +6982,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block'].includes(b.type);
+    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid'].includes(b.type);
     const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
@@ -7236,6 +7300,49 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const btnInlineStyle = b.width ? ` style="width:${b.width};min-width:0"` : '';
     const alignCls = b.align === 'right' ? ' info-btn-align-right' : '';
     return `<div class="info-btn-wrap${alignCls}"><button type="button" class="info-btn"${btnInlineStyle} onclick="openInfoPanel('${btnId}')"><span class="info-btn-emoji">💡</span><span>${label}</span></button></div>`;
+  }
+
+  // Grille de cartes pour "Courbe de poids qui diminue" — chaque carte regroupe un levier (ou plusieurs sous-leviers)
+  if (b.type === 'courbe_cards_grid') {
+    const items = Array.isArray(b.items) ? b.items : [];
+    if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+    // Filtrer : ne garder que les items dont au moins une pb est cochée
+    const visibleItems = items.filter(it => {
+      const pbs = Array.isArray(it.pb) ? it.pb : [it.pb];
+      return pbs.some(p => state.selectedPbs.has(p));
+    });
+    if (visibleItems.length === 0) return '';
+    const activeId = state.courbeCardsActive || null;
+    const cardsHtml = visibleItems.map((it, idx) => {
+      const cardId = it.id || `ccg-${idx}`;
+      const ticked = state.courbeCardsTicked.has(cardId);
+      const isActive = activeId === cardId;
+      const isDimmed = activeId && activeId !== cardId;
+      const dimmedCls = isDimmed ? ' dimmed' : '';
+      const activeCls = isActive ? ' active' : '';
+      const tickIcon = ticked ? '✅' : '☐';
+      return `<div class="courbe-card${activeCls}${dimmedCls}" data-card-id="${cardId}" onclick="openCourbeCard(this)">
+        <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${tickIcon}</span>
+        <span class="ccc-emoji">${it.emoji || '📄'}</span>
+        <span class="ccc-title">${substituteVars(it.label || '')}</span>
+      </div>`;
+    }).join('');
+    let contentHtml = '';
+    if (activeId) {
+      const activeItem = visibleItems.find(it => (it.id || '') === activeId) || items.find(it => it.id === activeId);
+      if (activeItem) {
+        const innerBlocks = Array.isArray(activeItem.blocks) ? activeItem.blocks : [];
+        const inner = renderBlocks(innerBlocks, sectionId, (depth||0)+1, `${path||i}.cc.${activeId}`);
+        contentHtml = `<div class="courbe-card-content" data-card-id="${activeId}">
+          <button type="button" class="courbe-card-close" onclick="closeCourbeCard()">✕ Fermer</button>
+          ${inner}
+        </div>`;
+      }
+    }
+    return `<div class="courbe-cards-grid-wrap">
+      <div class="courbe-cards-grid">${cardsHtml}</div>
+      ${contentHtml}
+    </div>`;
   }
 
   // Bloc groupé — wrapper blanc englobant plusieurs sous-blocs comme s'ils n'en formaient qu'un seul
@@ -8491,6 +8598,47 @@ function saveDecouverteNoteFromFiche(el) {
   if (typeof autoSaveFiche === 'function') autoSaveFiche();
 }
 window.saveDecouverteNoteFromFiche = saveDecouverteNoteFromFiche;
+// ═══════════════════════════════════════════════════
+// Grille de cartes "Courbe de poids qui diminue"
+// ═══════════════════════════════════════════════════
+function openCourbeCard(cardEl) {
+  if (!cardEl) return;
+  const cardId = cardEl.dataset.cardId;
+  if (!cardId) return;
+  if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+  // Ouvrir cette carte + marquer comme lue automatiquement
+  state.courbeCardsActive = cardId;
+  state.courbeCardsTicked.add(cardId);
+  renderCurrentSection();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.openCourbeCard = openCourbeCard;
+
+function closeCourbeCard() {
+  state.courbeCardsActive = null;
+  renderCurrentSection();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.closeCourbeCard = closeCourbeCard;
+
+function toggleCourbeCardTick(tickEl) {
+  if (!tickEl) return;
+  const card = tickEl.closest('.courbe-card');
+  if (!card) return;
+  const cardId = card.dataset.cardId;
+  if (!cardId) return;
+  if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+  if (state.courbeCardsTicked.has(cardId)) {
+    state.courbeCardsTicked.delete(cardId);
+    tickEl.textContent = '☐';
+  } else {
+    state.courbeCardsTicked.add(cardId);
+    tickEl.textContent = '✅';
+  }
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.toggleCourbeCardTick = toggleCourbeCardTick;
+
 function restoreDecouverteNotes(root) {
   if (!state.decouverteNotes) return;
   const scope = root || document;
@@ -9213,6 +9361,8 @@ function autoSaveActiveConsultation() {
         currentSessionId: state.currentSessionId || null,
         tickboxChoices: state.tickboxChoices || {},
         decouverteNotes: state.decouverteNotes || {},
+        courbeCardsActive: state.courbeCardsActive || null,
+        courbeCardsTicked: state.courbeCardsTicked ? [...state.courbeCardsTicked] : [],
         savedAt: Date.now()
       };
       localStorage.setItem('tdr_active_consultation', JSON.stringify(snapshot));
@@ -9285,6 +9435,8 @@ function restoreActiveConsultation() {
     state.currentSessionId = snap.currentSessionId || null;
     state.tickboxChoices = snap.tickboxChoices || {};
     state.decouverteNotes = snap.decouverteNotes || {};
+    state.courbeCardsActive = snap.courbeCardsActive || null;
+    state.courbeCardsTicked = new Set(snap.courbeCardsTicked || []);
     // Re-peupler le formulaire + reconstruire l'UI
     populateFormFromClient(state.client);
     buildSections();
