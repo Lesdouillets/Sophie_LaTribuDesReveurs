@@ -568,7 +568,7 @@ const SCRIPT_DATA = {
               }
             },
             { type: "normal", _purpleDark: true, text: "- 🔥 <em>OPTION</em> : il a voulu remonter : comme [il_elle] **l'a montré** lors de sa **tentative de remontée de courbe** !" },
-            { type: "normal", text: "<div style=\"height:16px\"></div>\n- Les courbes, ça va **nous donne** une **bonne indication**,\n  mais ça reste un **repère**.\n  ⇒ Le **+ important,** c'est vraiment d'ETRE **à l'écoute de son enfant**" },
+            { type: "normal", text: "<br><br>\n- Les courbes, ça va **nous donne** une **bonne indication**,\n  mais ça reste un **repère**.\n  ⇒ Le **+ important,** c'est vraiment d'ETRE **à l'écoute de son enfant**" },
           ]
         },
         {
@@ -593,8 +593,7 @@ const SCRIPT_DATA = {
         { type: "option_banner", leverId: "nutri_vol_petit", emoji: "🍼", showIfPb: "nutri_vol_petit", variant: "orange" },
         { type: "normal", showIfPb: "nutri_vol_petit", text: "- 🔥 Le **volume** des biberons (<strong style=\"color:#dc2626\">XX</strong>ml) est **assez petit** pour :\n  - **son âge**\n  - **et ses besoins**\n  ⇒ Ca se **rapproche +** de la **taille des biberons d'un nourrisson**\n  ⇒ **SI** les **biberons sont petits** : la **sensation d'être RASSASIE** se **dissipe** assez **vite**" },
         { type: "option_banner", leverId: "nutri_vol_gros", emoji: "🍼", showIfPb: "nutri_vol_gros", variant: "orange" },
-        { type: "normal", showIfPb: "nutri_vol_gros", text: "- 🔥 Le **volume** des biberons (<strong style=\"color:#dc2626\">XX</strong>ml) est **assez conséquent** par **rapport au volume de son estomac** (**souvent** on **suit ce qui est inscrit** sur les **boites de lait**)\n  ⇒ C'est **comme s'il était \"gavé\"**\n  ⇒ et **son estomac** doit **gérer une quantité importante** à chaque biberon\n  ⇒ ce qui peut **parfois entraîner une digestion + difficile...**" },
-        { type: "normal", _purpleDark: true, showIfPb: "nutri_vol_gros", text: "🔥 <em>OPTION</em> — Reflux : ... qui peut **favoriser le reflux**" },
+        { type: "normal", showIfPb: "nutri_vol_gros", text: "- 🔥 Le **volume** des biberons (<strong style=\"color:#dc2626\">XX</strong>ml) est **assez conséquent** par **rapport au volume de son estomac** (**souvent** on **suit ce qui est inscrit** sur les **boites de lait**)\n  ⇒ C'est **comme s'il était \"gavé\"**\n  ⇒ et **son estomac** doit **gérer une quantité importante** à chaque biberon\n  ⇒ ce qui peut **parfois entraîner une digestion + difficile...**\n<div style=\"background:#f5f0ff;border:3px dashed #7c3aed;border-radius:16px;padding:6px 20px 6px 0;box-shadow:0 2px 8px rgba(124,58,237,0.18);margin:8px 0\"><ul style=\"margin:0;padding-left:21px\"><li>🔥 <em>OPTION</em> — Reflux : ... qui peut <strong>favoriser le reflux</strong></li></ul></div>" },
         { type: "option_banner", leverId: "nutri_vol_longtemps", emoji: "⏳", showIfPb: "nutri_vol_longtemps", variant: "orange" },
         { type: "normal", showIfPb: "nutri_vol_longtemps", text: "- Les biberons sont **parfois bus pendant très longtemps** (souvent **pour terminer les quantités indiquées sur les boîtes de lait**)\n  ⇒ Ce qui peut **brouiller les signaux** naturels **de faim** et de **satiété**" },
         { type: "option_banner", emoji: "🤱", label: "🤱 Baisse de la lactation", showIfPb: ["nutri_tetee","nutri_tetee_longue","nutri_tetee_greve","nutri_tetee_mode_garde"], variant: "orange" },
