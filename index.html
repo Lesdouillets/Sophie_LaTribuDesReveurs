@@ -8719,9 +8719,13 @@ function openCourbeCard(cardEl) {
   const cardId = cardEl.dataset.cardId;
   if (!cardId) return;
   if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
-  // Ouvrir cette carte + marquer comme lue automatiquement
-  state.courbeCardsActive = cardId;
-  state.courbeCardsTicked.add(cardId);
+  // Toggle : si on re-clique sur la carte déjà active, on ferme
+  if (state.courbeCardsActive === cardId) {
+    state.courbeCardsActive = null;
+  } else {
+    state.courbeCardsActive = cardId;
+    state.courbeCardsTicked.add(cardId);
+  }
   renderCurrentSection();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
   // Scroller vers la grille qui contient cette carte (et non la 1ère grille de la page)
