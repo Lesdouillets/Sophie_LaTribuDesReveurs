@@ -567,7 +567,7 @@ const SCRIPT_DATA = {
                 ]
               }
             },
-            { type: "normal", _purpleDark: true, text: "🔥 <em>OPTION</em> : il a voulu remonter : comme [il_elle] **l'a montré** lors de sa **tentative de remontée de courbe** !" },
+            { type: "normal", _purpleDark: true, text: "- 🔥 <em>OPTION</em> : il a voulu remonter : comme [il_elle] **l'a montré** lors de sa **tentative de remontée de courbe** !" },
             { type: "normal", text: "- Les courbes, ça va **nous donne** une **bonne indication**,\n  mais ça reste un **repère**.\n  ⇒ Le **+ important,** c'est vraiment d'ETRE **à l'écoute de son enfant**" },
           ]
         },
