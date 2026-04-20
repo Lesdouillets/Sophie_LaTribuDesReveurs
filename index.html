@@ -2447,7 +2447,9 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
     .grouped-block .block-normal:not(.block-purple-dark) { background: transparent !important; border: none !important; box-shadow: none !important; padding: 4px 0 !important; margin-bottom: 4px !important; }
-    .grouped-block .block-purple-dark { margin: 0 0 4px 0 !important; padding: 6px 20px 6px 0 !important; }
+    .grouped-block .block-purple-dark { margin: 0 !important; padding: 6px 20px 6px 0 !important; }
+    .grouped-block .block-purple-dark + .edit-block-wrap > .block-normal:not(.block-purple-dark),
+    .grouped-block .edit-block-wrap:has(+ .edit-block-wrap > .block-purple-dark) > .block-normal:not(.block-purple-dark) { margin-top: 0 !important; margin-bottom: 0 !important; }
     .grouped-block .block-purple-dark ul { padding-left: 21px !important; margin-left: 0 !important; }
     .grouped-block .block-purple-dark > ul,
     .grouped-block .block-purple-dark > p,
