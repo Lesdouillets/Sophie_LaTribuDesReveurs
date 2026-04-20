@@ -1985,16 +1985,16 @@
     /* OPTION PURPLE-BTN — rectangle arrondi violet, 2 par ligne */
     .edit-block-wrap:has(> .block-option.purple-btn:not(.open-action)) {
       display: inline-block;
-      width: calc(50% - 10px);
+      width: calc(50% - 16px);
       vertical-align: top;
-      margin-right: 8px;
+      margin: 0 8px 16px;
     }
     /* La carte Tétine statique se comporte comme un purple-btn fermé : inline-block 50% → remonte d'une ligne quand un bouton violet disparaît */
     .edit-block-wrap:has(.obj-tetine-card) {
       display: inline-block;
-      width: calc(50% - 10px);
+      width: calc(50% - 16px);
       vertical-align: top;
-      margin-right: 8px;
+      margin: 0 8px 16px;
     }
     .edit-block-wrap:has(.obj-tetine-card) > .block { padding: 0 !important; }
     /* Quand IV. Objectifs contient la carte Tétine, on centre les inline-block (purple-btn + Tétine)
