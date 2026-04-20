@@ -2437,6 +2437,7 @@
       cursor: pointer;
     }
     .courbe-card-close:hover { background: #fee2e2; }
+    .courbe-card-close-bottom { margin-top: 14px; margin-bottom: 0; }
     /* Thème VIOLET (Environnement de sommeil) — mêmes règles, couleurs différentes */
     .courbe-cards-grid-wrap.theme-violet .courbe-card { background: #f5f3ff; border-color: #c4b5fd; box-shadow: 0 2px 6px rgba(109,40,217,0.10); }
     .courbe-cards-grid-wrap.theme-violet .courbe-card:hover { background: #ede9fe; box-shadow: 0 4px 12px rgba(109,40,217,0.22); }
@@ -7445,6 +7446,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
           <div class="courbe-card-banner">${bannerLabel}</div>
           <button type="button" class="courbe-card-close" onclick="closeCourbeCard()">✕ Fermer</button>
           ${inner}
+          <button type="button" class="courbe-card-close courbe-card-close-bottom" onclick="closeCourbeCard()">✕ Fermer</button>
         </div>`;
       }
     }
