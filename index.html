@@ -8739,9 +8739,18 @@ function openCourbeCard(cardEl) {
 window.openCourbeCard = openCourbeCard;
 
 function closeCourbeCard() {
+  // Mémoriser l'id de la carte active pour retrouver la grille après re-render
+  const prevId = state.courbeCardsActive;
   state.courbeCardsActive = null;
   renderCurrentSection();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+  // Scroller vers la grille (catégorie) dont venait la carte fermée
+  setTimeout(() => {
+    if (!prevId) return;
+    const card = document.querySelector(`.courbe-card[data-card-id="${prevId}"]`);
+    const wrap = card ? card.closest('.courbe-cards-grid-wrap') : null;
+    if (wrap) wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 60);
 }
 window.closeCourbeCard = closeCourbeCard;
 
