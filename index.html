@@ -8721,9 +8721,11 @@ function openCourbeCard(cardEl) {
   state.courbeCardsTicked.add(cardId);
   renderCurrentSection();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
-  // Scroller vers le haut de la grille pour voir toutes les cartes + le contenu déplié en dessous
+  // Scroller vers la grille qui contient cette carte (et non la 1ère grille de la page)
   setTimeout(() => {
-    const wrap = document.querySelector('.courbe-cards-grid-wrap');
+    // Retrouver la carte re-rendue via son cardId et son wrapper parent
+    const newCard = document.querySelector(`.courbe-card[data-card-id="${cardId}"]`);
+    const wrap = newCard ? newCard.closest('.courbe-cards-grid-wrap') : null;
     if (wrap) wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 60);
 }
