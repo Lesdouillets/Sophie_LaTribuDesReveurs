@@ -7318,6 +7318,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const formuleLabel = isFille
       ? '(Taille père + Taille mère − 13) / 2'
       : (sexe === 'Garçon' ? '(Taille père + Taille mère + 13) / 2' : '— sexe de l\'enfant non renseigné —');
+    const initPere = (state && state.client && state.client.taillePere) || '';
+    const initMere = (state && state.client && state.client.tailleMere) || '';
     return `<div class="block block-normal pg-calc" data-sexe="${sexe}" style="background:#fffbeb;border:1.5px solid #fde68a;padding:14px 18px">
       <div style="font-weight:800;color:#7c2d12;margin-bottom:8px;font-size:14px">🧬 Calculateur potentiel génétique</div>
       <div style="font-size:13px;color:#7c2d12;margin-bottom:6px"><strong>Sexe de l'enfant :</strong> <span id="pg-sexe-label">${sexeLabel}</span></div>
@@ -7325,12 +7327,12 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px">
         <label style="display:flex;align-items:center;gap:8px;font-size:14px">
           <span style="font-weight:700;color:#7c2d12">Taille père :</span>
-          <input type="number" id="pg-pere-input" step="1" min="0" oninput="updatePotentielGenetique()" style="width:90px;padding:6px 10px;border:1.5px solid #fcd34d;border-radius:8px;font-size:14px;font-weight:700;color:#7c2d12;background:white;-moz-appearance:textfield;appearance:textfield">
+          <input type="number" id="pg-pere-input" step="1" min="0" value="${initPere}" oninput="updatePotentielGenetique()" style="width:90px;padding:6px 10px;border:1.5px solid #fcd34d;border-radius:8px;font-size:14px;font-weight:700;color:#7c2d12;background:white;-moz-appearance:textfield;appearance:textfield">
           <span style="font-weight:700;color:#7c2d12">cm</span>
         </label>
         <label style="display:flex;align-items:center;gap:8px;font-size:14px">
           <span style="font-weight:700;color:#7c2d12">Taille mère :</span>
-          <input type="number" id="pg-mere-input" step="1" min="0" oninput="updatePotentielGenetique()" style="width:90px;padding:6px 10px;border:1.5px solid #fcd34d;border-radius:8px;font-size:14px;font-weight:700;color:#7c2d12;background:white;-moz-appearance:textfield;appearance:textfield">
+          <input type="number" id="pg-mere-input" step="1" min="0" value="${initMere}" oninput="updatePotentielGenetique()" style="width:90px;padding:6px 10px;border:1.5px solid #fcd34d;border-radius:8px;font-size:14px;font-weight:700;color:#7c2d12;background:white;-moz-appearance:textfield;appearance:textfield">
           <span style="font-weight:700;color:#7c2d12">cm</span>
         </label>
       </div>

@@ -547,10 +547,11 @@ const SCRIPT_DATA = {
       title: "Courbe de poids qui diminue",
       emoji: "📉",
       blocks: [
+        { type: "normal", text: "- **Je peux voir** qu'il y a un **qqch au niveau** des **apports alimentaires**.\n\n- **Avant de travailler le sommeil**, on vient toujours **s'assurer que les besoins nutritionnels** d'un enfant **sont bien couverts**\n  car **un corps qui manque d'énergie** aura + **de mal :**\n  - **à s'apaiser**\n  - et **enchaîner ses cycles**" },
         {
           type: "grouped_block",
           blocks: [
-            { type: "normal", text: "- **Je peux voir** qu'il y a un **qqch au niveau** des **apports alimentaires**.\n\n- **Avant de travailler le sommeil**, on vient toujours **s'assurer que les besoins nutritionnels** d'un enfant **sont bien couverts**\n  car **un corps qui manque d'énergie** aura + **de mal :**\n  - **à s'apaiser**\n  - et **enchaîner ses cycles**\n\n- En **tant que consultantes,** on va s'**appuyer** sur des **repères fiables,** comme les **courbes** de poids, la taille, le périmètre crânien\n  *D'ailleurs **je vous invite** vivement à **demander** à votre médecin de **prendre les MESURES** à **chaque RDV***\n- On peut **voir les courbes** un peu comme **notre tableau de bord** : elles **nous aident à savoir** si le **corps** reçoit **assez d'énergie** pour **soutenir** un **sommeil de qualité**" },
+            { type: "normal", text: "- En **tant que consultantes,** on va s'**appuyer** sur des **repères fiables,** comme les **courbes** de poids, la taille, le périmètre crânien\n  *D'ailleurs **je vous invite** vivement à **demander** à votre médecin de **prendre les MESURES** à **chaque RDV***\n- On peut **voir les courbes** un peu comme **notre tableau de bord** : elles **nous aident à savoir** si le **corps** reçoit **assez d'énergie** pour **soutenir** un **sommeil de qualité**" },
             { type: "normal", text: "- 🔥 Donc **quand on a lu les courbes**, on a **pu voir** que [prénom_enfant] est **[ne_nee] autour** du <strong style=\"color:#dc2626\">XX</strong>ᵉ percentile." },
             { type: "normal", _purpleDark: true, text: "- 🔥 <em>OPTION</em> : S'il a voulu remonter : ET a **même réussi à monter** au <strong style=\"color:#dc2626\">XX</strong>ᵉ percentile" },
             { type: "normal", text: "- 🔥 Puis progressivement, [il_elle] s'est **[stabilise_stabilisee] autour** du <strong style=\"color:#dc2626\">XX</strong>ᵉ percentile.\n  ⇒ **Concrètement**, cela signifie qu'[il_elle] a **perdu <strong style=\"color:#dc2626\">XX</strong> couloirs** depuis <strong style=\"color:#dc2626\">sa naissance / sa tentative de montée</strong>." },
@@ -583,8 +584,7 @@ const SCRIPT_DATA = {
             ]
           }
         },
-        { type: "normal", text: "- Donc, si on **prend un peu de recul** sur tout ça…\n  on peut voir qu'il y a **AUSSI :**\n  - **d'AUTRES plusieurs petites choses**\n  - AUTOUR de son **alimentation**\n  - qui peuvent **jouer un rôle** sur son **sommeil**" },
-        { type: "normal", text: "- Je pense notamment…" },
+        { type: "normal", text: "- Donc, si on **prend un peu de recul** sur tout ça…\n  on peut voir qu'il y a **AUSSI :**\n  - **d'AUTRES plusieurs petites choses**\n  - AUTOUR de son **alimentation**\n  - qui peuvent **jouer un rôle** sur son **sommeil**\n- Je pense notamment…\n<div style=\"height:40px\"></div>" },
         { type: "option_banner", leverId: "nutri_esp_long", emoji: "⏱️", showIfPb: "nutri_esp_long", variant: "orange" },
         { type: "normal", showIfPb: "nutri_esp_long", text: "- 🔥 L'**intervalle entre 2 prises** alimentaires peut être parfois assez long (<strong style=\"color:#dc2626\">XX</strong> heures)<br><br>\n- A cet âge, les enfants ont **besoin de prises + rapprochés** pour s'**adapter** à leur **signaux de faim.**\n- **🎓On devrait** normalement **leur donner** : \"***à la demande***\"\n- Et se **défaire** complètement du **mythe des espacements de 4h**, .. qui n'est **basé sur RIEN du TOUT**!\n- Avec des **espacements longs, [prénom_enfant]** a du **mal à \"TENIR\" jusqu'à la prochaine prise alimentaire**\n  ⇒ On **peut imaginer** qu'[il_elle] est **comme \"affamé\"** entre 2 prises alimentaires" },
         { type: "option_banner", leverId: "nutri_esp_court", emoji: "⏳", showIfPb: "nutri_esp_court", variant: "orange" },
