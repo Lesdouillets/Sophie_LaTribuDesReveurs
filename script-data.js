@@ -551,9 +551,9 @@ const SCRIPT_DATA = {
         {
           type: "grouped_block",
           blocks: [
-            { type: "normal", text: "- En **tant que consultantes,** on va s'**appuyer** sur des **repères fiables,** comme les **courbes** de poids, la taille, le périmètre crânien\n- D'ailleurs **je vous invite** vivement à **demander** à votre médecin de **prendre les MESURES** à **chaque RDV**\n- On peut **voir les courbes** un peu comme **notre tableau de bord** :<br><br>\n  elles **nous aident à savoir** si le **corps** reçoit **assez d'énergie** pour **soutenir** un **sommeil de qualité**" },
-            { type: "normal", text: "- 🔥 Donc **quand on a lu les courbes**, on a **pu voir** que [prénom_enfant] est **[ne_nee] autour** du <strong style=\"color:#dc2626\">XX</strong>ᵉ percentile." },
-            { type: "normal", _purpleDark: true, text: "- 🔥 <em>OPTION</em> : S'il a voulu remonter : ET a **même réussi à monter** au <strong style=\"color:#dc2626\">XX</strong>ᵉ percentile" },
+            { type: "normal", text: "- En **tant que consultantes,** on va s'**appuyer** sur des **repères fiables,** comme les **courbes** de poids, la taille, le périmètre crânien\n- D'ailleurs **je vous invite** vivement à **demander** à votre médecin de **prendre les MESURES** à **chaque RDV**\n- On peut **voir les courbes** un peu comme **notre tableau de bord** :\n  elles **nous aident à savoir** si le **corps** reçoit **assez d'énergie** pour **soutenir** un **sommeil de qualité**" },
+            { type: "normal", text: "- 🔥 Donc **quand on a lu les courbes**, on a **pu voir** que [prénom_enfant] est **[ne_nee] autour** du <strong style=\"color:#dc2626\">XX</strong>ᵉ percentile.<br><br>" },
+            { type: "normal", _purpleDark: true, text: "- <u>🔥 <em>OPTION</em> : S'il a voulu remonter :</u> ET a **même réussi à monter** au <strong style=\"color:#dc2626\">XX</strong>ᵉ percentile" },
             { type: "normal", text: "- 🔥 Puis progressivement, [il_elle] s'est **[stabilise_stabilisee] autour** du <strong style=\"color:#dc2626\">XX</strong>ᵉ percentile.\n  ⇒ **Concrètement**, cela signifie qu'[il_elle] a **perdu <strong style=\"color:#dc2626\">XX</strong> couloirs** depuis <strong style=\"color:#dc2626\">sa naissance / sa tentative de montée</strong>.<br><br>" },
             {
               type: "normal", text: "- **En général**, un enfant **suit plutôt le couloir** dans LEQUEL **il est né**\n  ⇒ c'est son **couloir de référence**\n- Dans **certains cas**, certains enfants **peuvent même DEPASSER** leur **couloir de référence :**\n  - Par exemple, lorsqu'ils ont un **fort potentiel génétique** (si les **parents sont grands**, par exemple),\n  - OU **lorsque les enfants sont nés** un peu en **dessous de leur potentiel.**\n    ⇒ On parle alors de **rattrapage de courbe**.\n- Donc, il est **tout à fait possible** que [prénom_enfant] :\n  - **atteigne un couloir supérieur** à son **couloir de référence**\n  - et fasse ce **rattrapage**,",
@@ -567,7 +567,7 @@ const SCRIPT_DATA = {
                 ]
               }
             },
-            { type: "normal", _purpleDark: true, text: "- 🔥 <em>OPTION</em> : il a voulu remonter : comme [il_elle] **l'a montré** lors de sa **tentative de remontée de courbe** !" },
+            { type: "normal", _purpleDark: true, text: "- <u>🔥 <em>OPTION</em> : il a voulu remonter :</u> comme [il_elle] **l'a montré** lors de sa **tentative de remontée de courbe** !" },
             { type: "normal", text: "<br><br>\n- Les courbes, ça va **nous donne** une **bonne indication**,\n  mais ça reste un **repère**.\n  ⇒ Le **+ important,** c'est vraiment d'ETRE **à l'écoute de son enfant**" },
           ]
         },
@@ -653,8 +653,8 @@ const SCRIPT_DATA = {
               id: "lait_solide_imp", emoji: "🍽️", label: "Lait/solide trop important",
               pb: "nutri_autre_lait_solide_important",
               blocks: [
-                { type: "normal", showIfPb: "nutri_autre_lait_solide_important", showIfAgeMaxMonths: 11, text: "- **🍽️ Solide trop important** — La **place de la diversification** dans son alimentation **prend une part importante**\n- Or à son âge, le **lait** devrait être la **source principale d'apport nutritionnel** … qui apporte :\n  - les nutriments essentiels\n  - et la satiété\n\n  ⇒ On rentre alors dans un **cercle vicieux** :\n  - Il **boit peu de lait**\n  - Il **mange bcp de solides** pour compenser\n  - La **diversification prend la place du lait** dans l'estomac (qui devrait être la source n°1 d'apports nutritionnels)\n  - Il **boit peu de lait**…" },
-                { type: "normal", showIfPb: "nutri_autre_lait_solide_important", showIfAgeMinMonths: 12, text: "- **🥛 Lait trop important** — La **place du lait** dans **son alimentation** prend une **part importante** dans **son alimentation**\n- Or **à son âge**, la **diversification** devrait être la **source principale d'apport nutritionnel**… qui **apporte** :\n  - **les nutriments** essentiels\n  - et **la satiété**\n\n  ⇒ On rentre alors dans un **cercle vicieux** :\n  - Il **mange peu de solides en journée**\n  - **Boit bcp de lait** pour compenser\n  - Le **lait prend la place des solides** dans l'estomac\n  - Il **mange peu de solides** …" },
+                { type: "normal", showIfPb: "nutri_autre_lait_solide_important", showIfAgeMaxMonths: 11, text: "- La **place de la diversification** dans son alimentation **prend une part importante**\n- Or à son âge, le **lait** devrait être la **source principale d'apport nutritionnel** … qui apporte :\n  - les nutriments essentiels\n  - et la satiété\n\n  ⇒ On rentre alors dans un **cercle vicieux** :\n  - Il **boit peu de lait**\n  - Il **mange bcp de solides** pour compenser\n  - La **diversification prend la place du lait** dans l'estomac (qui devrait être la source n°1 d'apports nutritionnels)\n  - Il **boit peu de lait**…" },
+                { type: "normal", showIfPb: "nutri_autre_lait_solide_important", showIfAgeMinMonths: 12, text: "- La **place du lait** dans **son alimentation** prend une **part importante** dans **son alimentation**\n- Or **à son âge**, la **diversification** devrait être la **source principale d'apport nutritionnel**… qui **apporte** :\n  - **les nutriments** essentiels\n  - et **la satiété**\n\n  ⇒ On rentre alors dans un **cercle vicieux** :\n  - Il **mange peu de solides en journée**\n  - **Boit bcp de lait** pour compenser\n  - Le **lait prend la place des solides** dans l'estomac\n  - Il **mange peu de solides** …" },
               ]
             },
             {
