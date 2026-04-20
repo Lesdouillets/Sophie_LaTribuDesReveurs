@@ -727,7 +727,7 @@ const SCRIPT_DATA = {
         { type: "question", showIfPb: "rythme_reveil_fatigue", text: "- L'**idée serait de rétablir des quotas de sommeil** pour **retrouver un rythme + en lien** avec :\n  - ses **besoins**\n  - et **son âge**\n- Et les **choses** vont se **mettre NATURELLEMENT EN PLACE** au niveau de **SON sommeil**\n\n⇒ Est-ce que **ça vous parle** jusque là ?" },
         { type: "option_banner", leverId: "rythme_reveil_relationnel", emoji: "💬", showIfPb: "rythme_reveil_relationnel", variant: "green", subLevel: true },
         { type: "normal", showIfPb: "rythme_reveil_relationnel", text: "- Aujourd'hui, **on sent** que **[prénom_enfant]** est **super [enthousiaste_enthousiaste] PAR CE QUI L'ATTEND** dans la journée :\n  - **jouer**\n  - de tester ce qu'[il_elle] a appris\n  - ou **simplement** de **VOUS retrouver**\n\n-  Le **cerveau des enfants fonctionne** beaucoup sur **l'anticipation** et **l'excitation**\n  ⇒ Du coup, **certains enfants** vont **réduire leur nuit** au **strict minimum**\n  ⇒ Et donc **se réveiller tôt matin** :\n  - **PAS** parce qu'ils n'ont **PLUS besoin de dormir**\n  - **MAIS** parce que leur **cerveau** est **déjà en mode** *« allez, on démarre, j'ai **trop envie de découvrir** ce qu'on va faire aujourd'hui ! »*" },
-        { type: "question", showIfPb: "rythme_reveil_relationnel", text: "  - de COMMENT **sortir doucement de ce petit « jeu relationnel »** qui s'est installé\n  - en vous proposant des **manières concrètes de réagir**\n  - pour que **le sommeil** puisse **se passer beaucoup + sereinement…** pour tout le monde\n\nCE QUE je vous propose, c'est qu'**on discute ensemble**\n- ⇒ Est-ce que **vous reconnaissez** VOTRE **situation…** dans ce que je vous dis là ?" },
+        { type: "question", showIfPb: "rythme_reveil_relationnel", text: "  - de COMMENT **sortir doucement de ce petit « jeu relationnel »** qui s'est installé\n  - en vous proposant des **manières concrètes de réagir**\n  - pour que **le sommeil** puisse **se passer beaucoup + sereinement…** pour tout le monde\n- CE QUE je vous propose, c'est qu'**on discute ensemble**<br>⇒ Est-ce que **vous reconnaissez** VOTRE **situation…** dans ce que je vous dis là ?" },
         { type: "option_banner", leverId: "rythme_reveil_mange", emoji: "🍼", showIfPb: "rythme_reveil_mange", variant: "green", subLevel: true },
         { type: "normal", showIfPb: "rythme_reveil_mange", text: "- Aujourd'hui, CE QUE **je comprends**, c'est que **[prénom_enfant]** **se réveille car [il_elle] a faim**\n- En **fin de nuit,** la **faim se fait de plus en plus sentir,**\n  **⇒ c'est NORMAL !**\n  ⇒ Et [il_elle] va **vous appeler et manger**\n\n- MAIS **une fois [eveille_eveillee] et [nourri_nourrie]** :\n  ⇒ son **système digestif se remet en route**\n  ⇒ son **éveil augmente**\n  ⇒ du coup, il devient **+ difficile de se rendormir** (car la **mélatonine** (hormone du S.) **commence** déjà **doucement à diminuer**)" },
         { type: "question", showIfPb: "rythme_reveil_mange", text: "On va faire en sorte que ces **réveils alimentaires passent + inaperçus** pour :\n- que la fin de nuit se passe **+ calmement**\n- et que **[prénom_enfant]** puisse se **rendormir + facilement**\n\n⇒ Est-ce que vous **sentez que ça a du sens** pour vous ?" },
@@ -765,57 +765,78 @@ const SCRIPT_DATA = {
           ]
         },
         { type: "normal", text: "- **CES conditions** **pour s'endormir** sont **devenues** ⇒ SES **stratégies d'endormissement**\n- Et le **problème**, c'est que SES stratégies, [il_elle] ne peut **PAS les reproduire [TOUT_SEUL]**<br>⇒ On appelle ça une **stratégie d'endormissement DÉPENDANTE**, car elle **dépend d'une aide extérieure, c'est-à-dire de VOUS**" },
-        { type: "option_banner", leverId: "strategie_rendormissement", emoji: "😴", showIfPb: "strategie_rendormissement", variant: "blue" },
-        { type: "normal", text: "- Et quand il se réveille, **l'environnement a parfois changé** :", showIfPb: "strategie_rendormissement" },
         {
-          type: "checklist", label: "Changements à l'environnement", showIfPb: "strategie_rendormissement",
+          type: "courbe_cards_grid",
+          theme: "blue",
           items: [
-            "Il est <strong>seul</strong>",
-            "Dans <strong>son lit</strong>",
-            "Vous <strong>n'êtes plus là</strong>",
-            "Il n'a <strong>plus ses éléments rassurants</strong>",
+            {
+              id: "strat_rend", emoji: "😴", label: "Rendormissement difficile",
+              pb: "strategie_rendormissement",
+              blocks: [
+                { type: "normal", text: "- Et quand il se réveille, **l'environnement a parfois changé** :", showIfPb: "strategie_rendormissement" },
+                {
+                  type: "checklist", label: "Changements à l'environnement", showIfPb: "strategie_rendormissement",
+                  items: [
+                    "Il est <strong>seul</strong>",
+                    "Dans <strong>son lit</strong>",
+                    "Vous <strong>n'êtes plus là</strong>",
+                    "Il n'a <strong>plus ses éléments rassurants</strong>",
+                  ]
+                },
+                { type: "normal", text: "- Pour **comprendre ce qui se passe** avec ses **rendormissements difficiles** ⇒ il faut **comprendre la structure du sommeil** :\n  - Son sommeil est **composé de cycles**\n  - et **entre chaque cycle,** on fait tous des **micro-réveils (tout à fait normaux)**\n  - le **cerveau va faire :**\n    - un léger **retour à la surface**\n    - **\"vérifier\"** que **tout va bien**\n    - **puis va se rendormir** de manière inconsciente\n\n- Chez la **plupart des enfants,** ces **micro-réveils** passent **inaperçus**, car ils **arrivent à se rendormir seuls.**\n- Mais pour **[prénom_enfant]**, ça **devient + compliqué** :\n  - A CHACUN de ses **micro-réveils NATURELS** :\n    - il va **se réveiller**\n    - il va **vouloir chercher à se rendormir**\n    - **SAUF** qu'il **NE trouvera PLUS les mêmes conditions**\n    - ⇒ Et donc **il VOUS appellera** pour :\n      - **se rassurer** car l'**environnement aura changé**\n      - et pour **reproduire les mêmes conditions** pour **pouvoir s'endormir**\n- Et **CES micro-réveils**, qui **normalement passent inaperçus**, se transforment en **véritables réveils**\n- Et c'est la **MÊME CHOSE** avec les **endormissements difficiles**<br>⇒ Il **cherche JUSTE** à **s'endormir AVEC** les **conditions qu'il connaît**\n\n- 💭 *Imaginez : vous vous endormez dans votre lit, et vous vous réveillez… dans la cuisine*<br>***⇒ Pas très rassurant, n'est-ce pas ?***", showIfPb: "strategie_rendormissement" },
+              ]
+            },
+            {
+              id: "strat_rel", emoji: "😴", label: "Enjeu relationnel",
+              pb: "strategie_enjeu_relationnel",
+              blocks: [
+                { type: "normal", text: "- Un **autre point important**\n- surtout pour **les + grands**\n- c'est que PARFOIS, la **séparation du coucher** peut **être difficile** pour [lui_elle] :\n  - [Il_Elle] n'a **pas envie** de **couper ce lien** avec vous,\n  - ⇒ donc [il_elle] essaye de le PROLONGER **comme [il_elle] peut** :", showIfPb: "strategie_enjeu_relationnel" },
+                {
+                  type: "checklist", label: "Signes de prolongation du lien", showIfPb: "strategie_enjeu_relationnel",
+                  items: [
+                    "en <strong>gardant</strong> un <strong>contact physique</strong> ☝️",
+                    "en vous <strong>appelant</strong> 💬💬",
+                    "en faisant <strong>durer le coucher</strong> 🕰️",
+                    "ou en se <strong>réveillant la nuit pour aller vous voir</strong> 🌛",
+                    "En se <strong>réveillant tôt</strong> le matin",
+                  ]
+                },
+                { type: "normal", text: "- [Il_Elle] est [dependant_dependante] à **VOTRE PRÉSENCE**", showIfPb: "strategie_enjeu_relationnel" },
+              ]
+            },
+            {
+              id: "strat_tet", emoji: "🍭", label: "Dépendance tétine",
+              pb: "strategie_tetine",
+              blocks: [
+                { type: "normal", text: "- Concernant la **tétine**, elle peut aussi **jouer un RÔLE dans ces réveils.**\n  - Aujourd'hui, **[prénom_enfant]** en a **BESOIN pour s'endormir,**<br>mais comme il est encore **trop jeune** pour la **remettre seul**\n  - **⇒** il va **vous appeler** à **CHAQUE FOIS** qu'elle n'est **plus dans sa bouche**\n\n  - Je vais vous **expliquer simplement pourquoi :**\n    - Le **sommeil** fonctionne **par cycles.**\n    - Et dans ces cycles, il y a **différentes phases de sommeil**\n    - **L'une d'elles** s'appelle le **sommeil paradoxal**, c'est le **sommeil des rêves**\n    - **Pendant** le **sommeil paradoxal**, le corps est **comme paralysé** *(peut-être justement pour éviter qu'on mette nos rêves à exécution !)*\n    - Et c'est souvent **à ce moment-là** que la **bouche s'ouvre**… et que la **tétine peut tomber**\n\n    - Et DONC à la **fin d'un cycle** de sommeil, il y a **CE fameux** « **micro-réveil** »\n    - Le **cerveau remonte** un peu **à la surface**, vérifie que **tout va bien** …….\n    - ⇒ Sauf que là…, **[prénom_enfant]** va se **rendre compte** que sa **tétine n'est plus là.**\n\n- Et comme, la **tétine** fait **partie de sa stratégie** pour s'endormir<br>⇒ Il va **vous appeler** pour que vous :\n  - **veniez la lui remettre**\n  - pour **pouvoir se rendormir**\n- Et ça, c'est **qqch de très fréquent**", showIfPb: "strategie_tetine" },
+                { type: "normal", showIfPb: "strategie_tetine", text: "- Du coup, il y a **2 chemins possibles**… et les 2 sont **tout à fait valables** :\n  - La **1ère option** : **GARDER** la tétine", embeddedActions: [
+                  {
+                    label: "Peut remettre la tétine", emoji: "✅", style: "action-green", mutexGroup: "tetine-remettre",
+                    blocks: [
+                      { type: "normal", text: "- Et comme **[prénom_enfant]** [il_elle] est **assez [grand_grande] et [moteur_motrice]**\n- On peut **progressivement lui apprendre** à la **retrouver ET à la remettre [seul_seule]**\n- L'**objectif** est qu'[il_elle] **gère [SEUL] ses micro-réveils** avec sa tétine" }
+                    ]
+                  },
+                  {
+                    label: "Ne peut pas remettre la tétine", emoji: "❌", style: "action", mutexGroup: "tetine-remettre",
+                    blocks: [
+                      { type: "normal", text: "- Comme **[prénom_enfant]** est **encore [petit_petite]** et n'a **pas encore la capacité motrice** pour la **remettre [seul_seule]**\n- **Dans ce cas,** ce sera **VOUS qui viendrez** la lui **remettre** lorsqu'**elle tombera** pendant son sommeil\n- Donc **au départ,** [il_elle] **dépend encore de vous** pour ça ⛔\n- En lui **remettant sa tétine A CHAQUE FOIS ⇒** Vous allez **garder** la **cohérence** dans ses **stratégies d'endormissement** ET de **rendormissement.**\n- Mais on peut progressivement **lui apprendre** comment [il_elle] **peut la remettre** dans la bouche\n- Mais c'est **VRAIMENT vers 6-7 mois**, qu'[il_elle] **aura la capacité motrice** pour la **chercher ET la remettre [SEUL]**\n- ⇒ Et comme ça, [il_elle] **pourra gérer [SEUL]** ses micro-réveils **avec sa tétine**" }
+                    ]
+                  }
+                ]},
+                { type: "normal", showIfPb: "strategie_tetine", text: "- La **2ème possibilité**, c'est de **supprimer la tétine** dès maintenant.\n\n- L'**objectif** est de **faire disparaître les réveils** **liés à la tétine**\n- Quand on **évoque cette idée**, ça peut **parfois faire un peu peur aux parents**, parce que la **tétine** a souvent une **grande place** dans l'**apaisement d'un bébé.**\n- Mais **MON expérience** montre qu'**en général**, les BB **s'adaptent très vite**,\n- et en **qq jours**, la tétine devient souvent un **lointain souvenir** !" },
+                { type: "normal", showIfPb: "strategie_tetine", text: "- Si je me base sur **ce qu'on a vu ensemble,**\n- **mon conseil** serait plutôt de la **supprimer maintenant**, car ça permettrait de **réduire les réveils \"tétine\"**.\n- Et bien sûr, **si vous choisissez cette option**, je serai là pour **vous accompagner** pour que ça se fasse le **+ en douceur possible.**\n- Mais dans tous les cas, ça **reste un choix parental.**\n- C'est **VOUS qui décidez**, ce qui **vous semble le + juste** pour votre enfant et pour votre famille,\n- et ensuite **on ajustera ensemble** en **fonction de VOTRE décision**" },
+                { type: "question", showIfPb: "strategie_tetine", text: "Alors dites-moi,\n\n⇒ qu'est-ce qui vous semble **le + juste pour vous**, par **rapport à cette tétine** :\n- souhaitez-vous **la garder** MAIS avec les **conséquences que ça implique**\n- ou souhaitez-vous **la supprimer définitivement** ?\n- Après on peut AUSSI faire « **un hybride** » :\n  - la **supprimer** durant les **tps de sommeil** et **PAS la journée**\n  - ou JUSTE **sur la sieste** et **PAS la nuit**…\n  ⇒ ça sera un peu **+ compliqué** pour **[prénom_enfant]**, c'est **une option envisageable**\n\n⇒ vers quoi **vous voudriez aller** ?", choice: {
+                  id: "strategie_tetine_choice",
+                  required: true,
+                  options: [
+                    { icon: "✅", label: "Garder", value: "garder", variant: "positive" },
+                    { icon: "❌", label: "Supprimer", value: "supprimer", variant: "negative" }
+                  ]
+                }},
+              ]
+            },
           ]
         },
-        { type: "normal", text: "- Pour **comprendre ce qui se passe** avec ses **rendormissements difficiles** ⇒ il faut **comprendre la structure du sommeil** :\n  - Son sommeil est **composé de cycles**\n  - et **entre chaque cycle,** on fait tous des **micro-réveils (tout à fait normaux)**\n  - le **cerveau va faire :**\n    - un léger **retour à la surface**\n    - **\"vérifier\"** que **tout va bien**\n    - **puis va se rendormir** de manière inconsciente\n\n- Chez la **plupart des enfants,** ces **micro-réveils** passent **inaperçus**, car ils **arrivent à se rendormir seuls.**\n- Mais pour **[prénom_enfant]**, ça **devient + compliqué** :\n  - A CHACUN de ses **micro-réveils NATURELS** :\n    - il va **se réveiller**\n    - il va **vouloir chercher à se rendormir**\n    - **SAUF** qu'il **NE trouvera PLUS les mêmes conditions**\n    - ⇒ Et donc **il VOUS appellera** pour :\n      - **se rassurer** car l'**environnement aura changé**\n      - et pour **reproduire les mêmes conditions** pour **pouvoir s'endormir**\n- Et **CES micro-réveils**, qui **normalement passent inaperçus**, se transforment en **véritables réveils**\n- Et c'est la **MÊME CHOSE** avec les **endormissements difficiles**<br>⇒ Il **cherche JUSTE** à **s'endormir AVEC** les **conditions qu'il connaît**\n\n- 💭 *Imaginez : vous vous endormez dans votre lit, et vous vous réveillez… dans la cuisine*<br>***⇒ Pas très rassurant, n'est-ce pas ?***", showIfPb: "strategie_rendormissement" },
-        { type: "option_banner", leverId: "strategie_enjeu_relationnel", emoji: "😴", showIfPb: "strategie_enjeu_relationnel", variant: "blue" },
-        { type: "normal", text: "- Un **autre point important**\n- surtout pour **les + grands**\n- c'est que PARFOIS, la **séparation du coucher** peut **être difficile** pour [lui_elle] :\n  - [Il_Elle] n'a **pas envie** de **couper ce lien** avec vous,\n  - ⇒ donc [il_elle] essaye de le PROLONGER **comme [il_elle] peut** :", showIfPb: "strategie_enjeu_relationnel" },
-        {
-          type: "checklist", label: "Signes de prolongation du lien", showIfPb: "strategie_enjeu_relationnel",
-          items: [
-            "en <strong>gardant</strong> un <strong>contact physique</strong> ☝️",
-            "en vous <strong>appelant</strong> 💬💬",
-            "en faisant <strong>durer le coucher</strong> 🕰️",
-            "ou en se <strong>réveillant la nuit pour aller vous voir</strong> 🌛",
-            "En se <strong>réveillant tôt</strong> le matin",
-          ]
-        },
-        { type: "normal", text: "- [Il_Elle] est [dependant_dependante] à **VOTRE PRÉSENCE**", showIfPb: "strategie_enjeu_relationnel" },
-        { type: "option_banner", leverId: "strategie_tetine", emoji: "🍭", showIfPb: "strategie_tetine", variant: "blue" },
-        { type: "normal", text: "- Concernant la **tétine**, elle peut aussi **jouer un RÔLE dans ces réveils.**\n  - Aujourd'hui, **[prénom_enfant]** en a **BESOIN pour s'endormir,**<br>mais comme il est encore **trop jeune** pour la **remettre seul**\n  - **⇒** il va **vous appeler** à **CHAQUE FOIS** qu'elle n'est **plus dans sa bouche**\n\n  - Je vais vous **expliquer simplement pourquoi :**\n    - Le **sommeil** fonctionne **par cycles.**\n    - Et dans ces cycles, il y a **différentes phases de sommeil**\n    - **L'une d'elles** s'appelle le **sommeil paradoxal**, c'est le **sommeil des rêves**\n    - **Pendant** le **sommeil paradoxal**, le corps est **comme paralysé** *(peut-être justement pour éviter qu'on mette nos rêves à exécution !)*\n    - Et c'est souvent **à ce moment-là** que la **bouche s'ouvre**… et que la **tétine peut tomber**\n\n    - Et DONC à la **fin d'un cycle** de sommeil, il y a **CE fameux** « **micro-réveil** »\n    - Le **cerveau remonte** un peu **à la surface**, vérifie que **tout va bien** …….\n    - ⇒ Sauf que là…, **[prénom_enfant]** va se **rendre compte** que sa **tétine n'est plus là.**\n\n- Et comme, la **tétine** fait **partie de sa stratégie** pour s'endormir<br>⇒ Il va **vous appeler** pour que vous :\n  - **veniez la lui remettre**\n  - pour **pouvoir se rendormir**\n- Et ça, c'est **qqch de très fréquent**", showIfPb: "strategie_tetine" },
-        { type: "normal", showIfPb: "strategie_tetine", text: "- Du coup, il y a **2 chemins possibles**… et les 2 sont **tout à fait valables** :\n  - La **1ère option** : **GARDER** la tétine", embeddedActions: [
-          {
-            label: "Peut remettre la tétine", emoji: "✅", style: "action-green", mutexGroup: "tetine-remettre",
-            blocks: [
-              { type: "normal", text: "- Et comme **[prénom_enfant]** [il_elle] est **assez [grand_grande] et [moteur_motrice]**\n- On peut **progressivement lui apprendre** à la **retrouver ET à la remettre [seul_seule]**\n- L'**objectif** est qu'[il_elle] **gère [SEUL] ses micro-réveils** avec sa tétine" }
-            ]
-          },
-          {
-            label: "Ne peut pas remettre la tétine", emoji: "❌", style: "action", mutexGroup: "tetine-remettre",
-            blocks: [
-              { type: "normal", text: "- Comme **[prénom_enfant]** est **encore [petit_petite]** et n'a **pas encore la capacité motrice** pour la **remettre [seul_seule]**\n- **Dans ce cas,** ce sera **VOUS qui viendrez** la lui **remettre** lorsqu'**elle tombera** pendant son sommeil\n- Donc **au départ,** [il_elle] **dépend encore de vous** pour ça ⛔\n- En lui **remettant sa tétine A CHAQUE FOIS ⇒** Vous allez **garder** la **cohérence** dans ses **stratégies d'endormissement** ET de **rendormissement.**\n- Mais on peut progressivement **lui apprendre** comment [il_elle] **peut la remettre** dans la bouche\n- Mais c'est **VRAIMENT vers 6-7 mois**, qu'[il_elle] **aura la capacité motrice** pour la **chercher ET la remettre [SEUL]**\n- ⇒ Et comme ça, [il_elle] **pourra gérer [SEUL]** ses micro-réveils **avec sa tétine**" }
-            ]
-          }
-        ]},
-        { type: "normal", showIfPb: "strategie_tetine", text: "- La **2ème possibilité**, c'est de **supprimer la tétine** dès maintenant.\n\n- L'**objectif** est de **faire disparaître les réveils** **liés à la tétine**\n- Quand on **évoque cette idée**, ça peut **parfois faire un peu peur aux parents**, parce que la **tétine** a souvent une **grande place** dans l'**apaisement d'un bébé.**\n- Mais **MON expérience** montre qu'**en général**, les BB **s'adaptent très vite**,\n- et en **qq jours**, la tétine devient souvent un **lointain souvenir** !" },
-        { type: "normal", showIfPb: "strategie_tetine", text: "- Si je me base sur **ce qu'on a vu ensemble,**\n- **mon conseil** serait plutôt de la **supprimer maintenant**, car ça permettrait de **réduire les réveils \"tétine\"**.\n- Et bien sûr, **si vous choisissez cette option**, je serai là pour **vous accompagner** pour que ça se fasse le **+ en douceur possible.**\n- Mais dans tous les cas, ça **reste un choix parental.**\n- C'est **VOUS qui décidez**, ce qui **vous semble le + juste** pour votre enfant et pour votre famille,\n- et ensuite **on ajustera ensemble** en **fonction de VOTRE décision**" },
-        { type: "question", showIfPb: "strategie_tetine", text: "Alors dites-moi,\n\n⇒ qu'est-ce qui vous semble **le + juste pour vous**, par **rapport à cette tétine** :\n- souhaitez-vous **la garder** MAIS avec les **conséquences que ça implique**\n- ou souhaitez-vous **la supprimer définitivement** ?\n- Après on peut AUSSI faire « **un hybride** » :\n  - la **supprimer** durant les **tps de sommeil** et **PAS la journée**\n  - ou JUSTE **sur la sieste** et **PAS la nuit**…\n  ⇒ ça sera un peu **+ compliqué** pour **[prénom_enfant]**, c'est **une option envisageable**\n\n⇒ vers quoi **vous voudriez aller** ?", choice: {
-          id: "strategie_tetine_choice",
-          required: true,
-          options: [
-            { icon: "✅", label: "Garder", value: "garder", variant: "positive" },
-            { icon: "❌", label: "Supprimer", value: "supprimer", variant: "negative" }
-          ]
-        }},
         { type: "normal", _parentLevel: true, text: "- Donc si **on résume tout ça** :<div style=\"padding-left:24px\"><ul style=\"margin:4px 0 0 18px;padding:0;list-style:disc;line-height:1.35\"><li>Ce n'est <strong>PAS</strong> que <strong>[prénom_enfant]</strong> <strong>refuse de dormir</strong></li><li>C'est tout simplement qu'il <strong>ne SAIT PAS encore COMMENT s'endormir autrement</strong>.</li><li>L'<strong>objectif</strong> va être de <strong>l'accompagner</strong> pour :<ul style=\"margin:2px 0 0 18px;padding:0;list-style:disc;line-height:1.35\"><li>qu'il <strong>découvre</strong> SES PROPRES <strong>stratégies d'endormissement autonomes</strong></li><li>⇒ pour qu'il puisse :<ul style=\"margin:2px 0 0 18px;padding:0;list-style:disc;line-height:1.35\"><li><strong>S'endormir seul</strong></li><li><strong>Enchaîner</strong> plusieurs <strong>cycles de sommeil</strong></li></ul></li></ul></li></ul></div>" },
         { type: "question", _parentLevel: true, text: "• Est-ce que **ça vous parle** comme ça ?" },
       ]
@@ -910,7 +931,7 @@ const SCRIPT_DATA = {
               pb: "relationnel_lit_parental",
               blocks: [
                 { type: "normal", showIfPb: "relationnel_lit_parental", text: "- Aujourd'hui **[prénom_enfant]** :\n  - Vient souvent vous **rejoindre dans votre lit**\n    ⇒ Alors que **chez Papy et Mamie**, ça ne se **passe pas comme ça** !\n\n- À son âge, il n'y a **rien de plus excitant** que de **communiquer avec Papa et Maman.**\n- Et pour [lui_elle], **toute attention… EST** une **attention** :\nque ce soit **un câlin, un rire**… ou **même** un **petit conflit.**\n  ⇒ Parce que, **dans TOUS les cas,** C'EST un **moment de relation avec vous.**\n\n- Et au **moment du coucher…** c'est un **petit peu particulier** :\n  - c'est le **moment** où le **lien physique se coupe**\n  - où il y a une **VRAIE et LONGUE séparation avec vous**\n    ⇒ Et ça peut être un peu **difficile pour [lui_elle]**\n    parce qu'[il_elle] a simplement **envie de prolonger le moment** **…encore un peu plus longtemps**\n\n- Donc ce que je vois ici :\n  - c'est **PAS forcément** une **difficulté liée au sommeil**\n    - mais c'est surtout **un besoin de relation qui s'exprime**\n    - Un **moyen** pour [lui_elle] **de prolonger le lien** avec vous.\n    ⇒ Et c'est **qqch** qui **arrive très souvent** chez les enfants de cet âge\n    ⇒ et qui est **tout à fait normal !**" },
-                { type: "question", showIfPb: "relationnel_lit_parental", text: "  - de COMMENT **sortir doucement de ce petit « jeu relationnel »** qui s'est installé\n  - en vous proposant des **manières concrètes de réagir**\n  - pour que **le coucher** puisse **se passer beaucoup + sereinement…** pour tout le monde\n\nCE QUE **je vous propose,** c'est qu'**on discute ensemble**\n- ⇒ Est-ce que **vous reconnaissez** VOTRE **situation**… dans ce que je vous dis là ?" },
+                { type: "question", showIfPb: "relationnel_lit_parental", text: "  - de COMMENT **sortir doucement de ce petit « jeu relationnel »** qui s'est installé\n  - en vous proposant des **manières concrètes de réagir**\n  - pour que **le coucher** puisse **se passer beaucoup + sereinement…** pour tout le monde\n- CE QUE **je vous propose,** c'est qu'**on discute ensemble**<br>⇒ Est-ce que **vous reconnaissez** VOTRE **situation**… dans ce que je vous dis là ?" },
               ]
             },
             {
@@ -918,7 +939,7 @@ const SCRIPT_DATA = {
               pb: "relationnel_conflit_autres",
               blocks: [
                 { type: "normal", showIfPb: "relationnel_conflit_autres", text: "- Aujourd'hui **[prénom_enfant]** :\n  - semble parfois **en « conflit »** avec vous sur **différents sujets** (qui ne sont **pas forcément liés au sommeil**)\n    ⇒ Alors qu'à la **crèche / chez Papy et Mamie**, ça ne se **passe pas comme ça** !\n\n- À son âge, il n'y a **rien de plus excitant** que de **communiquer avec Papa et Maman.**\n- Et pour [lui_elle], **toute attention… EST** une **attention** :\nque ce soit **un câlin, un rire**… ou **même** un **petit conflit.**\n  ⇒ Parce que, **dans TOUS les cas,** C'EST un **moment de relation avec vous.**\n\n- Et au **moment du coucher…** c'est un **petit peu particulier** :\n  - c'est le **moment** où le **lien physique se coupe**\n  - où il y a une **VRAIE et LONGUE séparation avec vous**\n    ⇒ Et ça peut être un peu **difficile pour [lui_elle]**\n    parce qu'[il_elle] a simplement **envie de prolonger le moment** **…encore un peu plus longtemps**\n\n- Donc ce que je vois ici :\n  - c'est **PAS forcément** une **difficulté liée au sommeil**\n    - mais c'est surtout **un besoin de relation qui s'exprime**\n    - Un **moyen** pour [lui_elle] **de prolonger le lien** avec vous.\n    ⇒ Et c'est **qqch** qui **arrive très souvent** chez les enfants de cet âge\n    ⇒ et qui est **tout à fait normal !**" },
-                { type: "question", showIfPb: "relationnel_conflit_autres", text: "  - de COMMENT **sortir doucement de ce petit « jeu relationnel »** qui s'est installé\n  - en vous proposant des **manières concrètes de réagir**\n  - pour que **le coucher** puisse **se passer beaucoup + sereinement…** pour tout le monde\n\nCE QUE **je vous propose,** c'est qu'**on discute ensemble**\n- ⇒ Est-ce que **vous reconnaissez** VOTRE **situation**… dans ce que je vous dis là ?" },
+                { type: "question", showIfPb: "relationnel_conflit_autres", text: "  - de COMMENT **sortir doucement de ce petit « jeu relationnel »** qui s'est installé\n  - en vous proposant des **manières concrètes de réagir**\n  - pour que **le coucher** puisse **se passer beaucoup + sereinement…** pour tout le monde\n- CE QUE **je vous propose,** c'est qu'**on discute ensemble**<br>⇒ Est-ce que **vous reconnaissez** VOTRE **situation**… dans ce que je vous dis là ?" },
               ]
             },
             {
@@ -930,7 +951,7 @@ const SCRIPT_DATA = {
                   "Fait de <strong>nombreux rappels …après l'avoir couché</strong>"
                 ]},
                 { type: "normal", showIfPb: "relationnel_rappels", text: "⇒ Alors qu'à la **crèche / chez Papy et Mamie**, ça ne se **passe pas comme ça** !\n\n- À son âge, il n'y a **rien de plus excitant** que de **communiquer avec Papa et Maman.**\n- Et pour [lui_elle], **toute attention EST** une **attention** :\nque ce soit **un câlin, un rire**… ou **même PLUSIEURS petits échanges**\n  ⇒ Parce que, **dans TOUS les cas,** C'EST un **moment de relation avec vous.**\n\n- Et au **moment du coucher…** c'est un **petit peu particulier** :\n  - c'est le **moment** où le **lien physique se coupe**\n  - où il y a une **VRAIE et LONGUE séparation avec vous**\n    ⇒ Et ça peut être un peu **difficile pour [lui_elle]**\n    parce qu'[il_elle] a simplement **envie de prolonger le moment** **…encore un peu plus longtemps**\n\n- Donc ce que je vois ici :\n  - c'est **PAS forcément** une **difficulté liée au sommeil**\n    - mais c'est surtout **un besoin de relation qui s'exprime**\n    - Un **moyen** pour [lui_elle] **de prolonger le lien** avec vous.\n    - et aussi une forme de **dépendance à votre présence pour :**\n      - **s'apaiser**\n      - **et s'endormir**\n    ⇒ Et c'est **qqch** qui **arrive très souvent** chez les enfants de cet âge\n    ⇒ et qui est **tout à fait normal !**" },
-                { type: "question", showIfPb: "relationnel_rappels", text: "  - de COMMENT **sortir doucement de ce petit « jeu relationnel »** qui s'est installé\n  - en vous proposant des **manières concrètes de réagir**\n  - pour que **le coucher** puisse **se passer beaucoup + sereinement…** pour tout le monde\n\nCE QUE je vous propose, c'est qu'**on discute ensemble**\n- ⇒ Est-ce que **vous reconnaissez** VOTRE **situation…** dans ce que je vous dis là ?" },
+                { type: "question", showIfPb: "relationnel_rappels", text: "  - de COMMENT **sortir doucement de ce petit « jeu relationnel »** qui s'est installé\n  - en vous proposant des **manières concrètes de réagir**\n  - pour que **le coucher** puisse **se passer beaucoup + sereinement…** pour tout le monde\n- CE QUE je vous propose, c'est qu'**on discute ensemble**<br>⇒ Est-ce que **vous reconnaissez** VOTRE **situation…** dans ce que je vous dis là ?" },
               ]
             },
           ]
