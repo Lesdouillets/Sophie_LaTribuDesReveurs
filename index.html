@@ -1977,7 +1977,7 @@
     .block-option.purple .option-content { background: #f5f0ff; }
     .block-option.purple .option-content .block:not(.block-question):not(.block-conseil-vert):not(.block-fin-consultation) { background: #f5f0ff; border-color: #d4c4f0; }
     .block-option.purple > .option-content > .edit-block-wrap:first-child .block { border: none; box-shadow: none; background: #f5f0ff; }
-    .block-purple-dark { background: #f5f0ff !important; border: 3px dashed #7c3aed !important; border-radius: 16px !important; box-shadow: 0 2px 8px rgba(124,58,237,0.18) !important; }
+    .block-purple-dark { background: #f5f0ff !important; border: 3px dashed #a78bfa !important; border-radius: 16px !important; box-shadow: 0 2px 8px rgba(167,139,250,0.18) !important; }
     .block-no-border { border: none !important; box-shadow: none !important; background: transparent !important; padding: 0 !important; }
     .block-option.purple .option-content .block-option.purple .option-content .block:not(.block-question) { background: #ddd3f8; border-color: #c4b5e0; }
     .block-option.purple .block-question { background: #fdf0f0 !important; border-color: #e8a0a0 !important; }
@@ -4345,7 +4345,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=295"></script>
+<script src="script-data.js?v=296"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -4742,7 +4742,20 @@ function toggleTypeLait() {
   const volGroup = document.getElementById('nutri-volume-group');
   if (volGroup) volGroup.style.display = allaitement?.checked ? 'none' : '';
   const teteeGroup = document.getElementById('nutri-tetee-group');
-  if (teteeGroup) teteeGroup.style.display = (allaitement?.checked || mixte?.checked) ? '' : 'none';
+  const teteeVisible = allaitement?.checked || mixte?.checked;
+  if (teteeGroup) teteeGroup.style.display = teteeVisible ? '' : 'none';
+  // Si le groupe Tétée est caché (pas d'allaitement/mixte), décocher toutes les pb tétée liées pour ne pas les laisser traîner
+  if (!teteeVisible) {
+    const teteePbs = ['nutri_tetee','nutri_tetee_longue','nutri_tetee_greve','nutri_tetee_mode_garde','nutri_inf_tetee','nutri_inf_tetee_longue','nutri_inf_tetee_greve','nutri_inf_tetee_mode_garde'];
+    let changed = false;
+    teteePbs.forEach(pb => {
+      document.querySelectorAll(`input[name="pb"][value="${pb}"], input.modal-pb[value="${pb}"], input.diag-pb[value="${pb}"]`).forEach(cb => {
+        if (cb.checked) { cb.checked = false; cb.closest('.pb-item')?.classList.remove('checked'); changed = true; }
+      });
+      if (state && state.selectedPbs && state.selectedPbs.has(pb)) { state.selectedPbs.delete(pb); changed = true; }
+    });
+    if (changed && typeof rebuildAfterPbChange === 'function') rebuildAfterPbChange();
+  }
   const diversif = document.querySelector('input[name="alim"][value="Diversification"]');
   document.querySelectorAll('.nutri-diversif-only').forEach(el => {
     el.style.display = diversif?.checked ? '' : 'none';
