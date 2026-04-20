@@ -2691,6 +2691,24 @@
         </div>
 
         <div class="setup-section">
+          <h3>📊 Notes émotionnelles <span style="font-size:12px;font-weight:400;color:#aaa">(optionnel, sur 10)</span></h3>
+          <div style="display:grid;grid-template-columns:180px 1fr 1fr;gap:10px 14px;align-items:center;font-size:13px">
+            <div></div>
+            <div style="text-align:center;font-weight:700;color:#be185d">👩 Maman</div>
+            <div style="text-align:center;font-weight:700;color:#1e40af">👨 Papa</div>
+            <div style="font-weight:600">Grossesse</div>
+            <div style="display:flex;align-items:center;gap:6px;justify-content:center"><input type="text" inputmode="numeric" maxlength="3" data-note-key="grossesse_maman" data-note-origin="fiche" oninput="saveDecouverteNoteFromFiche(this)" style="width:60px;border:1.5px solid #ec4899;background:#fdf2f8;border-radius:8px;padding:6px 8px;text-align:center;font-weight:700;color:#be185d" placeholder="  "><span style="color:#be185d;font-weight:700">/10</span></div>
+            <div style="display:flex;align-items:center;gap:6px;justify-content:center"><input type="text" inputmode="numeric" maxlength="3" data-note-key="grossesse_papa" data-note-origin="fiche" oninput="saveDecouverteNoteFromFiche(this)" style="width:60px;border:1.5px solid #3b82f6;background:#eff6ff;border-radius:8px;padding:6px 8px;text-align:center;font-weight:700;color:#1e40af" placeholder="  "><span style="color:#1e40af;font-weight:700">/10</span></div>
+            <div style="font-weight:600">Accouchement</div>
+            <div style="display:flex;align-items:center;gap:6px;justify-content:center"><input type="text" inputmode="numeric" maxlength="3" data-note-key="accouchement_maman" data-note-origin="fiche" oninput="saveDecouverteNoteFromFiche(this)" style="width:60px;border:1.5px solid #ec4899;background:#fdf2f8;border-radius:8px;padding:6px 8px;text-align:center;font-weight:700;color:#be185d" placeholder="  "><span style="color:#be185d;font-weight:700">/10</span></div>
+            <div style="display:flex;align-items:center;gap:6px;justify-content:center"><input type="text" inputmode="numeric" maxlength="3" data-note-key="accouchement_papa" data-note-origin="fiche" oninput="saveDecouverteNoteFromFiche(this)" style="width:60px;border:1.5px solid #3b82f6;background:#eff6ff;border-radius:8px;padding:6px 8px;text-align:center;font-weight:700;color:#1e40af" placeholder="  "><span style="color:#1e40af;font-weight:700">/10</span></div>
+            <div style="font-weight:600">État d'être actuel</div>
+            <div style="display:flex;align-items:center;gap:6px;justify-content:center"><input type="text" inputmode="numeric" maxlength="3" data-note-key="etat_etre_maman" data-note-origin="fiche" oninput="saveDecouverteNoteFromFiche(this)" style="width:60px;border:1.5px solid #ec4899;background:#fdf2f8;border-radius:8px;padding:6px 8px;text-align:center;font-weight:700;color:#be185d" placeholder="  "><span style="color:#be185d;font-weight:700">/10</span></div>
+            <div style="display:flex;align-items:center;gap:6px;justify-content:center"><input type="text" inputmode="numeric" maxlength="3" data-note-key="etat_etre_papa" data-note-origin="fiche" oninput="saveDecouverteNoteFromFiche(this)" style="width:60px;border:1.5px solid #3b82f6;background:#eff6ff;border-radius:8px;padding:6px 8px;text-align:center;font-weight:700;color:#1e40af" placeholder="  "><span style="color:#1e40af;font-weight:700">/10</span></div>
+          </div>
+        </div>
+
+        <div class="setup-section">
           <h3>📞 Contact de la famille</h3>
           <div class="form-grid">
             <div class="form-group">
@@ -4229,7 +4247,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=275"></script>
+<script src="script-data.js?v=276"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -4322,7 +4340,7 @@ function cleanStaleOverrides() {
     ...(SCRIPT_DATA.planAction || []),
     SCRIPT_DATA.conclusion
   ].filter(Boolean);
-  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','appert_calculator','potentiel_genetique_calculator'];
+  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question'];
   let changed = false;
   for (const sectionId of Object.keys(state.scriptOverrides)) {
     const src = allSections.find(s => s.id === sectionId);
@@ -4438,7 +4456,7 @@ function saveScriptOverrides() {
 function getOverrideBlocks(section) {
   const ov = state.scriptOverrides[section.id];
   if (!ov) return section.blocks || [];
-  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'option_banner', 'parent_banner', 'tarifs_tableau', 'appert_calculator','potentiel_genetique_calculator'];
+  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'option_banner', 'parent_banner', 'tarifs_tableau', 'appert_calculator','potentiel_genetique_calculator','decouverte_notes_question'];
   const liveBlocks = section.blocks || [];
 
   // Pour problematique/objectifs, ov.blocks est déjà nettoyé par ensureOverride
@@ -6615,6 +6633,7 @@ function renderCurrentSection() {
   markAfterOptionBanner(area);
   // Restaurer les tick-box choices déjà renseignés
   if (typeof restoreTickboxChoices === 'function') restoreTickboxChoices(area);
+  if (typeof restoreDecouverteNotes === 'function') restoreDecouverteNotes(area);
   // Remplir le diagnostic avec le clone des checkboxes si la section contient le container
   const diagContainer = document.getElementById('diag-pb-container');
   if (diagContainer) {
@@ -6726,12 +6745,9 @@ function getEffectiveAgeMonths() {
 function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
   return (blocks||[]).map((b,i) => {
     // Cacher le bloc si une des problématiques indiquées dans hideIfPb est cochée
-    // EXCEPTION : si la pb a été cochée VIA un tickbox choice (state.tickboxSyncedPbs),
-    // on ne cache pas — l'utilisateur doit pouvoir changer sa réponse sans que le bloc disparaisse.
     if (b.hideIfPb) {
       const pbs = Array.isArray(b.hideIfPb) ? b.hideIfPb : [b.hideIfPb];
-      const syncedSet = state.tickboxSyncedPbs || new Set();
-      if (pbs.some(pb => state.selectedPbs.has(pb) && !syncedSet.has(pb))) return '';
+      if (pbs.some(pb => state.selectedPbs.has(pb))) return '';
     }
     // Afficher le bloc uniquement si la problématique indiquée dans showIfPb est cochée
     // EXCEPTION : si state.revealedLever correspond à une pb de showIfPb, on rend
@@ -6782,7 +6798,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','potentiel_genetique_calculator'].includes(b.type);
+    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question'].includes(b.type);
     const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
@@ -7121,6 +7137,42 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       </div>
     </div>`;
   }
+  // Bloc question III. Découverte — notes 0-10 (version initiale OU confirmation si déjà renseignées dans la fiche)
+  if (b.type === 'decouverte_notes_question') {
+    const n = (state && state.decouverteNotes) || {};
+    const allFilled = ['grossesse_maman','grossesse_papa','accouchement_maman','accouchement_papa','etat_etre_maman','etat_etre_papa']
+      .every(k => n[k] !== undefined && String(n[k]).trim() !== '');
+    const mamanInp = (k) => `<input type="text" inputmode="numeric" maxlength="3" data-note-key="${k}" oninput="saveDecouverteNote(this)" style="width:52px;border:1.5px solid #ec4899;background:#fdf2f8;border-radius:8px;padding:4px 6px;text-align:center;font-weight:700;color:#be185d" placeholder="  ">`;
+    const papaInp = (k) => `<input type="text" inputmode="numeric" maxlength="3" data-note-key="${k}" oninput="saveDecouverteNote(this)" style="width:52px;border:1.5px solid #3b82f6;background:#eff6ff;border-radius:8px;padding:4px 6px;text-align:center;font-weight:700;color:#1e40af" placeholder="  ">`;
+    const mamanPair = (k) => `<span style="display:inline-flex;align-items:center;gap:4px;color:#be185d;font-weight:700">👩 Maman ${mamanInp(k)} /10</span>`;
+    const papaPair = (k) => `<span style="display:inline-flex;align-items:center;gap:4px;color:#1e40af;font-weight:700">👨 Papa ${papaInp(k)} /10</span>`;
+    if (allFilled) {
+      // Version confirmation
+      return `<div class="block block-question">
+        <div class="q-text">
+          <div style="margin-bottom:10px">❓ Maintenant, je voudrais que vous me <strong>confirmiez</strong> les <strong>notes émotionnelles</strong> que vous m'avez données :</div>
+          <ul style="margin:4px 0 0 20px;padding:0;list-style:disc;line-height:1.9">
+            <li>Vous m'avez dit que pour <strong>votre grossesse</strong> vous mettriez ${mamanInp('grossesse_maman')} /10 ET ${papaInp('grossesse_papa')} /10 pour le Papa. <strong>C'est bien ça ?</strong></li>
+            <li>Et pour <strong>votre accouchement</strong> ${mamanInp('accouchement_maman')} /10 et ${papaInp('accouchement_papa')} /10 pour le Papa ?</li>
+            <li>Et enfin pour <strong>votre ÉTAT D'ÊTRE actuel</strong> (en prenant en compte votre <strong>vie perso/pro/par rapport au sommeil de votre enfant</strong>), vous mettriez ${mamanInp('etat_etre_maman')} /10 ET ${papaInp('etat_etre_papa')} /10 pour le Papa. <strong>C'est toujours ça ?</strong></li>
+          </ul>
+        </div>
+      </div>`;
+    }
+    // Version initiale
+    return `<div class="block block-question">
+      <div class="q-text">
+        <div style="margin-bottom:6px">❓ Maintenant, je <strong>voudrais savoir</strong> :</div>
+        <div style="margin-bottom:10px">Si vous deviez mettre une <strong>note de 0 à 10</strong>, 10 étant la meilleure note, quelle note vous mettriez à :</div>
+        <ul style="margin:4px 0 0 20px;padding:0;list-style:disc;line-height:1.9">
+          <li><strong>Votre grossesse</strong> ET <u>pour le Papa</u> ?<br>${mamanPair('grossesse_maman')} &nbsp; ${papaPair('grossesse_papa')}</li>
+          <li><strong>Votre accouchement</strong> ET <u>pour le Papa</u> ?<br>${mamanPair('accouchement_maman')} &nbsp; ${papaPair('accouchement_papa')}</li>
+          <li>Et maintenant à <strong>votre ÉTAT D'ÊTRE actuel</strong> (en prenant en compte votre <strong>vie perso/pro/par rapport au sommeil de votre enfant</strong>) ET <u>pour le Papa</u> ?<br>${mamanPair('etat_etre_maman')} &nbsp; ${papaPair('etat_etre_papa')}</li>
+        </ul>
+      </div>
+    </div>`;
+  }
+
   // Calculateur potentiel génétique (taille cible adulte)
   if (b.type === 'potentiel_genetique_calculator') {
     const sexe = (state && state.client && state.client.sexe) || '';
@@ -8219,6 +8271,7 @@ function selectTickboxChoice(el) {
   if (syncChanged) {
     if (typeof buildSections === 'function') buildSections();
     if (typeof buildSidebar === 'function') buildSidebar();
+    if (typeof renderCurrentSection === 'function') renderCurrentSection();
   }
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
@@ -8238,6 +8291,44 @@ function restoreTickboxChoices(root) {
     }
   });
 }
+
+// Notes 0-10 grossesse / accouchement / état d'être (maman/papa) — III. Découverte
+function saveDecouverteNote(el) {
+  if (!el || !el.dataset.noteKey) return;
+  if (!state.decouverteNotes) state.decouverteNotes = {};
+  const k = el.dataset.noteKey;
+  state.decouverteNotes[k] = el.value || '';
+  // Synchroniser vers la fiche client (si l'input existe)
+  document.querySelectorAll(`input[data-note-key="${k}"][data-note-origin="fiche"]`).forEach(inp => {
+    if (inp !== el) inp.value = el.value || '';
+  });
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+  if (typeof autoSaveFiche === 'function') autoSaveFiche();
+}
+window.saveDecouverteNote = saveDecouverteNote;
+
+function saveDecouverteNoteFromFiche(el) {
+  if (!el || !el.dataset.noteKey) return;
+  if (!state.decouverteNotes) state.decouverteNotes = {};
+  const k = el.dataset.noteKey;
+  state.decouverteNotes[k] = el.value || '';
+  // Synchroniser vers les inputs du script (III. Découverte)
+  document.querySelectorAll(`input[data-note-key="${k}"]:not([data-note-origin="fiche"])`).forEach(inp => {
+    if (inp !== el) inp.value = el.value || '';
+  });
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+  if (typeof autoSaveFiche === 'function') autoSaveFiche();
+}
+window.saveDecouverteNoteFromFiche = saveDecouverteNoteFromFiche;
+function restoreDecouverteNotes(root) {
+  if (!state.decouverteNotes) return;
+  const scope = root || document;
+  scope.querySelectorAll('input[data-note-key]').forEach(inp => {
+    const v = state.decouverteNotes[inp.dataset.noteKey];
+    if (v !== undefined) inp.value = v;
+  });
+}
+window.restoreDecouverteNotes = restoreDecouverteNotes;
 
 // Replie / déplie le groupe de blocs qui suit un bandeau enfant (option_banner).
 // S'arrête au prochain bandeau (ou au marqueur reset-indent = remonte au niveau parent).
@@ -8939,6 +9030,7 @@ function autoSaveActiveConsultation() {
         completedSet: state.completedSet ? [...state.completedSet] : [],
         currentSessionId: state.currentSessionId || null,
         tickboxChoices: state.tickboxChoices || {},
+        decouverteNotes: state.decouverteNotes || {},
         savedAt: Date.now()
       };
       localStorage.setItem('tdr_active_consultation', JSON.stringify(snapshot));
@@ -9010,6 +9102,7 @@ function restoreActiveConsultation() {
     state.completedSet = new Set(snap.completedSet || []);
     state.currentSessionId = snap.currentSessionId || null;
     state.tickboxChoices = snap.tickboxChoices || {};
+    state.decouverteNotes = snap.decouverteNotes || {};
     // Re-peupler le formulaire + reconstruire l'UI
     populateFormFromClient(state.client);
     buildSections();
@@ -9353,6 +9446,7 @@ function saveCurrentSession() {
     heureFinStr: state.heureFinStr,
     consultDate: document.getElementById('consult-date')?.value || '',
     consultDuree: document.getElementById('consult-duree')?.value || '75',
+    decouverteNotes: state.decouverteNotes || {},
   };
 
   state.currentSessionId = session.id;
@@ -9541,6 +9635,7 @@ function generateCRHtml(s) {
       checkedItems,
       heureFinStr: state.heureFinStr,
       savedAt: new Date().toISOString(),
+      decouverteNotes: state.decouverteNotes || {},
     };
   }
 
@@ -9611,6 +9706,28 @@ function generateCRHtml(s) {
       <h3>📚 Sections abordées</h3>
       ${doneItems}
     </div>
+
+    ${(() => {
+      const n = s.decouverteNotes || {};
+      const hasAny = Object.values(n).some(v => v && String(v).trim());
+      if (!hasAny) return '';
+      const cell = (v, color) => `<td style="padding:6px 10px;border:1px solid #e5e7eb;text-align:center;font-weight:700;color:${color}">${v && String(v).trim() ? String(v).trim()+' /10' : '–'}</td>`;
+      return `<div class="cr-section">
+        <h3>📊 Notes émotionnelles (0–10)</h3>
+        <table style="border-collapse:collapse;font-size:13px">
+          <thead><tr>
+            <th style="padding:6px 10px;border:1px solid #e5e7eb;background:#f9fafb"></th>
+            <th style="padding:6px 10px;border:1px solid #e5e7eb;background:#fdf2f8;color:#be185d">👩 Maman</th>
+            <th style="padding:6px 10px;border:1px solid #e5e7eb;background:#eff6ff;color:#1e40af">👨 Papa</th>
+          </tr></thead>
+          <tbody>
+            <tr><td style="padding:6px 10px;border:1px solid #e5e7eb;font-weight:600">Grossesse</td>${cell(n.grossesse_maman,'#be185d')}${cell(n.grossesse_papa,'#1e40af')}</tr>
+            <tr><td style="padding:6px 10px;border:1px solid #e5e7eb;font-weight:600">Accouchement</td>${cell(n.accouchement_maman,'#be185d')}${cell(n.accouchement_papa,'#1e40af')}</tr>
+            <tr><td style="padding:6px 10px;border:1px solid #e5e7eb;font-weight:600">État d'être actuel</td>${cell(n.etat_etre_maman,'#be185d')}${cell(n.etat_etre_papa,'#1e40af')}</tr>
+          </tbody>
+        </table>
+      </div>`;
+    })()}
 
     <div class="cr-section">
       <h3>📝 Notes libres de la consultante</h3>
