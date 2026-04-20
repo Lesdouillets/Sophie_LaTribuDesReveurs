@@ -7,7 +7,10 @@
       "Bash(curl -sI 'https://lesdouillets.github.io/Sophie_LaTribuDesReveurs/')",
       "Bash(curl -s 'https://lesdouillets.github.io/Sophie_LaTribuDesReveurs/script-data.js?v=171')",
       "Bash(curl -s 'https://lesdouillets.github.io/Sophie_LaTribuDesReveurs/index.html')",
-      "Bash(git -C '/c/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs' status --short)"
+      "Bash(git -C '/c/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs' status --short)",
+      "Bash(node -e \"const fs=require\\('fs'\\);let s=fs.readFileSync\\('script-data.js','utf8'\\);const before=\\(s.match\\(/🎓/g\\)||[]\\).length;s=s.replace\\(/🎓/g,''\\);const after=\\(s.match\\(/🎓/g\\)||[]\\).length;fs.writeFileSync\\('script-data.js',s\\);console.log\\('Removed',before-after,'occurrences'\\);\")",
+      "Bash(python -c ' *)",
+      "Bash(py -c ' *)"
     ]
   }
 }
