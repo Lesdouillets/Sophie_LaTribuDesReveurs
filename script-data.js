@@ -337,10 +337,8 @@ const SCRIPT_DATA = {
       title: "VII. Plusieurs chemins possibles",
       emoji: "🛤️",
       blocks: [
-        { type: "normal", text: "- Il va y avoir **plusieurs chemins possibles** pour accompagner [prénom_enfant],\n  - et l'**idée** c'est vraiment de **trouver celui qui vous correspond le mieux**\n\n- Pour ça, j'aurais **besoin de savoir** :\n  - Est-ce que vous avez **BESOIN** **ça aille plutôt vite**,\n  - OU est-ce que vous **préférez mettre** un **peu + de progressivité** ?\n\n  - Sachant que la **progressivité pas à pas** sera:\n    - **+ douce**\n    - **MAIS + longue** en terme de résultats\n  - Tandis que le **chemin le + direct** permet de:\n    - **faire évoluer les choses + rapidement**\n    - mais **PEUT générer + d'émotions**\n\n- Donc, c'est **vraiment vous qui choisissez** le chemin en fonction de :\n  - ce que **vous préférez**\n  - de ce que vous **attendez en terme de rapidité**\n  - et VOTRE **gestion des émotions**" },
-        { type: "question", text: "<div style=\"display:grid;grid-template-columns:auto auto 1fr;gap:6px 8px;align-items:start\"><span>❓</span><span>•</span><span>Avec tout ça en tête, qu'est-ce qui vous <strong>semblerait le + juste</strong> pour vous et pour [prénom_enfant] :</span></div><ul style=\"margin:6px 0 0 60px;padding:0;list-style:disc\"><li style=\"line-height:1.6\"><strong>Quelque chose</strong> de <strong>plutôt progressif,</strong></li><li style=\"line-height:1.6\">Ou <strong>quelque chose</strong> de <strong>+ rapide ?</strong></li></ul>" },
-        { type: "normal", text: "- Du coup, je préfère vous dire, pour **être totalement transparente** avec vous :\n  - QUAND on **met en place des changements**\n  - **même** avec **beaucoup de progressivité**,\n  - **il PEUT y avoir des émotions**\n  - surtout **au début.**\n    - ⇒ C'est tout à fait **NORMAL**\n\n- On va demander à [prénom_enfant] de **changer ses habitudes** et elle PEUT :\n  - **réagir**\n  - et **montrer qu'elle n'est pas d'accord**\n\n- Dans ces moments-là, CE QUI va **vraiment l'aider** c'est :\n  - que vous **soyez à ses côtés**\n  - et que **vous l'accompagniez** avec **COHERENCE**…\n- 👏… et avec **tout ce que vous avez déjà mis en place**, vous êtes **sur la bonne voie**" },
-        { type: "question", text: "Est-ce que vous êtes **à l'aise avec ça, avec les émotions** ?" },
+        { type: "normal", text: "- Il va y avoir **plusieurs chemins possibles** pour accompagner [prénom_enfant],\n  - et l'**idée** c'est vraiment de **trouver celui qui vous correspond le mieux**\n\n- Pour ça, j'aurais **besoin de savoir** :\n  - Est-ce que vous avez **BESOIN** **ça aille plutôt vite**,\n  - OU est-ce que vous **préférez mettre** un **peu + de progressivité** ?\n\n  - Sachant que la **progressivité pas à pas** sera:\n    - **+ douce**\n    - **MAIS + longue** en terme de résultats\n  - Tandis que le **chemin le + direct** permet de:\n    - **faire évoluer les choses + rapidement**\n    - mais **PEUT générer + d'émotions**\n\n- Donc, c'est **vraiment vous qui choisissez** le chemin en fonction de :\n  - ce que **vous préférez**\n  - de ce que vous **attendez en terme de rapidité**\n  - et VOTRE **gestion des émotions**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\"><div style=\"display:grid;grid-template-columns:auto auto 1fr;gap:6px 8px;align-items:start\"><span>❓</span><span>•</span><span>Avec tout ça en tête, qu'est-ce qui vous <strong>semblerait le + juste</strong> pour vous et pour [prénom_enfant] :</span></div><ul style=\"margin:6px 0 0 60px;padding:0;list-style:disc\"><li style=\"line-height:1.6\"><strong>Quelque chose</strong> de <strong>plutôt progressif,</strong></li><li style=\"line-height:1.6\">Ou <strong>quelque chose</strong> de <strong>+ rapide ?</strong></li></ul></div>" },
+        { type: "normal", text: "- Du coup, je préfère vous dire, pour **être totalement transparente** avec vous :\n  - QUAND on **met en place des changements**\n  - **même** avec **beaucoup de progressivité**,\n  - **il PEUT y avoir des émotions**\n  - surtout **au début.**\n    - ⇒ C'est tout à fait **NORMAL**\n\n- On va demander à [prénom_enfant] de **changer ses habitudes** et elle PEUT :\n  - **réagir**\n  - et **montrer qu'elle n'est pas d'accord**\n\n- Dans ces moments-là, CE QUI va **vraiment l'aider** c'est :\n  - que vous **soyez à ses côtés**\n  - et que **vous l'accompagniez** avec **COHERENCE**…\n- 👏… et avec **tout ce que vous avez déjà mis en place**, vous êtes **sur la bonne voie**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">❓ Est-ce que vous êtes <strong>à l'aise avec ça, avec les émotions</strong> ?</div>" },
         {
           type: "option", label: "OUI", emoji: "✅", style: "action-green", mutexGroup: "chemins-emotions",
           blocks: [
@@ -898,13 +896,11 @@ const SCRIPT_DATA = {
       title: "IX. Reformulation et statistiques",
       emoji: "📊",
       blocks: [
-        { type: "normal", text: "- **Donc si je résume ce qu'on s'est dit !**" },
-        { type: "question", text: "C'est **bien ça** ?\nEst-ce **clair pour vous** ?" },
+        { type: "normal", text: "- **Donc si je résume ce qu'on s'est dit !**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">❓ C'est <strong>bien ça</strong> ?<br>Est-ce <strong>clair pour vous</strong> ?</div>" },
         {
           type: "option", label: "Pas eu le temps de tout discuter", style: "purple",
           blocks: [
-            { type: "normal", text: "- On a **discuté de pas mal de choses**\n- Mais **malheureusement**, on n'a **PAS** eu le temps de **TOUT** discuter\n- Ce que **je vous propose** c'est que l'on **finisse cette discussion** autour d'**un AUTRE RDV**" },
-            { type: "question", text: "Est-ce que **ça vous irait** ?" },
+            { type: "normal", text: "- On a **discuté de pas mal de choses**\n- Mais **malheureusement**, on n'a **PAS** eu le temps de **TOUT** discuter\n- Ce que **je vous propose** c'est que l'on **finisse cette discussion** autour d'**un AUTRE RDV**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">❓ Est-ce que <strong>ça vous irait</strong> ?</div>" },
             {
               type: "option", label: "💰 Tarifs", style: "purple",
               blocks: [
@@ -933,7 +929,6 @@ const SCRIPT_DATA = {
     blocks: [
       { type: "question", text: "Est-ce que **TOUT** ce que je **vous ai proposé** vous **correspond à vos valeurs**?" },
       { type: "obj_rappel" },
-      { type: "question", text: "Est-ce que j'ai **répondu à [ces_vos_objectifs]** ?" },
       {
         type: "option", label: "OUI", emoji: "✅", style: "action-green", mutexGroup: "conclusion-obj",
         blocks: [
