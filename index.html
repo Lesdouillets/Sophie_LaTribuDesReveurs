@@ -5898,6 +5898,16 @@ function startConsultation() {
   if (!prenomEnfant) { alert('Merci de renseigner le prénom de l\'enfant.'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
   if (!sexeEnfant) { alert('Merci de sélectionner le sexe de l\'enfant.'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
   if (!dateNaissVal && !ageManuelVal) { alert('Merci d\'indiquer la date de naissance ou l\'âge de l\'enfant.'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
+  // Vérifier que le mode d'allaitement est renseigné si Allaitement maternel OU Allaitement mixte est coché
+  const hasAllaitementOrMixte = [...document.querySelectorAll('input[name="alim"]:checked')].some(cb => cb.value === 'Allaitement maternel' || cb.value === 'Allaitement mixte');
+  if (hasAllaitementOrMixte) {
+    const modeChecked = [...document.querySelectorAll('input[name="allaitement_mode"]:checked')].length > 0;
+    if (!modeChecked) {
+      alert("Merci de préciser le mode d'allaitement (au sein et/ou au biberon) dans l'onglet Santé.");
+      showSetupTab('tab-sante', document.querySelector('.setup-tab[onclick*="tab-sante"]'));
+      return;
+    }
+  }
   const consultDate2 = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
   const dateNaiss = document.getElementById('date-naissance')?.value;
   const dateTerme = document.getElementById('date-terme')?.value;
