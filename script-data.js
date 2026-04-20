@@ -592,6 +592,7 @@ const SCRIPT_DATA = {
             {
               id: "esp", emoji: "⏱️", label: "Espacement",
               pb: ["nutri_esp_long","nutri_esp_court"],
+              sublabels: { "nutri_esp_long": "Trop long", "nutri_esp_court": "Trop court" },
               blocks: [
                 { type: "normal", showIfPb: "nutri_esp_long", text: "- 🔥 L'**intervalle entre 2 prises** alimentaires peut être parfois assez long (<strong style=\"color:#dc2626\">XX</strong> heures)<br><br>\n- A cet âge, les enfants ont **besoin de prises + rapprochés** pour s'**adapter** à leur **signaux de faim.**\n- **On devrait** normalement **leur donner** : \"***à la demande***\"\n- Et se **défaire** complètement du **mythe des espacements de 4h**, .. qui n'est **basé sur RIEN du TOUT**!\n- Avec des **espacements longs, [prénom_enfant]** a du **mal à \"TENIR\" jusqu'à la prochaine prise alimentaire**\n  ⇒ On **peut imaginer** qu'[il_elle] est **comme \"affamé\"** entre 2 prises alimentaires" },
                 { type: "normal", showIfPb: "nutri_esp_court", text: "- 🔥 L'**espacement entre 2 prises** alimentaires est **parfois très rapprochés** (<strong style=\"color:#dc2626\">XX</strong> heures)\n  ⇒ [prénom_enfant] n'a **PAS TOUJOURS le temps** d'**avoir** vraiment **faim**\n  ⇒ ce qui peut **limiter le volume pris** ... **par prise alimentaire**" },
@@ -600,6 +601,7 @@ const SCRIPT_DATA = {
             {
               id: "vol", emoji: "🍼", label: "Volume des bib",
               pb: ["nutri_vol_petit","nutri_vol_gros","nutri_vol_longtemps"],
+              sublabels: { "nutri_vol_petit": "Petit bib", "nutri_vol_gros": "Gros bib", "nutri_vol_longtemps": "Bu longtemps" },
               blocks: [
                 { type: "normal", showIfPb: "nutri_vol_petit", text: "- 🔥 Le **volume** des biberons (<strong style=\"color:#dc2626\">XX</strong>ml) est **assez petit** pour :\n  - **son âge**\n  - **et ses besoins**\n  ⇒ Ca se **rapproche +** de la **taille des biberons d'un nourrisson**\n  ⇒ **SI** les **biberons sont petits** : la **sensation d'être RASSASIE** se **dissipe** assez **vite**" },
                 { type: "normal", showIfPb: "nutri_vol_gros", text: "- 🔥 Le **volume** des biberons (<strong style=\"color:#dc2626\">XX</strong>ml) est **assez conséquent** par **rapport au volume de son estomac** (**souvent** on **suit ce qui est inscrit** sur les **boites de lait**)\n  ⇒ C'est **comme s'il était \"gavé\"**\n  ⇒ et **son estomac** doit **gérer une quantité importante** à chaque biberon\n  ⇒ ce qui peut **parfois entraîner une digestion + difficile...**\n<div style=\"background:#f5f0ff;border:3px dashed #a78bfa;border-radius:16px;padding:6px 20px 6px 0;box-shadow:0 2px 8px rgba(167,139,250,0.18);margin:8px 0\"><ul style=\"margin:0;padding-left:21px\"><li>🔥 <em>OPTION</em> — Reflux : ... qui peut <strong>favoriser le reflux</strong></li></ul></div>" },
@@ -609,6 +611,7 @@ const SCRIPT_DATA = {
             {
               id: "tetee", emoji: "🤱", label: "Tétée : baisse de lactation",
               pb: ["nutri_tetee","nutri_tetee_longue","nutri_tetee_greve","nutri_tetee_mode_garde"],
+              sublabels: { "nutri_tetee_longue": "Longue tétée", "nutri_tetee_greve": "Grève des tétées", "nutri_tetee_mode_garde": "Mode de garde" },
               blocks: [
                 { type: "normal", showIfPb: "nutri_tetee_longue", text: "- **🤱 Longue tétée** — Les **tétées** SEMBLENT **être assez longues**\n- La durée des tétées MOYENNE est normalement autour de 20min\n  ⇒ On dirait que BB **cherche à avoir +**, mais qui **n'arrive pas à** avoir tout **ce dont il a besoin**" },
                 { type: "normal", showIfPb: "nutri_tetee_greve", text: "- **🙅 Grève des tétées** — Vous m'avez aussi parlé du refus de certaines tétées" },

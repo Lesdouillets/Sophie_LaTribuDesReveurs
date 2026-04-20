@@ -2340,7 +2340,7 @@
     .courbe-cards-grid-wrap { margin: 18px 0; }
     .courbe-cards-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 14px;
       margin-bottom: 16px;
     }
@@ -2365,9 +2365,24 @@
     .courbe-card:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(194,65,12,0.22); background: #ffedd5; }
     .courbe-card.active { background: linear-gradient(135deg, #f97316, #fb923c); border-color: #c2410c; color: white; box-shadow: 0 4px 16px rgba(194,65,12,0.35); }
     .courbe-card.active .ccc-title { color: white; }
-    .courbe-card.dimmed { opacity: 0.35; pointer-events: none; filter: grayscale(0.6); }
+    .courbe-card.dimmed { opacity: 0.45; filter: grayscale(0.5); }
+    .courbe-card.dimmed:hover { opacity: 0.8; filter: grayscale(0.2); }
     .courbe-card .ccc-emoji { font-size: 28px; line-height: 1; }
     .courbe-card .ccc-title { font-weight: 800; font-size: 13.5px; color: #7c2d12; line-height: 1.25; }
+    .courbe-card .ccc-subs { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-top: 2px; }
+    .courbe-card .ccc-sub-chip { font-size: 11px; font-weight: 600; color: #9a3412; background: rgba(251,146,60,0.18); padding: 2px 8px; border-radius: 999px; line-height: 1.4; }
+    .courbe-card.active .ccc-sub-chip { background: rgba(255,255,255,0.25); color: #fff; }
+    .courbe-card-banner {
+      background: linear-gradient(90deg, #c2410c, #f97316);
+      color: white;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: 0.3px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 6px rgba(194,65,12,0.25);
+    }
     .courbe-card .ccc-tick {
       position: absolute;
       top: 8px;
@@ -4409,7 +4424,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=298"></script>
+<script src="script-data.js?v=299"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7313,6 +7328,12 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     });
     if (visibleItems.length === 0) return '';
     const activeId = state.courbeCardsActive || null;
+    const getActiveSublabels = (it) => {
+      if (!it.sublabels) return [];
+      return Object.entries(it.sublabels)
+        .filter(([pb]) => state.selectedPbs.has(pb))
+        .map(([, label]) => label);
+    };
     const cardsHtml = visibleItems.map((it, idx) => {
       const cardId = it.id || `ccg-${idx}`;
       const ticked = state.courbeCardsTicked.has(cardId);
@@ -7321,10 +7342,13 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const dimmedCls = isDimmed ? ' dimmed' : '';
       const activeCls = isActive ? ' active' : '';
       const tickIcon = ticked ? '✅' : '☐';
+      const subs = getActiveSublabels(it);
+      const subsHtml = subs.length ? `<span class="ccc-subs">${subs.map(s => `<span class="ccc-sub-chip">${s}</span>`).join('')}</span>` : '';
       return `<div class="courbe-card${activeCls}${dimmedCls}" data-card-id="${cardId}" onclick="openCourbeCard(this)">
         <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${tickIcon}</span>
         <span class="ccc-emoji">${it.emoji || '📄'}</span>
         <span class="ccc-title">${substituteVars(it.label || '')}</span>
+        ${subsHtml}
       </div>`;
     }).join('');
     let contentHtml = '';
@@ -7333,7 +7357,11 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       if (activeItem) {
         const innerBlocks = Array.isArray(activeItem.blocks) ? activeItem.blocks : [];
         const inner = renderBlocks(innerBlocks, sectionId, (depth||0)+1, `${path||i}.cc.${activeId}`);
+        const subs = getActiveSublabels(activeItem);
+        const subsBannerHtml = subs.length ? ` — ${subs.join(' · ')}` : '';
+        const bannerLabel = `${activeItem.emoji || ''} ${substituteVars(activeItem.label || '')}${subsBannerHtml}`;
         contentHtml = `<div class="courbe-card-content" data-card-id="${activeId}">
+          <div class="courbe-card-banner">${bannerLabel}</div>
           <button type="button" class="courbe-card-close" onclick="closeCourbeCard()">✕ Fermer</button>
           ${inner}
         </div>`;
