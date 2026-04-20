@@ -2336,6 +2336,38 @@
     .btn-edit-mode.active { background: #f0ad4e; color: #7c3000; border-color: transparent; }
 
     .edit-block-wrap { position: relative; }
+    /* Bloc "Conclusion" — barre latérale épaisse orange (couleurs Nutrition) + fond orange pâle */
+    .conclusion-nutrition {
+      display: flex;
+      align-items: stretch;
+      background: #fff7ed;
+      border: 1.5px solid #fdba74;
+      border-radius: 14px;
+      overflow: hidden;
+      margin: 18px 0;
+      box-shadow: 0 2px 8px rgba(194,65,12,0.12);
+    }
+    .conclusion-nutrition > .conclusion-sidebar {
+      background: linear-gradient(180deg, #c2410c, #f97316);
+      color: white;
+      font-weight: 900;
+      font-size: 15px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      padding: 18px 20px;
+      min-width: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .conclusion-nutrition > .conclusion-content {
+      flex: 1;
+      padding: 14px 20px;
+      min-width: 0;
+    }
+    .conclusion-nutrition > .conclusion-content .block { background: transparent !important; border: none !important; box-shadow: none !important; margin-bottom: 8px; }
     .edit-block-controls {
       display: none; position: absolute; top: 6px; right: 8px;
       gap: 4px; z-index: 5;
@@ -4296,7 +4328,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=287"></script>
+<script src="script-data.js?v=290"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -4389,7 +4421,7 @@ function cleanStaleOverrides() {
     ...(SCRIPT_DATA.planAction || []),
     SCRIPT_DATA.conclusion
   ].filter(Boolean);
-  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid'];
+  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition'];
   let changed = false;
   for (const sectionId of Object.keys(state.scriptOverrides)) {
     const src = allSections.find(s => s.id === sectionId);
@@ -4505,7 +4537,7 @@ function saveScriptOverrides() {
 function getOverrideBlocks(section) {
   const ov = state.scriptOverrides[section.id];
   if (!ov) return section.blocks || [];
-  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'option_banner', 'parent_banner', 'tarifs_tableau', 'appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid'];
+  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'option_banner', 'parent_banner', 'tarifs_tableau', 'appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition'];
   const liveBlocks = section.blocks || [];
 
   // Pour problematique/objectifs, ov.blocks est déjà nettoyé par ensureOverride
@@ -6856,7 +6888,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid'].includes(b.type);
+    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition'].includes(b.type);
     const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
@@ -7174,6 +7206,13 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const btnInlineStyle = b.width ? ` style="width:${b.width};min-width:0"` : '';
     const alignCls = b.align === 'right' ? ' info-btn-align-right' : '';
     return `<div class="info-btn-wrap${alignCls}"><button type="button" class="info-btn"${btnInlineStyle} onclick="openInfoPanel('${btnId}')"><span class="info-btn-emoji">💡</span><span>${label}</span></button></div>`;
+  }
+
+  // Bloc "Conclusion Nutrition" — barre latérale orange épaisse avec "Conclusion" horizontal + fond orange pâle
+  if (b.type === 'conclusion_nutrition') {
+    const innerBlocks = Array.isArray(b.blocks) ? b.blocks : [];
+    const innerHtml = renderBlocks(innerBlocks, sectionId, (depth||0)+1, `${path||i}.ccl`);
+    return `<div class="conclusion-nutrition"><div class="conclusion-sidebar"><span>Conclusion</span></div><div class="conclusion-content">${innerHtml}</div></div>`;
   }
 
   // Rendu spécial IV. Objectifs — Lieu de sommeil : intro à gauche + 2 boutons jaunes à droite au même niveau
