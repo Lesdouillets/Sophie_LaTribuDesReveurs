@@ -6636,6 +6636,12 @@ function renderCurrentSection() {
   // Bouton "Retour à la consultation" sur les sections conditionnelles
   if (section.sectionType === 'conditional') {
     html += `<button class="btn-return-to-diag" onclick="returnToDiagnostic()">↩ Retour à la consultation (V. Diagnostic)</button>`;
+    // Bandeau de catégorie parente (Nutrition, Confort physique, etc.)
+    const cat = getPbCategoryFromValue(section.problematiqueId) || 'autre';
+    const catLabel = (typeof PB_CATEGORY_LABELS !== 'undefined' && PB_CATEGORY_LABELS[cat]) ? PB_CATEGORY_LABELS[cat] : null;
+    if (catLabel) {
+      html += `<div class="inline-conditional-parent-banner" data-category="${cat}" style="cursor:default;margin-bottom:12px"><span class="icp-label">${catLabel}</span></div>`;
+    }
   }
   html += `<div class="section-header">
     <span class="section-emoji">${section.emoji||'📄'}</span>
@@ -8463,29 +8469,40 @@ function toggleConditionalCategoryGroup(bannerEl) {
 function refreshInlineConditionalSections() {
   const area = document.getElementById('content-area');
   if (!area) return;
-  // Supprimer les anciennes sections inline
-  area.querySelectorAll('.inline-conditional-section').forEach(el => el.remove());
-  // Trouver le bloc conditional_sections_inline dans le DOM via un marqueur
-  // Puisqu'on ne le wrappe pas dans un conteneur spécifique, on insère les nouvelles sections
-  // juste après le dernier bloc "normal" de V. Diagnostic (avant les nav-buttons)
+  // Supprimer les anciens groupes de catégories ET les sections orphelines
+  area.querySelectorAll('.inline-conditional-category-group, .inline-conditional-section').forEach(el => el.remove());
   const checkedSections = (window.SCRIPT_DATA || SCRIPT_DATA).conditional.filter(s =>
     s.problematiqueId && isProblematiqueMatched(s.problematiqueId, state.selectedPbs)
   );
   if (!checkedSections.length) return;
-  const html = checkedSections.map(s => {
+  // Regrouper par catégorie parente (en préservant l'ordre d'apparition)
+  const groupsByCat = [];
+  const catIndexMap = {};
+  checkedSections.forEach(s => {
     const cat = getPbCategoryFromValue(s.problematiqueId) || 'autre';
-    return `
-    <div class="inline-conditional-section" data-section-id="${s.id}" data-category="${cat}">
-      <div class="inline-conditional-header" onclick="toggleConditionalSection('${s.id}')">
-        <span class="inline-conditional-emoji">${s.emoji || '📄'}</span>
-        <span class="inline-conditional-title">${getSectionDisplayTitle(s)}</span>
-        <span class="inline-conditional-arrow">▾</span>
-      </div>
-      <div class="inline-conditional-content">
-        ${renderBlocks(getOverrideBlocks(s), s.id)}
-        <button type="button" class="btn-close-conditional" onclick="toggleConditionalSection('${s.id}')">✕ Fermer cette section</button>
-      </div>
-    </div>`;
+    if (catIndexMap[cat] === undefined) {
+      catIndexMap[cat] = groupsByCat.length;
+      groupsByCat.push({ cat, sections: [] });
+    }
+    groupsByCat[catIndexMap[cat]].sections.push(s);
+  });
+  const html = groupsByCat.map(group => {
+    const { cat, sections } = group;
+    const catLabel = (typeof PB_CATEGORY_LABELS !== 'undefined' && PB_CATEGORY_LABELS[cat]) ? PB_CATEGORY_LABELS[cat] : cat;
+    const parentBannerHtml = `<div class="inline-conditional-parent-banner" data-category="${cat}" onclick="toggleConditionalCategoryGroup(this)"><span class="icp-label">${catLabel}</span><span class="icp-arrow">▾</span></div>`;
+    const sectionsHtml = sections.map(s => `
+      <div class="inline-conditional-section" data-section-id="${s.id}" data-category="${cat}">
+        <div class="inline-conditional-header" onclick="toggleConditionalSection('${s.id}')">
+          <span class="inline-conditional-emoji">${s.emoji || '📄'}</span>
+          <span class="inline-conditional-title">${getSectionDisplayTitle(s)}</span>
+          <span class="inline-conditional-arrow">▾</span>
+        </div>
+        <div class="inline-conditional-content">
+          ${renderBlocks(getOverrideBlocks(s), s.id)}
+          <button type="button" class="btn-close-conditional" onclick="toggleConditionalSection('${s.id}')">✕ Fermer cette section</button>
+        </div>
+      </div>`).join('');
+    return `<div class="inline-conditional-category-group" data-category="${cat}">${parentBannerHtml}${sectionsHtml}</div>`;
   }).join('');
   const navButtons = area.querySelector('.nav-buttons');
   if (navButtons) {
