@@ -573,11 +573,7 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"],
-          text: "- Il y a un **2nd repère qu'on utilise** pour **se guider** : c'est la **règle d'Appert**\n- Elle nous donne des **indications sur la quantité \"théorique\" par 24h** en **fonction du poids,**<br><br>\n- 🔥 Aujourd'hui, [prénom_enfant] pèse **[poids]** kg\n  et vous me dites qu'[il_elle] boit environ <strong style=\"color:#dc2626\">XX</strong> mL sur 24 heures."
-        },
-        {
-          type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"],
-          text: "- Si on se réfère à la **règle d'Appert**, ses besoins théoriques en lait seraient plutôt autour de **[besoin_lait_volume]** par jour (voire plus !).",
+          text: "- Il y a un **2nd repère qu'on utilise** pour **se guider** : c'est la **règle d'Appert**\n- Elle nous donne des **indications sur la quantité \"théorique\" par 24h** en **fonction du poids,**<br><br>\n- 🔥 Aujourd'hui, [prénom_enfant] pèse **[poids]** kg\n  et vous me dites qu'[il_elle] boit environ <strong style=\"color:#dc2626\">XX</strong> mL sur 24 heures.<br><br>\n- Si on se réfère à la **règle d'Appert**, ses besoins théoriques en lait seraient plutôt autour de **[besoin_lait_volume]** par jour (voire plus !).<br><br>\n⇒ Ca veut dire que **là aussi,** il y a un **écart** ENTRE **ses besoins** et ses **apports actuels**\n- Mais **ce n'est pas une règle stricte**, c'est **juste un repère** pour nous aider.\n- On reste surtout sur **une logique d'*à la demande***, surtout chez les plus petits.<br><br>\n- **Tous les BB** n'ont **pas :**\n  - **exactement le même rythme**\n  - et **leurs besoins** peuvent **varier d'un jour à l'autre.**\n  ⇒ On se fie surtout à leurs **signes de faim et de satiété**.",
           trailingInfoButton: {
             label: "Calcul règle d'Appert",
             title: "Calcul règle d'Appert",
@@ -587,10 +583,6 @@ const SCRIPT_DATA = {
               { type: "appert_calculator" },
             ]
           }
-        },
-        {
-          type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"],
-          text: "⇒ Ca veut dire que **là aussi,** il y a un **écart** ENTRE **ses besoins** et ses **apports actuels**\n- Mais **ce n'est pas une règle stricte**, c'est **juste un repère** pour nous aider.\n- On reste surtout sur **une logique d'*à la demande***, surtout chez les plus petits.<br><br>\n- **Tous les BB** n'ont **pas :**\n  - **exactement le même rythme**\n  - et **leurs besoins** peuvent **varier d'un jour à l'autre.**\n  ⇒ On se fie surtout à leurs **signes de faim et de satiété**."
         },
         { type: "normal", text: "- Donc, si on **prend un peu de recul** sur tout ça…\n  on peut voir qu'il y a **AUSSI :**\n  - **d'AUTRES plusieurs petites choses**\n  - AUTOUR de son **alimentation**\n  - qui peuvent **jouer un rôle** sur son **sommeil**<br><br>\n- Je pense notamment…" },
         { type: "normal", _noBorder: true, text: "<div style=\"height:40px;background:#fff7ed;border-radius:12px;margin:0 -8px\"></div>" },
