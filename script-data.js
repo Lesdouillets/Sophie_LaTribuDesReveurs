@@ -109,6 +109,18 @@ const PB_LABELS = {
   'nutri_lok_long_autre_lait_animal': 'Lait animal',
   'nutri_lok_long_conseq_inconfort': 'Conséquences : Inconfort',
   'nutri_lok_long_conseq_mange_nuit': 'Conséquences : Mange la nuit',
+  // Nutrition — Lait (courbes OK) — Espacement trop court
+  'nutri_lok_court_vol_petit': 'Petit bib',
+  'nutri_lok_court_vol_gros': 'Gros bib',
+  'nutri_lok_court_inconfort_digestif': 'Inconfort digestif',
+  'nutri_lok_court_inversion_jour_nuit': 'Inversion Jour/Nuit',
+  'nutri_lok_court_inversion_lait_solide': 'Inversion ordre lait/solide',
+  'nutri_lok_court_autre_feculents': 'Pas assez de féculents',
+  'nutri_lok_court_autre_lait_solide_important': 'Lait / solide trop important',
+  'nutri_lok_court_autre_jus_vegetal': 'Jus végétal',
+  'nutri_lok_court_autre_lait_animal': 'Lait animal',
+  'nutri_lok_court_conseq_inconfort': 'Conséquences : Inconfort',
+  'nutri_lok_court_conseq_mange_nuit': 'Conséquences : Mange la nuit',
   // Souhaits
   'souhait_tetine': 'Suppression de la tétine',
   'souhait_position_dorsale': 'Vers une position dorsale',
@@ -1086,6 +1098,78 @@ const SCRIPT_DATA = {
             { type: "normal", showIfPb: "nutri_lok_long_conseq_inconfort", text: "- 🤮 ET potentiellement ça va **réduire son inconfort digestif**" },
             { type: "normal", showIfPb: "nutri_lok_long_tetee_greve", text: "- 🪧 Et la \"grève des tétées\" pourrait **être une réponse** au fait que **l'effort pour obtenir le lait** est devenu **trop important.**\n- Dans **certains cas**, les BB se **mettent en mode \"veille\"**\n  ⇒ ils **\"pèsent le pour et le contre\"** :\n  - entre **l'effort pour téter**\n  - et la **quantité de lait reçue**\n- et parfois, la **balance penche du côté de l'effort**… alors ils **préfèrent refuser la tétée.**" },
             { type: "normal", showIfPb: "nutri_lok_long_conseq_mange_nuit", text: "- 🌛 L'**objectif** serait **aussi** de **réduire les réveils nocturnes** car il **semble utiliser la nuit** pour **compléter ce qu'**il ne **prend pas** encore en **journée**" },
+            { type: "question", text: "Est-ce que **ça fait sens pour vous** quand je vous **l'explique comme ça** ?" },
+            { type: "normal", text: "- Nous allons donc :\n  - **travailler ensemble** sur ce **pillier \"alimentation\"** en **rétablissant un rythme alimentaire** qui lui **convienne mieux**" },
+            { type: "normal", text: "- Et **avec ces ajustements**, **vous allez voir** que ça va **solutionner une partie** de ses **troubles du sommeil**" },
+          ]
+        },
+      ]
+    },
+
+    // ─── NUTRITION : LAIT (COURBES OK) — ESPACEMENT TROP COURT ─────────
+    {
+      id: "nutri_lok_esp_court",
+      problematiqueId: "nutri_lok_esp_court",
+      leverId: "nutri_lok_esp_court",
+      title: "Lait (courbes OK) — Espacement trop court",
+      emoji: "⏱️",
+      blocks: [
+        { type: "normal", text: "- 🔥 Aujourd'hui, les **biberons/tétées** de [prénom_enfant] sont espacés d'environ <strong style=\"color:#dc2626\">XX</strong> h\n\n- C'est un **espacement** relativement **COURT** pour un E. de cet âge\n  ⇒ c'est plutôt un **rythme d'un nourrisson,** avec des **prises très rapprochées**" },
+        { type: "normal", _purpleDark: true, showIfPb: "nutri_lok_court_vol_petit", text: "- 🔥 <u><em>OPTION</em> : petits biberons 🍼</u>" },
+        { type: "normal", showIfPb: "nutri_lok_court_vol_petit", text: "<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">🔥 J'ai pu remarquer que la <strong>taille de ses biberons</strong> est de <strong style=\"color:#dc2626\">XX</strong> ml</div>\n\n- ⇒ Pour un BB de cet âge, c'est un **volume assez petit**\n- **comme je vous le disais,** comme celui **d'un nourrisson**\n- Or, **à cet âge,** les **volumes de biberons** sont généralement **+ importants**, ce qui leur permet de :\n  - **couvrir leurs besoins nutritionnels**\n  - d'avoir une **satiété + longue** sur la durée\n  - tout en **restant adapté à la physiologie** de leur **estomac**" },
+        { type: "normal", text: "- Donc, si on **prend un peu de recul** sur tout ça…\n  on peut voir qu'il y a **AUSSI :**\n  - **d'AUTRES plusieurs petites choses**\n  - AUTOUR de son **alimentation**\n  - qui peuvent **jouer un rôle** sur son **sommeil**<br><br>\n- Je pense notamment…" },
+        { type: "normal", _noBorder: true, text: "<div style=\"height:40px;background:#fff7ed;border-radius:12px;margin:0 -8px\"></div>" },
+        {
+          type: "courbe_cards_grid",
+          items: [
+            {
+              id: "vol", emoji: "🍼", label: "Taille / durée des bib",
+              pb: ["nutri_lok_court_vol_petit","nutri_lok_court_vol_gros"],
+              sublabels: { "nutri_lok_court_vol_petit": "Petit bib", "nutri_lok_court_vol_gros": "Gros bib" },
+              blocks: [
+                { type: "normal", showIfPb: "nutri_lok_court_vol_petit", text: "<div class=\"cc-sub-banner\">Petit bib</div>\n- Le **volume** des biberons est **assez petit** pour :\n  - **son âge**\n  - **et ses besoins**\n  ⇒ L'**estomac** est **constamment sollicité**" },
+                { type: "normal", showIfPb: "nutri_lok_court_vol_gros", text: "<div class=\"cc-sub-banner\">Gros bib</div>\n- Le **volume** des biberons (<strong style=\"color:#dc2626\">XX</strong>ml) est **assez conséquent** par **rapport au volume de son estomac** (**souvent** on **suit ce qui est inscrit** sur les **boites de lait**)\n  ⇒ C'est **comme s'il était \"gavé\"**\n  ⇒ et **son estomac** doit **gérer une quantité importante** à chaque biberon et **TRES SOUVENT**\n  ⇒ ce qui peut **parfois entraîner une digestion + difficile...**\n<div style=\"background:#f5f0ff;border:3px dashed #a78bfa;border-radius:16px;padding:6px 20px 6px 0;box-shadow:0 2px 8px rgba(167,139,250,0.18);margin:8px 0\"><ul style=\"margin:0;padding-left:21px\"><li>🔥 <em>OPTION</em> — Reflux : ... qui peut <strong>favoriser le reflux</strong></li></ul></div>" },
+              ]
+            },
+            {
+              id: "inconfort", emoji: "🤮", label: "Inconfort digestif",
+              pb: "nutri_lok_court_inconfort_digestif",
+              blocks: [
+                { type: "normal", showIfPb: "nutri_lok_court_inconfort_digestif", text: "- Le fait qu'il semble **éprouver** un certain **inconfort digestif**" },
+              ]
+            },
+            {
+              id: "inv", emoji: "🔄", label: "Inversion",
+              pb: ["nutri_lok_court_inversion_jour_nuit","nutri_lok_court_inversion_lait_solide"],
+              sublabels: { "nutri_lok_court_inversion_jour_nuit": "Jour/Nuit", "nutri_lok_court_inversion_lait_solide": "Ordre lait/solide" },
+              blocks: [
+                { type: "normal", showIfPb: "nutri_lok_court_inversion_jour_nuit", text: "<div class=\"cc-sub-banner\">Inversion Jour/Nuit 🌞🌛</div>\n- La **majorité des apports** se fait **la nuit** (peut être dû au mode de garde)\n  ⇒ Il semble y avoir une **inversion jour/nuit** au niveau de son alimentation\n  ⇒ Il se pourrait qu'il **compense le manque d'apport en journée** en se **nourrissant la nuit**" },
+                { type: "normal", showIfPb: "nutri_lok_court_inversion_lait_solide", showIfAgeMaxMonths: 11, text: "<div class=\"cc-sub-banner\">Mettre lait AVANT les solides</div>\n- Aujourd'hui, la **diversification** est **prise AVANT le lait**\n  ⇒ Le **problème** c'est que **ça occupe de la place dans l'estomac,**\n  ⇒ et ça **donne moins de place** **pour le lait,**\n  ⇒ Pourtant, le **lait reste l'apport n°1 pour :**\n  - les nutriments\n  - et la sensation de satiété" },
+                { type: "normal", showIfPb: "nutri_lok_court_inversion_lait_solide", showIfAgeMinMonths: 12, text: "<div class=\"cc-sub-banner\">Mettre solide AVANT le lait</div>\n- Aujourd'hui, **le lait** est **pris AVANT la diversification**\n  ⇒ Le **problème** c'est que **ça occupe de la place dans l'estomac,**\n  ⇒ et ça **donne moins de place** **pour la diversification,**\n  ⇒ Pourtant, la **diversification reste l'apport n°1 pour :**\n  - les nutriments\n  - et la sensation de satiété" },
+              ]
+            },
+            {
+              id: "autre", emoji: "🍽️", label: "Autres (Féculent / Lait-Solide / Jus-Lait animal)",
+              pb: ["nutri_lok_court_autre_feculents","nutri_lok_court_autre_lait_solide_important","nutri_lok_court_autre_jus_vegetal","nutri_lok_court_autre_lait_animal"],
+              sublabels: { "nutri_lok_court_autre_feculents": "Féculents", "nutri_lok_court_autre_lait_solide_important": "Lait/solide imp.", "nutri_lok_court_autre_jus_vegetal": "Jus végétal", "nutri_lok_court_autre_lait_animal": "Lait animal" },
+              blocks: [
+                { type: "normal", showIfPb: "nutri_lok_court_autre_feculents", text: "<div class=\"cc-sub-banner\">Féculent 🥔</div>\n- La **part des féculents** dans son alimentation **est assez faible**\n- Et pourtant, les **féculents participent** activement à :\n  - **l'apport énergétique**" },
+                { type: "normal", showIfPb: "nutri_lok_court_autre_lait_solide_important", showIfAgeMaxMonths: 11, text: "<div class=\"cc-sub-banner\">Solide trop important</div>\n- La **place de la diversification** dans son alimentation **prend une part importante**\n- Or à son âge, le **lait** devrait être la **source principale d'apport nutritionnel**" },
+                { type: "normal", showIfPb: "nutri_lok_court_autre_lait_solide_important", showIfAgeMinMonths: 12, text: "<div class=\"cc-sub-banner\">Lait trop important</div>\n- La **place du lait** dans **son alimentation** prend une **part importante** dans **son alimentation**\n- Or **à son âge**, la **diversification** devrait être la **source principale d'apport nutritionnel**" },
+                { type: "normal", showIfPb: "nutri_lok_court_autre_jus_vegetal", text: "<div class=\"cc-sub-banner\">Jus végétal 🧃</div>\n- [prénom_enfant] boit une **grande quantité** de biberons de <strong style=\"color:#c52f26\">jus végétal</strong>\n- Or ils **n'apportent PAS les mêmes besoins nutritionnels** que le **lait maternel ou infantile**\n  ⇒ L'**estomac** est alors **rempli MAIS PAS** forcément **avec les bons apports** pour **grandir**" },
+                { type: "normal", showIfPb: "nutri_lok_court_autre_lait_animal", text: "<div class=\"cc-sub-banner\">Lait animal 🐄</div>\n- [prénom_enfant] boit une **grande quantité** de biberons de <strong style=\"color:#c52f26\">lait animal</strong>\n- Or ils **n'apportent PAS les mêmes besoins nutritionnels** que le **lait maternel ou infantile**\n  ⇒ L'**estomac** est alors **rempli MAIS PAS** forcément **avec les bons apports** pour **grandir**" },
+              ]
+            },
+          ]
+        },
+        { type: "normal", _parentLevel: true, text: "- Voilà,\n- AVEC tous ces **petits indices,**\n- On commence à voir un **schéma qui se dessine** au **niveau de sa nutrition**\n- Et **CE QUI est intéressant**, c'est que ça correspond à CE QUE **vous observez** :\n  - dans son comportement\n  - et dans son sommeil" },
+        {
+          type: "conclusion_nutrition",
+          _parentLevel: true,
+          blocks: [
+            { type: "normal", text: "- Pour moi, **l'explication la + probable,**\n  <span style=\"color:#dc2626\">⇒ c'est que [prénom_enfant] a un **vrai inconfort digestif**</span>\n\n- Il **reçoit peut-être** des **apports suffisants** sur 24 h, MAIS de **façon très fractionnée.**\n- **Dans ce cas**, leur **système digestif** peut **travailler presque en continu**, SANS véritable **tps de repos.**\n  ⇒ Cela peut **créer** :\n  - **un inconfort digestif**\n  - et un **sommeil + fragmenté,** avec des **réveils + fréquents.**\n\n- 🎯 L'**objectif** serait donc d'**adapter progressivement la répartition** de ses apports :\n  - avec des **prises - rapprochées** pour mieux **respecter sa digestion**\n  - des **volumes + adaptés**" },
+            { type: "normal", showIfPb: "nutri_lok_court_conseq_inconfort", text: "- 🤮 ET potentiellement ça va **réduire son inconfort digestif**" },
+            { type: "normal", showIfPb: "nutri_lok_court_conseq_mange_nuit", text: "- 🌛 L'**objectif** serait **aussi** de **réduire les réveils nocturnes** car il **semble utiliser la nuit** pour **compléter ce qu'**il ne **prend pas** encore en **journée**" },
             { type: "question", text: "Est-ce que **ça fait sens pour vous** quand je vous **l'explique comme ça** ?" },
             { type: "normal", text: "- Nous allons donc :\n  - **travailler ensemble** sur ce **pillier \"alimentation\"** en **rétablissant un rythme alimentaire** qui lui **convienne mieux**" },
             { type: "normal", text: "- Et **avec ces ajustements**, **vous allez voir** que ça va **solutionner une partie** de ses **troubles du sommeil**" },
