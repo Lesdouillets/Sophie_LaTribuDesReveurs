@@ -2988,8 +2988,8 @@
               <div class="form-group full" id="allaitement-mode-group" style="display:none;margin-top:8px">
                 <label>Mode d'allaitement <span style="color:#aaa;font-size:11px">(plusieurs choix possibles)</span></label>
                 <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
-                  <label class="pb-item"><input type="checkbox" name="allaitement_mode" value="Allaitement au sein"> <span>🤱 Allaitement au sein</span></label>
-                  <label class="pb-item"><input type="checkbox" name="allaitement_mode" value="Allaitement au biberon"> <span>🍼 Allaitement au biberon</span></label>
+                  <label class="pb-item"><input type="checkbox" name="allaitement_mode" value="Allaitement au sein" onchange="enforceAllaitementMode()"> <span>🤱 Allaitement au sein</span></label>
+                  <label class="pb-item"><input type="checkbox" name="allaitement_mode" value="Allaitement au biberon" onchange="enforceAllaitementMode()"> <span>🍼 Allaitement au biberon</span></label>
                 </div>
               </div>
               <div class="form-group full" id="type-lait-group" style="display:none;margin-top:8px">
@@ -4887,6 +4887,33 @@ function syncMedicalToConfort() {
     if (typeof buildSidebar === 'function') buildSidebar();
   }
 }
+// Valide que le mode d'allaitement est coché si allaitement maternel / mixte l'est.
+// Affiche un avertissement visuel rouge sinon (non-bloquant, mais persistant jusqu'à correction).
+function enforceAllaitementMode() {
+  const allaitement = document.querySelector('input[name="alim"][value="Allaitement maternel"]')?.checked;
+  const mixte = document.querySelector('input[name="alim"][value="Allaitement mixte"]')?.checked;
+  const allaitGroup = document.getElementById('allaitement-mode-group');
+  if (!allaitGroup) return;
+  let warn = document.getElementById('allait-mode-warn');
+  const needsMode = !!(allaitement || mixte);
+  const modeChecked = [...document.querySelectorAll('input[name="allaitement_mode"]:checked')].length > 0;
+  if (needsMode && !modeChecked) {
+    if (!warn) {
+      warn = document.createElement('div');
+      warn.id = 'allait-mode-warn';
+      warn.style.cssText = 'color:#dc2626;font-size:12px;margin-top:6px;font-weight:700;padding:6px 10px;background:#fef2f2;border:1.5px solid #fca5a5;border-radius:6px;width:fit-content';
+      warn.innerHTML = "⚠️ Précisez si c'est « au sein » et/ou « au biberon » (champ obligatoire)";
+      allaitGroup.appendChild(warn);
+    }
+    allaitGroup.style.setProperty('box-shadow', '0 0 0 2px rgba(220,38,38,0.35)', 'important');
+    allaitGroup.style.setProperty('border-radius', '8px', 'important');
+  } else {
+    if (warn) warn.remove();
+    allaitGroup.style.removeProperty('box-shadow');
+    allaitGroup.style.removeProperty('border-radius');
+  }
+}
+
 function toggleTypeLait() {
   const bib = document.querySelector('input[name="alim"][value="Biberon lait infantile"]');
   const mixte = document.querySelector('input[name="alim"][value="Allaitement mixte"]');
@@ -5028,6 +5055,8 @@ function toggleTypeLait() {
   }
   // Diversification N°1 visible si âge < 12 mois
   updateDiversifN1Visibility();
+  // Valider que le mode d'allaitement est coché si allaitement maternel/mixte
+  enforceAllaitementMode();
 }
 
 function updateDiversifN1Visibility() {
@@ -5206,6 +5235,8 @@ function populateFormFromClient(c) {
   }
   // Sync medical → confort après chargement : si RGO/APLV médicaux sont cochés, la case pb "confort" correspondante doit l'être aussi
   if (typeof syncMedicalToConfort === 'function') syncMedicalToConfort();
+  // Validation mode d'allaitement après chargement
+  if (typeof enforceAllaitementMode === 'function') enforceAllaitementMode();
 }
 
 function loadClient(idx) {

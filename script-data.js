@@ -623,7 +623,7 @@ const SCRIPT_DATA = {
           ]
         },
         {
-          type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"],
+          type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement mixte","Allaitement au biberon"],
           text: "- Il y a un **2nd repère qu'on utilise** pour **se guider** : c'est la **règle d'Appert**\n- Elle nous donne des **indications sur la quantité \"théorique\" par 24h** en **fonction du poids,**<br><br>\n- 🔥 Aujourd'hui, [prénom_enfant] pèse **[poids]** kg\n  et vous me dites qu'[il_elle] boit environ <strong style=\"color:#dc2626\">XX</strong> mL sur 24 heures.\n- Si on se réfère à la **règle d'Appert**, ses besoins théoriques en lait seraient plutôt autour de **[besoin_lait_volume]** par jour (voire plus !).<br><br>\n- ⇒ Ca veut dire que **là aussi,** il y a un **écart** ENTRE **ses besoins** et ses **apports actuels**\n- Mais **ce n'est pas une règle stricte**, c'est **juste un repère** pour nous aider.\n- On reste surtout sur **une logique d'*à la demande***, surtout chez les plus petits.<br><br>\n- **Tous les BB** n'ont **pas :**\n  - **exactement le même rythme**\n  - et **leurs besoins** peuvent **varier d'un jour à l'autre.**\n  ⇒ On se fie surtout à leurs **signes de faim et de satiété**.",
           trailingInfoButton: {
             label: "Calcul règle d'Appert",
@@ -665,7 +665,7 @@ const SCRIPT_DATA = {
               sublabels: { "nutri_tetee_longue": "Longue tétée", "nutri_tetee_greve": "Grève des tétées", "nutri_tetee_mode_garde": "Mode de garde" },
               blocks: [
                 { type: "normal", showIfPb: "nutri_tetee_longue", text: "<div class=\"cc-sub-banner\">Longue tétée</div>\n- Les **tétées** SEMBLENT **être assez longues**\n- La durée des tétées MOYENNE est normalement autour de 20min\n  ⇒ On dirait que BB **cherche à avoir +**, mais qui **n'arrive pas à** avoir tout **ce dont il a besoin**" },
-                { type: "normal", showIfPb: "nutri_tetee_greve", text: "<div class=\"cc-sub-banner\">Grève des tétées</div>\n- Vous m'avez aussi parlé du refus de certaines tétées" },
+                { type: "normal", showIfPb: "nutri_tetee_greve", text: "<div class=\"cc-sub-banner\">Grève des tétées</div>\n- Vous m'avez aussi parlé du **refus de certaines tétées**" },
                 { type: "normal", showIfPb: ["nutri_tetee","nutri_tetee_longue","nutri_tetee_greve","nutri_tetee_mode_garde"], text: "- **Au vu des courbes,** je me dis, qu'il y a peut-être **qqch qui se joue** au **niveau de votre lactation.**\n- Il y a peut-être eu une **possible diminution** (peut-être car **vos seins sont moins stimulés ?**)" },
                 { type: "normal", showIfPb: "nutri_tetee_mode_garde", text: "- ...Ce sont des choses qui **peuvent arriver** lors d'un **changement de rythme**\n  notamment quand un **BB commence un mode de garde**\n  ⇒ car la **stimulation de vos seins** est **moins importante en journée**" },
                 { type: "normal", showIfPb: ["nutri_tetee","nutri_tetee_longue","nutri_tetee_greve","nutri_tetee_mode_garde"], text: "- Et comme le **corps fonctionne** à la **demande,**\n  ⇒ ça **peut influencer** sur la **quantité de lait** que **boit** [prénom_enfant]\n- **Et surtout**, c'est qqch :\n  - de **fréquent**\n  - et sur lequel on peut **facilement agir**\n\n- **Heureusement,** il y a des **solutions qui existent** pour **re-booster la lactation**\n  et je vous en **reparlerai** un petit peu **plus tard**" },
@@ -774,7 +774,7 @@ const SCRIPT_DATA = {
           ]
         },
         {
-          type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"],
+          type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement mixte","Allaitement au biberon"],
           text: "- Il y a un **2nd repère qu'on utilise** pour **se guider** : c'est la **règle d'Appert**\n- Elle nous donne des **indications sur la quantité \"théorique\" par 24h** en **fonction du poids,**<br><br>\n- 🔥 Aujourd'hui, [prénom_enfant] pèse **[poids]** kg\n  et vous me dites qu'[il_elle] boit environ <strong style=\"color:#dc2626\">XX</strong> mL sur 24 heures.\n- Si on se réfère à la **règle d'Appert**, ses besoins théoriques en lait seraient plutôt autour de **[besoin_lait_volume]** par jour (voire plus !).<br><br>\n- ⇒ Ca veut dire que **là aussi,** il y a un **écart** ENTRE **ses besoins** et ses **apports actuels**\n- Mais **ce n'est pas une règle stricte**, c'est **juste un repère** pour nous aider.\n- On reste surtout sur **une logique d'*à la demande***, surtout chez les plus petits.<br><br>\n- **Tous les BB** n'ont **pas :**\n  - **exactement le même rythme**\n  - et **leurs besoins** peuvent **varier d'un jour à l'autre.**\n  ⇒ On se fie surtout à leurs **signes de faim et de satiété**.",
           trailingInfoButton: {
             label: "Calcul règle d'Appert",
@@ -816,7 +816,7 @@ const SCRIPT_DATA = {
               sublabels: { "nutri_inf_tetee_longue": "Longue tétée", "nutri_inf_tetee_greve": "Grève des tétées", "nutri_inf_tetee_mode_garde": "Mode de garde" },
               blocks: [
                 { type: "normal", showIfPb: "nutri_inf_tetee_longue", text: "<div class=\"cc-sub-banner\">Longue tétée</div>\n- Les **tétées** SEMBLENT **être assez longues**\n- La durée des tétées MOYENNE est normalement autour de 20min\n  ⇒ On dirait que BB **cherche à avoir +**, mais qui **n'arrive pas à** avoir tout **ce dont il a besoin**" },
-                { type: "normal", showIfPb: "nutri_inf_tetee_greve", text: "<div class=\"cc-sub-banner\">Grève des tétées</div>\n- Vous m'avez aussi parlé du refus de certaines tétées" },
+                { type: "normal", showIfPb: "nutri_inf_tetee_greve", text: "<div class=\"cc-sub-banner\">Grève des tétées</div>\n- Vous m'avez aussi parlé du **refus de certaines tétées**" },
                 { type: "normal", showIfPb: ["nutri_inf_tetee","nutri_inf_tetee_longue","nutri_inf_tetee_greve","nutri_inf_tetee_mode_garde"], text: "- **Au vu des courbes,** je me dis, qu'il y a peut-être **qqch qui se joue** au **niveau de votre lactation.**\n- Il y a peut-être eu une **possible diminution** (peut-être car **vos seins sont moins stimulés ?**)" },
                 { type: "normal", showIfPb: "nutri_inf_tetee_mode_garde", text: "- ...Ce sont des choses qui **peuvent arriver** lors d'un **changement de rythme**\n  notamment quand un **BB commence un mode de garde**\n  ⇒ car la **stimulation de vos seins** est **moins importante en journée**" },
                 { type: "normal", showIfPb: ["nutri_inf_tetee","nutri_inf_tetee_longue","nutri_inf_tetee_greve","nutri_inf_tetee_mode_garde"], text: "- Et comme le **corps fonctionne** à la **demande,**\n  ⇒ ça **peut influencer** sur la **quantité de lait** que **boit** [prénom_enfant]\n- **Et surtout**, c'est qqch :\n  - de **fréquent**\n  - et sur lequel on peut **facilement agir**\n\n- **Heureusement,** il y a des **solutions qui existent** pour **re-booster la lactation**\n  et je vous en **reparlerai** un petit peu **plus tard**" },
@@ -914,7 +914,7 @@ const SCRIPT_DATA = {
           ]
         },
         {
-          type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"],
+          type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement mixte","Allaitement au biberon"],
           text: "- Il y a un **2nd repère qu'on utilise** pour **se guider** : c'est la **règle d'Appert**\n- Elle nous donne des **indications sur la quantité \"théorique\" par 24h** en **fonction du poids,**<br><br>\n- 🔥 Aujourd'hui, [prénom_enfant] pèse **[poids]** kg\n  et vous me dites qu'[il_elle] boit environ <strong style=\"color:#dc2626\">XX</strong> mL sur 24 heures.\n- Si on se **réfère à la règle d'Appert**, ses **besoins théoriques** en lait seraient **plutôt autour** de **[besoin_lait_volume]** par jour **(voire plus !).**<br><br>\n- ⇒ Ca veut dire que **là aussi,** il y a un **écart** ENTRE **ses besoins** et ses **apports actuels**\n- Mais **ce n'est pas une règle stricte**, c'est **juste un repère** pour nous aider.\n- On reste surtout sur **une logique d'*à la demande***, surtout chez les plus petits.<br><br>\n- **Tous les BB** n'ont **pas :**\n  - **exactement le même rythme**\n  - et **leurs besoins** peuvent **varier d'un jour à l'autre.**\n  ⇒ On se fie surtout à leurs **signes de faim et de satiété**.",
           trailingInfoButton: {
             label: "Calcul règle d'Appert",
