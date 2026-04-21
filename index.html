@@ -8417,6 +8417,10 @@ function clonePbGridFor(targetId, cbClass, onchangeFunc) {
   const clone = source.cloneNode(true);
   // Remplacer name="pb" par class cbClass, et pb-cat-checkbox/pb-sub-parent par des versions préfixées
   clone.setAttribute('onchange', onchangeFunc);
+  // Écoute fiable de l'événement change sur le conteneur (fallback si setAttribute ne suffit pas)
+  clone.addEventListener('change', function() {
+    try { new Function(onchangeFunc)(); } catch (err) { console.error('[clonePbGridFor onchange]', err); }
+  });
   clone.querySelectorAll('input[name="pb"]').forEach(cb => {
     cb.removeAttribute('name');
     cb.classList.add(cbClass);
@@ -8488,8 +8492,10 @@ function modalSelectCat(btn, checked) {
 }
 
 function applyPbChanges() {
+  console.log('[applyPbChanges] fired. modal-pb checked count:', document.querySelectorAll('.modal-pb:checked').length);
   const savedId = state.sections[state.currentIdx]?.id;
   state.selectedPbs = new Set([...document.querySelectorAll('.modal-pb:checked')].map(cb=>cb.value));
+  console.log('[applyPbChanges] new selectedPbs:', [...state.selectedPbs]);
   syncPbsToFicheClient();
   syncPbsHighlights();
   rebuildAfterPbChange();
