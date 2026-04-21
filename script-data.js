@@ -58,7 +58,7 @@ const PB_LABELS = {
   'nutri_autre_jus_vegetal': 'Jus végétal',
   'nutri_autre_lait_animal': 'Lait animal',
   'nutri_inversion_jour_nuit': 'Inversion Jour/Nuit',
-  'nutri_inversion_lait_solide': 'Inversion Lait / Solide',
+  'nutri_inversion_lait_solide': 'Inversion ordre Lait / Solide',
   // Nutrition — Percentile inférieur (mêmes sous-items que "diminue")
   'nutri_inf_esp_long': 'Espacement trop long entre 2 prises',
   'nutri_inf_esp_court': 'Espacement trop court entre 2 prises',
@@ -75,7 +75,7 @@ const PB_LABELS = {
   'nutri_inf_autre_jus_vegetal': 'Jus végétal',
   'nutri_inf_autre_lait_animal': 'Lait animal',
   'nutri_inf_inversion_jour_nuit': 'Inversion Jour/Nuit',
-  'nutri_inf_inversion_lait_solide': 'Inversion Lait / Solide',
+  'nutri_inf_inversion_lait_solide': 'Inversion ordre Lait / Solide',
   // Nutrition — Trop d'apport
   'nutri_trop_apport': "Trop d'apport",
   'nutri_ta_esp_long': 'Espacement trop long entre 2 prises',
@@ -84,7 +84,7 @@ const PB_LABELS = {
   'nutri_ta_vol_gros': 'Volume de biberon trop gros',
   'nutri_ta_vol_longtemps': 'Biberon bu trop longtemps',
   'nutri_ta_inversion_jour_nuit': 'Inversion Jour/Nuit',
-  'nutri_ta_inversion_lait_solide': 'Inversion Lait / Solide',
+  'nutri_ta_inversion_lait_solide': 'Inversion ordre Lait / Solide',
   'nutri_ta_autre_feculents': 'Trop de féculents',
   'nutri_ta_autre_lait_solide_important': 'Lait / solide trop important',
   'nutri_ta_autre_jus_vegetal': 'Jus végétal',
@@ -658,7 +658,7 @@ const SCRIPT_DATA = {
               ]
             },
             {
-              id: "inv_ls", emoji: "🔄", label: "Inversion Lait/Solide",
+              id: "inv_ls", emoji: "🔄", label: "Inversion ordre Lait/Solide",
               pb: "nutri_inversion_lait_solide",
               blocks: [
                 { type: "normal", showIfPb: "nutri_inversion_lait_solide", showIfAgeMaxMonths: 11, text: "<span style=\"display:inline-block;background:linear-gradient(135deg,#fb923c,#ea580c);color:white;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:10px;box-shadow:0 2px 6px rgba(234,88,12,0.3)\">🎯 Mettre lait AVANT les solides</span>\n\n- Aujourd'hui, la **diversification** est **prise AVANT le lait**\n  ⇒ Le **problème** c'est que **ça occupe de la place dans l'estomac,**\n  ⇒ et ça **donne moins de place pour le lait,**\n  ⇒ Pourtant, le **lait reste l'apport n°1 pour** :\n  - les nutriments\n  - et la sensation de satiété" },
@@ -807,7 +807,7 @@ const SCRIPT_DATA = {
               ]
             },
             {
-              id: "inv_ls", emoji: "🔄", label: "Inversion Lait/Solide",
+              id: "inv_ls", emoji: "🔄", label: "Inversion ordre Lait/Solide",
               pb: "nutri_inf_inversion_lait_solide",
               blocks: [
                 { type: "normal", showIfPb: "nutri_inf_inversion_lait_solide", showIfAgeMaxMonths: 11, text: "<span style=\"display:inline-block;background:linear-gradient(135deg,#fb923c,#ea580c);color:white;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:10px;box-shadow:0 2px 6px rgba(234,88,12,0.3)\">🎯 Mettre lait AVANT les solides</span>\n\n- Aujourd'hui, la **diversification** est **prise AVANT le lait**\n  ⇒ Le **problème** c'est que **ça occupe de la place dans l'estomac,**\n  ⇒ et ça **donne moins de place pour le lait,**\n  ⇒ Pourtant, le **lait reste l'apport n°1 pour** :\n  - les nutriments\n  - et la sensation de satiété" },
@@ -934,7 +934,7 @@ const SCRIPT_DATA = {
               ]
             },
             {
-              id: "inv_ls", emoji: "🔄", label: "Inversion Lait/Solide",
+              id: "inv_ls", emoji: "🔄", label: "Inversion ordre Lait/Solide",
               pb: "nutri_ta_inversion_lait_solide",
               blocks: [
                 { type: "normal", showIfPb: "nutri_ta_inversion_lait_solide", showIfAgeMaxMonths: 11, text: "<span style=\"display:inline-block;background:linear-gradient(135deg,#fb923c,#ea580c);color:white;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:10px;box-shadow:0 2px 6px rgba(234,88,12,0.3)\">🎯 Mettre lait AVANT les solides</span>\n\n- Aujourd'hui, la **diversification** est **prise AVANT le lait**\n  ⇒ Le **problème** c'est que **ça occupe de la place dans l'estomac,**\n  ⇒ et ça **brouille** la **sensation de satiété**" },

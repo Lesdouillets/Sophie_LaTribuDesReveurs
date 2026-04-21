@@ -27,7 +27,8 @@
       "Bash(awk 'NR>=550 && NR<=692 {print}' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")",
       "Bash(awk 'NR>=830 && NR<=855' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")",
       "Bash(awk 'NR>=850 && NR<=870' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")",
-      "Bash(awk 'NR>=865 && NR<=1020' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")"
+      "Bash(awk 'NR>=865 && NR<=1020' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")",
+      "Bash(perl -i -pe 's/Inversion lait\\\\/solide/Inversion ordre lait\\\\/solide/g; s/Inversion Lait\\\\/Solide/Inversion ordre Lait\\\\/Solide/g; s/Inversion Lait \\\\/ Solide/Inversion ordre Lait \\\\/ Solide/g; s/Inv\\\\. lait\\\\/solide/Inv. ordre lait\\\\/solide/g' script-data.js index.html)"
     ]
   }
 }
