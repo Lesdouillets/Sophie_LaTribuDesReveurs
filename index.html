@@ -8313,6 +8313,11 @@ function substituteVars(text) {
     // Restaurer les expressions protégées
     t = t.replace(/\x00(\d+)\x00/g, (_, i) => snapshots[parseInt(i)]);
   }
+  // Token {{cercle_vicieux:s1|s2|s3|s4}} → SVG HTML
+  t = t.replace(/\{\{cercle_vicieux:([^}]+)\}\}/g, (_, params) => {
+    const parts = params.split('|');
+    return renderViciousCircleSVG(parts[0] || '', parts[1] || '', parts[2] || '', parts[3] || '');
+  });
   return renderMarkdown(t);
 }
 
