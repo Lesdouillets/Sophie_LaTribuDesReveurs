@@ -972,14 +972,14 @@ const SCRIPT_DATA = {
             },
           ]
         },
-        { type: "normal", _parentLevel: true, text: "- Voilà,\n- AVEC tous ces **petits indices,**\n- On commence à voir un **schéma qui se dessine** au **niveau de sa nutrition**<br><br>\n- Et **CE QUI est intéressant**, c'est que ça correspond à CE QUE **vous observez** :\n  - dans son comportement\n  - et dans son sommeil" },
+        { type: "normal", _parentLevel: true, text: "- Voilà,\n- AVEC tous ces **petits indices,**\n- On commence à voir un **schéma qui se dessine** au **niveau de sa nutrition**\n- Et **CE QUI est intéressant**, c'est que ça correspond à CE QUE **vous observez** :\n  - dans son comportement\n  - et dans son sommeil" },
         {
           type: "conclusion_nutrition",
           _parentLevel: true,
           blocks: [
-            { type: "normal", text: "- Pour moi, **l'explication la + probable,**\n  <span style=\"color:#dc2626\">⇒ c'est que [prénom_enfant] a des **apports au-dessus de ses besoins**</span>\n\n- Et **quand les apports** sont **trop importants**, ça peut :\n  - **fragmenter le sommeil**\n  - et **maintenir des habitudes** qui ne **servent plus** vraiment la **faim**\n\n  ⇒ 🎯L'**objectif** serait donc de **rééquilibrer progressivement** ses apports pour :\n  - **retrouver** un **rythme alimentaire** adapté à **son âge** et à **ses besoins réels**" },
+            { type: "normal", text: "- Pour moi, **l'explication la + probable,**\n- <span style=\"color:#dc2626\">⇒ c'est que [prénom_enfant] a **TROP d'apports nutritionnels**</span>\n\n- Et c'est une **situation** qui arrive **très souvent**, parce que :\n  - les **repères donnés sur les boîtes**\n  - ou dans l'entourage\n    ⇒ **POUSSENT** parfois à **donner des quantités + importantes** QUE **leur réellement besoin.**\n\n- Dans ce contexte, les **troubles du sommeil** que vous décrivez ne sont **peut-être** **PAS UNIQUEMENT liés à un problème de sommeil**\n  ⇒ MAIS à la **digestion perturbée** et à une **surcharge calorique**\n\n  ⇒ L'**objectif** serait donc d'**adapter progressivement la quantité de ses apports**" },
             { type: "question", text: "Est-ce que **ça fait sens pour vous** quand je vous **l'explique comme ça** ?" },
-            { type: "normal", text: "- Nous allons donc :\n  - **rétablir un rythme alimentaire + structuré**\n  - et **ajuster les apports** adaptés :\n    - à son âge\n    - et à son poids" },
+            { type: "normal", text: "- Nous allons donc :\n  - **Ré-équilibrer le rythme alimentaire** en fonction de **ces besoins**\n  - **Et redonner une structure à son alimentation**" },
             { type: "normal", text: "- Et **avec ces ajustements**, **vous allez voir** que ça va **solutionner une partie** de ses **troubles du sommeil**" },
           ]
         },
