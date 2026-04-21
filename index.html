@@ -9995,6 +9995,13 @@ function selectCat(btn, checked) {
     const spb = document.getElementById('spb-' + cb.value);
     if (spb) { spb.checked = checked; togglePb(cb.value, checked); }
   });
+  // Propager l'état aux checkboxes externes (modal/diag/fiche) + re-synchroniser
+  // les sub-parents et cats ancêtres (ex: "Courbes pas OK" au-dessus de "Courbe diminue")
+  const container = cat.closest('.problematiques-grid, #modal-pb-list, #diag-pb-container');
+  if (container) {
+    // Déclencher l'onchange du container pour que onFicheClientPbChange / onModalPbChange / onDiagnosticPbChange se lance
+    container.dispatchEvent(new Event('change', { bubbles: true }));
+  }
 }
 addCatSelectButtons(document.querySelector('#setup-screen'));
 
