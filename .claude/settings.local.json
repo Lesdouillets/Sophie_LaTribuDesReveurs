@@ -18,7 +18,11 @@
       "Bash(perl -i -pe 's/\\\\\\\\n\\\\*💭/\\\\\\\\n- *💭/g' script-data.js)",
       "Bash(grep -c \"\\\\\\\\\\\\\\\\n\\\\*💭\" script-data.js)",
       "Bash(perl -i -pe 's/\\\\\\\\\\\\\\\\n\\\\*💭/\\\\\\\\\\\\\\\\n- \\\\*💭/g' script-data.js)",
-      "Bash(awk 'NR>=3088 && NR<=3100' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")"
+      "Bash(awk 'NR>=3088 && NR<=3100' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")",
+      "Bash(awk '/^function substituteVars/,/^}/' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")",
+      "Bash(awk 'NR>=8122 && /^}/ {print NR; exit}' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")",
+      "Bash(awk 'NR>=8122 && NR<=8127' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")",
+      "Bash(awk 'NR>=8128 && /^}/ {print NR; count++; if \\(count==1\\) exit}' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")"
     ]
   }
 }
