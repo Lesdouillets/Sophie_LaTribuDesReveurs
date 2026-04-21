@@ -140,6 +140,25 @@ const PB_LABELS = {
   'nutri_lok_la_autre_lait_solide_important': 'Lait / solide trop important',
   'nutri_lok_la_conseq_inconfort': 'Conséquences : Inconfort',
   'nutri_lok_la_conseq_mange_nuit': 'Conséquences : Mange la nuit',
+  // Nutrition — Lait (courbes OK) — Jus végétal
+  'nutri_lok_jus_vegetal': 'Jus végétal (courbes OK)',
+  'nutri_lok_jv_esp_long': 'Espacement trop long entre 2 prises',
+  'nutri_lok_jv_esp_court': 'Espacement trop court entre 2 prises',
+  'nutri_lok_jv_vol_petit': 'Petit bib',
+  'nutri_lok_jv_vol_gros': 'Gros bib',
+  'nutri_lok_jv_vol_longtemps': 'Biberon bu trop longtemps',
+  'nutri_lok_jv_inconfort_digestif': 'Inconfort digestif',
+  'nutri_lok_jv_tetee': 'Tétée — baisse de lactation',
+  'nutri_lok_jv_tetee_longue': 'Tétées longues',
+  'nutri_lok_jv_tetee_greve': 'Grève des tétées',
+  'nutri_lok_jv_tetee_mode_garde': 'Baisse de lactation — mode de garde',
+  'nutri_lok_jv_inversion_jour_nuit': 'Inversion Jour/Nuit',
+  'nutri_lok_jv_inversion_lait_solide': 'Inversion ordre lait/solide',
+  'nutri_lok_jv_tetine_cache_faim': 'Tétine = cache-faim',
+  'nutri_lok_jv_autre_feculents': 'Pas assez de féculents',
+  'nutri_lok_jv_autre_lait_solide_important': 'Lait / solide trop important',
+  'nutri_lok_jv_conseq_inconfort': 'Conséquences : Inconfort',
+  'nutri_lok_jv_conseq_mange_nuit': 'Conséquences : Mange la nuit',
   // Souhaits
   'souhait_tetine': 'Suppression de la tétine',
   'souhait_position_dorsale': 'Vers une position dorsale',
@@ -1285,6 +1304,104 @@ const SCRIPT_DATA = {
             { type: "normal", showIfPb: "nutri_lok_la_conseq_inconfort", text: "- 🤮 ET potentiellement ça va **réduire son inconfort digestif**" },
             { type: "normal", showIfPb: "nutri_lok_la_tetee_greve", text: "- 🪧 Et la \"grève des tétées\" pourrait **être une réponse** au fait que **l'effort pour obtenir le lait** est devenu **trop important.**\n- Dans **certains cas**, les BB se **mettent en mode \"veille\"**\n  ⇒ ils **\"pèsent le pour et le contre\"** :\n  - entre **l'effort pour téter**\n  - et la **quantité de lait reçue**\n- et parfois, la **balance penche du côté de l'effort**… alors ils **préfèrent refuser la tétée.**" },
             { type: "normal", showIfPb: "nutri_lok_la_conseq_mange_nuit", text: "- 🌛 L'**objectif** serait **aussi** de **réduire les réveils nocturnes** car il **semble utiliser la nuit** pour **compléter ce qu'**il ne **prend pas** encore en **journée**" },
+            { type: "question", text: "Est-ce que **ça fait sens pour vous** quand je vous **l'explique comme ça** ?" },
+            { type: "normal", text: "- On va donc **travailler ensemble** sur ce **pilier \"alimentation\"** en réintroduisant des **apports nutritionnels ADAPTÉS** à ses besoins, pour favoriser :\n  - une **satiété + durable**\n  - un meilleur **confort digestif**\n  - et un **sommeil + apaisé**" },
+            { type: "normal", text: "- Et **avec ces ajustements**, **vous allez voir** que ça va **solutionner une partie** de ses **troubles du sommeil**" },
+          ]
+        },
+      ]
+    },
+
+    // ─── NUTRITION : LAIT (COURBES OK) — JUS VÉGÉTAL ─────────
+    {
+      id: "nutri_lok_jus_vegetal",
+      problematiqueId: "nutri_lok_jus_vegetal",
+      leverId: "nutri_lok_jus_vegetal",
+      title: "Lait (courbes OK) — Jus végétal",
+      emoji: "🧃",
+      blocks: [
+        { type: "normal", text: "- Aujourd'hui, [prénom_enfant] boit des **biberons de jus végétal** en **quantité importante**\n- Les **jus végétaux** ne sont **pas TOUJOURS adaptés aux besoins des enfants**\n  - Ils sont soient :\n    - **trop pauvres**\n    - ou **trop riches** en **certains nutriments essentiels** à leur **croissance**\n\n- Ces boissons **PEUVENT faire partie de l'alimentation familiale**\n  mais elles **ne couvrent PAS les besoins nutritionnels** d'un jeune enfant\n\n- **Jusqu'à au moins 3 ans**, le **lait** *(infantile ou maternel)* reste **INDISPENSABLE** dans l'alimentation des enfants\n  car ils sont **spécialement conçus** pour leur **bon développement** *(source : Haute Autorité de Santé, et le PNNS : Programme National Nutrition et Santé)*" },
+        { type: "normal", text: "- Donc, si on **prend un peu de recul** sur tout ça…\n  on peut voir qu'il y a **AUSSI :**\n  - **d'AUTRES plusieurs petites choses**\n  - AUTOUR de son **alimentation**\n  - qui peuvent **jouer un rôle** sur son **sommeil**<br><br>\n- Je pense notamment…" },
+        { type: "normal", _noBorder: true, text: "<div style=\"height:40px;background:#fff7ed;border-radius:12px;margin:0 -8px\"></div>" },
+        {
+          type: "courbe_cards_grid",
+          items: [
+            {
+              id: "esp", emoji: "🔛", label: "Espacement bib et sein",
+              pb: ["nutri_lok_jv_esp_long","nutri_lok_jv_esp_court"],
+              sublabels: { "nutri_lok_jv_esp_long": "Trop long", "nutri_lok_jv_esp_court": "Trop court" },
+              blocks: [
+                { type: "normal", showIfPb: "nutri_lok_jv_esp_long", text: "<div class=\"cc-sub-banner\">Espacement LONG</div>\n- 🔥 L'**intervalle entre 2 prises** alimentaires peut être parfois assez long (<strong style=\"color:#dc2626\">XX</strong> heures)\n\n- A cet âge, les enfants ont **besoin de prises + rapprochés** pour s'**adapter** à leur **signaux de faim.**\n- **On devrait** normalement **leur donner** : \"***à la demande***\"\n- Avec des **espacements longs, [prénom_enfant]** a du **mal à \"TENIR\" jusqu'à la prochaine prise alimentaire**\n  ⇒ On **peut imaginer** qu'[il_elle] est **comme \"affamé\"** entre 2 prises alimentaires" },
+                { type: "normal", showIfPb: "nutri_lok_jv_esp_court", text: "<div class=\"cc-sub-banner\">Espacement COURT</div>\n- L'**espacement entre 2 prises** alimentaires est **parfois très rapprochés** (<strong style=\"color:#dc2626\">XX</strong> heures)\n  ⇒ **Son estomac** est **constamment sollicité**\n  ⇒ Ce qui peut provoquer un **certain inconfort digestif**" },
+              ]
+            },
+            {
+              id: "vol", emoji: "🍼", label: "Taille / durée des bib",
+              pb: ["nutri_lok_jv_vol_petit","nutri_lok_jv_vol_gros","nutri_lok_jv_vol_longtemps"],
+              sublabels: { "nutri_lok_jv_vol_petit": "Petit bib", "nutri_lok_jv_vol_gros": "Gros bib", "nutri_lok_jv_vol_longtemps": "Bu longtemps" },
+              blocks: [
+                { type: "normal", showIfPb: "nutri_lok_jv_vol_petit", text: "<div class=\"cc-sub-banner\">Petit bib</div>\n- 🔥 Le **volume** des biberons (<strong style=\"color:#dc2626\">XX</strong>ml) est **assez petit** pour :\n  - **son âge**\n  - **et ses besoins**\n  ⇒ Ca se **rapproche +** de la **taille des biberons d'un nourrisson**\n  ⇒ **SI** les **biberons sont petits** : la **sensation d'être RASSASIE** se **dissipe** assez **vite**" },
+                { type: "normal", showIfPb: "nutri_lok_jv_vol_gros", text: "<div class=\"cc-sub-banner\">Gros bib</div>\n- 🔥 Le **volume** des biberons (<strong style=\"color:#dc2626\">XX</strong>ml) est **assez conséquent** par **rapport au volume de son estomac** (**souvent** on **suit ce qui est inscrit** sur les **boites de lait**)\n  ⇒ C'est **comme s'il était \"gavé\"**\n  ⇒ et **son estomac** doit **gérer une quantité importante** à chaque biberon\n  ⇒ ce qui peut **parfois entraîner une digestion + difficile...**\n<div style=\"background:#f5f0ff;border:3px dashed #a78bfa;border-radius:16px;padding:6px 20px 6px 0;box-shadow:0 2px 8px rgba(167,139,250,0.18);margin:8px 0\"><ul style=\"margin:0;padding-left:21px\"><li>🔥 <em>OPTION</em> — Reflux : ... qui peut <strong>favoriser le reflux</strong></li></ul></div>" },
+                { type: "normal", showIfPb: "nutri_lok_jv_vol_longtemps", text: "<div class=\"cc-sub-banner\">Bu longtemps</div>\n- Les biberons sont **parfois bus pendant très longtemps** (souvent **pour terminer les quantités indiquées sur les boîtes de lait**)\n  ⇒ Ce qui peut **brouiller les signaux** naturels **de faim** et de **satiété**" },
+              ]
+            },
+            {
+              id: "inconfort", emoji: "🤮", label: "Inconfort digestif",
+              pb: "nutri_lok_jv_inconfort_digestif",
+              blocks: [
+                { type: "normal", showIfPb: "nutri_lok_jv_inconfort_digestif", text: "- Le fait qu'il **éprouve** un **inconfort digestif** après ses repas" },
+              ]
+            },
+            {
+              id: "tetee", emoji: "🤱", label: "Tétée : baisse de lactation",
+              pb: ["nutri_lok_jv_tetee","nutri_lok_jv_tetee_longue","nutri_lok_jv_tetee_greve","nutri_lok_jv_tetee_mode_garde"],
+              sublabels: { "nutri_lok_jv_tetee_longue": "Longue tétée", "nutri_lok_jv_tetee_greve": "Grève des tétées", "nutri_lok_jv_tetee_mode_garde": "Mode de garde" },
+              blocks: [
+                { type: "normal", showIfPb: "nutri_lok_jv_tetee_longue", text: "<div class=\"cc-sub-banner\">Longue tétée</div>\n- Les **tétées** SEMBLENT **être assez longues**\n- La **durée des tétées MOYENNE** est normalement autour de **20 min**\n  ⇒ Ce qui **pourrait indiquer** peut-être un **manque de satiété** avec **le jus végétal**" },
+                { type: "normal", showIfPb: "nutri_lok_jv_tetee_greve", text: "<div class=\"cc-sub-banner\">Grève des tétées</div>\n- Vous m'avez aussi parlé du **refus de certaines tétées**" },
+                { type: "normal", showIfPb: ["nutri_lok_jv_tetee","nutri_lok_jv_tetee_longue","nutri_lok_jv_tetee_greve","nutri_lok_jv_tetee_mode_garde"], text: "- Il y a peut-être eu une **possible diminution** (peut-être car **vos seins sont moins stimulés ?**)" },
+                { type: "normal", showIfPb: "nutri_lok_jv_tetee_mode_garde", text: "- ...Ce sont des choses qui **peuvent arriver** lors d'un **changement de rythme**\n  notamment quand un **BB commence un mode de garde**\n  ⇒ car la **stimulation de vos seins** est **moins importante en journée**" },
+                { type: "normal", showIfPb: ["nutri_lok_jv_tetee","nutri_lok_jv_tetee_longue","nutri_lok_jv_tetee_greve","nutri_lok_jv_tetee_mode_garde"], text: "  ⇒ Donc, ça **peut influencer** sur la **quantité de lait** que **boit** [prénom_enfant]\n\n- **Heureusement,** il y a des **solutions qui existent** pour :\n  - **re-booster la lactation**\n  - et donc de diminuer la part de **jus végétal**\n\n  et je vous en **reparlerai plus tard**" },
+              ]
+            },
+            {
+              id: "inv", emoji: "🔄", label: "Inversion",
+              pb: ["nutri_lok_jv_inversion_jour_nuit","nutri_lok_jv_inversion_lait_solide"],
+              sublabels: { "nutri_lok_jv_inversion_jour_nuit": "Jour/Nuit", "nutri_lok_jv_inversion_lait_solide": "Ordre lait/solide" },
+              blocks: [
+                { type: "normal", showIfPb: "nutri_lok_jv_inversion_jour_nuit", text: "<div class=\"cc-sub-banner\">Inversion Jour/Nuit 🌞🌛</div>\n- La **majorité des apports** se fait **la nuit** (peut être dû au mode de garde)\n  ⇒ Il semble y avoir une **inversion jour/nuit** au niveau de son alimentation\n  ⇒ il est possible qu'il **compense le manque d'apports en journée** en se **nourrissant la nuit**" },
+                { type: "normal", showIfPb: "nutri_lok_jv_inversion_lait_solide", showIfAgeMaxMonths: 11, text: "<div class=\"cc-sub-banner\">Mettre lait AVANT les solides</div>\n- Aujourd'hui, la **diversification** est **prise AVANT le lait**\n  ⇒ Le **problème** c'est que **ça occupe de la place dans l'estomac,**\n  ⇒ et ça **donne moins de place** **pour le lait,**\n  ⇒ Pourtant, le **lait reste l'apport n°1 pour :**\n  - les nutriments\n  - et la sensation de satiété" },
+                { type: "normal", showIfPb: "nutri_lok_jv_inversion_lait_solide", showIfAgeMinMonths: 12, text: "<div class=\"cc-sub-banner\">Mettre solide AVANT le lait</div>\n- Aujourd'hui, **le lait** est **pris AVANT la diversification**\n  ⇒ Le **problème** c'est que **ça occupe de la place dans l'estomac,**\n  ⇒ et ça **donne moins de place** **pour la diversification,**\n  ⇒ Pourtant, la **diversification reste l'apport n°1 pour :**\n  - les nutriments\n  - et la sensation de satiété" },
+              ]
+            },
+            {
+              id: "tetine", emoji: "🍭", label: "Tétine = cache-faim",
+              pb: "nutri_lok_jv_tetine_cache_faim",
+              blocks: [
+                { type: "normal", showIfPb: "nutri_lok_jv_tetine_cache_faim", text: "- [prénom_enfant] **demande souvent la tétine** dans la bouche\n- La TETINE **PEUT répondre à un reflexe de succion**\n- MAIS peut aussi faire **office d'illusion** puisqu'**elle \"dupe\" le cerveau :**\n  - [prénom_enfant] **\"tète et déglutit\"** avec la tétine\n  - donc le **cerveau pense que qqch rentre** dans son estomac\n  - **mais rien ne rentre**…\n  - et **au bout d'un moment :**\n    - l'**illusion se perd**\n    - et la **faim se fait VRAIMENT ressentir**\n  - **MEME SI vous remettez la tétine :**\n    - il n'**en veut pas**\n    - et il pleure\n    - Parce qu'il **veut autre chose**\n    ⇒ Tout simplement car il a faim\n\n  ⇒ Donc, pour moi, la tétine joue ICI le **rôle d'un \"cache-faim\"**" },
+              ]
+            },
+            {
+              id: "autre", emoji: "🍽️", label: "Autres (Féculent / Lait-Solide)",
+              pb: ["nutri_lok_jv_autre_feculents","nutri_lok_jv_autre_lait_solide_important"],
+              sublabels: { "nutri_lok_jv_autre_feculents": "Féculents", "nutri_lok_jv_autre_lait_solide_important": "Lait/solide imp." },
+              blocks: [
+                { type: "normal", showIfPb: "nutri_lok_jv_autre_feculents", text: "<div class=\"cc-sub-banner\">Féculent 🥔</div>\n- La **part des féculents** dans son alimentation **est assez faible**\n- Et pourtant, les **féculents participent** activement à :\n  - **l'apport énergétique**\n  - et... à la **satiété**" },
+                { type: "normal", showIfPb: "nutri_lok_jv_autre_lait_solide_important", showIfAgeMaxMonths: 11, text: "<div class=\"cc-sub-banner\">Solide trop important</div>\n- La **place de la diversification** dans son alimentation **prend une part importante**\n- Or à son âge, le **lait** devrait être la **source principale d'apport nutritionnel**" },
+                { type: "normal", showIfPb: "nutri_lok_jv_autre_lait_solide_important", showIfAgeMinMonths: 12, text: "<div class=\"cc-sub-banner\">Lait trop important</div>\n- La **place du lait** dans **son alimentation** prend une **part importante** dans **son alimentation**\n- Or **à son âge**, la **diversification** devrait être la **source principale d'apport nutritionnel**… qui **apporte :**\n  - **les nutriments** essentiels\n  - et **la satiété**\n\n  ⇒ On rentre alors dans un **cercle vicieux** :\n  - Il **mange peu de solides en journée**\n  - **Boit bcp de lait** pour compenser\n  - Le **lait prend la place des solides** dans l'estomac\n  - Il **mange peu de solides** …" },
+              ]
+            },
+          ]
+        },
+        { type: "normal", _parentLevel: true, text: "- Voilà,\n- AVEC tous ces **petits indices,**\n- On commence à voir un **schéma qui se dessine** au **niveau de sa nutrition**\n- Et **CE QUI est intéressant**, c'est que ça correspond à CE QUE **vous observez** :\n  - dans son comportement\n  - et dans son sommeil" },
+        {
+          type: "conclusion_nutrition",
+          _parentLevel: true,
+          blocks: [
+            { type: "normal", text: "- Pour moi, **l'explication la + probable**\n- <span style=\"color:#dc2626\">⇒ c'est que [prénom_enfant] **a faim**.</span>\n  Il a **CERTES souvent l'estomac rempli**\n  MAIS PAS forcément **avec les bons apports** pour grandir et être rassasié\n\n- Les **jus végétaux** ne **couvrent PAS ses besoins nutritionnels des enfants**\n- Dans ce cas :\n  - la **faim revient rapidement**\n  - leur **système digestif** peut être **sollicité de manière inadaptée,** avec **inconfort ou reflux**\n- Cela peut contribuer à :\n  - un **sommeil + fragmenté**\n  - et à des **réveils plus fréquents.**\n\n  ⇒ 🎯 L'**idée** serait donc d'**adapter la QUALITÉ** de ses apports nutritionnels, pour qu'ils **répondent aux besoins d'un enfant de cet âge**" },
+            { type: "normal", showIfPb: "nutri_lok_jv_conseq_inconfort", text: "- 🤮 ET potentiellement ça va **réduire son inconfort digestif**" },
+            { type: "normal", showIfPb: "nutri_lok_jv_tetee_greve", text: "- 🪧 Et la \"grève des tétées\" pourrait **être une réponse** au fait que **l'effort pour obtenir le lait** est devenu **trop important.**\n- Dans **certains cas**, les BB se **mettent en mode \"veille\"**\n  ⇒ ils **\"pèsent le pour et le contre\"** :\n  - entre **l'effort pour téter**\n  - et la **quantité de lait reçue**\n- et parfois, la **balance penche du côté de l'effort**… alors ils **préfèrent refuser la tétée.**" },
+            { type: "normal", showIfPb: "nutri_lok_jv_conseq_mange_nuit", text: "- 🌛 L'**objectif** serait **aussi** de **réduire les réveils nocturnes** car il **semble utiliser la nuit** pour **compléter ce qu'**il ne **prend pas** encore en **journée**" },
             { type: "question", text: "Est-ce que **ça fait sens pour vous** quand je vous **l'explique comme ça** ?" },
             { type: "normal", text: "- On va donc **travailler ensemble** sur ce **pilier \"alimentation\"** en réintroduisant des **apports nutritionnels ADAPTÉS** à ses besoins, pour favoriser :\n  - une **satiété + durable**\n  - un meilleur **confort digestif**\n  - et un **sommeil + apaisé**" },
             { type: "normal", text: "- Et **avec ces ajustements**, **vous allez voir** que ça va **solutionner une partie** de ses **troubles du sommeil**" },
