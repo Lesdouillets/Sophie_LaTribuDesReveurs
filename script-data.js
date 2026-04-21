@@ -930,7 +930,7 @@ const SCRIPT_DATA = {
               id: "inv_jn", emoji: "🌞🌛", label: "Inversion Jour/Nuit",
               pb: "nutri_ta_inversion_jour_nuit",
               blocks: [
-                { type: "normal", showIfPb: "nutri_ta_inversion_jour_nuit", text: "- La **majorité des apports** se fait **la nuit** (peut être dû au mode de garde)\n  ⇒ Il semble y avoir une **inversion jour/nuit** au niveau de son alimentation<br><br>\n- Or **la nuit,** le **corps est programmé** pour être en **\"mode repos\"**\n  ⇒ Il se pourrait alors :\n  1. Qu'il **utilise la nuit** pour **compenser le manque d'apport en journée**\n  2. Mais que la **pression de S.** de la nuit rendent les prises alimentaires **- efficaces**\n    ⇒ et donc qu'il **boive PLUS QUE CES véritables besoins**" },
+                { type: "normal", showIfPb: "nutri_ta_inversion_jour_nuit", text: "- La **majorité des apports** se fait **la nuit** (peut être dû au mode de garde)\n  ⇒ Il semble y avoir une **inversion jour/nuit** au niveau de son alimentation<br><br>\n- Or **la nuit,** le **corps est programmé** pour être en **\"mode repos\"**\n  ⇒ Il se pourrait alors :\n  - Qu'il **utilise la nuit** pour **compenser le manque d'apport en journée**\n  - Mais que la **pression de S.** de la nuit rendent les prises alimentaires **- efficaces**\n    ⇒ et donc qu'il **boive PLUS QUE CES véritables besoins**" },
               ]
             },
             {
