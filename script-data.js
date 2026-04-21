@@ -137,8 +137,7 @@ const PB_LABELS = {
   'nutri_lok_la_inversion_lait_solide': 'Inversion ordre lait/solide',
   'nutri_lok_la_tetine_cache_faim': 'Tétine = cache-faim',
   'nutri_lok_la_autre_feculents': 'Pas assez de féculents',
-  'nutri_lok_la_autre_lait_solide_important': 'Lait trop important',
-  'nutri_lok_la_autre_solide_important': 'Solide trop important',
+  'nutri_lok_la_autre_lait_solide_important': 'Lait / solide trop important',
   'nutri_lok_la_conseq_inconfort': 'Conséquences : Inconfort',
   'nutri_lok_la_conseq_mange_nuit': 'Conséquences : Mange la nuit',
   // Souhaits
@@ -1134,9 +1133,7 @@ const SCRIPT_DATA = {
       title: "Lait (courbes OK) — Espacement trop court",
       emoji: "⏱️",
       blocks: [
-        { type: "normal", text: "- 🔥 Aujourd'hui, les **biberons/tétées** de [prénom_enfant] sont espacés d'environ <strong style=\"color:#dc2626\">XX</strong> h\n\n- C'est un **espacement** relativement **COURT** pour un E. de cet âge\n  ⇒ c'est plutôt un **rythme d'un nourrisson,** avec des **prises très rapprochées**" },
-        { type: "normal", _purpleDark: true, showIfPb: "nutri_lok_court_vol_petit", text: "- 🔥 <u><em>OPTION</em> : petits biberons 🍼</u>" },
-        { type: "normal", showIfPb: "nutri_lok_court_vol_petit", text: "<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">🔥 J'ai pu remarquer que la <strong>taille de ses biberons</strong> est de <strong style=\"color:#dc2626\">XX</strong> ml</div>\n\n- ⇒ Pour un BB de cet âge, c'est un **volume assez petit**\n- **comme je vous le disais,** comme celui **d'un nourrisson**\n- Or, **à cet âge,** les **volumes de biberons** sont généralement **+ importants**, ce qui leur permet de :\n  - **couvrir leurs besoins nutritionnels**\n  - d'avoir une **satiété + longue** sur la durée\n  - tout en **restant adapté à la physiologie** de leur **estomac**" },
+        { type: "normal", text: "- 🔥 Aujourd'hui, les **biberons/tétées** de [prénom_enfant] sont espacés d'environ <strong style=\"color:#dc2626\">XX</strong> h\n\n- C'est un **espacement** relativement **COURT** pour un enfant de cet âge\n  ⇒ c'est plutôt un **rythme d'un nourrisson,** avec des **prises très rapprochées**" },
         { type: "normal", text: "- Donc, si on **prend un peu de recul** sur tout ça…\n  on peut voir qu'il y a **AUSSI :**\n  - **d'AUTRES plusieurs petites choses**\n  - AUTOUR de son **alimentation**\n  - qui peuvent **jouer un rôle** sur son **sommeil**<br><br>\n- Je pense notamment…" },
         { type: "normal", _noBorder: true, text: "<div style=\"height:40px;background:#fff7ed;border-radius:12px;margin:0 -8px\"></div>" },
         {
@@ -1206,7 +1203,7 @@ const SCRIPT_DATA = {
       title: "Lait (courbes OK) — Lait animal",
       emoji: "🥛",
       blocks: [
-        { type: "normal", text: "- Aujourd'hui, [prénom_enfant] boit des **biberons de lait animal** en **quantité importante**\n- Les **laits animaux** ne sont **pas TOUJOURS adaptés aux besoins des enfants**\n  - Ils sont soient :\n    - **trop pauvres**\n    - ou **trop riches** en **certains nutriments essentiels** à leur **croissance**\n- Ces boissons **PEUVENT faire partie de l'alimentation familiale**\n  mais elles **ne couvrent PAS les besoins nutritionnels** d'un jeune enfant\n- **Jusqu'à au moins 3 ans**, le **lait** *(infantile ou maternel)* reste **INDISPENSABLE** dans l'alimentation des enfants\n  car ils sont **spécialement conçus** pour leur **bon développement** *(source : Haute Autorité de Santé, et le PNNS : Programme National Nutrition et Santé)*" },
+        { type: "normal", text: "- Aujourd'hui, [prénom_enfant] boit des **biberons de lait animal** en **quantité importante**\n- Les **laits animaux** ne sont **pas TOUJOURS adaptés aux besoins des enfants**\n  - Ils sont soient :\n    - **trop pauvres**\n    - ou **trop riches** en **certains nutriments essentiels** à leur **croissance**\n\n- Ces boissons **PEUVENT faire partie de l'alimentation familiale**\n  mais elles **ne couvrent PAS les besoins nutritionnels** d'un jeune enfant\n\n- **Jusqu'à au moins 3 ans**, le **lait** *(infantile ou maternel)* reste **INDISPENSABLE** dans l'alimentation des enfants\n  car ils sont **spécialement conçus** pour leur **bon développement** *(source : Haute Autorité de Santé, et le PNNS : Programme National Nutrition et Santé)*" },
         { type: "normal", text: "- Donc, si on **prend un peu de recul** sur tout ça…\n  on peut voir qu'il y a **AUSSI :**\n  - **d'AUTRES plusieurs petites choses**\n  - AUTOUR de son **alimentation**\n  - qui peuvent **jouer un rôle** sur son **sommeil**<br><br>\n- Je pense notamment…" },
         { type: "normal", _noBorder: true, text: "<div style=\"height:40px;background:#fff7ed;border-radius:12px;margin:0 -8px\"></div>" },
         {
@@ -1217,7 +1214,7 @@ const SCRIPT_DATA = {
               pb: ["nutri_lok_la_esp_long","nutri_lok_la_esp_court"],
               sublabels: { "nutri_lok_la_esp_long": "Trop long", "nutri_lok_la_esp_court": "Trop court" },
               blocks: [
-                { type: "normal", showIfPb: "nutri_lok_la_esp_long", text: "<div class=\"cc-sub-banner\">Espacement LONG</div>\n- L'**intervalle entre 2 prises** alimentaires peut être parfois assez long (<strong style=\"color:#dc2626\">XX</strong> heures)\n- A cet âge, les enfants ont **besoin de prises + rapprochés** pour s'**adapter** à leur **signaux de faim.**\n- **On devrait** normalement **leur donner** : \"***à la demande***\"\n- Avec des **espacements longs, [prénom_enfant]** a du **mal à \"TENIR\" jusqu'à la prochaine prise alimentaire**\n  ⇒ On **peut imaginer** qu'[il_elle] est **comme \"affamé\"** entre 2 prises alimentaires" },
+                { type: "normal", showIfPb: "nutri_lok_la_esp_long", text: "<div class=\"cc-sub-banner\">Espacement LONG</div>\n- 🔥 L'**intervalle entre 2 prises** alimentaires peut être parfois assez long (<strong style=\"color:#dc2626\">XX</strong> heures)\n\n- A cet âge, les enfants ont **besoin de prises + rapprochés** pour s'**adapter** à leur **signaux de faim.**\n- **On devrait** normalement **leur donner** : \"***à la demande***\"\n- Avec des **espacements longs, [prénom_enfant]** a du **mal à \"TENIR\" jusqu'à la prochaine prise alimentaire**\n  ⇒ On **peut imaginer** qu'[il_elle] est **comme \"affamé\"** entre 2 prises alimentaires" },
                 { type: "normal", showIfPb: "nutri_lok_la_esp_court", text: "<div class=\"cc-sub-banner\">Espacement COURT</div>\n- L'**espacement entre 2 prises** alimentaires est **parfois très rapprochés** (<strong style=\"color:#dc2626\">XX</strong> heures)\n  ⇒ **Son estomac** est **constamment sollicité**\n  ⇒ Ce qui peut provoquer un **certain inconfort digestif**" },
               ]
             },
@@ -1226,8 +1223,8 @@ const SCRIPT_DATA = {
               pb: ["nutri_lok_la_vol_petit","nutri_lok_la_vol_gros","nutri_lok_la_vol_longtemps"],
               sublabels: { "nutri_lok_la_vol_petit": "Petit bib", "nutri_lok_la_vol_gros": "Gros bib", "nutri_lok_la_vol_longtemps": "Bu longtemps" },
               blocks: [
-                { type: "normal", showIfPb: "nutri_lok_la_vol_petit", text: "<div class=\"cc-sub-banner\">Petit bib</div>\n- Le **volume** des biberons (<strong style=\"color:#dc2626\">XX</strong>ml) est **assez petit** pour :\n  - **son âge**\n  - **et ses besoins**\n  ⇒ Ca se **rapproche +** de la **taille des biberons d'un nourrisson**\n  ⇒ **SI** les **biberons sont petits** : la **sensation d'être RASSASIE** se **dissipe** assez **vite**" },
-                { type: "normal", showIfPb: "nutri_lok_la_vol_gros", text: "<div class=\"cc-sub-banner\">Gros bib</div>\n- Le **volume** des biberons (<strong style=\"color:#dc2626\">XX</strong>ml) est **assez conséquent** par **rapport au volume de son estomac** (**souvent** on **suit ce qui est inscrit** sur les **boites de lait**)\n  ⇒ C'est **comme s'il était \"gavé\"**\n  ⇒ et **son estomac** doit **gérer une quantité importante** à chaque biberon\n  ⇒ ce qui peut **parfois entraîner une digestion + difficile...**\n<div style=\"background:#f5f0ff;border:3px dashed #a78bfa;border-radius:16px;padding:6px 20px 6px 0;box-shadow:0 2px 8px rgba(167,139,250,0.18);margin:8px 0\"><ul style=\"margin:0;padding-left:21px\"><li>🔥 <em>OPTION</em> — Reflux : ... qui peut <strong>favoriser le reflux</strong></li></ul></div>" },
+                { type: "normal", showIfPb: "nutri_lok_la_vol_petit", text: "<div class=\"cc-sub-banner\">Petit bib</div>\n- 🔥 Le **volume** des biberons (<strong style=\"color:#dc2626\">XX</strong>ml) est **assez petit** pour :\n  - **son âge**\n  - **et ses besoins**\n  ⇒ Ca se **rapproche +** de la **taille des biberons d'un nourrisson**\n  ⇒ **SI** les **biberons sont petits** : la **sensation d'être RASSASIE** se **dissipe** assez **vite**" },
+                { type: "normal", showIfPb: "nutri_lok_la_vol_gros", text: "<div class=\"cc-sub-banner\">Gros bib</div>\n- 🔥 Le **volume** des biberons (<strong style=\"color:#dc2626\">XX</strong>ml) est **assez conséquent** par **rapport au volume de son estomac** (**souvent** on **suit ce qui est inscrit** sur les **boites de lait**)\n  ⇒ C'est **comme s'il était \"gavé\"**\n  ⇒ et **son estomac** doit **gérer une quantité importante** à chaque biberon\n  ⇒ ce qui peut **parfois entraîner une digestion + difficile...**\n<div style=\"background:#f5f0ff;border:3px dashed #a78bfa;border-radius:16px;padding:6px 20px 6px 0;box-shadow:0 2px 8px rgba(167,139,250,0.18);margin:8px 0\"><ul style=\"margin:0;padding-left:21px\"><li>🔥 <em>OPTION</em> — Reflux : ... qui peut <strong>favoriser le reflux</strong></li></ul></div>" },
                 { type: "normal", showIfPb: "nutri_lok_la_vol_longtemps", text: "<div class=\"cc-sub-banner\">Bu longtemps</div>\n- Les biberons sont **parfois bus pendant très longtemps** (souvent **pour terminer les quantités indiquées sur les boîtes de lait**)\n  ⇒ Ce qui peut **brouiller les signaux** naturels **de faim** et de **satiété**" },
               ]
             },
@@ -1269,12 +1266,12 @@ const SCRIPT_DATA = {
             },
             {
               id: "autre", emoji: "🍽️", label: "Autres (Féculent / Lait-Solide)",
-              pb: ["nutri_lok_la_autre_feculents","nutri_lok_la_autre_lait_solide_important","nutri_lok_la_autre_solide_important"],
-              sublabels: { "nutri_lok_la_autre_feculents": "Féculents", "nutri_lok_la_autre_lait_solide_important": "Lait trop imp.", "nutri_lok_la_autre_solide_important": "Solide trop imp." },
+              pb: ["nutri_lok_la_autre_feculents","nutri_lok_la_autre_lait_solide_important"],
+              sublabels: { "nutri_lok_la_autre_feculents": "Féculents", "nutri_lok_la_autre_lait_solide_important": "Lait/solide imp." },
               blocks: [
                 { type: "normal", showIfPb: "nutri_lok_la_autre_feculents", text: "<div class=\"cc-sub-banner\">Féculent 🥔</div>\n- La **part des féculents** dans son alimentation **est assez faible**\n- Et pourtant, les **féculents participent** activement à :\n  - **l'apport énergétique**\n  - et... à la **satiété**" },
-                { type: "normal", showIfPb: "nutri_lok_la_autre_lait_solide_important", text: "<div class=\"cc-sub-banner\">Lait trop important</div>\n- La **place du lait** dans **son alimentation** prend une **part importante** dans **son alimentation**\n- Or **à son âge**, la **diversification** devrait être la **source principale d'apport nutritionnel**… qui **apporte :**\n  - **les nutriments** essentiels\n  - et **la satiété**\n\n  ⇒ On rentre alors dans un **cercle vicieux** :\n  - Il **mange peu de solides en journée**\n  - **Boit bcp de lait** pour compenser\n  - Le **lait prend la place des solides** dans l'estomac\n  - Il **mange peu de solides** …" },
-                { type: "normal", showIfPb: "nutri_lok_la_autre_solide_important", text: "<div class=\"cc-sub-banner\">Solide trop important</div>\n- La **place de la diversification** dans son alimentation **prend une part importante**\n- Or à son âge, le **lait** devrait être la **source principale d'apport nutritionnel**" },
+                { type: "normal", showIfPb: "nutri_lok_la_autre_lait_solide_important", showIfAgeMaxMonths: 11, text: "<div class=\"cc-sub-banner\">Solide trop important</div>\n- La **place de la diversification** dans son alimentation **prend une part importante**\n- Or à son âge, le **lait** devrait être la **source principale d'apport nutritionnel**" },
+                { type: "normal", showIfPb: "nutri_lok_la_autre_lait_solide_important", showIfAgeMinMonths: 12, text: "<div class=\"cc-sub-banner\">Lait trop important</div>\n- La **place du lait** dans **son alimentation** prend une **part importante** dans **son alimentation**\n- Or **à son âge**, la **diversification** devrait être la **source principale d'apport nutritionnel**… qui **apporte :**\n  - **les nutriments** essentiels\n  - et **la satiété**\n\n  ⇒ On rentre alors dans un **cercle vicieux** :\n  - Il **mange peu de solides en journée**\n  - **Boit bcp de lait** pour compenser\n  - Le **lait prend la place des solides** dans l'estomac\n  - Il **mange peu de solides** …" },
               ]
             },
           ]
