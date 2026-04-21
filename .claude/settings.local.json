@@ -32,7 +32,8 @@
       "Bash(perl -i -pe 'BEGIN{$c=0} $c += s/<span style=\\\\\\\\\"display:inline-block;background:linear-gradient\\\\\\(135deg,#fb923c,#ea580c\\\\\\);color:white;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:10px;box-shadow:0 2px 6px rgba\\\\\\(234,88,12,0.3\\\\\\)\\\\\\\\\">🎯 \\([^<]+?\\)<\\\\/span>\\\\\\\\n\\\\\\\\n/<div class=\\\\\\\\\"cc-sub-banner\\\\\\\\\">$1<\\\\/div>\\\\\\\\n/g; END{print STDERR \"replaced: $c\\\\n\"}' script-data.js)",
       "Bash(perl -i -pe 's{<span style=\\\\\\\\\"display:inline-block;background:linear-gradient\\\\\\(135deg,#fb923c,#ea580c\\\\\\);color:white;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:10px;box-shadow:0 2px 6px rgba\\\\\\(234,88,12,0\\\\.3\\\\\\)\\\\\\\\\">🎯 \\([^<]+?\\)</span>\\\\\\\\n\\\\\\\\n}{<div class=\\\\\\\\\"cc-sub-banner\\\\\\\\\">$1</div>\\\\\\\\n}g' script-data.js)",
       "Bash(perl -i -pe 'my $old = shift; my $new = shift; 1')",
-      "Bash(perl -i -0777 -pe 's{<span style=\\\\\\\\\"display:inline-block;background:linear-gradient\\\\\\(135deg,#fb923c,#ea580c\\\\\\)[^>]*\\\\\\\\\">🎯 \\([^<]+?\\)</span>\\\\\\\\n\\\\\\\\n}{<div class=\\\\\\\\\"cc-sub-banner\\\\\\\\\">$1</div>\\\\\\\\n}g' script-data.js)"
+      "Bash(perl -i -0777 -pe 's{<span style=\\\\\\\\\"display:inline-block;background:linear-gradient\\\\\\(135deg,#fb923c,#ea580c\\\\\\)[^>]*\\\\\\\\\">🎯 \\([^<]+?\\)</span>\\\\\\\\n\\\\\\\\n}{<div class=\\\\\\\\\"cc-sub-banner\\\\\\\\\">$1</div>\\\\\\\\n}g' script-data.js)",
+      "Bash(perl -i -pe 's/🎓 ?//g' script-data.js)"
     ]
   }
 }
