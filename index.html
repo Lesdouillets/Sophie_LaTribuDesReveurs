@@ -3102,7 +3102,7 @@
                     <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_courbes" data-exclusive="nutri_top_level" data-auto-only="true"> Courbes pas OK</label>
                     <div class="pb-items">
                       <div class="pb-category pb-level-2">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_declinante" data-subgroup-child="nutri_courbes" data-auto-only="true"> Courbe de poids diminue <span class="pb-cause-tag">⇒ Faim</span></label>
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_declinante" data-subgroup-child="nutri_courbes"> Courbe de poids diminue <span class="pb-cause-tag">⇒ Faim</span></label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_espacement" data-auto-only="true"> Espacement</label>
@@ -3150,7 +3150,7 @@
                         </div>
                       </div>
                       <div class="pb-category pb-level-2">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_inferieur" data-subgroup-child="nutri_courbes" data-auto-only="true"> Courbe de poids sur percentile INFÉRIEUR (vs. PC/ou taille) <span class="pb-cause-tag">⇒ Faim</span></label>
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_inferieur" data-subgroup-child="nutri_courbes"> Courbe de poids sur percentile INFÉRIEUR (vs. PC/ou taille) <span class="pb-cause-tag">⇒ Faim</span></label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_inf_espacement" data-auto-only="true"> Espacement</label>
@@ -3197,7 +3197,7 @@
                         </div>
                       </div>
                       <div class="pb-category pb-level-2">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_trop_apport" data-subgroup-child="nutri_courbes" data-auto-only="true"> Trop d'apport</label>
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_trop_apport" data-subgroup-child="nutri_courbes"> Trop d'apport</label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_ta_espacement" data-auto-only="true"> Espacement</label>
@@ -9148,16 +9148,8 @@ document.addEventListener('change', function(e) {
       return;
     }
   }
-  // Bloquer si aucun frère avec le même auto-parent n'est coché (data-requires-sibling)
-  if (cb.checked && cb.dataset.requiresSibling) {
-    const parentVal = cb.dataset.requiresSibling;
-    const grid = cb.closest('.problematiques-grid') || document;
-    const hasSiblingChecked = [...grid.querySelectorAll(`input[data-auto-parent="${parentVal}"]`)].some(c => c.checked && c.value !== cb.value && !c.dataset.requiresSibling);
-    if (!hasSiblingChecked) {
-      cb.checked = false;
-      return;
-    }
-  }
+  // [Désactivé sur demande utilisateur] Bloquer si aucun frère avec le même auto-parent n'est coché (data-requires-sibling)
+  // Les conséquences (Inconfort / Mange la nuit) peuvent désormais être cochées indépendamment des autres sous-items.
   // Bloquer le clic manuel sur les checkboxes auto-only (gérées uniquement par la sync)
   if (cb.dataset.autoOnly) {
     const group = cb.dataset.subgroup;
@@ -9303,16 +9295,9 @@ document.addEventListener('change', function(e) {
       dep.closest('.pb-item')?.classList.remove('checked');
     });
   }
-  // 6. Décocher les conséquences si aucun frère n'est coché (data-requires-sibling)
+  // [Désactivé sur demande utilisateur] 6. Décocher les conséquences si aucun frère n'est coché (data-requires-sibling)
+  // Les conséquences restent cochées indépendamment des autres sous-items.
   const grid = cb.closest('.problematiques-grid') || document;
-  grid.querySelectorAll('input[data-requires-sibling]').forEach(conseq => {
-    const parentVal = conseq.dataset.requiresSibling;
-    const hasSiblingChecked = [...grid.querySelectorAll(`input[data-auto-parent="${parentVal}"]`)].some(c => c.checked && !c.dataset.requiresSibling);
-    if (!hasSiblingChecked && conseq.checked) {
-      conseq.checked = false;
-      conseq.closest('.pb-item')?.classList.remove('checked');
-    }
-  });
   // 7. Re-sync auto-parents : décocher si aucun enfant n'est coché (seulement les parents auto-only sans attribut value propre)
   const autoParentValues = new Set();
   grid.querySelectorAll('input[data-auto-parent]').forEach(c => autoParentValues.add(c.dataset.autoParent));

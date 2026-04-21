@@ -37,7 +37,8 @@
       "Bash(perl -i -pe 's/parlé du refus de certaines tétées\\(?!\\\\*\\)/parlé du **refus de certaines tétées**/g' script-data.js)",
       "Bash(perl -i -pe 's/showIfAlim: \\\\[\"Biberon lait infantile\",\"Allaitement au biberon\",\"Allaitement mixte\"\\\\]/showIfAlim: [\"Biberon lait infantile\",\"Allaitement mixte\"]/g' script-data.js)",
       "Bash(perl -i -pe 's/showIfAlim: \\\\[\"Biberon lait infantile\",\"Allaitement mixte\"\\\\]/showIfAlim: [\"Biberon lait infantile\",\"Allaitement mixte\",\"Allaitement au biberon\"]/g' script-data.js)",
-      "Bash(awk 'NR==4917,/^}/{if\\(/^}/\\){print NR; exit}}' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")"
+      "Bash(awk 'NR==4917,/^}/{if\\(/^}/\\){print NR; exit}}' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")",
+      "Bash(perl -i -pe 's/\\(value=\"nutri_courbe_declinante\" data-subgroup-child=\"nutri_courbes\"\\) data-auto-only=\"true\"/$1/; s/\\(value=\"nutri_courbe_inferieur\" data-subgroup-child=\"nutri_courbes\"\\) data-auto-only=\"true\"/$1/; s/\\(value=\"nutri_trop_apport\" data-subgroup-child=\"nutri_courbes\"\\) data-auto-only=\"true\"/$1/' index.html)"
     ]
   }
 }
