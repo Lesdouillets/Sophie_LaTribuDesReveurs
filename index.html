@@ -8795,9 +8795,11 @@ function openCourbeCard(cardEl) {
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
   // Scroller vers la grille qui contient cette carte (et non la 1ère grille de la page)
   setTimeout(() => {
-    // Retrouver la carte re-rendue via son cardId et son wrapper parent
-    const newCard = document.querySelector(`.courbe-card[data-card-id="${cardId}"]`);
-    const wrap = newCard ? newCard.closest('.courbe-cards-grid-wrap') : null;
+    // Retrouver le wrapper EXACT via son gridPath (sinon querySelector par cardId
+    // peut tomber sur une carte du même id dans une AUTRE section quand
+    // conditional_sections_inline rend plusieurs sections simultanément)
+    const wrap = document.querySelector(`.courbe-cards-grid-wrap[data-grid-path="${CSS.escape(gridPath)}"]`)
+              || document.querySelector(`.courbe-card[data-card-id="${cardId}"]`)?.closest('.courbe-cards-grid-wrap');
     if (wrap) wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 60);
 }
@@ -8822,11 +8824,15 @@ function closeCourbeCard(btnEl) {
   }
   renderCurrentSection();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
-  // Scroller vers la grille dont venait la carte fermée
+  // Scroller vers la grille dont venait la carte fermée (via gridPath pour éviter
+  // de tomber sur une grille d'une autre section avec le même cardId)
   setTimeout(() => {
-    if (!prevId) return;
-    const card = document.querySelector(`.courbe-card[data-card-id="${prevId}"]`);
-    const wrap = card ? card.closest('.courbe-cards-grid-wrap') : null;
+    let wrap = null;
+    if (gridPath) wrap = document.querySelector(`.courbe-cards-grid-wrap[data-grid-path="${CSS.escape(gridPath)}"]`);
+    if (!wrap && prevId) {
+      const card = document.querySelector(`.courbe-card[data-card-id="${prevId}"]`);
+      wrap = card ? card.closest('.courbe-cards-grid-wrap') : null;
+    }
     if (wrap) wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 60);
 }
