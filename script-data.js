@@ -937,8 +937,8 @@ const SCRIPT_DATA = {
               id: "inv_ls", emoji: "🔄", label: "Inversion Lait/Solide",
               pb: "nutri_ta_inversion_lait_solide",
               blocks: [
-                { type: "normal", showIfPb: "nutri_ta_inversion_lait_solide", showIfAgeMaxMonths: 11, text: "- Aujourd'hui, la **diversification** est **prise AVANT le lait**\n  ⇒ Le **problème** c'est que **ça occupe de la place dans l'estomac,**\n  ⇒ et ça **brouille** la **sensation de satiété**" },
-                { type: "normal", showIfPb: "nutri_ta_inversion_lait_solide", showIfAgeMinMonths: 12, text: "- Aujourd'hui, **le lait** est **pris AVANT la diversification**\n  ⇒ Le **problème** c'est que **ça occupe de la place dans l'estomac,**\n  ⇒ et ça **brouille** la **sensation de satiété**" },
+                { type: "normal", showIfPb: "nutri_ta_inversion_lait_solide", showIfAgeMaxMonths: 11, text: "<span style=\"display:inline-block;background:linear-gradient(135deg,#fb923c,#ea580c);color:white;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:10px;box-shadow:0 2px 6px rgba(234,88,12,0.3)\">🎯 Mettre lait AVANT les solides</span>\n\n- Aujourd'hui, la **diversification** est **prise AVANT le lait**\n  ⇒ Le **problème** c'est que **ça occupe de la place dans l'estomac,**\n  ⇒ et ça **brouille** la **sensation de satiété**" },
+                { type: "normal", showIfPb: "nutri_ta_inversion_lait_solide", showIfAgeMinMonths: 12, text: "<span style=\"display:inline-block;background:linear-gradient(135deg,#fb923c,#ea580c);color:white;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:10px;box-shadow:0 2px 6px rgba(234,88,12,0.3)\">🎯 Mettre solide AVANT le lait</span>\n\n- Aujourd'hui, **le lait** est **pris AVANT la diversification**\n  ⇒ Le **problème** c'est que **ça occupe de la place dans l'estomac,**\n  ⇒ et ça **brouille** la **sensation de satiété**" },
               ]
             },
             {
