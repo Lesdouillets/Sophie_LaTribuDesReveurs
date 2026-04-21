@@ -4835,6 +4835,18 @@ function toggleAutreAllergie() {
   const cb = document.getElementById('medical-autre-allergie');
   document.getElementById('autre-allergie-row').style.display = cb?.checked ? 'block' : 'none';
 }
+// Sens inverse : après modif des pbs confort dans V./modal/fiche, ré-aligner les cases médicales
+// (sinon c.rgo/aplvSuspecte persistent et syncMedicalToConfort re-coche au reload → bug case qui revient).
+function syncConfortToMedical() {
+  const pbs = state.selectedPbs || new Set();
+  const rgo = pbs.has('rgo_allergie') || pbs.has('rgo_seul');
+  const aplvSusp = pbs.has('rgo_allergie') || pbs.has('allergie_seule');
+  const setChk = (id, v) => { const el = document.getElementById(id); if (el && el.checked !== v) el.checked = v; };
+  setChk('medical-rgo', rgo);
+  setChk('medical-aplv-susp', aplvSusp);
+  // medical-aplv-conf : on ne touche pas automatiquement (pas de pb confort dédiée à "APLV confirmée")
+}
+
 function syncMedicalToConfort() {
   const rgo = document.getElementById('medical-rgo')?.checked;
   const aplvSusp = document.getElementById('medical-aplv-susp')?.checked;
@@ -8583,6 +8595,9 @@ function syncPbsToFicheClient() {
     const anyChild = [...container.querySelectorAll(`input[data-subgroup-child="${sp.dataset.subgroup}"]`)].some(c => c.checked);
     sp.checked = anyChild;
   });
+  // 4. Sens inverse confort → médical : si l'utilisateur décoche une pb confort, décocher aussi la case médicale
+  //    (évite le bug : la case revient au hard refresh car c.rgo/aplvSusp persistaient)
+  if (typeof syncConfortToMedical === 'function') syncConfortToMedical();
 }
 
 // Synchronise checkboxes fiche client → state.selectedPbs + sections
