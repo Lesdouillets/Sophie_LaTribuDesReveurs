@@ -7405,10 +7405,28 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
     if (!state.courbeCardsActiveByGrid) state.courbeCardsActiveByGrid = {};
     // Filtrer : ne garder que les items dont au moins une pb est cochée
+    // Puis trier dans l'ordre du modal (source grid de la fiche client)
+    const sourcePbOrder = (() => {
+      const src = document.querySelector('.problematiques-grid[onchange="onFicheClientPbChange()"]');
+      if (!src) return null;
+      const order = new Map();
+      [...src.querySelectorAll('input[name="pb"]')].forEach((cb, i) => order.set(cb.value, i));
+      return order;
+    })();
+    const itemMinOrderIdx = (it) => {
+      if (!sourcePbOrder) return 0;
+      const pbs = Array.isArray(it.pb) ? it.pb : [it.pb];
+      let min = Infinity;
+      pbs.forEach(p => {
+        const idx = sourcePbOrder.get(p);
+        if (typeof idx === 'number' && idx < min) min = idx;
+      });
+      return min === Infinity ? 1e9 : min;
+    };
     const visibleItems = items.filter(it => {
       const pbs = Array.isArray(it.pb) ? it.pb : [it.pb];
       return pbs.some(p => state.selectedPbs.has(p));
-    });
+    }).sort((a, b) => itemMinOrderIdx(a) - itemMinOrderIdx(b));
     if (visibleItems.length === 0) return '';
     const gridPath = `${sectionId||'x'}__${path||'main'}`;
     const activeId = state.courbeCardsActiveByGrid[gridPath] || null;
