@@ -89,6 +89,26 @@ const PB_LABELS = {
   'nutri_ta_autre_lait_solide_important': 'Lait / solide trop important',
   'nutri_ta_autre_jus_vegetal': 'Jus végétal',
   'nutri_ta_autre_lait_animal': 'Lait animal',
+  // Nutrition — Lait (courbes OK) — Espacement trop long
+  'nutri_lait_ok': 'Lait (courbes OK)',
+  'nutri_lok_esp_long': 'Espacement trop long (courbes OK)',
+  'nutri_lok_esp_court': 'Espacement trop court (courbes OK)',
+  'nutri_lok_long_vol_petit': 'Petit bib',
+  'nutri_lok_long_vol_gros': 'Gros bib',
+  'nutri_lok_long_vol_longtemps': 'Biberon bu trop longtemps',
+  'nutri_lok_long_tetee': 'Tétée — baisse de lactation',
+  'nutri_lok_long_tetee_longue': 'Tétées longues',
+  'nutri_lok_long_tetee_greve': 'Grève des tétées',
+  'nutri_lok_long_tetee_mode_garde': 'Baisse de lactation — mode de garde',
+  'nutri_lok_long_inversion_jour_nuit': 'Inversion Jour/Nuit',
+  'nutri_lok_long_inversion_lait_solide': 'Inversion ordre lait/solide',
+  'nutri_lok_long_tetine_cache_faim': 'Tétine = cache-faim',
+  'nutri_lok_long_autre_feculents': 'Pas assez de féculents',
+  'nutri_lok_long_autre_lait_solide_important': 'Lait / solide trop important',
+  'nutri_lok_long_autre_jus_vegetal': 'Jus végétal',
+  'nutri_lok_long_autre_lait_animal': 'Lait animal',
+  'nutri_lok_long_conseq_inconfort': 'Conséquences : Inconfort',
+  'nutri_lok_long_conseq_mange_nuit': 'Conséquences : Mange la nuit',
   // Souhaits
   'souhait_tetine': 'Suppression de la tétine',
   'souhait_position_dorsale': 'Vers une position dorsale',
@@ -981,6 +1001,52 @@ const SCRIPT_DATA = {
             { type: "question", text: "Est-ce que **ça fait sens pour vous** quand je vous **l'explique comme ça** ?" },
             { type: "normal", text: "- Nous allons donc :\n  - **Ré-équilibrer le rythme alimentaire** en fonction de **ces besoins**\n  - **Et redonner une structure à son alimentation**" },
             { type: "normal", text: "- Et **avec ces ajustements**, **vous allez voir** que ça va **solutionner une partie** de ses **troubles du sommeil**" },
+          ]
+        },
+      ]
+    },
+
+    // ─── NUTRITION : LAIT (COURBES OK) — ESPACEMENT TROP LONG ─────────
+    {
+      id: "nutri_lok_esp_long",
+      problematiqueId: "nutri_lok_esp_long",
+      leverId: "nutri_lok_esp_long",
+      title: "Lait (courbes OK) — Espacement trop long",
+      emoji: "⏱️",
+      blocks: [
+        { type: "normal", text: "<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">🔥 Aujourd'hui, les <strong>prises alimentaires</strong> de [prénom_enfant] sont espacées d'environ <strong style=\"color:#dc2626\">XX</strong> h</div>" },
+        { type: "normal", text: "- C'est un **espacement** relativement **LONG** pour un enfant de cet âge\n  - A cet âge, les enfants ont **besoin de prises + rapprochés** pour s'**adapter** à :\n    - leur **signaux de faim**\n    - leur digestion\n- 🎓 **On devrait** normalement **leur donner** : \"***à la demande***\"\n- Et se **défaire** complètement du **mythe des espacements de 4h**, .. qui n'est **basé sur RIEN du TOUT**!" },
+        { type: "normal", _purpleDark: true, showIfPb: "nutri_lok_long_vol_gros", text: "- 🔥 <u><em>OPTION</em> : gros biberons 🍼</u>" },
+        { type: "normal", showIfPb: "nutri_lok_long_vol_gros", text: "<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">🔥 J'ai pu remarquer que la <strong>taille de ses biberons</strong> est autour de <strong style=\"color:#dc2626\">XX</strong> ml</div>\n\n- ⇒ Pour un BB de cet âge, c'est un **volume assez important** quand on regarde la **taille de l'estomac**\n- À cet âge, les **prises de biberons** sont un **peu + fractionnées** pour s'adapter à :\n  - la **taille de leur estomac**\n  - et à leur **digestion** encore **immature**" },
+        { type: "normal", showIfPb: ["nutri_lok_long_vol_gros","nutri_lok_long_conseq_inconfort"], text: "- ET Vous me **parlez AUSSI** d'un certain **inconfort digestif...**" },
+        { type: "normal", showIfPb: ["nutri_lok_long_vol_gros","rgo_seul","rgo_allergie"], text: "  ⇒ … voire **de reflux**" },
+        { type: "normal", text: "- Donc, si on **prend un peu de recul** sur tout ça…\n  on peut voir qu'il y a **AUSSI :**\n  - **d'AUTRES plusieurs petites choses**\n  - AUTOUR de son **alimentation**\n  - qui peuvent **jouer un rôle** sur son **sommeil**<br><br>\n- Je pense notamment…" },
+        { type: "normal", _noBorder: true, text: "<div style=\"height:40px;background:#fff7ed;border-radius:12px;margin:0 -8px\"></div>" },
+        {
+          type: "courbe_cards_grid",
+          items: [
+            {
+              id: "vol", emoji: "🍼", label: "Taille / durée des bib",
+              pb: ["nutri_lok_long_vol_petit","nutri_lok_long_vol_gros","nutri_lok_long_vol_longtemps"],
+              sublabels: { "nutri_lok_long_vol_petit": "Petit bib", "nutri_lok_long_vol_gros": "Gros bib", "nutri_lok_long_vol_longtemps": "Bu longtemps" },
+              blocks: [
+                { type: "normal", showIfPb: "nutri_lok_long_vol_petit", text: "<div class=\"cc-sub-banner\">Petit bib</div>\n- Le **volume** des biberons (<strong style=\"color:#dc2626\">XX</strong>ml) est **assez petit** pour :\n  - **son âge**\n  - **et ses besoins**\n    ⇒ Ca se **rapproche +** de la **taille des biberons d'un nourrisson**\n    ⇒ **SI** les **biberons sont petits** : la **sensation d'être RASSASIE** se **dissipe** assez **vite**" },
+                { type: "normal", showIfPb: "nutri_lok_long_vol_gros", text: "<div class=\"cc-sub-banner\">Gros bib</div>\n- Le **volume** des biberons (<strong style=\"color:#dc2626\">XX</strong>ml) est **assez conséquent** par **rapport au volume de son estomac** (**souvent** on **suit ce qui est inscrit** sur les **boites de lait**)\n  ⇒ C'est **comme s'il était \"gavé\"**\n  ⇒ et **son estomac** doit **gérer une quantité importante** à chaque biberon\n  ⇒ ce qui peut **parfois entraîner une digestion + difficile...**\n<div style=\"background:#f5f0ff;border:3px dashed #a78bfa;border-radius:16px;padding:6px 20px 6px 0;box-shadow:0 2px 8px rgba(167,139,250,0.18);margin:8px 0\"><ul style=\"margin:0;padding-left:21px\"><li>🔥 <em>OPTION</em> — Reflux : ... qui peut <strong>favoriser le reflux</strong></li></ul></div>" },
+                { type: "normal", showIfPb: "nutri_lok_long_vol_longtemps", text: "<div class=\"cc-sub-banner\">Bu longtemps</div>\n- Les biberons sont **parfois bus pendant très longtemps** (souvent **pour terminer les quantités indiquées sur les boîtes de lait**)\n  ⇒ Ce qui peut être un **moyen** de **lisser la faim** entre **chaque biberon**" },
+              ]
+            },
+            {
+              id: "tetee", emoji: "🤱", label: "Tétée : baisse de lactation",
+              pb: ["nutri_lok_long_tetee","nutri_lok_long_tetee_longue","nutri_lok_long_tetee_greve","nutri_lok_long_tetee_mode_garde"],
+              sublabels: { "nutri_lok_long_tetee_longue": "Longue tétée", "nutri_lok_long_tetee_greve": "Grève des tétées", "nutri_lok_long_tetee_mode_garde": "Mode de garde" },
+              blocks: [
+                { type: "normal", showIfPb: "nutri_lok_long_tetee_longue", text: "<div class=\"cc-sub-banner\">Longue tétée</div>\n- Les **tétées** SEMBLENT **être assez longues**\n- 🎓 La **durée des tétées MOYENNE** est normalement autour de **20 min**\n  ⇒ Peut-être un moyen de **lisser la faim** entre **chaque tétée**" },
+                { type: "normal", showIfPb: "nutri_lok_long_tetee_greve", text: "<div class=\"cc-sub-banner\">Grève des tétées</div>\n- Vous m'avez aussi parlé du **refus de certaines tétées**" },
+                { type: "normal", showIfPb: ["nutri_lok_long_tetee","nutri_lok_long_tetee_longue","nutri_lok_long_tetee_greve","nutri_lok_long_tetee_mode_garde"], text: "- Je pense, qu'il y a peut-être **qqch** au **niveau de votre lactation.**\n- Il y a peut-être eu une **possible diminution** (peut-être car **vos seins sont moins stimulés ?**)" },
+                { type: "normal", showIfPb: "nutri_lok_long_tetee_mode_garde", text: "- ...Ce sont des choses qui **peuvent arriver** lors d'un **changement de rythme**\n  notamment quand un **BB commence un mode de garde**\n  ⇒ car la **stimulation de vos seins** est **moins importante en journée**" },
+                { type: "normal", showIfPb: ["nutri_lok_long_tetee","nutri_lok_long_tetee_longue","nutri_lok_long_tetee_greve","nutri_lok_long_tetee_mode_garde"], text: "  ⇒ Donc, ça **peut influencer** sur la **quantité de lait** que **boit** [prénom_enfant]\n- **Heureusement,** il y a des **solutions qui existent** pour **re-booster la lactation**\n  et je vous en **reparlerai plus tard**" },
+              ]
+            },
           ]
         },
       ]
