@@ -42,6 +42,7 @@ const PB_LABELS = {
   'relationnel_rappels': 'Multiples rappels après le coucher',
   // Nutrition — Courbe de poids qui diminue
   'nutri_courbe_declinante': 'Courbe de poids qui diminue',
+  'nutri_courbe_inferieur': 'Courbe de poids sur percentile inférieur',
   'nutri_esp_long': 'Espacement trop long entre 2 prises',
   'nutri_esp_court': 'Espacement trop court entre 2 prises',
   'nutri_vol_petit': 'Volume de biberon trop petit',
