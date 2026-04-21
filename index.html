@@ -8618,7 +8618,11 @@ function syncPbsToFicheClient() {
     }
   });
   // 3. Sub-parents (intermédiaires) : cochés si ≥ 1 enfant direct du subgroup coché
-  document.querySelectorAll('.pb-sub-parent, .modal-pb-sub-parent, .diag-pb-sub-parent').forEach(sp => {
+  //    Itération en ORDRE INVERSE (plus profond d'abord) pour que les sub-parents
+  //    imbriqués (ex. Espacement dans Lait) soient évalués AVANT leurs ancêtres.
+  //    Sinon, un ancêtre (Lait) voit l'ancien état de son enfant (Espacement)
+  //    et reste coché alors que tous ses descendants feuilles sont décochés.
+  [...document.querySelectorAll('.pb-sub-parent, .modal-pb-sub-parent, .diag-pb-sub-parent')].reverse().forEach(sp => {
     if (!sp.dataset.subgroup) return;
     // Chercher les enfants dans le MÊME container que le sub-parent (fiche/modal/diag)
     const container = sp.closest('.problematiques-grid, #modal-pb-list, #diag-pb-container');
