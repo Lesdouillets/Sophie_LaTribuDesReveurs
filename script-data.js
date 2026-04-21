@@ -210,6 +210,20 @@ const PB_LABELS = {
   'nutri_div_n1_autre_jus_vegetal': 'Jus végétal',
   'nutri_div_n1_autre_lait_animal': 'Lait animal',
   'nutri_div_n1_conseq_mange_nuit': 'Conséquences : Mange la nuit',
+  // Nutrition — Pas assez de féculents
+  'nutri_div_feculents': 'Pas assez de féculents',
+  'nutri_div_fec_esp_long': 'Espacement trop long entre 2 prises',
+  'nutri_div_fec_esp_court': 'Espacement trop court entre 2 prises',
+  'nutri_div_fec_vol_petit': 'Petit bib',
+  'nutri_div_fec_vol_gros': 'Gros bib',
+  'nutri_div_fec_vol_longtemps': 'Biberon bu trop longtemps',
+  'nutri_div_fec_inversion_jour_nuit': 'Inversion Jour/Nuit',
+  'nutri_div_fec_inversion_lait_solide': 'Inversion ordre lait/solide',
+  'nutri_div_fec_tetine_cache_faim': 'Tétine = cache-faim',
+  'nutri_div_fec_autre_jus_vegetal': 'Jus végétal',
+  'nutri_div_fec_autre_lait_animal': 'Lait animal',
+  'nutri_div_fec_conseq_dependance': 'Conséquences : Dépendance',
+  'nutri_div_fec_conseq_mange_nuit': 'Conséquences : Mange la nuit',
   // Souhaits
   'souhait_tetine': 'Suppression de la tétine',
   'souhait_position_dorsale': 'Vers une position dorsale',
@@ -742,7 +756,7 @@ const SCRIPT_DATA = {
           type: "courbe_cards_grid",
           items: [
             {
-              id: "esp", emoji: "⏱️", label: "Espacement",
+              id: "esp", emoji: "🔛", label: "Espacement bib et sein",
               pb: ["nutri_esp_long","nutri_esp_court"],
               sublabels: { "nutri_esp_long": "Trop long", "nutri_esp_court": "Trop court" },
               blocks: [
@@ -893,7 +907,7 @@ const SCRIPT_DATA = {
           type: "courbe_cards_grid",
           items: [
             {
-              id: "esp", emoji: "⏱️", label: "Espacement",
+              id: "esp", emoji: "🔛", label: "Espacement bib et sein",
               pb: ["nutri_inf_esp_long","nutri_inf_esp_court"],
               sublabels: { "nutri_inf_esp_long": "Trop long", "nutri_inf_esp_court": "Trop court" },
               blocks: [
@@ -1033,7 +1047,7 @@ const SCRIPT_DATA = {
           type: "courbe_cards_grid",
           items: [
             {
-              id: "esp", emoji: "⏱️", label: "Espacement",
+              id: "esp", emoji: "🔛", label: "Espacement bib et sein",
               pb: ["nutri_ta_esp_long","nutri_ta_esp_court"],
               sublabels: { "nutri_ta_esp_long": "Trop long", "nutri_ta_esp_court": "Trop court" },
               blocks: [
@@ -1650,7 +1664,6 @@ const SCRIPT_DATA = {
       emoji: "🥑",
       blocks: [
         { type: "normal", text: "- Aujourd'hui, le **lait prend une place très importante** dans l'alimentation de [prénom_enfant]\n- L'**alimentation solide** est **mise de côté** au profit du lait\n  ⇒ Votre enfant a une **quantité de lait similaire** à un **enfant de - d'1 an**\n- *Info lait enfant + d'1 an : autour de 500 mL*\n\n- Pourtant, **après 1 an,** les **besoins évoluent** :\n  - Les **solides** deviennent progressivement la **source principale d'énergie**\n  - La **mastication favorise** une **satiété + durable**\n  - L'**équilibre alimentaire** se **répartit** davantage sur les **différents repas de la journée**\n- Le **lait reste important MAIS NE DOIT PLUS** être la **base majoritaire des apports**" },
-        { type: "normal", _purpleDark: true, showIfPb: "nutri_div_n1_bib_strat_dep", text: "- 🔥 <u><em>OPTION</em> : Bib/sein = stratégie dépendante 🪑</u>" },
         { type: "normal", showIfPb: "nutri_div_n1_bib_strat_dep", text: "- De plus, [prénom_enfant] a **besoin de lait** pour **s'endormir**\n- Ce qui **augmente ENCORE +** ces **quantités de lait journalière**" },
         { type: "normal", text: "- Donc, si on **prend un peu de recul** sur tout ça…\n  on peut voir qu'il y a **AUSSI :**\n  - **d'AUTRES plusieurs petites choses**\n  - AUTOUR de son **alimentation**\n  - qui peuvent **jouer un rôle** sur son **sommeil**<br><br>\n- Je pense notamment…" },
         { type: "normal", _noBorder: true, text: "<div style=\"height:40px;background:#fff7ed;border-radius:12px;margin:0 -8px\"></div>" },
@@ -1715,6 +1728,83 @@ const SCRIPT_DATA = {
             { type: "question", text: "Est-ce que **ça fait sens pour vous** quand je vous **l'explique comme ça** ?" },
             { type: "normal", text: "- Nous allons donc :\n  - **Rétablir un rythme +** structuré\n  - **Revoir** les **apports de lait** adaptés à son âge\n  - **Retrouver** progressivement une **répartition + adaptée** entre lait et alimentation solide" },
             { type: "normal", showIfPb: "nutri_div_n1_conseq_mange_nuit", text: "- 🌛 **OPTION : Suppression alim la nuit** — Et **progressivement,** l'**objectif** sera de **supprimer cette compensation nocturne**,\n  <u>**UNE FOIS**</u> que <u>**TOUS**</u> les apports de la journée seront **bien sécurisées**" },
+            { type: "normal", text: "- Et **avec ces ajustements**, **vous allez voir** que ça va **solutionner une partie** de ses **troubles du sommeil**" },
+          ]
+        },
+      ]
+    },
+
+    // ─── NUTRITION : PAS ASSEZ DE FÉCULENTS ─────────
+    {
+      id: "nutri_div_feculents",
+      problematiqueId: "nutri_div_feculents",
+      leverId: "nutri_div_feculents",
+      title: "Pas assez de féculents",
+      emoji: "🥔",
+      blocks: [
+        { type: "normal", text: "- Aujourd'hui l'**alimentation** de [prénom_enfant] se **compose** essentiellement de **légumes et fruits.**\n- Or à cet âge, un enfant **a besoin,** dans son alimentation, **beaucoup + de féculents** pour pouvoir **grossir et donc grandir.**" },
+        { type: "normal", text: "- Donc, si on **prend un peu de recul** sur tout ça…\n  on peut voir qu'il y a **AUSSI :**\n  - **d'AUTRES plusieurs petites choses**\n  - AUTOUR de son **alimentation**\n  - qui peuvent **jouer un rôle** sur son **sommeil**<br><br>\n- Je pense notamment…" },
+        { type: "normal", _noBorder: true, text: "<div style=\"height:40px;background:#fff7ed;border-radius:12px;margin:0 -8px\"></div>" },
+        {
+          type: "courbe_cards_grid",
+          items: [
+            {
+              id: "esp", emoji: "🔛", label: "Espacement bib et sein",
+              pb: ["nutri_div_fec_esp_long","nutri_div_fec_esp_court"],
+              sublabels: { "nutri_div_fec_esp_long": "Trop long", "nutri_div_fec_esp_court": "Trop court" },
+              blocks: [
+                { type: "normal", showIfPb: "nutri_div_fec_esp_long", text: "<div class=\"cc-sub-banner\">Espacement LONG</div>\n- 🔥 L'**intervalle entre 2 prises** alimentaires peut être parfois assez long (<strong style=\"color:#dc2626\">XX</strong> heures)\n\n- A cet âge, les enfants ont **besoin de prises + rapprochés** pour s'**adapter** à leur **signaux de faim.**\n- **On devrait** normalement **leur donner** : \"***à la demande***\"\n- Avec des **espacements longs, [prénom_enfant]** va **se ruer sur le lait** et se **remplira l'estomac de lait** au détriment des solides" },
+                { type: "normal", showIfPb: "nutri_div_fec_esp_court", text: "<div class=\"cc-sub-banner\">Espacement COURT</div>\n- 🔥 L'**espacement entre 2 prises** alimentaires est **parfois très rapprochés** (<strong style=\"color:#dc2626\">XX</strong> heures)\n  ⇒ [prénom_enfant] n'a **PAS TOUJOURS le temps** d'**avoir** vraiment **faim**\n  ⇒ ce qui peut **limiter le volume des solides**" },
+              ]
+            },
+            {
+              id: "vol", emoji: "🍼", label: "Taille / durée des bib",
+              pb: ["nutri_div_fec_vol_petit","nutri_div_fec_vol_gros","nutri_div_fec_vol_longtemps"],
+              sublabels: { "nutri_div_fec_vol_petit": "Petit bib", "nutri_div_fec_vol_gros": "Gros bib", "nutri_div_fec_vol_longtemps": "Bu longtemps" },
+              blocks: [
+                { type: "normal", showIfPb: "nutri_div_fec_vol_petit", text: "<div class=\"cc-sub-banner\">Petit bib</div>\n- 🔥 Le **volume** des biberons (<strong style=\"color:#dc2626\">XX</strong>ml) est **assez petit** pour :\n  - **son âge**\n  - **et ses besoins**\n  ⇒ Ca se **rapproche +** de la **taille des biberons d'un nourrisson**\n  ⇒ **SI** les **biberons sont petits** : la **sensation d'être RASSASIE** se **dissipe** assez **vite**\n  ⇒ **il cherche** alors à en **demander 1 autre**\n    ⇒ **Le lait prendra** alors la **place** de la **diversification**" },
+                { type: "normal", showIfPb: "nutri_div_fec_vol_gros", text: "<div class=\"cc-sub-banner\">Gros bib</div>\n- 🔥 Le **volume** des biberons (<strong style=\"color:#dc2626\">XX</strong>ml) est **assez conséquent** par **rapport au volume de son estomac** (**souvent** on **suit ce qui est inscrit** sur les **boites de lait**)\n  ⇒ C'est **comme s'il était \"gavé\"**\n  ⇒ et **son estomac** doit **gérer une quantité importante** à chaque biberon\n  ⇒ ce qui peut **parfois entraîner une digestion + difficile...**\n<div style=\"background:#f5f0ff;border:3px dashed #a78bfa;border-radius:16px;padding:6px 20px 6px 0;box-shadow:0 2px 8px rgba(167,139,250,0.18);margin:8px 0\"><ul style=\"margin:0;padding-left:21px\"><li>🔥 <em>OPTION</em> — Reflux : ... qui peut <strong>favoriser le reflux</strong></li></ul></div>" },
+                { type: "normal", showIfPb: "nutri_div_fec_vol_longtemps", text: "<div class=\"cc-sub-banner\">Bu longtemps</div>\n- Les biberons sont **parfois bus pendant très longtemps** (souvent **pour terminer les quantités indiquées sur les boîtes de lait**)\n  ⇒ Ce qui peut **brouiller les signaux** naturels **de faim** et de **satiété**" },
+              ]
+            },
+            {
+              id: "inv", emoji: "🔄", label: "Inversion",
+              pb: ["nutri_div_fec_inversion_jour_nuit","nutri_div_fec_inversion_lait_solide"],
+              sublabels: { "nutri_div_fec_inversion_jour_nuit": "Jour/Nuit", "nutri_div_fec_inversion_lait_solide": "Ordre lait/solide" },
+              blocks: [
+                { type: "normal", showIfPb: "nutri_div_fec_inversion_jour_nuit", text: "<div class=\"cc-sub-banner\">Inversion Jour/Nuit 🌞🌛</div>\n- La **majorité des apports** se fait **la nuit** (`peut être dû au mode de garde`)\n  ⇒ Il semble y avoir une **inversion jour/nuit** au niveau de son alimentation\n  ⇒ Il est **possible** qu'il **compense le manque d'apport en journée**" },
+                { type: "normal", showIfPb: "nutri_div_fec_inversion_lait_solide", showIfAgeMaxMonths: 11, text: "<div class=\"cc-sub-banner\">Mettre lait AVANT les solides</div>\n- Aujourd'hui, la **diversification** est **prise AVANT le lait**\n  ⇒ Le **problème** c'est que **ça occupe de la place dans l'estomac,**\n  ⇒ et ça **donne moins de place** **pour le lait,**\n  ⇒ Pourtant, le **lait reste l'apport n°1 pour :**\n  - les nutriments\n  - et la sensation de satiété" },
+                { type: "normal", showIfPb: "nutri_div_fec_inversion_lait_solide", showIfAgeMinMonths: 12, text: "<div class=\"cc-sub-banner\">Mettre solide AVANT le lait</div>\n- Aujourd'hui, **le lait** est **pris AVANT la diversification**\n  ⇒ Le **problème** c'est que **ça occupe de la place dans l'estomac,**\n  ⇒ et ça **donne moins de place** **pour la diversification,**\n  ⇒ Pourtant, la **diversification reste l'apport n°1 pour :**\n  - les nutriments\n  - et la sensation de satiété" },
+              ]
+            },
+            {
+              id: "tetine", emoji: "🍭", label: "Tétine = cache-faim",
+              pb: "nutri_div_fec_tetine_cache_faim",
+              blocks: [
+                { type: "normal", showIfPb: "nutri_div_fec_tetine_cache_faim", text: "- [prénom_enfant] **demande souvent la tétine** dans la bouche\n- La TETINE **PEUT répondre à un reflexe de succion**\n- MAIS peut aussi faire **office d'illusion** puisqu'**elle \"dupe\" le cerveau :**\n  - [prénom_enfant] **\"tète et déglutit\"** avec la tétine\n  - donc le **cerveau pense que qqch rentre** dans son estomac\n  - **mais rien ne rentre**…\n  - et **au bout d'un moment :**\n    - l'**illusion se perd**\n    - et la **faim se fait VRAIMENT ressentir**\n  - **MEME SI vous remettez la tétine :**\n    - il n'**en veut pas**\n    - et il pleure\n    - Parce qu'il **veut autre chose**\n    ⇒ Tout simplement car il a faim\n\n  ⇒ Donc, pour moi, la tétine joue ICI le **rôle d'un \"cache-faim\"**" },
+              ]
+            },
+            {
+              id: "autre", emoji: "🍽️", label: "Autres (Jus-Lait animal)",
+              pb: ["nutri_div_fec_autre_jus_vegetal","nutri_div_fec_autre_lait_animal"],
+              sublabels: { "nutri_div_fec_autre_jus_vegetal": "Jus végétal", "nutri_div_fec_autre_lait_animal": "Lait animal" },
+              blocks: [
+                { type: "normal", showIfPb: "nutri_div_fec_autre_jus_vegetal", text: "<div class=\"cc-sub-banner\">Jus végétal 🧃</div>\n- [prénom_enfant] boit une **grande quantité** de biberons de <strong style=\"color:#c52f26\">jus végétal</strong>\n- Or ils **n'apportent PAS les mêmes besoins nutritionnels** que le **lait maternel ou infantile**\n  ⇒ L'**estomac** est alors **rempli MAIS PAS** forcément **avec les bons apports** pour **grandir** …..et **être rassasié**" },
+                { type: "normal", showIfPb: "nutri_div_fec_autre_lait_animal", text: "<div class=\"cc-sub-banner\">Lait animal 🐄</div>\n- [prénom_enfant] boit une **grande quantité** de biberons de <strong style=\"color:#c52f26\">lait animal</strong>\n- Or ils **n'apportent PAS les mêmes besoins nutritionnels** que le **lait maternel ou infantile**\n  ⇒ L'**estomac** est alors **rempli MAIS PAS** forcément **avec les bons apports** pour **grandir** …..et **être rassasié**" },
+              ]
+            },
+          ]
+        },
+        { type: "normal", _parentLevel: true, text: "- Voilà,\n- AVEC tous ces **petits indices,**\n- On commence à voir un **schéma qui se dessine** au **niveau de sa nutrition**\n- Et **CE QUI est intéressant**, c'est que ça correspond à CE QUE **vous observez** :\n  - dans son comportement\n  - et dans son sommeil" },
+        {
+          type: "conclusion_nutrition",
+          _parentLevel: true,
+          blocks: [
+            { type: "normal", text: "- Pour moi, **l'explication la + probable,**\n- <span style=\"color:#dc2626\">⇒ c'est que [prénom_enfant] a **encore faim**</span>\n- Une **faible part de féculents**, entraine alors une **satiété limitée,** ce qui **contribue à un sommeil fragmenté**\n- L'**objectif** serait donc d'**augmenter l'apport de féculents** dans ses repas" },
+            { type: "normal", showIfPb: "nutri_div_fec_conseq_mange_nuit", text: "- 🌛 L'**objectif** serait **aussi** de **réduire les réveils nocturnes** car il **semble utiliser la nuit** pour **compléter ce qu'**il ne **prend pas** encore en **journée**" },
+            { type: "question", text: "Est-ce que **ça fait sens pour vous** quand je vous **l'explique comme ça** ?" },
+            { type: "normal", text: "- Nous allons donc :\n  - Rétablir un **rythme + structuré**\n  - **Revoir** les **apports de lait adaptés** à son âge\n  - **Retrouver** progressivement une **répartition + adaptée entre lait et alimentation solide**" },
+            { type: "normal", showIfPb: "nutri_div_fec_conseq_mange_nuit", text: "- 🌛 **OPTION : Suppression alim la nuit** — Et **progressivement,** l'**objectif** sera de **supprimer cette compensation nocturne**,\n  <u>**UNE FOIS**</u> que <u>**TOUS**</u> les apports de la journée seront **bien sécurisées**" },
             { type: "normal", text: "- Et **avec ces ajustements**, **vous allez voir** que ça va **solutionner une partie** de ses **troubles du sommeil**" },
           ]
         },

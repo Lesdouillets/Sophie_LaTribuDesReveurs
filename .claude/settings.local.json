@@ -41,7 +41,8 @@
       "Bash(perl -i -pe 's/\\(value=\"nutri_courbe_declinante\" data-subgroup-child=\"nutri_courbes\"\\) data-auto-only=\"true\"/$1/; s/\\(value=\"nutri_courbe_inferieur\" data-subgroup-child=\"nutri_courbes\"\\) data-auto-only=\"true\"/$1/; s/\\(value=\"nutri_trop_apport\" data-subgroup-child=\"nutri_courbes\"\\) data-auto-only=\"true\"/$1/' index.html)",
       "Bash(awk 'NR==1219,NR==1314' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")",
       "Read(//tmp/**)",
-      "Bash(perl -i -pe 's/\\(value=\"nutri_lok_lait_animal\" data-subgroup-child=\"nutri_lait_ok\"\\) data-auto-only=\"true\"/$1/; s/\\(value=\"nutri_lok_jus_vegetal\" data-subgroup-child=\"nutri_lait_ok\"\\) data-auto-only=\"true\"/$1/; s/\\(value=\"nutri_lok_inv_jn\" data-subgroup-child=\"nutri_lait_ok\"\\) data-auto-only=\"true\"/$1/; s/\\(value=\"nutri_lok_lait_n1\" data-subgroup-child=\"nutri_lait_ok\"\\) data-auto-only=\"true\"/$1/' index.html)"
+      "Bash(perl -i -pe 's/\\(value=\"nutri_lok_lait_animal\" data-subgroup-child=\"nutri_lait_ok\"\\) data-auto-only=\"true\"/$1/; s/\\(value=\"nutri_lok_jus_vegetal\" data-subgroup-child=\"nutri_lait_ok\"\\) data-auto-only=\"true\"/$1/; s/\\(value=\"nutri_lok_inv_jn\" data-subgroup-child=\"nutri_lait_ok\"\\) data-auto-only=\"true\"/$1/; s/\\(value=\"nutri_lok_lait_n1\" data-subgroup-child=\"nutri_lait_ok\"\\) data-auto-only=\"true\"/$1/' index.html)",
+      "Bash(perl -i -pe 's|id: \"esp\", emoji: \"⏱️\", label: \"Espacement\",|id: \"esp\", emoji: \"🔛\", label: \"Espacement bib et sein\",|g' script-data.js)"
     ]
   }
 }

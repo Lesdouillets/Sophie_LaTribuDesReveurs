@@ -4842,6 +4842,12 @@ function syncConfortToMedical() {
   setChk('medical-rgo', rgo);
   setChk('medical-aplv-susp', aplvSusp);
   // medical-aplv-conf : on ne touche pas automatiquement (pas de pb confort dédiée à "APLV confirmée")
+  // Mettre à jour state.client pour que la sauvegarde reflète le nouvel état
+  // (sinon la sauvegarde lit c.rgo/c.aplvSuspecte des anciennes valeurs et la case revient au reload)
+  if (state && state.client) {
+    state.client.rgo = rgo;
+    state.client.aplvSuspecte = aplvSusp;
+  }
 }
 
 function syncMedicalToConfort() {
