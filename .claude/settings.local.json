@@ -24,7 +24,9 @@
       "Bash(awk 'NR>=8122 && NR<=8127' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")",
       "Bash(awk 'NR>=8128 && /^}/ {print NR; count++; if \\(count==1\\) exit}' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")",
       "Bash(perl -i -pe 'BEGIN{$in=0} if\\($.==696\\){$in=1} if\\($.==829\\){$in=0} if\\($in\\){ s/\\\\bnutri_esp_/nutri_inf_esp_/g; s/\\\\bnutri_vol_/nutri_inf_vol_/g; s/\\\\bnutri_tetee\\\\b/nutri_inf_tetee/g; s/\\\\bnutri_tetee_longue\\\\b/nutri_inf_tetee_longue/g; s/\\\\bnutri_tetee_greve\\\\b/nutri_inf_tetee_greve/g; s/\\\\bnutri_tetee_mode_garde\\\\b/nutri_inf_tetee_mode_garde/g; s/\\\\bnutri_tetine_coupe_faim\\\\b/nutri_inf_tetine_coupe_faim/g; s/\\\\bnutri_autre_/nutri_inf_autre_/g; s/\\\\bnutri_inversion_/nutri_inf_inversion_/g; s/\\\\bnutri_conseq_/nutri_inf_conseq_/g; }' script-data.js)",
-      "Bash(awk 'NR>=550 && NR<=692 {print}' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")"
+      "Bash(awk 'NR>=550 && NR<=692 {print}' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")",
+      "Bash(awk 'NR>=830 && NR<=855' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")",
+      "Bash(awk 'NR>=850 && NR<=870' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")"
     ]
   }
 }

@@ -76,6 +76,19 @@ const PB_LABELS = {
   'nutri_inf_autre_lait_animal': 'Lait animal',
   'nutri_inf_inversion_jour_nuit': 'Inversion Jour/Nuit',
   'nutri_inf_inversion_lait_solide': 'Inversion Lait / Solide',
+  // Nutrition — Trop d'apport
+  'nutri_trop_apport': "Trop d'apport",
+  'nutri_ta_esp_long': 'Espacement trop long entre 2 prises',
+  'nutri_ta_esp_court': 'Espacement trop court entre 2 prises',
+  'nutri_ta_vol_petit': 'Volume de biberon trop petit',
+  'nutri_ta_vol_gros': 'Volume de biberon trop gros',
+  'nutri_ta_vol_longtemps': 'Biberon bu trop longtemps',
+  'nutri_ta_inversion_jour_nuit': 'Inversion Jour/Nuit',
+  'nutri_ta_inversion_lait_solide': 'Inversion Lait / Solide',
+  'nutri_ta_autre_feculents': 'Trop de féculents',
+  'nutri_ta_autre_lait_solide_important': 'Lait / solide trop important',
+  'nutri_ta_autre_jus_vegetal': 'Jus végétal',
+  'nutri_ta_autre_lait_animal': 'Lait animal',
   // Souhaits
   'souhait_tetine': 'Suppression de la tétine',
   'souhait_position_dorsale': 'Vers une position dorsale',
@@ -722,6 +735,19 @@ const SCRIPT_DATA = {
           blocks: [
             { type: "normal", text: "- En **tant que consultantes,** on va s'**appuyer** sur des **repères fiables,** comme les **courbes** de poids, la taille, le périmètre crânien\n- D'ailleurs **je vous invite** vivement à **demander** à votre médecin de **prendre les MESURES** à **chaque RDV**\n- On peut **voir les courbes** un peu comme **notre tableau de bord** :\n  elles **nous aident à savoir** si le **corps** reçoit **assez d'énergie** pour **soutenir** un **sommeil de qualité**" },
             { type: "normal", text: "<br><br>\n- Donc **quand on a lu les courbes**, on a **pu voir** que [prénom_enfant] était sur des **couloirs différents** entre le **poids, taille et le périmètre cranien.**\n- Mais que le **POIDS** était sur un **percentile INFERIEUR**\n\n- En général, les 3 courbes :\n  - **évoluent** de **manière** assez **harmonieuses**\n  - et **suivent** à **peu près** le **même percentile**" },
+            {
+              type: "normal", text: "- **En général**, un enfant **suit plutôt le couloir** dans LEQUEL **il est né**\n  ⇒ c'est son **couloir de référence**\n- Dans **certains cas**, certains enfants **peuvent même DEPASSER** leur **couloir de référence :**\n  - Par exemple, lorsqu'ils ont un **fort potentiel génétique** (si les **parents sont grands**, par exemple),\n  - OU **lorsque les enfants sont nés** un peu en **dessous de leur potentiel.**\n    ⇒ On parle alors de **rattrapage de courbe**.\n- Donc, il est **tout à fait possible** que [prénom_enfant] :\n  - **atteigne un couloir supérieur** à son **couloir de référence**\n  - et fasse ce **rattrapage**,",
+              trailingInfoButton: {
+                label: "Potentiel génétique",
+                title: "Potentiel génétique",
+                blocks: [
+                  { type: "normal", text: "- **Définition :** Potentiel de croissance de l'enfant en fonction de la taille de ses parents." },
+                  { type: "normal", text: "- **Formules** *(méthode de Tanner)* :\n  - 👧 **Fille** : (Taille père + Taille mère − 13) / 2\n  - 👦 **Garçon** : (Taille père + Taille mère + 13) / 2\n- Le résultat donne la **taille cible adulte** (± 8,5 cm)." },
+                  { type: "potentiel_genetique_calculator" },
+                ]
+              }
+            },
+            { type: "normal", _purpleDark: true, text: "- 🔥 <u><em>OPTION</em> : il a voulu remonter :</u> comme [il_elle] **l'a montré** lors de sa **tentative de remontée de courbe** !" },
             { type: "normal", text: "<br><br>\n- Les courbes, ça va **nous donne** une **bonne indication**,\n  mais ça reste un **repère**.\n  ⇒ Le **+ important,** c'est vraiment d'ETRE **à l'écoute de son enfant**" },
           ]
         },
@@ -838,6 +864,122 @@ const SCRIPT_DATA = {
             { type: "question", text: "Est-ce que **ça fait sens pour vous** quand je vous **l'explique comme ça** ?" },
             { type: "normal", text: "- Nous allons donc :\n  - **rétablir un rythme alimentaire + structuré**\n  - et **sécuriser les apports de lait** adaptés :\n    - à son âge\n    - et à son poids" },
             { type: "normal", showIfPb: "nutri_inf_conseq_mange_nuit", text: "- 🌛 Et **progressivement,** l'**objectif** sera de **supprimer cette compensation nocturne**,\n  <u>**UNE FOIS**</u> que <u>**TOUS**</u> les apports de la journée seront **bien sécurisées**" },
+            { type: "normal", text: "- Et **avec ces ajustements**, **vous allez voir** que ça va **solutionner une partie** de ses **troubles du sommeil**" },
+          ]
+        },
+      ]
+    },
+
+    // ─── NUTRITION : TROP D'APPORT ─────────
+    {
+      id: "nutri_trop_apport",
+      problematiqueId: "nutri_trop_apport",
+      leverId: "nutri_trop_apport",
+      title: "Trop d'apport",
+      emoji: "📈",
+      blocks: [
+        { type: "normal", text: "- **Je peux voir** qu'il y a un **qqch au niveau** des **apports alimentaires**.\n\n- **Avant de travailler le sommeil**, on vient toujours **s'assurer que :**\n  - **les besoins nutritionnels** d'un enfant **sont bien couverts**\n  - et qu'il n'a **pas de gène** qui pourrait venir **perturber son sommeil**" },
+        {
+          type: "grouped_block",
+          blocks: [
+            { type: "normal", text: "- En **tant que consultante**, on va s'**appuyer** sur des **repères fiables,** comme les **courbes** de poids, la taille, le périmètre crânien\n- D'ailleurs **je vous invite** vivement **si ce n'est pas pris systématiquement :**\n  - à **demander** à votre médecin de **prendre les mesures** à **chaque RDV**\n- On peut **voir les courbes** un peu comme **notre tableau de bord** :\n  elles **nous aident à savoir** si le **corps** reçoit **assez d'énergie** pour **soutenir** un **sommeil de qualité**" },
+            { type: "normal", text: "<br><br>\n- À la lecture des courbes, on peut observer que :\n  - le **poids** de [prénom_enfant] a **augmenté rapidement,**\n  - ALORS QUE la **taille et le périmètre crânien** restent **stables.**\n  ⇒ Concrètement, la **prise de poids est + rapide QUE CE QU'ON attend habituellement** pour sa croissance" },
+            { type: "normal", text: "- Pour vous **donner un repère** :\n  - **À cet âge**, la **croissance** devrait être **harmonieuse,** avec les **3 courbes** qui **évoluent sur le même couloir**" },
+            { type: "normal", text: "- **La courbe nous aide** à avoir une **vue fonctionnelle** mais BIEN SUR**, il s'agit de repères**.\n  ⇒ On **reste toujours à l'écoute de son enfant** et **on ajuste** selon ce qu'**on observe au quotidien**" },
+            { type: "normal", text: "<br><br>\n- Les courbes, ça va **nous donne** une **bonne indication**,\n  mais ça reste un **repère**.\n  ⇒ Le **+ important,** c'est vraiment d'ETRE **à l'écoute de son enfant**" },
+          ]
+        },
+        {
+          type: "normal", showIfAgeMaxMonths: 9, showIfAlim: ["Biberon lait infantile","Allaitement au biberon","Allaitement mixte"],
+          text: "- Il y a un **2nd repère qu'on utilise** pour **se guider** : c'est la **règle d'Appert**\n- Elle nous donne des **indications sur la quantité \"théorique\" par 24h** en **fonction du poids,**<br><br>\n- 🔥 Aujourd'hui, [prénom_enfant] pèse **[poids]** kg\n  et vous me dites qu'[il_elle] boit environ <strong style=\"color:#dc2626\">XX</strong> mL sur 24 heures.\n- Si on se **réfère à la règle d'Appert**, ses **besoins théoriques** en lait seraient **plutôt autour** de **[besoin_lait_volume]** par jour **(voire plus !).**<br><br>\n- ⇒ Ca veut dire que **là aussi,** il y a un **écart** ENTRE **ses besoins** et ses **apports actuels**\n- Mais **ce n'est pas une règle stricte**, c'est **juste un repère** pour nous aider.\n- On reste surtout sur **une logique d'*à la demande***, surtout chez les plus petits.<br><br>\n- **Tous les BB** n'ont **pas :**\n  - **exactement le même rythme**\n  - et **leurs besoins** peuvent **varier d'un jour à l'autre.**\n  ⇒ On se fie surtout à leurs **signes de faim et de satiété**.",
+          trailingInfoButton: {
+            label: "Calcul règle d'Appert",
+            title: "Calcul règle d'Appert",
+            blocks: [
+              { type: "normal", text: "- La **règle d'Appert** donne la **quantité théorique de lait sur 24h** selon le **poids** de l'enfant :" },
+              { type: "normal", text: "- **Si poids < 6 kg** :\n  - (poids × 100) + **200 mL** ± 100 mL\n- **Si poids ≥ 6 kg** :\n  - (poids × 100) + **250 mL** ± 100 mL" },
+              { type: "appert_calculator" },
+            ]
+          }
+        },
+        { type: "normal", text: "- Donc, si on **prend un peu de recul** sur tout ça…\n  on peut voir qu'il y a **AUSSI :**\n  - **d'AUTRES plusieurs petites choses**\n  - AUTOUR de son **alimentation**\n  - qui peuvent **jouer un rôle** sur son **sommeil**<br><br>\n- Je pense notamment…" },
+        { type: "normal", _noBorder: true, text: "<div style=\"height:40px;background:#fff7ed;border-radius:12px;margin:0 -8px\"></div>" },
+        {
+          type: "courbe_cards_grid",
+          items: [
+            {
+              id: "esp", emoji: "⏱️", label: "Espacement",
+              pb: ["nutri_ta_esp_long","nutri_ta_esp_court"],
+              sublabels: { "nutri_ta_esp_long": "Trop long", "nutri_ta_esp_court": "Trop court" },
+              blocks: [
+                { type: "normal", showIfPb: "nutri_ta_esp_long", text: "<div class=\"cc-sub-banner\">Trop long</div>\n- L'**intervalle entre 2 prises** alimentaires peut être parfois assez long (<strong style=\"color:#dc2626\">XX</strong> heures)\n- A cet âge, les enfants ont **besoin de prises + rapprochés** pour s'**adapter** à leur **signaux de faim.**\n- 🎓 **On devrait** normalement **leur donner** : \"***à la demande***\"\n- Et se **défaire** complètement du **mythe des espacements de 4h**, .. qui n'est **basé sur RIEN du TOUT**!\n- Avec des **espacements longs, [prénom_enfant]** a du **mal à \"TENIR\" jusqu'à la prochaine prise alimentaire**\n  ⇒ On **peut imaginer** qu'[il_elle] **se « rue »** sur sa nourriture **en mangeant + que nécessaire** pour combler ce manque" },
+                { type: "normal", showIfPb: "nutri_ta_esp_court", text: "<div class=\"cc-sub-banner\">Trop court</div>\n- L'**espacement entre 2 prises** alimentaires est **parfois très rapprochés** (<strong style=\"color:#dc2626\">XX</strong> heures)\n  ⇒ C'est **comme si** il était **« gavé » de nourriture**" },
+              ]
+            },
+            {
+              id: "vol", emoji: "🍼", label: "Volume des bib",
+              pb: ["nutri_ta_vol_petit","nutri_ta_vol_gros","nutri_ta_vol_longtemps"],
+              sublabels: { "nutri_ta_vol_petit": "Petit bib", "nutri_ta_vol_gros": "Gros bib", "nutri_ta_vol_longtemps": "Bu longtemps" },
+              blocks: [
+                { type: "normal", showIfPb: "nutri_ta_vol_petit", text: "<div class=\"cc-sub-banner\">Petit bib</div>\n- Le **volume** des biberons (<strong style=\"color:#dc2626\">XX</strong>ml) est **assez petit** pour :\n  - **son âge**\n  - **et ses besoins**\n  ⇒ Ca se **rapproche +** de la **taille des biberons d'un nourrisson**\n  ⇒ **SI** les **biberons sont petits** : la **sensation d'être RASSASIE** se **dissipe** assez **vite**\n    ⇒ **Et augmente la demande** pour **+ de biberons**" },
+                { type: "normal", showIfPb: "nutri_ta_vol_gros", text: "<div class=\"cc-sub-banner\">Gros bib</div>\n- Le **volume** des biberons (<strong style=\"color:#dc2626\">XX</strong>ml) est **assez conséquent** par **rapport au volume de son estomac** (**souvent** on **suit ce qui est inscrit** sur les **boites de lait**)\n  ⇒ C'est **comme s'il était \"gavé\"**\n  ⇒ et **son estomac** doit **gérer une quantité importante** à chaque biberon\n  ⇒ ce qui peut **parfois entraîner une digestion + difficile...**\n<div style=\"background:#f5f0ff;border:3px dashed #a78bfa;border-radius:16px;padding:6px 20px 6px 0;box-shadow:0 2px 8px rgba(167,139,250,0.18);margin:8px 0\"><ul style=\"margin:0;padding-left:21px\"><li>🔥 <em>OPTION</em> — Reflux : ... qui peut <strong>favoriser le reflux</strong></li></ul></div>" },
+                { type: "normal", showIfPb: "nutri_ta_vol_longtemps", text: "<div class=\"cc-sub-banner\">Bu longtemps</div>\n- Les biberons sont **parfois bus pendant très longtemps** (souvent **pour terminer les quantités indiquées sur les boîtes de lait**)\n  ⇒ Ce qui peut **brouiller les signaux** naturels **de faim** et de **satiété**" },
+              ]
+            },
+            {
+              id: "inv_jn", emoji: "🌞🌛", label: "Inversion Jour/Nuit",
+              pb: "nutri_ta_inversion_jour_nuit",
+              blocks: [
+                { type: "normal", showIfPb: "nutri_ta_inversion_jour_nuit", text: "- La **majorité des apports** se fait **la nuit** (peut être dû au mode de garde)\n  ⇒ Il semble y avoir une **inversion jour/nuit** au niveau de son alimentation<br><br>\n- Or **la nuit,** le **corps est programmé** pour être en **\"mode repos\"**\n  ⇒ Il se pourrait alors :\n  1. Qu'il **utilise la nuit** pour **compenser le manque d'apport en journée**\n  2. Mais que la **pression de S.** de la nuit rendent les prises alimentaires **- efficaces**\n    ⇒ et donc qu'il **boive PLUS QUE CES véritables besoins**" },
+              ]
+            },
+            {
+              id: "inv_ls", emoji: "🔄", label: "Inversion Lait/Solide",
+              pb: "nutri_ta_inversion_lait_solide",
+              blocks: [
+                { type: "normal", showIfPb: "nutri_ta_inversion_lait_solide", showIfAgeMaxMonths: 11, text: "- Aujourd'hui, la **diversification** est **prise AVANT le lait**\n  ⇒ Le **problème** c'est que **ça occupe de la place dans l'estomac,**\n  ⇒ et ça **brouille** la **sensation de satiété**" },
+                { type: "normal", showIfPb: "nutri_ta_inversion_lait_solide", showIfAgeMinMonths: 12, text: "- Aujourd'hui, **le lait** est **pris AVANT la diversification**\n  ⇒ Le **problème** c'est que **ça occupe de la place dans l'estomac,**\n  ⇒ et ça **brouille** la **sensation de satiété**" },
+              ]
+            },
+            {
+              id: "feculents", emoji: "🥔", label: "Féculent IMPORTANT",
+              pb: "nutri_ta_autre_feculents",
+              blocks: [
+                { type: "normal", showIfPb: "nutri_ta_autre_feculents", text: "- La **part des féculents** dans son alimentation **est assez IMPORTANTE**\n  ⇒ L'**alimentation** devrait être **diversifiée**, et les **féculents** ne DEVRAIENT **pas dépasser 50%** des apports" },
+              ]
+            },
+            {
+              id: "lait_solide_imp", emoji: "🍽️", label: "Lait/solide trop important",
+              pb: "nutri_ta_autre_lait_solide_important",
+              blocks: [
+                { type: "normal", showIfPb: "nutri_ta_autre_lait_solide_important", showIfAgeMaxMonths: 11, text: "<div class=\"cc-sub-banner\">OPTION : Solide trop important</div>\n- La **place de la diversification** dans son alimentation **prend une part importante**\n- Or à son âge, le **lait** devrait être la **source principale d'apport nutritionnel**" },
+                { type: "normal", showIfPb: "nutri_ta_autre_lait_solide_important", showIfAgeMinMonths: 12, text: "<div class=\"cc-sub-banner\">OPTION : Lait trop important</div>\n- La **place du lait** dans **son alimentation** prend une **part importante** dans **son alimentation**\n- Or **à son âge**, la **diversification** devrait être la **source principale d'apport nutritionnel**" },
+              ]
+            },
+            {
+              id: "jus_vegetal", emoji: "🧃", label: "Jus végétal",
+              pb: "nutri_ta_autre_jus_vegetal",
+              blocks: [
+                { type: "normal", showIfPb: "nutri_ta_autre_jus_vegetal", text: "- [prénom_enfant] boit une **grande quantité** de biberons de <strong style=\"color:#c52f26\">jus végétal</strong>\n- Or ils **n'apportent PAS les mêmes besoins nutritionnels** que le **lait maternel ou infantile**\n  ⇒ L'**estomac** est alors **rempli MAIS PAS** forcément **avec les bons apports**" },
+              ]
+            },
+            {
+              id: "lait_animal", emoji: "🥛", label: "Lait animal",
+              pb: "nutri_ta_autre_lait_animal",
+              blocks: [
+                { type: "normal", showIfPb: "nutri_ta_autre_lait_animal", text: "- [prénom_enfant] boit une **grande quantité** de biberons de <strong style=\"color:#c52f26\">lait animal</strong>\n- Or ils **n'apportent PAS les mêmes besoins nutritionnels** que le **lait maternel ou infantile**\n  ⇒ L'**estomac** est alors **rempli MAIS PAS** forcément **avec les bons apports**" },
+              ]
+            },
+          ]
+        },
+        { type: "normal", _parentLevel: true, text: "- Voilà,\n- AVEC tous ces **petits indices,**\n- On commence à voir un **schéma qui se dessine** au **niveau de sa nutrition**<br><br>\n- Et **CE QUI est intéressant**, c'est que ça correspond à CE QUE **vous observez** :\n  - dans son comportement\n  - et dans son sommeil" },
+        {
+          type: "conclusion_nutrition",
+          _parentLevel: true,
+          blocks: [
+            { type: "normal", text: "- Pour moi, **l'explication la + probable,**\n  <span style=\"color:#dc2626\">⇒ c'est que [prénom_enfant] a des **apports au-dessus de ses besoins**</span>\n\n- Et **quand les apports** sont **trop importants**, ça peut :\n  - **fragmenter le sommeil**\n  - et **maintenir des habitudes** qui ne **servent plus** vraiment la **faim**\n\n  ⇒ 🎯L'**objectif** serait donc de **rééquilibrer progressivement** ses apports pour :\n  - **retrouver** un **rythme alimentaire** adapté à **son âge** et à **ses besoins réels**" },
+            { type: "question", text: "Est-ce que **ça fait sens pour vous** quand je vous **l'explique comme ça** ?" },
+            { type: "normal", text: "- Nous allons donc :\n  - **rétablir un rythme alimentaire + structuré**\n  - et **ajuster les apports** adaptés :\n    - à son âge\n    - et à son poids" },
             { type: "normal", text: "- Et **avec ces ajustements**, **vous allez voir** que ça va **solutionner une partie** de ses **troubles du sommeil**" },
           ]
         },
