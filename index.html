@@ -4589,7 +4589,7 @@ function cleanStaleOverrides() {
     ...(SCRIPT_DATA.planAction || []),
     SCRIPT_DATA.conclusion
   ].filter(Boolean);
-  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid'];
+  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid','vicious_circle'];
   let changed = false;
   for (const sectionId of Object.keys(state.scriptOverrides)) {
     const src = allSections.find(s => s.id === sectionId);
@@ -4705,7 +4705,7 @@ function saveScriptOverrides() {
 function getOverrideBlocks(section) {
   const ov = state.scriptOverrides[section.id];
   if (!ov) return section.blocks || [];
-  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'option_banner', 'parent_banner', 'tarifs_tableau', 'appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid'];
+  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'option_banner', 'parent_banner', 'tarifs_tableau', 'appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid','vicious_circle'];
   const liveBlocks = section.blocks || [];
 
   // Pour problematique/objectifs, ov.blocks est déjà nettoyé par ensureOverride
@@ -7079,7 +7079,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid'].includes(b.type);
+    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid','vicious_circle'].includes(b.type);
     const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
@@ -7475,6 +7475,33 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       <div class="courbe-cards-grid">${cardsHtml}</div>
       ${contentHtml}
     </div>`;
+  }
+
+  // Cercle vicieux — diagramme circulaire SVG avec 4 étapes en boucle (clockwise)
+  if (b.type === 'vicious_circle') {
+    const steps = Array.isArray(b.steps) ? b.steps.slice(0, 4) : [];
+    while (steps.length < 4) steps.push('...');
+    const [s1, s2, s3, s4] = steps.map(s => substituteVars(s));
+    const pillStyle = "height:100%;display:flex;align-items:center;justify-content:center;background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:40px;padding:6px 12px;text-align:center;font-weight:600;color:#7a1818;font-size:13px;line-height:1.25;box-sizing:border-box";
+    return `<div style="margin:18px 0">
+<svg viewBox="0 0 620 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;height:auto;display:block;margin:0 auto">
+  <defs>
+    <marker id="vcarr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <path d="M 410 60 A 130 130 0 0 1 500 175" stroke="#dc2626" stroke-width="2.5" fill="none" marker-end="url(#vcarr)"/>
+  <path d="M 500 245 A 130 130 0 0 1 410 360" stroke="#dc2626" stroke-width="2.5" fill="none" marker-end="url(#vcarr)"/>
+  <path d="M 210 360 A 130 130 0 0 1 120 245" stroke="#dc2626" stroke-width="2.5" fill="none" marker-end="url(#vcarr)"/>
+  <path d="M 120 175 A 130 130 0 0 1 210 60" stroke="#dc2626" stroke-width="2.5" fill="none" marker-end="url(#vcarr)"/>
+  <foreignObject x="210" y="25" width="200" height="70"><div xmlns="http://www.w3.org/1999/xhtml" style="${pillStyle}">${s1}</div></foreignObject>
+  <foreignObject x="410" y="175" width="200" height="70"><div xmlns="http://www.w3.org/1999/xhtml" style="${pillStyle}">${s2}</div></foreignObject>
+  <foreignObject x="210" y="325" width="200" height="70"><div xmlns="http://www.w3.org/1999/xhtml" style="${pillStyle}">${s3}</div></foreignObject>
+  <foreignObject x="10" y="175" width="200" height="70"><div xmlns="http://www.w3.org/1999/xhtml" style="${pillStyle}">${s4}</div></foreignObject>
+  <text x="310" y="205" text-anchor="middle" font-size="14" font-weight="700" fill="#dc2626" font-style="italic">Cercle vicieux</text>
+  <text x="310" y="235" text-anchor="middle" font-size="24">🔁</text>
+</svg>
+</div>`;
   }
 
   // Bloc groupé — wrapper blanc englobant plusieurs sous-blocs comme s'ils n'en formaient qu'un seul
