@@ -952,8 +952,8 @@ const SCRIPT_DATA = {
               id: "lait_solide_imp", emoji: "🍽️", label: "Lait/solide trop important",
               pb: "nutri_ta_autre_lait_solide_important",
               blocks: [
-                { type: "normal", showIfPb: "nutri_ta_autre_lait_solide_important", showIfAgeMaxMonths: 11, text: "<div class=\"cc-sub-banner\">OPTION : Solide trop important</div>\n- La **place de la diversification** dans son alimentation **prend une part importante**\n- Or à son âge, le **lait** devrait être la **source principale d'apport nutritionnel**" },
-                { type: "normal", showIfPb: "nutri_ta_autre_lait_solide_important", showIfAgeMinMonths: 12, text: "<div class=\"cc-sub-banner\">OPTION : Lait trop important</div>\n- La **place du lait** dans **son alimentation** prend une **part importante** dans **son alimentation**\n- Or **à son âge**, la **diversification** devrait être la **source principale d'apport nutritionnel**" },
+                { type: "normal", showIfPb: "nutri_ta_autre_lait_solide_important", showIfAgeMaxMonths: 11, text: "<span style=\"display:inline-block;background:linear-gradient(135deg,#fb923c,#ea580c);color:white;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:10px;box-shadow:0 2px 6px rgba(234,88,12,0.3)\">🎯 Solides TROP important</span>\n\n- La **place de la diversification** dans son alimentation **prend une part importante**\n- Or à son âge, le **lait** devrait être la **source principale d'apport nutritionnel**" },
+                { type: "normal", showIfPb: "nutri_ta_autre_lait_solide_important", showIfAgeMinMonths: 12, text: "<span style=\"display:inline-block;background:linear-gradient(135deg,#fb923c,#ea580c);color:white;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:10px;box-shadow:0 2px 6px rgba(234,88,12,0.3)\">🎯 Lait TROP important</span>\n\n- La **place du lait** dans **son alimentation** prend une **part importante** dans **son alimentation**\n- Or **à son âge**, la **diversification** devrait être la **source principale d'apport nutritionnel**" },
               ]
             },
             {
