@@ -10,7 +10,14 @@
       "Bash(git -C '/c/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs' status --short)",
       "Bash(node -e \"const fs=require\\('fs'\\);let s=fs.readFileSync\\('script-data.js','utf8'\\);const before=\\(s.match\\(/🎓/g\\)||[]\\).length;s=s.replace\\(/🎓/g,''\\);const after=\\(s.match\\(/🎓/g\\)||[]\\).length;fs.writeFileSync\\('script-data.js',s\\);console.log\\('Removed',before-after,'occurrences'\\);\")",
       "Bash(python -c ' *)",
-      "Bash(py -c ' *)"
+      "Bash(py -c ' *)",
+      "Bash(grep -c \"\\\\\\\\*💭\" \"C:\\\\Users\\\\sophi\\\\OneDrive\\\\Documents\\\\GitHub\\\\Sophie_LaTribuDesReveurs\\\\script-data.js\")",
+      "Bash(grep -n \"\\\\\\\\*💭\" \"C:\\\\Users\\\\sophi\\\\OneDrive\\\\Documents\\\\GitHub\\\\Sophie_LaTribuDesReveurs\\\\script-data.js\")",
+      "Bash(sed -i 's|\\\\\\\\n\\\\*💭|\\\\\\\\n- *💭|g' script-data.js)",
+      "Bash(grep -c \"\\\\\\\\\\\\\\\\n- \\\\*💭\" script-data.js)",
+      "Bash(perl -i -pe 's/\\\\\\\\n\\\\*💭/\\\\\\\\n- *💭/g' script-data.js)",
+      "Bash(grep -c \"\\\\\\\\\\\\\\\\n\\\\*💭\" script-data.js)",
+      "Bash(perl -i -pe 's/\\\\\\\\\\\\\\\\n\\\\*💭/\\\\\\\\\\\\\\\\n- \\\\*💭/g' script-data.js)"
     ]
   }
 }
