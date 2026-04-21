@@ -85,7 +85,7 @@ const PB_LABELS = {
   'nutri_ta_vol_longtemps': 'Biberon bu trop longtemps',
   'nutri_ta_inversion_jour_nuit': 'Inversion Jour/Nuit',
   'nutri_ta_inversion_lait_solide': 'Inversion ordre Lait / Solide',
-  'nutri_ta_autre_feculents': 'Trop de féculents',
+  'nutri_ta_autre_feculents': 'Féculent IMPORTANT',
   'nutri_ta_autre_lait_solide_important': 'Lait / solide trop important',
   'nutri_ta_autre_jus_vegetal': 'Jus végétal',
   'nutri_ta_autre_lait_animal': 'Lait animal',
@@ -966,10 +966,10 @@ const SCRIPT_DATA = {
               ]
             },
             {
-              id: "feculents", emoji: "🥔", label: "Féculent IMPORTANT",
+              id: "feculents", emoji: "🥔", label: "Féculent <span style=\"color:#dc2626;font-weight:700\">IMPORTANT</span>",
               pb: "nutri_ta_autre_feculents",
               blocks: [
-                { type: "normal", showIfPb: "nutri_ta_autre_feculents", text: "- La **part des féculents** dans son alimentation **est assez IMPORTANTE**\n  ⇒ L'**alimentation** devrait être **diversifiée**, et les **féculents** ne DEVRAIENT **pas dépasser 50%** des apports" },
+                { type: "normal", showIfPb: "nutri_ta_autre_feculents", text: "- La **part des féculents** dans son alimentation **est assez <span style=\"color:#dc2626\">IMPORTANTE</span>**\n  ⇒ L'**alimentation** devrait être **diversifiée**, et les **féculents** ne DEVRAIENT **pas dépasser 50%** des apports" },
               ]
             },
             {
