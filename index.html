@@ -2429,7 +2429,31 @@
     .diag-section-body { padding: 0 2px; }
 
     /* Search bar pour filtrer les sections dans V. Diagnostic */
-    .diagnostic-sections-search { margin: 10px 0 14px; display: flex; justify-content: flex-end; }
+    .diagnostic-sections-search {
+      margin: 10px 0 14px; display: flex; justify-content: flex-end;
+      align-items: center; gap: 10px;
+    }
+    .diag-search-count {
+      font-size: 12px; color: #64748b; font-weight: 600;
+      min-width: 80px; text-align: right;
+    }
+    .diag-search-highlight {
+      background: #fef08a; color: #713f12;
+      padding: 0 2px; border-radius: 3px;
+      font-weight: 700;
+      box-shadow: 0 0 0 1px #eab308;
+    }
+    /* Card catégorie avec un match dans sa section (même non ouverte) : anneau pulsant */
+    .diag-cat-card[data-has-match="true"]::after {
+      content: ''; position: absolute; inset: -3px;
+      border: 2.5px solid #eab308; border-radius: 14px;
+      pointer-events: none;
+      animation: diagMatchPulse 1.2s ease-in-out infinite;
+    }
+    @keyframes diagMatchPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
     .diag-search-input {
       width: 100%; max-width: 480px; padding: 10px 14px;
       border: 2px solid #cbd5e0; border-radius: 10px;
@@ -7503,6 +7527,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     return `<div class="diagnostic-sections-wrapper">
       <div class="diagnostic-sections-search">
         <input type="text" placeholder="🔍 Rechercher dans les sections…" oninput="filterDiagnosticSections(this.value)" class="diag-search-input" autocomplete="off">
+        <span id="diag-search-count" class="diag-search-count"></span>
       </div>
       <div class="courbe-cards-grid-wrap diagnostic-sections-grid" data-grid-path="${gridPath}">
         <div class="courbe-cards-grid diag-categories-grid">${cardsHtml}</div>
@@ -8941,18 +8966,101 @@ window.saveDecouverteNoteFromFiche = saveDecouverteNoteFromFiche;
 // ═══════════════════════════════════════════════════
 // Grille de cartes "Courbe de poids qui diminue"
 // ═══════════════════════════════════════════════════
-// Filtre les cards de la grille V. Diagnostic selon un mot-clé tapé dans la search bar.
-// Recherche dans le titre ET le contenu texte des blocs (si déjà rendus dans la card active).
+// Recherche dans V. Diagnostic : surligne les mots dans la section ouverte + indique les cards
+// dont la section sous-jacente contient le mot (anneau pulsant) + compteur de résultats.
 function filterDiagnosticSections(q) {
-  q = (q || '').toLowerCase().trim();
-  const grid = document.querySelector('.diagnostic-sections-grid');
-  if (!grid) return;
-  grid.querySelectorAll('.courbe-card').forEach(card => {
-    const title = (card.querySelector('.ccc-title')?.textContent || '').toLowerCase();
-    const emoji = (card.querySelector('.ccc-emoji')?.textContent || '').toLowerCase();
-    const match = !q || title.includes(q) || emoji.includes(q);
-    card.style.display = match ? '' : 'none';
+  q = (q || '').trim();
+  // 1. Nettoyer les anciens highlights et indicateurs
+  document.querySelectorAll('.diag-search-highlight').forEach(el => {
+    const parent = el.parentNode;
+    if (!parent) return;
+    parent.replaceChild(document.createTextNode(el.textContent), el);
+    parent.normalize();
   });
+  document.querySelectorAll('.diag-cat-card').forEach(c => c.removeAttribute('data-has-match'));
+  const counter = document.getElementById('diag-search-count');
+  if (counter) counter.textContent = '';
+  if (!q || q.length < 2) return; // min 2 chars pour éviter du bruit
+  const qLower = q.toLowerCase();
+  // 2. Extraire récursivement tous les textes des blocks
+  function extractText(blocks) {
+    if (!Array.isArray(blocks)) return '';
+    const parts = [];
+    blocks.forEach(b => {
+      if (!b) return;
+      if (typeof b.text === 'string') parts.push(b.text);
+      if (typeof b.label === 'string') parts.push(b.label);
+      if (typeof b.title === 'string') parts.push(b.title);
+      if (Array.isArray(b.blocks)) parts.push(extractText(b.blocks));
+      if (Array.isArray(b.items)) {
+        b.items.forEach(it => {
+          if (it && typeof it.label === 'string') parts.push(it.label);
+          if (it && Array.isArray(it.blocks)) parts.push(extractText(it.blocks));
+        });
+      }
+    });
+    return parts.join(' ');
+  }
+  // 3. Pour chaque catégorie active, vérifier si au moins 1 de ses sections matche
+  const checkedSections = (typeof SCRIPT_DATA !== 'undefined' && SCRIPT_DATA.conditional)
+    ? SCRIPT_DATA.conditional.filter(s => s.problematiqueId && isProblematiqueMatched(s.problematiqueId, state.selectedPbs))
+    : [];
+  const catsWithMatch = new Set();
+  checkedSections.forEach(s => {
+    const allText = ((s.title || '') + ' ' + extractText(s.blocks || [])).toLowerCase();
+    if (allText.includes(qLower)) {
+      const cat = getPbCategoryFromValue(s.problematiqueId) || 'autre';
+      catsWithMatch.add(cat);
+    }
+  });
+  document.querySelectorAll('.diag-cat-card').forEach(c => {
+    const cat = c.dataset.sectionCat;
+    if (catsWithMatch.has(cat)) c.setAttribute('data-has-match', 'true');
+  });
+  // 4. Surligner les occurrences dans le contenu de la card ouverte
+  const content = document.querySelector('.diagnostic-sections-grid .courbe-card-content');
+  let matchCount = 0;
+  if (content) {
+    const reEsc = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(reEsc, 'gi');
+    const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, {
+      acceptNode: (n) => {
+        if (!n.nodeValue || n.nodeValue.length < 1) return NodeFilter.FILTER_REJECT;
+        if (!n.parentElement) return NodeFilter.FILTER_REJECT;
+        if (n.parentElement.closest('script, style, mark.diag-search-highlight, .courbe-card-close, .courbe-card-banner, .diag-section-banner, .inline-conditional-parent-banner')) return NodeFilter.FILTER_REJECT;
+        return n.nodeValue.toLowerCase().includes(qLower) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      }
+    });
+    const nodes = [];
+    let n;
+    while (n = walker.nextNode()) nodes.push(n);
+    nodes.forEach(node => {
+      const text = node.nodeValue;
+      const frag = document.createDocumentFragment();
+      let last = 0;
+      text.replace(regex, (match, offset) => {
+        if (offset > last) frag.appendChild(document.createTextNode(text.slice(last, offset)));
+        const mark = document.createElement('mark');
+        mark.className = 'diag-search-highlight';
+        mark.textContent = match;
+        frag.appendChild(mark);
+        last = offset + match.length;
+        matchCount++;
+      });
+      if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    });
+  }
+  // 5. Compteur + scroll vers 1er résultat
+  if (counter) {
+    if (matchCount > 0) counter.textContent = `${matchCount} résultat${matchCount > 1 ? 's' : ''}`;
+    else if (catsWithMatch.size > 0) counter.textContent = `Voir cards surlignées`;
+    else counter.textContent = 'Aucun résultat';
+  }
+  if (matchCount > 0 && content) {
+    const first = content.querySelector('.diag-search-highlight');
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 }
 window.filterDiagnosticSections = filterDiagnosticSections;
 
