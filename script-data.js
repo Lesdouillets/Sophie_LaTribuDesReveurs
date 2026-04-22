@@ -394,47 +394,54 @@ const SCRIPT_DATA = {
       emoji: "🩺",
       blocks: [
         { type: "normal", text: "- OK, là super, j'ai eu **beaucoup d'informations**\n- MERCI !\n\n- **Maintenant, j'ai :**\n  - une **vue PLUS globale** de la situation\n  - ET des **solutions à mettre en œuvre**" },
-        { type: "separator", text: "📊 Besoins de sommeil selon l'âge" },
-        { type: "normal", text: "- D'après les **données consolidées** de la **National Sleep Foundation** (États-Unis) ET du **laboratoire français d'étude du sommeil** :\n\n- Votre enfant a des <strong style=\"color:#c0392b\">BESOINS</strong> pour son âge\n- ⚠️ Je parle toujours en **<span style=\"border-bottom:1px dashed currentColor;cursor:help\" title=\"L'âge qu'aurait eu votre enfant s'il était né à terme. Cela permet de connaître l'âge de maturation du cerveau.\">âge CORRIGÉ</span>**" },
         {
-          type: "besoins_sommeil",
-          tranches: [
-            { age: "0-2 mois", nuit: "8h-10h (entrecoupé tps alimentation)", jour: "8h-10h", total: "16h-20h (moy. 17-18h)", siestes: "–" },
-            { age: "2-3 mois", nuit: "9h-12h (1 à 3 tps alimentation)", jour: "5h-6h", total: "14h-18h (moy. 16-17h)", siestes: "3 à 6 siestes" },
-            { age: "4-7 mois", nuit: "10h-13h (1 à 3 tps alimentation)", jour: "4h-5h", total: "14h30-18h (moy. 15-16h)", siestes: "3 à 4 siestes" },
-            { age: "8-14 mois", nuit: "10h-13h (moy. 11-12h ininterrompue)", jour: "2h30-4h", total: "13h-17h (moy. 14-15h)", siestes: "2 siestes (voire 3 jusqu'à 10 mois)" },
-            { age: "15 mois – 2 ans", nuit: "10h-13h (moy. 11-12h ininterrompue)", jour: "2h-4h", total: "13h-16h (moy. 13h30-14h30)", siestes: "1 à 2 siestes" },
-            { age: "2-3 ans", nuit: "10h-13h (moy. 11-12h ininterrompue)", jour: "2h-4h", total: "13h-16h (moy. 13h30-14h30)", siestes: "1 sieste" },
-            { age: "4-5 ans", nuit: "11h-13h (moy. 11-12h)", jour: "2h-3h ou 45 min temps calme", total: "12h-16h (moy. 13-14h)", siestes: "1 sieste ou temps calme" },
-          ]
-        },
-        { type: "separator", text: "📋 Difficultés identifiées" },
-        {
-          type: "option", label: "Pas de dette de sommeil", emoji: "✅", style: "action-green", _purpleContent: true, mutexGroup: "diag-sommeil",
-          blocks: [
-            { type: "normal", text: "- La **bonne nouvelle** c'est qu'aujourd'hui [prénom_enfant] n'est **PAS en dette de sommeil**" },
-            { type: "conseil_vert", text: "👏 Vous faites **TOUT** pour que ça ne **soit pas le cas**!" },
-            { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau du tps d'endormissement :</u>** Par contre, je vois des **difficultés** sur la **durée d'endormissement** … qui est **très longue**", _purpleDark: true },
-            { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau du nombre de siestes …</u>** Par contre, je peux voir que le **nombre de siestes** … ne **correspond PAS** aux **besoins** d'un enfant de **cet âge**", _purpleDark: true },
-          ]
-        },
-        {
-          type: "option", label: "Difficultés de sommeil identifiées", emoji: "❌", style: "action", _purpleContent: true, mutexGroup: "diag-sommeil",
-          blocks: [
-            { type: "normal", text: "- Au vu de ce qu'on s'est dit\n- En effet, vous aviez **BIEN identifié** que votre enfant a des **difficultés de sommeil**.", _noBorder: true },
-            { type: "normal", text: "- <u>OPTION</u> : **<u>Temps d'endormissement trop long :</u>** Il y a une **petite problématique** au niveau des **durées d'endormissement**… qui sont **très longues**", _purpleDark: true },
-            { type: "normal", text: "- <u>OPTION</u> : **<u>Durée des siestes trop courte :</u>** Il y a aussi un **petit caillou** concernant la **durée des siestes**… qui sont **très courtes**", _purpleDark: true },
-            { type: "normal", text: "- <u>OPTION</u> : **<u>Nombre de siestes inadapté :</u>** Il y a aussi **quelque chose à travailler** au niveau du **nombre de siestes**… qui ne **correspondent PAS** forcément aux **besoins de son âge**", _purpleDark: true },
-          ]
-        },
-        {
-          type: "option", label: "Difficultés alimentaires IDENTIFIÉES (courbes en déclin)", emoji: "🍼", style: "action-yellow", _purpleContent: true,
-          blocks: [
-            { type: "normal", text: "- Je valide **AUSSI des difficultés alimentaires** parce que…\n- En effet,", _noBorder: true },
-            { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau des courbes qu'on a vues ensemble,</u>** il y a quelque chose qui se joue", _purpleDark: true },
-            { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau des différents symptômes que vous m'avez partagés,</u>** il y a quelque chose à creuser", _purpleDark: true },
-            { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau de son inconfort,</u>** pour [prénom_enfant] il faudrait comprendre pourquoi il est ainsi", _purpleDark: true },
-            { type: "normal", text: "- Du coup, il y a **BIEN quelque chose** qui **NE VA PAS** du côté de la **nutrition**", _noBorder: true },
+          type: "columns_2",
+          leftTitle: "📊 Besoins de sommeil selon l'âge",
+          rightTitle: "📋 Difficultés identifiées",
+          left: [
+            { type: "normal", text: "- D'après les **données consolidées** de la **National Sleep Foundation** (États-Unis) ET du **laboratoire français d'étude du sommeil** :\n\n- Votre enfant a des <strong style=\"color:#c0392b\">BESOINS</strong> pour son âge\n- ⚠️ Je parle toujours en **<span style=\"border-bottom:1px dashed currentColor;cursor:help\" title=\"L'âge qu'aurait eu votre enfant s'il était né à terme. Cela permet de connaître l'âge de maturation du cerveau.\">âge CORRIGÉ</span>**" },
+            {
+              type: "besoins_sommeil",
+              tranches: [
+                { age: "0-2 mois", nuit: "8h-10h (entrecoupé tps alimentation)", jour: "8h-10h", total: "16h-20h (moy. 17-18h)", siestes: "–" },
+                { age: "2-3 mois", nuit: "9h-12h (1 à 3 tps alimentation)", jour: "5h-6h", total: "14h-18h (moy. 16-17h)", siestes: "3 à 6 siestes" },
+                { age: "4-7 mois", nuit: "10h-13h (1 à 3 tps alimentation)", jour: "4h-5h", total: "14h30-18h (moy. 15-16h)", siestes: "3 à 4 siestes" },
+                { age: "8-14 mois", nuit: "10h-13h (moy. 11-12h ininterrompue)", jour: "2h30-4h", total: "13h-17h (moy. 14-15h)", siestes: "2 siestes (voire 3 jusqu'à 10 mois)" },
+                { age: "15 mois – 2 ans", nuit: "10h-13h (moy. 11-12h ininterrompue)", jour: "2h-4h", total: "13h-16h (moy. 13h30-14h30)", siestes: "1 à 2 siestes" },
+                { age: "2-3 ans", nuit: "10h-13h (moy. 11-12h ininterrompue)", jour: "2h-4h", total: "13h-16h (moy. 13h30-14h30)", siestes: "1 sieste" },
+                { age: "4-5 ans", nuit: "11h-13h (moy. 11-12h)", jour: "2h-3h ou 45 min temps calme", total: "12h-16h (moy. 13-14h)", siestes: "1 sieste ou temps calme" },
+              ]
+            },
+          ],
+          right: [
+            {
+              type: "option", label: "Pas de dette de sommeil", emoji: "✅", style: "action-green", _purpleContent: true, mutexGroup: "diag-sommeil",
+              blocks: [
+                { type: "normal", text: "- La **bonne nouvelle** c'est qu'aujourd'hui [prénom_enfant] n'est **PAS en dette de sommeil**" },
+                { type: "conseil_vert", text: "👏 Vous faites **TOUT** pour que ça ne **soit pas le cas**!" },
+                { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau du tps d'endormissement :</u>** Par contre, je vois des **difficultés** sur la **durée d'endormissement** … qui est **très longue**", _purpleDark: true },
+                { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau du nombre de siestes …</u>** Par contre, je peux voir que le **nombre de siestes** … ne **correspond PAS** aux **besoins** d'un enfant de **cet âge**", _purpleDark: true },
+              ]
+            },
+            {
+              type: "option", label: "Difficultés de sommeil identifiées", emoji: "❌", style: "action", _purpleContent: true, mutexGroup: "diag-sommeil",
+              blocks: [
+                { type: "normal", text: "- Au vu de ce qu'on s'est dit\n- En effet, vous aviez **BIEN identifié** que votre enfant a des **difficultés de sommeil**.", _noBorder: true },
+                { type: "normal", text: "- <u>OPTION</u> : **<u>Temps d'endormissement trop long :</u>** Il y a une **petite problématique** au niveau des **durées d'endormissement**… qui sont **très longues**", _purpleDark: true },
+                { type: "normal", text: "- <u>OPTION</u> : **<u>Durée des siestes trop courte :</u>** Il y a aussi un **petit caillou** concernant la **durée des siestes**… qui sont **très courtes**", _purpleDark: true },
+                { type: "normal", text: "- <u>OPTION</u> : **<u>Nombre de siestes inadapté :</u>** Il y a aussi **quelque chose à travailler** au niveau du **nombre de siestes**… qui ne **correspondent PAS** forcément aux **besoins de son âge**", _purpleDark: true },
+              ]
+            },
+            {
+              type: "option", label: "Difficultés alimentaires IDENTIFIÉES (courbes en déclin)", emoji: "🍼", style: "action-yellow", _purpleContent: true,
+              blocks: [
+                { type: "normal", text: "- Je valide **AUSSI des difficultés alimentaires** parce que…\n- En effet,", _noBorder: true },
+                { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau des courbes qu'on a vues ensemble,</u>** il y a quelque chose qui se joue", _purpleDark: true },
+                { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau des différents symptômes que vous m'avez partagés,</u>** il y a quelque chose à creuser", _purpleDark: true },
+                { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau de son inconfort,</u>** pour [prénom_enfant] il faudrait comprendre pourquoi il est ainsi", _purpleDark: true },
+                { type: "normal", text: "- Du coup, il y a **BIEN quelque chose** qui **NE VA PAS** du côté de la **nutrition**", _noBorder: true },
+              ]
+            },
           ]
         },
         { type: "normal", _noBorder: true, text: "<div style=\"width:fit-content;max-width:100%;margin:0 auto;text-align:left;background:#ffffff;padding:16px 22px;border-radius:12px;border:1px solid #c8d3e5;box-shadow:0 2px 6px rgba(45,63,92,0.08)\"><ul style=\"margin:0;padding-left:20px\"><li style=\"line-height:1.6\">MAIS la <strong>bonne nouvelle</strong> c'est que :</li><li style=\"line-height:1.6\"><strong>TOUT</strong> ce que vous m'avez partagé a du sens, est <strong>explicable</strong></li><li style=\"line-height:1.6\">Mais <strong>SURTOUT</strong> que c'est <strong>solutionnable</strong> !</li><li style=\"line-height:1.6\">ET que je peux vous <strong>accompagner</strong> pour les troubles du sommeil de [prénom_enfant]</li></ul></div>" },

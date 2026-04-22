@@ -1253,6 +1253,67 @@
     .age-active td:first-child::before { content: "▶ "; color: var(--primary); }
     .age-active td:last-child { background: #fff !important; border: 2px solid #e8a0a0 !important; border-radius: 12px; }
 
+    /* Besoins de sommeil — fiche compacte */
+    .besoins-wrap { width: 100%; }
+    .besoins-compact {
+      background: #fff; border: 2px solid #e8a0a0; border-radius: 12px;
+      padding: 14px 16px; box-shadow: 0 2px 8px rgba(192,57,43,0.08);
+      margin-bottom: 10px;
+    }
+    .besoins-compact-empty { text-align: center; color: #94a3b8; padding: 20px; }
+    .bc-header {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1.5px dashed #fecaca; padding-bottom: 8px; margin-bottom: 10px;
+      flex-wrap: wrap; gap: 6px;
+    }
+    .bc-tranche { font-size: 16px; font-weight: 800; color: #c0392b; letter-spacing: 0.3px; }
+    .bc-prenom { font-size: 13px; color: #64748b; font-weight: 600; }
+    .bc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .bc-ref { display: flex; flex-direction: column; gap: 6px; }
+    .bc-ref-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 5px 8px; background: #fff7ed; border-radius: 6px; font-size: 13px;
+    }
+    .bc-ref-row.bc-total { background: #fef2f2; font-weight: 700; }
+    .bc-k { color: #475569; font-weight: 600; }
+    .bc-v { color: #0f172a; font-weight: 700; }
+    .bc-input {
+      background: #fdf0f0; border: 1.5px solid #fecaca; border-radius: 10px;
+      padding: 10px 12px; display: flex; flex-direction: column; gap: 6px;
+    }
+    .bc-input-title { font-size: 12px; color: #c0392b; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
+    .bc-input-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+    .bc-input-row label { font-size: 12px; color: #64748b; font-weight: 600; }
+    .bc-input-total { margin-top: 4px; padding-top: 6px; border-top: 1px dashed #fecaca; font-size: 13px; color: #64748b; text-align: right; }
+    .bc-input-total strong { font-size: 17px; color: #c0392b; margin-left: 4px; }
+    @media (max-width: 680px) { .bc-grid { grid-template-columns: 1fr; } }
+    /* Backup <details> : toutes les tranches */
+    .besoins-backup { margin-top: 4px; }
+    .besoins-backup summary {
+      cursor: pointer; font-size: 13px; color: #64748b; font-weight: 700;
+      padding: 6px 10px; border-radius: 6px; background: #f1f5f9;
+      list-style: none; user-select: none;
+    }
+    .besoins-backup summary::before { content: '▸ '; color: #94a3b8; }
+    .besoins-backup[open] summary::before { content: '▾ '; }
+    .besoins-backup summary:hover { background: #e2e8f0; }
+    .besoins-backup[open] summary { margin-bottom: 8px; }
+    .besoins-backup .besoins-table { margin-bottom: 0; font-size: 12.5px; }
+
+    /* Grille 2 colonnes pour V. Diagnostic (Besoins + Difficultés) */
+    .columns-2-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+      margin: 12px 0 18px;
+    }
+    .columns-2-grid > .col-2 { min-width: 0; }
+    .columns-2-grid .col-2-title {
+      font-size: 14px; font-weight: 800; color: #334155;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      padding: 8px 12px; background: #f1f5f9; border-radius: 8px;
+      margin-bottom: 10px; border-left: 4px solid #94a3b8;
+    }
+    @media (max-width: 900px) { .columns-2-grid { grid-template-columns: 1fr; } }
+
     /* NAV BUTTONS */
     .nav-buttons {
       display: flex; justify-content: space-between; align-items: center;
@@ -7299,7 +7360,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid','vicious_circle'].includes(b.type);
+    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid','vicious_circle','columns_2'].includes(b.type);
     const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
@@ -7920,6 +7981,16 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     </div>`;
   }
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
+  if (b.type === 'columns_2') {
+    const leftBlocks = Array.isArray(b.left) ? b.left : [];
+    const rightBlocks = Array.isArray(b.right) ? b.right : [];
+    const leftTitle = b.leftTitle ? `<div class="col-2-title">${substituteVars(b.leftTitle)}</div>` : '';
+    const rightTitle = b.rightTitle ? `<div class="col-2-title">${substituteVars(b.rightTitle)}</div>` : '';
+    return `<div class="columns-2-grid">
+      <div class="col-2 col-2-left">${leftTitle}${renderBlocks(leftBlocks, sectionId, (depth||0)+1, `${path||i}.col.L`)}</div>
+      <div class="col-2 col-2-right">${rightTitle}${renderBlocks(rightBlocks, sectionId, (depth||0)+1, `${path||i}.col.R`)}</div>
+    </div>`;
+  }
   if (b.type === 'separator') return `<div class="block block-separator">${text}</div>`;
 
   if (b.type === 'pb_intro') {
@@ -8216,19 +8287,41 @@ function renderBesoinsSommeil(tranches) {
     return false;
   }
   const inputStyle = 'width:80px;padding:8px 6px;border:2px solid #e8a0a0;border-radius:8px;font-size:16px;font-weight:800;text-align:center;background:#fff';
-  return `<table class="besoins-table"><thead><tr><th>Tranche d'âge</th><th>Total / 24h</th><th>Nuit 🌙</th><th>Jour / Siestes ☀️</th><th style="background:#c0392b;color:white;font-size:14px;text-align:center">📝 ${prenom}</th></tr></thead><tbody>`
+  const activeTranche = tranches.find(t => matchAge(t));
+  // Compact card = la tranche d'âge de l'enfant, lisible verticalement
+  const compactCard = activeTranche ? `
+    <div class="besoins-compact">
+      <div class="bc-header">
+        <span class="bc-tranche">${activeTranche.age}</span>
+        <span class="bc-prenom">📝 ${prenom} — <em>${ageLabel}</em></span>
+      </div>
+      <div class="bc-grid">
+        <div class="bc-ref">
+          <div class="bc-ref-row"><span class="bc-k">🌙 Nuit</span><span class="bc-v">${activeTranche.nuit}</span></div>
+          <div class="bc-ref-row"><span class="bc-k">☀️ Jour</span><span class="bc-v">${activeTranche.jour}</span></div>
+          <div class="bc-ref-row bc-total"><span class="bc-k">∑ Total / 24h</span><span class="bc-v">${activeTranche.total}</span></div>
+          <div class="bc-ref-row"><span class="bc-k">💤 Siestes</span><span class="bc-v">${activeTranche.siestes}</span></div>
+        </div>
+        <div class="bc-input">
+          <div class="bc-input-title">Sommeil réel de ${prenom}</div>
+          <div class="bc-input-row"><label>Nuit</label><input type="text" id="sommeil-nuit" placeholder="0,00" style="${inputStyle}" oninput="calcSommeilTotal()"></div>
+          <div class="bc-input-row"><label>Jour</label><input type="text" id="sommeil-jour" placeholder="0,00" style="${inputStyle}" oninput="calcSommeilTotal()"></div>
+          <div class="bc-input-total">Total : <strong id="sommeil-total">0h00</strong></div>
+        </div>
+      </div>
+    </div>` : `
+    <div class="besoins-compact besoins-compact-empty">
+      <em>Âge de l'enfant non renseigné — veuillez compléter la fiche client.</em>
+    </div>`;
+  // Backup : toutes les tranches dans un <details> repliable
+  const backupTable = `<details class="besoins-backup"><summary>Voir toutes les tranches d'âge</summary>
+    <table class="besoins-table"><thead><tr><th>Tranche d'âge</th><th>Total / 24h</th><th>Nuit 🌙</th><th>Jour / Siestes ☀️</th></tr></thead><tbody>`
     + tranches.map(t => {
       const active = matchAge(t);
-      const inputCell = active
-        ? `<td style="background:#fdf0f0;vertical-align:middle;text-align:center;padding:12px 10px">
-            <div style="margin-bottom:8px"><strong style="font-size:20px;color:#c0392b" id="sommeil-total">0h00</strong></div>
-            <div style="margin-bottom:6px"><span style="font-size:12px;color:#888;font-weight:600">Nuit</span><br><input type="text" id="sommeil-nuit" placeholder="0,00" style="${inputStyle}" oninput="calcSommeilTotal()"></div>
-            <div><span style="font-size:12px;color:#888;font-weight:600">Jour</span><br><input type="text" id="sommeil-jour" placeholder="0,00" style="${inputStyle}" oninput="calcSommeilTotal()"></div>
-          </td>`
-        : '<td></td>';
-      return `<tr class="${active?'age-active':''}"><td class="age-highlight">${t.age}</td><td>${t.total}</td><td>${t.nuit}</td><td>${t.jour}<br><small style="color:#666">${t.siestes}</small></td>${inputCell}</tr>`;
+      return `<tr class="${active?'age-active':''}"><td class="age-highlight">${t.age}</td><td>${t.total}</td><td>${t.nuit}</td><td>${t.jour}<br><small style="color:#666">${t.siestes}</small></td></tr>`;
     }).join('')
-    + `</tbody></table>`;
+    + `</tbody></table></details>`;
+  return `<div class="besoins-wrap">${compactCard}${backupTable}</div>`;
 }
 
 function parseHM(val) {
