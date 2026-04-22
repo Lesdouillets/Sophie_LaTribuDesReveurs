@@ -2414,10 +2414,13 @@
     }
 
     /* Card catégorie pour V. Diagnostic */
+    .diag-cat-card { min-width: 220px; }
     .diag-cat-card .ccc-subtitle {
       display: block; font-size: 11.5px; font-weight: 600;
       margin-top: 4px; opacity: 0.85; text-align: center;
-      line-height: 1.2; max-width: 180px;
+      line-height: 1.2;
+      max-width: 100%; width: 100%;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .diag-cat-card.active .ccc-subtitle { color: white; }
     .diag-section-banner {
@@ -7493,8 +7496,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       // Sous-titre : si 1 seule section, afficher son nom. Si plusieurs, les lister (séparés par /)
       const subTitles = sections.map(s => getSectionDisplayTitle(s)).filter(Boolean).join(' / ');
       const activeStyle = isActive
-        ? `background:linear-gradient(90deg,${colors.dark},${colors.main});color:white;border-color:${colors.dark};box-shadow:0 4px 14px ${colors.main}55`
-        : `border-left:4px solid ${colors.main}`;
+        ? `background:linear-gradient(90deg,${colors.dark},${colors.main});color:white;border:3px solid ${colors.dark};box-shadow:0 4px 14px ${colors.main}55`
+        : `border:3px solid ${colors.main}`;
       return `<div class="courbe-card${activeCls}${dimmedCls} diag-cat-card" data-card-id="${cardId}" data-section-cat="${cat}" style="${activeStyle}" onclick="openCourbeCard(this)">
         <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${tickIcon}</span>
         <span class="ccc-emoji">${catEmoji}</span>
@@ -7510,10 +7513,14 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       if (activeGroup) {
         const colors = catColors[activeCat] || { main:'#9ca3af', dark:'#4b5563' };
         const catLabel = (typeof PB_CATEGORY_LABELS !== 'undefined' && PB_CATEGORY_LABELS[activeCat]) ? PB_CATEGORY_LABELS[activeCat] : activeCat;
+        const catShortLabel = (catLabel || '').replace(/^[^A-Za-zÀ-ÿ]+/, '').trim().toLowerCase();
         // Rendre toutes les sections de cette catégorie à la suite
         const sectionsInner = activeGroup.sections.map(s => {
           const inner = renderBlocks(getOverrideBlocks(s), s.id);
-          const sectionBanner = `<div class="diag-section-banner" style="background:${colors.main}">${s.emoji || ''} ${getSectionDisplayTitle(s)}</div>`;
+          const secTitle = getSectionDisplayTitle(s);
+          // Masquer le sub-banner si son titre est le même que celui de la catégorie parente (redondant)
+          const showBanner = secTitle && secTitle.trim().toLowerCase() !== catShortLabel;
+          const sectionBanner = showBanner ? `<div class="diag-section-banner" style="background:${colors.main}">${s.emoji || ''} ${secTitle}</div>` : '';
           return `${sectionBanner}<div class="diag-section-body">${inner}</div>`;
         }).join('');
         contentHtml = `<div class="courbe-card-content" data-card-id="${activeId}" style="border:3px solid ${colors.main};box-shadow:0 4px 16px ${colors.main}33">
