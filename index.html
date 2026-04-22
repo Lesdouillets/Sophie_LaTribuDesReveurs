@@ -2416,12 +2416,13 @@
     /* Card catégorie pour V. Diagnostic */
     .diag-cat-card { min-width: 220px; }
     .diag-cat-card .ccc-title {
-      font-size: 14.5px !important;
+      font-size: 16.5px !important;
       font-weight: 900 !important;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.4px;
       text-transform: uppercase;
     }
-    .diag-cat-card .ccc-emoji { font-size: 26px !important; }
+    .diag-cat-card .ccc-subtitle { font-size: 12.5px !important; font-weight: 700 !important; }
+    .diag-cat-card .ccc-emoji { font-size: 30px !important; }
     /* Forcer la couleur catégorie sur les titres (sinon CSS par défaut #7c2d12 gagne) */
     .diag-cat-card[data-section-cat="nutrition"] .ccc-title,
     .diag-cat-card[data-section-cat="nutrition"] .ccc-subtitle { color: #c2410c !important; }
@@ -7535,14 +7536,14 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         subTitles = [...labels].join(' / ');
       }
       const activeStyle = isActive
-        ? `background:linear-gradient(90deg,${colors.dark},${colors.main});color:white;border:3px solid ${colors.dark};box-shadow:0 4px 14px ${colors.main}55`
-        : `border:3px solid ${colors.main}`;
-      const titleColor = isActive ? 'white' : colors.dark;
+        ? `background:linear-gradient(90deg,${colors.dark},${colors.main});color:white;border:5px solid ${colors.dark};box-shadow:0 6px 18px ${colors.main}66`
+        : `border:5px solid ${colors.main};background:${colors.light};box-shadow:0 2px 8px ${colors.main}33`;
+      // Pas d'inline style sur le titre — la couleur est gérée via les règles CSS .diag-cat-card[data-section-cat=...]
       return `<div class="courbe-card${activeCls}${dimmedCls} diag-cat-card" data-card-id="${cardId}" data-section-cat="${cat}" style="${activeStyle}" onclick="openCourbeCard(this)">
         <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${tickIcon}</span>
         <span class="ccc-emoji">${catEmoji}</span>
-        <span class="ccc-title" style="color:${titleColor} !important">${catShortLabel}</span>
-        ${subTitles ? `<span class="ccc-subtitle" style="color:${titleColor} !important">${subTitles}</span>` : ''}
+        <span class="ccc-title">${catShortLabel}</span>
+        ${subTitles ? `<span class="ccc-subtitle">${subTitles}</span>` : ''}
       </div>`;
     }).join('');
     // Contenu de la catégorie active
