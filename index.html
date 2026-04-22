@@ -1687,6 +1687,8 @@
       border: 3px dashed #a78bfa !important;
       background: #f5f0ff !important;
       box-shadow: 0 2px 8px rgba(167,139,250,0.18) !important;
+      padding: 8px 20px !important;
+      margin-bottom: 8px !important;
     }
     .block-option.action.open-action .block-empathie { border: none !important; box-shadow: none !important; background: #ffffff !important; }
     .block-option.action.open-action .block-important { border: none !important; box-shadow: none !important; background: #ffffff !important; }
@@ -1975,7 +1977,7 @@
     .block-option.purple .option-content { background: #f5f0ff; }
     .block-option.purple .option-content .block:not(.block-question):not(.block-conseil-vert):not(.block-fin-consultation) { background: #f5f0ff; border-color: #d4c4f0; }
     .block-option.purple > .option-content > .edit-block-wrap:first-child .block { border: none; box-shadow: none; background: #f5f0ff; }
-    .block-purple-dark { background: #f5f0ff !important; border: 3px dashed #a78bfa !important; border-radius: 16px !important; box-shadow: 0 2px 8px rgba(167,139,250,0.18) !important; padding-left: 17px !important; }
+    .block-purple-dark { background: #f5f0ff !important; border: 3px dashed #a78bfa !important; border-radius: 16px !important; box-shadow: 0 2px 8px rgba(167,139,250,0.18) !important; padding-left: 20px !important; }
     .block-purple-dark ul { padding-left: 21px !important; }
     .block-no-border { border: none !important; box-shadow: none !important; background: transparent !important; padding: 0 !important; }
     .block-option.purple .option-content .block-option.purple .option-content .block:not(.block-question) { background: #ddd3f8; border-color: #c4b5e0; }
@@ -2380,7 +2382,7 @@
     .courbe-card .ccc-sub-chip { font-size: 11px; font-weight: 600; color: #9a3412; background: rgba(251,146,60,0.18); padding: 2px 8px; border-radius: 999px; line-height: 1.4; }
     .courbe-card.active .ccc-sub-chip { background: rgba(255,255,255,0.25); color: #fff; }
     /* Grille sticky compacte pour les cards enfants (nested inside card content) */
-    .courbe-card-content > .courbe-cards-grid-wrap > .courbe-cards-grid {
+    .courbe-card-content .courbe-cards-grid-wrap > .courbe-cards-grid {
       position: sticky;
       top: 76px; /* juste en-dessous de la banner parent sticky (~64-72px) */
       z-index: 40;
@@ -2390,7 +2392,7 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
     /* Mode compact pour les cards dans une grille sticky nested */
-    .courbe-card-content > .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card {
+    .courbe-card-content .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card {
       padding: 6px 10px 6px 28px;
       min-height: 36px;
       flex-direction: row;
@@ -2398,28 +2400,44 @@
       gap: 6px;
       justify-content: flex-start;
     }
-    .courbe-card-content > .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-emoji {
+    .courbe-card-content .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-emoji {
       font-size: 18px; line-height: 1; flex-shrink: 0;
     }
-    .courbe-card-content > .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-title {
+    .courbe-card-content .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-title {
       font-size: 12.5px; line-height: 1.25; text-align: left;
     }
-    .courbe-card-content > .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-tick {
+    .courbe-card-content .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-tick {
       top: 4px; right: 4px; font-size: 12px;
     }
-    .courbe-card-content > .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-subs {
+    .courbe-card-content .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-subs {
       display: none; /* Les chips de sous-labels sont cachées en mode compact */
     }
 
     /* Card catégorie pour V. Diagnostic */
     .diag-cat-card { min-width: 220px; }
     .diag-cat-card .ccc-title {
-      font-size: 15.5px !important;
+      font-size: 14.5px !important;
       font-weight: 900 !important;
       letter-spacing: 0.3px;
       text-transform: uppercase;
     }
-    .diag-cat-card .ccc-emoji { font-size: 28px !important; }
+    .diag-cat-card .ccc-emoji { font-size: 26px !important; }
+    /* Forcer la couleur catégorie sur les titres (sinon CSS par défaut #7c2d12 gagne) */
+    .diag-cat-card[data-section-cat="nutrition"] .ccc-title,
+    .diag-cat-card[data-section-cat="nutrition"] .ccc-subtitle { color: #c2410c !important; }
+    .diag-cat-card[data-section-cat="rythme"] .ccc-title,
+    .diag-cat-card[data-section-cat="rythme"] .ccc-subtitle { color: #166534 !important; }
+    .diag-cat-card[data-section-cat="strategie"] .ccc-title,
+    .diag-cat-card[data-section-cat="strategie"] .ccc-subtitle { color: #1e40af !important; }
+    .diag-cat-card[data-section-cat="env"] .ccc-title,
+    .diag-cat-card[data-section-cat="env"] .ccc-subtitle { color: #5b21b6 !important; }
+    .diag-cat-card[data-section-cat="relationnel"] .ccc-title,
+    .diag-cat-card[data-section-cat="relationnel"] .ccc-subtitle { color: #be185d !important; }
+    .diag-cat-card[data-section-cat="confort_physique"] .ccc-title,
+    .diag-cat-card[data-section-cat="confort_physique"] .ccc-subtitle { color: #b91c1c !important; }
+    /* Carte active = texte blanc (override les règles ci-dessus) */
+    .diag-cat-card.active .ccc-title,
+    .diag-cat-card.active .ccc-subtitle { color: white !important; }
     .diag-cat-card .ccc-subtitle {
       display: block; font-size: 11.5px; font-weight: 600;
       margin-top: 4px; opacity: 0.85; text-align: center;
