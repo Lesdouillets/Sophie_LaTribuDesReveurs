@@ -7521,12 +7521,18 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       if (cat === 'nutrition' || cat === 'confort_physique') {
         subTitles = sections.map(s => getSectionDisplayTitle(s)).filter(Boolean).join(' / ');
       } else if (cat === 'rythme') {
-        const rythmePbs = ['rythme_te_trop_long','rythme_te_long_siestes_courtes','rythme_te_long_reveils_matinaux','rythme_te_trop_court','rythme_te_court_siestes_courtes','rythme_siestes_courtes','rythme_horaires_aleatoires','rythme_reveil_decalage','rythme_reveil_fatigue','rythme_reveil_relationnel','rythme_reveil_mange','rythme_reveil_faim','rythme_reveil_dependance','rythme_reveil_bruit','rythme_activite_physique'];
-        const labels = [];
-        rythmePbs.forEach(pb => {
-          if (state.selectedPbs.has(pb) && typeof PB_LABELS !== 'undefined' && PB_LABELS[pb]) labels.push(PB_LABELS[pb]);
+        // Consolider les sous-causes en un seul label top-level (pas de détail des réveils matinaux, etc.)
+        const labels = new Set();
+        state.selectedPbs.forEach(pb => {
+          if (!pb.startsWith('rythme_')) return;
+          if (pb.startsWith('rythme_reveil_')) labels.add('Réveils matinaux');
+          else if (pb === 'rythme_te_trop_long' || pb === 'rythme_te_long_siestes_courtes' || pb === 'rythme_te_long_reveils_matinaux') labels.add("Temps d'éveil trop long");
+          else if (pb === 'rythme_te_trop_court' || pb === 'rythme_te_court_siestes_courtes') labels.add("Temps d'éveil trop court");
+          else if (pb === 'rythme_siestes_courtes') labels.add('Siestes courtes');
+          else if (pb === 'rythme_horaires_aleatoires') labels.add('Horaires aléatoires');
+          else if (pb === 'rythme_activite_physique') labels.add("Pas d'activité physique");
         });
-        subTitles = labels.join(' / ');
+        subTitles = [...labels].join(' / ');
       }
       const activeStyle = isActive
         ? `background:linear-gradient(90deg,${colors.dark},${colors.main});color:white;border:3px solid ${colors.dark};box-shadow:0 4px 14px ${colors.main}55`
