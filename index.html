@@ -2482,10 +2482,20 @@
       min-width: 80px; text-align: right;
     }
     .diag-search-highlight {
-      background: #fef08a; color: #713f12;
-      padding: 0 2px; border-radius: 3px;
-      font-weight: 700;
-      box-shadow: 0 0 0 1px #eab308;
+      background: #fde047; color: #713f12;
+      padding: 1px 3px; border-radius: 3px;
+      font-weight: 800;
+      box-shadow: 0 0 0 1.5px #eab308;
+    }
+    /* Match ciblé après clic sur un résultat : flash animé pour bien repérer */
+    .diag-search-highlight.diag-search-target {
+      background: #f59e0b; color: #fff;
+      box-shadow: 0 0 0 3px #fbbf24, 0 0 16px 4px rgba(245,158,11,0.6);
+      animation: diagTargetFlash 1.6s ease-out 2;
+    }
+    @keyframes diagTargetFlash {
+      0%, 100% { background: #f59e0b; transform: scale(1); }
+      50% { background: #dc2626; transform: scale(1.08); }
     }
     /* Card catégorie avec un match dans sa section (même non ouverte) : anneau pulsant */
     .diag-cat-card[data-has-match="true"]::after {
@@ -9282,7 +9292,12 @@ function gotoSearchResult(cat, idxInPath, sectionId, blockIdx, childId) {
         ? [...marks]
         : [...marks].filter(m => !m.closest('.courbe-card-content .courbe-card-content'));
       const target = filtered[idxInPath] || filtered[0];
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (target) {
+        // Retirer toute classe target précédente, puis flash le mot ciblé
+        document.querySelectorAll('.diag-search-target').forEach(el => el.classList.remove('diag-search-target'));
+        target.classList.add('diag-search-target');
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }, 80);
   }, 100);
 }
