@@ -7479,12 +7479,12 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     if (!state.courbeCardsActiveByGrid) state.courbeCardsActiveByGrid = {};
     const gridPath = 'diagnostic_inline_sections';
     const catColors = {
-      nutrition: { main: '#f97316', light: '#fed7aa', dark: '#c2410c' },
-      rythme: { main: '#22c55e', light: '#bbf7d0', dark: '#166534' },
-      strategie: { main: '#3b82f6', light: '#bfdbfe', dark: '#1e3a8a' },
-      env: { main: '#8b5cf6', light: '#ddd6fe', dark: '#5b21b6' },
-      relationnel: { main: '#ec4899', light: '#fbcfe8', dark: '#831843' },
-      confort_physique: { main: '#dc2626', light: '#fecaca', dark: '#7f1d1d' },
+      nutrition: { main: '#f97316', light: '#fed7aa', pastel: '#fff7ed', dark: '#c2410c' },
+      rythme: { main: '#22c55e', light: '#bbf7d0', pastel: '#f0fdf4', dark: '#166534' },
+      strategie: { main: '#3b82f6', light: '#bfdbfe', pastel: '#eff6ff', dark: '#1e3a8a' },
+      env: { main: '#8b5cf6', light: '#ddd6fe', pastel: '#f5f3ff', dark: '#5b21b6' },
+      relationnel: { main: '#ec4899', light: '#fbcfe8', pastel: '#fdf2f8', dark: '#831843' },
+      confort_physique: { main: '#dc2626', light: '#fecaca', pastel: '#fef2f2', dark: '#7f1d1d' },
     };
     const catEmojis = {
       nutrition: '🍽️',
@@ -7540,8 +7540,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         subTitles = [...labels].join(' / ');
       }
       const activeStyle = isActive
-        ? `background:linear-gradient(90deg,${colors.dark},${colors.main});color:white;border:5px solid ${colors.dark};box-shadow:0 6px 18px ${colors.main}66`
-        : `border:5px solid ${colors.main};background:${colors.light};box-shadow:0 2px 8px ${colors.main}33`;
+        ? `background:linear-gradient(90deg,${colors.dark},${colors.main});color:white;border:3px solid ${colors.dark};box-shadow:0 6px 18px ${colors.main}66`
+        : `border:3px solid ${colors.main};background:${colors.pastel};box-shadow:0 2px 8px ${colors.main}33`;
       // Pas d'inline style sur le titre — la couleur est gérée via les règles CSS .diag-cat-card[data-section-cat=...]
       return `<div class="courbe-card${activeCls}${dimmedCls} diag-cat-card" data-card-id="${cardId}" data-section-cat="${cat}" style="${activeStyle}" onclick="openCourbeCard(this)">
         <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${tickIcon}</span>
