@@ -9249,6 +9249,9 @@ window.filterDiagnosticSections = filterDiagnosticSections;
 function gotoSearchResult(cat, idxInPath, sectionId, blockIdx, childId) {
   const card = document.querySelector(`.diag-cat-card[data-section-cat="${cat}"]`);
   if (!card) return;
+  // CAPTURER la valeur de recherche AVANT le re-render (sinon l'input est recréé vide)
+  const inputBefore = document.querySelector('.diag-search-input');
+  const q = inputBefore ? inputBefore.value : '';
   if (!state.courbeCardsActiveByGrid) state.courbeCardsActiveByGrid = {};
   if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
   // 1. Activer la card parent (catégorie)
@@ -9265,11 +9268,10 @@ function gotoSearchResult(cat, idxInPath, sectionId, blockIdx, childId) {
   // 3. Re-rendre
   renderCurrentSection();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
-  // 4. Réappliquer le surlignage + scroller vers l'occurrence EXACTE
-  //    On cherche uniquement dans la zone de la bonne section + sous-carte
+  // 4. Restaurer la valeur de recherche sur le nouvel input + réappliquer le surlignage
   setTimeout(() => {
-    const input = document.querySelector('.diag-search-input');
-    const q = input ? input.value : '';
+    const newInput = document.querySelector('.diag-search-input');
+    if (newInput && q) newInput.value = q;
     filterDiagnosticSections(q);
     setTimeout(() => {
       // Zone de recherche = courbe-card-content OUVERTE de la sous-carte concernée si applicable,
