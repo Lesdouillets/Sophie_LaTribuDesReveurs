@@ -1690,6 +1690,10 @@
       padding: 8px 20px !important;
       margin-bottom: 8px !important;
     }
+    /* Aligner les bullets dans les purple-dark avec les bullets des blocs normaux (outside) */
+    .block-option.action.open-action .block-normal.block-purple-dark ul {
+      padding-left: 0 !important;
+    }
     .block-option.action.open-action .block-empathie { border: none !important; box-shadow: none !important; background: #ffffff !important; }
     .block-option.action.open-action .block-important { border: none !important; box-shadow: none !important; background: #ffffff !important; }
     .block-option.action.open-action .block-question { background: #fdf0f0 !important; }
@@ -2482,9 +2486,9 @@
       50% { opacity: 1; }
     }
     .diag-search-input {
-      width: 100%; max-width: 480px; padding: 10px 14px;
-      border: 2px solid #cbd5e0; border-radius: 10px;
-      font-size: 14px; font-family: inherit;
+      width: 260px; max-width: 100%; padding: 6px 12px;
+      border: 1.5px solid #cbd5e0; border-radius: 8px;
+      font-size: 13px; font-family: inherit;
       transition: border-color 0.15s, box-shadow 0.15s;
       box-sizing: border-box;
     }
@@ -9102,12 +9106,17 @@ function filterDiagnosticSections(q) {
   // 5. Compteur + scroll vers 1er résultat
   if (counter) {
     if (matchCount > 0) counter.textContent = `${matchCount} résultat${matchCount > 1 ? 's' : ''}`;
-    else if (catsWithMatch.size > 0) counter.textContent = `Voir cards surlignées`;
+    else if (catsWithMatch.size > 0) counter.textContent = `${catsWithMatch.size} section${catsWithMatch.size > 1 ? 's' : ''} — cliquer card surlignée`;
     else counter.textContent = 'Aucun résultat';
   }
   if (matchCount > 0 && content) {
     const first = content.querySelector('.diag-search-highlight');
     if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } else if (matchCount === 0 && catsWithMatch.size > 0 && !content) {
+    // Pas de contenu ouvert + matches dans d'autres cards → auto-ouvrir la 1ère card matchante
+    const firstCat = [...catsWithMatch][0];
+    const targetCard = document.querySelector(`.diag-cat-card[data-section-cat="${firstCat}"]`);
+    if (targetCard && typeof openCourbeCard === 'function') openCourbeCard(targetCard);
   }
 }
 window.filterDiagnosticSections = filterDiagnosticSections;
