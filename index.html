@@ -1299,6 +1299,13 @@
     .besoins-backup summary:hover { background: #e2e8f0; }
     .besoins-backup[open] summary { margin-bottom: 8px; }
     .besoins-backup .besoins-table { margin-bottom: 0; font-size: 12.5px; }
+    /* Uniformiser la ligne active du backup (pas de cadre rouge spécial sur la dernière colonne) */
+    .besoins-backup .age-active td:last-child {
+      background: #e8f5e9 !important;
+      border: none !important;
+      border-bottom: 1px solid var(--border) !important;
+      border-radius: 0 !important;
+    }
 
     /* Grille 2 colonnes pour V. Diagnostic (Besoins + Difficultés) — style "cards" comme III. Découverte */
     .columns-2-grid {
@@ -1336,10 +1343,16 @@
       box-shadow: 0 3px 10px rgba(26,42,66,0.28);
     }
     @media (max-width: 900px) { .columns-2-grid { grid-template-columns: 1fr; } }
-    /* Centrer les options "action" dans la colonne droite (Pas de dette / Difficultés sommeil / Difficultés alim) */
-    .columns-2-grid .col-2-right { align-items: center; }
-    .columns-2-grid .col-2-right > .col-2-title { align-self: stretch; }
-    .columns-2-grid .col-2-right > .edit-block-wrap { align-self: center; }
+    /* Colonne droite : grid 2-col pour mettre les 2 premières options côte à côte et la 3e (alim) pleine largeur */
+    .columns-2-grid .col-2-right {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      align-content: start;
+      justify-items: center;
+    }
+    .columns-2-grid .col-2-right > .col-2-title { grid-column: 1 / -1; justify-self: stretch; }
+    .columns-2-grid .col-2-right > .edit-block-wrap:nth-of-type(3) { grid-column: 1 / -1; }
 
     /* NAV BUTTONS */
     .nav-buttons {
