@@ -1300,19 +1300,46 @@
     .besoins-backup[open] summary { margin-bottom: 8px; }
     .besoins-backup .besoins-table { margin-bottom: 0; font-size: 12.5px; }
 
-    /* Grille 2 colonnes pour V. Diagnostic (Besoins + Difficultés) */
+    /* Grille 2 colonnes pour V. Diagnostic (Besoins + Difficultés) — style "cards" comme III. Découverte */
     .columns-2-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
-      margin: 12px 0 18px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+      align-items: stretch; margin: 12px 0 18px;
     }
-    .columns-2-grid > .col-2 { min-width: 0; }
+    .columns-2-grid > .col-2 {
+      min-width: 0; display: flex; flex-direction: column;
+      border: 2px solid #cbd5e0; border-radius: 14px;
+      padding: 12px; background: #ffffff; cursor: pointer;
+      box-sizing: border-box;
+      transition: opacity 0.2s, filter 0.2s, border-color 0.15s, box-shadow 0.15s;
+      opacity: 0.45; filter: grayscale(0.6);
+    }
+    .columns-2-grid > .col-2:hover { opacity: 0.75; filter: grayscale(0.3); }
+    .columns-2-grid[data-active-col="1"] > .col-2[data-col-idx="1"],
+    .columns-2-grid[data-active-col="2"] > .col-2[data-col-idx="2"] {
+      opacity: 1; filter: none;
+      border-color: #2980b9;
+      box-shadow: 0 4px 14px rgba(41,128,185,0.20);
+      cursor: default;
+    }
     .columns-2-grid .col-2-title {
-      font-size: 14px; font-weight: 800; color: #334155;
-      text-transform: uppercase; letter-spacing: 0.5px;
-      padding: 8px 12px; background: #f1f5f9; border-radius: 8px;
-      margin-bottom: 10px; border-left: 4px solid #94a3b8;
+      padding: 10px 14px; border-radius: 10px;
+      font-weight: 900; font-size: 14px;
+      text-align: center; display: flex; align-items: center; justify-content: center;
+      min-height: 48px; margin-bottom: 10px;
+      background: #d1d5db; color: #6b7280; letter-spacing: 0.3px;
+      transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+    }
+    .columns-2-grid[data-active-col="1"] > .col-2[data-col-idx="1"] .col-2-title,
+    .columns-2-grid[data-active-col="2"] > .col-2[data-col-idx="2"] .col-2-title {
+      background: linear-gradient(90deg, #1a2a42, #4a5f82);
+      color: white;
+      box-shadow: 0 3px 10px rgba(26,42,66,0.28);
     }
     @media (max-width: 900px) { .columns-2-grid { grid-template-columns: 1fr; } }
+    /* Centrer les options "action" dans la colonne droite (Pas de dette / Difficultés sommeil / Difficultés alim) */
+    .columns-2-grid .col-2-right { align-items: center; }
+    .columns-2-grid .col-2-right > .col-2-title { align-self: stretch; }
+    .columns-2-grid .col-2-right > .edit-block-wrap { align-self: center; }
 
     /* NAV BUTTONS */
     .nav-buttons {
@@ -5964,6 +5991,13 @@ function setDecouverteStep(el, step) {
 }
 window.setDecouverteStep = setDecouverteStep;
 
+function setColumns2Active(el, idx) {
+  const grid = el.closest('.columns-2-grid');
+  if (!grid) return;
+  grid.setAttribute('data-active-col', String(idx));
+}
+window.setColumns2Active = setColumns2Active;
+
 function updateAppertVolume() {
   const input = document.getElementById('appert-poids-input');
   const resultEl = document.getElementById('appert-volume-result');
@@ -7986,9 +8020,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const rightBlocks = Array.isArray(b.right) ? b.right : [];
     const leftTitle = b.leftTitle ? `<div class="col-2-title">${substituteVars(b.leftTitle)}</div>` : '';
     const rightTitle = b.rightTitle ? `<div class="col-2-title">${substituteVars(b.rightTitle)}</div>` : '';
-    return `<div class="columns-2-grid">
-      <div class="col-2 col-2-left">${leftTitle}${renderBlocks(leftBlocks, sectionId, (depth||0)+1, `${path||i}.col.L`)}</div>
-      <div class="col-2 col-2-right">${rightTitle}${renderBlocks(rightBlocks, sectionId, (depth||0)+1, `${path||i}.col.R`)}</div>
+    const activeCol = (b.defaultActive === 2) ? 2 : 1;
+    return `<div class="columns-2-grid" data-active-col="${activeCol}">
+      <div class="col-2 col-2-left" data-col-idx="1" onclick="setColumns2Active(this, 1)">${leftTitle}${renderBlocks(leftBlocks, sectionId, (depth||0)+1, `${path||i}.col.L`)}</div>
+      <div class="col-2 col-2-right" data-col-idx="2" onclick="setColumns2Active(this, 2)">${rightTitle}${renderBlocks(rightBlocks, sectionId, (depth||0)+1, `${path||i}.col.R`)}</div>
     </div>`;
   }
   if (b.type === 'separator') return `<div class="block block-separator">${text}</div>`;
