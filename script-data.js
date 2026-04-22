@@ -395,7 +395,7 @@ const SCRIPT_DATA = {
       blocks: [
         { type: "normal", text: "- OK, là super, j'ai eu **beaucoup d'informations**\n- MERCI !\n\n- **Maintenant, j'ai :**\n  - une **vue PLUS globale** de la situation\n  - ET des **solutions à mettre en œuvre**" },
         { type: "separator", text: "📊 Besoins de sommeil selon l'âge" },
-        { type: "normal", text: "- D'après les **données consolidées** de la **National Sleep Foundation** (États-Unis) ET le **laboratoire français d'étude du sommeil** :\n\n- Votre enfant a des <strong style=\"color:#c0392b\">BESOINS</strong> pour son âge\n- ⚠️ Je parle toujours en **<span style=\"border-bottom:1px dashed currentColor;cursor:help\" title=\"L'âge qu'aurait eu votre enfant s'il était né à terme. Cela permet de connaître l'âge de maturation du cerveau.\">âge CORRIGÉ</span>**" },
+        { type: "normal", text: "- D'après les **données consolidées** de la **National Sleep Foundation** (États-Unis) ET du **laboratoire français d'étude du sommeil** :\n\n- Votre enfant a des <strong style=\"color:#c0392b\">BESOINS</strong> pour son âge\n- ⚠️ Je parle toujours en **<span style=\"border-bottom:1px dashed currentColor;cursor:help\" title=\"L'âge qu'aurait eu votre enfant s'il était né à terme. Cela permet de connaître l'âge de maturation du cerveau.\">âge CORRIGÉ</span>**" },
         {
           type: "besoins_sommeil",
           tranches: [
@@ -414,7 +414,7 @@ const SCRIPT_DATA = {
           blocks: [
             { type: "normal", text: "- La **bonne nouvelle** c'est qu'aujourd'hui [prénom_enfant] n'est **PAS en dette de sommeil**" },
             { type: "conseil_vert", text: "👏 Vous faites **TOUT** pour que ça ne **soit pas le cas**!" },
-            { type: "normal", text: "**<u>Au niveau du tps d'endormissement :</u>** Par contre, je vois des **difficultés** sur la **durée d'endormissement** … qui est **très long**", _purpleDark: true },
+            { type: "normal", text: "**<u>Au niveau du tps d'endormissement :</u>** Par contre, je vois des **difficultés** sur la **durée d'endormissement** … qui est **très longue**", _purpleDark: true },
             { type: "normal", text: "**<u>Au niveau du nombre de siestes …</u>** Par contre, je peux voir que le **nombre de siestes** … ne **correspond PAS** aux **besoins** d'un enfant de **cet âge**", _purpleDark: true },
           ]
         },
@@ -432,7 +432,7 @@ const SCRIPT_DATA = {
           blocks: [
             { type: "normal", text: "- Je valide **AUSSI des difficultés alimentaires** parce que…\n- En effet,", _noBorder: true },
             { type: "normal", text: "**<u>Au niveau des courbes qu'on a vues ensemble,</u>** il y a quelque chose qui se joue", _purpleDark: true },
-            { type: "normal", text: "**<u>Au niveau des différents symptômes que vous m'avez partagé,</u>** il y a quelque chose à creuser", _purpleDark: true },
+            { type: "normal", text: "**<u>Au niveau des différents symptômes que vous m'avez partagés,</u>** il y a quelque chose à creuser", _purpleDark: true },
             { type: "normal", text: "**<u>Au niveau de son inconfort,</u>** pour [prénom_enfant] il faudrait comprendre pourquoi il est ainsi", _purpleDark: true },
             { type: "normal", text: "- Du coup, il y a **BIEN quelque chose** qui **NE VA PAS** du côté de la **nutrition**", _noBorder: true },
           ]
