@@ -7351,38 +7351,58 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
 
   if (b.type === 'conditional_sections_inline') {
-    // Affiche le contenu des sections conditionnelles dont la problématique est cochée, à la suite de V. Diagnostic
+    // Affiche les sections conditionnelles actives sous forme de GRILLE DE CARDS (style courbe_cards_grid)
+    // — 1 card par section active, tick en haut-droite pour marquer "vu", couleur par catégorie.
     const checkedSections = SCRIPT_DATA.conditional.filter(s => s.problematiqueId && isProblematiqueMatched(s.problematiqueId, state.selectedPbs));
     if (checkedSections.length === 0) return '';
-    // Regrouper par catégorie parente (en préservant l'ordre d'apparition)
-    const groupsByCat = [];
-    const catIndexMap = {};
-    checkedSections.forEach(s => {
+    if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+    if (!state.courbeCardsActiveByGrid) state.courbeCardsActiveByGrid = {};
+    const gridPath = 'diagnostic_inline_sections';
+    const activeId = state.courbeCardsActiveByGrid[gridPath] || null;
+    const catColors = {
+      nutrition: '#f97316',
+      rythme: '#22c55e',
+      strategie: '#3b82f6',
+      env: '#8b5cf6',
+      relationnel: '#ec4899',
+      confort_physique: '#dc2626',
+    };
+    const cardsHtml = checkedSections.map(s => {
+      const cardId = 'cs_' + s.id;
+      const ticked = state.courbeCardsTicked.has(cardId);
+      const isActive = activeId === cardId;
+      const isDimmed = activeId && activeId !== cardId;
+      const dimmedCls = isDimmed ? ' dimmed' : '';
+      const activeCls = isActive ? ' active' : '';
       const cat = getPbCategoryFromValue(s.problematiqueId) || 'autre';
-      if (catIndexMap[cat] === undefined) {
-        catIndexMap[cat] = groupsByCat.length;
-        groupsByCat.push({ cat, sections: [] });
-      }
-      groupsByCat[catIndexMap[cat]].sections.push(s);
-    });
-    return groupsByCat.map(group => {
-      const { cat, sections } = group;
-      const catLabel = (typeof PB_CATEGORY_LABELS !== 'undefined' && PB_CATEGORY_LABELS[cat]) ? PB_CATEGORY_LABELS[cat] : cat;
-      const parentBannerHtml = `<div class="inline-conditional-parent-banner" data-category="${cat}" onclick="toggleConditionalCategoryGroup(this)"><span class="icp-label">${catLabel}</span><span class="icp-arrow">▾</span></div>`;
-      const sectionsHtml = sections.map(s => `
-      <div class="inline-conditional-section" data-section-id="${s.id}" data-category="${cat}">
-        <div class="inline-conditional-header" onclick="toggleConditionalSection('${s.id}')">
-          <span class="inline-conditional-emoji">${s.emoji || '📄'}</span>
-          <span class="inline-conditional-title">${getSectionDisplayTitle(s)}</span>
-          <span class="inline-conditional-arrow">▾</span>
-        </div>
-        <div class="inline-conditional-content">
-          ${renderBlocks(getOverrideBlocks(s), s.id)}
-          <button type="button" class="btn-close-conditional" onclick="toggleConditionalSection('${s.id}')">✕ Fermer cette section</button>
-        </div>
-      </div>`).join('');
-      return `<div class="inline-conditional-category-group" data-category="${cat}">${parentBannerHtml}${sectionsHtml}</div>`;
+      const color = catColors[cat] || '#9ca3af';
+      const tickIcon = ticked ? '✅' : '☐';
+      return `<div class="courbe-card${activeCls}${dimmedCls}" data-card-id="${cardId}" data-section-cat="${cat}" style="border-left:4px solid ${color}" onclick="openCourbeCard(this)">
+        <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${tickIcon}</span>
+        <span class="ccc-emoji">${s.emoji || '📄'}</span>
+        <span class="ccc-title">${getSectionDisplayTitle(s)}</span>
+      </div>`;
     }).join('');
+    let contentHtml = '';
+    if (activeId) {
+      const activeSection = checkedSections.find(s => 'cs_' + s.id === activeId);
+      if (activeSection) {
+        const cat = getPbCategoryFromValue(activeSection.problematiqueId) || 'autre';
+        const color = catColors[cat] || '#9ca3af';
+        const inner = renderBlocks(getOverrideBlocks(activeSection), activeSection.id);
+        const bannerLabel = `${activeSection.emoji || ''} ${getSectionDisplayTitle(activeSection)}`;
+        contentHtml = `<div class="courbe-card-content" data-card-id="${activeId}" style="border-top:3px solid ${color}">
+          <div class="courbe-card-banner" style="background:${color};color:white">${bannerLabel}</div>
+          <button type="button" class="courbe-card-close" onclick="closeCourbeCard(this)">✕ Fermer</button>
+          ${inner}
+          <button type="button" class="courbe-card-close courbe-card-close-bottom" onclick="closeCourbeCard(this)">✕ Fermer</button>
+        </div>`;
+      }
+    }
+    return `<div class="courbe-cards-grid-wrap diagnostic-sections-grid" data-grid-path="${gridPath}">
+      <div class="courbe-cards-grid">${cardsHtml}</div>
+      ${contentHtml}
+    </div>`;
   }
 
   if (b.type === 'grouped_checklist') {
