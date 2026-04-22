@@ -8374,13 +8374,15 @@ function renderBesoinsSommeil(tranches) {
     : (reel !== '' && reel !== undefined && reel !== null)
       ? parseInt(reel)
       : parseAgeToMonths(state.client.ageCorrigeManuel || state.client.ageEnfant);
-  // Priorité : âge corrigé si disponible, sinon âge réel
-  const hasCorrige = !!(state.client.ageCorrigeStr && String(state.client.ageCorrigeStr).trim())
-                  || (corrige !== '' && corrige !== undefined && corrige !== null);
+  // Priorité : âge corrigé si disponible (ageCorrigeStr / ageCorrigeMois / ageCorrigeManuel), sinon âge réel
+  const nonEmpty = v => v !== '' && v !== undefined && v !== null && String(v).trim() !== '';
+  const hasCorrige = nonEmpty(state.client.ageCorrigeStr)
+                  || nonEmpty(state.client.ageCorrigeManuel)
+                  || nonEmpty(corrige);
   const badgeReel = '<span style="background:#dbeafe;color:#1e3a8a;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.3px;margin-left:4px">âge réel</span>';
   const badgeCorrige = '<span style="background:#fecaca;color:#7f1d1d;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.3px;margin-left:4px">âge corrigé</span>';
-  const corrigeTxt = state.client.ageCorrigeStr || (corrige !== '' && corrige !== undefined && corrige !== null ? corrige + ' mois' : '');
-  const reelTxt = state.client.ageReelStr || (reel !== '' && reel !== undefined && reel !== null ? reel + ' mois' : (months + ' mois'));
+  const corrigeTxt = state.client.ageCorrigeStr || state.client.ageCorrigeManuel || (nonEmpty(corrige) ? corrige + ' mois' : '');
+  const reelTxt = state.client.ageReelStr || (nonEmpty(reel) ? reel + ' mois' : (months + ' mois'));
   const ageLabel = hasCorrige ? (corrigeTxt + badgeCorrige) : (reelTxt + badgeReel);
   const prenom = state.client.prenomEnfant || '[prénom]';
   function matchAge(t) {
