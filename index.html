@@ -2381,7 +2381,23 @@
     .courbe-card .ccc-subs { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-top: 2px; }
     .courbe-card .ccc-sub-chip { font-size: 11px; font-weight: 600; color: #9a3412; background: rgba(251,146,60,0.18); padding: 2px 8px; border-radius: 999px; line-height: 1.4; }
     .courbe-card.active .ccc-sub-chip { background: rgba(255,255,255,0.25); color: #fff; }
+    /* Search bar pour filtrer les sections dans V. Diagnostic */
+    .diagnostic-sections-search { margin: 10px 0 14px; }
+    .diag-search-input {
+      width: 100%; max-width: 480px; padding: 10px 14px;
+      border: 2px solid #cbd5e0; border-radius: 10px;
+      font-size: 14px; font-family: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      box-sizing: border-box;
+    }
+    .diag-search-input:focus {
+      outline: none; border-color: #4a5568;
+      box-shadow: 0 0 0 3px rgba(74,85,104,0.15);
+    }
     .courbe-card-banner {
+      position: sticky;
+      top: 0;
+      z-index: 50;
       background: linear-gradient(90deg, #c2410c, #f97316);
       color: white;
       padding: 10px 18px;
@@ -7399,9 +7415,14 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         </div>`;
       }
     }
-    return `<div class="courbe-cards-grid-wrap diagnostic-sections-grid" data-grid-path="${gridPath}">
-      <div class="courbe-cards-grid">${cardsHtml}</div>
-      ${contentHtml}
+    return `<div class="diagnostic-sections-wrapper">
+      <div class="diagnostic-sections-search">
+        <input type="text" placeholder="🔍 Rechercher dans les sections…" oninput="filterDiagnosticSections(this.value)" class="diag-search-input" autocomplete="off">
+      </div>
+      <div class="courbe-cards-grid-wrap diagnostic-sections-grid" data-grid-path="${gridPath}">
+        <div class="courbe-cards-grid">${cardsHtml}</div>
+        ${contentHtml}
+      </div>
     </div>`;
   }
 
@@ -8835,6 +8856,21 @@ window.saveDecouverteNoteFromFiche = saveDecouverteNoteFromFiche;
 // ═══════════════════════════════════════════════════
 // Grille de cartes "Courbe de poids qui diminue"
 // ═══════════════════════════════════════════════════
+// Filtre les cards de la grille V. Diagnostic selon un mot-clé tapé dans la search bar.
+// Recherche dans le titre ET le contenu texte des blocs (si déjà rendus dans la card active).
+function filterDiagnosticSections(q) {
+  q = (q || '').toLowerCase().trim();
+  const grid = document.querySelector('.diagnostic-sections-grid');
+  if (!grid) return;
+  grid.querySelectorAll('.courbe-card').forEach(card => {
+    const title = (card.querySelector('.ccc-title')?.textContent || '').toLowerCase();
+    const emoji = (card.querySelector('.ccc-emoji')?.textContent || '').toLowerCase();
+    const match = !q || title.includes(q) || emoji.includes(q);
+    card.style.display = match ? '' : 'none';
+  });
+}
+window.filterDiagnosticSections = filterDiagnosticSections;
+
 function openCourbeCard(cardEl) {
   if (!cardEl) return;
   const cardId = cardEl.dataset.cardId;
