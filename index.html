@@ -2455,7 +2455,9 @@
       margin-top: 4px; opacity: 0.85; text-align: center;
       line-height: 1.2;
       max-width: 100%; width: 100%;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden; text-overflow: ellipsis;
+      word-break: break-word;
     }
     .diag-cat-card.active .ccc-subtitle { color: white; }
     .diag-section-banner {
@@ -7528,12 +7530,11 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const dimmedCls = isDimmed ? ' dimmed' : '';
       const activeCls = isActive ? ' active' : '';
       const tickIcon = ticked ? '✅' : '☐';
-      // Sous-titre : affiché uniquement pour nutrition, confort_physique et rythme
+      // Sous-titre : affiché pour toutes les catégories avec noms des pbs cochées
       let subTitles = '';
       if (cat === 'nutrition' || cat === 'confort_physique') {
         subTitles = sections.map(s => getSectionDisplayTitle(s)).filter(Boolean).join(' / ');
       } else if (cat === 'rythme') {
-        // Consolider les sous-causes en un seul label top-level (pas de détail des réveils matinaux, etc.)
         const labels = new Set();
         state.selectedPbs.forEach(pb => {
           if (!pb.startsWith('rythme_')) return;
@@ -7545,6 +7546,15 @@ function renderBlockInner(b, i, sectionId, depth, path) {
           else if (pb === 'rythme_activite_physique') labels.add("Pas d'activité physique");
         });
         subTitles = [...labels].join(' / ');
+      } else if (cat === 'env') {
+        const envPbs = { env_obscurite: 'Obscurité', env_temperature: 'Température', env_lit_ouvert: 'Lit ouvert', env_rituel: 'Rituel', env_cadre: 'Cadre', env_stimulations: 'Stimulations', env_ecrans: 'Écrans' };
+        subTitles = Object.keys(envPbs).filter(pb => state.selectedPbs.has(pb)).map(pb => envPbs[pb]).join(' / ');
+      } else if (cat === 'strategie') {
+        const stratPbs = { strategie_rendormissement: 'Rendormissement', strategie_enjeu_relationnel: 'Enjeu relationnel', strategie_tetine: 'Dépendance tétine' };
+        subTitles = Object.keys(stratPbs).filter(pb => state.selectedPbs.has(pb)).map(pb => stratPbs[pb]).join(' / ');
+      } else if (cat === 'relationnel') {
+        const relPbs = { relationnel_lit_parental: 'Lit parental', relationnel_conflit_autres: 'Conflits', relationnel_rappels: 'Rappels' };
+        subTitles = Object.keys(relPbs).filter(pb => state.selectedPbs.has(pb)).map(pb => relPbs[pb]).join(' / ');
       }
       const activeStyle = isActive
         ? `background:linear-gradient(90deg,${colors.dark},${colors.main});color:white;border:3px solid ${colors.dark};box-shadow:0 6px 18px ${colors.main}66`
