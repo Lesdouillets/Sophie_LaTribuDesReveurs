@@ -7383,21 +7383,41 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       relationnel: '#ec4899',
       confort_physique: '#dc2626',
     };
-    const cardsHtml = checkedSections.map(s => {
-      const cardId = 'cs_' + s.id;
-      const ticked = state.courbeCardsTicked.has(cardId);
-      const isActive = activeId === cardId;
-      const isDimmed = activeId && activeId !== cardId;
-      const dimmedCls = isDimmed ? ' dimmed' : '';
-      const activeCls = isActive ? ' active' : '';
+    // Regrouper les cards par catégorie (préserve l'ordre d'apparition)
+    const groupsByCat = [];
+    const catIndexMap = {};
+    checkedSections.forEach(s => {
       const cat = getPbCategoryFromValue(s.problematiqueId) || 'autre';
+      if (catIndexMap[cat] === undefined) {
+        catIndexMap[cat] = groupsByCat.length;
+        groupsByCat.push({ cat, sections: [] });
+      }
+      groupsByCat[catIndexMap[cat]].sections.push(s);
+    });
+    const cardsHtml = groupsByCat.map(group => {
+      const { cat, sections } = group;
+      const catLabel = (typeof PB_CATEGORY_LABELS !== 'undefined' && PB_CATEGORY_LABELS[cat]) ? PB_CATEGORY_LABELS[cat] : cat;
       const color = catColors[cat] || '#9ca3af';
-      const tickIcon = ticked ? '✅' : '☐';
-      return `<div class="courbe-card${activeCls}${dimmedCls}" data-card-id="${cardId}" data-section-cat="${cat}" style="border-left:4px solid ${color}" onclick="openCourbeCard(this)">
-        <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${tickIcon}</span>
-        <span class="ccc-emoji">${s.emoji || '📄'}</span>
-        <span class="ccc-title">${getSectionDisplayTitle(s)}</span>
-      </div>`;
+      // Nom court de la catégorie (sans emoji) pour préfixer le titre de chaque card
+      const catShortLabel = (catLabel || '').replace(/^[^A-Za-zÀ-ÿ]+/, '').trim();
+      const groupCardsHtml = sections.map(s => {
+        const cardId = 'cs_' + s.id;
+        const ticked = state.courbeCardsTicked.has(cardId);
+        const isActive = activeId === cardId;
+        const isDimmed = activeId && activeId !== cardId;
+        const dimmedCls = isDimmed ? ' dimmed' : '';
+        const activeCls = isActive ? ' active' : '';
+        const tickIcon = ticked ? '✅' : '☐';
+        const sectionTitle = getSectionDisplayTitle(s);
+        const cardTitle = catShortLabel ? `${catShortLabel} — ${sectionTitle}` : sectionTitle;
+        return `<div class="courbe-card${activeCls}${dimmedCls}" data-card-id="${cardId}" data-section-cat="${cat}" style="border-left:4px solid ${color}" onclick="openCourbeCard(this)">
+          <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${tickIcon}</span>
+          <span class="ccc-emoji">${s.emoji || '📄'}</span>
+          <span class="ccc-title">${cardTitle}</span>
+        </div>`;
+      }).join('');
+      return `<div class="inline-conditional-parent-banner" data-category="${cat}" style="cursor:default"><span class="icp-label">${catLabel}</span></div>
+      <div class="courbe-cards-grid">${groupCardsHtml}</div>`;
     }).join('');
     let contentHtml = '';
     if (activeId) {
@@ -7420,7 +7440,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         <input type="text" placeholder="🔍 Rechercher dans les sections…" oninput="filterDiagnosticSections(this.value)" class="diag-search-input" autocomplete="off">
       </div>
       <div class="courbe-cards-grid-wrap diagnostic-sections-grid" data-grid-path="${gridPath}">
-        <div class="courbe-cards-grid">${cardsHtml}</div>
+        ${cardsHtml}
         ${contentHtml}
       </div>
     </div>`;
