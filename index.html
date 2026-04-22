@@ -2413,6 +2413,20 @@
       display: none; /* Les chips de sous-labels sont cachées en mode compact */
     }
 
+    /* Card catégorie pour V. Diagnostic */
+    .diag-cat-card .ccc-subtitle {
+      display: block; font-size: 11.5px; font-weight: 600;
+      margin-top: 4px; opacity: 0.85; text-align: center;
+      line-height: 1.2; max-width: 180px;
+    }
+    .diag-cat-card.active .ccc-subtitle { color: white; }
+    .diag-section-banner {
+      display: inline-block; color: white; padding: 6px 12px;
+      border-radius: 6px; font-weight: 700; font-size: 13.5px;
+      margin: 12px 0 8px; letter-spacing: 0.3px;
+    }
+    .diag-section-body { padding: 0 2px; }
+
     /* Search bar pour filtrer les sections dans V. Diagnostic */
     .diagnostic-sections-search { margin: 10px 0 14px; }
     .diag-search-input {
@@ -7399,28 +7413,31 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
 
   if (b.type === 'conditional_sections_inline') {
-    // Affiche les sections conditionnelles actives sous forme de GRILLE DE CARDS (style courbe_cards_grid)
-    // — 1 card par section active, tick en haut-droite pour marquer "vu", couleur par catégorie.
+    // Une SEULE card par catégorie parente (Nutrition, Rythme, Stratégie, Env, Relationnel, Confort).
+    // La card affiche : emoji + nom catégorie + nom de la (ou des) sous-section active(s).
+    // Clic → contenu s'affiche juste après la grille. Plus de banner parent séparé.
     const checkedSections = SCRIPT_DATA.conditional.filter(s => s.problematiqueId && isProblematiqueMatched(s.problematiqueId, state.selectedPbs));
     if (checkedSections.length === 0) return '';
     if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
     if (!state.courbeCardsActiveByGrid) state.courbeCardsActiveByGrid = {};
     const gridPath = 'diagnostic_inline_sections';
-    // Auto-activer la 1ère section si aucune n'est encore active → évite le clic supplémentaire
-    let activeId = state.courbeCardsActiveByGrid[gridPath] || null;
-    if (!activeId && checkedSections.length > 0) {
-      activeId = 'cs_' + checkedSections[0].id;
-      state.courbeCardsActiveByGrid[gridPath] = activeId;
-    }
     const catColors = {
-      nutrition: '#f97316',
-      rythme: '#22c55e',
-      strategie: '#3b82f6',
-      env: '#8b5cf6',
-      relationnel: '#ec4899',
-      confort_physique: '#dc2626',
+      nutrition: { main: '#f97316', light: '#fed7aa', dark: '#c2410c' },
+      rythme: { main: '#22c55e', light: '#bbf7d0', dark: '#166534' },
+      strategie: { main: '#3b82f6', light: '#bfdbfe', dark: '#1e3a8a' },
+      env: { main: '#8b5cf6', light: '#ddd6fe', dark: '#5b21b6' },
+      relationnel: { main: '#ec4899', light: '#fbcfe8', dark: '#831843' },
+      confort_physique: { main: '#dc2626', light: '#fecaca', dark: '#7f1d1d' },
     };
-    // Regrouper les cards par catégorie (préserve l'ordre d'apparition)
+    const catEmojis = {
+      nutrition: '🍽️',
+      rythme: '⏰',
+      strategie: '😴',
+      env: '🏠',
+      relationnel: '💬',
+      confort_physique: '🩺',
+    };
+    // Regrouper par catégorie
     const groupsByCat = [];
     const catIndexMap = {};
     checkedSections.forEach(s => {
@@ -7431,42 +7448,56 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       }
       groupsByCat[catIndexMap[cat]].sections.push(s);
     });
+    // Auto-activer la 1ère catégorie si aucune n'est active
+    let activeId = state.courbeCardsActiveByGrid[gridPath] || null;
+    if (!activeId && groupsByCat.length > 0) {
+      activeId = 'cat_' + groupsByCat[0].cat;
+      state.courbeCardsActiveByGrid[gridPath] = activeId;
+    }
+    // Construire UNE card par catégorie
     const cardsHtml = groupsByCat.map(group => {
       const { cat, sections } = group;
       const catLabel = (typeof PB_CATEGORY_LABELS !== 'undefined' && PB_CATEGORY_LABELS[cat]) ? PB_CATEGORY_LABELS[cat] : cat;
-      const color = catColors[cat] || '#9ca3af';
       const catShortLabel = (catLabel || '').replace(/^[^A-Za-zÀ-ÿ]+/, '').trim();
-      const groupCardsHtml = sections.map(s => {
-        const cardId = 'cs_' + s.id;
-        const ticked = state.courbeCardsTicked.has(cardId);
-        const isActive = activeId === cardId;
-        const isDimmed = activeId && activeId !== cardId;
-        const dimmedCls = isDimmed ? ' dimmed' : '';
-        const activeCls = isActive ? ' active' : '';
-        const tickIcon = ticked ? '✅' : '☐';
-        const sectionTitle = getSectionDisplayTitle(s);
-        const cardTitle = catShortLabel ? `${catShortLabel} — ${sectionTitle}` : sectionTitle;
-        return `<div class="courbe-card${activeCls}${dimmedCls}" data-card-id="${cardId}" data-section-cat="${cat}" style="border-left:4px solid ${color}" onclick="openCourbeCard(this)">
-          <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${tickIcon}</span>
-          <span class="ccc-emoji">${s.emoji || '📄'}</span>
-          <span class="ccc-title">${cardTitle}</span>
-        </div>`;
-      }).join('');
-      return `<div class="inline-conditional-parent-banner" data-category="${cat}" style="cursor:default"><span class="icp-label">${catLabel}</span></div>
-      <div class="courbe-cards-grid">${groupCardsHtml}</div>`;
+      const colors = catColors[cat] || { main:'#9ca3af', light:'#f3f4f6', dark:'#4b5563' };
+      const catEmoji = catEmojis[cat] || '📄';
+      const cardId = 'cat_' + cat;
+      const ticked = state.courbeCardsTicked.has(cardId);
+      const isActive = activeId === cardId;
+      const isDimmed = activeId && activeId !== cardId;
+      const dimmedCls = isDimmed ? ' dimmed' : '';
+      const activeCls = isActive ? ' active' : '';
+      const tickIcon = ticked ? '✅' : '☐';
+      // Sous-titre : si 1 seule section, afficher son nom. Si plusieurs, les lister (séparés par /)
+      const subTitles = sections.map(s => getSectionDisplayTitle(s)).filter(Boolean).join(' / ');
+      const activeStyle = isActive
+        ? `background:linear-gradient(135deg,${colors.main},${colors.light});color:white;border-color:${colors.main}`
+        : `border-left:4px solid ${colors.main}`;
+      return `<div class="courbe-card${activeCls}${dimmedCls} diag-cat-card" data-card-id="${cardId}" data-section-cat="${cat}" style="${activeStyle}" onclick="openCourbeCard(this)">
+        <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${tickIcon}</span>
+        <span class="ccc-emoji">${catEmoji}</span>
+        <span class="ccc-title">${catShortLabel}</span>
+        ${subTitles ? `<span class="ccc-subtitle">${subTitles}</span>` : ''}
+      </div>`;
     }).join('');
+    // Contenu de la catégorie active
     let contentHtml = '';
-    if (activeId) {
-      const activeSection = checkedSections.find(s => 'cs_' + s.id === activeId);
-      if (activeSection) {
-        const cat = getPbCategoryFromValue(activeSection.problematiqueId) || 'autre';
-        const color = catColors[cat] || '#9ca3af';
-        const inner = renderBlocks(getOverrideBlocks(activeSection), activeSection.id);
-        const bannerLabel = `${activeSection.emoji || ''} ${getSectionDisplayTitle(activeSection)}`;
-        contentHtml = `<div class="courbe-card-content" data-card-id="${activeId}" style="border-top:3px solid ${color}">
-          <div class="courbe-card-banner" style="background:${color};color:white">${bannerLabel}</div>
+    if (activeId && activeId.startsWith('cat_')) {
+      const activeCat = activeId.slice(4);
+      const activeGroup = groupsByCat.find(g => g.cat === activeCat);
+      if (activeGroup) {
+        const colors = catColors[activeCat] || { main:'#9ca3af', dark:'#4b5563' };
+        const catLabel = (typeof PB_CATEGORY_LABELS !== 'undefined' && PB_CATEGORY_LABELS[activeCat]) ? PB_CATEGORY_LABELS[activeCat] : activeCat;
+        // Rendre toutes les sections de cette catégorie à la suite
+        const sectionsInner = activeGroup.sections.map(s => {
+          const inner = renderBlocks(getOverrideBlocks(s), s.id);
+          const sectionBanner = `<div class="diag-section-banner" style="background:${colors.main}">${s.emoji || ''} ${getSectionDisplayTitle(s)}</div>`;
+          return `${sectionBanner}<div class="diag-section-body">${inner}</div>`;
+        }).join('');
+        contentHtml = `<div class="courbe-card-content" data-card-id="${activeId}" style="border-top:3px solid ${colors.main}">
+          <div class="courbe-card-banner" style="background:${colors.main};color:white">${catLabel}</div>
           <button type="button" class="courbe-card-close" onclick="closeCourbeCard(this)">✕ Fermer</button>
-          ${inner}
+          ${sectionsInner}
           <button type="button" class="courbe-card-close courbe-card-close-bottom" onclick="closeCourbeCard(this)">✕ Fermer</button>
         </div>`;
       }
@@ -7476,7 +7507,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         <input type="text" placeholder="🔍 Rechercher dans les sections…" oninput="filterDiagnosticSections(this.value)" class="diag-search-input" autocomplete="off">
       </div>
       <div class="courbe-cards-grid-wrap diagnostic-sections-grid" data-grid-path="${gridPath}">
-        ${cardsHtml}
+        <div class="courbe-cards-grid diag-categories-grid">${cardsHtml}</div>
         ${contentHtml}
       </div>
     </div>`;
