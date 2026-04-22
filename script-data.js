@@ -414,26 +414,26 @@ const SCRIPT_DATA = {
           blocks: [
             { type: "normal", text: "- La **bonne nouvelle** c'est qu'aujourd'hui [prénom_enfant] n'est **PAS en dette de sommeil**" },
             { type: "conseil_vert", text: "👏 Vous faites **TOUT** pour que ça ne **soit pas le cas**!" },
-            { type: "normal", text: "**<u>Au niveau du tps d'endormissement :</u>** Par contre, je vois des **difficultés** sur la **durée d'endormissement** … qui est **très longue**", _purpleDark: true },
-            { type: "normal", text: "**<u>Au niveau du nombre de siestes …</u>** Par contre, je peux voir que le **nombre de siestes** … ne **correspond PAS** aux **besoins** d'un enfant de **cet âge**", _purpleDark: true },
+            { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau du tps d'endormissement :</u>** Par contre, je vois des **difficultés** sur la **durée d'endormissement** … qui est **très longue**", _purpleDark: true },
+            { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau du nombre de siestes …</u>** Par contre, je peux voir que le **nombre de siestes** … ne **correspond PAS** aux **besoins** d'un enfant de **cet âge**", _purpleDark: true },
           ]
         },
         {
           type: "option", label: "Difficultés de sommeil identifiées", emoji: "❌", style: "action", _purpleContent: true, mutexGroup: "diag-sommeil",
           blocks: [
             { type: "normal", text: "- Au vu de ce qu'on s'est dit\n- En effet, vous aviez **BIEN identifié** que votre enfant a des **difficultés de sommeil**.", _noBorder: true },
-            { type: "normal", text: "**<u>⏱ Temps d'endormissement trop long :</u>** Il y a une **petite problématique** au niveau des **durées d'endormissement**… qui sont **très longues**", _purpleDark: true },
-            { type: "normal", text: "**<u>⏰ Durée des siestes trop courte :</u>** Il y a aussi un **petit caillou** concernant la **durée des siestes**… qui sont **très courtes**", _purpleDark: true },
-            { type: "normal", text: "**<u>🔢 Nombre de siestes inadapté :</u>** Il y a aussi **quelque chose à travailler** au niveau du **nombre de siestes**… qui ne **correspondent PAS** forcément aux **besoins de son âge**", _purpleDark: true },
+            { type: "normal", text: "- <u>OPTION</u> : **<u>Temps d'endormissement trop long :</u>** Il y a une **petite problématique** au niveau des **durées d'endormissement**… qui sont **très longues**", _purpleDark: true },
+            { type: "normal", text: "- <u>OPTION</u> : **<u>Durée des siestes trop courte :</u>** Il y a aussi un **petit caillou** concernant la **durée des siestes**… qui sont **très courtes**", _purpleDark: true },
+            { type: "normal", text: "- <u>OPTION</u> : **<u>Nombre de siestes inadapté :</u>** Il y a aussi **quelque chose à travailler** au niveau du **nombre de siestes**… qui ne **correspondent PAS** forcément aux **besoins de son âge**", _purpleDark: true },
           ]
         },
         {
           type: "option", label: "Difficultés alimentaires IDENTIFIÉES (courbes en déclin)", emoji: "🍼", style: "action-yellow", _purpleContent: true,
           blocks: [
             { type: "normal", text: "- Je valide **AUSSI des difficultés alimentaires** parce que…\n- En effet,", _noBorder: true },
-            { type: "normal", text: "**<u>Au niveau des courbes qu'on a vues ensemble,</u>** il y a quelque chose qui se joue", _purpleDark: true },
-            { type: "normal", text: "**<u>Au niveau des différents symptômes que vous m'avez partagés,</u>** il y a quelque chose à creuser", _purpleDark: true },
-            { type: "normal", text: "**<u>Au niveau de son inconfort,</u>** pour [prénom_enfant] il faudrait comprendre pourquoi il est ainsi", _purpleDark: true },
+            { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau des courbes qu'on a vues ensemble,</u>** il y a quelque chose qui se joue", _purpleDark: true },
+            { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau des différents symptômes que vous m'avez partagés,</u>** il y a quelque chose à creuser", _purpleDark: true },
+            { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau de son inconfort,</u>** pour [prénom_enfant] il faudrait comprendre pourquoi il est ainsi", _purpleDark: true },
             { type: "normal", text: "- Du coup, il y a **BIEN quelque chose** qui **NE VA PAS** du côté de la **nutrition**", _noBorder: true },
           ]
         },
@@ -441,7 +441,7 @@ const SCRIPT_DATA = {
         { type: "separator", text: "⚙️ Leviers identifiés" },
         { type: "leviers_dynamiques" },
         { type: "leviers_count" },
-        { type: "normal", text: "- On aura **PEUT-ÊTRE pas le temps** de tout voir aujourd'hui :\n- mais on pourra **toujours reprendre un RDV plus tard** pour **discuter des points** que l'on n'aura **pas eu le temps de voir aujourd'hui.**\n\n- Donc, **CE QUE je vois en 1er**, c'est **quelque chose au niveau de**…" },
+        { type: "normal", text: "- On n'aura **PEUT-ÊTRE pas le temps** de tout voir aujourd'hui :\n- mais on pourra **toujours reprendre un RDV plus tard** pour **discuter des points** que l'on n'aura **pas eu le temps de voir aujourd'hui.**\n\n- Donc, **CE QUE je vois en 1er**, c'est **quelque chose au niveau de**…" },
         { type: "conditional_sections_inline" },
       ]
     },
