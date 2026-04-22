@@ -2381,6 +2381,38 @@
     .courbe-card .ccc-subs { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-top: 2px; }
     .courbe-card .ccc-sub-chip { font-size: 11px; font-weight: 600; color: #9a3412; background: rgba(251,146,60,0.18); padding: 2px 8px; border-radius: 999px; line-height: 1.4; }
     .courbe-card.active .ccc-sub-chip { background: rgba(255,255,255,0.25); color: #fff; }
+    /* Grille sticky compacte pour les cards enfants (nested inside card content) */
+    .courbe-card-content > .courbe-cards-grid-wrap > .courbe-cards-grid {
+      position: sticky;
+      top: 50px; /* juste en-dessous de la banner sticky */
+      z-index: 40;
+      background: #fff;
+      padding: 6px 6px;
+      margin: 0 -6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    /* Mode compact pour les cards dans une grille sticky nested */
+    .courbe-card-content > .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card {
+      padding: 6px 10px 6px 28px;
+      min-height: 36px;
+      flex-direction: row;
+      align-items: center;
+      gap: 6px;
+      justify-content: flex-start;
+    }
+    .courbe-card-content > .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-emoji {
+      font-size: 18px; line-height: 1; flex-shrink: 0;
+    }
+    .courbe-card-content > .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-title {
+      font-size: 12.5px; line-height: 1.25; text-align: left;
+    }
+    .courbe-card-content > .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-tick {
+      top: 4px; right: 4px; font-size: 12px;
+    }
+    .courbe-card-content > .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-subs {
+      display: none; /* Les chips de sous-labels sont cachées en mode compact */
+    }
+
     /* Search bar pour filtrer les sections dans V. Diagnostic */
     .diagnostic-sections-search { margin: 10px 0 14px; }
     .diag-search-input {
