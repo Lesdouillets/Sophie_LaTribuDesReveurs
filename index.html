@@ -7493,8 +7493,19 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const dimmedCls = isDimmed ? ' dimmed' : '';
       const activeCls = isActive ? ' active' : '';
       const tickIcon = ticked ? '✅' : '☐';
-      // Sous-titre : si 1 seule section, afficher son nom. Si plusieurs, les lister (séparés par /)
-      const subTitles = sections.map(s => getSectionDisplayTitle(s)).filter(Boolean).join(' / ');
+      // Sous-titre : affiché uniquement pour nutrition, confort_physique et rythme
+      // Pour rythme : label de la pb spécifique cochée (ex: "Temps d'éveil trop long"), pas le titre de la section
+      let subTitles = '';
+      if (cat === 'nutrition' || cat === 'confort_physique') {
+        subTitles = sections.map(s => getSectionDisplayTitle(s)).filter(Boolean).join(' / ');
+      } else if (cat === 'rythme') {
+        const rythmePbs = ['rythme_te_trop_long','rythme_te_long_siestes_courtes','rythme_te_long_reveils_matinaux','rythme_te_trop_court','rythme_te_court_siestes_courtes','rythme_siestes_courtes','rythme_horaires_aleatoires','rythme_reveil_decalage','rythme_reveil_fatigue','rythme_reveil_relationnel','rythme_reveil_mange','rythme_reveil_faim','rythme_reveil_dependance','rythme_reveil_bruit','rythme_activite_physique'];
+        const labels = [];
+        rythmePbs.forEach(pb => {
+          if (state.selectedPbs.has(pb) && typeof PB_LABELS !== 'undefined' && PB_LABELS[pb]) labels.push(PB_LABELS[pb]);
+        });
+        subTitles = labels.join(' / ');
+      }
       const activeStyle = isActive
         ? `background:linear-gradient(90deg,${colors.dark},${colors.main});color:white;border:3px solid ${colors.dark};box-shadow:0 4px 14px ${colors.main}55`
         : `border:3px solid ${colors.main}`;
