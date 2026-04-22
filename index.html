@@ -1727,15 +1727,7 @@
     /* OPTION ACTION — variante avec petits blocs violets distincts à l'intérieur (quand ouvert)
        Fond du déroulé reste BLANC (comportement par défaut de .open-action).
        Restaure uniquement la couleur violet foncé des blocs marqués _purpleDark. */
-    .block-option.action.action-purple-inside.open-action .block.block-normal.block-purple-dark,
-    .block-option.action.action-purple-inside.open-action .edit-block-wrap > .block.block-normal.block-purple-dark {
-      background: #ddd3f8 !important;
-      border: 1px solid #c4b5e0 !important;
-      border-radius: var(--radius) !important;
-      box-shadow: none !important;
-      padding: 12px 16px !important;
-      margin-bottom: 10px !important;
-    }
+    /* (Désactivé : on laisse le style dashed violet standard de .block-purple-dark s'appliquer) */
 
     /* 2+ boutons ACTION frères (top-level ou imbriqués) : côte-à-côte
        Ne s'applique QUE si le wrapper a un wrapper-action frère (avant ou après), pour ne pas affecter un bouton action isolé. */
@@ -2415,6 +2407,13 @@
 
     /* Card catégorie pour V. Diagnostic */
     .diag-cat-card { min-width: 220px; }
+    .diag-cat-card .ccc-title {
+      font-size: 18px !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+    .diag-cat-card .ccc-emoji { font-size: 32px !important; }
     .diag-cat-card .ccc-subtitle {
       display: block; font-size: 11.5px; font-weight: 600;
       margin-top: 4px; opacity: 0.85; text-align: center;
@@ -7493,27 +7492,14 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const dimmedCls = isDimmed ? ' dimmed' : '';
       const activeCls = isActive ? ' active' : '';
       const tickIcon = ticked ? '✅' : '☐';
-      // Sous-titre : affiché uniquement pour nutrition, confort_physique et rythme
-      // Pour rythme : label de la pb spécifique cochée (ex: "Temps d'éveil trop long"), pas le titre de la section
-      let subTitles = '';
-      if (cat === 'nutrition' || cat === 'confort_physique') {
-        subTitles = sections.map(s => getSectionDisplayTitle(s)).filter(Boolean).join(' / ');
-      } else if (cat === 'rythme') {
-        const rythmePbs = ['rythme_te_trop_long','rythme_te_long_siestes_courtes','rythme_te_long_reveils_matinaux','rythme_te_trop_court','rythme_te_court_siestes_courtes','rythme_siestes_courtes','rythme_horaires_aleatoires','rythme_reveil_decalage','rythme_reveil_fatigue','rythme_reveil_relationnel','rythme_reveil_mange','rythme_reveil_faim','rythme_reveil_dependance','rythme_reveil_bruit','rythme_activite_physique'];
-        const labels = [];
-        rythmePbs.forEach(pb => {
-          if (state.selectedPbs.has(pb) && typeof PB_LABELS !== 'undefined' && PB_LABELS[pb]) labels.push(PB_LABELS[pb]);
-        });
-        subTitles = labels.join(' / ');
-      }
       const activeStyle = isActive
         ? `background:linear-gradient(90deg,${colors.dark},${colors.main});color:white;border:3px solid ${colors.dark};box-shadow:0 4px 14px ${colors.main}55`
         : `border:3px solid ${colors.main}`;
+      const titleColor = isActive ? 'white' : colors.dark;
       return `<div class="courbe-card${activeCls}${dimmedCls} diag-cat-card" data-card-id="${cardId}" data-section-cat="${cat}" style="${activeStyle}" onclick="openCourbeCard(this)">
         <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${tickIcon}</span>
         <span class="ccc-emoji">${catEmoji}</span>
-        <span class="ccc-title">${catShortLabel}</span>
-        ${subTitles ? `<span class="ccc-subtitle">${subTitles}</span>` : ''}
+        <span class="ccc-title" style="color:${titleColor}">${catShortLabel}</span>
       </div>`;
     }).join('');
     // Contenu de la catégorie active
