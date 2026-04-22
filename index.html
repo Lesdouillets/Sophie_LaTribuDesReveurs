@@ -3102,7 +3102,7 @@
                     <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_courbes" data-exclusive="nutri_top_level" data-auto-only="true"> Courbes pas OK</label>
                     <div class="pb-items">
                       <div class="pb-category pb-level-2">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_declinante" data-subgroup-child="nutri_courbes"> Courbe de poids diminue <span class="pb-cause-tag">⇒ Faim</span></label>
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_declinante" data-subgroup-child="nutri_courbes" data-exclusive="nutri_top_child"> Courbe de poids diminue <span class="pb-cause-tag">⇒ Faim</span></label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_espacement" data-auto-only="true"> Espacement</label>
@@ -3150,7 +3150,7 @@
                         </div>
                       </div>
                       <div class="pb-category pb-level-2">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_inferieur" data-subgroup-child="nutri_courbes"> Courbe de poids sur percentile INFÉRIEUR (vs. PC/ou taille) <span class="pb-cause-tag">⇒ Faim</span></label>
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_inferieur" data-subgroup-child="nutri_courbes" data-exclusive="nutri_top_child"> Courbe de poids sur percentile INFÉRIEUR (vs. PC/ou taille) <span class="pb-cause-tag">⇒ Faim</span></label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_inf_espacement" data-auto-only="true"> Espacement</label>
@@ -3197,7 +3197,7 @@
                         </div>
                       </div>
                       <div class="pb-category pb-level-2">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_trop_apport" data-subgroup-child="nutri_courbes"> Trop d'apport</label>
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_trop_apport" data-subgroup-child="nutri_courbes" data-exclusive="nutri_top_child"> Trop d'apport</label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_ta_espacement" data-auto-only="true"> Espacement</label>
@@ -3238,7 +3238,7 @@
                     <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_lait_ok" data-exclusive="nutri_top_level" data-auto-only="true"> Lait <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(courbes OK)</span></label>
                     <div class="pb-items">
                       <div class="pb-category pb-level-2">
-                        <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_lok_espacement" data-subgroup-child="nutri_lait_ok" data-auto-only="true"> Espacement</label>
+                        <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_lok_espacement" data-subgroup-child="nutri_lait_ok" data-auto-only="true" data-exclusive="nutri_top_child"> Espacement</label>
                         <div class="pb-items">
                       <div class="pb-category pb-level-3">
                         <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_lok_esp_long" data-exclusive="nutri_lok_espacement" data-subgroup-child="nutri_lok_espacement"> Espacement trop long <span class="pb-cause-tag">⇒ Faim entre les prises</span></label>
@@ -3314,7 +3314,7 @@
                         </div>
                       </div>
                       <div class="pb-category pb-level-2">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_lok_lait_animal" data-subgroup-child="nutri_lait_ok"> Lait animal <span class="pb-cause-tag">⇒ Faim</span></label>
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_lok_lait_animal" data-subgroup-child="nutri_lait_ok" data-exclusive="nutri_top_child"> Lait animal <span class="pb-cause-tag">⇒ Faim</span></label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_lok_la_espacement" data-auto-only="true"> Espacement</label>
@@ -3360,7 +3360,7 @@
                         </div>
                       </div>
                       <div class="pb-category pb-level-2">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_lok_jus_vegetal" data-subgroup-child="nutri_lait_ok"> Jus végétal <span class="pb-cause-tag">⇒ Faim</span></label>
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_lok_jus_vegetal" data-subgroup-child="nutri_lait_ok" data-exclusive="nutri_top_child"> Jus végétal <span class="pb-cause-tag">⇒ Faim</span></label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_lok_jv_espacement" data-auto-only="true"> Espacement</label>
@@ -3406,7 +3406,7 @@
                         </div>
                       </div>
                       <div class="pb-category pb-level-2">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_lok_inv_jn" data-subgroup-child="nutri_lait_ok"> Inversion Jour/Nuit <span class="pb-cause-tag">⇒ Pb à la crèche ?</span></label>
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_lok_inv_jn" data-subgroup-child="nutri_lait_ok" data-exclusive="nutri_top_child"> Inversion Jour/Nuit <span class="pb-cause-tag">⇒ Pb à la crèche ?</span></label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_lok_ijn_espacement" data-auto-only="true"> Espacement</label>
@@ -3446,7 +3446,7 @@
                         </div>
                       </div>
                       <div class="pb-category pb-level-2" id="nutri-lok-n1-group">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_lok_lait_n1" data-subgroup-child="nutri_lait_ok"> Lait N°1 <span class="pb-cause-tag">⇒ Faim</span></label>
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_lok_lait_n1" data-subgroup-child="nutri_lait_ok" data-exclusive="nutri_top_child"> Lait N°1 <span class="pb-cause-tag">⇒ Faim</span></label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_lok_n1_espacement" data-auto-only="true"> Espacement</label>
@@ -3497,7 +3497,7 @@
                     <div class="pb-items">
                       <!-- Diversification N°1 — visible si âge < 12 mois -->
                       <div class="pb-category pb-level-2" id="nutri-diversif-n1-group">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_div_n1" data-subgroup-child="nutri_diversif_ok" data-auto-only="true"> Diversification N°1 <span class="pb-cause-tag">⇒ Faim ou Dépendance</span></label>
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_div_n1" data-subgroup-child="nutri_diversif_ok" data-auto-only="true" data-exclusive="nutri_top_child"> Diversification N°1 <span class="pb-cause-tag">⇒ Faim ou Dépendance</span></label>
                         <div class="pb-items">
                           <label class="pb-item pb-title-style"><span class="pb-cat-arrow" style="visibility:hidden">▸</span><input type="checkbox" name="pb" value="nutri_div_n1_bib_strat_dep" data-auto-parent="nutri_div_n1"> <span>En plus : Bib = stratégie dépendante</span></label>
                           <div class="pb-category pb-level-3">
@@ -3536,7 +3536,7 @@
                       </div>
                       <!-- Pas assez de féculents — toujours visible -->
                       <div class="pb-category pb-level-2">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_div_feculents" data-subgroup-child="nutri_diversif_ok" data-auto-only="true"> Pas assez de féculents <span class="pb-cause-tag">⇒ Faim</span></label>
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_div_feculents" data-subgroup-child="nutri_diversif_ok" data-auto-only="true" data-exclusive="nutri_top_child"> Pas assez de féculents <span class="pb-cause-tag">⇒ Faim</span></label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_div_fec_espacement" data-auto-only="true"> Espacement</label>
