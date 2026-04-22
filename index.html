@@ -1344,7 +1344,7 @@
     }
     @media (max-width: 900px) { .columns-2-grid { grid-template-columns: 1fr; } }
     /* Variante 3 colonnes (avec colonne "Bonne nouvelle") */
-    .columns-2-grid.columns-3 { grid-template-columns: 1fr 1fr 0.9fr; }
+    .columns-2-grid.columns-3 { grid-template-columns: 1fr 1.3fr 0.75fr; }
     .columns-2-grid.columns-3[data-active-col="3"] > .col-2[data-col-idx="3"] {
       opacity: 1; filter: none;
       border-color: #c52f26;
@@ -1377,7 +1377,23 @@
       justify-items: center;
     }
     .columns-2-grid .col-2-right > .col-2-title { grid-column: 1 / -1; justify-self: stretch; }
+    /* Annuler le inline-block global sur les wrappers action côte-à-côte quand on est dans une col-2-right */
+    .columns-2-grid .col-2-right > .edit-block-wrap {
+      display: block !important;
+      vertical-align: initial !important;
+      margin: 0 !important;
+      width: 100%;
+      justify-self: center;
+    }
     .columns-2-grid .col-2-right > .edit-block-wrap:nth-of-type(3) { grid-column: 1 / -1; }
+    /* Quand une option est OUVERTE, son wrapper s'étend sur toute la largeur de la col-2-right */
+    .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action.open-action) {
+      grid-column: 1 / -1 !important;
+      justify-self: stretch !important;
+    }
+    .columns-2-grid .col-2-right > .edit-block-wrap > .block-option.action.open-action {
+      width: 100% !important;
+    }
 
     /* NAV BUTTONS */
     .nav-buttons {
