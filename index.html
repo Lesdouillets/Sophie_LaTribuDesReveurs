@@ -2505,6 +2505,38 @@
       outline: none; border-color: #4a5568;
       box-shadow: 0 0 0 3px rgba(74,85,104,0.15);
     }
+    /* Liste de résultats de recherche */
+    .diag-search-results {
+      display: none;
+      margin: 0 0 12px; padding: 6px;
+      max-height: 320px; overflow-y: auto;
+      border: 1.5px solid #cbd5e0; border-radius: 10px;
+      background: #fff; box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    }
+    .diag-search-results.has-results { display: block; }
+    .diag-search-result {
+      padding: 8px 10px; border-radius: 7px; cursor: pointer;
+      border-left: 4px solid #999; margin-bottom: 4px;
+      background: #f8fafc; transition: background 0.12s;
+    }
+    .diag-search-result:hover { background: #f1f5f9; }
+    .diag-search-result:last-child { margin-bottom: 0; }
+    .dsr-title {
+      font-size: 12px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.3px; margin-bottom: 3px;
+    }
+    .dsr-cat-tag {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      padding: 1px 6px; border-radius: 4px; color: #fff;
+      margin-right: 6px; vertical-align: middle; letter-spacing: 0.3px;
+    }
+    .dsr-snippet {
+      font-size: 12.5px; color: #334155; line-height: 1.35;
+    }
+    .dsr-snippet mark {
+      background: #fef08a; color: #713f12; padding: 0 2px;
+      border-radius: 3px; font-weight: 700;
+    }
     .courbe-card-banner {
       position: sticky;
       top: 0;
@@ -7598,6 +7630,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         <input type="text" placeholder="🔍 Rechercher dans les sections…" oninput="filterDiagnosticSections(this.value)" class="diag-search-input" autocomplete="off">
         <span id="diag-search-count" class="diag-search-count"></span>
       </div>
+      <div id="diag-search-results" class="diag-search-results"></div>
       <div class="courbe-cards-grid-wrap diagnostic-sections-grid" data-grid-path="${gridPath}">
         <div class="courbe-cards-grid diag-categories-grid">${cardsHtml}</div>
         ${contentHtml}
@@ -9039,7 +9072,7 @@ window.saveDecouverteNoteFromFiche = saveDecouverteNoteFromFiche;
 // dont la section sous-jacente contient le mot (anneau pulsant) + compteur de résultats.
 function filterDiagnosticSections(q) {
   q = (q || '').trim();
-  // 1. Nettoyer les anciens highlights et indicateurs
+  // 1. Nettoyer les anciens highlights et la liste
   document.querySelectorAll('.diag-search-highlight').forEach(el => {
     const parent = el.parentNode;
     if (!parent) return;
@@ -9048,49 +9081,84 @@ function filterDiagnosticSections(q) {
   });
   document.querySelectorAll('.diag-cat-card').forEach(c => c.removeAttribute('data-has-match'));
   const counter = document.getElementById('diag-search-count');
+  const listEl = document.getElementById('diag-search-results');
   if (counter) counter.textContent = '';
-  if (!q || q.length < 2) return; // min 2 chars pour éviter du bruit
+  if (listEl) { listEl.innerHTML = ''; listEl.classList.remove('has-results'); }
+  if (!q || q.length < 2) return;
+
   const qLower = q.toLowerCase();
-  // 2. Extraire récursivement tous les textes des blocks
-  function extractText(blocks) {
-    if (!Array.isArray(blocks)) return '';
-    const parts = [];
+  const reEsc = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const catColorMap = {
+    nutrition: { main: '#f97316', dark: '#c2410c', label: 'Nutrition' },
+    rythme: { main: '#22c55e', dark: '#166534', label: 'Rythme' },
+    strategie: { main: '#3b82f6', dark: '#1e3a8a', label: 'Stratégie' },
+    env: { main: '#8b5cf6', dark: '#5b21b6', label: 'Env' },
+    relationnel: { main: '#ec4899', dark: '#be185d', label: 'Relationnel' },
+    confort_physique: { main: '#dc2626', dark: '#b91c1c', label: 'Confort' },
+  };
+  const escHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  // Collecter les textes par section (une entrée = un fragment de texte avec son origine section)
+  function collectTexts(blocks, out) {
+    if (!Array.isArray(blocks)) return;
     blocks.forEach(b => {
       if (!b) return;
-      if (typeof b.text === 'string') parts.push(b.text);
-      if (typeof b.label === 'string') parts.push(b.label);
-      if (typeof b.title === 'string') parts.push(b.title);
-      if (Array.isArray(b.blocks)) parts.push(extractText(b.blocks));
+      if (typeof b.text === 'string') out.push(b.text);
+      if (typeof b.label === 'string') out.push(b.label);
+      if (typeof b.title === 'string') out.push(b.title);
+      if (Array.isArray(b.blocks)) collectTexts(b.blocks, out);
       if (Array.isArray(b.items)) {
         b.items.forEach(it => {
-          if (it && typeof it.label === 'string') parts.push(it.label);
-          if (it && Array.isArray(it.blocks)) parts.push(extractText(it.blocks));
+          if (it && typeof it.label === 'string') out.push(it.label);
+          if (it && Array.isArray(it.blocks)) collectTexts(it.blocks, out);
         });
       }
     });
-    return parts.join(' ');
   }
-  // 3. Pour chaque catégorie active, vérifier si au moins 1 de ses sections matche
+
   const checkedSections = (typeof SCRIPT_DATA !== 'undefined' && SCRIPT_DATA.conditional)
     ? SCRIPT_DATA.conditional.filter(s => s.problematiqueId && isProblematiqueMatched(s.problematiqueId, state.selectedPbs))
     : [];
+
+  // Compteur d'occurrences par catégorie (pour retrouver le Nième match après ouverture de la card)
+  const catMatchIndex = {};
+  const results = [];
   const catsWithMatch = new Set();
+
   checkedSections.forEach(s => {
-    const allText = ((s.title || '') + ' ' + extractText(s.blocks || [])).toLowerCase();
-    if (allText.includes(qLower)) {
-      const cat = getPbCategoryFromValue(s.problematiqueId) || 'autre';
-      catsWithMatch.add(cat);
-    }
+    const cat = getPbCategoryFromValue(s.problematiqueId) || 'autre';
+    const secTitle = s.title || '';
+    const texts = [];
+    if (secTitle) texts.push(secTitle);
+    collectTexts(s.blocks || [], texts);
+    // Nettoyer balises HTML pour le snippet
+    const clean = texts.map(t => String(t).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()).filter(Boolean);
+    clean.forEach(txt => {
+      const regex = new RegExp(reEsc, 'gi');
+      let m;
+      while ((m = regex.exec(txt)) !== null) {
+        catsWithMatch.add(cat);
+        catMatchIndex[cat] = (catMatchIndex[cat] || 0);
+        const idxInCat = catMatchIndex[cat]++;
+        const start = Math.max(0, m.index - 35);
+        const end = Math.min(txt.length, m.index + m[0].length + 55);
+        const before = (start > 0 ? '…' : '') + escHtml(txt.slice(start, m.index));
+        const matchStr = '<mark>' + escHtml(m[0]) + '</mark>';
+        const after = escHtml(txt.slice(m.index + m[0].length, end)) + (end < txt.length ? '…' : '');
+        results.push({ cat, sectionTitle: secTitle, snippet: before + matchStr + after, idxInCat });
+        if (m[0].length === 0) break; // sécurité
+      }
+    });
   });
+
+  // Marquer les cards parent qui contiennent un match
   document.querySelectorAll('.diag-cat-card').forEach(c => {
-    const cat = c.dataset.sectionCat;
-    if (catsWithMatch.has(cat)) c.setAttribute('data-has-match', 'true');
+    if (catsWithMatch.has(c.dataset.sectionCat)) c.setAttribute('data-has-match', 'true');
   });
-  // 4. Surligner les occurrences dans le contenu de la card ouverte
+
+  // Surligner les occurrences dans la card ouverte (pour l'ancrage après scroll)
   const content = document.querySelector('.diagnostic-sections-grid .courbe-card-content');
-  let matchCount = 0;
   if (content) {
-    const reEsc = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const regex = new RegExp(reEsc, 'gi');
     const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, {
       acceptNode: (n) => {
@@ -9114,29 +9182,64 @@ function filterDiagnosticSections(q) {
         mark.textContent = match;
         frag.appendChild(mark);
         last = offset + match.length;
-        matchCount++;
       });
       if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
       node.parentNode.replaceChild(frag, node);
     });
   }
-  // 5. Compteur + scroll vers 1er résultat
-  if (counter) {
-    if (matchCount > 0) counter.textContent = `${matchCount} résultat${matchCount > 1 ? 's' : ''}`;
-    else if (catsWithMatch.size > 0) counter.textContent = `${catsWithMatch.size} section${catsWithMatch.size > 1 ? 's' : ''} — cliquer card surlignée`;
-    else counter.textContent = 'Aucun résultat';
+
+  // Rendre la liste de résultats
+  if (listEl) {
+    if (results.length) {
+      const MAX = 40;
+      const shown = results.slice(0, MAX);
+      listEl.innerHTML = shown.map(r => {
+        const colors = catColorMap[r.cat] || { main: '#999', dark: '#333', label: r.cat };
+        const title = escHtml(r.sectionTitle || colors.label);
+        return `<div class="diag-search-result" style="border-left-color:${colors.main}" onclick="gotoSearchResult('${r.cat}', ${r.idxInCat})">
+          <div class="dsr-title" style="color:${colors.dark}"><span class="dsr-cat-tag" style="background:${colors.main}">${colors.label}</span>${title}</div>
+          <div class="dsr-snippet">${r.snippet}</div>
+        </div>`;
+      }).join('') + (results.length > MAX ? `<div style="text-align:center;font-size:11px;color:#64748b;padding:6px">+ ${results.length - MAX} autres résultats…</div>` : '');
+      listEl.classList.add('has-results');
+    }
   }
-  if (matchCount > 0 && content) {
-    const first = content.querySelector('.diag-search-highlight');
-    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  } else if (matchCount === 0 && catsWithMatch.size > 0 && !content) {
-    // Pas de contenu ouvert + matches dans d'autres cards → auto-ouvrir la 1ère card matchante
-    const firstCat = [...catsWithMatch][0];
-    const targetCard = document.querySelector(`.diag-cat-card[data-section-cat="${firstCat}"]`);
-    if (targetCard && typeof openCourbeCard === 'function') openCourbeCard(targetCard);
+
+  if (counter) {
+    if (results.length > 0) counter.textContent = `${results.length} résultat${results.length > 1 ? 's' : ''}`;
+    else counter.textContent = 'Aucun résultat';
   }
 }
 window.filterDiagnosticSections = filterDiagnosticSections;
+
+// Naviguer vers un résultat de recherche précis : ouvre la card parent concernée
+// puis scroll vers la Nième occurrence surlignée dans cette catégorie.
+function gotoSearchResult(cat, idxInCat) {
+  const card = document.querySelector(`.diag-cat-card[data-section-cat="${cat}"]`);
+  if (!card) return;
+  const wrap = card.closest('.courbe-cards-grid-wrap');
+  const gridPath = wrap?.dataset.gridPath;
+  const cardId = card.dataset.cardId;
+  const alreadyOpen = gridPath && state.courbeCardsActiveByGrid && state.courbeCardsActiveByGrid[gridPath] === cardId;
+  const scrollToIdx = () => {
+    const input = document.querySelector('.diag-search-input');
+    const q = input ? input.value : '';
+    // Re-appliquer le surlignage dans la card nouvellement ouverte
+    filterDiagnosticSections(q);
+    setTimeout(() => {
+      const marks = document.querySelectorAll('.diagnostic-sections-grid .courbe-card-content .diag-search-highlight');
+      const target = marks[idxInCat] || marks[0];
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 60);
+  };
+  if (alreadyOpen) {
+    scrollToIdx();
+  } else {
+    openCourbeCard(card);
+    setTimeout(scrollToIdx, 120);
+  }
+}
+window.gotoSearchResult = gotoSearchResult;
 
 function openCourbeCard(cardEl) {
   if (!cardEl) return;
