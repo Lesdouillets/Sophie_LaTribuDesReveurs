@@ -1343,6 +1343,31 @@
       box-shadow: 0 3px 10px rgba(26,42,66,0.28);
     }
     @media (max-width: 900px) { .columns-2-grid { grid-template-columns: 1fr; } }
+    /* Variante 3 colonnes (avec colonne "Bonne nouvelle") */
+    .columns-2-grid.columns-3 { grid-template-columns: 1fr 1fr 0.9fr; }
+    .columns-2-grid.columns-3[data-active-col="3"] > .col-2[data-col-idx="3"] {
+      opacity: 1; filter: none;
+      border-color: #c52f26;
+      box-shadow: 0 4px 14px rgba(197,47,38,0.25);
+      cursor: default;
+    }
+    .columns-2-grid.columns-3[data-active-col="3"] > .col-2[data-col-idx="3"] .col-2-title {
+      background: linear-gradient(90deg, #991b1b, #dc2626);
+      color: white;
+      box-shadow: 0 3px 10px rgba(153,27,27,0.28);
+    }
+    /* Style "news-red" pour la 3e colonne : fond rouge pastel + accents rouges */
+    .col-2.col-3-news-red {
+      background: #fef2f2;
+      border-color: #fecaca;
+    }
+    .col-2.col-3-news-red .col-2-title {
+      background: #fecaca; color: #7f1d1d;
+    }
+    .col-2.col-3-news-red .block-normal {
+      background: transparent !important; border: none !important; box-shadow: none !important;
+    }
+    @media (max-width: 900px) { .columns-2-grid.columns-3 { grid-template-columns: 1fr; } }
     /* Colonne droite : grid 2-col pour mettre les 2 premières options côte à côte et la 3e (alim) pleine largeur */
     .columns-2-grid .col-2-right {
       display: grid !important;
@@ -8031,12 +8056,21 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   if (b.type === 'columns_2') {
     const leftBlocks = Array.isArray(b.left) ? b.left : [];
     const rightBlocks = Array.isArray(b.right) ? b.right : [];
+    const thirdBlocks = Array.isArray(b.third) ? b.third : [];
+    const hasThird = thirdBlocks.length > 0;
     const leftTitle = b.leftTitle ? `<div class="col-2-title">${substituteVars(b.leftTitle)}</div>` : '';
     const rightTitle = b.rightTitle ? `<div class="col-2-title">${substituteVars(b.rightTitle)}</div>` : '';
-    const activeCol = (b.defaultActive === 2) ? 2 : 1;
-    return `<div class="columns-2-grid" data-active-col="${activeCol}">
+    const thirdTitle = b.thirdTitle ? `<div class="col-2-title">${substituteVars(b.thirdTitle)}</div>` : '';
+    const thirdStyleCls = b.thirdStyle ? ` col-3-${b.thirdStyle}` : '';
+    const activeCol = (b.defaultActive === 2) ? 2 : (b.defaultActive === 3 ? 3 : 1);
+    const gridCls = hasThird ? 'columns-2-grid columns-3' : 'columns-2-grid';
+    const thirdHtml = hasThird
+      ? `<div class="col-2 col-2-third${thirdStyleCls}" data-col-idx="3" onclick="setColumns2Active(this, 3)">${thirdTitle}${renderBlocks(thirdBlocks, sectionId, (depth||0)+1, `${path||i}.col.T`)}</div>`
+      : '';
+    return `<div class="${gridCls}" data-active-col="${activeCol}">
       <div class="col-2 col-2-left" data-col-idx="1" onclick="setColumns2Active(this, 1)">${leftTitle}${renderBlocks(leftBlocks, sectionId, (depth||0)+1, `${path||i}.col.L`)}</div>
       <div class="col-2 col-2-right" data-col-idx="2" onclick="setColumns2Active(this, 2)">${rightTitle}${renderBlocks(rightBlocks, sectionId, (depth||0)+1, `${path||i}.col.R`)}</div>
+      ${thirdHtml}
     </div>`;
   }
   if (b.type === 'separator') return `<div class="block block-separator">${text}</div>`;

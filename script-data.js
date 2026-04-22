@@ -413,6 +413,11 @@ const SCRIPT_DATA = {
               ]
             },
           ],
+          thirdTitle: "✨ La bonne nouvelle",
+          thirdStyle: "news-red",
+          third: [
+            { type: "normal", _noBorder: true, text: "<ul style=\"margin:0;padding-left:20px\"><li style=\"line-height:1.6\">MAIS la <strong>bonne nouvelle</strong> c'est que :</li><li style=\"line-height:1.6\"><strong>TOUT</strong> ce que vous m'avez partagé a du sens, est <strong>explicable</strong></li><li style=\"line-height:1.6\">Mais <strong>SURTOUT</strong> que c'est <strong>solutionnable</strong> !</li><li style=\"line-height:1.6\">ET que je peux vous <strong>accompagner</strong> pour les troubles du sommeil de [prénom_enfant]</li></ul>" },
+          ],
           right: [
             {
               type: "option", label: "Pas de dette de sommeil", emoji: "✅", style: "action-green", _purpleContent: true, mutexGroup: "diag-sommeil",
@@ -444,7 +449,6 @@ const SCRIPT_DATA = {
             },
           ]
         },
-        { type: "normal", _noBorder: true, text: "<div style=\"width:fit-content;max-width:100%;margin:0 auto;text-align:left;background:#ffffff;padding:16px 22px;border-radius:12px;border:1px solid #c8d3e5;box-shadow:0 2px 6px rgba(45,63,92,0.08)\"><ul style=\"margin:0;padding-left:20px\"><li style=\"line-height:1.6\">MAIS la <strong>bonne nouvelle</strong> c'est que :</li><li style=\"line-height:1.6\"><strong>TOUT</strong> ce que vous m'avez partagé a du sens, est <strong>explicable</strong></li><li style=\"line-height:1.6\">Mais <strong>SURTOUT</strong> que c'est <strong>solutionnable</strong> !</li><li style=\"line-height:1.6\">ET que je peux vous <strong>accompagner</strong> pour les troubles du sommeil de [prénom_enfant]</li></ul></div>" },
         { type: "leviers_dynamiques" },
         { type: "leviers_count" },
         { type: "normal", text: "- On n'aura **PEUT-ÊTRE pas le temps** de tout voir aujourd'hui :\n- mais on pourra **toujours reprendre un RDV plus tard** pour **discuter des points** que l'on n'aura **pas eu le temps de voir aujourd'hui.**\n\n- Donc, **CE QUE je vois en 1er**, c'est **quelque chose au niveau de**…" },
