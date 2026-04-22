@@ -1271,12 +1271,13 @@
     .bc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .bc-ref { display: flex; flex-direction: column; gap: 6px; }
     .bc-ref-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 5px 8px; background: #fff7ed; border-radius: 6px; font-size: 13px;
+      display: grid; grid-template-columns: 110px 1fr;
+      align-items: center; gap: 8px;
+      padding: 5px 10px; background: #fff7ed; border-radius: 6px; font-size: 13px;
     }
     .bc-ref-row.bc-total { background: #fef2f2; font-weight: 700; }
     .bc-k { color: #475569; font-weight: 600; }
-    .bc-v { color: #0f172a; font-weight: 700; }
+    .bc-v { color: #0f172a; font-weight: 700; text-align: left; }
     .bc-input {
       background: #fdf0f0; border: 1.5px solid #fecaca; border-radius: 10px;
       padding: 10px 12px; display: flex; flex-direction: column; gap: 6px;
@@ -8373,9 +8374,10 @@ function renderBesoinsSommeil(tranches) {
     : (reel !== '' && reel !== undefined && reel !== null)
       ? parseInt(reel)
       : parseAgeToMonths(state.client.ageCorrigeManuel || state.client.ageEnfant);
-  const ageLabel = (corrige !== '' && corrige !== undefined && corrige !== null)
-    ? (state.client.ageCorrigeStr || corrige + ' mois') + ' (corrigé)'
-    : (state.client.ageReelStr || months + ' mois');
+  const isCorrige = (corrige !== '' && corrige !== undefined && corrige !== null);
+  const ageLabel = isCorrige
+    ? (state.client.ageCorrigeStr || corrige + ' mois') + ' <span style="background:#fecaca;color:#7f1d1d;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.3px;margin-left:4px">âge corrigé</span>'
+    : (state.client.ageReelStr || months + ' mois') + ' <span style="background:#dbeafe;color:#1e3a8a;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.3px;margin-left:4px">âge réel</span>';
   const prenom = state.client.prenomEnfant || '[prénom]';
   function matchAge(t) {
     if (isNaN(months)) return false;
@@ -8397,14 +8399,14 @@ function renderBesoinsSommeil(tranches) {
     <div class="besoins-compact">
       <div class="bc-header">
         <span class="bc-tranche">${activeTranche.age}</span>
-        <span class="bc-prenom">📝 ${prenom} — <em>${ageLabel}</em></span>
+        <span class="bc-prenom">📝 ${prenom} — ${ageLabel}</span>
       </div>
       <div class="bc-grid">
         <div class="bc-ref">
           <div class="bc-ref-row"><span class="bc-k">🌙 Nuit</span><span class="bc-v">${activeTranche.nuit}</span></div>
           <div class="bc-ref-row"><span class="bc-k">☀️ Jour</span><span class="bc-v">${activeTranche.jour}</span></div>
-          <div class="bc-ref-row bc-total"><span class="bc-k">∑ Total / 24h</span><span class="bc-v">${activeTranche.total}</span></div>
           <div class="bc-ref-row"><span class="bc-k">💤 Siestes</span><span class="bc-v">${activeTranche.siestes}</span></div>
+          <div class="bc-ref-row bc-total"><span class="bc-k">∑ Total / 24h</span><span class="bc-v">${activeTranche.total}</span></div>
         </div>
         <div class="bc-input">
           <div class="bc-input-title">Sommeil réel de ${prenom}</div>
