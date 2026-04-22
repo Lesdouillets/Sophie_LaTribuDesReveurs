@@ -2397,21 +2397,28 @@
     }
     /* Mode "semi-compact" pour les cards dans une grille sticky nested (entre-deux) */
     .courbe-card-content .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card {
-      padding: 10px 14px 10px 34px;
-      min-height: 52px;
+      padding: 14px 16px 14px 38px;
+      min-height: 68px;
       flex-direction: row;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       justify-content: flex-start;
     }
     .courbe-card-content .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-emoji {
-      font-size: 22px; line-height: 1; flex-shrink: 0;
+      font-size: 26px; line-height: 1; flex-shrink: 0;
     }
     .courbe-card-content .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-title {
-      font-size: 13px; line-height: 1.25; text-align: left; font-weight: 700;
+      font-size: 13.5px; line-height: 1.25; text-align: left; font-weight: 700;
     }
     .courbe-card-content .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-tick {
-      top: 5px; right: 5px; font-size: 13px;
+      top: 8px; right: 8px; font-size: 18px;
+      width: 26px; height: 26px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .courbe-card-content .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-tick:hover {
+      background: rgba(0,0,0,0.08);
     }
     .courbe-card-content .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-subs {
       display: none; /* Les chips de sous-labels sont cachées en mode compact */
