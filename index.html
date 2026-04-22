@@ -2380,6 +2380,10 @@
     .courbe-card.active .ccc-title { color: white; }
     .courbe-card.dimmed { opacity: 0.45; filter: grayscale(0.5); }
     .courbe-card.dimmed:hover { opacity: 0.8; filter: grayscale(0.2); }
+    /* Dans la grille sticky enfant (nested), on garde les cards pleinement visibles pour naviguer */
+    .courbe-card-content .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card.dimmed {
+      opacity: 1 !important; filter: none !important;
+    }
     .courbe-card .ccc-emoji { font-size: 28px; line-height: 1; }
     .courbe-card .ccc-title { font-weight: 800; font-size: 13.5px; color: #7c2d12; line-height: 1.25; }
     .courbe-card .ccc-subs { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-top: 2px; }
@@ -2660,8 +2664,8 @@
     .grouped-block .block-purple-dark > p,
     .grouped-block .block-purple-dark > li { margin-left: 0 !important; }
     /* Même alignement des bullets pour les encadrés violet à l'intérieur d'une carte Courbe (contenu déplié) */
-    .courbe-card-content .block-purple-dark { padding: 6px 20px !important; }
-    .courbe-card-content .block-purple-dark ul { padding-left: 24px !important; margin-left: 0 !important; }
+    .courbe-card-content .block-purple-dark { padding: 6px 18px !important; }
+    .courbe-card-content .block-purple-dark ul { padding-left: 22px !important; margin-left: 0 !important; }
     .grouped-block .edit-block-wrap { margin-bottom: 0; }
     /* Bloc "Conclusion" — barre latérale épaisse orange (couleurs Nutrition) + fond orange pâle */
     .conclusion-nutrition {
@@ -9098,19 +9102,25 @@ function filterDiagnosticSections(q) {
   };
   const escHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-  // Collecter les textes par section (une entrée = un fragment de texte avec son origine section)
-  function collectTexts(blocks, out) {
+  // Collecter les fragments de texte avec leur chemin (sectionId, blockIdx, childItemId, childLabel)
+  // Chaque fragment = { text, path: { blockIdx, childId, childLabel } }
+  function collectTextFragments(blocks, frags, blockIdx, childCtx) {
     if (!Array.isArray(blocks)) return;
     blocks.forEach(b => {
       if (!b) return;
-      if (typeof b.text === 'string') out.push(b.text);
-      if (typeof b.label === 'string') out.push(b.label);
-      if (typeof b.title === 'string') out.push(b.title);
-      if (Array.isArray(b.blocks)) collectTexts(b.blocks, out);
+      if (typeof b.text === 'string') frags.push({ text: b.text, blockIdx, ...childCtx });
+      if (typeof b.label === 'string') frags.push({ text: b.label, blockIdx, ...childCtx });
+      if (typeof b.title === 'string') frags.push({ text: b.title, blockIdx, ...childCtx });
+      if (Array.isArray(b.blocks)) collectTextFragments(b.blocks, frags, blockIdx, childCtx);
       if (Array.isArray(b.items)) {
         b.items.forEach(it => {
-          if (it && typeof it.label === 'string') out.push(it.label);
-          if (it && Array.isArray(it.blocks)) collectTexts(it.blocks, out);
+          if (!it) return;
+          // Si ce block est un courbe_cards_grid, on capture l'item.id comme sous-carte cliquable
+          const subCtx = (b.type === 'courbe_cards_grid')
+            ? { childId: it.id || null, childLabel: it.label || '' }
+            : childCtx;
+          if (typeof it.label === 'string') frags.push({ text: it.label, blockIdx, ...subCtx });
+          if (Array.isArray(it.blocks)) collectTextFragments(it.blocks, frags, blockIdx, subCtx);
         });
       }
     });
@@ -9120,33 +9130,42 @@ function filterDiagnosticSections(q) {
     ? SCRIPT_DATA.conditional.filter(s => s.problematiqueId && isProblematiqueMatched(s.problematiqueId, state.selectedPbs))
     : [];
 
-  // Compteur d'occurrences par catégorie (pour retrouver le Nième match après ouverture de la card)
-  const catMatchIndex = {};
+  // Compteur d'occurrences PAR CHEMIN (sectionId + blockIdx + childId)
+  // → permet de retrouver le Nième match dans le DOM une fois la bonne sous-carte ouverte.
+  const pathMatchIndex = {};
   const results = [];
   const catsWithMatch = new Set();
 
   checkedSections.forEach(s => {
     const cat = getPbCategoryFromValue(s.problematiqueId) || 'autre';
     const secTitle = s.title || '';
-    const texts = [];
-    if (secTitle) texts.push(secTitle);
-    collectTexts(s.blocks || [], texts);
-    // Nettoyer balises HTML pour le snippet
-    const clean = texts.map(t => String(t).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()).filter(Boolean);
-    clean.forEach(txt => {
+    const frags = [];
+    if (secTitle) frags.push({ text: secTitle, blockIdx: -1, childId: null, childLabel: '' });
+    (s.blocks || []).forEach((b, bi) => {
+      collectTextFragments([b], frags, bi, { childId: null, childLabel: '' });
+    });
+    frags.forEach(frag => {
+      const cleanTxt = String(frag.text).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+      if (!cleanTxt) return;
       const regex = new RegExp(reEsc, 'gi');
       let m;
-      while ((m = regex.exec(txt)) !== null) {
+      while ((m = regex.exec(cleanTxt)) !== null) {
         catsWithMatch.add(cat);
-        catMatchIndex[cat] = (catMatchIndex[cat] || 0);
-        const idxInCat = catMatchIndex[cat]++;
+        // Clé de chemin unique : sectionId + childId (rend la même sous-carte ouverte)
+        const pathKey = `${s.id || ''}||${frag.childId || ''}`;
+        pathMatchIndex[pathKey] = (pathMatchIndex[pathKey] || 0);
+        const idxInPath = pathMatchIndex[pathKey]++;
         const start = Math.max(0, m.index - 35);
-        const end = Math.min(txt.length, m.index + m[0].length + 55);
-        const before = (start > 0 ? '…' : '') + escHtml(txt.slice(start, m.index));
+        const end = Math.min(cleanTxt.length, m.index + m[0].length + 55);
+        const before = (start > 0 ? '…' : '') + escHtml(cleanTxt.slice(start, m.index));
         const matchStr = '<mark>' + escHtml(m[0]) + '</mark>';
-        const after = escHtml(txt.slice(m.index + m[0].length, end)) + (end < txt.length ? '…' : '');
-        results.push({ cat, sectionTitle: secTitle, snippet: before + matchStr + after, idxInCat });
-        if (m[0].length === 0) break; // sécurité
+        const after = escHtml(cleanTxt.slice(m.index + m[0].length, end)) + (end < cleanTxt.length ? '…' : '');
+        results.push({
+          cat, sectionTitle: secTitle, sectionId: s.id || '',
+          blockIdx: frag.blockIdx, childId: frag.childId, childLabel: frag.childLabel || '',
+          snippet: before + matchStr + after, idxInPath
+        });
+        if (m[0].length === 0) break;
       }
     });
   });
@@ -9196,8 +9215,11 @@ function filterDiagnosticSections(q) {
       listEl.innerHTML = shown.map(r => {
         const colors = catColorMap[r.cat] || { main: '#999', dark: '#333', label: r.cat };
         const title = escHtml(r.sectionTitle || colors.label);
-        return `<div class="diag-search-result" style="border-left-color:${colors.main}" onclick="gotoSearchResult('${r.cat}', ${r.idxInCat})">
-          <div class="dsr-title" style="color:${colors.dark}"><span class="dsr-cat-tag" style="background:${colors.main}">${colors.label}</span>${title}</div>
+        const childSuffix = r.childLabel ? ` <span style="opacity:0.7;font-weight:600;text-transform:none">› ${escHtml(r.childLabel)}</span>` : '';
+        const sid = (r.sectionId || '').replace(/'/g, "\\'");
+        const cid = (r.childId || '').replace(/'/g, "\\'");
+        return `<div class="diag-search-result" style="border-left-color:${colors.main}" onclick="gotoSearchResult('${r.cat}', ${r.idxInPath}, '${sid}', ${r.blockIdx}, '${cid}')">
+          <div class="dsr-title" style="color:${colors.dark}"><span class="dsr-cat-tag" style="background:${colors.main}">${colors.label}</span>${title}${childSuffix}</div>
           <div class="dsr-snippet">${r.snippet}</div>
         </div>`;
       }).join('') + (results.length > MAX ? `<div style="text-align:center;font-size:11px;color:#64748b;padding:6px">+ ${results.length - MAX} autres résultats…</div>` : '');
@@ -9212,32 +9234,57 @@ function filterDiagnosticSections(q) {
 }
 window.filterDiagnosticSections = filterDiagnosticSections;
 
-// Naviguer vers un résultat de recherche précis : ouvre la card parent concernée
-// puis scroll vers la Nième occurrence surlignée dans cette catégorie.
-function gotoSearchResult(cat, idxInCat) {
+// Naviguer vers un résultat de recherche précis : ouvre la card parent (catégorie),
+// + la sous-carte (courbe_cards_grid item) si applicable, puis scroll vers l'occurrence exacte.
+function gotoSearchResult(cat, idxInPath, sectionId, blockIdx, childId) {
   const card = document.querySelector(`.diag-cat-card[data-section-cat="${cat}"]`);
   if (!card) return;
-  const wrap = card.closest('.courbe-cards-grid-wrap');
-  const gridPath = wrap?.dataset.gridPath;
-  const cardId = card.dataset.cardId;
-  const alreadyOpen = gridPath && state.courbeCardsActiveByGrid && state.courbeCardsActiveByGrid[gridPath] === cardId;
-  const scrollToIdx = () => {
+  if (!state.courbeCardsActiveByGrid) state.courbeCardsActiveByGrid = {};
+  if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+  // 1. Activer la card parent (catégorie)
+  const parentGridPath = 'diagnostic_inline_sections';
+  const parentCardId = 'cat_' + cat;
+  state.courbeCardsActiveByGrid[parentGridPath] = parentCardId;
+  state.courbeCardsTicked.add(parentCardId);
+  // 2. Activer la sous-carte courbe_cards_grid si applicable
+  if (sectionId && childId && typeof blockIdx === 'number' && blockIdx >= 0) {
+    const childGridPath = `${sectionId}__${blockIdx}`;
+    state.courbeCardsActiveByGrid[childGridPath] = childId;
+    state.courbeCardsTicked.add(childId);
+  }
+  // 3. Re-rendre
+  renderCurrentSection();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+  // 4. Réappliquer le surlignage + scroller vers l'occurrence EXACTE
+  //    On cherche uniquement dans la zone de la bonne section + sous-carte
+  setTimeout(() => {
     const input = document.querySelector('.diag-search-input');
     const q = input ? input.value : '';
-    // Re-appliquer le surlignage dans la card nouvellement ouverte
     filterDiagnosticSections(q);
     setTimeout(() => {
-      const marks = document.querySelectorAll('.diagnostic-sections-grid .courbe-card-content .diag-search-highlight');
-      const target = marks[idxInCat] || marks[0];
+      // Zone de recherche = courbe-card-content OUVERTE de la sous-carte concernée si applicable,
+      // sinon le diag-section-body de la section, sinon toute la card parent.
+      let scope = null;
+      if (childId) {
+        // Chercher un courbe-card-content dont data-card-id = childId
+        const candidates = document.querySelectorAll('.diagnostic-sections-grid .courbe-card-content .courbe-card-content');
+        candidates.forEach(c => { if (c.dataset.cardId === childId) scope = c; });
+      }
+      if (!scope) {
+        // Fallback : toute la card parent ouverte
+        scope = document.querySelector('.diagnostic-sections-grid .courbe-card-content');
+      }
+      if (!scope) return;
+      const marks = scope.querySelectorAll(':scope .diag-search-highlight');
+      // Exclure les highlights qui sont DANS une sous-card-content imbriquée (pour les cards parent sans childId,
+      // on ne veut pas compter les matches du contenu d'un enfant ouvert qui appartient à une autre entrée).
+      const filtered = childId
+        ? [...marks]
+        : [...marks].filter(m => !m.closest('.courbe-card-content .courbe-card-content'));
+      const target = filtered[idxInPath] || filtered[0];
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 60);
-  };
-  if (alreadyOpen) {
-    scrollToIdx();
-  } else {
-    openCourbeCard(card);
-    setTimeout(scrollToIdx, 120);
-  }
+    }, 80);
+  }, 100);
 }
 window.gotoSearchResult = gotoSearchResult;
 
