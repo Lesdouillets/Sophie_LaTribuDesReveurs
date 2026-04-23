@@ -1,4 +1,4 @@
-const CACHE = 'tdr-v810';
+const CACHE = 'tdr-v813';
 const ASSETS = ['./index.html', './script-data.js'];
 
 self.addEventListener('install', e => {
@@ -21,12 +21,22 @@ self.addEventListener('fetch', e => {
   if (url.origin !== self.location.origin) return;
 
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request).then(resp => {
-      if (resp.ok) {
-        const clone = resp.clone();
-        caches.open(CACHE).then(c => c.put(e.request, clone));
-      }
-      return resp;
-    }))
+    caches.match(e.request).then(cached => {
+      if (cached) return cached;
+      return fetch(e.request).then(resp => {
+        if (resp && resp.ok) {
+          const clone = resp.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+        }
+        return resp;
+      }).catch(err => {
+        // Hors ligne et pas de cache : fallback gracieux pour les navigations HTML
+        if (e.request.mode === 'navigate') {
+          return caches.match('./index.html');
+        }
+        // Sinon réponse vide (évite l'erreur uncaught)
+        return new Response('', { status: 503, statusText: 'Offline' });
+      });
+    })
   );
 });

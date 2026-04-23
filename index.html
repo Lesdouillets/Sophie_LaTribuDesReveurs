@@ -2009,16 +2009,31 @@
       flex: 1 1 0 !important;
       max-width: 360px !important;
     }
-    /* Pills OUI/NON (labels courts) : max-width réduit */
+    /* Pills OUI/NON (labels courts) : largeur compacte ~110px */
     .edit-block-wrap:has(> [data-mutex-group="chemins-emotions"]:not(.open-action)),
     .edit-block-wrap:has(> [data-mutex-group="conclusion-obj"]:not(.open-action)) {
-      max-width: 140px !important;
-      flex: 0 1 140px !important;
+      width: 110px !important;
+      max-width: 110px !important;
+      min-width: 110px !important;
+      flex: 0 0 110px !important;
     }
-    /* Pills Accompagnée/PAS accompagnée : max-width ajusté au plus long label */
+    .edit-block-wrap:has(> [data-mutex-group="chemins-emotions"]:not(.open-action)) > .block-option,
+    .edit-block-wrap:has(> [data-mutex-group="conclusion-obj"]:not(.open-action)) > .block-option {
+      width: 110px !important;
+      max-width: 110px !important;
+      min-width: 110px !important;
+    }
+    /* Pills Accompagnée/PAS accompagnée : largeur fixe ajustée au plus long label */
     .edit-block-wrap:has(> [data-mutex-group="decouverte-psy"]:not(.open-action)) {
-      max-width: 240px !important;
-      flex: 0 1 240px !important;
+      width: 220px !important;
+      max-width: 220px !important;
+      min-width: 220px !important;
+      flex: 0 0 220px !important;
+    }
+    .edit-block-wrap:has(> [data-mutex-group="decouverte-psy"]:not(.open-action)) > .block-option {
+      width: 220px !important;
+      max-width: 220px !important;
+      min-width: 220px !important;
     }
     .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) > .block-option.action.pill-style {
       width: 100% !important;
@@ -2483,14 +2498,14 @@
     }
 
     /* NON (action rouge) du mutex "conclusion-obj" — les 3 purple options en 3 colonnes */
-    .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap:has(> .block-option.purple) {
+    .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap:has(> .block-option.purple:not(.compact-closed)) {
       display: inline-block !important;
       width: calc(33.33% - 10px) !important;
       vertical-align: top;
       margin-right: 6px;
       box-sizing: border-box;
     }
-    .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap > .block-option.purple {
+    .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap > .block-option.purple:not(.compact-closed) {
       width: 100% !important;
       margin-left: 0 !important;
       margin-right: 0 !important;
@@ -2520,14 +2535,14 @@
       box-shadow: none !important;
     }
     /* Pour les 3 purple du mutex "conclusion-obj" ouverts : même hauteur min */
-    .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap > .block-option.purple:has(> .option-content.open) {
+    .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap > .block-option.purple:not(.compact-closed):has(> .option-content.open) {
       min-height: 260px;
     }
-    .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap > .block-option.purple:has(> .option-content.open) > .option-content.open {
+    .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap > .block-option.purple:not(.compact-closed):has(> .option-content.open) > .option-content.open {
       min-height: 180px;
     }
     /* Quand fermé : header agrandi en pilule verticale (emoji + titre empilés) */
-    .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap > .block-option.purple:not(:has(> .option-content.open)) > .option-header {
+    .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap > .block-option.purple:not(.compact-closed):not(:has(> .option-content.open)) > .option-header {
       flex-direction: column !important;
       align-items: center !important;
       justify-content: center !important;
