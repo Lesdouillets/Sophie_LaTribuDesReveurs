@@ -2277,12 +2277,18 @@
       justify-content: flex-start;
     }
     /* Option purple dans un bloc question (ex: 💰 Tarifs) : sans fond/bordure violet, hérite du fond rouge */
-    .block-question .embedded-actions > .block-option.purple:not(.open-action),
-    .block-question .embedded-actions > .block-option.purple.open-action {
+    /* Spécificité élevée pour battre `.block-option.action.open-action .block-option.purple` */
+    .block-option.action .block-question .embedded-actions > .block-option.purple,
+    .block-option.action.open-action .block-question .embedded-actions > .block-option.purple,
+    .block-question .embedded-actions > .block-option.purple {
       background: transparent !important;
       border: none !important;
       box-shadow: none !important;
     }
+    .block-option.action .block-question .embedded-actions > .block-option.purple .option-content,
+    .block-option.action.open-action .block-question .embedded-actions > .block-option.purple .option-content,
+    .block-option.action .block-question .embedded-actions > .block-option.purple .option-header,
+    .block-option.action.open-action .block-question .embedded-actions > .block-option.purple .option-header,
     .block-question .embedded-actions > .block-option.purple .option-content,
     .block-question .embedded-actions > .block-option.purple .option-header {
       background: transparent !important;
