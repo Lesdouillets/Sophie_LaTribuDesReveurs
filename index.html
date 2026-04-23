@@ -1915,10 +1915,16 @@
       align-items: center !important; justify-content: center !important;
       width: 22px !important; height: 22px !important;
       font-size: 16px !important; line-height: 1 !important;
+      font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Segoe UI Symbol", sans-serif !important;
       text-align: center !important;
       filter: none !important; text-shadow: none !important;
       flex-shrink: 0;
       overflow: hidden;
+    }
+    /* Compensation : ❌ rend visuellement plus gros que ✅ — on réduit légèrement les ❌ dans les pills */
+    .block-option.action.pill-style:not(.action-green):not(.action-yellow):not(.open-action) > .option-header .option-emoji {
+      transform: scale(0.85);
+      transform-origin: center;
     }
     .block-option.action.pill-style:not(.open-action) > .option-header .option-label-text {
       color: inherit !important; font-weight: 700 !important; font-size: 14.5px !important;
