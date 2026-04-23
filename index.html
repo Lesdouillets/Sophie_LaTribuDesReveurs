@@ -1963,18 +1963,27 @@
       background: #fee2e2 !important; border-color: #fca5a5 !important;
       transform: none; box-shadow: 0 2px 6px rgba(153,27,27,0.12) !important;
     }
-    /* Quand 2 pills sont côte-à-côte (mutex), même largeur avec flex:1 */
+    /* Règle universelle : 2 pills frères = MÊME LARGEUR automatique (quel que soit le contexte) */
     .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) {
-      display: inline-flex !important; flex: 1 1 0 !important;
-      margin: 4px 6px 4px 0 !important; vertical-align: middle;
-      max-width: 320px;
+      display: inline-block;
+      margin: 4px 6px 4px 0 !important; vertical-align: top;
+      box-sizing: border-box;
+    }
+    /* Quand 2+ pill-siblings : chacun prend 50% (minus gap) — marche en block ET en flex */
+    .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)):has(~ .edit-block-wrap > .block-option.action.pill-style:not(.open-action)),
+    .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) ~ .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) {
+      width: calc(50% - 10px) !important;
+      flex: 1 1 0 !important;
+      max-width: 360px !important;
     }
     .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) > .block-option.action.pill-style {
       width: 100% !important;
+      min-width: 0 !important;
     }
-    /* Dans embedded-actions : 2 pills = 2 colonnes égales */
-    .embedded-actions .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) {
-      flex: 1 1 0;
+    /* Harmoniser la hauteur dans une même ligne : tous les pills s'alignent sur la plus grande */
+    .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) > .block-option.action.pill-style,
+    .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) > .block-option.action.pill-style > .option-header {
+      height: 100%;
     }
     /* Dans col-2-right (V. Diagnostic) : 2 pills côte-à-côte, même largeur */
     .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) {
@@ -2171,11 +2180,6 @@
     }
     .block-question .embedded-actions .block-option.action.pill-style:not(.open-action) > .option-header {
       padding: 10px 14px !important;
-    }
-    /* Quand 2 pills ont des labels de longueur différente (ex: decouverte-psy), on les force à la même largeur */
-    .block-question .embedded-actions .edit-block-wrap:has(> [data-mutex-group="decouverte-psy"]:not(.open-action)) {
-      flex: 1 1 0 !important;
-      max-width: 320px !important;
     }
     .embedded-actions > .block-option.action:not(.open-action) {
       margin: 0;
