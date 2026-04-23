@@ -1890,6 +1890,56 @@
        Restaure uniquement la couleur violet foncé des blocs marqués _purpleDark. */
     /* (Désactivé : on laisse le style dashed violet standard de .block-purple-dark s'appliquer) */
 
+    /* PILL-STYLE : variante visuelle des boutons .action qui ressemble au tbc-opt (Garder/Supprimer)
+       mais CONSERVE tout le comportement mutex/sibling-hide/ouverture de contenu des boutons .action. */
+    .block-option.action.pill-style:not(.open-action) {
+      width: auto; min-width: 110px; max-width: 320px;
+      background: transparent !important; box-shadow: none !important;
+      border: 2px solid transparent; border-radius: 10px;
+      margin: 0;
+    }
+    .block-option.action.pill-style:not(.open-action) > .option-header {
+      flex-direction: row !important;
+      justify-content: center !important; align-items: center !important;
+      padding: 10px 18px !important; gap: 10px !important;
+      min-height: 0 !important;
+      border-radius: 10px;
+    }
+    .block-option.action.pill-style:not(.open-action) > .option-header > span {
+      flex-direction: row !important; gap: 10px !important;
+    }
+    .block-option.action.pill-style:not(.open-action) > .option-header .option-emoji {
+      font-size: 18px !important; line-height: 1 !important;
+      filter: none !important; text-shadow: none !important;
+    }
+    .block-option.action.pill-style:not(.open-action) > .option-header .option-label-text {
+      color: inherit !important; font-weight: 700 !important; font-size: 14.5px !important;
+      text-shadow: none !important; text-align: left !important;
+    }
+    .block-option.action.pill-style:not(.open-action) > .option-header .option-toggle { display: none !important; }
+    /* Couleur variante positive (vert) */
+    .block-option.action.pill-style.action-green:not(.open-action) {
+      background: #f0fdf4 !important;
+      border-color: #bbf7d0 !important; color: #166534;
+    }
+    .block-option.action.pill-style.action-green:not(.open-action):hover {
+      background: #dcfce7 !important; border-color: #86efac !important;
+      transform: none; box-shadow: 0 2px 6px rgba(22,101,52,0.12) !important;
+    }
+    /* Couleur variante negative (rouge — style action par défaut) */
+    .block-option.action.pill-style:not(.action-green):not(.action-yellow):not(.open-action) {
+      background: #fef2f2 !important;
+      border-color: #fecaca !important; color: #991b1b;
+    }
+    .block-option.action.pill-style:not(.action-green):not(.action-yellow):not(.open-action):hover {
+      background: #fee2e2 !important; border-color: #fca5a5 !important;
+      transform: none; box-shadow: 0 2px 6px rgba(153,27,27,0.12) !important;
+    }
+    /* Quand 2 pills sont côte-à-côte (mutex), gap plus petit */
+    .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) {
+      display: inline-block; margin: 4px 6px 4px 0 !important; vertical-align: middle;
+    }
+
     /* 2+ boutons ACTION frères (top-level ou imbriqués) : côte-à-côte
        Ne s'applique QUE si le wrapper a un wrapper-action frère (avant ou après), pour ne pas affecter un bouton action isolé. */
     .edit-block-wrap:has(> .block-option.action:not(.open-action)):has(~ .edit-block-wrap > .block-option.action:not(.open-action)),
@@ -7483,10 +7533,11 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const actionGreenClass = b.style === 'action-green' ? ' action-green' : '';
     const actionYellowClass = b.style === 'action-yellow' ? ' action-yellow' : '';
     const actionPurpleInsideClass = b._purpleContent ? ' action-purple-inside' : '';
+    const pillStyleClass = b._pillStyle ? ' pill-style' : '';
     const cardClass = b.style === 'card' ? ' card' : '';
     const emojiHtml = b.emoji ? `<span class="option-emoji">${b.emoji}</span>` : '';
     const mutexAttr = b.mutexGroup ? ` data-mutex-group="${String(b.mutexGroup).replace(/"/g, '&quot;')}"` : '';
-    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${purpleBtnClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionPurpleInsideClass}${cardClass}"${mutexAttr}>
+    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${purpleBtnClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionPurpleInsideClass}${pillStyleClass}${cardClass}"${mutexAttr}>
       <div class="option-header" onclick="toggleOption(this)">
         <span style="display:flex;align-items:center;gap:6px">
           ${emojiHtml}
@@ -8222,6 +8273,16 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
 
   if (b.type === 'question') {
+    // Boutons action embarqués (pill-style) à l'intérieur du cadre question
+    let qEmbeddedHtml = '';
+    if (Array.isArray(b.embeddedActions) && b.embeddedActions.length) {
+      qEmbeddedHtml = `<div class="embedded-actions" contenteditable="false">` +
+        b.embeddedActions.map((opt, oi) => {
+          const sub = { type: 'option', ...opt };
+          return renderBlockInner(sub, oi, sectionId, (depth||0)+1, `${path||i}.ea.${oi}`);
+        }).join('') +
+      `</div>`;
+    }
     // Tick-box optionnel embarqué dans le cadre du bloc question (via b.choice)
     let choiceHtml = '';
     if (b.choice) {
@@ -8291,6 +8352,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     return `<div class="block block-question">
       <div class="q-text" contenteditable="true">${innerHtml}</div>
       ${choiceHtml}
+      ${qEmbeddedHtml}
     </div>`;
   }
 

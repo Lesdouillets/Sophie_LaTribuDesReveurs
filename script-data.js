@@ -281,7 +281,7 @@ const SCRIPT_DATA = {
           blocks: [
             { type: "question", text: "Est-ce que vous êtes **accompagnée** du coup ?" },
             {
-              type: "option", label: "Accompagnée avec un psy", emoji: "✅", style: "action-green", mutexGroup: "decouverte-psy",
+              type: "option", label: "Accompagnée avec un psy", emoji: "✅", style: "action-green", _pillStyle: true, mutexGroup: "decouverte-psy",
               blocks: [
                 { type: "empathie", text: "- **Super !**\n- **Je comprends…** ce que vous vivez, c'est **vraiment pas simple.**\n- Après une naissance, c'est **NORMAL** de se sentir **fatiguée**, et de se sentir un peu **perdue** par moments.\n- Vous êtes **LOIN** d'être la **SEULE** à passer par là" },
                 { type: "conseil", text: "- 👏 Et j'ai envie de vous dire **quelque chose d'important** :\n- vous faites déjà **énormément** pour votre BB\n- Même si parfois, vous avez l'impression **DE NE pas y arriver** ⇒ **EN RÉALITÉ**, vous vous en occupez **très bien**" },
@@ -289,7 +289,7 @@ const SCRIPT_DATA = {
               ]
             },
             {
-              type: "option", label: "PAS accompagnée avec un psy", emoji: "❌", style: "action", mutexGroup: "decouverte-psy",
+              type: "option", label: "PAS accompagnée avec un psy", emoji: "❌", style: "action", _pillStyle: true, mutexGroup: "decouverte-psy",
               blocks: [
                 { type: "empathie", text: "- D'accord. **Je comprends…** ce que vous vivez, c'est **vraiment pas simple.**\n- Après une naissance, c'est **NORMAL** de se sentir **fatiguée** et un peu **perdue** par moments.\n- Vous êtes **LOIN** d'être la **SEULE** à passer par là." },
                 { type: "conseil", text: "- 👏 Vous faites déjà **énormément** pour votre BB\n- Même si parfois, vous avez l'impression **DE NE pas y arriver** ⇒ **EN RÉALITÉ**, vous vous en occupez **très bien**" },
@@ -420,7 +420,7 @@ const SCRIPT_DATA = {
           ],
           right: [
             {
-              type: "option", label: "Pas de dette de sommeil", emoji: "✅", style: "action-green", _purpleContent: true, mutexGroup: "diag-sommeil",
+              type: "option", label: "Pas de dette de sommeil", emoji: "✅", style: "action-green", _pillStyle: true, _purpleContent: true, mutexGroup: "diag-sommeil",
               blocks: [
                 { type: "normal", text: "- La **bonne nouvelle** c'est qu'aujourd'hui [prénom_enfant] n'est **PAS en dette de sommeil**" },
                 { type: "conseil_vert", text: "👏 Vous faites **TOUT** pour que ça ne **soit pas le cas**!" },
@@ -429,7 +429,7 @@ const SCRIPT_DATA = {
               ]
             },
             {
-              type: "option", label: "Difficultés de sommeil identifiées", emoji: "❌", style: "action", _purpleContent: true, mutexGroup: "diag-sommeil",
+              type: "option", label: "Difficultés de sommeil identifiées", emoji: "❌", style: "action", _pillStyle: true, _purpleContent: true, mutexGroup: "diag-sommeil",
               blocks: [
                 { type: "normal", text: "- Au vu de ce qu'on s'est dit\n- En effet, vous aviez **BIEN identifié** que votre enfant a des **difficultés de sommeil**.", _noBorder: true },
                 { type: "normal", text: "- <u>OPTION</u> : **<u>Temps d'endormissement trop long :</u>** Il y a une **petite problématique** au niveau des **durées d'endormissement**… qui sont **très longues**", _purpleDark: true },
@@ -514,15 +514,16 @@ const SCRIPT_DATA = {
       emoji: "🛤️",
       blocks: [
         { type: "normal", text: "- Il va y avoir **plusieurs chemins possibles** pour accompagner [prénom_enfant],\n  - et l'**idée** c'est vraiment de **trouver celui qui vous correspond le mieux**\n\n- Pour ça, j'aurais **besoin de savoir** :\n  - Est-ce que vous avez **BESOIN** **ça aille plutôt vite**,\n  - OU est-ce que vous **préférez mettre** un **peu + de progressivité** ?\n\n  - Sachant que la **progressivité pas à pas** sera:\n    - **+ douce**\n    - **MAIS + longue** en terme de résultats\n  - Tandis que le **chemin le + direct** permet de:\n    - **faire évoluer les choses + rapidement**\n    - mais **PEUT générer + d'émotions**\n\n- Donc, c'est **vraiment vous qui choisissez** le chemin en fonction de :\n  - ce que **vous préférez**\n  - de ce que vous **attendez en terme de rapidité**\n  - et VOTRE **gestion des émotions**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\"><div style=\"display:grid;grid-template-columns:auto auto 1fr;gap:6px 8px;align-items:start\"><span>❓</span><span>•</span><span>Avec tout ça en tête, qu'est-ce qui vous <strong>semblerait le + juste</strong> pour vous et pour [prénom_enfant] :</span></div><ul style=\"margin:6px 0 0 60px;padding:0;list-style:disc\"><li style=\"line-height:1.6\"><strong>Quelque chose</strong> de <strong>plutôt progressif,</strong></li><li style=\"line-height:1.6\">Ou <strong>quelque chose</strong> de <strong>+ rapide ?</strong></li></ul></div>" },
-        { type: "normal", text: "- Du coup, je préfère vous dire, pour **être totalement transparente** avec vous :\n  - QUAND on **met en place des changements**\n  - **même** avec **beaucoup de progressivité**,\n  - **il PEUT y avoir des émotions**\n  - surtout **au début.**\n    - ⇒ C'est tout à fait **NORMAL**\n\n- On va demander à [prénom_enfant] de **changer ses habitudes** et elle PEUT :\n  - **réagir**\n  - et **montrer qu'elle n'est pas d'accord**\n\n- Dans ces moments-là, CE QUI va **vraiment l'aider** c'est :\n  - que vous **soyez à ses côtés**\n  - et que **vous l'accompagniez** avec **COHERENCE**…\n- 👏… et avec **tout ce que vous avez déjà mis en place**, vous êtes **sur la bonne voie**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">❓ Est-ce que vous êtes <strong>à l'aise avec ça, avec les émotions</strong> ?</div>", embeddedActions: [
+        { type: "normal", text: "- Du coup, je préfère vous dire, pour **être totalement transparente** avec vous :\n  - QUAND on **met en place des changements**\n  - **même** avec **beaucoup de progressivité**,\n  - **il PEUT y avoir des émotions**\n  - surtout **au début.**\n    - ⇒ C'est tout à fait **NORMAL**\n\n- On va demander à [prénom_enfant] de **changer ses habitudes** et elle PEUT :\n  - **réagir**\n  - et **montrer qu'elle n'est pas d'accord**\n\n- Dans ces moments-là, CE QUI va **vraiment l'aider** c'est :\n  - que vous **soyez à ses côtés**\n  - et que **vous l'accompagniez** avec **COHERENCE**…\n- 👏… et avec **tout ce que vous avez déjà mis en place**, vous êtes **sur la bonne voie**" },
+        { type: "question", text: "Est-ce que vous êtes <strong>à l'aise avec ça, avec les émotions</strong> ?", embeddedActions: [
           {
-            label: "OUI", emoji: "✅", style: "action-green", mutexGroup: "chemins-emotions",
+            label: "OUI", emoji: "✅", style: "action-green", _pillStyle: true, mutexGroup: "chemins-emotions",
             blocks: [
               { type: "normal", text: "- Alors, **si ça vous va :**\n  - On va pouvoir **passer à la suite,**\n  - et **voir concrètement** COMMENT on **va mettre ça en place**" }
             ]
           },
           {
-            label: "NON", emoji: "❌", style: "action", mutexGroup: "chemins-emotions",
+            label: "NON", emoji: "❌", style: "action", _pillStyle: true, mutexGroup: "chemins-emotions",
             blocks: [
               { type: "normal", text: "- **Merci** de me le dire, c'est **vraiment important pour MOI** de le savoir.\n- **Je comprends…** c'est **difficile d'entendre son enfant pleurer**\n- Et franchement, **personne n'aime ça**\n\n- Et **CE QUE** je peux vous **dire TOUT DE SUITE**\n  ⇒ c'est qu'**ON NE** va **PAS laisser** [prénom_enfant] **seul** avec ses pleurs.\n\n- **Par contre**, il y a **quelque chose d'important** à comprendre :\n  - Les **pleurs chez l'enfant**, c'est surtout une **façon de communiquer.**\n\n- Aujourd'hui, on va **lui demander de changer une habitude** … et **comme pour nous,**\n  - **le changement**\n  - **personne n'aime ça !**\n\n- Donc oui, c'est **possible** qu'**il réagisse**,\n  - qu'il **proteste**\n  - ou qu'il **pleure**\n  - pour dire **\"*je préférais avant*\"**\n  ⇒ Et ça… c'est une **réaction normale**\n\n- L'idée, encore une fois, c'est vraiment de **VOUS respecter**\n- On va simplement :\n  - **adapter l'accompagnement**\n  - pour que ce soit le **+ confortable** possible **POUR VOUS**.\n\n- On pourra aller vers quelque chose :\n  - de **+ progressif**\n  - avec des **ajustements tout en douceur**\n  - et vous **POURREZ avancer à VOTRE rythme**\n\n- Et surtout, **vous ne SEREZ PAS SEULE**\n- On va **LE faire ensemble**\n- … ET LUI il aura **SURTOUT besoin** :\n  - de sentir que **VOUS êtes là**\n  - et CE QUE **vous SAVEZ ce que vous faites**" },
               { type: "normal", text: "<br><br><br>" },
@@ -2241,7 +2242,7 @@ const SCRIPT_DATA = {
       { type: "question", text: "Est-ce que **TOUT** ce que je **vous ai proposé** vous **correspond à vos valeurs**?" },
       { type: "obj_rappel" },
       {
-        type: "option", label: "OUI", emoji: "✅", style: "action-green", mutexGroup: "conclusion-obj",
+        type: "option", label: "OUI", emoji: "✅", style: "action-green", _pillStyle: true, mutexGroup: "conclusion-obj",
         blocks: [
           { type: "question", text: "Est-ce qu'il vous **reste des questions** ?" },
           { type: "question", text: "**QUAND** est-ce que vous **PENSEZ** **pouvoir commencer** à **mettre ces changements en place** ?" },
@@ -2264,7 +2265,7 @@ const SCRIPT_DATA = {
         ]
       },
       {
-        type: "option", label: "NON", emoji: "❌", style: "action", mutexGroup: "conclusion-obj",
+        type: "option", label: "NON", emoji: "❌", style: "action", _pillStyle: true, mutexGroup: "conclusion-obj",
         blocks: [
           { type: "normal", text: "- Ok je **vous entends**\n- Et **merci de me le dire** !" },
           {
