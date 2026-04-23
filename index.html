@@ -2000,6 +2000,12 @@
       flex: 1 1 0 !important;
       max-width: 360px !important;
     }
+    /* Pills OUI/NON (labels courts) : max-width réduit */
+    .edit-block-wrap:has(> [data-mutex-group="chemins-emotions"]:not(.open-action)),
+    .edit-block-wrap:has(> [data-mutex-group="conclusion-obj"]:not(.open-action)) {
+      max-width: 140px !important;
+      flex: 0 1 140px !important;
+    }
     .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) > .block-option.action.pill-style {
       width: 100% !important;
       min-width: 0 !important;
