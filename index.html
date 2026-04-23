@@ -1345,7 +1345,7 @@
     }
     @media (max-width: 900px) { .columns-2-grid { grid-template-columns: 1fr; } }
     /* Variante 3 colonnes (avec colonne "Bonne nouvelle") */
-    .columns-2-grid.columns-3 { grid-template-columns: 1fr 1.2fr 0.8fr; }
+    .columns-2-grid.columns-3 { grid-template-columns: 0.9fr 1.5fr 0.7fr; }
     .columns-2-grid.columns-3[data-active-col="3"] > .col-2[data-col-idx="3"] {
       opacity: 1; filter: none;
       border-color: #c52f26;
@@ -1369,23 +1369,26 @@
       background: transparent !important; border: none !important; box-shadow: none !important;
     }
     @media (max-width: 900px) { .columns-2-grid.columns-3 { grid-template-columns: 1fr; } }
-    /* Colonne droite : flex-wrap pour mettre green+red côte à côte (rapprochés) et yellow pleine largeur en dessous */
+    /* Colonne droite : CSS GRID — plus prévisible que flex pour centrer les pills */
     .columns-2-grid .col-2-right {
-      display: flex !important;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 14px;
-      justify-content: center;
-      align-content: flex-start;
+      display: grid !important;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      align-content: start;
+      justify-items: center;
     }
-    .columns-2-grid .col-2-right > .col-2-title { flex-basis: 100%; width: 100%; }
-    /* Annuler le inline-block global sur les wrappers action côte-à-côte quand on est dans une col-2-right */
+    .columns-2-grid .col-2-right > .col-2-title {
+      grid-column: 1 / -1;
+      justify-self: stretch;
+      width: auto;
+    }
+    /* Wrappers dans le grid col-2-right : display block, centré dans leur cellule */
     .columns-2-grid .col-2-right > .edit-block-wrap {
       display: block !important;
       vertical-align: initial !important;
       margin: 0 !important;
       width: auto;
-      flex: 0 0 auto;
+      justify-self: center;
     }
     /* La dernière option (yellow = Difficultés alim) : même largeur que les pills du dessus, centrée */
     .columns-2-grid .col-2-right > .edit-block-wrap:last-child:not(:has(> .block-option.action.open-action)) {
@@ -1394,9 +1397,10 @@
       margin: 6px auto 0 !important;
       flex: 0 0 auto !important;
     }
-    /* Quand une option est OUVERTE dans col-2-right : wrapper centré pleine largeur + pill centré */
+    /* Quand une option est OUVERTE dans col-2-right : wrapper spanne les 2 colonnes du grid */
     .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action.open-action) {
-      flex: 1 1 100% !important;
+      grid-column: 1 / -1 !important;
+      justify-self: stretch !important;
       width: 100% !important;
       max-width: 100% !important;
       margin: 0 !important;
@@ -1408,27 +1412,18 @@
       margin-left: 0 !important;
       margin-right: 0 !important;
     }
-    /* V. Diagnostic : bouton jaune SOUS les 2 pills, CENTRÉ, à taille réduite */
-    /* Override agressif pour battre toute règle antérieure sur yellow dans col-2-right */
+    /* V. Diagnostic : bouton jaune SOUS les 2 pills, spanne les 2 colonnes du grid, centré */
     .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action-yellow):not(:has(> .block-option.open-action)) {
-      display: flex !important;
-      flex: 0 0 100% !important;
-      flex-basis: 100% !important;
-      width: 100% !important;
-      max-width: 100% !important;
-      min-width: 100% !important;
-      margin: 20px 0 0 !important;
-      margin-left: 0 !important;
-      margin-right: 0 !important;
-      justify-content: center !important;
-      align-items: center !important;
+      grid-column: 1 / -1 !important;
+      justify-self: center !important;
+      margin: 16px 0 0 !important;
+      width: auto !important;
     }
     .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action-yellow:not(.open-action)) > .block-option.action-yellow {
-      width: 260px !important;
+      width: 280px !important;
       min-width: 200px !important;
       max-width: 340px !important;
-      flex: 0 0 auto !important;
-      margin: 0 auto !important;
+      margin: 0 !important;
     }
     .columns-2-grid .col-2-right > .edit-block-wrap > .block-option.action.open-action {
       width: 100% !important;
@@ -1860,7 +1855,7 @@
       filter: none;
     }
     .block-option.action.open-action > .option-content {
-      background: #ffffff; padding: 0 16px 14px;
+      background: #ffffff; padding: 14px 16px;
     }
     .block-option.action.open-action .block-normal:not(.block-purple-dark) { border: none !important; box-shadow: none !important; background: #ffffff !important; }
     /* Préserver le style violet pointillé sur les blocs _purpleDark à l'intérieur des options action */
@@ -2060,24 +2055,21 @@
       padding: 10px 12px !important;
       gap: 8px !important;
     }
-    /* Pills Pas de dette/Difficultés de sommeil : ULTRA-spécifique pour battre margin asymétrique universel */
-    .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action.pill-style[data-mutex-group="diag-sommeil"]:not(.open-action)),
-    .edit-block-wrap:has(> .block-option.action.pill-style[data-mutex-group="diag-sommeil"]:not(.open-action)),
-    .block-option.action.pill-style[data-mutex-group="diag-sommeil"]:not(.open-action) {
-      width: 150px !important;
-      max-width: 150px !important;
-      min-width: 150px !important;
-      flex: 0 0 150px !important;
+    /* Pills Pas de dette/Difficultés de sommeil : en grid, chaque pill occupe une cellule (largeur = 100% de cellule) */
+    .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action.pill-style[data-mutex-group="diag-sommeil"]:not(.open-action)) {
+      width: 100% !important;
+      max-width: 100% !important;
       margin: 0 !important;
-      margin-left: 0 !important;
-      margin-right: 0 !important;
-      margin-top: 0 !important;
-      margin-bottom: 0 !important;
+      justify-self: stretch !important;
+    }
+    .block-option.action.pill-style[data-mutex-group="diag-sommeil"]:not(.open-action) {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
     }
     .edit-block-wrap:has(> [data-mutex-group="diag-sommeil"]:not(.open-action)) > .block-option {
-      width: 150px !important;
-      max-width: 150px !important;
-      min-width: 150px !important;
+      width: 100% !important;
+      max-width: 100% !important;
     }
     .block-option[data-mutex-group="diag-sommeil"] .option-label-text {
       white-space: normal !important;
