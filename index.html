@@ -3258,12 +3258,12 @@
     }
     .sol-checkbox-label { color: #334155; }
 
-    /* ═══ MODAL FLOTTANT SOLUTIONS (top-right) ═══ */
+    /* ═══ MODAL DROPDOWN SOLUTIONS (déclenché par btn header 🧭) ═══ */
     .solutions-modal-wrap {
-      position: fixed; top: 20px; right: 20px; z-index: 150;
+      position: fixed; top: 56px; right: 12px; z-index: 150;
       background: #fff; border: 2px solid #2d3f5c; border-radius: 12px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.18);
-      min-width: 220px; max-width: 320px;
+      min-width: 240px; max-width: 340px;
       font-size: 13px;
       overflow: hidden;
     }
@@ -3271,17 +3271,17 @@
       display: flex; align-items: center; gap: 8px;
       padding: 10px 14px;
       background: linear-gradient(90deg, #1a2a42, #4a5f82);
-      color: white; font-weight: 700; cursor: pointer;
+      color: white; font-weight: 700;
       user-select: none;
     }
     .solmod-icon { font-size: 16px; }
     .solmod-title { flex: 1; }
     .solmod-count-badge { font-size: 12px; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px; }
-    .solmod-toggle { font-size: 11px; opacity: 0.8; margin-left: 4px; transition: transform 0.2s; }
-    .solutions-modal-wrap.open .solmod-toggle { transform: rotate(180deg); }
+    .solmod-toggle { display: none; }
     .solmod-body {
       padding: 10px 12px; max-height: 400px; overflow-y: auto;
       background: #fff;
+      display: block !important;
     }
     .solmod-cat { margin-bottom: 10px; }
     .solmod-cat:last-child { margin-bottom: 0; }
@@ -4404,6 +4404,7 @@
     </div>
     <div class="header-actions">
       <button class="btn-edit-mode" id="btn-edit-mode" onclick="toggleEditMode()">✏️ Éditer</button>
+      <button class="btn-icon" id="btn-solutions" title="Solutions identifiées" onclick="toggleSolutionsModal()" style="position:relative;font-size:17px">🧭<span id="btn-solutions-badge" style="display:none;position:absolute;top:-2px;right:-2px;background:#dc2626;color:#fff;font-size:10px;font-weight:700;border-radius:9px;padding:0 5px;line-height:14px;min-width:14px;text-align:center">0</span></button>
       <button class="btn-icon" title="Outils SOS" onclick="toggleSosPanel()" style="font-size:17px">🆘</button>
       <button class="btn-icon" title="Sessions sauvegardées" onclick="openSessionsModal()">📁</button>
       <button class="btn-icon" title="Ajuster les problématiques" onclick="togglePbModal()">⚙️</button>
@@ -4985,15 +4986,14 @@
   </div>
 </div><!-- /app-screen -->
 
-<!-- MODAL SOLUTIONS FLOTTANT (top-right, synchro avec les cases VIII) -->
+<!-- MODAL DROPDOWN SOLUTIONS (déclenché par btn 🧭 du header) -->
 <div class="solutions-modal-wrap" id="solutions-modal" style="display:none">
-  <div class="solmod-header" onclick="toggleSolutionsModal()">
+  <div class="solmod-header">
     <span class="solmod-icon">🧭</span>
-    <span class="solmod-title">Solutions</span>
+    <span class="solmod-title">Solutions identifiées</span>
     <span class="solmod-count-badge">(<span id="solutions-modal-count">0</span>)</span>
-    <span class="solmod-toggle" id="solutions-modal-toggle">▼</span>
   </div>
-  <div class="solmod-body" id="solutions-modal-body" style="display:none"></div>
+  <div class="solmod-body" id="solutions-modal-body"></div>
 </div>
 
 <!-- PANNEAU NOTES FLOTTANT (visible pendant consultation) -->
@@ -7138,13 +7138,10 @@ function initUI() {
       setTimeout(initNotesPosition, 200);
     }, 50);
   }
-  // Affiche aussi le modal Solutions flottant
-  const solMod = document.getElementById('solutions-modal');
-  if (solMod) {
-    solMod.style.display = 'block';
-    if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
-    if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
-  }
+  // Le modal Solutions reste caché par défaut ; il s'ouvre via le bouton 🧭 du header.
+  // Mais on synchronise + on update le badge pour que le compteur soit correct.
+  if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
+  if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
   // Restore notes si session en cours
   const ta = document.getElementById('session-notes-textarea');
   if (ta && state._notes !== undefined) ta.value = state._notes;
@@ -8783,13 +8780,19 @@ function renderSolutionsCheckboxes() {
     if (!hasChildren) {
       inner = `<div class="sol-cat-empty" style="padding:12px 14px;color:#94a3b8;font-style:italic;font-size:13px">Aucune solution configurée pour cette catégorie.</div>`;
     } else {
-      inner = children.map(ch => {
+      // Intro commune de la catégorie — affichée uniquement si au moins un enfant est coché
+      const anyChildChecked = children.some(ch => state.selectedSolutions.has(ch.id));
+      const introHtml = (anyChildChecked && Array.isArray(cat.introBlocks) && cat.introBlocks.length)
+        ? `<div class="sol-cat-intro">${renderBlocks(cat.introBlocks, 'sol_' + cat.id)}</div>`
+        : '';
+      const checkboxes = children.map(ch => {
         const checked = state.selectedSolutions.has(ch.id);
         return `<label class="sol-checkbox-row" data-sol-id="${ch.id}">
           <input type="checkbox" ${checked?'checked':''} onchange="toggleSolution('${ch.id}', this.checked)">
           <span class="sol-checkbox-label">${ch.label || ch.id}</span>
         </label>`;
       }).join('');
+      inner = `<div class="sol-cat-checkboxes">${checkboxes}</div>${introHtml}`;
     }
     return `<div class="sol-cat" data-sol-cat="${cat.id}" style="border-color:${c.main};background:${c.pastel}">
       <div class="sol-cat-header" style="background:${c.main};color:#fff">${headerLabel}</div>
@@ -8847,19 +8850,44 @@ function updateSolutionsModal() {
   });
   body.innerHTML = parts.length ? parts.join('') : '<div class="solmod-empty"><em>Aucune solution cochée pour l\'instant.</em></div>';
   count.textContent = total;
+  if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
 }
 window.updateSolutionsModal = updateSolutionsModal;
 
 function toggleSolutionsModal() {
   const modal = document.getElementById('solutions-modal');
-  const body = document.getElementById('solutions-modal-body');
-  if (!modal || !body) return;
-  const isOpen = body.style.display !== 'none';
-  body.style.display = isOpen ? 'none' : 'block';
-  modal.classList.toggle('open', !isOpen);
-  if (!isOpen) updateSolutionsModal();
+  if (!modal) return;
+  const isVisible = modal.style.display === 'block';
+  modal.style.display = isVisible ? 'none' : 'block';
+  if (!isVisible) {
+    if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
+    updateSolutionsModal();
+  }
 }
 window.toggleSolutionsModal = toggleSolutionsModal;
+
+// Badge sur le bouton header qui affiche le nombre de solutions
+function updateSolutionsBadge() {
+  const badge = document.getElementById('btn-solutions-badge');
+  if (!badge) return;
+  const count = state.selectedSolutions ? state.selectedSolutions.size : 0;
+  if (count > 0) {
+    badge.textContent = count;
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+window.updateSolutionsBadge = updateSolutionsBadge;
+
+// Fermer le modal au clic en dehors
+document.addEventListener('click', (e) => {
+  const modal = document.getElementById('solutions-modal');
+  const btn = document.getElementById('btn-solutions');
+  if (!modal || modal.style.display !== 'block') return;
+  if (modal.contains(e.target) || (btn && btn.contains(e.target))) return;
+  modal.style.display = 'none';
+});
 
 // Hook : quand state.selectedPbs change (via modal "Modifier problématiques"), resync + modal
 const _origOnFicheClientPbChange = window.onFicheClientPbChange;

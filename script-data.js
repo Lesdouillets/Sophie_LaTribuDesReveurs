@@ -2167,9 +2167,16 @@ const SCRIPT_DATA = {
     categories: [
       {
         id: "confort_physique", title: "Confort physique", emoji: "🩺",
+        introBlocks: [
+          { type: "normal", text: "- **Avant** de passer aux **conseils concrets sur le sommeil**,\n- je voudrais qu'on **s'attarde un peu sur** le **confort physique** de [prénom_enfant].\n\n---\n\n- **Pour moi**, c'est un **point essentiel**, parce que :\n  ⇒ **même si on met en place tout ce qu'il faut pour le sommeil,**\n  ⇒ si votre BB ressent **une gêne ou un inconfort**\n  ⇒ son **sommeil restera toujours compliqué. Quoi qu'il arrive !**\n\n- 💭 *Imaginez-vous, dans un **beau palace de la côte d'Azur**, dans une **chambre magnifique** avec un **matelas confortable***\n  *Si le **repas de la veille** n'a **pas été bien digéré**,*\n  *vous allez **passer une très mauvaise nuit,***\n  ***même si** toutes les **conditions sont réunies** POUR.*\n\n---\n\n- Donc l'idée ici, ce n'est **PAS** de **donner un diagnostic**, ce n'est **PAS mon rôle**, je ne suis **PAS médecin**\n  mais plutôt de vous **donner des pistes** :\n  - pour **apaiser** [prénom_enfant], et voir ce qui peut :\n    - être mis en place\n    - ou exploré\n\n---\n\n- Parce qu'**1 fois** cette **base** rétablie\n  ⇒ **tout le reste devient bcp + simple, efficace …et durable dans le temps !**" },
+        ],
         children: [
-          { id: "conf_aplv", label: "APLV", autoCheckIfPbs: ["allergie_seule", "rgo_allergie"] },
-          { id: "conf_rgo",  label: "Conseils RGO", autoCheckIfPbs: ["rgo_seul"] },
+          { id: "conf_aplv", label: "APLV", cardLabel: "APLV suspectée", cardEmoji: "🌿", autoCheckIfPbs: ["allergie_seule", "rgo_allergie"], blocks: [
+            { type: "normal", text: "- *(Contenu solution APLV à compléter.)*" },
+          ]},
+          { id: "conf_rgo", label: "Conseils RGO", cardLabel: "Conseils RGO", cardEmoji: "😣", autoCheckIfPbs: ["rgo_seul"], blocks: [
+            { type: "normal", text: "- *(Contenu solution RGO à compléter.)*" },
+          ]},
         ]
       },
       {
