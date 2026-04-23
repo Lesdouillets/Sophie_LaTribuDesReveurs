@@ -2150,6 +2150,11 @@
     .block-question .embedded-actions .block-option.action.pill-style:not(.open-action) > .option-header {
       padding: 10px 14px !important;
     }
+    /* Quand 2 pills ont des labels de longueur différente (ex: decouverte-psy), on les force à la même largeur */
+    .block-question .embedded-actions .edit-block-wrap:has(> [data-mutex-group="decouverte-psy"]:not(.open-action)) {
+      flex: 1 1 0 !important;
+      max-width: 320px !important;
+    }
     .embedded-actions > .block-option.action:not(.open-action) {
       margin: 0;
     }
