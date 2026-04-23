@@ -1268,7 +1268,7 @@
     }
     .bc-tranche { font-size: 16px; font-weight: 800; color: #c0392b; letter-spacing: 0.3px; }
     .bc-prenom { font-size: 13px; color: #64748b; font-weight: 600; }
-    .bc-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 12px; }
+    .bc-grid { display: grid; grid-template-columns: 2.2fr 1fr; gap: 10px; }
     .bc-ref { display: flex; flex-direction: column; gap: 6px; }
     .bc-ref-row {
       display: grid; grid-template-columns: 110px 1fr;
@@ -1280,12 +1280,12 @@
     .bc-v { color: #0f172a; font-weight: 700; text-align: left; }
     .bc-input {
       background: #fdf0f0; border: 1.5px solid #fecaca; border-radius: 10px;
-      padding: 10px 12px; display: flex; flex-direction: column; gap: 6px;
+      padding: 8px 8px; display: flex; flex-direction: column; gap: 4px;
     }
     .bc-input-title { font-size: 11.5px; color: #c0392b; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; text-align: center; }
     .bc-input-row { display: flex; align-items: center; justify-content: center; gap: 4px; }
     .bc-input-row label { font-size: 12px; color: #64748b; font-weight: 600; }
-    .bc-input-total { margin-top: 4px; padding-top: 6px; border-top: 1px dashed #fecaca; font-size: 13px; color: #64748b; text-align: right; }
+    .bc-input-total { margin-top: 4px; padding-top: 6px; border-top: 1px dashed #fecaca; font-size: 13px; color: #64748b; text-align: center; }
     .bc-input-total strong { font-size: 17px; color: #c0392b; margin-left: 4px; }
     @media (max-width: 680px) { .bc-grid { grid-template-columns: 1fr; } }
     /* Backup <details> : toutes les tranches */
@@ -1345,7 +1345,7 @@
     }
     @media (max-width: 900px) { .columns-2-grid { grid-template-columns: 1fr; } }
     /* Variante 3 colonnes (avec colonne "Bonne nouvelle") */
-    .columns-2-grid.columns-3 { grid-template-columns: 1fr 1fr 0.95fr; }
+    .columns-2-grid.columns-3 { grid-template-columns: 1fr 1.2fr 0.8fr; }
     .columns-2-grid.columns-3[data-active-col="3"] > .col-2[data-col-idx="3"] {
       opacity: 1; filter: none;
       border-color: #c52f26;
@@ -8689,7 +8689,7 @@ function renderBesoinsSommeil(tranches) {
     if (a === '4-5 ans')            return months >= 48;
     return false;
   }
-  const inputStyle = 'width:62px;padding:6px 4px;border:2px solid #e8a0a0;border-radius:8px;font-size:15px;font-weight:800;text-align:center;background:#fff';
+  const inputStyle = 'width:54px;padding:5px 3px;border:2px solid #e8a0a0;border-radius:6px;font-size:14px;font-weight:800;text-align:center;background:#fff';
   const activeTranche = tranches.find(t => matchAge(t));
   // Compact card = la tranche d'âge de l'enfant, lisible verticalement
   const compactCard = activeTranche ? `
