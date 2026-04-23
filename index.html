@@ -7045,7 +7045,13 @@ function initUI() {
   const notesPanel = document.getElementById('notes-panel');
   if (notesPanel) {
     notesPanel.style.display = 'block';
-    setTimeout(() => { initNotesPosition(); makeNotesDraggable(); }, 50);
+    // Double setTimeout : 1er pour laisser le browser layout le panel, 2e pour mesurer correctement
+    setTimeout(() => {
+      initNotesPosition();
+      makeNotesDraggable();
+      // Re-positionner après 200ms au cas où offsetWidth/Height n'étaient pas prêts
+      setTimeout(initNotesPosition, 200);
+    }, 50);
   }
   // Restore notes si session en cours
   const ta = document.getElementById('session-notes-textarea');
@@ -11134,12 +11140,18 @@ function toggleNotesPanel() {
 function initNotesPosition() {
   const panel = document.getElementById('notes-panel');
   if (!panel) return;
-  // Position initiale : coin bas-droite
-  const rect = panel.getBoundingClientRect();
+  // Reset de tous les styles de position inline pour repartir d'un état propre
   panel.style.bottom = '';
   panel.style.right = '';
-  panel.style.top = (window.innerHeight - panel.offsetHeight - 20) + 'px';
-  panel.style.left = (window.innerWidth - panel.offsetWidth - 20) + 'px';
+  panel.style.top = '';
+  panel.style.left = '';
+  // Forcer un reflow pour que offsetWidth/Height soient corrects
+  panel.offsetHeight;
+  // Position initiale : coin bas-droite (panneau épinglé à droite avec 20px de marge)
+  const panelWidth = panel.offsetWidth || 320;
+  const panelHeight = panel.offsetHeight || 40;
+  panel.style.top = Math.max(20, window.innerHeight - panelHeight - 20) + 'px';
+  panel.style.left = Math.max(20, window.innerWidth - panelWidth - 20) + 'px';
 }
 
 function makeNotesDraggable() {
