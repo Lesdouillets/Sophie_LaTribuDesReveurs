@@ -2232,6 +2232,7 @@ const SCRIPT_DATA = {
                 },
               ]
             },
+            { type: "normal", text: "- Et si malgré tout ça, vous **sentez que ça ne s'améliore pas**, ça peut **valoir le coup** de vérifier s'il n'y a **pas autre chose derrière** :\n  - Vérifier les **tensions corporelles** qui pourraient être à l'**origine** du reflux *(ex : si accouchement long, traumatisant, position dans le ventre)*\n    ⇒ Chez un **ostéopathe pédiatrique**\n  - Vérifier les **freins de bouche** qui pourraient faire **rentrer de l'air dans l'estomac**\n    ⇒ Chez un **ORL pédiatrique**\n  - Vérifier si pas de **problèmes de succion** qui pourraient faire **rentrer de l'air dans l'estomac**\n    ⇒ Auprès d'une **conseillère en lactation IBCLC** spécialisée en détection de pb de succion\n  - Surveiller les **allergènes alimentaires**\n    ⇒ car il y a toujours la **possibilité d'allergie**, notamment APLV" },
             { type: "conseil_vert", text: "**En résumé**,\n\navec un **BB qui a du reflux**, on va surtout **l'aider à digérer tranquillement** :\n- En **fractionnant les repas**, plutôt que de donner de grandes quantités d'un coup\n- En **gardant BB bien vertical** après les repas, pendant environ 20 minutes\n- En **favorisant un environnement calme** et une **routine régulière**, car stress et fatigue peuvent accentuer le reflux\n\n**Avec** ces **petits changements**, [prénom_enfant] sera **beaucoup + à l'aise**… et trouvera plus facilement le **chemin du sommeil.**" },
           ]},
         ]
