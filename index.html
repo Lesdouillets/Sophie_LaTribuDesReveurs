@@ -1374,7 +1374,7 @@
       display: flex !important;
       flex-direction: row;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 14px;
       justify-content: center;
       align-content: flex-start;
     }
@@ -1417,7 +1417,7 @@
       width: 100% !important;
       max-width: 100% !important;
       min-width: 100% !important;
-      margin: 12px 0 0 !important;
+      margin: 20px 0 0 !important;
       margin-left: 0 !important;
       margin-right: 0 !important;
       justify-content: center !important;
@@ -1425,8 +1425,8 @@
     }
     .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action-yellow:not(.open-action)) > .block-option.action-yellow {
       width: 260px !important;
-      min-width: 260px !important;
-      max-width: 360px !important;
+      min-width: 200px !important;
+      max-width: 340px !important;
       flex: 0 0 auto !important;
       margin: 0 auto !important;
     }
@@ -2060,18 +2060,27 @@
       padding: 10px 12px !important;
       gap: 8px !important;
     }
-    /* Pills Pas de dette/Difficultés de sommeil : largeur ajustée au plus long label (~240px) */
+    /* Pills Pas de dette/Difficultés de sommeil : largeur ajustée au plus long label */
     .edit-block-wrap:has(> [data-mutex-group="diag-sommeil"]:not(.open-action)),
     .block-option[data-mutex-group="diag-sommeil"]:not(.open-action) {
-      width: 240px !important;
-      max-width: 240px !important;
-      min-width: 240px !important;
-      flex: 0 0 240px !important;
+      width: 180px !important;
+      max-width: 180px !important;
+      min-width: 180px !important;
+      flex: 0 0 180px !important;
     }
     .edit-block-wrap:has(> [data-mutex-group="diag-sommeil"]:not(.open-action)) > .block-option {
-      width: 240px !important;
-      max-width: 240px !important;
-      min-width: 240px !important;
+      width: 180px !important;
+      max-width: 180px !important;
+      min-width: 180px !important;
+    }
+    .block-option[data-mutex-group="diag-sommeil"] .option-label-text {
+      white-space: normal !important;
+      line-height: 1.25 !important;
+      font-size: 13px !important;
+    }
+    .block-option[data-mutex-group="diag-sommeil"] > .option-header {
+      padding: 10px 12px !important;
+      gap: 8px !important;
     }
     .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) > .block-option.action.pill-style {
       width: 100% !important;
