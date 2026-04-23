@@ -540,7 +540,6 @@ const SCRIPT_DATA = {
       title: "VIII. Plan d'action",
       emoji: "🧭",
       blocks: [
-        { type: "normal", text: "- Maintenant qu'on a **tout vu ensemble**, on va passer **à l'action**.\n- Les **solutions ci-dessous** sont **auto-cochées** selon les problématiques identifiées dans V. Diagnostic.\n- Tu peux **adapter manuellement** les cases pour ajuster le plan à cette famille." },
         { type: "solutions_checkboxes" },
       ]
     },
