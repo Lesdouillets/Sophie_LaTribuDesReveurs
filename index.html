@@ -2135,12 +2135,20 @@
       gap: 12px;
       margin-top: 14px;
     }
-    /* Dans un bloc question : pills alignées à gauche (pas centrées) */
+    /* Dans un bloc question : pills alignées à gauche (pas centrées) + largeur compacte */
     .block-question .embedded-actions {
       justify-content: flex-start;
     }
     .block-question .embedded-actions .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) {
       flex: 0 0 auto;
+      max-width: none !important;
+    }
+    .block-question .embedded-actions .block-option.action.pill-style:not(.open-action) {
+      width: auto !important;
+      min-width: 80px !important;
+    }
+    .block-question .embedded-actions .block-option.action.pill-style:not(.open-action) > .option-header {
+      padding: 10px 14px !important;
     }
     .embedded-actions > .block-option.action:not(.open-action) {
       margin: 0;
