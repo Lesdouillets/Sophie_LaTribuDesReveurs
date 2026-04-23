@@ -1409,12 +1409,17 @@
       margin-right: 0 !important;
     }
     /* V. Diagnostic : bouton jaune SOUS les 2 pills, CENTRÉ, à taille réduite */
+    /* Override agressif pour battre toute règle antérieure sur yellow dans col-2-right */
     .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action-yellow):not(:has(> .block-option.open-action)) {
+      display: flex !important;
       flex: 0 0 100% !important;
+      flex-basis: 100% !important;
       width: 100% !important;
       max-width: 100% !important;
+      min-width: 100% !important;
       margin: 12px 0 0 !important;
-      display: flex !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
       justify-content: center !important;
       align-items: center !important;
     }
@@ -1423,7 +1428,7 @@
       min-width: 260px !important;
       max-width: 360px !important;
       flex: 0 0 auto !important;
-      margin: 0 !important;
+      margin: 0 auto !important;
     }
     .columns-2-grid .col-2-right > .edit-block-wrap > .block-option.action.open-action {
       width: 100% !important;
@@ -2034,17 +2039,39 @@
       padding: 8px 10px !important;
       gap: 6px !important;
     }
-    /* Pills Accompagnée/PAS accompagnée : largeur fixe ajustée au plus long label */
-    .edit-block-wrap:has(> [data-mutex-group="decouverte-psy"]:not(.open-action)) {
-      width: 220px !important;
-      max-width: 220px !important;
-      min-width: 220px !important;
-      flex: 0 0 220px !important;
+    /* Pills Accompagnée/PAS accompagnée : labels "Accompagnée" / "PAS accompagnée" → 150px suffisent */
+    .edit-block-wrap:has(> [data-mutex-group="decouverte-psy"]:not(.open-action)),
+    .block-option[data-mutex-group="decouverte-psy"]:not(.open-action) {
+      width: 150px !important;
+      max-width: 150px !important;
+      min-width: 150px !important;
+      flex: 0 0 150px !important;
     }
     .edit-block-wrap:has(> [data-mutex-group="decouverte-psy"]:not(.open-action)) > .block-option {
-      width: 220px !important;
-      max-width: 220px !important;
-      min-width: 220px !important;
+      width: 150px !important;
+      max-width: 150px !important;
+      min-width: 150px !important;
+    }
+    .block-option[data-mutex-group="decouverte-psy"] .option-label-text {
+      white-space: nowrap !important;
+      line-height: 1.2 !important;
+    }
+    .block-option[data-mutex-group="decouverte-psy"] > .option-header {
+      padding: 10px 12px !important;
+      gap: 8px !important;
+    }
+    /* Pills Pas de dette/Difficultés de sommeil : largeur ajustée au plus long label (~240px) */
+    .edit-block-wrap:has(> [data-mutex-group="diag-sommeil"]:not(.open-action)),
+    .block-option[data-mutex-group="diag-sommeil"]:not(.open-action) {
+      width: 240px !important;
+      max-width: 240px !important;
+      min-width: 240px !important;
+      flex: 0 0 240px !important;
+    }
+    .edit-block-wrap:has(> [data-mutex-group="diag-sommeil"]:not(.open-action)) > .block-option {
+      width: 240px !important;
+      max-width: 240px !important;
+      min-width: 240px !important;
     }
     .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) > .block-option.action.pill-style {
       width: 100% !important;
@@ -2240,6 +2267,17 @@
     .block-question .embedded-actions {
       justify-content: flex-start;
     }
+    /* Option purple dans un bloc question (ex: 💰 Tarifs) : sans fond/bordure violet, hérite du fond rouge */
+    .block-question .embedded-actions > .block-option.purple:not(.open-action),
+    .block-question .embedded-actions > .block-option.purple.open-action {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    .block-question .embedded-actions > .block-option.purple .option-content,
+    .block-question .embedded-actions > .block-option.purple .option-header {
+      background: transparent !important;
+    }
     .embedded-actions > .block-option.action:not(.open-action) {
       margin: 0;
     }
@@ -2322,19 +2360,22 @@
       padding: 8px 14px !important;
       min-height: 0 !important;
     }
-    /* Ouvert : étendre négativement pour couvrir le padding 16px du parent .option-content */
-    .block-option.purple.compact-closed.open-action {
-      width: calc(100% + 32px) !important;
-      max-width: calc(100% + 32px) !important;
-      margin-left: -16px !important;
-      margin-right: -16px !important;
+    /* Masquer "Dérouler" et la flèche sur le bouton compact-closed */
+    .block-option.purple.compact-closed > .option-header .option-toggle,
+    .block-option.purple.compact-closed > .option-header .option-arrow {
+      display: none !important;
     }
+    /* Ouvert : étendre négativement pour couvrir le padding 16px du parent .option-content — UNE SEULE FOIS (au niveau du wrapper) */
     .edit-block-wrap:has(> .block-option.purple.compact-closed.open-action) {
       display: block !important;
-      margin: 18px 0 !important;
-      width: calc(100% + 32px);
-      margin-left: -16px;
-      margin-right: -16px;
+      width: calc(100% + 32px) !important;
+      max-width: calc(100% + 32px) !important;
+      margin: 18px -16px !important;
+    }
+    .block-option.purple.compact-closed.open-action {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
     }
     .block-option.purple .option-header:hover { background: rgba(124,58,237,0.12); }
     .block-option.purple .option-arrow { color: #5b21b6; }

@@ -281,7 +281,7 @@ const SCRIPT_DATA = {
           blocks: [
             { type: "question", text: "Est-ce que vous êtes **accompagnée** du coup ?", embeddedActions: [
               {
-                label: "Accompagnée avec un psy", emoji: "✅", style: "action-green", _pillStyle: true, mutexGroup: "decouverte-psy",
+                label: "Accompagnée", emoji: "✅", style: "action-green", _pillStyle: true, mutexGroup: "decouverte-psy",
                 blocks: [
                   { type: "empathie", text: "- **Super !**\n- **Je comprends…** ce que vous vivez, c'est **vraiment pas simple.**\n- Après une naissance, c'est **NORMAL** de se sentir **fatiguée**, et de se sentir un peu **perdue** par moments.\n- Vous êtes **LOIN** d'être la **SEULE** à passer par là" },
                   { type: "conseil", text: "- 👏 Et j'ai envie de vous dire **quelque chose d'important** :\n- vous faites déjà **énormément** pour votre BB\n- Même si parfois, vous avez l'impression **DE NE pas y arriver** ⇒ **EN RÉALITÉ**, vous vous en occupez **très bien**" },
@@ -289,7 +289,7 @@ const SCRIPT_DATA = {
                 ]
               },
               {
-                label: "PAS accompagnée avec un psy", emoji: "❌", style: "action", _pillStyle: true, mutexGroup: "decouverte-psy",
+                label: "PAS accompagnée", emoji: "❌", style: "action", _pillStyle: true, mutexGroup: "decouverte-psy",
                 blocks: [
                   { type: "empathie", text: "- D'accord. **Je comprends…** ce que vous vivez, c'est **vraiment pas simple.**\n- Après une naissance, c'est **NORMAL** de se sentir **fatiguée** et un peu **perdue** par moments.\n- Vous êtes **LOIN** d'être la **SEULE** à passer par là." },
                   { type: "conseil", text: "- 👏 Vous faites déjà **énormément** pour votre BB\n- Même si parfois, vous avez l'impression **DE NE pas y arriver** ⇒ **EN RÉALITÉ**, vous vous en occupez **très bien**" },
@@ -2252,13 +2252,14 @@ const SCRIPT_DATA = {
               type: "option", label: "🔥 Si Pas pris de RDV", style: "purple", _compactClosed: true,
               blocks: [
                 { type: "important", text: "🔥 Au vu de ce qu'on s'est dit, je pense qu'il serait **intéressant de se revoir**\n\nSachant que **vous voulez commencer** le <strong style=\"color:#C0392B\">XXX</strong>, on **peut se voir** le <strong style=\"color:#C0392B\">XXX</strong>" },
-                { type: "question", text: "Qu'est-ce que vous en pensez ?" },
-                {
-                  type: "option", label: "💰 Tarifs", style: "purple",
-                  blocks: [
-                    { type: "tarifs_tableau" }
-                  ]
-                }
+                { type: "question", text: "Qu'est-ce que <strong>vous en pensez</strong> ?", embeddedActions: [
+                  {
+                    label: "💰 Tarifs", style: "purple", _noPurpleStyle: true,
+                    blocks: [
+                      { type: "tarifs_tableau" }
+                    ]
+                  }
+                ]}
               ]
             },
             { type: "question", text: "Moi, j'ai une **dernière question** pour VOUS qui est **très importante** :\n⇒ Comment vous **vous sentez LÀ,** à **l'idée de mettre** tout ceci **en place** ?" },
