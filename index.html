@@ -1066,19 +1066,19 @@
       margin: 0;
     }
     .block:has(> .info-btn.inline-right) { position: relative; padding-right: 210px; min-height: 68px; }
-    /* Plusieurs boutons info : stack vertical flottant à droite */
+    /* Plusieurs boutons info : stack vertical flottant à droite (ancré en haut) */
     .info-btns-stack {
       position: absolute;
       right: 16px;
-      top: 50%;
-      transform: translateY(-50%);
+      top: 16px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      max-width: 240px;
+      gap: 8px;
+      max-width: 220px;
+      z-index: 2;
     }
-    .info-btn.in-stack { float: none; position: static; margin: 0; }
-    .block:has(> .info-btns-stack) { position: relative; padding-right: 260px; min-height: 80px; }
+    .info-btn.in-stack { float: none; position: static; margin: 0; width: 100%; text-align: left; }
+    .block:has(> .info-btns-stack) { position: relative; padding-right: 240px; min-height: 110px; }
 
     /* Bouton "Retour à la consultation" en haut des sections conditionnelles */
     .btn-return-to-diag {
@@ -5297,7 +5297,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=341"></script>
+<script src="script-data.js?v=347"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
