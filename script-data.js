@@ -2251,7 +2251,7 @@ const SCRIPT_DATA = {
             {
               type: "option", label: "🔥 Si Pas pris de RDV", style: "purple", _compactClosed: true,
               blocks: [
-                { type: "important", text: "🔥 Au vu de ce qu'on s'est dit, je pense qu'il serait **intéressant de se revoir**\n\nSachant que **vous voulez commencer** le <strong style=\"color:#C0392B\">XXX</strong>, on **peut se voir** le <strong style=\"color:#C0392B\">XXX</strong>" },
+                { type: "important", text: "- 🔥 Au vu de ce qu'on s'est dit, je pense qu'il serait **intéressant de se revoir**\n\n- Sachant que **vous voulez commencer** le <strong style=\"color:#C0392B\">XXX</strong>, on **peut se voir** le <strong style=\"color:#C0392B\">XXX</strong>" },
                 { type: "question", text: "Qu'est-ce que <strong>vous en pensez</strong> ?", embeddedActions: [
                   {
                     label: "💰 Tarifs", style: "purple", _noPurpleStyle: true,

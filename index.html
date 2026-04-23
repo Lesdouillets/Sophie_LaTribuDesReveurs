@@ -2278,6 +2278,11 @@
     .block-question .embedded-actions > .block-option.purple .option-header {
       background: transparent !important;
     }
+    /* Masquer "Dérouler" et la flèche sur Tarifs (option purple dans question) */
+    .block-question .embedded-actions > .block-option.purple .option-toggle,
+    .block-question .embedded-actions > .block-option.purple .option-arrow {
+      display: none !important;
+    }
     .embedded-actions > .block-option.action:not(.open-action) {
       margin: 0;
     }
@@ -2365,12 +2370,12 @@
     .block-option.purple.compact-closed > .option-header .option-arrow {
       display: none !important;
     }
-    /* Ouvert : étendre négativement pour couvrir le padding 16px du parent .option-content — UNE SEULE FOIS (au niveau du wrapper) */
+    /* Ouvert : simplement 100% du parent, sans débordement */
     .edit-block-wrap:has(> .block-option.purple.compact-closed.open-action) {
       display: block !important;
-      width: calc(100% + 32px) !important;
-      max-width: calc(100% + 32px) !important;
-      margin: 18px -16px !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 18px 0 !important;
     }
     .block-option.purple.compact-closed.open-action {
       width: 100% !important;
