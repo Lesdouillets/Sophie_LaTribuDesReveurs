@@ -2012,19 +2012,24 @@
       flex: 1 1 0 !important;
       max-width: 360px !important;
     }
-    /* Pills OUI/NON (labels courts) : largeur compacte ~110px */
+    /* Pills OUI/NON (labels courts) : largeur compacte ~90px */
     .edit-block-wrap:has(> [data-mutex-group="chemins-emotions"]:not(.open-action)),
     .edit-block-wrap:has(> [data-mutex-group="conclusion-obj"]:not(.open-action)) {
-      width: 110px !important;
-      max-width: 110px !important;
-      min-width: 110px !important;
-      flex: 0 0 110px !important;
+      width: 90px !important;
+      max-width: 90px !important;
+      min-width: 90px !important;
+      flex: 0 0 90px !important;
     }
     .edit-block-wrap:has(> [data-mutex-group="chemins-emotions"]:not(.open-action)) > .block-option,
     .edit-block-wrap:has(> [data-mutex-group="conclusion-obj"]:not(.open-action)) > .block-option {
-      width: 110px !important;
-      max-width: 110px !important;
-      min-width: 110px !important;
+      width: 90px !important;
+      max-width: 90px !important;
+      min-width: 90px !important;
+    }
+    .edit-block-wrap:has(> [data-mutex-group="chemins-emotions"]:not(.open-action)) > .block-option > .option-header,
+    .edit-block-wrap:has(> [data-mutex-group="conclusion-obj"]:not(.open-action)) > .block-option > .option-header {
+      padding: 8px 10px !important;
+      gap: 6px !important;
     }
     /* Pills Accompagnée/PAS accompagnée : largeur fixe ajustée au plus long label */
     .edit-block-wrap:has(> [data-mutex-group="decouverte-psy"]:not(.open-action)) {
