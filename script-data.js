@@ -408,7 +408,7 @@ const SCRIPT_DATA = {
                 { age: "2-3 mois", nuit: "9h-12h (1 à 3 tps d'alim)", jour: "5h-6h", total: "14h-18h (moy. 16-17h)", siestes: "3 à 6 siestes" },
                 { age: "4-7 mois", nuit: "10h-13h (1 à 3 tps d'alim)", jour: "4h-5h", total: "14h30-18h (moy. 15-16h)", siestes: "3 à 4 siestes" },
                 { age: "8-14 mois", nuit: "10h-13h (moy. 11-12h ininterrompue)", jour: "2h30-4h", total: "13h-17h (moy. 14-15h)", siestes: "2 siestes (voire 3 jusqu'à 10 mois)" },
-                { age: "15 mois – 2 ans", nuit: "10h-13h (moy. 11-12h ininterrompue)", jour: "2h-4h", total: "13h-16h (moy. 13h30-14h30)", siestes: "1 à 2 siestes" },
+                { age: "15 mois - 2 ans", nuit: "10h-13h (moy. 11-12h ininterrompue)", jour: "2h-4h", total: "13h-16h (moy. 13h30-14h30)", siestes: "1 à 2 siestes" },
                 { age: "2-3 ans", nuit: "10h-13h (moy. 11-12h ininterrompue)", jour: "2h-4h", total: "13h-16h (moy. 13h30-14h30)", siestes: "1 sieste" },
                 { age: "4-5 ans", nuit: "11h-13h (moy. 11-12h)", jour: "2h-3h ou 45 min temps calme", total: "12h-16h (moy. 13-14h)", siestes: "1 sieste ou temps calme" },
               ]
