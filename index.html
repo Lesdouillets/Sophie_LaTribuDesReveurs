@@ -1066,6 +1066,19 @@
       margin: 0;
     }
     .block:has(> .info-btn.inline-right) { position: relative; padding-right: 210px; min-height: 68px; }
+    /* Plusieurs boutons info : stack vertical flottant à droite */
+    .info-btns-stack {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-width: 240px;
+    }
+    .info-btn.in-stack { float: none; position: static; margin: 0; }
+    .block:has(> .info-btns-stack) { position: relative; padding-right: 260px; min-height: 80px; }
 
     /* Bouton "Retour à la consultation" en haut des sections conditionnelles */
     .btn-return-to-diag {
@@ -5284,7 +5297,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=311"></script>
+<script src="script-data.js?v=315"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -8833,14 +8846,20 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   if (Array.isArray(b.trailingInfoButtons)) trailingBtnsList.push(...b.trailingInfoButtons);
   if (trailingBtnsList.length) {
     window.__infoButtons = window.__infoButtons || {};
-    trailingBtnHtml = trailingBtnsList.map((tb, tbi) => {
+    const btnsInner = trailingBtnsList.map((tb, tbi) => {
       const btnId = `info-btn-${sectionId||'x'}-${String(path||i).replace(/\./g,'-')}-trail-${tbi}`;
       const label = substituteVars(tb.label || 'Plus d\'infos');
       const title = substituteVars(tb.title || tb.label || 'Informations');
       const contentHtml = renderBlocks(Array.isArray(tb.blocks) ? tb.blocks : [], sectionId, (depth||0)+1, path||String(i));
       window.__infoButtons[btnId] = { title, content: contentHtml };
-      return `<button type="button" class="info-btn inline-right" contenteditable="false" onclick="openInfoPanel('${btnId}')"><span class="info-btn-emoji">💡</span><span>${label}</span></button>`;
+      // Si 1 seul bouton : classe .inline-right (positionné absolument)
+      // Si > 1 : classe .in-stack (positionnement géré par le container parent)
+      const cls = trailingBtnsList.length > 1 ? 'info-btn in-stack' : 'info-btn inline-right';
+      return `<button type="button" class="${cls}" contenteditable="false" onclick="openInfoPanel('${btnId}')"><span class="info-btn-emoji">💡</span><span>${label}</span></button>`;
     }).join('');
+    trailingBtnHtml = trailingBtnsList.length > 1
+      ? `<div class="info-btns-stack" contenteditable="false">${btnsInner}</div>`
+      : btnsInner;
   }
   // Boutons action embarqués à l'intérieur du bloc texte (via embeddedActions)
   let embeddedHtml = '';

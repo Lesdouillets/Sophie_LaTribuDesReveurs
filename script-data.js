@@ -2173,7 +2173,7 @@ const SCRIPT_DATA = {
           { id: "conf_aplv", label: "APLV", cardLabel: "APLV suspectée", cardEmoji: "🌿", autoCheckIfPbs: ["allergie_seule", "rgo_allergie"], blocks: [
             { type: "normal", text: "- *(Contenu solution APLV à compléter.)*" },
           ]},
-          { id: "conf_rgo", label: "Conseils RGO", cardLabel: "Conseils RGO", cardEmoji: "😣", autoCheckIfPbs: ["rgo_seul"], blocks: [
+          { id: "conf_rgo", label: "Conseils RGO", cardLabel: "Conseils RGO", cardEmoji: "🤮", autoCheckIfPbs: ["rgo_seul"], blocks: [
             {
               type: "normal",
               text: "- Très souvent, derrière cet inconfort, on retrouve …le **reflux**.\n- Le reflux, c'est **qqch** qui est **très fréquent** chez les BB…\n- parfois, il PEUT ETRE **discret** et **pas toujours évident** à **repérer.**\n  ⇒ Mais il peut **vraiment gêner**, surtout en **position allongée**…\n  ⇒ et du coup, **forcément,** ça peut **impacter le sommeil**\n\n- Donc, concrètement, il y a **plusieurs petits ajustements** qui peuvent déjà **faire une vraie différence**",
@@ -2186,10 +2186,10 @@ const SCRIPT_DATA = {
                   ]
                 },
                 {
-                  label: "Gorge rouge",
+                  label: "Gorge rouge = acidité OU bcp de pleurs",
                   title: "Gorge rouge = acidité OU bcp de pleurs",
                   blocks: [
-                    { type: "normal", text: "- **Gorge rouge = acidité OU bcp de pleurs**\n  - La **gorge rouge** ne signifie **pas toujours** que le **reflux est acide** et **irrite la gorge** (⇒ traitement donné à tort)\n    ⇒ Ça peut AUSSI être un **symptôme d'un BB qui pleure beaucoup**" }
+                    { type: "normal", text: "- La **gorge rouge** ne signifie **pas toujours** que le **reflux est acide** et **irrite la gorge** (⇒ traitement donné à tort)\n  ⇒ Ça peut AUSSI être un **symptôme d'un BB qui pleure beaucoup**" }
                   ]
                 }
               ]
@@ -2197,12 +2197,6 @@ const SCRIPT_DATA = {
             {
               type: "courbe_cards_grid",
               items: [
-                {
-                  id: "rgo_journee", emoji: "☀️", label: "Journée",
-                  blocks: [
-                    { type: "normal", text: "- Déjà, en journée, tout ce qui va **favoriser la verticalité** et **le calme** …va l'aider.\n  - ✅ N'hésitez pas à utiliser le **portage** ⇒ aide à maintenir la verticalité pour soulager l'inconfort et apaiser BB\n  - ❌ Éviter les **positions recroquevillées** ⇒ qui compriment l'estomac *(ex : transat)*\n  - ❌ Éviter aussi de **trop stimuler** BB ⇒ Il a besoin de **bcp de calme** *(ex : jouets à piles, écrans, environnement bruyant)*\n  - ❌ Éviter les **manipulations juste après les repas** ⇒ le liquide remonte + facilement si on manipule trop un enfant\n  - ❌ Éviter les **vêtements qui serrent** le ventre ⇒ Comprime l'estomac *(ex : vêtements avec des élastiques, couches trop serrées)*\n\n- L'idée, c'est vraiment de ne **pas comprimer l'estomac** et de **laisser la digestion se faire tranquillement**." },
-                  ]
-                },
                 {
                   id: "rgo_alim", emoji: "🍽", label: "Alimentation",
                   blocks: [
@@ -2221,6 +2215,12 @@ const SCRIPT_DATA = {
                         { type: "normal", text: "Je vous encourage à :\n- ❌ À **ne PAS changer plusieurs fois de lait** à la suite\n  ⇒ 🎓 *temps d'adaptation = 2 semaines*\n\n- ✅ Idéalement proposer un **temps d'alimentation** au **réveil des siestes** (ou dans les 30 min)\n  ⇒ 🎓 *C'est le meilleur moment pour nourrir un enfant, car il aura l'énergie suffisante pour boire efficacement*\n\n- ✅ Au niveau de la **tétine du biberon**, vérifier le **débit de la tétine**\n  ⇒ 🎓 *Avec un débit trop lent, bébé avale de l'air ; avec un débit trop rapide, le reflux est aggravé*\n\n- ✅ Tester éventuellement un **biberon anti-reflux**\n  ⇒ 🎓 *Peut aider certains bébés*\n\n- ✅ Vérifier la **reconstitution du lait** : 1) l'eau 2) la poudre\n  ⇒ 🎓 *Un lait mal reconstitué peut priver un enfant d'apports nutritionnels et créer une déshydratation*\n\n- ✅ **Fractionner les prises** avec des biberons **+ petits mais + fréquents** (toutes les 2-3h30 environ)\n  ⇒ 💡 *La demi-vidange gastrique du lait infantile est de 74 min en moyenne ⇒ cela limite la distension de l'estomac et des remontées acides*\n\n- ✅ Favoriser les prises alimentaires dans un **environnement calme et peu stimulant**\n  ⇒ 🎓 *Les bébés avec du reflux ont besoin de beaucoup de calme*\n\n- ✅ Proposer des **« pauses » entre les prises** de 5 à 10 min avec des balancements\n  ⇒ 🎓 *Limite l'air dans l'estomac et les remontées*\n\n- ✅ Maintenir bébé **20 à 30 min en position verticale** après avoir mangé *(portage, écharpe, bébé contre l'épaule, portage physiologique)*\n  ⇒ 🎓 *Pour éviter que le lait remonte dans l'œsophage et crée une œsophagite*\n\n- ❌ Évitez les **positions trop horizontales** juste **après la tétée** *(ex : transat, poser bébé immédiatement allongé)*\n  ⇒ 🎓 *L'horizontalité ou la compression de l'estomac favorise le reflux*\n\n- ✅ Faire un **rot à la fin du repas**\n  ⇒ 🎓 *Pour supprimer au maximum l'air dans l'estomac qui pourrait créer des remontées*\n\n- ✅ Déposer bébé sur un **lit à plat**\n  ⇒ 🎓 *Diminue le risque de Mort Inattendue du Nourrisson*\n\n- ✅ Déposer bébé **sur le dos** OU alors **le faire en conscience** du risque\n  ⇒ 🎓 *Diminue le risque de Mort Inattendue du Nourrisson*" },
                       ]
                     },
+                  ]
+                },
+                {
+                  id: "rgo_journee", emoji: "☀️", label: "Journée",
+                  blocks: [
+                    { type: "normal", text: "- Déjà, en journée, tout ce qui va **favoriser la verticalité** et **le calme** …va l'aider.\n  - ✅ N'hésitez pas à utiliser le **portage** ⇒ aide à maintenir la verticalité pour soulager l'inconfort et apaiser BB\n  - ❌ Eviter les **positions recroquevillées** ⇒ qui comprime l'estomac *(ex : transat)*\n  - ❌ Eviter aussi de **trop stimuler** BB ⇒ Il a besoin de **bcp calme** *(ex : jouets à piles, écrans, environnement bruyant)*\n  - ❌ Eviter les **manipulations juste après les repas** ⇒ le liquide remonte + facilement si on manipule trop un enfant\n  - ❌ Eviter les **vêtements qui serrent** le ventre ⇒ Comprime l'estomac *(ex : vêtements avec des élastiques, couches trop serrées)*\n- L'idée, c'est vraiment de ne **pas comprimer l'estomac** et de **laisser la digestion se faire tranquillement**." },
                   ]
                 },
                 {
