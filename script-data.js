@@ -534,6 +534,17 @@ const SCRIPT_DATA = {
       ]
     },
 
+    // ── VIII. PLAN D'ACTION ────────────────────────────────
+    {
+      id: "plan_action",
+      title: "VIII. Plan d'action",
+      emoji: "🧭",
+      blocks: [
+        { type: "normal", text: "- Maintenant qu'on a **tout vu ensemble**, on va passer **à l'action**.\n- Les **solutions ci-dessous** sont **auto-cochées** selon les problématiques identifiées dans V. Diagnostic.\n- Tu peux **adapter manuellement** les cases pour ajuster le plan à cette famille." },
+        { type: "solutions_checkboxes" },
+      ]
+    },
+
   ],
 
   // ── SECTIONS CONDITIONNELLES ─────────────────────────────
@@ -2146,6 +2157,53 @@ const SCRIPT_DATA = {
     },
 
   ],
+
+  // ── SOLUTIONS (Plan d'action VIII) — arbre catégorie → solutions enfants ──────
+  // Chaque parent = catégorie (Confort, Nutrition, Rythme, Stratégie, Env, Relationnel).
+  // Chaque enfant = solution concrète avec une case à cocher.
+  // `autoCheckIfPbs` = liste de pb qui, quand cochées, auto-cochent cette solution.
+  // L'utilisateur peut manuellement toggler les cases dans VIII.
+  solutions: {
+    categories: [
+      {
+        id: "confort_physique", title: "Confort physique", emoji: "🩺",
+        children: [
+          { id: "conf_aplv", label: "APLV", autoCheckIfPbs: ["allergie_seule", "rgo_allergie"] },
+          { id: "conf_rgo",  label: "Conseils RGO", autoCheckIfPbs: ["rgo_seul"] },
+        ]
+      },
+      {
+        id: "nutrition", title: "Nutrition", emoji: "🍽️",
+        children: [
+          // À compléter
+        ]
+      },
+      {
+        id: "rythme", title: "Rythme (Organisation de la journée)", emoji: "⏰",
+        children: [
+          // À compléter
+        ]
+      },
+      {
+        id: "strategie", title: "Stratégie de sommeil", emoji: "😴",
+        children: [
+          // À compléter
+        ]
+      },
+      {
+        id: "env", title: "Environnement de sommeil", emoji: "🏠",
+        children: [
+          // À compléter
+        ]
+      },
+      {
+        id: "relationnel", title: "Enjeux relationnels", emoji: "💬",
+        children: [
+          // À compléter
+        ]
+      },
+    ]
+  },
 
   // ── PLAN D'ACTION ─────────────────────────────────────────
   planAction: [
