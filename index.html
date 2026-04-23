@@ -8264,11 +8264,9 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const obj = state.client.objectifs;
     if (!obj) return '';
     const objHtml = obj.replace(/\n/g, '<br>');
-    const cesVos = (obj && obj.trim()) ? 'ces objectifs' : 'vos objectifs';
     return `<div class="block block-pb-recap">
       <div class="pb-recap-intro">• <u>Pour rappel, vos objectifs étaient :</u></div>
       <div class="pb-recap-text"><em>${objHtml}</em></div>
-      <div style="background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin-top:14px;font-weight:400;line-height:1.7">❓ Est-ce que j'ai <strong>répondu à ${cesVos}</strong> ?</div>
     </div>`;
   }
 
