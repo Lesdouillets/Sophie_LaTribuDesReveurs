@@ -1943,7 +1943,7 @@
     }
     /* Quand 2 pills sont côte-à-côte (mutex), même largeur avec flex:1 */
     .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) {
-      display: inline-flex; flex: 1 1 0;
+      display: inline-flex !important; flex: 1 1 0 !important;
       margin: 4px 6px 4px 0 !important; vertical-align: middle;
       max-width: 320px;
     }

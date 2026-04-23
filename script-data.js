@@ -469,7 +469,7 @@ const SCRIPT_DATA = {
           ]
         },
         {
-          type: "option", label: "Objectifs PAS faisables", emoji: "⚠️", style: "action", _pillStyle: true, mutexGroup: "objectifs-revus",
+          type: "option", label: "Objectifs PAS faisables", emoji: "❌", style: "action", _pillStyle: true, mutexGroup: "objectifs-revus",
           blocks: [
             { type: "normal", text: "- Par rapport aux **objectifs que vous avez donné**\n- ⇒ Il y a **certains points** que je **voudrais re-discuter avec vous**" },
             {
