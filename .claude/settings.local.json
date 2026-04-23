@@ -46,7 +46,8 @@
       "Bash(awk 'NR==1147 || NR==1302 || NR==1400' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")",
       "Bash(perl -i -pe ' *)",
       "Bash(perl -i -pe 's|data-exclusive=\"nutri_courbes_child\"|data-exclusive=\"nutri_top_child\"|g; s|data-exclusive=\"nutri_lok_child\"|data-exclusive=\"nutri_top_child\"|g; s|data-exclusive=\"nutri_diversif_child\"|data-exclusive=\"nutri_top_child\"|g' index.html)",
-      "Bash(awk 'NR>=8044 && NR<=8110' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")"
+      "Bash(awk 'NR>=8044 && NR<=8110' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")",
+      "Bash(perl -i -pe \"s/tps alimentation/tps d'alim/g\" script-data.js)"
     ]
   }
 }
