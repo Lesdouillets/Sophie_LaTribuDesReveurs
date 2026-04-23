@@ -2224,7 +2224,7 @@ const SCRIPT_DATA = {
                 label: "Allergique vs Intolérant",
                 title: "💡 Allergique vs Intolérant",
                 blocks: [
-                  { type: "normal", text: "**ALLERGIQUE :**\n- 🎓 **Allergie** = **Réaction disproportionnée du système immunitaire** face à un allergène\n  ⇒ Le **corps réagit** comme si une **substance était dangereuse** (même si elle **ne l'est pas**).\n\n- On peut être **allergique aux PLV**\n- mais **PAS allergique au lactose** (= sucre dans le lait)\n\n---\n\n**INTOLÉRANT :**\n- 🎓 **Intolérance** = **Seuil** au-delà duquel **l'organisme ne peut plus digérer ou absorber correctement** certains aliments\n\n- Par contre, on peut être **intolérant au lactose** (= sucre du lait)\n\n⇒ Cependant, l'**intolérance au lactose** est **très rare** chez les **bébés**" }
+                  { type: "normal", text: "**ALLERGIQUE :**\n- **Allergie** = **Réaction disproportionnée du système immunitaire** face à un allergène\n  ⇒ Le **corps réagit** comme si une **substance était dangereuse** (même si elle **ne l'est pas**).\n\n- On peut être **allergique aux PLV**\nmais **PAS allergique au lactose** (= sucre dans le lait)\n\n---\n\n**INTOLÉRANT :**\n- **Intolérance** = **Seuil** au-delà duquel **l'organisme ne peut plus digérer ou absorber correctement** certains aliments\n\n- Par contre, on peut être **intolérant au lactose** (= sucre du lait)\n⇒ Cependant, l'**intolérance au lactose** est **très rare** chez les **bébés**" }
                 ]
               }
             },
@@ -2292,6 +2292,24 @@ const SCRIPT_DATA = {
             { type: "conseil", showIfAlim: "Diversification", text: "💡 Et vous pouvez vous faire **aider d'une diététicienne nutritionniste pédiatrique** (⇒ nous avons **Tiffany Deroyer** chez Fée Dodo qui pourra vous **venir en aide sur l'alimentation**)\n\net la consultation est **souvent prise en charge par la Mutuelle**" },
             { type: "important", showIfAlim: ["Allaitement au sein", "Allaitement au biberon", "Allaitement mixte"], text: "⚠️ Attention au lait de **jument, brebis, chèvre, ânesse, soja**… pour les **allergies croisées**" },
             { type: "important", showIfAlim: ["Allaitement au sein", "Allaitement au biberon", "Allaitement mixte"], text: "⚠️ Aux **carences** qu'une **éviction peut engendrer** :\n- en **fer** pour votre enfant ⇒ Au besoin, il y a des compléments (toujours valider auprès de votre médecin) *(ex : Child Life : Iron liquid)*\n- **au calcium** : il faudrait que vous vous **fassiez supplémenter**\n\n<img src=\"https://cloudinary.images-iherb.com/image/upload/f_auto,q_auto:eco/images/cdl/cdl12100/v/40.jpg\" alt=\"Child Life Iron Liquid\" style=\"max-width:120px;height:auto;margin-top:8px;border:1px solid #cbd5e0;border-radius:6px;background:#fff;padding:4px\">" },
+            {
+              type: "option", label: "OPTION Tensions corporelles", emoji: "🦴", style: "purple-btn",
+              blocks: [
+                { type: "normal", text: "- Je vous invite à **vérifier** s'il n'y a **pas de tensions corporelles** qui pourraient être à l'**origine du reflux** *(ex : accouchement difficile, BB qui est dans une position asymétrique, corps en forme banane…)*\n  ⇒ Vous pouvez aller voir un **ostéopathe pédiatrique**" },
+              ]
+            },
+            {
+              type: "option", label: "OPTION Freins restrictifs", emoji: "👄", style: "purple-btn",
+              blocks: [
+                { type: "normal", text: "- Je vous inviterai aussi à **vérifier** s'il n'y a **pas de freins restrictifs** qui pourraient **faire rentrer de l'air dans l'estomac** + qui peut rendre **+ difficile la prise alimentaire**\n\n- Vous pouvez aller voir :\n  - **Pédiatre** — à voir en 1er\n  - **Thérapeute manuel** type ostéopathe pédiatrique — voir si BB n'a pas de tension et non un frein\n  - **Consultante IBCLC** — voir **si un frein buccal** est la **cause des difficultés d'allaitement**\n  - **Chirurgien ORL** — pour **diagnostiquer et traiter les freins buccaux**\n  - **Dentiste pédiatrique ou spécialiste des freins buccaux** — pour évaluer et traiter les freins buccaux\n  - **Orthophoniste pédiatrique** — pour la **mobilité de la langue**\n  - **Kiné spécialisé en mobilité linguale** — pour la mobilité de la langue" },
+              ]
+            },
+            {
+              type: "option", label: "OPTION Pb de succion", emoji: "🤱", style: "purple-btn",
+              blocks: [
+                { type: "normal", text: "- Je vous inviterai aussi à **vérifier** s'il n'y a **pas de pb de succion** qui pourraient **faire rentrer de l'air dans l'estomac**, qui peut rendre **+ difficile la prise alimentaire**\n\n- Vous pouvez aller voir :\n  - **Pédiatre** à voir en 1er\n  - **Consultante IBCLC** : Observera la prise de sein et identifiera les pb de succion / positionnement + exercices à faire + si bib : changement de biberon\n  - **Chirurgien ORL ou ORL** : **Si frein** de langue ou lèvre suspecté\n  - **Orthophoniste pédiatrique** : En cas de **difficulté de coordination** entre la **succion / déglutition / respiration**" },
+              ]
+            },
           ]},
           { id: "conf_rgo", label: "Conseils RGO", cardLabel: "Conseils RGO", cardEmoji: "🤮", autoCheckIfPbs: ["rgo_seul"], blocks: [
             {
