@@ -1268,7 +1268,7 @@
     }
     .bc-tranche { font-size: 16px; font-weight: 800; color: #c0392b; letter-spacing: 0.3px; }
     .bc-prenom { font-size: 13px; color: #64748b; font-weight: 600; }
-    .bc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .bc-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 12px; }
     .bc-ref { display: flex; flex-direction: column; gap: 6px; }
     .bc-ref-row {
       display: grid; grid-template-columns: 110px 1fr;
@@ -1282,8 +1282,8 @@
       background: #fdf0f0; border: 1.5px solid #fecaca; border-radius: 10px;
       padding: 10px 12px; display: flex; flex-direction: column; gap: 6px;
     }
-    .bc-input-title { font-size: 12px; color: #c0392b; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
-    .bc-input-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+    .bc-input-title { font-size: 11.5px; color: #c0392b; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; text-align: center; }
+    .bc-input-row { display: flex; align-items: center; justify-content: center; gap: 4px; }
     .bc-input-row label { font-size: 12px; color: #64748b; font-weight: 600; }
     .bc-input-total { margin-top: 4px; padding-top: 6px; border-top: 1px dashed #fecaca; font-size: 13px; color: #64748b; text-align: right; }
     .bc-input-total strong { font-size: 17px; color: #c0392b; margin-left: 4px; }
@@ -2006,15 +2006,18 @@
       box-sizing: border-box;
     }
     /* Quand 2+ pill-siblings : chacun prend 50% (minus gap) — marche en block ET en flex */
-    .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)):has(~ .edit-block-wrap > .block-option.action.pill-style:not(.open-action)),
-    .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) ~ .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) {
+    /* EXCLUSION : les pills yellow ne suivent PAS cette règle (ils ont leur propre règle spécifique plus bas) */
+    .edit-block-wrap:has(> .block-option.action.pill-style:not(.action-yellow):not(.open-action)):has(~ .edit-block-wrap > .block-option.action.pill-style:not(.action-yellow):not(.open-action)),
+    .edit-block-wrap:has(> .block-option.action.pill-style:not(.action-yellow):not(.open-action)) ~ .edit-block-wrap:has(> .block-option.action.pill-style:not(.action-yellow):not(.open-action)) {
       width: calc(50% - 10px) !important;
       flex: 1 1 0 !important;
       max-width: 360px !important;
     }
-    /* Pills OUI/NON (labels courts) : largeur compacte ~90px */
+    /* Pills OUI/NON (labels courts) : largeur compacte ~90px — cible wrapper ET option directe */
     .edit-block-wrap:has(> [data-mutex-group="chemins-emotions"]:not(.open-action)),
-    .edit-block-wrap:has(> [data-mutex-group="conclusion-obj"]:not(.open-action)) {
+    .edit-block-wrap:has(> [data-mutex-group="conclusion-obj"]:not(.open-action)),
+    .block-option[data-mutex-group="chemins-emotions"]:not(.open-action),
+    .block-option[data-mutex-group="conclusion-obj"]:not(.open-action) {
       width: 90px !important;
       max-width: 90px !important;
       min-width: 90px !important;
@@ -2026,8 +2029,8 @@
       max-width: 90px !important;
       min-width: 90px !important;
     }
-    .edit-block-wrap:has(> [data-mutex-group="chemins-emotions"]:not(.open-action)) > .block-option > .option-header,
-    .edit-block-wrap:has(> [data-mutex-group="conclusion-obj"]:not(.open-action)) > .block-option > .option-header {
+    .block-option[data-mutex-group="chemins-emotions"]:not(.open-action) > .option-header,
+    .block-option[data-mutex-group="conclusion-obj"]:not(.open-action) > .option-header {
       padding: 8px 10px !important;
       gap: 6px !important;
     }
@@ -8617,7 +8620,7 @@ function renderBesoinsSommeil(tranches) {
     if (a === '4-5 ans')            return months >= 48;
     return false;
   }
-  const inputStyle = 'width:80px;padding:8px 6px;border:2px solid #e8a0a0;border-radius:8px;font-size:16px;font-weight:800;text-align:center;background:#fff';
+  const inputStyle = 'width:62px;padding:6px 4px;border:2px solid #e8a0a0;border-radius:8px;font-size:15px;font-weight:800;text-align:center;background:#fff';
   const activeTranche = tranches.find(t => matchAge(t));
   // Compact card = la tranche d'âge de l'enfant, lisible verticalement
   const compactCard = activeTranche ? `
