@@ -3257,6 +3257,28 @@
       font-weight: 700; color: #0f172a;
     }
     .sol-checkbox-label { color: #334155; }
+    /* Intro commune + cards enfants sous les checkboxes */
+    .sol-cat-intro { padding: 10px 14px 4px; }
+    .sol-cat-intro .block { background: transparent !important; border: none !important; box-shadow: none !important; padding: 6px 0 !important; }
+    .sol-child-cards {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      padding: 10px 12px;
+    }
+    .sol-child-card {
+      flex: 1 1 140px; min-width: 140px; max-width: 220px;
+      padding: 12px 14px; border: 2px solid; border-radius: 12px;
+      cursor: pointer; background: #fff;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      transition: transform 0.1s, box-shadow 0.15s;
+    }
+    .sol-child-card:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .sol-child-card.active { box-shadow: 0 4px 14px rgba(0,0,0,0.18); }
+    .sol-child-card .solc-emoji { font-size: 28px; line-height: 1; }
+    .sol-child-card .solc-label { font-weight: 700; font-size: 13.5px; text-align: center; }
+    .sol-child-content {
+      border: 2px solid; border-radius: 12px; background: #fff;
+      margin: 0 12px 12px; padding: 12px 16px;
+    }
 
     /* ═══ MODAL DROPDOWN SOLUTIONS (déclenché par btn header 🧭) ═══ */
     .solutions-modal-wrap {
@@ -5194,7 +5216,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=304"></script>
+<script src="script-data.js?v=305"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -5362,6 +5384,7 @@ let state = {
   selectedPbs: new Set(),
   selectedSolutions: new Set(),
   selectedSolutionsManuallyEdited: new Set(),
+  solActiveChildByCat: {},
   revealedLever: null,
   sections: [],
   currentIdx: 0,
@@ -8780,11 +8803,8 @@ function renderSolutionsCheckboxes() {
     if (!hasChildren) {
       inner = `<div class="sol-cat-empty" style="padding:12px 14px;color:#94a3b8;font-style:italic;font-size:13px">Aucune solution configurée pour cette catégorie.</div>`;
     } else {
-      // Intro commune de la catégorie — affichée uniquement si au moins un enfant est coché
       const anyChildChecked = children.some(ch => state.selectedSolutions.has(ch.id));
-      const introHtml = (anyChildChecked && Array.isArray(cat.introBlocks) && cat.introBlocks.length)
-        ? `<div class="sol-cat-intro">${renderBlocks(cat.introBlocks, 'sol_' + cat.id)}</div>`
-        : '';
+      // Checkboxes de sélection
       const checkboxes = children.map(ch => {
         const checked = state.selectedSolutions.has(ch.id);
         return `<label class="sol-checkbox-row" data-sol-id="${ch.id}">
@@ -8792,7 +8812,31 @@ function renderSolutionsCheckboxes() {
           <span class="sol-checkbox-label">${ch.label || ch.id}</span>
         </label>`;
       }).join('');
-      inner = `<div class="sol-cat-checkboxes">${checkboxes}</div>${introHtml}`;
+      // Intro commune — affichée uniquement si ≥ 1 enfant coché
+      const introHtml = (anyChildChecked && Array.isArray(cat.introBlocks) && cat.introBlocks.length)
+        ? `<div class="sol-cat-intro">${renderBlocks(cat.introBlocks, 'sol_' + cat.id)}</div>`
+        : '';
+      // Cards des enfants cochés (une card par child coché, cliquable pour ouvrir le contenu)
+      const checkedChildren = children.filter(ch => state.selectedSolutions.has(ch.id));
+      const activeChildId = (state.solActiveChildByCat && state.solActiveChildByCat[cat.id]) || null;
+      const cardsHtml = checkedChildren.length ? `<div class="sol-child-cards">` + checkedChildren.map(ch => {
+        const isActive = activeChildId === ch.id;
+        return `<div class="sol-child-card${isActive?' active':''}" style="border-color:${c.main};${isActive?'background:'+c.main+';color:#fff':'background:#fff'}" onclick="toggleSolChildCard('${cat.id}','${ch.id}')">
+          <span class="solc-emoji">${ch.cardEmoji || '📄'}</span>
+          <span class="solc-label">${ch.cardLabel || ch.label || ch.id}</span>
+        </div>`;
+      }).join('') + `</div>` : '';
+      // Contenu de l'enfant actif (si applicable)
+      let childContentHtml = '';
+      if (activeChildId) {
+        const activeChild = children.find(ch => ch.id === activeChildId);
+        if (activeChild && Array.isArray(activeChild.blocks) && activeChild.blocks.length) {
+          childContentHtml = `<div class="sol-child-content" style="border-color:${c.main}">` +
+            renderBlocks(activeChild.blocks, 'sol_' + cat.id + '_' + activeChild.id) +
+            `</div>`;
+        }
+      }
+      inner = `<div class="sol-cat-checkboxes">${checkboxes}</div>${introHtml}${cardsHtml}${childContentHtml}`;
     }
     return `<div class="sol-cat" data-sol-cat="${cat.id}" style="border-color:${c.main};background:${c.pastel}">
       <div class="sol-cat-header" style="background:${c.main};color:#fff">${headerLabel}</div>
@@ -8829,6 +8873,18 @@ function toggleSolution(id, checked) {
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.toggleSolution = toggleSolution;
+
+function toggleSolChildCard(catId, childId) {
+  if (!state.solActiveChildByCat) state.solActiveChildByCat = {};
+  if (state.solActiveChildByCat[catId] === childId) {
+    delete state.solActiveChildByCat[catId]; // re-click ferme
+  } else {
+    state.solActiveChildByCat[catId] = childId;
+  }
+  renderCurrentSection();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.toggleSolChildCard = toggleSolChildCard;
 
 // Modal flottant top-right — liste des solutions cochées
 function updateSolutionsModal() {
