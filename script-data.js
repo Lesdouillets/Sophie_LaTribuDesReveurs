@@ -432,7 +432,7 @@ const SCRIPT_DATA = {
             {
               type: "option", label: "Difficultés de sommeil identifiées", emoji: "❌", style: "action", _pillStyle: true, _purpleContent: true, mutexGroup: "diag-sommeil",
               blocks: [
-                { type: "normal", text: "- Au vu de ce qu'on s'est dit\n- En effet, vous aviez **BIEN identifié** que votre enfant a des **difficultés de sommeil**.", _noBorder: true },
+                { type: "normal", text: "- Au vu de ce qu'on s'est dit\n- En effet, vous aviez **BIEN identifié** que votre enfant a des **difficultés de sommeil**.\n<br>", _noBorder: true },
                 { type: "normal", text: "- <u>OPTION</u> : **<u>Temps d'endormissement trop long :</u>** Il y a une **petite problématique** au niveau des **durées d'endormissement**… qui sont **très longues**", _purpleDark: true },
                 { type: "normal", text: "- <u>OPTION</u> : **<u>Durée des siestes trop courte :</u>** Il y a aussi un **petit caillou** concernant la **durée des siestes**… qui sont **très courtes**", _purpleDark: true },
                 { type: "normal", text: "- <u>OPTION</u> : **<u>Nombre de siestes inadapté :</u>** Il y a aussi **quelque chose à travailler** au niveau du **nombre de siestes**… qui ne **correspondent PAS** forcément aux **besoins de son âge**", _purpleDark: true },
