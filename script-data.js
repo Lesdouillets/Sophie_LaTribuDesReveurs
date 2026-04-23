@@ -2249,7 +2249,7 @@ const SCRIPT_DATA = {
             { type: "question", text: "Est-ce qu'il vous **reste des questions** ?" },
             { type: "question", text: "**QUAND** est-ce que vous **PENSEZ** **pouvoir commencer** à **mettre ces changements en place** ?" },
             {
-              type: "option", label: "🔥 Si Pas pris de RDV", style: "purple",
+              type: "option", label: "🔥 Si Pas pris de RDV", style: "purple", _compactClosed: true,
               blocks: [
                 { type: "important", text: "🔥 Au vu de ce qu'on s'est dit, je pense qu'il serait **intéressant de se revoir**\n\nSachant que **vous voulez commencer** le <strong style=\"color:#C0392B\">XXX</strong>, on **peut se voir** le <strong style=\"color:#C0392B\">XXX</strong>" },
                 { type: "question", text: "Qu'est-ce que vous en pensez ?" },

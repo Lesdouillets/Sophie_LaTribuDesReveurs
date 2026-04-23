@@ -2259,6 +2259,29 @@
       background: #f5f0ff;
       border-color: #7c3aed;
     }
+    /* Variante COMPACT-CLOSED : petit bouton fermé + plein largeur ouvert + marge verticale */
+    .block-option.purple.compact-closed:not(.open-action) {
+      display: inline-block;
+      width: auto; min-width: 200px; max-width: 360px;
+      margin: 18px auto !important;
+    }
+    .edit-block-wrap:has(> .block-option.purple.compact-closed:not(.open-action)) {
+      display: block;
+      text-align: center;
+      margin: 18px 0 !important;
+    }
+    .block-option.purple.compact-closed:not(.open-action) > .option-header {
+      padding: 10px 18px !important;
+      min-height: 0 !important;
+    }
+    .block-option.purple.compact-closed.open-action {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    .edit-block-wrap:has(> .block-option.purple.compact-closed.open-action) {
+      display: block;
+      margin: 18px 0 !important;
+    }
     .block-option.purple .option-header:hover { background: rgba(124,58,237,0.12); }
     .block-option.purple .option-arrow { color: #5b21b6; }
     .block-option.purple .option-label-text { color: #5b21b6; font-weight: 700; }
@@ -7619,10 +7642,11 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const actionYellowClass = b.style === 'action-yellow' ? ' action-yellow' : '';
     const actionPurpleInsideClass = b._purpleContent ? ' action-purple-inside' : '';
     const pillStyleClass = b._pillStyle ? ' pill-style' : '';
+    const compactClosedClass = b._compactClosed ? ' compact-closed' : '';
     const cardClass = b.style === 'card' ? ' card' : '';
     const emojiHtml = b.emoji ? `<span class="option-emoji">${b.emoji}</span>` : '';
     const mutexAttr = b.mutexGroup ? ` data-mutex-group="${String(b.mutexGroup).replace(/"/g, '&quot;')}"` : '';
-    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${purpleBtnClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionPurpleInsideClass}${pillStyleClass}${cardClass}"${mutexAttr}>
+    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${purpleBtnClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionPurpleInsideClass}${pillStyleClass}${compactClosedClass}${cardClass}"${mutexAttr}>
       <div class="option-header" onclick="toggleOption(this)">
         <span style="display:flex;align-items:center;gap:6px">
           ${emojiHtml}
