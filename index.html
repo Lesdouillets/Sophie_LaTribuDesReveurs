@@ -1066,19 +1066,23 @@
       margin: 0;
     }
     .block:has(> .info-btn.inline-right) { position: relative; padding-right: 210px; min-height: 68px; }
-    /* Plusieurs boutons info : stack vertical flottant à droite (ancré en haut) */
+    /* Plusieurs boutons info : stack vertical flottant à droite (via float, reste dans le bloc) */
     .info-btns-stack {
-      position: absolute;
-      right: 16px;
-      top: 16px;
+      float: right;
+      clear: right;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      max-width: 220px;
-      z-index: 2;
+      max-width: 200px;
+      width: 200px;
+      margin: 0 0 8px 14px;
     }
     .info-btn.in-stack { float: none; position: static; margin: 0; width: 100%; text-align: left; }
-    .block:has(> .info-btns-stack) { position: relative; padding-right: 240px; min-height: 110px; }
+    .block:has(> .info-btns-stack) { min-height: 0; padding-right: 16px; }
+    /* Clear le float en fin de bloc */
+    .block:has(> .info-btns-stack)::after {
+      content: ''; display: block; clear: both;
+    }
 
     /* Bouton "Retour à la consultation" en haut des sections conditionnelles */
     .btn-return-to-diag {
@@ -5297,7 +5301,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=347"></script>
+<script src="script-data.js?v=348"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -8399,6 +8403,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       return min === Infinity ? 1e9 : min;
     };
     const visibleItems = items.filter(it => {
+      // Si aucun pb n'est défini, on affiche toujours l'item (utilisé dans les cards de solutions)
+      if (!it.pb) return true;
       const pbs = Array.isArray(it.pb) ? it.pb : [it.pb];
       return pbs.some(p => state.selectedPbs.has(p));
     }).sort((a, b) => itemMinOrderIdx(a) - itemMinOrderIdx(b));
