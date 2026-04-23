@@ -2174,7 +2174,65 @@ const SCRIPT_DATA = {
             { type: "normal", text: "- *(Contenu solution APLV à compléter.)*" },
           ]},
           { id: "conf_rgo", label: "Conseils RGO", cardLabel: "Conseils RGO", cardEmoji: "😣", autoCheckIfPbs: ["rgo_seul"], blocks: [
-            { type: "normal", text: "- *(Contenu solution RGO à compléter.)*" },
+            {
+              type: "normal",
+              text: "- Très souvent, derrière cet inconfort, on retrouve …le **reflux**.\n- Le reflux, c'est **qqch** qui est **très fréquent** chez les BB…\n- parfois, il PEUT ETRE **discret** et **pas toujours évident** à **repérer.**\n  ⇒ Mais il peut **vraiment gêner**, surtout en **position allongée**…\n  ⇒ et du coup, **forcément,** ça peut **impacter le sommeil**\n\n- Donc, concrètement, il y a **plusieurs petits ajustements** qui peuvent déjà **faire une vraie différence**",
+              trailingInfoButtons: [
+                {
+                  label: "Causes du RGO",
+                  title: "Causes du RGO",
+                  blocks: [
+                    { type: "normal", text: "- Il peut y avoir **différentes causes** :\n  - <u>**Mécanique**</u> :\n    - Système digestif immature : **Sphincter Inférieur de l'œsophage (SIO) immature** *(anneau musculaire entre l'œsophage et l'estomac pas assez développé pour se contracter efficacement et maintenir le contenu du bol gastrique dans l'estomac)*\n    - Tensions corporelles\n    - Freins restrictifs\n    - Pb de succion\n  - <u>**Alimentaire**</u> :\n    - Allergie\n    - Œsophage court\n    - Bcp d'horizontalité\n    - Bcp d'alimentation liquide *(ex : bouteille d'eau à l'horizontal)*\n    - Trop d'alimentation\n    - Système digestif immature : microbiote immature" }
+                  ]
+                },
+                {
+                  label: "Gorge rouge",
+                  title: "Gorge rouge = acidité OU bcp de pleurs",
+                  blocks: [
+                    { type: "normal", text: "- **Gorge rouge = acidité OU bcp de pleurs**\n  - La **gorge rouge** ne signifie **pas toujours** que le **reflux est acide** et **irrite la gorge** (⇒ traitement donné à tort)\n    ⇒ Ça peut AUSSI être un **symptôme d'un BB qui pleure beaucoup**" }
+                  ]
+                }
+              ]
+            },
+            {
+              type: "courbe_cards_grid",
+              items: [
+                {
+                  id: "rgo_journee", emoji: "☀️", label: "Journée",
+                  blocks: [
+                    { type: "normal", text: "- Déjà, en journée, tout ce qui va **favoriser la verticalité** et **le calme** …va l'aider.\n  - ✅ N'hésitez pas à utiliser le **portage** ⇒ aide à maintenir la verticalité pour soulager l'inconfort et apaiser BB\n  - ❌ Éviter les **positions recroquevillées** ⇒ qui compriment l'estomac *(ex : transat)*\n  - ❌ Éviter aussi de **trop stimuler** BB ⇒ Il a besoin de **bcp de calme** *(ex : jouets à piles, écrans, environnement bruyant)*\n  - ❌ Éviter les **manipulations juste après les repas** ⇒ le liquide remonte + facilement si on manipule trop un enfant\n  - ❌ Éviter les **vêtements qui serrent** le ventre ⇒ Comprime l'estomac *(ex : vêtements avec des élastiques, couches trop serrées)*\n\n- L'idée, c'est vraiment de ne **pas comprimer l'estomac** et de **laisser la digestion se faire tranquillement**." },
+                  ]
+                },
+                {
+                  id: "rgo_alim", emoji: "🍽", label: "Alimentation",
+                  blocks: [
+                    { type: "normal", text: "**Autour des repas**, il y a aussi **quelques points importants** :" },
+                    {
+                      type: "option", label: "🤱 Bébé au sein", style: "purple", showIfAlim: "Allaitement au sein",
+                      blocks: [
+                        { type: "conseil_vert", text: "🎓 Le fait de **donner à la demande**, va lui permettre de **prendre suffisamment de lait** MEME **s'il régurgite beaucoup**" },
+                        { type: "normal", text: "Je vous encourage grandement à :\n- ✅ Garder l'allaitement **à la demande** ⇒ le lait maternel a un **effet « pansement »** sur l'œsophage\n\n- ✅ Favoriser les **prises alimentaires** dans un **environnement calme et peu stimulant**\n  ⇒ 🎓 *Les bébés avec du reflux ont besoin de beaucoup de calme*\n\n- ✅ Adapter la **position d'allaitement**\n  ⇒ 🎓 *La position « Biological Nurturing » sera la + adaptée : Maman semi-allongée, semi-inclinée, et bébé posé au-dessus ventre contre ventre*\n\n- ✅ Idéalement proposer un **temps d'alimentation** au **réveil des siestes** (ou dans les 30 min)\n  ⇒ 🎓 *C'est le meilleur moment pour nourrir un enfant, car il aura l'énergie suffisante pour boire efficacement*\n\n- ✅ Proposer des **« pauses » entre les prises** de 5 à 10 min avec des balancements\n  ⇒ 🎓 *Limite l'air dans l'estomac et les remontées*\n\n- ✅ Maintenir bébé **20 à 30 min en position verticale** après avoir mangé *(portage, écharpe, bébé contre l'épaule)*\n  ⇒ 🎓 *Pour éviter que le lait remonte dans l'œsophage et crée une œsophagite*\n\n- ❌ Évitez les **positions trop horizontales** trop rapidement **après la tétée** *(ex : transat, poser bébé immédiatement allongé)*\n  ⇒ 🎓 *L'horizontalité ou la compression de l'estomac favorise le reflux*\n\n- ✅ Faire un **rot à la fin du repas**\n  ⇒ 🎓 *Pour supprimer au maximum l'air dans l'estomac qui pourrait créer des remontées*\n\n- ✅ **Dissocier l'alimentation et le sommeil**\n  ⇒ 🎓 *La multiplication des prises alimentaires empêche la verticalisation après les repas ⇒ entretient le reflux*\n  ⇒ 🎓 *Peut favoriser une stratégie dépendante à l'endormissement*\n\n- ✅ Déposer bébé sur un **lit à plat**\n  ⇒ 🎓 *Diminue le risque de Mort Inattendue du Nourrisson*\n\n- ✅ Déposer bébé **sur le dos** OU alors **le faire en conscience** du risque\n  ⇒ 🎓 *Diminue le risque de Mort Inattendue du Nourrisson*" },
+                        { type: "normal", _purpleDark: true, text: "💡 *La demi-vidange gastrique du lait maternel est de 36 min en moyenne*\n\n👏 Et c'est le **meilleur lait** pour un BB !" },
+                      ]
+                    },
+                    {
+                      type: "option", label: "🍼 Bébé au biberon", style: "purple", showIfAlim: ["Allaitement au biberon", "Allaitement mixte", "Biberon lait infantile"],
+                      blocks: [
+                        { type: "normal", text: "Je vous encourage à :\n- ❌ À **ne PAS changer plusieurs fois de lait** à la suite\n  ⇒ 🎓 *temps d'adaptation = 2 semaines*\n\n- ✅ Idéalement proposer un **temps d'alimentation** au **réveil des siestes** (ou dans les 30 min)\n  ⇒ 🎓 *C'est le meilleur moment pour nourrir un enfant, car il aura l'énergie suffisante pour boire efficacement*\n\n- ✅ Au niveau de la **tétine du biberon**, vérifier le **débit de la tétine**\n  ⇒ 🎓 *Avec un débit trop lent, bébé avale de l'air ; avec un débit trop rapide, le reflux est aggravé*\n\n- ✅ Tester éventuellement un **biberon anti-reflux**\n  ⇒ 🎓 *Peut aider certains bébés*\n\n- ✅ Vérifier la **reconstitution du lait** : 1) l'eau 2) la poudre\n  ⇒ 🎓 *Un lait mal reconstitué peut priver un enfant d'apports nutritionnels et créer une déshydratation*\n\n- ✅ **Fractionner les prises** avec des biberons **+ petits mais + fréquents** (toutes les 2-3h30 environ)\n  ⇒ 💡 *La demi-vidange gastrique du lait infantile est de 74 min en moyenne ⇒ cela limite la distension de l'estomac et des remontées acides*\n\n- ✅ Favoriser les prises alimentaires dans un **environnement calme et peu stimulant**\n  ⇒ 🎓 *Les bébés avec du reflux ont besoin de beaucoup de calme*\n\n- ✅ Proposer des **« pauses » entre les prises** de 5 à 10 min avec des balancements\n  ⇒ 🎓 *Limite l'air dans l'estomac et les remontées*\n\n- ✅ Maintenir bébé **20 à 30 min en position verticale** après avoir mangé *(portage, écharpe, bébé contre l'épaule, portage physiologique)*\n  ⇒ 🎓 *Pour éviter que le lait remonte dans l'œsophage et crée une œsophagite*\n\n- ❌ Évitez les **positions trop horizontales** juste **après la tétée** *(ex : transat, poser bébé immédiatement allongé)*\n  ⇒ 🎓 *L'horizontalité ou la compression de l'estomac favorise le reflux*\n\n- ✅ Faire un **rot à la fin du repas**\n  ⇒ 🎓 *Pour supprimer au maximum l'air dans l'estomac qui pourrait créer des remontées*\n\n- ✅ Déposer bébé sur un **lit à plat**\n  ⇒ 🎓 *Diminue le risque de Mort Inattendue du Nourrisson*\n\n- ✅ Déposer bébé **sur le dos** OU alors **le faire en conscience** du risque\n  ⇒ 🎓 *Diminue le risque de Mort Inattendue du Nourrisson*" },
+                      ]
+                    },
+                  ]
+                },
+                {
+                  id: "rgo_rituel", emoji: "🌙", label: "Rituel du soir",
+                  blocks: [
+                    { type: "normal", text: "- Le soir, l'idée, c'est d'être **encore plus doux** :\n  - ❌ Éviter les **sur-stimulations** avant le coucher\n  - ✅ Anticiper le **change AVANT le lait** ⇒ les manipulations peuvent faire remonter le reflux\n  - ✅ Mettre en place une **routine** ⇒ sécurise et diminue le stress. Les pleurs peuvent aggraver l'irritation de l'œsophage *(ex : repas → temps calme → rituel → coucher)*" },
+                    { type: "normal", _purpleDark: true, text: "💡 Un bébé **suffisamment verticalisé la journée**, PEUT ne **pas** avoir **besoin d'être verticalisé la nuit**" },
+                  ]
+                },
+              ]
+            },
+            { type: "conseil_vert", text: "**En résumé**,\n\navec un **BB qui a du reflux**, on va surtout **l'aider à digérer tranquillement** :\n- En **fractionnant les repas**, plutôt que de donner de grandes quantités d'un coup\n- En **gardant BB bien vertical** après les repas, pendant environ 20 minutes\n- En **favorisant un environnement calme** et une **routine régulière**, car stress et fatigue peuvent accentuer le reflux\n\n**Avec** ces **petits changements**, [prénom_enfant] sera **beaucoup + à l'aise**… et trouvera plus facilement le **chemin du sommeil.**" },
           ]},
         ]
       },

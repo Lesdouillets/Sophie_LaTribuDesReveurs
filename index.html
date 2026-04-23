@@ -5284,7 +5284,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=306"></script>
+<script src="script-data.js?v=309"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -8825,17 +8825,22 @@ function renderBlockInner(b, i, sectionId, depth, path) {
 
   const cls = { normal:'block-normal', important:'block-important', conseil:'block-conseil', conseil_vert:'block-conseil-vert', empathie:'block-empathie' }[b.type] || 'block-normal';
   const extraCls = (b._purpleDark ? ' block-purple-dark' : '') + (b._noBorder ? ' block-no-border' : '');
-  // Bouton "💡 Plus d'infos" flottant à droite DANS le bloc (optionnel, via trailingInfoButton)
+  // Boutons "💡 Plus d'infos" flottants à droite DANS le bloc (optionnel)
+  // Supporte `trailingInfoButton` (singulier) OU `trailingInfoButtons` (array)
   let trailingBtnHtml = '';
-  if (b.trailingInfoButton) {
-    const tb = b.trailingInfoButton;
-    const btnId = `info-btn-${sectionId||'x'}-${String(path||i).replace(/\./g,'-')}-trail`;
-    const label = substituteVars(tb.label || 'Plus d\'infos');
-    const title = substituteVars(tb.title || tb.label || 'Informations');
-    const contentHtml = renderBlocks(Array.isArray(tb.blocks) ? tb.blocks : [], sectionId, (depth||0)+1, path||String(i));
+  const trailingBtnsList = [];
+  if (b.trailingInfoButton) trailingBtnsList.push(b.trailingInfoButton);
+  if (Array.isArray(b.trailingInfoButtons)) trailingBtnsList.push(...b.trailingInfoButtons);
+  if (trailingBtnsList.length) {
     window.__infoButtons = window.__infoButtons || {};
-    window.__infoButtons[btnId] = { title, content: contentHtml };
-    trailingBtnHtml = `<button type="button" class="info-btn inline-right" contenteditable="false" onclick="openInfoPanel('${btnId}')"><span class="info-btn-emoji">💡</span><span>${label}</span></button>`;
+    trailingBtnHtml = trailingBtnsList.map((tb, tbi) => {
+      const btnId = `info-btn-${sectionId||'x'}-${String(path||i).replace(/\./g,'-')}-trail-${tbi}`;
+      const label = substituteVars(tb.label || 'Plus d\'infos');
+      const title = substituteVars(tb.title || tb.label || 'Informations');
+      const contentHtml = renderBlocks(Array.isArray(tb.blocks) ? tb.blocks : [], sectionId, (depth||0)+1, path||String(i));
+      window.__infoButtons[btnId] = { title, content: contentHtml };
+      return `<button type="button" class="info-btn inline-right" contenteditable="false" onclick="openInfoPanel('${btnId}')"><span class="info-btn-emoji">💡</span><span>${label}</span></button>`;
+    }).join('');
   }
   // Boutons action embarqués à l'intérieur du bloc texte (via embeddedActions)
   let embeddedHtml = '';
