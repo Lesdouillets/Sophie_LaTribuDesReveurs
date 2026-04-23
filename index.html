@@ -2011,9 +2011,9 @@
       box-sizing: border-box;
     }
     /* Quand 2+ pill-siblings : chacun prend 50% (minus gap) — marche en block ET en flex */
-    /* EXCLUSION : les pills yellow ne suivent PAS cette règle (ils ont leur propre règle spécifique plus bas) */
-    .edit-block-wrap:has(> .block-option.action.pill-style:not(.action-yellow):not(.open-action)):has(~ .edit-block-wrap > .block-option.action.pill-style:not(.action-yellow):not(.open-action)),
-    .edit-block-wrap:has(> .block-option.action.pill-style:not(.action-yellow):not(.open-action)) ~ .edit-block-wrap:has(> .block-option.action.pill-style:not(.action-yellow):not(.open-action)) {
+    /* EXCLUSIONS : yellow et diag-sommeil ont leurs propres règles spécifiques */
+    .edit-block-wrap:has(> .block-option.action.pill-style:not(.action-yellow):not([data-mutex-group="diag-sommeil"]):not(.open-action)):has(~ .edit-block-wrap > .block-option.action.pill-style:not(.action-yellow):not([data-mutex-group="diag-sommeil"]):not(.open-action)),
+    .edit-block-wrap:has(> .block-option.action.pill-style:not(.action-yellow):not([data-mutex-group="diag-sommeil"]):not(.open-action)) ~ .edit-block-wrap:has(> .block-option.action.pill-style:not(.action-yellow):not([data-mutex-group="diag-sommeil"]):not(.open-action)) {
       width: calc(50% - 10px) !important;
       flex: 1 1 0 !important;
       max-width: 360px !important;
@@ -2060,7 +2060,9 @@
       padding: 10px 12px !important;
       gap: 8px !important;
     }
-    /* Pills Pas de dette/Difficultés de sommeil : largeur ajustée au plus long label */
+    /* Pills Pas de dette/Difficultés de sommeil : largeur ajustée au plus long label
+       Sélecteurs spécifiques PLUSIEURS pour battre la règle universelle sibling-flex */
+    .columns-2-grid .col-2-right > .edit-block-wrap:has(> [data-mutex-group="diag-sommeil"]:not(.open-action)),
     .edit-block-wrap:has(> [data-mutex-group="diag-sommeil"]:not(.open-action)),
     .block-option[data-mutex-group="diag-sommeil"]:not(.open-action) {
       width: 180px !important;
