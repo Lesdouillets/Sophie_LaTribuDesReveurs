@@ -1387,16 +1387,31 @@
       width: auto;
       flex: 0 0 auto;
     }
-    /* La dernière option (yellow = Difficultés alim) prend toute la largeur */
-    .columns-2-grid .col-2-right > .edit-block-wrap:last-child {
-      flex-basis: 100%;
-      display: flex !important;
-      justify-content: center;
+    /* La dernière option (yellow = Difficultés alim) : même largeur que les pills du dessus, centrée */
+    .columns-2-grid .col-2-right > .edit-block-wrap:last-child:not(:has(> .block-option.action.open-action)) {
+      width: calc(50% - 10px) !important;
+      max-width: 360px !important;
+      margin: 6px auto 0 !important;
+      flex: 0 0 auto !important;
     }
-    /* Quand une option est OUVERTE, son wrapper s'étend sur toute la largeur de la col-2-right */
+    /* Quand une option est OUVERTE dans col-2-right : wrapper centré pleine largeur + pill centré */
     .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action.open-action) {
-      flex-basis: 100% !important;
-      width: 100%;
+      flex: 1 1 100% !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      display: block !important;
+    }
+    .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action.open-action) > .block-option.action.open-action {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+    /* Yellow seul après ouverture d'un frère : aussi centré */
+    .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action.action-yellow.pill-style:not(.open-action)) {
+      margin-left: auto !important;
+      margin-right: auto !important;
     }
     .columns-2-grid .col-2-right > .edit-block-wrap > .block-option.action.open-action {
       width: 100% !important;
@@ -1928,7 +1943,7 @@
     }
     .block-option.action.pill-style:not(.open-action) > .option-header .option-label-text {
       color: inherit !important; font-weight: 700 !important; font-size: 14.5px !important;
-      text-shadow: none !important; text-align: left !important;
+      text-shadow: none !important; text-align: center !important;
     }
     /* Variante taille doublée — UNIQUEMENT pour VI. Objectifs revus (mutexGroup "objectifs-revus") */
     .block-option.action.pill-style[data-mutex-group="objectifs-revus"]:not(.open-action) > .option-header {
@@ -1962,6 +1977,15 @@
     .block-option.action.pill-style:not(.action-green):not(.action-yellow):not(.open-action):hover {
       background: #fee2e2 !important; border-color: #fca5a5 !important;
       transform: none; box-shadow: 0 2px 6px rgba(153,27,27,0.12) !important;
+    }
+    /* Couleur variante jaune (action-yellow + pill-style) */
+    .block-option.action.pill-style.action-yellow:not(.open-action) {
+      background: #fefce8 !important;
+      border-color: #fde68a !important; color: #78350f;
+    }
+    .block-option.action.pill-style.action-yellow:not(.open-action):hover {
+      background: #fef9c3 !important; border-color: #fcd34d !important;
+      transform: none; box-shadow: 0 2px 6px rgba(180,83,9,0.12) !important;
     }
     /* Règle universelle : 2 pills frères = MÊME LARGEUR automatique (quel que soit le contexte) */
     .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) {
@@ -2166,20 +2190,9 @@
       gap: 12px;
       margin-top: 14px;
     }
-    /* Dans un bloc question : pills alignées à gauche (pas centrées) + largeur compacte */
+    /* Dans un bloc question : pills alignées à gauche (pas centrées) */
     .block-question .embedded-actions {
       justify-content: flex-start;
-    }
-    .block-question .embedded-actions .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) {
-      flex: 0 0 auto;
-      max-width: none !important;
-    }
-    .block-question .embedded-actions .block-option.action.pill-style:not(.open-action) {
-      width: auto !important;
-      min-width: 80px !important;
-    }
-    .block-question .embedded-actions .block-option.action.pill-style:not(.open-action) > .option-header {
-      padding: 10px 14px !important;
     }
     .embedded-actions > .block-option.action:not(.open-action) {
       margin: 0;
