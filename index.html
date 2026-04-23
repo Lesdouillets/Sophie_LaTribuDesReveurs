@@ -1911,16 +1911,32 @@
       flex-direction: row !important; gap: 10px !important; align-items: center !important;
     }
     .block-option.action.pill-style:not(.open-action) > .option-header .option-emoji {
-      display: inline-block !important;
+      display: inline-flex !important;
+      align-items: center !important; justify-content: center !important;
       width: 22px !important; height: 22px !important;
-      font-size: 18px !important; line-height: 22px !important;
+      font-size: 16px !important; line-height: 1 !important;
       text-align: center !important;
       filter: none !important; text-shadow: none !important;
       flex-shrink: 0;
+      overflow: hidden;
     }
     .block-option.action.pill-style:not(.open-action) > .option-header .option-label-text {
       color: inherit !important; font-weight: 700 !important; font-size: 14.5px !important;
       text-shadow: none !important; text-align: left !important;
+    }
+    /* Variante taille doublée — UNIQUEMENT pour VI. Objectifs revus (mutexGroup "objectifs-revus") */
+    .block-option.action.pill-style[data-mutex-group="objectifs-revus"]:not(.open-action) > .option-header {
+      padding: 20px 28px !important; gap: 14px !important; border-radius: 12px;
+    }
+    .block-option.action.pill-style[data-mutex-group="objectifs-revus"]:not(.open-action) > .option-header > span {
+      gap: 14px !important;
+    }
+    .block-option.action.pill-style[data-mutex-group="objectifs-revus"]:not(.open-action) > .option-header .option-emoji {
+      width: 32px !important; height: 32px !important;
+      font-size: 24px !important;
+    }
+    .block-option.action.pill-style[data-mutex-group="objectifs-revus"]:not(.open-action) > .option-header .option-label-text {
+      font-size: 17px !important;
     }
     .block-option.action.pill-style:not(.open-action) > .option-header .option-toggle { display: none !important; }
     /* Couleur variante positive (vert) */
