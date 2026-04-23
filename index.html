@@ -1893,10 +1893,11 @@
     /* PILL-STYLE : variante visuelle des boutons .action qui ressemble au tbc-opt (Garder/Supprimer)
        mais CONSERVE tout le comportement mutex/sibling-hide/ouverture de contenu des boutons .action. */
     .block-option.action.pill-style:not(.open-action) {
-      width: auto; min-width: 110px; max-width: 320px;
+      width: 100%; min-width: 110px; max-width: 320px;
       background: transparent !important; box-shadow: none !important;
       border: 2px solid transparent; border-radius: 10px;
       margin: 0;
+      box-sizing: border-box;
     }
     .block-option.action.pill-style:not(.open-action) > .option-header {
       flex-direction: row !important;
@@ -1904,13 +1905,18 @@
       padding: 10px 18px !important; gap: 10px !important;
       min-height: 0 !important;
       border-radius: 10px;
+      box-sizing: border-box;
     }
     .block-option.action.pill-style:not(.open-action) > .option-header > span {
-      flex-direction: row !important; gap: 10px !important;
+      flex-direction: row !important; gap: 10px !important; align-items: center !important;
     }
     .block-option.action.pill-style:not(.open-action) > .option-header .option-emoji {
-      font-size: 18px !important; line-height: 1 !important;
+      display: inline-block !important;
+      width: 22px !important; height: 22px !important;
+      font-size: 18px !important; line-height: 22px !important;
+      text-align: center !important;
       filter: none !important; text-shadow: none !important;
+      flex-shrink: 0;
     }
     .block-option.action.pill-style:not(.open-action) > .option-header .option-label-text {
       color: inherit !important; font-weight: 700 !important; font-size: 14.5px !important;
@@ -1935,9 +1941,29 @@
       background: #fee2e2 !important; border-color: #fca5a5 !important;
       transform: none; box-shadow: 0 2px 6px rgba(153,27,27,0.12) !important;
     }
-    /* Quand 2 pills sont côte-à-côte (mutex), gap plus petit */
+    /* Quand 2 pills sont côte-à-côte (mutex), même largeur avec flex:1 */
     .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) {
-      display: inline-block; margin: 4px 6px 4px 0 !important; vertical-align: middle;
+      display: inline-flex; flex: 1 1 0;
+      margin: 4px 6px 4px 0 !important; vertical-align: middle;
+      max-width: 320px;
+    }
+    .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) > .block-option.action.pill-style {
+      width: 100% !important;
+    }
+    /* Dans embedded-actions : 2 pills = 2 colonnes égales */
+    .embedded-actions .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) {
+      flex: 1 1 0;
+    }
+    /* Dans col-2-right (V. Diagnostic) : 2 pills côte-à-côte, même largeur */
+    .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) {
+      display: inline-flex !important;
+      flex: 1 1 0 !important;
+      width: auto !important;
+      max-width: none !important;
+      margin: 0 4px !important;
+    }
+    .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) > .block-option.action.pill-style {
+      width: 100% !important;
     }
 
     /* 2+ boutons ACTION frères (top-level ou imbriqués) : côte-à-côte
@@ -2108,6 +2134,13 @@
       align-items: flex-start;
       gap: 12px;
       margin-top: 14px;
+    }
+    /* Dans un bloc question : pills alignées à gauche (pas centrées) */
+    .block-question .embedded-actions {
+      justify-content: flex-start;
+    }
+    .block-question .embedded-actions .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) {
+      flex: 0 0 auto;
     }
     .embedded-actions > .block-option.action:not(.open-action) {
       margin: 0;

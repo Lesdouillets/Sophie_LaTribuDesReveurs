@@ -463,13 +463,13 @@ const SCRIPT_DATA = {
       emoji: "🎯",
       blocks: [
         {
-          type: "option", label: "Objectifs faisables", emoji: "✅", style: "action-green", mutexGroup: "objectifs-revus",
+          type: "option", label: "Objectifs faisables", emoji: "✅", style: "action-green", _pillStyle: true, mutexGroup: "objectifs-revus",
           blocks: [
             { type: "normal", text: "- Par rapport aux **objectifs que vous avez donné**\n- ⇒ moi ce que **je pense** c'est que c'est **tout à fait COHÉRENT et FAISABLES**" }
           ]
         },
         {
-          type: "option", label: "Objectifs PAS faisables", emoji: "⚠️", style: "action", mutexGroup: "objectifs-revus",
+          type: "option", label: "Objectifs PAS faisables", emoji: "⚠️", style: "action", _pillStyle: true, mutexGroup: "objectifs-revus",
           blocks: [
             { type: "normal", text: "- Par rapport aux **objectifs que vous avez donné**\n- ⇒ Il y a **certains points** que je **voudrais re-discuter avec vous**" },
             {
