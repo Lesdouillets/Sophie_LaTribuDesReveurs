@@ -1406,6 +1406,11 @@
       margin: 0 !important;
       display: block !important;
     }
+    /* Quand un mutex diag-sommeil est ouvert, le frère fermé reste centré en spannant les 2 cols */
+    .columns-2-grid .col-2-right:has(> .edit-block-wrap > .block-option[data-mutex-group="diag-sommeil"].open-action) > .edit-block-wrap:has(> .block-option[data-mutex-group="diag-sommeil"]:not(.open-action)) {
+      grid-column: 1 / -1 !important;
+      justify-self: center !important;
+    }
     .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action.open-action) > .block-option.action.open-action {
       width: 100% !important;
       max-width: 100% !important;
@@ -1867,10 +1872,10 @@
       margin-bottom: 8px !important;
       margin-top: 8px !important;
     }
-    /* Espace blanc supplémentaire entre l'encadré vert (conseil_vert) et le bloc violet qui suit */
+    /* Espace blanc supplémentaire entre l'encadré vert (conseil_vert) et le bloc violet qui suit : 1 ligne */
     .block-option.action.open-action .block-conseil-vert + .edit-block-wrap > .block-normal.block-purple-dark,
     .block-option.action.open-action .edit-block-wrap:has(> .block-conseil-vert) + .edit-block-wrap > .block-normal.block-purple-dark {
-      margin-top: 16px !important;
+      margin-top: 28px !important;
     }
     /* Aligner les bullets dans les purple-dark avec les bullets des blocs normaux (outside) */
     .block-option.action.open-action .block-normal.block-purple-dark ul {
