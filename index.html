@@ -9067,8 +9067,14 @@ function renderBlockInner(b, i, sectionId, depth, path) {
 function setTickboxChoiceFromSol(cid, value) {
   if (!state.tickboxChoices) state.tickboxChoices = {};
   state.tickboxChoices[cid] = value;
+  // Auto-cocher la solution Tétine si une des options est sélectionnée
+  if ((cid === 'strategie_tetine_choice' || cid === 'obj_tetine_static') && value) {
+    if (!state.selectedSolutions) state.selectedSolutions = new Set();
+    state.selectedSolutions.add('strat_tetine');
+  }
   if (typeof renderCurrentSection === 'function') renderCurrentSection();
   if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
+  if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 
@@ -10284,6 +10290,13 @@ function selectTickboxChoice(el) {
     const currentValue = wasSelected ? null : el.dataset.value;
     setPb('souhait_tetine', currentValue === 'supprimer');
     syncChanged = true;
+  }
+  // Auto-cocher la solution Tétine quand une option tétine est sélectionnée (peu importe la valeur)
+  if ((cid === 'obj_tetine_static' || cid === 'strategie_tetine_choice') && !wasSelected) {
+    if (!state.selectedSolutions) state.selectedSolutions = new Set();
+    state.selectedSolutions.add('strat_tetine');
+    if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
+    if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
   }
   if (syncChanged) {
     if (typeof buildSections === 'function') buildSections();
