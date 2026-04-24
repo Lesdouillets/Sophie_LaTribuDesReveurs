@@ -7798,6 +7798,12 @@ function openInfoPanel(btnId) {
   titleEl.innerHTML = '💡 ' + (data.title || 'Informations');
   bodyEl.innerHTML = data.content || '';
   panel.classList.add('open');
+  // Thème bleu si ouverture depuis un bouton flottant (bulle BD)
+  if (btnId && btnId.startsWith('float-')) {
+    panel.classList.add('info-panel-blue');
+  } else {
+    panel.classList.remove('info-panel-blue');
+  }
   window.__activeInfoBtnId = btnId;
   // Initialise les widgets dynamiques (labels qui dépendent de state.client)
   if (typeof updatePotentielGenetique === 'function' && bodyEl.querySelector('#pg-pere-input')) {
