@@ -2495,6 +2495,8 @@
     .block-purple-dark { background: #f5f0ff !important; border: 3px dashed #a78bfa !important; border-radius: 16px !important; box-shadow: 0 2px 8px rgba(167,139,250,0.18) !important; padding-left: 20px !important; }
     .block-purple-dark ul { padding-left: 21px !important; }
     .block-no-border { border: none !important; box-shadow: none !important; background: transparent !important; padding: 0 !important; }
+    /* Bloc avec fond et bordure de la catégorie parente */
+    .block-cat-bg { background: var(--cat-light, #fef2f2) !important; border-color: var(--cat-main, #dc2626) !important; }
     .block-option.purple .option-content .block-option.purple .option-content .block:not(.block-question) { background: #ddd3f8; border-color: #c4b5e0; }
     .block-option.purple .block-question { background: #fdf0f0 !important; border-color: #e8a0a0 !important; }
 
@@ -2899,6 +2901,18 @@
     .courbe-card .ccc-subs { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-top: 2px; }
     .courbe-card .ccc-sub-chip { font-size: 11px; font-weight: 600; color: #9a3412; background: rgba(251,146,60,0.18); padding: 2px 8px; border-radius: 999px; line-height: 1.4; }
     .courbe-card.active .ccc-sub-chip { background: rgba(255,255,255,0.25); color: #fff; }
+    /* Couleurs de la catégorie parent (appliquées aux courbe-cards dans une carte de solution) */
+    .sol-child-content .courbe-card {
+      background: var(--cat-light, #fff7ed);
+      border-color: var(--cat-main, #fdba74);
+    }
+    .sol-child-content .courbe-card:hover { background: var(--cat-light, #ffedd5); }
+    .sol-child-content .courbe-card.active {
+      background: var(--cat-main, #f97316);
+      border-color: var(--cat-dark, #c2410c);
+    }
+    .sol-child-content .courbe-card .ccc-title { color: var(--cat-dark, #7c2d12); }
+    .sol-child-content .courbe-card.active .ccc-title { color: #fff; }
     /* Grille sticky compacte pour les cards enfants (nested inside card content) */
     .courbe-card-content .courbe-cards-grid-wrap > .courbe-cards-grid {
       position: sticky;
@@ -8970,7 +8984,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
 
   const cls = { normal:'block-normal', important:'block-important', conseil:'block-conseil', conseil_vert:'block-conseil-vert', empathie:'block-empathie' }[b.type] || 'block-normal';
   const hasTrailing = !!(b.trailingInfoButton || (Array.isArray(b.trailingInfoButtons) && b.trailingInfoButtons.length));
-  const extraCls = (b._purpleDark ? ' block-purple-dark' : '') + (b._noBorder ? ' block-no-border' : '') + (hasTrailing ? ' block-has-trailing' : '');
+  const extraCls = (b._purpleDark ? ' block-purple-dark' : '') + (b._noBorder ? ' block-no-border' : '') + (hasTrailing ? ' block-has-trailing' : '') + (b._catBg ? ' block-cat-bg' : '');
   // Boutons "💡 Plus d'infos" flottants à droite DANS le bloc (optionnel)
   // Supporte `trailingInfoButton` (singulier) OU `trailingInfoButtons` (array)
   let trailingBtnHtml = '';
@@ -8989,13 +9003,13 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       // Si > 1 : classe .in-stack (positionnement géré par le container parent)
       const cls = trailingBtnsList.length > 1 ? 'info-btn in-stack' : 'info-btn inline-right';
       const btnStyle = trailingBtnsList.length > 1
-        ? 'position:relative;display:block;width:100%;min-width:0;text-align:center;margin-bottom:8px;padding:10px 14px 10px 36px;font-size:13px'
-        : 'position:relative;display:block;width:200px;min-width:0;text-align:center;padding:10px 14px 10px 36px;font-size:13px';
+        ? 'position:relative;display:block;width:100%;min-width:0;text-align:center;margin-bottom:8px;padding:10px 14px 10px 36px;font-size:13px;box-sizing:border-box'
+        : 'position:relative;display:block;width:100%;min-width:0;text-align:center;padding:10px 14px 10px 36px;font-size:13px;box-sizing:border-box';
       return `<button type="button" class="${cls}" contenteditable="false" onclick="openInfoPanel('${btnId}')" style="${btnStyle}"><span class="info-btn-emoji" style="position:absolute;left:12px;top:50%;transform:translateY(-50%)">💡</span><span>${label}</span></button>`;
     }).join('');
     trailingBtnHtml = trailingBtnsList.length > 1
       ? `<div class="info-btns-stack" contenteditable="false" style="width:200px;float:right;margin:0 0 10px 14px">${btnsInner}</div>`
-      : `<div contenteditable="false" style="float:right;margin:0 0 10px 14px">${btnsInner}</div>`;
+      : `<div contenteditable="false" style="width:200px;float:right;margin:0 0 10px 14px">${btnsInner}</div>`;
   }
   // Boutons action embarqués à l'intérieur du bloc texte (via embeddedActions)
   let embeddedHtml = '';
