@@ -7889,6 +7889,10 @@ function renderCurrentSection() {
     </div>
     ${showPrevNext ? `<button class="btn-nav btn-next" title="Aller à la section suivante" onclick="nextSection()" ${state.currentIdx===state.sections.length-1?'disabled':''}>Suivant →</button>` : '<div></div>'}
   </div>`;
+  // Bouton spécial "Passer : Progressivité & Gestion des émotions" après les nav, uniquement sur VI. Objectifs revus
+  if (section.id === 'objectifs_revus') {
+    html += `<div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn-nav btn-next" style="flex-direction:column;padding:11px 22px;line-height:1.25;align-items:center;gap:2px" onclick="const i=state.sections.findIndex(s=>s.id==='plan_action'); if(i>=0) navigateTo(i);"><span style="font-size:13px;opacity:0.9;font-weight:500">⏭️ Passer :</span><span>Progressivité &amp; Gestion des émotions</span></button></div>`;
+  }
   area.innerHTML = html;
   // Marquer les parents qui contiennent 2+ boutons action frères (pour le centrage CSS)
   markActionSiblingContainers(area);

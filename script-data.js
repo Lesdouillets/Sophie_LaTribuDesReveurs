@@ -504,7 +504,6 @@ const SCRIPT_DATA = {
             },
           ]
         },
-        { type: "normal", _noBorder: true, text: "<div style=\"display:flex;justify-content:center;margin:24px 0 12px\"><button type=\"button\" onclick=\"const i=state.sections.findIndex(s=>s.id==='plan_action'); if(i>=0) navigateTo(i);\" style=\"background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:14px;padding:14px 28px;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(99,102,241,0.35);display:flex;flex-direction:column;align-items:center;gap:2px;line-height:1.25;font-family:inherit;transition:transform 0.15s,box-shadow 0.15s\" onmouseover=\"this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(99,102,241,0.45)'\" onmouseout=\"this.style.transform='translateY(0)';this.style.boxShadow='0 4px 14px rgba(99,102,241,0.35)'\"><span style=\"font-size:13px;opacity:0.9\">⏭️ Passer :</span><span>Progressivité &amp; Gestion des émotions</span></button></div>" },
       ]
     },
 
