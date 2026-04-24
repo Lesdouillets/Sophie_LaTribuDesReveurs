@@ -9074,9 +9074,11 @@ function setTickboxChoiceFromSol(cid, value) {
     if (!state.selectedPbs) state.selectedPbs = new Set();
     if (value === 'supprimer') state.selectedPbs.add('souhait_tetine');
     else state.selectedPbs.delete('souhait_tetine');
-    // Auto-cocher la solution Tétine
+    // Auto-cocher la solution Tétine + protéger contre syncSolutionsFromPbs
     if (!state.selectedSolutions) state.selectedSolutions = new Set();
+    if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
     state.selectedSolutions.add('strat_tetine');
+    state.selectedSolutionsManuallyEdited.add('strat_tetine');
     // Synchroniser les checkboxes IV. Objectifs / V. Diagnostic visibles
     document.querySelectorAll('.block-tickbox-choice[data-choice-id="obj_tetine_static"] .tbc-opt, .block-tickbox-choice[data-choice-id="strategie_tetine_choice"] .tbc-opt').forEach(opt => {
       opt.classList.toggle('tbc-selected', opt.dataset.value === value);
@@ -9189,7 +9191,9 @@ function renderSolutionsCheckboxes() {
         if (tchoice) {
           checked = true;
           if (!state.selectedSolutions) state.selectedSolutions = new Set();
+          if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
           state.selectedSolutions.add('strat_tetine');
+          state.selectedSolutionsManuallyEdited.add('strat_tetine');
         }
         const opts = [
           { val: 'garder', label: '✅ Garder' },
