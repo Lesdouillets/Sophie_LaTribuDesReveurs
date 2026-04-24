@@ -1058,31 +1058,33 @@
     .info-btn-emoji { font-size: 16px; }
     /* Variante : bouton flottant à droite DANS un bloc texte (inline-right) */
     .info-btn.inline-right {
-      float: right;
-      clear: right;
-      margin: 0 0 8px 14px;
-      max-width: 200px;
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 170px;
+      z-index: 2;
     }
-    .block:has(> .info-btn.inline-right) { min-height: 0; }
-    .block:has(> .info-btn.inline-right)::after {
-      content: ''; display: block; clear: both;
+    .block:has(> .info-btn.inline-right) {
+      position: relative;
+      padding-right: 200px;
+      min-height: 60px;
     }
-    /* Plusieurs boutons info : stack vertical flottant à droite (via float, reste dans le bloc) */
+    /* Plusieurs boutons info : stack vertical positionné absolument à droite dans le bloc */
     .info-btns-stack {
-      float: right;
-      clear: right;
+      position: absolute;
+      top: 14px;
+      right: 14px;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      max-width: 200px;
-      width: 200px;
-      margin: 0 0 8px 14px;
+      width: 170px;
+      z-index: 2;
     }
     .info-btn.in-stack { float: none; position: static; margin: 0; width: 100%; text-align: left; }
-    .block:has(> .info-btns-stack) { min-height: 0; padding-right: 16px; }
-    /* Clear le float en fin de bloc */
-    .block:has(> .info-btns-stack)::after {
-      content: ''; display: block; clear: both;
+    .block:has(> .info-btns-stack) {
+      position: relative;
+      padding-right: 200px;
+      min-height: 130px;
     }
 
     /* Bouton "Retour à la consultation" en haut des sections conditionnelles */
@@ -3301,7 +3303,11 @@
     .sol-child-content .block { max-width: 100%; box-sizing: border-box; overflow-wrap: break-word; }
     .sol-child-content .info-btns-stack,
     .sol-child-content .info-btn.inline-right {
-      max-width: 180px;
+      width: 160px;
+    }
+    .sol-child-content .block:has(> .info-btns-stack),
+    .sol-child-content .block:has(> .info-btn.inline-right) {
+      padding-right: 190px;
     }
     /* Bloc "🧭 Solutions identifiées" façon Leviers identifiés */
     .block-solutions-identifiees {
@@ -5308,7 +5314,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=356"></script>
+<script src="script-data.js?v=357"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
