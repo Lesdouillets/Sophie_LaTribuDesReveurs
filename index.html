@@ -3296,6 +3296,12 @@
     .sol-child-content {
       border: 2px solid; border-radius: 12px; background: #fff;
       margin: 14px 0 0; padding: 14px 18px;
+      overflow: hidden; box-sizing: border-box;
+    }
+    .sol-child-content .block { max-width: 100%; box-sizing: border-box; overflow-wrap: break-word; }
+    .sol-child-content .info-btns-stack,
+    .sol-child-content .info-btn.inline-right {
+      max-width: 180px;
     }
     /* Bloc "🧭 Solutions identifiées" façon Leviers identifiés */
     .block-solutions-identifiees {
