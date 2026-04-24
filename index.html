@@ -7700,6 +7700,10 @@ function togglePb(value, checked) {
   const newIdx = state.sections.findIndex(s=>s.id===savedId);
   state.currentIdx = newIdx>=0 ? newIdx : Math.min(state.currentIdx, state.sections.length-1);
   buildSidebar();
+  // Synchroniser les solutions auto-cochées en fonction des pbs cochées
+  if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
+  if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
+  if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
 }
 
 // ═══════════════════════════════════════════════════
