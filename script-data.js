@@ -2412,6 +2412,7 @@ const SCRIPT_DATA = {
             blocks: [
               { type: "normal", text: "- Maintenant, on **va parler \"tétine\"**\n  **PUISQU'on** EN A **discuté** ensemble\n  et que **vous souhaitez…**" },
               { type: "normal",
+                _leftTitle: "Supprimer",
                 showIfAnyOf: [
                   { pb: "souhait_tetine" },
                   { tickbox: { cid: "obj_tetine_static", value: "supprimer" } },
@@ -2447,6 +2448,7 @@ const SCRIPT_DATA = {
                   { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } },
                   { tickbox: { cid: "strategie_tetine_choice", value: "hybride" } }
                 ],
+                _leftTitle: "Commencer par un soir",
                 text: "- Je vous conseille de **toujours commencer par un soir**, car :\n  - la **pression de sommeil**\n  - et la **sécrétion de la mélatonine** vont **aider** vers un 1er endormissement + serein *(vs pour une sieste)*\n\n- Même si ça peut **faire peur aux parents de supprimer la tétine**\n  ⇒ en général, **elle** est **oubliée** en **qq jours !**"
               },
               { type: "normal",
@@ -2454,6 +2456,7 @@ const SCRIPT_DATA = {
                   { tickbox: { cid: "obj_tetine_static", value: "garder" } },
                   { tickbox: { cid: "strategie_tetine_choice", value: "garder" } }
                 ],
+                _leftTitle: "Garder",
                 text: "- Dans ce cas, l'**objectif** va être d'**aider** [prénom_enfant] à DEVENIR **autonome AVEC SA tétine**\n  - On va lui **\"apprendre\"** à :\n    - la **retrouver**\n    - la **remettre dans sa bouche SEUL**\n\n  1. La **1ère étape**, ça va être de **lui mettre la tétine** dans **SA main** et de **guider son bras** et **sa main**… **vers sa bouche**\n\n  2. La **2nde étape**, ça va être de lui **mettre la tétine**, **NON PAS** dans **SA main**… mais **PRÈS de sa main**\n     - pour qu'[il_elle] puisse :\n       - la **retrouver**\n       - et **la mettre dans sa bouche**\n\n  3. Vous pouvez **pratiquer ces exercices plusieurs fois**, pour qu'[il_elle] puisse **développer sa motricité** et **son autonomie**"
               },
               { type: "normal", _noBorder: true,
@@ -2471,6 +2474,7 @@ const SCRIPT_DATA = {
                 text: "- 💡 Vous pouvez aussi mettre **plusieurs tétines dans le lit** *(idéalement fluorescentes)*, pour qu'[il_elle] puisse les **retrouver + facilement la nuit.**"
               },
               { type: "normal",
+                _leftTitle: "Hybride",
                 showIfTickbox: { cid: "strategie_tetine_choice", value: "hybride" },
                 text: "- Si vous souhaitez **aller vers ce mode \"hybride\"** : *\"Ok pour la tétine mais pas TOUT le temps\"*\n  ⇒ je vous conseille d'**être cohérent dans votre approche**\n\n  pour que [prénom_enfant] puisse avoir les **MÊMES stratégies d'endormissement**\n\n  - Si c'est **OK** pour garder la tétine **pendant les siestes** ⇒ alors il **aura sa tétine** pour **TOUTES ses siestes**\n  - Si ce n'est **PAS OK** pour **la garder la nuit** ⇒ alors il **dormira SANS** sa tétine **TOUTES les nuits**\n    ⇒ sinon ça **peut devenir confus**… et **compliquer l'endormissement**"
               },
