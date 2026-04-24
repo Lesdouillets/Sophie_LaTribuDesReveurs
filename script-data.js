@@ -2410,12 +2410,13 @@ const SCRIPT_DATA = {
         children: [
           { id: "strat_tetine", label: "Tétine", cardLabel: "Tétine", cardEmoji: "🍼",
             blocks: [
-              { type: "normal", text: "- Maintenant, on **va parler \"tétine\"**\n\n  **PUISQU'on** EN A **discuté** ensemble\n\n  et que **vous souhaitez…**" },
+              { type: "normal", text: "- Maintenant, on **va parler \"tétine\"**\n  **PUISQU'on** EN A **discuté** ensemble\n  et que **vous souhaitez…**" },
               { type: "normal",
                 showIfAnyOf: [
                   { pb: "souhait_tetine" },
                   { tickbox: { cid: "obj_tetine_static", value: "supprimer" } },
-                  { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } }
+                  { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } },
+                  { tickbox: { cid: "strategie_tetine_choice", value: "hybride" } }
                 ],
                 text: "- Il y a **plusieurs moyens de la supprimer**\n\n---\n\n1. Il y a l'option **\"DIRECT\"**… comme un 🩹 **pansement qu'on arrache**\n   ⇒ On **y va \"franco\"**, on **coupe TOUTES les tétines** de la **maison**\n   ⇒ et comme ça il n'y a **plus de risque** de **retour en arrière !**\n\n---\n\n2. Il y a aussi des **livres** que vous pouvez **lire avec** [prénom_enfant]\n   ⇒ je pense à *\"La tétine de Nina\"* de Christine Naumann\n\n---\n\n3. Ce qui **peut marcher aussi** (pour les petits enfants)\n\n   ⚠️ mais c'est **à vous de voir** si vous **êtes à l'aise** avec ça,\n   ⇒ C'est d'**utiliser** la **\"pensée imaginaire\"** :\n   ⇒ **De dire**… qu'**on donne** la tétine **au Père Noël**, à la **Fée**, au **bébé**…"
               },
@@ -2424,7 +2425,8 @@ const SCRIPT_DATA = {
                 showIfAnyOf: [
                   { pb: "souhait_tetine" },
                   { tickbox: { cid: "obj_tetine_static", value: "supprimer" } },
-                  { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } }
+                  { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } },
+                  { tickbox: { cid: "strategie_tetine_choice", value: "hybride" } }
                 ],
                 text: "- Il y a aussi des **tétines de sevrage**, je pense notamment à la **Tétine Clipp** *(une méthode progressive)*\n- On **met des collerettes** (x5) sur **l'embout de la tétine** *(c'est une tétine spéciale)* pour **réduire** de + en + **la taille de la zone de succion**\n\n<div style=\"background:#fef3c7;border:1.5px solid #fcd34d;border-radius:10px;padding:10px 14px;margin-top:10px\"><strong>Tétine Clipp (20€)</strong><br><a href=\"https://www.clipp.fr/clipp-tetine/\" target=\"_blank\" rel=\"noopener\" style=\"color:#b45309\">https://www.clipp.fr/clipp-tetine/</a></div>"
               },
@@ -2433,7 +2435,8 @@ const SCRIPT_DATA = {
                 showIfAnyOf: [
                   { pb: "souhait_tetine" },
                   { tickbox: { cid: "obj_tetine_static", value: "supprimer" } },
-                  { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } }
+                  { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } },
+                  { tickbox: { cid: "strategie_tetine_choice", value: "hybride" } }
                 ],
                 text: "- Et enfin, il y a les boîtes **\"Stop Tétine\"** qui s'adressent aux **enfants qui SOUHAITENT arrêter la tétine**\n- Avec un mélange de : stickers, tableau motivationnel, guide explicatif pour les parents…\n\n<div style=\"background:#fef3c7;border:1.5px solid #fcd34d;border-radius:10px;padding:10px 14px;margin-top:10px\"><strong>Boîte \"Stop tétine\" (30€)</strong><br><a href=\"https://www.latribuhappykids.com/products/boite-stop-tetine\" target=\"_blank\" rel=\"noopener\" style=\"color:#b45309\">latribuhappykids.com/products/boite-stop-tetine</a></div>"
               },
@@ -2441,7 +2444,8 @@ const SCRIPT_DATA = {
                 showIfAnyOf: [
                   { pb: "souhait_tetine" },
                   { tickbox: { cid: "obj_tetine_static", value: "supprimer" } },
-                  { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } }
+                  { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } },
+                  { tickbox: { cid: "strategie_tetine_choice", value: "hybride" } }
                 ],
                 text: "- Je vous conseille de **toujours commencer par un soir**, car :\n  - la **pression de sommeil**\n  - et la **sécrétion de la mélatonine** vont **aider** vers un 1er endormissement + serein *(vs pour une sieste)*\n\n- Même si ça peut **faire peur aux parents de supprimer la tétine** ⇒ en général, **elle** est **oubliée** en **qq jours !**"
               },
