@@ -1058,14 +1058,15 @@
     .info-btn-emoji { font-size: 16px; }
     /* Variante : bouton flottant à droite DANS un bloc texte (inline-right) */
     .info-btn.inline-right {
-      float: none;
-      position: absolute;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      margin: 0;
+      float: right;
+      clear: right;
+      margin: 0 0 8px 14px;
+      max-width: 200px;
     }
-    .block:has(> .info-btn.inline-right) { position: relative; padding-right: 210px; min-height: 68px; }
+    .block:has(> .info-btn.inline-right) { min-height: 0; }
+    .block:has(> .info-btn.inline-right)::after {
+      content: ''; display: block; clear: both;
+    }
     /* Plusieurs boutons info : stack vertical flottant à droite (via float, reste dans le bloc) */
     .info-btns-stack {
       float: right;
