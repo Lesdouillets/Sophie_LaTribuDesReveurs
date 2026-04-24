@@ -49,7 +49,8 @@
       "Bash(awk 'NR>=8044 && NR<=8110' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")",
       "Bash(perl -i -pe \"s/tps alimentation/tps d'alim/g\" script-data.js)",
       "Bash(perl -i -CS -pe \"s/15 mois – 2 ans/15 mois - 2 ans/g\" script-data.js)",
-      "Bash(awk '/conditional:\\\\s*\\\\[|solutions:|planAction:\\\\s*\\\\[|conclusion:/{print NR\": \"$0}' script-data.js)"
+      "Bash(awk '/conditional:\\\\s*\\\\[|solutions:|planAction:\\\\s*\\\\[|conclusion:/{print NR\": \"$0}' script-data.js)",
+      "WebFetch(domain:hopitauxnord-u-pariscite.aphp.fr)"
     ]
   }
 }

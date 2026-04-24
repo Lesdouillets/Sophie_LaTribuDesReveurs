@@ -1027,6 +1027,22 @@
     }
     .info-body ul { padding-left: 22px; margin: 6px 0; }
     .info-body li { margin-bottom: 4px; line-height: 1.6; }
+    /* Thème bleu pour panneaux ouverts via boutons flottants (bulle BD) */
+    .info-panel.info-panel-blue .info-header {
+      background: linear-gradient(135deg, #2563eb, #60a5fa);
+      color: #ffffff;
+    }
+    .info-panel.info-panel-blue .info-header-title { color: #ffffff; }
+    .info-panel.info-panel-blue .info-close-btn { color: #ffffff; background: rgba(255,255,255,0.25); }
+    .info-panel.info-panel-blue .info-close-btn:hover { background: rgba(255,255,255,0.45); }
+    .info-panel.info-panel-blue .info-body .block-normal,
+    .info-panel.info-panel-blue .info-body .block-empathie,
+    .info-panel.info-panel-blue .info-body .block-important,
+    .info-panel.info-panel-blue .info-body .block-conseil,
+    .info-panel.info-panel-blue .info-body .block-conseil-vert {
+      background: #dbeafe !important;
+      border-color: #3b82f6 !important;
+    }
     .info-body strong { font-weight: 700; color: var(--text); }
     .info-body em { color: var(--text); }
     .info-body u { text-decoration: underline; }
@@ -3334,7 +3350,7 @@
     .sol-floating-btn {
       position: relative;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 4px; width: 160px; height: 120px;
+      gap: 4px; width: 170px; height: 125px;
       border: 3px solid #3b82f6;
       border-radius: 50%;
       background: #dbeafe !important;
@@ -3343,24 +3359,22 @@
       padding: 10px 14px; text-align: center;
       transition: transform 0.15s, box-shadow 0.15s;
     }
-    /* Queue de bulle de BD pointant vers la gauche (style classique) */
+    /* Queue triangulaire courte pointant en bas-à-gauche */
     .sol-floating-btn::before {
       content: '';
       position: absolute;
-      bottom: 8px; left: -34px;
-      width: 0; height: 0;
-      border-top: 8px solid transparent;
-      border-bottom: 32px solid transparent;
-      border-right: 36px solid #3b82f6;
+      bottom: -28px; left: 28px;
+      width: 44px; height: 38px;
+      background: #3b82f6;
+      clip-path: polygon(0 100%, 100% 0, 60% 0);
     }
     .sol-floating-btn::after {
       content: '';
       position: absolute;
-      bottom: 12px; left: -26px;
-      width: 0; height: 0;
-      border-top: 6px solid transparent;
-      border-bottom: 24px solid transparent;
-      border-right: 28px solid #dbeafe;
+      bottom: -20px; left: 33px;
+      width: 36px; height: 30px;
+      background: #dbeafe;
+      clip-path: polygon(0 100%, 100% 0, 60% 0);
     }
     .sol-floating-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(59,130,246,0.4); }
     .sol-floating-btn:active { transform: scale(0.98); }
