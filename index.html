@@ -8870,12 +8870,12 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       // Si > 1 : classe .in-stack (positionnement géré par le container parent)
       const cls = trailingBtnsList.length > 1 ? 'info-btn in-stack' : 'info-btn inline-right';
       const btnStyle = trailingBtnsList.length > 1
-        ? ''
-        : 'position:absolute;top:14px;right:14px;width:170px;z-index:2';
-      return `<button type="button" class="${cls}" contenteditable="false" onclick="openInfoPanel('${btnId}')"${btnStyle ? ` style="${btnStyle}"` : ''}><span class="info-btn-emoji">💡</span><span>${label}</span></button>`;
+        ? 'width:100%;text-align:left'
+        : 'width:200px;margin:0 0 10px auto;display:flex';
+      return `<button type="button" class="${cls}" contenteditable="false" onclick="openInfoPanel('${btnId}')" style="${btnStyle}"><span class="info-btn-emoji">💡</span><span>${label}</span></button>`;
     }).join('');
     trailingBtnHtml = trailingBtnsList.length > 1
-      ? `<div class="info-btns-stack" contenteditable="false" style="position:absolute;top:14px;right:14px;width:170px;z-index:2;display:flex;flex-direction:column;gap:8px">${btnsInner}</div>`
+      ? `<div class="info-btns-stack" contenteditable="false" style="display:flex;flex-direction:column;gap:8px;width:200px;margin:0 0 12px auto">${btnsInner}</div>`
       : btnsInner;
   }
   // Boutons action embarqués à l'intérieur du bloc texte (via embeddedActions)
@@ -8888,8 +8888,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       }).join('') +
     `</div>`;
   }
-  const inlineStyle = hasTrailing ? ' style="position:relative;padding-right:200px;min-height:60px"' : '';
-  return `<div class="block ${cls}${extraCls}" contenteditable="true"${inlineStyle}>${trailingBtnHtml}${text}${embeddedHtml}</div>`;
+  return `<div class="block ${cls}${extraCls}" contenteditable="true">${trailingBtnHtml}${text}${embeddedHtml}</div>`;
 }
 
 // ══════════════════════════════════════════════════════════
