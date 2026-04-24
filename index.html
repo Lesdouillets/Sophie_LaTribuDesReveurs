@@ -1077,31 +1077,14 @@
     .info-btn-wrap.info-btn-align-right { text-align: right; }
     .info-btn-emoji { font-size: 16px; }
     /* Variante : bouton flottant à droite DANS un bloc texte (inline-right) */
-    .info-btn.inline-right {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      width: 170px;
-      z-index: 2;
-    }
+    .info-btn.inline-right { /* styles gérés via inline style dans le renderer */ }
     /* Plusieurs boutons info : stack vertical positionné absolument à droite dans le bloc */
     .info-btns-stack {
-      position: absolute;
-      top: 14px;
-      right: 14px;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      width: 170px;
-      z-index: 2;
     }
-    .info-btn.in-stack { float: none; position: static; margin: 0; width: 100%; text-align: left; }
-    .block.block-has-trailing {
-      position: relative;
-      padding-right: 200px;
-      min-height: 60px;
-    }
-    .block.block-has-trailing:has(.info-btns-stack) { min-height: 130px; }
+    .info-btn.in-stack { float: none; position: static; margin: 0; text-align: left; }
 
     /* Bouton "Retour à la consultation" en haut des sections conditionnelles */
     .btn-return-to-diag {
@@ -2913,6 +2896,17 @@
     }
     .sol-child-content .courbe-card .ccc-title { color: var(--cat-dark, #7c2d12); }
     .sol-child-content .courbe-card.active .ccc-title { color: #fff; }
+    .sol-child-content .courbe-card-content {
+      background: var(--cat-light, #fff7ed);
+      border-color: var(--cat-main, #fdba74);
+    }
+    .sol-child-content .courbe-card-banner {
+      background: linear-gradient(90deg, var(--cat-dark, #c2410c), var(--cat-main, #f97316));
+    }
+    .sol-child-content .cc-sub-banner {
+      background: var(--cat-light, #fb923c);
+      color: var(--cat-dark, #7c2d12);
+    }
     /* Grille sticky compacte pour les cards enfants (nested inside card content) */
     .courbe-card-content .courbe-cards-grid-wrap > .courbe-cards-grid {
       position: sticky;
@@ -3398,13 +3392,6 @@
     .sol-floating-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(59,130,246,0.4); }
     .sol-floating-btn:active { transform: scale(0.98); }
     .sol-child-content .block { max-width: 100%; box-sizing: border-box; overflow-wrap: break-word; }
-    .sol-child-content .info-btns-stack,
-    .sol-child-content .info-btn.inline-right {
-      width: 160px;
-    }
-    .sol-child-content .block.block-has-trailing {
-      padding-right: 190px;
-    }
     /* Bloc "🧭 Solutions identifiées" façon Leviers identifiés */
     .block-solutions-identifiees {
       background: white;
