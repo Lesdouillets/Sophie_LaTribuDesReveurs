@@ -7720,6 +7720,8 @@ function togglePb(value, checked) {
   if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
   if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
   if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
+  // Détecter conflit tétine si la pb souhait_tetine change
+  if (value === 'souhait_tetine' && typeof checkTetineConflict === 'function') checkTetineConflict();
 }
 
 // ═══════════════════════════════════════════════════
@@ -9070,6 +9072,71 @@ function setTickboxChoiceFromSol(cid, value) {
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 
+// Détecte un conflit entre les différents choix "garder/supprimer" pour la tétine,
+// et ouvre une modal permettant au parent de trancher vers un choix unique.
+function checkTetineConflict() {
+  const choices = state.tickboxChoices || {};
+  const values = new Set();
+  if (choices.obj_tetine_static) values.add(choices.obj_tetine_static);
+  if (choices.strategie_tetine_choice) values.add(choices.strategie_tetine_choice);
+  if (state.selectedPbs && state.selectedPbs.has('souhait_tetine')) values.add('supprimer');
+  // Filter: only keep garder/supprimer/hybride
+  const relevant = [...values].filter(v => ['garder','supprimer','hybride'].includes(v));
+  if (relevant.length > 1) {
+    openTetineConflictModal();
+  }
+}
+
+function openTetineConflictModal() {
+  let modal = document.getElementById('tetine-conflict-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'tetine-conflict-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center';
+    modal.innerHTML = `
+      <div style="background:#fff;border-radius:14px;padding:24px 28px;max-width:480px;box-shadow:0 8px 28px rgba(0,0,0,0.3)">
+        <div style="font-weight:800;font-size:16px;color:#b45309;margin-bottom:8px">⚠️ Choix contradictoires pour la tétine</div>
+        <div style="font-size:14px;line-height:1.55;margin-bottom:18px;color:#333">
+          Vous avez coché plusieurs options différentes concernant la tétine (garder / supprimer).<br>
+          Merci de choisir une seule décision :
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button type="button" onclick="resolveTetineConflict('garder')" style="padding:10px 14px;background:#dcfce7;border:2px solid #16a34a;border-radius:10px;font-weight:700;color:#14532d;cursor:pointer;font-family:inherit">✅ Garder la tétine</button>
+          <button type="button" onclick="resolveTetineConflict('supprimer')" style="padding:10px 14px;background:#fee2e2;border:2px solid #dc2626;border-radius:10px;font-weight:700;color:#7f1d1d;cursor:pointer;font-family:inherit">❌ Supprimer la tétine</button>
+          <button type="button" onclick="resolveTetineConflict('hybride')" style="padding:10px 14px;background:#fef3c7;border:2px solid #eab308;border-radius:10px;font-weight:700;color:#713f12;cursor:pointer;font-family:inherit">🔀 Hybride</button>
+          <button type="button" onclick="resolveTetineConflict('none')" style="padding:10px 14px;background:#f1f5f9;border:2px solid #94a3b8;border-radius:10px;font-weight:700;color:#475569;cursor:pointer;font-family:inherit">🤐 Ne pas en parler</button>
+        </div>
+      </div>`;
+    document.body.appendChild(modal);
+  }
+  modal.style.display = 'flex';
+}
+
+function resolveTetineConflict(choice) {
+  if (!state.tickboxChoices) state.tickboxChoices = {};
+  if (choice === 'none') {
+    // Effacer tous les choix et décocher la pb
+    delete state.tickboxChoices.obj_tetine_static;
+    delete state.tickboxChoices.strategie_tetine_choice;
+    if (state.selectedPbs) state.selectedPbs.delete('souhait_tetine');
+    if (state.selectedSolutions) state.selectedSolutions.delete('strat_tetine');
+  } else {
+    // Appliquer le même choix partout
+    state.tickboxChoices.obj_tetine_static = choice;
+    state.tickboxChoices.strategie_tetine_choice = choice;
+    if (!state.selectedPbs) state.selectedPbs = new Set();
+    if (choice === 'supprimer') state.selectedPbs.add('souhait_tetine');
+    else state.selectedPbs.delete('souhait_tetine');
+  }
+  const modal = document.getElementById('tetine-conflict-modal');
+  if (modal) modal.style.display = 'none';
+  if (typeof buildSections === 'function') buildSections();
+  if (typeof buildSidebar === 'function') buildSidebar();
+  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+  if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+
 function renderSolutionsCheckboxes() {
   const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
   if (!sols.length) return '<div class="block block-normal"><em>(Aucune solution configurée.)</em></div>';
@@ -10224,6 +10291,10 @@ function selectTickboxChoice(el) {
     if (typeof renderCurrentSection === 'function') renderCurrentSection();
   }
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+  // Détection de conflit entre les choix tétine (garder/supprimer)
+  if (cid === 'obj_tetine_static' || cid === 'strategie_tetine_choice') {
+    if (typeof checkTetineConflict === 'function') checkTetineConflict();
+  }
 }
 
 // Restaurer les tick-boxes déjà cochées après un (re)render de section

@@ -2418,7 +2418,7 @@ const SCRIPT_DATA = {
                   { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } },
                   { tickbox: { cid: "strategie_tetine_choice", value: "hybride" } }
                 ],
-                text: "- Il y a **plusieurs moyens de la supprimer**\n\n---\n\n1. Il y a l'option **\"DIRECT\"**… comme un 🩹 **pansement qu'on arrache**\n   ⇒ On **y va \"franco\"**, on **coupe TOUTES les tétines** de la **maison**\n   ⇒ et comme ça il n'y a **plus de risque** de **retour en arrière !**\n\n---\n\n2. Il y a aussi des **livres** que vous pouvez **lire avec** [prénom_enfant]\n   ⇒ je pense à *\"La tétine de Nina\"* de Christine Naumann\n\n---\n\n3. Ce qui **peut marcher aussi** (pour les petits enfants)\n\n   ⚠️ mais c'est **à vous de voir** si vous **êtes à l'aise** avec ça,\n   ⇒ C'est d'**utiliser** la **\"pensée imaginaire\"** :\n   ⇒ **De dire**… qu'**on donne** la tétine **au Père Noël**, à la **Fée**, au **bébé**…"
+                text: "- Il y a **plusieurs moyens de la supprimer**\n  1. Il y a l'option **\"DIRECT\"**… comme un **pansement qu'on arrache**\n     ⇒ On **y va \"franco\"**, on **coupe TOUTES les tétines** de la **maison**\n     ⇒ et comme ça il n'y a **plus de risque** de **retour en arrière !**\n  2. Il y a aussi des **livres** que vous pouvez **lire avec** [prénom_enfant]\n     ⇒ je pense à *\"La tétine de Nina\"* de Christine Naumann\n  3. Ce qui **peut marcher aussi** (pour les petits enfants)\n     ⚠️ mais c'est **à vous de voir** si vous **êtes à l'aise** avec ça,\n     ⇒ C'est d'**utiliser** la **\"pensée imaginaire\"** :\n     ⇒ **De dire**… qu'**on donne** la tétine **au Père Noël**, à la **Fée**, au **bébé**…"
               },
               { type: "normal",
                 showIfRealAgeMinMonths: 24,
@@ -2447,7 +2447,7 @@ const SCRIPT_DATA = {
                   { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } },
                   { tickbox: { cid: "strategie_tetine_choice", value: "hybride" } }
                 ],
-                text: "- Je vous conseille de **toujours commencer par un soir**, car :\n  - la **pression de sommeil**\n  - et la **sécrétion de la mélatonine** vont **aider** vers un 1er endormissement + serein *(vs pour une sieste)*\n\n- Même si ça peut **faire peur aux parents de supprimer la tétine** ⇒ en général, **elle** est **oubliée** en **qq jours !**"
+                text: "- Je vous conseille de **toujours commencer par un soir**, car :\n  - la **pression de sommeil**\n  - et la **sécrétion de la mélatonine** vont **aider** vers un 1er endormissement + serein *(vs pour une sieste)*\n\n- Même si ça peut **faire peur aux parents de supprimer la tétine**\n  ⇒ en général, **elle** est **oubliée** en **qq jours !**"
               },
               { type: "normal",
                 showIfAnyOf: [
