@@ -9062,6 +9062,14 @@ function renderBlockInner(b, i, sectionId, depth, path) {
 // ══════════════════════════════════════════════════════════
 // SOLUTIONS CHECKBOXES (VIII. Plan d'action) + modal flottant
 // ══════════════════════════════════════════════════════════
+function setTickboxChoiceFromSol(cid, value) {
+  if (!state.tickboxChoices) state.tickboxChoices = {};
+  state.tickboxChoices[cid] = value;
+  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+  if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+
 function renderSolutionsCheckboxes() {
   const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
   if (!sols.length) return '<div class="block block-normal"><em>(Aucune solution configurée.)</em></div>';
@@ -9081,10 +9089,24 @@ function renderSolutionsCheckboxes() {
     if (!children.length) return '';
     const rows = children.map(ch => {
       const checked = state.selectedSolutions.has(ch.id);
-      return `<label class="sol-row" data-sol-id="${ch.id}">
+      let subRows = '';
+      // Sous-options pour Tétine : reflètent strategie_tetine_choice (garder/supprimer/hybride)
+      if (ch.id === 'strat_tetine') {
+        const choices = state.tickboxChoices || {};
+        const tchoice = choices['strategie_tetine_choice'] || choices['obj_tetine_static'] || '';
+        const opts = [
+          { val: 'garder', label: '✅ Garder' },
+          { val: 'supprimer', label: '❌ Supprimer' },
+          { val: 'hybride', label: '🔀 Hybride' }
+        ];
+        subRows = `<div class="sol-row-sub" style="padding-left:30px;display:flex;flex-direction:column;gap:4px;margin-top:4px">` +
+          opts.map(o => `<label style="display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer"><input type="radio" name="sol-tetine-sub" value="${o.val}" ${tchoice===o.val?'checked':''} onchange="setTickboxChoiceFromSol('strategie_tetine_choice','${o.val}')"> ${o.label}</label>`).join('') +
+          `</div>`;
+      }
+      return `<div data-sol-id="${ch.id}"><label class="sol-row">
         <input type="checkbox" ${checked?'checked':''} onchange="toggleSolution('${ch.id}', this.checked)">
         <span class="sol-row-label">${ch.label || ch.id}</span>
-      </label>`;
+      </label>${subRows}</div>`;
     }).join('');
     return `<div class="sol-group" data-cat="${cat.id}">
       <div class="sol-group-title" style="color:${c.dark};border-color:${c.main}">${cat.emoji || ''} ${cat.title}</div>
