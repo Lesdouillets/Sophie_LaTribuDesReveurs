@@ -2314,6 +2314,21 @@
       border-color: #dc2626;
       color: #7f1d1d;
     }
+    /* Variante WARNING (jaune) */
+    .block-tickbox-choice .tbc-opt[data-variant="warning"] {
+      background: #fef9c3;
+      border-color: #fde68a;
+      color: #854d0e;
+    }
+    .block-tickbox-choice .tbc-opt[data-variant="warning"]:hover {
+      background: #fef3c7;
+      border-color: #fcd34d;
+    }
+    .block-tickbox-choice .tbc-opt.tbc-selected[data-variant="warning"] {
+      background: #fef3c7;
+      border-color: #eab308;
+      color: #713f12;
+    }
     /* Variante INLINE : utilisée à l'intérieur d'un bloc question — retire le cadre,
        le fond et les marges pour s'intégrer proprement au cadre du bloc parent. */
     .block-tickbox-choice.tbc-inline {
@@ -8028,6 +8043,25 @@ function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
       const isRevealed = state.revealedLever && pbs.includes(state.revealedLever);
       if (!isChecked && !isRevealed) return '';
     }
+    // Condition : un choix tickbox a une certaine valeur
+    // Format : showIfTickbox: { cid: "obj_tetine_static", value: "supprimer" } OU array de ces objets (OR)
+    // Ou combiné avec showIfAnyOf: [{pb:"..."}, {tickbox:{cid,value}}]
+    if (b.showIfTickbox) {
+      const checks = Array.isArray(b.showIfTickbox) ? b.showIfTickbox : [b.showIfTickbox];
+      const choices = state.tickboxChoices || {};
+      const ok = checks.some(c => choices[c.cid] === c.value);
+      if (!ok) return '';
+    }
+    // OR logique entre plusieurs conditions (showIfAnyOf: [{pb:"x"}, {tickbox:{cid,value}}])
+    if (Array.isArray(b.showIfAnyOf) && b.showIfAnyOf.length) {
+      const choices = state.tickboxChoices || {};
+      const ok = b.showIfAnyOf.some(cond => {
+        if (cond.pb) return state.selectedPbs.has(cond.pb);
+        if (cond.tickbox) return choices[cond.tickbox.cid] === cond.tickbox.value;
+        return false;
+      });
+      if (!ok) return '';
+    }
     // Condition "minutes restantes avant fin de consultation" — bloc affiché si au moins X min restent.
     // Une fois rendu visible, on garde un flag pour ne plus cacher le bloc aux re-renders suivants
     // (le parent ne doit pas le voir "disparaître" sous ses yeux pendant qu'il le lit).
@@ -8049,6 +8083,19 @@ function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
       if (age == null) return ''; // pas d'âge → on cache par prudence
       if (b.showIfAgeMinMonths != null && age < b.showIfAgeMinMonths) return '';
       if (b.showIfAgeMaxMonths != null && age > b.showIfAgeMaxMonths) return '';
+    }
+    // Conditions d'âge RÉEL (priorité âge réel, fallback âge corrigé)
+    if (b.showIfRealAgeMinMonths != null || b.showIfRealAgeMaxMonths != null) {
+      const c = (state && state.client) || {};
+      let age = null;
+      if (c.ageReelMois != null && c.ageReelMois !== '') {
+        const n = typeof c.ageReelMois === 'number' ? c.ageReelMois : parseFloat(c.ageReelMois);
+        if (!isNaN(n)) age = Math.floor(n);
+      }
+      if (age == null) age = getEffectiveAgeMonths();
+      if (age == null) return '';
+      if (b.showIfRealAgeMinMonths != null && age < b.showIfRealAgeMinMonths) return '';
+      if (b.showIfRealAgeMaxMonths != null && age > b.showIfRealAgeMaxMonths) return '';
     }
     // Condition mode d'alimentation — match contre c.alimentation OU c.allaitementMode
     if (b.showIfAlim) {
@@ -9744,6 +9791,10 @@ function substituteVars(text) {
     // Restaurer les expressions protégées
     t = t.replace(/\x00(\d+)\x00/g, (_, i) => snapshots[parseInt(i)]);
   }
+  // Tokens conditionnels selon l'enseigne : {{if-feedodo}}...{{/if-feedodo}} et {{if-tribu}}...{{/if-tribu}}
+  const isFeedodo = enseigne === 'feedodo';
+  t = t.replace(/\{\{if-feedodo\}\}([\s\S]*?)\{\{\/if-feedodo\}\}/g, (_, inner) => isFeedodo ? inner : '');
+  t = t.replace(/\{\{if-tribu\}\}([\s\S]*?)\{\{\/if-tribu\}\}/g, (_, inner) => isFeedodo ? '' : inner);
   // Token {{cercle_vicieux:s1|s2|s3|s4}} → SVG HTML
   t = t.replace(/\{\{cercle_vicieux:([^}]+)\}\}/g, (_, params) => {
     const parts = params.split('|');

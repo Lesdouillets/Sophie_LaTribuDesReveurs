@@ -2028,7 +2028,8 @@ const SCRIPT_DATA = {
                   required: true,
                   options: [
                     { icon: "✅", label: "Garder", value: "garder", variant: "positive" },
-                    { icon: "❌", label: "Supprimer", value: "supprimer", variant: "negative" }
+                    { icon: "❌", label: "Supprimer", value: "supprimer", variant: "negative" },
+                    { icon: "🔀", label: "Hybride", value: "hybride", variant: "warning" }
                   ]
                 }},
               ]
@@ -2366,7 +2367,7 @@ const SCRIPT_DATA = {
             },
             {
               type: "normal",
-              text: "- Vérifier s'il n'y a pas de **problèmes de succion** qui pourraient faire **rentrer de l'air dans l'estomac**\n  ⇒ Auprès d'une **conseillère en lactation IBCLC** spécialisée en détection de problème de succion. Nous avons **Fanny Rieusec** chez Fée Dodo qui pourrait vous aider sur ce sujet",
+              text: "- Vérifier s'il n'y a pas de **problèmes de succion** qui pourraient faire **rentrer de l'air dans l'estomac**\n  ⇒ Auprès d'une **conseillère en lactation IBCLC** spécialisée en détection de problème de succion.{{if-feedodo}} Nous avons **Fanny Rieusec** chez Fée Dodo qui pourrait vous aider sur ce sujet{{/if-feedodo}}",
               trailingInfoButton: {
                 label: "IBCLC pb de succion",
                 title: "Conseillère en lactation IBCLC",
@@ -2407,7 +2408,56 @@ const SCRIPT_DATA = {
       {
         id: "strategie", title: "Stratégie de sommeil", emoji: "😴",
         children: [
-          // À compléter
+          { id: "strat_tetine", label: "Tétine", cardLabel: "Tétine", cardEmoji: "🍼",
+            blocks: [
+              { type: "normal", text: "- Maintenant, on **va parler \"tétine\"**\n\n  **PUISQU'on** EN A **discuté** ensemble\n\n  et que **vous souhaitez…**" },
+              { type: "normal",
+                showIfAnyOf: [
+                  { pb: "souhait_tetine" },
+                  { tickbox: { cid: "obj_tetine_static", value: "supprimer" } },
+                  { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } }
+                ],
+                text: "- Il y a **plusieurs moyens de la supprimer**\n\n---\n\n1. Il y a l'option **\"DIRECT\"**… comme un 🩹 **pansement qu'on arrache**\n   ⇒ On **y va \"franco\"**, on **coupe TOUTES les tétines** de la **maison**\n   ⇒ et comme ça il n'y a **plus de risque** de **retour en arrière !**\n\n---\n\n2. Il y a aussi des **livres** que vous pouvez **lire avec** [prénom_enfant]\n   ⇒ je pense à *\"La tétine de Nina\"* de Christine Naumann\n\n---\n\n3. Ce qui **peut marcher aussi** (pour les petits enfants)\n\n   ⚠️ mais c'est **à vous de voir** si vous **êtes à l'aise** avec ça,\n   ⇒ C'est d'**utiliser** la **\"pensée imaginaire\"** :\n   ⇒ **De dire**… qu'**on donne** la tétine **au Père Noël**, à la **Fée**, au **bébé**…"
+              },
+              { type: "normal",
+                showIfRealAgeMinMonths: 24,
+                showIfAnyOf: [
+                  { pb: "souhait_tetine" },
+                  { tickbox: { cid: "obj_tetine_static", value: "supprimer" } },
+                  { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } }
+                ],
+                text: "- Il y a aussi des **tétines de sevrage**, je pense notamment à la **Tétine Clipp** *(une méthode progressive)*\n- On **met des collerettes** (x5) sur **l'embout de la tétine** *(c'est une tétine spéciale)* pour **réduire** de + en + **la taille de la zone de succion**\n\n<div style=\"background:#fef3c7;border:1.5px solid #fcd34d;border-radius:10px;padding:10px 14px;margin-top:10px\"><strong>Tétine Clipp (20€)</strong><br><a href=\"https://www.clipp.fr/clipp-tetine/\" target=\"_blank\" rel=\"noopener\" style=\"color:#b45309\">https://www.clipp.fr/clipp-tetine/</a></div>"
+              },
+              { type: "normal",
+                showIfRealAgeMinMonths: 36,
+                showIfAnyOf: [
+                  { pb: "souhait_tetine" },
+                  { tickbox: { cid: "obj_tetine_static", value: "supprimer" } },
+                  { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } }
+                ],
+                text: "- Et enfin, il y a les boîtes **\"Stop Tétine\"** qui s'adressent aux **enfants qui SOUHAITENT arrêter la tétine**\n- Avec un mélange de : stickers, tableau motivationnel, guide explicatif pour les parents…\n\n<div style=\"background:#fef3c7;border:1.5px solid #fcd34d;border-radius:10px;padding:10px 14px;margin-top:10px\"><strong>Boîte \"Stop tétine\" (30€)</strong><br><a href=\"https://www.latribuhappykids.com/products/boite-stop-tetine\" target=\"_blank\" rel=\"noopener\" style=\"color:#b45309\">latribuhappykids.com/products/boite-stop-tetine</a></div>"
+              },
+              { type: "normal",
+                showIfAnyOf: [
+                  { pb: "souhait_tetine" },
+                  { tickbox: { cid: "obj_tetine_static", value: "supprimer" } },
+                  { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } }
+                ],
+                text: "- Je vous conseille de **toujours commencer par un soir**, car :\n  - la **pression de sommeil**\n  - et la **sécrétion de la mélatonine** vont **aider** vers un 1er endormissement + serein *(vs pour une sieste)*\n\n- Même si ça peut **faire peur aux parents de supprimer la tétine** ⇒ en général, **elle** est **oubliée** en **qq jours !**"
+              },
+              { type: "normal",
+                showIfAnyOf: [
+                  { tickbox: { cid: "obj_tetine_static", value: "garder" } },
+                  { tickbox: { cid: "strategie_tetine_choice", value: "garder" } }
+                ],
+                text: "- Dans ce cas, l'**objectif** va être d'**aider** [prénom_enfant] à DEVENIR **autonome AVEC SA tétine**\n\n- On va lui **\"apprendre\"** à :\n  - la **retrouver**\n  - la **remettre dans sa bouche SEUL**\n\n1. La **1ère étape**, ça va être de **lui mettre la tétine** dans **SA main** et de **guider son bras** et **sa main**… **vers sa bouche**\n\n2. La **2nde étape**, ça va être de lui **mettre la tétine**, **NON PAS** dans **SA main**… mais **PRÈS de sa main**\n   pour qu'il puisse :\n   - la **retrouver**\n   - et **la mettre dans sa bouche**\n\n3. Vous pouvez **pratiquer ces exercices plusieurs fois**, pour qu'il puisse **développer sa motricité** et **son autonomie**\n\n- 💡 **En combien de temps, il acquiert cette compétence ?**\n  - Ça va dépendre de :\n    - du **nombre de fois** que vous allez **répéter le geste**\n    - de SA **motricité**\n    - … de SON **envie d'aller vers le changement !**\n  ⇒ L'**âge moyen** est autour de **6 et 7 mois**\n\n- 💡 Vous pouvez aussi mettre **plusieurs tétines dans le lit** *(idéalement fluorescentes)*, pour qu'il puisse les **retrouver + facilement la nuit.**"
+              },
+              { type: "normal",
+                showIfTickbox: { cid: "strategie_tetine_choice", value: "hybride" },
+                text: "- Si vous souhaitez **aller vers ce mode \"hybride\"** : *\"Ok pour la tétine mais pas TOUT le temps\"*\n  ⇒ je vous conseille d'**être cohérent dans votre approche**\n\n  pour que [prénom_enfant] puisse avoir les **MÊMES stratégies d'endormissement**\n\n  - Si c'est **OK** pour garder la tétine **pendant les siestes** ⇒ alors il **aura sa tétine** pour **TOUTES ses siestes**\n  - Si ce n'est **PAS OK** pour **la garder la nuit** ⇒ alors il **dormira SANS** sa tétine **TOUTES les nuits**\n    ⇒ sinon ça **peut devenir confus**… et **compliquer l'endormissement**"
+              },
+            ]
+          },
         ]
       },
       {
