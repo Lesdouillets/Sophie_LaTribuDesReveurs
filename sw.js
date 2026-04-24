@@ -1,4 +1,4 @@
-const CACHE = 'tdr-v924';
+const CACHE = 'tdr-v925';
 const ASSETS = ['./index.html', './script-data.js'];
 
 self.addEventListener('install', e => {
@@ -20,9 +20,9 @@ self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
   if (url.origin !== self.location.origin) return;
 
-  // Stratégie network-first : priorité au serveur, fallback cache si hors ligne
+  // Stratégie network-first avec no-store pour forcer un re-fetch à chaque fois
   e.respondWith(
-    fetch(e.request).then(resp => {
+    fetch(e.request, { cache: 'no-store' }).then(resp => {
       if (resp && resp.ok) {
         const clone = resp.clone();
         caches.open(CACHE).then(c => c.put(e.request, clone));
