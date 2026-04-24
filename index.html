@@ -8097,6 +8097,12 @@ function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
       });
       if (!ok) return '';
     }
+    // Cacher le bloc si l'un des choix tickbox listés est défini (quelle que soit la valeur)
+    if (Array.isArray(b.hideIfChoiceSet) && b.hideIfChoiceSet.length) {
+      const choices = state.tickboxChoices || {};
+      const anySet = b.hideIfChoiceSet.some(cid => !!choices[cid]);
+      if (anySet) return '';
+    }
     // Condition "minutes restantes avant fin de consultation" — bloc affiché si au moins X min restent.
     // Une fois rendu visible, on garde un flag pour ne plus cacher le bloc aux re-renders suivants
     // (le parent ne doit pas le voir "disparaître" sous ses yeux pendant qu'il le lit).
@@ -10200,11 +10206,47 @@ function modalSelectCat(btn, checked) {
 
 function applyPbChanges() {
   const savedId = state.sections[state.currentIdx]?.id;
+  const prevHadSouhaitTetine = state.selectedPbs && state.selectedPbs.has('souhait_tetine');
   state.selectedPbs = new Set([...document.querySelectorAll('.modal-pb:checked')].map(cb=>cb.value));
+  const nowHasSouhaitTetine = state.selectedPbs.has('souhait_tetine');
+  // Si souhait_tetine a changé via le modal → appliquer la logique tétine (sync tickboxes / solution)
+  if (prevHadSouhaitTetine !== nowHasSouhaitTetine) {
+    syncTetineFromPbChange(nowHasSouhaitTetine);
+  }
   syncPbsToFicheClient();
   syncPbsHighlights();
   rebuildAfterPbChange();
   autoSaveActiveConsultation();
+}
+
+// Logique tétine extraite : à appeler quand la pb souhait_tetine change (via togglePb OU modal)
+function syncTetineFromPbChange(checked) {
+  if (!state.tickboxChoices) state.tickboxChoices = {};
+  if (!state.selectedSolutions) state.selectedSolutions = new Set();
+  if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
+  if (checked) {
+    const existing1 = state.tickboxChoices['strategie_tetine_choice'];
+    const existing2 = state.tickboxChoices['obj_tetine_static'];
+    const hasConflict = (existing1 && existing1 !== 'supprimer') || (existing2 && existing2 !== 'supprimer');
+    if (hasConflict) {
+      if (typeof openTetineConflictModal === 'function') openTetineConflictModal();
+    } else {
+      state.tickboxChoices['strategie_tetine_choice'] = 'supprimer';
+      state.tickboxChoices['obj_tetine_static'] = 'supprimer';
+      state.selectedSolutions.add('strat_tetine');
+      state.selectedSolutionsManuallyEdited.add('strat_tetine');
+    }
+  } else {
+    if (state.tickboxChoices['strategie_tetine_choice'] === 'supprimer') {
+      delete state.tickboxChoices['strategie_tetine_choice'];
+    }
+    if (state.tickboxChoices['obj_tetine_static'] === 'supprimer') {
+      delete state.tickboxChoices['obj_tetine_static'];
+    }
+    // Retirer la solution Tétine si plus aucune sous-option active
+    state.selectedSolutions.delete('strat_tetine');
+    state.selectedSolutionsManuallyEdited.delete('strat_tetine');
+  }
 }
 
 function onModalPbChange() {
