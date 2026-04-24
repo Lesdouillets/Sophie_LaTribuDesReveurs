@@ -11425,6 +11425,12 @@ function newConsultation() {
     document.getElementById('notes-panel').style.display = 'none';
     document.getElementById('app-screen').style.display = 'none';
     document.getElementById('setup-screen').style.display = 'flex';
+    // Réinitialiser les états persistants entre consultations
+    state.selectedPbs = new Set();
+    state.selectedSolutions = new Set();
+    state.selectedSolutionsManuallyEdited = new Set();
+    state.tickboxChoices = {};
+    state.completedSet = new Set();
     clearActiveConsultation();
     loadSavedClients();
   }
@@ -11469,6 +11475,8 @@ function autoSaveActiveConsultation() {
         decouverteNotes: state.decouverteNotes || {},
         courbeCardsActiveByGrid: state.courbeCardsActiveByGrid || {},
         courbeCardsTicked: state.courbeCardsTicked ? [...state.courbeCardsTicked] : [],
+        selectedSolutions: state.selectedSolutions ? [...state.selectedSolutions] : [],
+        selectedSolutionsManuallyEdited: state.selectedSolutionsManuallyEdited ? [...state.selectedSolutionsManuallyEdited] : [],
         savedAt: Date.now()
       };
       localStorage.setItem('tdr_active_consultation', JSON.stringify(snapshot));
@@ -11542,6 +11550,8 @@ function restoreActiveConsultation() {
     state.tickboxChoices = snap.tickboxChoices || {};
     state.decouverteNotes = snap.decouverteNotes || {};
     state.courbeCardsActiveByGrid = snap.courbeCardsActiveByGrid || {};
+    state.selectedSolutions = new Set(snap.selectedSolutions || []);
+    state.selectedSolutionsManuallyEdited = new Set(snap.selectedSolutionsManuallyEdited || []);
     state.courbeCardsTicked = new Set(snap.courbeCardsTicked || []);
     // Re-peupler le formulaire + reconstruire l'UI
     populateFormFromClient(state.client);
@@ -11958,6 +11968,9 @@ function resumeSession(idx) {
 
   state.client = { ...s.client };
   state.selectedPbs = new Set(s.selectedPbs || []);
+  state.selectedSolutions = new Set(s.selectedSolutions || []);
+  state.selectedSolutionsManuallyEdited = new Set(s.selectedSolutionsManuallyEdited || []);
+  state.tickboxChoices = s.tickboxChoices || {};
   state.completedSet = new Set();
   state.currentIdx = 0;
   state.currentSessionId = s.id;

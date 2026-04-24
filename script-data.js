@@ -2445,7 +2445,7 @@ const SCRIPT_DATA = {
                 text: "- Il y a **plusieurs moyens de la supprimer**\n  - **1.** Il y a l'option **\"DIRECT\"**… comme un **pansement qu'on arrache**\n    - ⇒ On **y va \"franco\"**, on **coupe TOUTES les tétines** de la **maison**\n    - ⇒ et comme ça il n'y a **plus de risque** de **retour en arrière !**\n\n  - **2.** Il y a aussi des **livres** que vous pouvez **lire avec** [prénom_enfant]\n    - ⇒ je pense à *\"La tétine de Nina\"* de Christine Naumann\n\n  - **3.** Ce qui **peut marcher aussi** (pour les petits enfants)\n    - ⚠️ mais c'est **à vous de voir** si vous **êtes à l'aise** avec ça,\n    - ⇒ C'est d'**utiliser** la **\"pensée imaginaire\"** :\n    - ⇒ **De dire**… qu'**on donne** la tétine **au Père Noël**, à la **Fée**, au **bébé**…"
               },
               { type: "normal",
-                _leftTitle: "Tétine Clipp (> 2 ans)",
+                _leftTitle: "Tétine Clipp<br>(> 2 ans)",
                 showIfRealAgeMinMonths: 24,
                 showIfAnyOf: [
                   { pb: "souhait_tetine" },
@@ -2456,7 +2456,7 @@ const SCRIPT_DATA = {
                 text: "<img src=\"https://www.clipp.fr/wp-content/uploads/4-1.jpg\" alt=\"Tétine Clipp\" style=\"float:right;height:180px;width:auto;max-width:180px;border-radius:8px;margin:0 0 8px 14px;object-fit:contain\">\n\n- Il y a aussi des **tétines de sevrage**, je pense notamment à la **Tétine Clipp** *(une méthode progressive)*\n- On **met des collerettes** (x5) sur **l'embout de la tétine** *(c'est une tétine spéciale)* pour **réduire** de + en + **la taille de la zone de succion**\n- **Tétine Clipp (20€)** — <a href=\"https://www.clipp.fr/clipp-tetine/\" target=\"_blank\" rel=\"noopener\" style=\"color:#b45309\">https://www.clipp.fr/clipp-tetine/</a>"
               },
               { type: "normal",
-                _leftTitle: "Stop Tétine (> 3 ans)",
+                _leftTitle: "Stop Tétine<br>(> 3 ans)",
                 showIfRealAgeMinMonths: 36,
                 showIfAnyOf: [
                   { pb: "souhait_tetine" },
