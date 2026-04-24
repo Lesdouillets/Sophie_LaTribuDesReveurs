@@ -10356,7 +10356,6 @@ function onDiagnosticPbChange() {
     state.selectedPbs = new Set([...document.querySelectorAll('.diag-pb:checked')].map(cb=>cb.value));
     syncPbsToFicheClient();
     syncPbsHighlights();
-    // Ne pas re-rendre la section pour ne pas détruire/recréer le diagnostic
     const savedId = state.sections[state.currentIdx]?.id;
     buildSidebarPbPanel();
     buildSections();
@@ -10364,9 +10363,11 @@ function onDiagnosticPbChange() {
     state.currentIdx = newIdx>=0 ? newIdx : Math.min(state.currentIdx, state.sections.length-1);
     buildSidebar();
     updateDiagLeviersCount();
-    // Mettre à jour le contenu "conditional_sections_inline" (sections cochées affichées à la suite de V. Diagnostic)
-    // sans recréer le diagnostic lui-même
-    refreshInlineConditionalSections();
+    // Sauvegarder et restaurer la position de scroll pour éviter le "saut"
+    const contentArea = document.getElementById('content-area');
+    const savedScroll = contentArea ? contentArea.scrollTop : 0;
+    renderCurrentSection();
+    if (contentArea) contentArea.scrollTop = savedScroll;
     autoSaveActiveConsultation();
   }, 0);
 }
