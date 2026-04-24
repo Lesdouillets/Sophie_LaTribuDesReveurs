@@ -5308,7 +5308,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=361"></script>
+<script src="script-data.js?v=362"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -8870,13 +8870,13 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       // Si > 1 : classe .in-stack (positionnement géré par le container parent)
       const cls = trailingBtnsList.length > 1 ? 'info-btn in-stack' : 'info-btn inline-right';
       const btnStyle = trailingBtnsList.length > 1
-        ? 'width:100%;text-align:left'
-        : 'width:200px;margin:0 0 10px auto;display:flex';
+        ? 'display:block;width:100%;text-align:left;margin-bottom:8px'
+        : 'display:inline-block;width:200px';
       return `<button type="button" class="${cls}" contenteditable="false" onclick="openInfoPanel('${btnId}')" style="${btnStyle}"><span class="info-btn-emoji">💡</span><span>${label}</span></button>`;
     }).join('');
     trailingBtnHtml = trailingBtnsList.length > 1
-      ? `<div class="info-btns-stack" contenteditable="false" style="display:flex;flex-direction:column;gap:8px;width:200px;margin:0 0 12px auto">${btnsInner}</div>`
-      : btnsInner;
+      ? `<div class="info-btns-stack" contenteditable="false" style="width:200px;float:right;margin:0 0 10px 14px">${btnsInner}</div>`
+      : `<div contenteditable="false" style="float:right;margin:0 0 10px 14px">${btnsInner}</div>`;
   }
   // Boutons action embarqués à l'intérieur du bloc texte (via embeddedActions)
   let embeddedHtml = '';
@@ -8888,7 +8888,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       }).join('') +
     `</div>`;
   }
-  return `<div class="block ${cls}${extraCls}" contenteditable="true">${trailingBtnHtml}${text}${embeddedHtml}</div>`;
+  const clearFix = hasTrailing ? '<div style="clear:both"></div>' : '';
+  return `<div class="block ${cls}${extraCls}" contenteditable="true" style="overflow:hidden">${trailingBtnHtml}${text}${embeddedHtml}${clearFix}</div>`;
 }
 
 // ══════════════════════════════════════════════════════════
