@@ -5308,7 +5308,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=359"></script>
+<script src="script-data.js?v=360"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9565,6 +9565,8 @@ function substituteVars(text) {
       /le couloir dans (?:LEQUEL|lequel)(?:[\s*]+)il est(?:[\s*]+)né(?:e|s|es)?(?![a-zA-Zàâäéèêëïîôöùûüÿ])/gi,
       /il peut (?:être|arriver|sembler|y avoir)\b/gi,
       /il\b.{0,5}PEUT y avoir/gi,
+      // "il peut y avoir" avec formatage markdown possible autour de "avoir" (ex: "il peut y **avoir**")
+      /il(?:[\s*]+)peut(?:[\s*]+)y(?:[\s*]+)avoir/gi,
       /il semble\b/gi,
       /il paraît\b/gi,
       /il vaut mieux\b/gi,
