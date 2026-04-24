@@ -1028,6 +1028,10 @@
     .info-body ul { padding-left: 22px; margin: 6px 0; }
     .info-body li { margin-bottom: 4px; line-height: 1.6; }
     /* Thème bleu pour panneaux ouverts via boutons flottants (bulle BD) */
+    .info-panel.info-panel-blue {
+      background: #f0f7ff !important;
+      border-left-color: #bfdbfe !important;
+    }
     .info-panel.info-panel-blue .info-header {
       background: linear-gradient(135deg, #2563eb, #60a5fa);
       color: #ffffff;
@@ -1040,8 +1044,8 @@
     .info-panel.info-panel-blue .info-body .block-important,
     .info-panel.info-panel-blue .info-body .block-conseil,
     .info-panel.info-panel-blue .info-body .block-conseil-vert {
-      background: #dbeafe !important;
-      border-color: #3b82f6 !important;
+      background: #eff6ff !important;
+      border-color: #bfdbfe !important;
     }
     .info-body strong { font-weight: 700; color: var(--text); }
     .info-body em { color: var(--text); }
@@ -3358,23 +3362,27 @@
       box-shadow: 0 4px 16px rgba(59,130,246,0.28);
       padding: 10px 14px; text-align: center;
       transition: transform 0.15s, box-shadow 0.15s;
+      overflow: visible;
     }
-    /* Queue triangulaire courte pointant en bas-à-gauche */
+    /* Queue triangulaire (bordure bleu foncé) */
     .sol-floating-btn::before {
       content: '';
       position: absolute;
-      bottom: -28px; left: 28px;
-      width: 44px; height: 38px;
+      bottom: -40px; left: 24px;
+      width: 54px; height: 48px;
       background: #3b82f6;
-      clip-path: polygon(0 100%, 100% 0, 60% 0);
+      clip-path: polygon(50% 0, 100% 0, 0 100%);
+      z-index: 1;
     }
+    /* Queue triangulaire (remplissage bleu clair, légèrement plus petit) */
     .sol-floating-btn::after {
       content: '';
       position: absolute;
-      bottom: -20px; left: 33px;
-      width: 36px; height: 30px;
+      bottom: -32px; left: 30px;
+      width: 44px; height: 38px;
       background: #dbeafe;
-      clip-path: polygon(0 100%, 100% 0, 60% 0);
+      clip-path: polygon(50% 0, 100% 0, 0 100%);
+      z-index: 2;
     }
     .sol-floating-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(59,130,246,0.4); }
     .sol-floating-btn:active { transform: scale(0.98); }
