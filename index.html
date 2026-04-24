@@ -7259,6 +7259,7 @@ function isProblematiqueMatched(problematiqueId, selectedPbs) {
     if (selectedPbs.has('strategie_rendormissement')
      || selectedPbs.has('strategie_tetine')
      || selectedPbs.has('strategie_enjeu_relationnel')) return true;
+    if (state.checkedCats && state.checkedCats.has('strategie')) return true;
     // Vérifier aussi l'état de la case parente "Stratégie de sommeil"
     const stratCat = document.querySelector('.pb-cat-checkbox[data-cat="strategie"]:checked, .modal-pb-cat[data-cat="strategie"]:checked, .diag-pb-cat[data-cat="strategie"]:checked');
     return !!stratCat;
@@ -7268,6 +7269,7 @@ function isProblematiqueMatched(problematiqueId, selectedPbs) {
   if (problematiqueId === 'env_general') {
     const envPbs = ['env_obscurite','env_temperature','env_lit_ouvert','env_rituel','env_cadre','env_stimulations','env_ecrans'];
     if (envPbs.some(id => selectedPbs.has(id))) return true;
+    if (state.checkedCats && state.checkedCats.has('env')) return true;
     const envCat = document.querySelector('.pb-cat-checkbox[data-cat="env"]:checked, .modal-pb-cat[data-cat="env"]:checked, .diag-pb-cat[data-cat="env"]:checked');
     return !!envCat;
   }
@@ -7276,6 +7278,7 @@ function isProblematiqueMatched(problematiqueId, selectedPbs) {
   if (problematiqueId === 'relationnel_general') {
     const relPbs = ['relationnel_lit_parental','relationnel_conflit_autres','relationnel_rappels'];
     if (relPbs.some(id => selectedPbs.has(id))) return true;
+    if (state.checkedCats && state.checkedCats.has('relationnel')) return true;
     const relCat = document.querySelector('.pb-cat-checkbox[data-cat="relationnel"]:checked, .modal-pb-cat[data-cat="relationnel"]:checked, .diag-pb-cat[data-cat="relationnel"]:checked');
     return !!relCat;
   }
@@ -7303,6 +7306,7 @@ function isProblematiqueMatched(problematiqueId, selectedPbs) {
       'rythme_activite_physique'
     ];
     if (rythmePbs.some(id => selectedPbs.has(id))) return true;
+    if (state.checkedCats && state.checkedCats.has('rythme')) return true;
     const rythmeCat = document.querySelector('.pb-cat-checkbox[data-cat="rythme"]:checked, .modal-pb-cat[data-cat="rythme"]:checked, .diag-pb-cat[data-cat="rythme"]:checked');
     return !!rythmeCat;
   }
@@ -9377,6 +9381,7 @@ function syncSolutionsFromPbs() {
 function toggleSolution(id, checked) {
   if (!state.selectedSolutions) state.selectedSolutions = new Set();
   if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
+  if (!state.tickboxChoices) state.tickboxChoices = {};
   // Règle : on ne peut cocher Tétine que si un sous-choix (Garder/Supprimer/Hybride) est actif
   if (id === 'strat_tetine' && checked) {
     const choices = state.tickboxChoices || {};
@@ -9387,10 +9392,27 @@ function toggleSolution(id, checked) {
       return;
     }
   }
+  // Décocher Tétine → effacer tous les sous-choix (tickboxes + pb) pour éviter que le render les re-coche
+  if (id === 'strat_tetine' && !checked) {
+    delete state.tickboxChoices['strategie_tetine_choice'];
+    delete state.tickboxChoices['obj_tetine_static'];
+    if (state.selectedPbs) state.selectedPbs.delete('souhait_tetine');
+    // Désélectionner visuellement dans IV / V
+    document.querySelectorAll('.block-tickbox-choice[data-choice-id="obj_tetine_static"] .tbc-opt, .block-tickbox-choice[data-choice-id="strategie_tetine_choice"] .tbc-opt').forEach(opt => {
+      opt.classList.remove('tbc-selected');
+    });
+    // Décocher visuellement la pb souhait_tetine
+    document.querySelectorAll('input[name="pb"][value="souhait_tetine"], input.modal-pb[value="souhait_tetine"], input.diag-pb[value="souhait_tetine"]').forEach(cb => {
+      cb.checked = false;
+      cb.closest('.pb-item')?.classList.toggle('checked', false);
+    });
+  }
   if (checked) state.selectedSolutions.add(id);
   else state.selectedSolutions.delete(id);
   state.selectedSolutionsManuallyEdited.add(id);
   updateSolutionsModal();
+  if (typeof buildSections === 'function') buildSections();
+  if (typeof buildSidebar === 'function') buildSidebar();
   renderCurrentSection();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
@@ -10208,6 +10230,11 @@ function applyPbChanges() {
   const savedId = state.sections[state.currentIdx]?.id;
   const prevHadSouhaitTetine = state.selectedPbs && state.selectedPbs.has('souhait_tetine');
   state.selectedPbs = new Set([...document.querySelectorAll('.modal-pb:checked')].map(cb=>cb.value));
+  // Persister aussi quelles catégories parentes sont cochées (pour les sections générales :
+  // strategie_rendormissement, env_general, rythme_general, relationnel_general)
+  state.checkedCats = new Set(
+    [...document.querySelectorAll('.modal-pb-cat:checked')].map(cb => cb.dataset.cat).filter(Boolean)
+  );
   const nowHasSouhaitTetine = state.selectedPbs.has('souhait_tetine');
   // Si souhait_tetine a changé via le modal → appliquer la logique tétine (sync tickboxes / solution)
   if (prevHadSouhaitTetine !== nowHasSouhaitTetine) {
@@ -11473,6 +11500,10 @@ function newConsultation() {
     state.selectedSolutionsManuallyEdited = new Set();
     state.tickboxChoices = {};
     state.completedSet = new Set();
+    state.courbeCardsActiveByGrid = {};
+    state.courbeCardsTicked = new Set();
+    state.solActiveCat = null;
+    state.solActiveChildByCat = {};
     clearActiveConsultation();
     loadSavedClients();
   }
