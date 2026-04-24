@@ -1124,7 +1124,7 @@
       margin-bottom: 14px;
     }
     .block-left-title {
-      font-size: 12px;
+      font-size: 15px;
       font-weight: 800;
       color: var(--cat-dark, #64748b);
       background: var(--cat-light, #e2e8f0);
@@ -8001,19 +8001,18 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
     const extraWrapClass = b._parentLevel ? ' reset-indent' : '';
-    const wrapped = `<div class="edit-block-wrap${extraWrapClass}">
+    const wrapOnly = `<div class="edit-block-wrap${extraWrapClass}">
       <div class="edit-block-controls">
         ${editBtn}
         ${delBtn}
       </div>
       ${inner}
-    </div>
-    ${addBtn}`;
+    </div>`;
     // Titre latéral à gauche si _leftTitle défini
     if (b._leftTitle && depth === 0) {
-      return `<div class="block-with-left-title"><div class="block-left-title">${substituteVars(b._leftTitle)}</div><div>${wrapped}</div></div>`;
+      return `<div class="block-with-left-title"><div class="block-left-title">${substituteVars(b._leftTitle)}</div>${wrapOnly}</div>${addBtn}`;
     }
-    return wrapped;
+    return wrapOnly + addBtn;
   }
   if (b._leftTitle && depth === 0) {
     return `<div class="block-with-left-title"><div class="block-left-title">${substituteVars(b._leftTitle)}</div><div>${inner}</div></div>`;
@@ -8908,8 +8907,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       // Si > 1 : classe .in-stack (positionnement géré par le container parent)
       const cls = trailingBtnsList.length > 1 ? 'info-btn in-stack' : 'info-btn inline-right';
       const btnStyle = trailingBtnsList.length > 1
-        ? 'display:block;width:100%;text-align:left;margin-bottom:8px'
-        : 'display:inline-block;width:200px';
+        ? 'display:block;width:100%;min-width:0;text-align:left;margin-bottom:8px;padding:10px 14px;font-size:13px'
+        : 'display:inline-flex;width:200px;min-width:0;padding:10px 14px;font-size:13px';
       return `<button type="button" class="${cls}" contenteditable="false" onclick="openInfoPanel('${btnId}')" style="${btnStyle}"><span class="info-btn-emoji">💡</span><span>${label}</span></button>`;
     }).join('');
     trailingBtnHtml = trailingBtnsList.length > 1
