@@ -2454,7 +2454,21 @@ const SCRIPT_DATA = {
                   { tickbox: { cid: "obj_tetine_static", value: "garder" } },
                   { tickbox: { cid: "strategie_tetine_choice", value: "garder" } }
                 ],
-                text: "- Dans ce cas, l'**objectif** va être d'**aider** [prénom_enfant] à DEVENIR **autonome AVEC SA tétine**\n  - On va lui **\"apprendre\"** à :\n    - la **retrouver**\n    - la **remettre dans sa bouche SEUL**\n\n1. La **1ère étape**, ça va être de **lui mettre la tétine** dans **SA main** et de **guider son bras** et **sa main**… **vers sa bouche**\n\n2. La **2nde étape**, ça va être de lui **mettre la tétine**, **NON PAS** dans **SA main**… mais **PRÈS de sa main**\n   pour qu'il puisse :\n   - la **retrouver**\n   - et **la mettre dans sa bouche**\n\n3. Vous pouvez **pratiquer ces exercices plusieurs fois**, pour qu'il puisse **développer sa motricité** et **son autonomie**\n\n<div style=\"background:#fef3c7;border:1.5px solid #fcd34d;border-radius:10px;padding:12px 16px;margin:12px 0;color:#7c2d12\">💡 <strong>En combien de temps, [il_elle] acquiert cette compétence ?</strong><br>Ça va dépendre de :<ul style=\"margin:6px 0 6px 20px;padding:0\"><li>du <strong>nombre de fois</strong> que vous allez <strong>répéter le geste</strong></li><li>de SA <strong>motricité</strong></li><li>… de SON <strong>envie d'aller vers le changement !</strong></li></ul>⇒ L'<strong>âge moyen</strong> est autour de <strong>6 et 7 mois</strong></div>\n\n- 💡 Vous pouvez aussi mettre **plusieurs tétines dans le lit** *(idéalement fluorescentes)*, pour qu'il puisse les **retrouver + facilement la nuit.**"
+                text: "- Dans ce cas, l'**objectif** va être d'**aider** [prénom_enfant] à DEVENIR **autonome AVEC SA tétine**\n  - On va lui **\"apprendre\"** à :\n    - la **retrouver**\n    - la **remettre dans sa bouche SEUL**\n\n  1. La **1ère étape**, ça va être de **lui mettre la tétine** dans **SA main** et de **guider son bras** et **sa main**… **vers sa bouche**\n\n  2. La **2nde étape**, ça va être de lui **mettre la tétine**, **NON PAS** dans **SA main**… mais **PRÈS de sa main**\n     - pour qu'[il_elle] puisse :\n       - la **retrouver**\n       - et **la mettre dans sa bouche**\n\n  3. Vous pouvez **pratiquer ces exercices plusieurs fois**, pour qu'[il_elle] puisse **développer sa motricité** et **son autonomie**"
+              },
+              { type: "normal", _noBorder: true,
+                showIfAnyOf: [
+                  { tickbox: { cid: "obj_tetine_static", value: "garder" } },
+                  { tickbox: { cid: "strategie_tetine_choice", value: "garder" } }
+                ],
+                text: "<div style=\"background:#fef3c7;border:1.5px solid #fcd34d;border-radius:10px;padding:12px 16px;color:#7c2d12;font-size:14px;line-height:1.55\">💡 <strong>En combien de temps, [il_elle] acquiert cette compétence ?</strong><br>Ça va dépendre de :<ul style=\"margin:6px 0 6px 20px;padding:0\"><li>du <strong>nombre de fois</strong> que vous allez <strong>répéter le geste</strong></li><li>de SA <strong>motricité</strong></li><li>… de SON <strong>envie d'aller vers le changement !</strong></li></ul>⇒ L'<strong>âge moyen</strong> est autour de <strong>6 et 7 mois</strong></div>"
+              },
+              { type: "normal",
+                showIfAnyOf: [
+                  { tickbox: { cid: "obj_tetine_static", value: "garder" } },
+                  { tickbox: { cid: "strategie_tetine_choice", value: "garder" } }
+                ],
+                text: "- 💡 Vous pouvez aussi mettre **plusieurs tétines dans le lit** *(idéalement fluorescentes)*, pour qu'[il_elle] puisse les **retrouver + facilement la nuit.**"
               },
               { type: "normal",
                 showIfTickbox: { cid: "strategie_tetine_choice", value: "hybride" },
