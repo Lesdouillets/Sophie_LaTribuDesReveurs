@@ -10319,13 +10319,23 @@ function selectTickboxChoice(el) {
     setPb('souhait_tetine', currentValue === 'supprimer');
     syncChanged = true;
   }
-  // Auto-cocher la solution Tétine quand une option tétine est sélectionnée (peu importe la valeur)
-  if ((cid === 'obj_tetine_static' || cid === 'strategie_tetine_choice') && !wasSelected) {
+  // Auto-cocher / auto-décocher la solution Tétine selon les choix actifs
+  if (cid === 'obj_tetine_static' || cid === 'strategie_tetine_choice') {
     if (!state.selectedSolutions) state.selectedSolutions = new Set();
     if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
-    state.selectedSolutions.add('strat_tetine');
-    // Protéger le choix manuel contre le reset par syncSolutionsFromPbs
-    state.selectedSolutionsManuallyEdited.add('strat_tetine');
+    if (!wasSelected) {
+      // Sélection → cocher Tétine
+      state.selectedSolutions.add('strat_tetine');
+      state.selectedSolutionsManuallyEdited.add('strat_tetine');
+    } else {
+      // Désélection → si aucune autre option tétine active (ni pb), décocher Tétine
+      const choices = state.tickboxChoices || {};
+      const stillActive = choices['strategie_tetine_choice'] || choices['obj_tetine_static'] || state.selectedPbs.has('souhait_tetine');
+      if (!stillActive) {
+        state.selectedSolutions.delete('strat_tetine');
+        state.selectedSolutionsManuallyEdited.delete('strat_tetine');
+      }
+    }
     if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
     if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
   }
