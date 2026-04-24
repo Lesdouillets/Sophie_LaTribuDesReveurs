@@ -2219,6 +2219,7 @@ const SCRIPT_DATA = {
             },
             {
               type: "normal",
+              _leftTitle: "APLV",
               text: "- À cet âge, on **pense parfois à l'allergie aux protéines de lait de vache**… même si bien sûr, ça **reste une piste parmi d'autres**. *(ex : œuf, fruits à coques, poisson/crustacé…)*\n- L'**allergie** aux **Protéines de Lait de vache** est **plus courante qu'on ne le pense**\n- **D'ailleurs, CHEZ** les **bébés PRESENTANT un RGO**, ON ESTIME qu'environ **40 % sont concernés par une APLV**\n- L'idée, ce n'est **PAS** de **vous alarmer** mais **de vous guider**",
               trailingInfoButton: {
                 label: "Allergique vs Intolérant",
