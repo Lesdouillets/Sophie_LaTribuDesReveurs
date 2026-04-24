@@ -3327,38 +3327,38 @@
       overflow: hidden; box-sizing: border-box;
     }
     .sol-floating-btns {
-      position: fixed; right: 20px; bottom: 20px;
-      display: flex; flex-direction: column; gap: 10px;
-      z-index: 150;
+      position: fixed; right: 30px; bottom: 280px;
+      display: flex; flex-direction: column; gap: 14px;
+      z-index: 250;
     }
     .sol-floating-btn {
       position: relative;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 2px; width: 100px; height: 100px;
+      gap: 4px; width: 140px; height: 140px;
       border: 3px solid #3b82f6;
-      border-radius: 50% 50% 50% 10px;
+      border-radius: 50% 50% 50% 12px;
       background: #dbeafe !important;
       color: #1e3a8a; cursor: pointer;
-      box-shadow: 0 4px 14px rgba(59,130,246,0.25);
-      padding: 8px; text-align: center;
+      box-shadow: 0 4px 16px rgba(59,130,246,0.28);
+      padding: 10px; text-align: center;
       transition: transform 0.15s, box-shadow 0.15s;
     }
-    /* Petite queue de bulle de BD en bas à gauche */
+    /* Longue queue de bulle de BD en bas à gauche */
     .sol-floating-btn::before {
       content: '';
       position: absolute;
-      bottom: -10px; left: 6px;
+      bottom: -36px; left: 4px;
       width: 0; height: 0;
-      border-top: 18px solid #3b82f6;
-      border-right: 14px solid transparent;
+      border-top: 40px solid #3b82f6;
+      border-right: 28px solid transparent;
     }
     .sol-floating-btn::after {
       content: '';
       position: absolute;
-      bottom: -5px; left: 10px;
+      bottom: -28px; left: 10px;
       width: 0; height: 0;
-      border-top: 12px solid #dbeafe;
-      border-right: 10px solid transparent;
+      border-top: 32px solid #dbeafe;
+      border-right: 22px solid transparent;
     }
     .sol-floating-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(59,130,246,0.4); }
     .sol-floating-btn:active { transform: scale(0.98); }
