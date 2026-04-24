@@ -2410,7 +2410,29 @@ const SCRIPT_DATA = {
         children: [
           { id: "strat_tetine", label: "Tétine", cardLabel: "Tétine", cardEmoji: "🍼", autoCheckIfPbs: ["souhait_tetine", "strategie_tetine"],
             blocks: [
-              { type: "normal", text: "- Maintenant, on **va parler \"tétine\"**\n  **PUISQU'on** EN A **discuté** ensemble\n  et que **vous souhaitez…**" },
+              { type: "normal",
+                showIfTickbox: [
+                  { cid: "strategie_tetine_choice", value: "supprimer" },
+                  { cid: "obj_tetine_static", value: "supprimer" }
+                ],
+                text: "- Maintenant, on **va parler \"tétine\"**\n  **PUISQU'on** EN A **discuté** ensemble\n  et que **vous souhaitez… la supprimer**"
+              },
+              { type: "normal",
+                showIfTickbox: [
+                  { cid: "strategie_tetine_choice", value: "garder" },
+                  { cid: "obj_tetine_static", value: "garder" }
+                ],
+                text: "- Maintenant, on **va parler \"tétine\"**\n  **PUISQU'on** EN A **discuté** ensemble\n  et que **vous souhaitez… la garder**"
+              },
+              { type: "normal",
+                showIfTickbox: { cid: "strategie_tetine_choice", value: "hybride" },
+                text: "- Maintenant, on **va parler \"tétine\"**\n  **PUISQU'on** EN A **discuté** ensemble\n  et que **vous souhaitez… la garder pour certains moments de la journée**"
+              },
+              { type: "normal",
+                _leftTitle: "Hybride",
+                showIfTickbox: { cid: "strategie_tetine_choice", value: "hybride" },
+                text: "- Si vous souhaitez **aller vers ce mode \"hybride\"** : *\"Ok pour la tétine mais pas TOUT le temps\"*\n  ⇒ je vous conseille d'**être cohérent dans votre approche** pour que [prénom_enfant] puisse avoir les **MÊMES stratégies d'endormissement**\n  - Si c'est **OK** pour garder la tétine **pendant les siestes** ⇒ alors il **aura sa tétine** pour **TOUTES ses siestes**\n  - Si ce n'est **PAS OK** pour **la garder la nuit** ⇒ alors il **dormira SANS** sa tétine **TOUTES les nuits**\n    ⇒ sinon ça **peut devenir confus**… et **compliquer l'endormissement**"
+              },
               { type: "normal",
                 _leftTitle: "Supprimer",
                 showIfAnyOf: [
@@ -2454,29 +2476,18 @@ const SCRIPT_DATA = {
               { type: "normal",
                 showIfAnyOf: [
                   { tickbox: { cid: "obj_tetine_static", value: "garder" } },
-                  { tickbox: { cid: "strategie_tetine_choice", value: "garder" } }
+                  { tickbox: { cid: "strategie_tetine_choice", value: "garder" } },
+                  { tickbox: { cid: "strategie_tetine_choice", value: "hybride" } }
                 ],
                 _leftTitle: "Garder",
-                text: "- Dans ce cas, l'**objectif** va être d'**aider** [prénom_enfant] à DEVENIR **autonome AVEC SA tétine**\n  - On va lui **\"apprendre\"** à :\n    - la **retrouver**\n    - la **remettre dans sa bouche SEUL**\n\n  1. La **1ère étape**, ça va être de **lui mettre la tétine** dans **SA main** et de **guider son bras** et **sa main**… **vers sa bouche**\n\n  2. La **2nde étape**, ça va être de lui **mettre la tétine**, **NON PAS** dans **SA main**… mais **PRÈS de sa main**\n     - pour qu'[il_elle] puisse :\n       - la **retrouver**\n       - et **la mettre dans sa bouche**\n\n  3. Vous pouvez **pratiquer ces exercices plusieurs fois**, pour qu'[il_elle] puisse **développer sa motricité** et **son autonomie**"
-              },
-              { type: "normal", _noBorder: true,
-                showIfAnyOf: [
-                  { tickbox: { cid: "obj_tetine_static", value: "garder" } },
-                  { tickbox: { cid: "strategie_tetine_choice", value: "garder" } }
-                ],
-                text: "<div style=\"background:#fef3c7;border:1.5px solid #fcd34d;border-radius:10px;padding:12px 16px;color:#7c2d12;font-size:14px;line-height:1.55\">💡 <strong>En combien de temps, [il_elle] acquiert cette compétence ?</strong><br>Ça va dépendre de :<ul style=\"margin:6px 0 6px 20px;padding:0\"><li>du <strong>nombre de fois</strong> que vous allez <strong>répéter le geste</strong></li><li>de SA <strong>motricité</strong></li><li>… de SON <strong>envie d'aller vers le changement !</strong></li></ul>⇒ L'<strong>âge moyen</strong> est autour de <strong>6 et 7 mois</strong></div>"
-              },
-              { type: "normal",
-                showIfAnyOf: [
-                  { tickbox: { cid: "obj_tetine_static", value: "garder" } },
-                  { tickbox: { cid: "strategie_tetine_choice", value: "garder" } }
-                ],
-                text: "- 💡 Vous pouvez aussi mettre **plusieurs tétines dans le lit** *(idéalement fluorescentes)*, pour qu'[il_elle] puisse les **retrouver + facilement la nuit.**"
-              },
-              { type: "normal",
-                _leftTitle: "Hybride",
-                showIfTickbox: { cid: "strategie_tetine_choice", value: "hybride" },
-                text: "- Si vous souhaitez **aller vers ce mode \"hybride\"** : *\"Ok pour la tétine mais pas TOUT le temps\"*\n  ⇒ je vous conseille d'**être cohérent dans votre approche**\n\n  pour que [prénom_enfant] puisse avoir les **MÊMES stratégies d'endormissement**\n\n  - Si c'est **OK** pour garder la tétine **pendant les siestes** ⇒ alors il **aura sa tétine** pour **TOUTES ses siestes**\n  - Si ce n'est **PAS OK** pour **la garder la nuit** ⇒ alors il **dormira SANS** sa tétine **TOUTES les nuits**\n    ⇒ sinon ça **peut devenir confus**… et **compliquer l'endormissement**"
+                text: "- Dans ce cas, l'**objectif** va être d'**aider** [prénom_enfant] à DEVENIR **autonome AVEC SA tétine**\n  - On va lui **\"apprendre\"** à :\n    - la **retrouver**\n    - la **remettre dans sa bouche SEUL**\n\n  1. La **1ère étape**, ça va être de **lui mettre la tétine** dans **SA main** et de **guider son bras** et **sa main**… **vers sa bouche**\n\n  2. La **2nde étape**, ça va être de lui **mettre la tétine**, **NON PAS** dans **SA main**… mais **PRÈS de sa main**\n     - pour qu'[il_elle] puisse :\n       - la **retrouver**\n       - et **la mettre dans sa bouche**\n\n  3. Vous pouvez **pratiquer ces exercices plusieurs fois**, pour qu'[il_elle] puisse **développer sa motricité** et **son autonomie**\n\n\n- 💡 Vous pouvez aussi mettre **plusieurs tétines dans le lit** *(idéalement fluorescentes)*, pour qu'[il_elle] puisse les **retrouver + facilement la nuit.**",
+                trailingInfoButton: {
+                  label: "Temps d'acquisition",
+                  title: "En combien de temps acquiert-[il_elle] cette compétence ?",
+                  blocks: [
+                    { type: "normal", text: "- 💡 **En combien de temps, [il_elle] acquiert cette compétence ?**\n  - Ça va dépendre de :\n    - du **nombre de fois** que vous allez **répéter le geste**\n    - de SA **motricité**\n    - … de SON **envie d'aller vers le changement !**\n  - ⇒ L'**âge moyen** est autour de **6 et 7 mois**" }
+                  ]
+                }
               },
             ]
           },
