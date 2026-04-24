@@ -384,7 +384,7 @@ const SCRIPT_DATA = {
             }}
           ]
         },
-        { type: "normal", _noBorder: true, hideIfPb: "souhait_tetine", text: "<div class=\"obj-tetine-card\" style=\"border:3px dashed #7c3aed;border-radius:16px;padding:14px 22px 16px;background:#f5f0ff;margin:0;max-width:none;text-align:center\"><div style=\"font-size:28px;line-height:1;margin-bottom:4px\">🍭</div><div style=\"font-weight:800;color:#5b21b6;font-size:13px;margin:2px 0 10px\">Souhait Tétine</div><div class=\"block block-tickbox-choice\" data-choice-id=\"obj_tetine_static\" data-required=\"false\" style=\"background:transparent;border:none;box-shadow:none;padding:0;margin:0\"><div class=\"tbc-options\" style=\"justify-content:center;gap:12px\"><div class=\"tbc-opt\" data-variant=\"positive\" data-value=\"garder\" onclick=\"selectTickboxChoice(this)\"><span class=\"tbc-icon\">✅</span><span>Garder</span></div><div class=\"tbc-opt\" data-variant=\"negative\" data-value=\"supprimer\" onclick=\"selectTickboxChoice(this)\"><span class=\"tbc-icon\">❌</span><span>Supprimer</span></div></div></div></div>" },
+        { type: "normal", _noBorder: true, hideIfPb: "souhait_tetine", text: "<div class=\"obj-tetine-card\" style=\"border:3px dashed #7c3aed;border-radius:16px;padding:14px 22px 16px;background:#f5f0ff;margin:0;max-width:none;text-align:center\"><div style=\"font-size:28px;line-height:1;margin-bottom:4px\">🍭</div><div style=\"font-weight:800;color:#5b21b6;font-size:13px;margin:2px 0 10px\">Souhait Tétine</div><div class=\"block block-tickbox-choice\" data-choice-id=\"obj_tetine_static\" data-required=\"false\" style=\"background:transparent;border:none;box-shadow:none;padding:0;margin:0\"><div class=\"tbc-options\" style=\"justify-content:center;gap:12px\"><div class=\"tbc-opt\" data-variant=\"positive\" data-value=\"garder\" onclick=\"selectTickboxChoice(this)\"><span class=\"tbc-icon\">✅</span><span>Garder</span></div><div class=\"tbc-opt\" data-variant=\"negative\" data-value=\"supprimer\" onclick=\"selectTickboxChoice(this)\"><span class=\"tbc-icon\">❌</span><span>Supprimer</span></div><div class=\"tbc-opt\" data-variant=\"warning\" data-value=\"hybride\" onclick=\"selectTickboxChoice(this)\"><span class=\"tbc-icon\">🔀</span><span>Hybride</span></div></div></div></div>" },
       ]
     },
 
@@ -2411,16 +2411,17 @@ const SCRIPT_DATA = {
           { id: "strat_tetine", label: "Tétine", cardLabel: "Tétine", cardEmoji: "🍼", autoCheckIfPbs: ["souhait_tetine", "strategie_tetine"],
             blocks: [
               { type: "normal",
-                showIfTickbox: [
-                  { cid: "strategie_tetine_choice", value: "supprimer" },
-                  { cid: "obj_tetine_static", value: "supprimer" }
+                showIfAnyOf: [
+                  { pb: "souhait_tetine" },
+                  { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } },
+                  { tickbox: { cid: "obj_tetine_static", value: "supprimer" } }
                 ],
                 text: "- Maintenant, on **va parler \"tétine\"**\n  **PUISQU'on** EN A **discuté** ensemble\n  et que **vous souhaitez… la supprimer**"
               },
               { type: "normal",
-                showIfTickbox: [
-                  { cid: "strategie_tetine_choice", value: "garder" },
-                  { cid: "obj_tetine_static", value: "garder" }
+                showIfAnyOf: [
+                  { tickbox: { cid: "strategie_tetine_choice", value: "garder" } },
+                  { tickbox: { cid: "obj_tetine_static", value: "garder" } }
                 ],
                 text: "- Maintenant, on **va parler \"tétine\"**\n  **PUISQU'on** EN A **discuté** ensemble\n  et que **vous souhaitez… la garder**"
               },
@@ -2444,6 +2445,7 @@ const SCRIPT_DATA = {
                 text: "- Il y a **plusieurs moyens de la supprimer**\n  - **1.** Il y a l'option **\"DIRECT\"**… comme un **pansement qu'on arrache**\n    - ⇒ On **y va \"franco\"**, on **coupe TOUTES les tétines** de la **maison**\n    - ⇒ et comme ça il n'y a **plus de risque** de **retour en arrière !**\n\n  - **2.** Il y a aussi des **livres** que vous pouvez **lire avec** [prénom_enfant]\n    - ⇒ je pense à *\"La tétine de Nina\"* de Christine Naumann\n\n  - **3.** Ce qui **peut marcher aussi** (pour les petits enfants)\n    - ⚠️ mais c'est **à vous de voir** si vous **êtes à l'aise** avec ça,\n    - ⇒ C'est d'**utiliser** la **\"pensée imaginaire\"** :\n    - ⇒ **De dire**… qu'**on donne** la tétine **au Père Noël**, à la **Fée**, au **bébé**…"
               },
               { type: "normal",
+                _leftTitle: "Tétine Clipp (> 2 ans)",
                 showIfRealAgeMinMonths: 24,
                 showIfAnyOf: [
                   { pb: "souhait_tetine" },
@@ -2454,6 +2456,7 @@ const SCRIPT_DATA = {
                 text: "- Il y a aussi des **tétines de sevrage**, je pense notamment à la **Tétine Clipp** *(une méthode progressive)*\n- On **met des collerettes** (x5) sur **l'embout de la tétine** *(c'est une tétine spéciale)* pour **réduire** de + en + **la taille de la zone de succion**\n\n<div style=\"background:#fef3c7;border:1.5px solid #fcd34d;border-radius:10px;padding:10px 14px;margin-top:10px\"><strong>Tétine Clipp (20€)</strong><br><a href=\"https://www.clipp.fr/clipp-tetine/\" target=\"_blank\" rel=\"noopener\" style=\"color:#b45309\">https://www.clipp.fr/clipp-tetine/</a></div>"
               },
               { type: "normal",
+                _leftTitle: "Stop Tétine (> 3 ans)",
                 showIfRealAgeMinMonths: 36,
                 showIfAnyOf: [
                   { pb: "souhait_tetine" },

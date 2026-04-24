@@ -7711,6 +7711,26 @@ function filterSidebar(query) {
 
 function togglePb(value, checked) {
   if (checked) state.selectedPbs.add(value); else state.selectedPbs.delete(value);
+  // Si la pb souhait_tetine est cochée → cocher automatiquement "supprimer" dans les choix tétine
+  if (value === 'souhait_tetine') {
+    if (!state.tickboxChoices) state.tickboxChoices = {};
+    if (!state.selectedSolutions) state.selectedSolutions = new Set();
+    if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
+    if (checked) {
+      state.tickboxChoices['strategie_tetine_choice'] = 'supprimer';
+      state.tickboxChoices['obj_tetine_static'] = 'supprimer';
+      state.selectedSolutions.add('strat_tetine');
+      state.selectedSolutionsManuallyEdited.add('strat_tetine');
+    } else {
+      // Si on décoche la pb, on efface seulement si les tickboxes étaient à "supprimer"
+      if (state.tickboxChoices['strategie_tetine_choice'] === 'supprimer') {
+        delete state.tickboxChoices['strategie_tetine_choice'];
+      }
+      if (state.tickboxChoices['obj_tetine_static'] === 'supprimer') {
+        delete state.tickboxChoices['obj_tetine_static'];
+      }
+    }
+  }
   const savedId = state.sections[state.currentIdx]?.id;
   buildSections();
   const newIdx = state.sections.findIndex(s=>s.id===savedId);
@@ -7720,6 +7740,8 @@ function togglePb(value, checked) {
   if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
   if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
   if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
+  // Re-render la section courante pour refléter l'état tétine
+  if (value === 'souhait_tetine' && typeof renderCurrentSection === 'function') renderCurrentSection();
   // Détecter conflit tétine si la pb souhait_tetine change
   if (value === 'souhait_tetine' && typeof checkTetineConflict === 'function') checkTetineConflict();
 }
