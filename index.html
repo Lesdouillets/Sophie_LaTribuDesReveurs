@@ -8080,12 +8080,12 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
       ${inner}
     </div>`;
     // Titre latéral à gauche si _leftTitle défini
-    if (b._leftTitle && depth === 0) {
+    if (b._leftTitle && depth <= 1) {
       return `<div class="block-with-left-title"><div class="block-left-title">${substituteVars(b._leftTitle)}</div>${wrapOnly}</div>${addBtn}`;
     }
     return wrapOnly + addBtn;
   }
-  if (b._leftTitle && depth === 0) {
+  if (b._leftTitle && depth <= 1) {
     return `<div class="block-with-left-title"><div class="block-left-title">${substituteVars(b._leftTitle)}</div><div>${inner}</div></div>`;
   }
   return inner;
