@@ -8087,6 +8087,16 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   const text = substituteVars(b.text||'');
 
   if (b.type === 'option') {
+    // Mode bulle BD flottante : rendu comme bouton fixé en bas à droite (openInfoPanel)
+    if (b._floatingBubble) {
+      window.__infoButtons = window.__infoButtons || {};
+      const fbId = `float-${sectionId||'x'}-${path||i}`;
+      const fbTitle = substituteVars(b.title || b.label || '');
+      const fbContent = renderBlocks(Array.isArray(b.blocks) ? b.blocks : [], sectionId, (depth||0)+1, String(path||i));
+      window.__infoButtons[fbId] = { title: fbTitle, content: fbContent };
+      const svg = `<svg class="sol-floating-btn-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M 100 15 C 40 15 10 45 10 85 C 10 120 35 145 78 152 L 62 178 L 100 150 C 155 148 190 120 190 85 C 190 45 160 15 100 15 Z" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" stroke-linejoin="round"/></svg>`;
+      return `<div class="sol-floating-btns" data-inline-bubble="1"><button type="button" class="sol-floating-btn" onclick="openInfoPanel('${fbId}')" title="${fbTitle}">${svg}<div class="sol-floating-btn-content"><span style="font-size:24px">${b.emoji||'💡'}</span><span style="font-size:12px">${substituteVars(b.label||'')}</span></div></button></div>`;
+    }
     const dangerClass = b.style === 'danger' ? ' danger' : '';
     const pleursClass = b.style === 'pleurs' ? ' pleurs' : '';
     const purpleClass = b.style === 'purple' ? ' purple' : '';
