@@ -9166,7 +9166,11 @@ function renderSolutionsCheckboxes() {
       // Sous-options pour Tétine : reflètent strategie_tetine_choice (garder/supprimer/hybride)
       if (ch.id === 'strat_tetine') {
         const choices = state.tickboxChoices || {};
-        const tchoice = choices['strategie_tetine_choice'] || choices['obj_tetine_static'] || '';
+        // Priorité : V. Diagnostic > IV. Objectifs > II. Problématique (pb souhait_tetine = supprimer)
+        let tchoice = choices['strategie_tetine_choice'] || choices['obj_tetine_static'] || '';
+        if (!tchoice && state.selectedPbs && state.selectedPbs.has('souhait_tetine')) {
+          tchoice = 'supprimer';
+        }
         const opts = [
           { val: 'garder', label: '✅ Garder' },
           { val: 'supprimer', label: '❌ Supprimer' },
