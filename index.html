@@ -9175,6 +9175,18 @@ function resolveTetineConflict(choice) {
     delete state.tickboxChoices.strategie_tetine_choice;
     if (state.selectedPbs) state.selectedPbs.delete('souhait_tetine');
     if (state.selectedSolutions) state.selectedSolutions.delete('strat_tetine');
+    // Marquer strat_tetine comme manuellement dé-sélectionné → empêche syncSolutionsFromPbs de le re-cocher
+    if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
+    state.selectedSolutionsManuallyEdited.add('strat_tetine');
+    // Désélectionner visuellement les tickboxes dans IV / V
+    document.querySelectorAll('.block-tickbox-choice[data-choice-id="obj_tetine_static"] .tbc-opt, .block-tickbox-choice[data-choice-id="strategie_tetine_choice"] .tbc-opt').forEach(opt => {
+      opt.classList.remove('tbc-selected');
+    });
+    // Décocher visuellement la pb souhait_tetine dans tous les containers
+    document.querySelectorAll('input[name="pb"][value="souhait_tetine"], input.modal-pb[value="souhait_tetine"], input.diag-pb[value="souhait_tetine"]').forEach(cb => {
+      cb.checked = false;
+      cb.closest('.pb-item')?.classList.toggle('checked', false);
+    });
   } else {
     // Appliquer le même choix partout
     state.tickboxChoices.obj_tetine_static = choice;
@@ -9221,12 +9233,17 @@ function renderSolutionsCheckboxes() {
           tchoice = 'supprimer';
         }
         // Auto-cocher la case Tétine si une sous-option est active
+        // Sinon, la décocher (empêche Tétine d'apparaître pour TOUS les enfants sans choix explicite)
         if (tchoice) {
           checked = true;
           if (!state.selectedSolutions) state.selectedSolutions = new Set();
           if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
           state.selectedSolutions.add('strat_tetine');
           state.selectedSolutionsManuallyEdited.add('strat_tetine');
+        } else {
+          // Aucune sous-option active → retirer Tétine
+          checked = false;
+          if (state.selectedSolutions) state.selectedSolutions.delete('strat_tetine');
         }
         const opts = [
           { val: 'garder', label: '✅ Garder' },
