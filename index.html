@@ -9586,11 +9586,17 @@ function substituteVars(text) {
   const filleGarcon = isFille ? 'fille' : 'garçon';
   const accordEnfant = `Nous sommes **BIEN d'accord** que ${c.prenomEnfant||'[prénom]'} est ${unUne} ${petitePetit} ${filleGarcon} qui est :\n  - En **bonne santé** ?\n  - A été **vu récemment par un médecin** ?`;
 
+  // Nom de l'enfant stylisé : gras + couleur selon sexe (bleu garçon, rose fille)
+  const prenomRaw = c.prenomEnfant || '';
+  const prenomColor = isFille ? '#E25098' : '#6495ED';
+  const prenomStyled = prenomRaw
+    ? `<strong style="color:${prenomColor}">${prenomRaw}</strong>`
+    : '[prénom]';
   let t = text
     .replace(/\[enseigne_nom\]/g, enseigneNom)
     .replace(/\[verif_identite\]/g, verifIdentite)
     .replace(/\[accord_enfant\]/g, accordEnfant)
-    .replace(/\[prénom_enfant\]/g, c.prenomEnfant||'[prénom]')
+    .replace(/\[prénom_enfant\]/g, prenomStyled)
     .replace(/\[prénom_parents\]/g, parents||'[parents]')
     .replace(/\[age\]/g, age)
     .replace(/\[role_parents\]/g, roleLabel)
@@ -9650,9 +9656,9 @@ function substituteVars(text) {
     .replace(/\[XXX – rappeler ici la problématique écrite par les parents\]/g, pb)
     .replace(/\[XXX – rappeler les objectifs des parents\]/g, obj)
     .replace(/\[XXX – rappeler les objectifs\]/g, obj)
-    .replace(/\[prénom\]/gi, c.prenomEnfant||'[prénom]')
-    .replace(/\[Prénom enfant\]/gi, c.prenomEnfant||'[prénom]')
-    .replace(/\[prénom enfant\]/gi, c.prenomEnfant||'[prénom]')
+    .replace(/\[prénom\]/gi, prenomStyled)
+    .replace(/\[Prénom enfant\]/gi, prenomStyled)
+    .replace(/\[prénom enfant\]/gi, prenomStyled)
     .replace(/\[prénom parents\]/gi, parents||'[parents]')
     .replace(/XXXX/g, heureFin);
   // Pronoms selon sexe du bébé — remplacer il/le/son/lui → elle/la/sa/lui
