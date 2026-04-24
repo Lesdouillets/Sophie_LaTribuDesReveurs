@@ -1064,11 +1064,6 @@
       width: 170px;
       z-index: 2;
     }
-    .block:has(> .info-btn.inline-right) {
-      position: relative;
-      padding-right: 200px;
-      min-height: 60px;
-    }
     /* Plusieurs boutons info : stack vertical positionné absolument à droite dans le bloc */
     .info-btns-stack {
       position: absolute;
@@ -1081,11 +1076,12 @@
       z-index: 2;
     }
     .info-btn.in-stack { float: none; position: static; margin: 0; width: 100%; text-align: left; }
-    .block:has(> .info-btns-stack) {
+    .block.block-has-trailing {
       position: relative;
       padding-right: 200px;
-      min-height: 130px;
+      min-height: 60px;
     }
+    .block.block-has-trailing:has(.info-btns-stack) { min-height: 130px; }
 
     /* Bouton "Retour à la consultation" en haut des sections conditionnelles */
     .btn-return-to-diag {
@@ -3305,8 +3301,7 @@
     .sol-child-content .info-btn.inline-right {
       width: 160px;
     }
-    .sol-child-content .block:has(> .info-btns-stack),
-    .sol-child-content .block:has(> .info-btn.inline-right) {
+    .sol-child-content .block.block-has-trailing {
       padding-right: 190px;
     }
     /* Bloc "🧭 Solutions identifiées" façon Leviers identifiés */
@@ -5314,7 +5309,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=357"></script>
+<script src="script-data.js?v=358"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -8856,7 +8851,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
 
   const cls = { normal:'block-normal', important:'block-important', conseil:'block-conseil', conseil_vert:'block-conseil-vert', empathie:'block-empathie' }[b.type] || 'block-normal';
-  const extraCls = (b._purpleDark ? ' block-purple-dark' : '') + (b._noBorder ? ' block-no-border' : '');
+  const hasTrailing = !!(b.trailingInfoButton || (Array.isArray(b.trailingInfoButtons) && b.trailingInfoButtons.length));
+  const extraCls = (b._purpleDark ? ' block-purple-dark' : '') + (b._noBorder ? ' block-no-border' : '') + (hasTrailing ? ' block-has-trailing' : '');
   // Boutons "💡 Plus d'infos" flottants à droite DANS le bloc (optionnel)
   // Supporte `trailingInfoButton` (singulier) OU `trailingInfoButtons` (array)
   let trailingBtnHtml = '';
