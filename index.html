@@ -1124,20 +1124,30 @@
       margin-bottom: 14px;
     }
     .block-left-title {
+      position: relative;
       font-size: 15px;
       font-weight: 800;
       color: var(--cat-dark, #64748b);
       background: var(--cat-light, #e2e8f0);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      padding: 14px 10px;
+      padding: 14px 13px 14px 10px;
       line-height: 1.3;
       text-align: center;
-      border-right: 3px solid var(--cat-main, #cbd5e0);
       border-radius: 8px 0 0 8px;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    .block-left-title::after {
+      content: '';
+      position: absolute;
+      top: 6px;
+      bottom: 6px;
+      right: 2px;
+      width: 3px;
+      background: var(--cat-main, #cbd5e0);
+      border-radius: 3px;
     }
     .block-with-left-title > .block,
     .block-with-left-title > .edit-block-wrap { margin-bottom: 0; height: 100%; }
