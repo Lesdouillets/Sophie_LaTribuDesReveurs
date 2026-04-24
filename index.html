@@ -10318,7 +10318,10 @@ function selectTickboxChoice(el) {
   // Auto-cocher la solution Tétine quand une option tétine est sélectionnée (peu importe la valeur)
   if ((cid === 'obj_tetine_static' || cid === 'strategie_tetine_choice') && !wasSelected) {
     if (!state.selectedSolutions) state.selectedSolutions = new Set();
+    if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
     state.selectedSolutions.add('strat_tetine');
+    // Protéger le choix manuel contre le reset par syncSolutionsFromPbs
+    state.selectedSolutionsManuallyEdited.add('strat_tetine');
     if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
     if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
   }
