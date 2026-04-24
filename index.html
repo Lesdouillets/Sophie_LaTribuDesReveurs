@@ -8938,12 +8938,12 @@ function renderSolutionsCheckboxes() {
   if (!sols.length) return '<div class="block block-normal"><em>(Aucune solution configurée.)</em></div>';
   syncSolutionsFromPbs();
   const catColorMap = {
-    confort_physique: { main: '#dc2626', dark: '#b91c1c' },
-    nutrition:        { main: '#f97316', dark: '#c2410c' },
-    rythme:           { main: '#22c55e', dark: '#166534' },
-    strategie:        { main: '#3b82f6', dark: '#1e3a8a' },
-    env:              { main: '#8b5cf6', dark: '#5b21b6' },
-    relationnel:      { main: '#ec4899', dark: '#be185d' },
+    confort_physique: { main: '#dc2626', dark: '#b91c1c', light: '#fef2f2' },
+    nutrition:        { main: '#f97316', dark: '#c2410c', light: '#fff7ed' },
+    rythme:           { main: '#22c55e', dark: '#166534', light: '#f0fdf4' },
+    strategie:        { main: '#3b82f6', dark: '#1e3a8a', light: '#eff6ff' },
+    env:              { main: '#8b5cf6', dark: '#5b21b6', light: '#f5f3ff' },
+    relationnel:      { main: '#ec4899', dark: '#be185d', light: '#fdf2f8' },
   };
   // Partie 1 : liste compacte "Leviers identifiés" style — groupée par catégorie
   const compactGroups = sols.map(cat => {
@@ -9014,7 +9014,7 @@ function renderSolutionsCheckboxes() {
       if (activeChildId) {
         const activeChild = children.find(ch => ch.id === activeChildId);
         if (activeChild && Array.isArray(activeChild.blocks) && activeChild.blocks.length) {
-          childContentHtml = `<div class="sol-child-content" style="border-color:${c.main};--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||c.main}20">` +
+          childContentHtml = `<div class="sol-child-content" style="border-color:${c.main};--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">` +
             renderBlocks(activeChild.blocks, 'sol_' + cat.id + '_' + activeChild.id) +
             `</div>`;
         }
