@@ -2453,7 +2453,7 @@ const SCRIPT_DATA = {
                   { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } },
                   { tickbox: { cid: "strategie_tetine_choice", value: "hybride" } }
                 ],
-                text: "<img src=\"https://www.clipp.fr/wp-content/uploads/4-1.jpg\" alt=\"Tétine Clipp\" style=\"float:right;width:140px;height:auto;border-radius:8px;margin:0 0 8px 14px\">\n\n- Il y a aussi des **tétines de sevrage**, je pense notamment à la **Tétine Clipp** *(une méthode progressive)*\n- On **met des collerettes** (x5) sur **l'embout de la tétine** *(c'est une tétine spéciale)* pour **réduire** de + en + **la taille de la zone de succion**\n- **Tétine Clipp (20€)** — <a href=\"https://www.clipp.fr/clipp-tetine/\" target=\"_blank\" rel=\"noopener\" style=\"color:#b45309\">https://www.clipp.fr/clipp-tetine/</a>"
+                text: "<img src=\"https://www.clipp.fr/wp-content/uploads/4-1.jpg\" alt=\"Tétine Clipp\" style=\"float:right;height:180px;width:auto;max-width:180px;border-radius:8px;margin:0 0 8px 14px;object-fit:contain\">\n\n- Il y a aussi des **tétines de sevrage**, je pense notamment à la **Tétine Clipp** *(une méthode progressive)*\n- On **met des collerettes** (x5) sur **l'embout de la tétine** *(c'est une tétine spéciale)* pour **réduire** de + en + **la taille de la zone de succion**\n- **Tétine Clipp (20€)** — <a href=\"https://www.clipp.fr/clipp-tetine/\" target=\"_blank\" rel=\"noopener\" style=\"color:#b45309\">https://www.clipp.fr/clipp-tetine/</a>"
               },
               { type: "normal",
                 _leftTitle: "Stop Tétine (> 3 ans)",
@@ -2464,7 +2464,7 @@ const SCRIPT_DATA = {
                   { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } },
                   { tickbox: { cid: "strategie_tetine_choice", value: "hybride" } }
                 ],
-                text: "<img src=\"https://www.latribuhappykids.com/cdn/shop/files/Boite-Stop-Tetine-LTHK-04.png?v=1760537894&width=750\" alt=\"Boîte Stop Tétine\" style=\"float:right;width:140px;height:auto;border-radius:8px;margin:0 0 8px 14px\">\n\n- Et enfin, il y a les boîtes **\"Stop Tétine\"** qui s'adressent aux **enfants qui SOUHAITENT arrêter la tétine**\n- Avec un mélange de : stickers, tableau motivationnel, guide explicatif pour les parents…\n- **Boîte \"Stop tétine\" (30€)** — <a href=\"https://www.latribuhappykids.com/products/boite-stop-tetine\" target=\"_blank\" rel=\"noopener\" style=\"color:#b45309\">latribuhappykids.com/products/boite-stop-tetine</a>"
+                text: "<img src=\"https://www.latribuhappykids.com/cdn/shop/files/Boite-Stop-Tetine-LTHK-04.png?v=1760537894&width=750\" alt=\"Boîte Stop Tétine\" style=\"float:right;height:180px;width:auto;max-width:180px;border-radius:8px;margin:0 0 8px 14px;object-fit:contain\">\n\n- Et enfin, il y a les boîtes **\"Stop Tétine\"** qui s'adressent aux **enfants qui SOUHAITENT arrêter la tétine**\n- Avec un mélange de : stickers, tableau motivationnel, guide explicatif pour les parents…\n- **Boîte \"Stop tétine\" (30€)** — <a href=\"https://www.latribuhappykids.com/products/boite-stop-tetine\" target=\"_blank\" rel=\"noopener\" style=\"color:#b45309\">latribuhappykids.com/products/boite-stop-tetine</a>"
               },
               { type: "normal",
                 showIfAnyOf: [
