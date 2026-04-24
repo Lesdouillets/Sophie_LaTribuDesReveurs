@@ -2379,7 +2379,7 @@ const SCRIPT_DATA = {
                 ]
               }
             },
-            { type: "conseil_vert", text: "**En résumé**,\n\navec un **BB qui a du reflux**, on va surtout **l'aider à digérer tranquillement** :\n- En **fractionnant les repas**, plutôt que de donner de grandes quantités d'un coup\n- En **gardant BB bien vertical** après les repas, pendant environ 20 minutes\n- En **favorisant un environnement calme** et une **routine régulière**, car stress et fatigue peuvent accentuer le reflux\n\n**Avec** ces **petits changements**, [prénom_enfant] sera **beaucoup + à l'aise**… et trouvera plus facilement le **chemin du sommeil.**" },
+            { type: "conseil_vert", text: "- **En résumé**,\n- avec un **BB qui a du reflux**, on va surtout **l'aider à digérer tranquillement** :\n  - En **fractionnant les repas**, plutôt que de donner de grandes quantités d'un coup\n  - En **gardant BB bien vertical** après les repas, pendant environ 20 minutes\n  - En **favorisant un environnement calme** et une **routine régulière**, car stress et fatigue peuvent accentuer le reflux\n- **Avec** ces **petits changements**, [prénom_enfant] sera **beaucoup + à l'aise**… et trouvera plus facilement le **chemin du sommeil.**" },
           ]},
         ]
       },
