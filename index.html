@@ -7711,16 +7711,27 @@ function filterSidebar(query) {
 
 function togglePb(value, checked) {
   if (checked) state.selectedPbs.add(value); else state.selectedPbs.delete(value);
-  // Si la pb souhait_tetine est cochée → cocher automatiquement "supprimer" dans les choix tétine
+  // Si la pb souhait_tetine est cochée → propager vers "supprimer" dans les choix tétine
   if (value === 'souhait_tetine') {
     if (!state.tickboxChoices) state.tickboxChoices = {};
     if (!state.selectedSolutions) state.selectedSolutions = new Set();
     if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
     if (checked) {
-      state.tickboxChoices['strategie_tetine_choice'] = 'supprimer';
-      state.tickboxChoices['obj_tetine_static'] = 'supprimer';
-      state.selectedSolutions.add('strat_tetine');
-      state.selectedSolutionsManuallyEdited.add('strat_tetine');
+      // Détecter un conflit : un tickbox existant ≠ "supprimer"
+      const existing1 = state.tickboxChoices['strategie_tetine_choice'];
+      const existing2 = state.tickboxChoices['obj_tetine_static'];
+      const hasConflict = (existing1 && existing1 !== 'supprimer') || (existing2 && existing2 !== 'supprimer');
+      if (hasConflict) {
+        // Ne pas écraser silencieusement — laisser le modal de conflit trancher
+        // (souhait_tetine est déjà dans selectedPbs, les tickboxes gardent leur valeur)
+        if (typeof openTetineConflictModal === 'function') openTetineConflictModal();
+      } else {
+        // Pas de conflit → propager
+        state.tickboxChoices['strategie_tetine_choice'] = 'supprimer';
+        state.tickboxChoices['obj_tetine_static'] = 'supprimer';
+        state.selectedSolutions.add('strat_tetine');
+        state.selectedSolutionsManuallyEdited.add('strat_tetine');
+      }
     } else {
       // Si on décoche la pb, on efface seulement si les tickboxes étaient à "supprimer"
       if (state.tickboxChoices['strategie_tetine_choice'] === 'supprimer') {
@@ -9343,6 +9354,16 @@ function syncSolutionsFromPbs() {
 function toggleSolution(id, checked) {
   if (!state.selectedSolutions) state.selectedSolutions = new Set();
   if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
+  // Règle : on ne peut cocher Tétine que si un sous-choix (Garder/Supprimer/Hybride) est actif
+  if (id === 'strat_tetine' && checked) {
+    const choices = state.tickboxChoices || {};
+    const hasSubChoice = choices['strategie_tetine_choice'] || choices['obj_tetine_static'] || (state.selectedPbs && state.selectedPbs.has('souhait_tetine'));
+    if (!hasSubChoice) {
+      alert('⚠️ Pour cocher « Tétine », il faut d\'abord choisir une sous-option : Garder / Supprimer / Hybride (dans IV. Objectifs ou V. Diagnostic).');
+      renderCurrentSection(); // remet la case à son état précédent
+      return;
+    }
+  }
   if (checked) state.selectedSolutions.add(id);
   else state.selectedSolutions.delete(id);
   state.selectedSolutionsManuallyEdited.add(id);
@@ -10334,9 +10355,9 @@ function selectTickboxChoice(el) {
     setPb('souhait_position_dorsale', currentValue === 'dorsale');
     syncChanged = true;
   }
-  // obj_tetine_static → souhait_tetine (cocher si "supprimer", décocher si "garder")
+  // obj_tetine_static ou strategie_tetine_choice → souhait_tetine (cocher si "supprimer", décocher sinon)
   // La carte reste visible grâce à l'exemption ciblée dans renderBlocks
-  if (cid === 'obj_tetine_static') {
+  if (cid === 'obj_tetine_static' || cid === 'strategie_tetine_choice') {
     const currentValue = wasSelected ? null : el.dataset.value;
     setPb('souhait_tetine', currentValue === 'supprimer');
     syncChanged = true;
