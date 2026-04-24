@@ -10363,6 +10363,11 @@ function onDiagnosticPbChange() {
     state.currentIdx = newIdx>=0 ? newIdx : Math.min(state.currentIdx, state.sections.length-1);
     buildSidebar();
     updateDiagLeviersCount();
+    // Replier toutes les cartes catégorie du diagnostic avant re-rendu
+    // (comportement par défaut : cartes fermées, l'utilisateur les ouvre via clic)
+    if (state.courbeCardsActiveByGrid) {
+      delete state.courbeCardsActiveByGrid['diagnostic_inline_sections'];
+    }
     // Sauvegarder et restaurer la position de scroll pour éviter le "saut"
     const contentArea = document.getElementById('content-area');
     const savedScroll = contentArea ? contentArea.scrollTop : 0;
