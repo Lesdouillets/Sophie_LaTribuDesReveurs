@@ -9590,7 +9590,7 @@ function substituteVars(text) {
   const prenomRaw = c.prenomEnfant || '';
   const prenomColor = isFille ? '#E25098' : '#6495ED';
   const prenomStyled = prenomRaw
-    ? `<strong style="color:${prenomColor}">${prenomRaw}</strong>`
+    ? `<strong style="color:${prenomColor};font-size:1.15em">${prenomRaw}</strong>`
     : '[prénom]';
   let t = text
     .replace(/\[enseigne_nom\]/g, enseigneNom)
