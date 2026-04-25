@@ -2354,7 +2354,8 @@
       margin-top: 8px;
     }
     /* Dans un bloc question : pills alignées à gauche (pas centrées) */
-    .block-question .embedded-actions {
+    .block-question .embedded-actions,
+    .block-question-inline .embedded-actions {
       justify-content: flex-start;
     }
     /* Option purple dans un bloc question (ex: 💰 Tarifs) : fond transparent, liseré rouge fin, label rouge */
@@ -9096,8 +9097,14 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       }).join('') +
     `</div>`;
   }
+  // Si embeddedQuestion défini : englober question + boutons dans une bulle rose intégrée au bloc
+  let embeddedBlockHtml = embeddedHtml;
+  if (b.embeddedQuestion) {
+    const questionText = substituteVars(b.embeddedQuestion);
+    embeddedBlockHtml = `<div class="block-question-inline" contenteditable="false" style="background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0 0;font-weight:400;line-height:1.7"><div style="margin-bottom:10px">❓ ${questionText}</div>${embeddedHtml}</div>`;
+  }
   const clearFix = hasTrailing ? '<div style="clear:both"></div>' : '';
-  return `<div class="block ${cls}${extraCls}" contenteditable="true" style="overflow:hidden">${trailingBtnHtml}${text}${embeddedHtml}${clearFix}</div>`;
+  return `<div class="block ${cls}${extraCls}" contenteditable="true" style="overflow:hidden">${trailingBtnHtml}${text}${embeddedBlockHtml}${clearFix}</div>`;
 }
 
 // ══════════════════════════════════════════════════════════
