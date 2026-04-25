@@ -256,8 +256,7 @@ const SCRIPT_DATA = {
       title: "II. Problématique",
       emoji: "🤔",
       blocks: [
-        { type: "pb_intro" },
-        { type: "pb_recap" },
+        { type: "pb_intro", _leftTitle: "Problématique", _leftTitleStyle: "background:#2d3f5c;color:#fff" },
         {
           type: "option", _floatingBubble: true, _bubbleBottom: "320px", label: "Si pleurs difficiles", emoji: "😭", style: "pleurs",
           blocks: [
