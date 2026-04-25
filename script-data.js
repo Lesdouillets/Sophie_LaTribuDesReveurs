@@ -2612,9 +2612,9 @@ const SCRIPT_DATA = {
     title: "X. Validation des objectifs et fin",
     emoji: "✅",
     blocks: [
-      { type: "question", text: "Est-ce que **TOUT** ce que je **vous ai proposé** vous **correspond à vos valeurs**?" },
+      { type: "question", _leftTitle: "Valeurs OK ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "Est-ce que **TOUT** ce que je **vous ai proposé** vous **correspond à vos valeurs**?" },
       { type: "obj_rappel" },
-      { type: "question", text: "Est-ce que j'ai <strong>répondu à vos objectifs</strong> ?", embeddedActions: [
+      { type: "question", _leftTitle: "Objectifs OK ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "Est-ce que j'ai <strong>répondu à vos objectifs</strong> ?", embeddedActions: [
         {
           label: "OUI", emoji: "✅", style: "action-green", _pillStyle: true, mutexGroup: "conclusion-obj",
           blocks: [
