@@ -8772,11 +8772,11 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     return `<div class="block block-question">
       <div class="q-text">
         <div style="margin-bottom:6px">❓ Maintenant, je <strong>voudrais savoir</strong> :</div>
-        <div style="margin-bottom:10px">Si vous deviez mettre une <strong>note de 0 à 10</strong>, 10 étant la meilleure note, quelle note vous mettriez à :</div>
+        <div style="margin-bottom:10px;padding-left:24px">Si vous deviez mettre une <strong>note de 0 à 10</strong>, 10 étant la meilleure note, quelle note vous mettriez à :</div>
         <ul style="margin:4px 0 0 20px;padding:0;list-style:disc;line-height:1.9">
-          <li><strong>Votre grossesse</strong> ET <u>pour le Papa</u> ?<br>${mamanPair('grossesse_maman')} &nbsp; ${papaPair('grossesse_papa')}</li>
-          <li><strong>Votre accouchement</strong> ET <u>pour le Papa</u> ?<br>${mamanPair('accouchement_maman')} &nbsp; ${papaPair('accouchement_papa')}</li>
-          <li>Et maintenant à <strong>votre ÉTAT D'ÊTRE actuel</strong> (en prenant en compte votre <strong>vie perso/pro/par rapport au sommeil de votre enfant</strong>) ET <u>pour le Papa</u> ?<br>${mamanPair('etat_etre_maman')} &nbsp; ${papaPair('etat_etre_papa')}</li>
+          <li><strong>Votre grossesse</strong> ?<br>${mamanPair('grossesse_maman')} &nbsp; ${papaPair('grossesse_papa')}</li>
+          <li><strong>Votre accouchement</strong> ?<br>${mamanPair('accouchement_maman')} &nbsp; ${papaPair('accouchement_papa')}</li>
+          <li>Et maintenant à <strong>votre ÉTAT D'ÊTRE actuel</strong> (en prenant en compte votre <strong>vie perso/pro/par rapport au sommeil de votre enfant</strong>) ?<br>${mamanPair('etat_etre_maman')} &nbsp; ${papaPair('etat_etre_papa')}</li>
         </ul>
       </div>
     </div>`;
