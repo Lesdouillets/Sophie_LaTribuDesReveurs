@@ -1912,6 +1912,12 @@
       background: #ffffff; padding: 14px 16px;
     }
     .block-option.action.open-action .block-normal:not(.block-purple-dark) { border: none !important; box-shadow: none !important; background: #ffffff !important; }
+    /* Restaurer le contour de carte sur les blocs normaux qui ont un titre latéral (apparence cohérente avec I. Accueil) */
+    .block-option.action.open-action .block-with-left-title .block-normal:not(.block-purple-dark) {
+      border: 1px solid var(--border) !important;
+      box-shadow: var(--shadow) !important;
+      background: var(--card-bg) !important;
+    }
     /* Préserver le style violet pointillé sur les blocs _purpleDark à l'intérieur des options action */
     .block-option.action.open-action .block-normal.block-purple-dark {
       border: 3px dashed #a78bfa !important;
