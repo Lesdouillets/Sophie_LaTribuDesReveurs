@@ -2426,12 +2426,18 @@ const SCRIPT_DATA = {
                 text: "- Maintenant, on **va parler \"tétine\"**\n  **PUISQU'on** EN A **discuté** ensemble\n  et que **vous souhaitez… la garder**"
               },
               { type: "normal",
-                showIfTickbox: { cid: "strategie_tetine_choice", value: "hybride" },
+                showIfTickbox: [
+                  { cid: "strategie_tetine_choice", value: "hybride" },
+                  { cid: "obj_tetine_static", value: "hybride" }
+                ],
                 text: "- Maintenant, on **va parler \"tétine\"**\n  **PUISQU'on** EN A **discuté** ensemble\n  et que **vous souhaitez… la garder pour certains moments de la journée**"
               },
               { type: "normal",
                 _leftTitle: "Hybride",
-                showIfTickbox: { cid: "strategie_tetine_choice", value: "hybride" },
+                showIfTickbox: [
+                  { cid: "strategie_tetine_choice", value: "hybride" },
+                  { cid: "obj_tetine_static", value: "hybride" }
+                ],
                 text: "- Si vous souhaitez **aller vers ce mode \"hybride\"** : *\"Ok pour la tétine mais pas TOUT le temps\"*\n  ⇒ je vous conseille d'**être cohérent dans votre approche** pour que [prénom_enfant] puisse avoir les **MÊMES stratégies d'endormissement**\n  - Si c'est **OK** pour garder la tétine **pendant les siestes** ⇒ alors il **aura sa tétine** pour **TOUTES ses siestes**\n  - Si ce n'est **PAS OK** pour **la garder la nuit** ⇒ alors il **dormira SANS** sa tétine **TOUTES les nuits**\n    ⇒ sinon ça **peut devenir confus**… et **compliquer l'endormissement**"
               },
               { type: "normal",
@@ -2439,6 +2445,7 @@ const SCRIPT_DATA = {
                 showIfAnyOf: [
                   { pb: "souhait_tetine" },
                   { tickbox: { cid: "obj_tetine_static", value: "supprimer" } },
+                  { tickbox: { cid: "obj_tetine_static", value: "hybride" } },
                   { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } },
                   { tickbox: { cid: "strategie_tetine_choice", value: "hybride" } }
                 ],
@@ -2450,6 +2457,7 @@ const SCRIPT_DATA = {
                 showIfAnyOf: [
                   { pb: "souhait_tetine" },
                   { tickbox: { cid: "obj_tetine_static", value: "supprimer" } },
+                  { tickbox: { cid: "obj_tetine_static", value: "hybride" } },
                   { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } },
                   { tickbox: { cid: "strategie_tetine_choice", value: "hybride" } }
                 ],
@@ -2461,6 +2469,7 @@ const SCRIPT_DATA = {
                 showIfAnyOf: [
                   { pb: "souhait_tetine" },
                   { tickbox: { cid: "obj_tetine_static", value: "supprimer" } },
+                  { tickbox: { cid: "obj_tetine_static", value: "hybride" } },
                   { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } },
                   { tickbox: { cid: "strategie_tetine_choice", value: "hybride" } }
                 ],
@@ -2470,6 +2479,7 @@ const SCRIPT_DATA = {
                 showIfAnyOf: [
                   { pb: "souhait_tetine" },
                   { tickbox: { cid: "obj_tetine_static", value: "supprimer" } },
+                  { tickbox: { cid: "obj_tetine_static", value: "hybride" } },
                   { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } },
                   { tickbox: { cid: "strategie_tetine_choice", value: "hybride" } }
                 ],
@@ -2479,6 +2489,7 @@ const SCRIPT_DATA = {
               { type: "normal",
                 showIfAnyOf: [
                   { tickbox: { cid: "obj_tetine_static", value: "garder" } },
+                  { tickbox: { cid: "obj_tetine_static", value: "hybride" } },
                   { tickbox: { cid: "strategie_tetine_choice", value: "garder" } },
                   { tickbox: { cid: "strategie_tetine_choice", value: "hybride" } }
                 ],
