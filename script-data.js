@@ -307,8 +307,7 @@ const SCRIPT_DATA = {
       title: "IV. Objectifs",
       emoji: "🎯",
       blocks: [
-        { type: "obj_intro" },
-        { type: "obj_recap" },
+        { type: "obj_intro", _leftTitle: "Objectifs", _leftTitleStyle: "background:#2d3f5c;color:#fff" },
         {
           type: "option", label: "Lieu de sommeil/lit\nSouhait de changer ?", emoji: "🛌", style: "purple-btn", hideIfPb: ["souhait_changement_lit","souhait_changement_chambre","souhait_changement_lit_chambre"],
           blocks: [
