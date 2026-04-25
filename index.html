@@ -8171,15 +8171,13 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
     // Titre latéral à gauche si _leftTitle défini
     if (b._leftTitle && depth <= 1) {
       const ltStyle = b._leftTitleStyle ? ` style="${b._leftTitleStyle}"` : '';
-      const wrapStyle = b._leftTitleStyle ? ` style="background:transparent"` : '';
-      return `<div class="block-with-left-title"${wrapStyle}><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div>${wrapOnly}</div>${addBtn}`;
+      return `<div class="block-with-left-title"><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div>${wrapOnly}</div>${addBtn}`;
     }
     return wrapOnly + addBtn;
   }
   if (b._leftTitle && depth <= 1) {
     const ltStyle = b._leftTitleStyle ? ` style="${b._leftTitleStyle}"` : '';
-    const wrapStyle = b._leftTitleStyle ? ` style="background:transparent"` : '';
-    return `<div class="block-with-left-title"${wrapStyle}><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div><div>${inner}</div></div>`;
+    return `<div class="block-with-left-title"><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div><div>${inner}</div></div>`;
   }
   return inner;
 }
