@@ -2519,6 +2519,9 @@
     #content-area:has(.obj-tetine-card) > .edit-block-wrap > .block,
     #content-area:has(.obj-tetine-card) > .edit-block-wrap > .block-question,
     #content-area:has(.obj-tetine-card) > .edit-block-wrap .block-normal,
+    #content-area:has(.obj-tetine-card) > .block-with-left-title > .edit-block-wrap > .block,
+    #content-area:has(.obj-tetine-card) > .block-with-left-title > .edit-block-wrap > .block-question,
+    #content-area:has(.obj-tetine-card) > .block-with-left-title > .edit-block-wrap .block-normal,
     #content-area:has(.obj-tetine-card) .lieu-sommeil-intro-grid,
     #content-area:has(.obj-tetine-card) .lieu-sommeil-intro-grid * { text-align: left; }
     /* Réinitialiser le contenu à l'intérieur du purple-btn ouvert / de la Tétine */
@@ -8746,29 +8749,12 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       </div>
     </div>`;
   }
-  // Bloc question III. Découverte — notes 0-10 (version initiale OU confirmation si déjà renseignées dans la fiche)
+  // Bloc question III. Découverte — notes 0-10 (les valeurs déjà saisies dans la fiche client sont restaurées automatiquement)
   if (b.type === 'decouverte_notes_question') {
-    const n = (state && state.decouverteNotes) || {};
-    const allFilled = ['grossesse_maman','grossesse_papa','accouchement_maman','accouchement_papa','etat_etre_maman','etat_etre_papa']
-      .every(k => n[k] !== undefined && String(n[k]).trim() !== '');
     const mamanInp = (k) => `<input type="text" inputmode="numeric" maxlength="3" data-note-key="${k}" oninput="saveDecouverteNote(this)" style="width:52px;border:1.5px solid #ec4899;background:#fdf2f8;border-radius:8px;padding:4px 6px;text-align:center;font-weight:700;color:#be185d" placeholder="  ">`;
     const papaInp = (k) => `<input type="text" inputmode="numeric" maxlength="3" data-note-key="${k}" oninput="saveDecouverteNote(this)" style="width:52px;border:1.5px solid #3b82f6;background:#eff6ff;border-radius:8px;padding:4px 6px;text-align:center;font-weight:700;color:#1e40af" placeholder="  ">`;
     const mamanPair = (k) => `<span style="display:inline-flex;align-items:center;gap:4px;color:#be185d;font-weight:700">👩 Maman ${mamanInp(k)} /10</span>`;
     const papaPair = (k) => `<span style="display:inline-flex;align-items:center;gap:4px;color:#1e40af;font-weight:700">👨 Papa ${papaInp(k)} /10</span>`;
-    if (allFilled) {
-      // Version confirmation
-      return `<div class="block block-question">
-        <div class="q-text">
-          <div style="margin-bottom:10px">❓ Maintenant, je voudrais que vous me <strong>confirmiez</strong> les <strong>notes émotionnelles</strong> que vous m'avez données :</div>
-          <ul style="margin:4px 0 0 20px;padding:0;list-style:disc;line-height:1.9">
-            <li>Vous m'avez dit que pour <strong>votre grossesse</strong> vous mettriez ${mamanInp('grossesse_maman')} /10 ET ${papaInp('grossesse_papa')} /10 pour le Papa. <strong>C'est bien ça ?</strong></li>
-            <li>Et pour <strong>votre accouchement</strong> ${mamanInp('accouchement_maman')} /10 et ${papaInp('accouchement_papa')} /10 pour le Papa ?</li>
-            <li>Et enfin pour <strong>votre ÉTAT D'ÊTRE actuel</strong> (en prenant en compte votre <strong>vie perso/pro/par rapport au sommeil de votre enfant</strong>), vous mettriez ${mamanInp('etat_etre_maman')} /10 ET ${papaInp('etat_etre_papa')} /10 pour le Papa. <strong>C'est toujours ça ?</strong></li>
-          </ul>
-        </div>
-      </div>`;
-    }
-    // Version initiale
     return `<div class="block block-question">
       <div class="q-text">
         <div style="margin-bottom:6px">❓ Maintenant, je <strong>voudrais savoir</strong> :</div>
