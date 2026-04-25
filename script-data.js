@@ -392,7 +392,7 @@ const SCRIPT_DATA = {
       title: "V. Diagnostic",
       emoji: "🩺",
       blocks: [
-        { type: "normal", text: "- OK, là super, j'ai eu **beaucoup d'informations**\n- MERCI !\n\n- **Maintenant, j'ai :**\n  - une **vue PLUS globale** de la situation\n  - ET des **solutions à mettre en œuvre**" },
+        { type: "normal", _leftTitle: "Vue globale", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- OK, là super, j'ai eu **beaucoup d'informations**\n- MERCI !\n\n- **Maintenant, j'ai :**\n  - une **vue PLUS globale** de la situation\n  - ET des **solutions à mettre en œuvre**" },
         {
           type: "columns_2",
           leftTitle: "📊 Besoins de sommeil selon l'âge",
@@ -448,8 +448,8 @@ const SCRIPT_DATA = {
           ]
         },
         { type: "leviers_dynamiques" },
-        { type: "leviers_count" },
-        { type: "normal", text: "- On n'aura **PEUT-ÊTRE pas le temps** de tout voir aujourd'hui :\n- mais on pourra **toujours reprendre un RDV plus tard** pour **discuter des points** que l'on n'aura **pas eu le temps de voir aujourd'hui.**\n\n- Donc, **CE QUE je vois en 1er**, c'est **quelque chose au niveau de**…" },
+        { type: "leviers_count", _leftTitle: "Nombre de levier(s) identifié(s)", _leftTitleStyle: "background:#2d3f5c;color:#fff" },
+        { type: "normal", _leftTitle: "Pas le temps de tout voir aujourd'hui", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- On n'aura **PEUT-ÊTRE pas le temps** de tout voir aujourd'hui :\n- mais on pourra **toujours reprendre un RDV plus tard** pour **discuter des points** que l'on n'aura **pas eu le temps de voir aujourd'hui.**\n\n- Donc, **CE QUE je vois en 1er**, c'est **quelque chose au niveau de**…" },
         { type: "conditional_sections_inline" },
       ]
     },
