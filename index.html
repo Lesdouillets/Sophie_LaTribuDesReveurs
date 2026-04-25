@@ -1148,6 +1148,22 @@
       border-left: 3px solid var(--cat-main, #cbd5e0);
       margin-bottom: 0;
     }
+    /* Variante avec bande de séparation verticale arrondie entre titre et contenu */
+    .block-with-left-title.has-band {
+      grid-template-columns: 130px 14px 1fr;
+    }
+    .block-left-title-band {
+      background: #e2e8f0;
+      border-radius: 999px;
+      width: 6px;
+      margin: 10px 0;
+      align-self: stretch;
+      justify-self: center;
+    }
+    .block-with-left-title.has-band > .edit-block-wrap > .block,
+    .block-with-left-title.has-band > .block {
+      border-left: none;
+    }
     .q-text ul, .q-text ol { padding-left: 24px; margin: 6px 0; }
     .q-text li { margin-bottom: 4px; }
     #edit-block-textarea ul, #edit-block-textarea ol { padding-left: 24px; margin: 6px 0; }
@@ -8171,13 +8187,17 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
     // Titre latéral à gauche si _leftTitle défini
     if (b._leftTitle && depth <= 1) {
       const ltStyle = b._leftTitleStyle ? ` style="${b._leftTitleStyle}"` : '';
-      return `<div class="block-with-left-title"><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div>${wrapOnly}</div>${addBtn}`;
+      const wrapCls = b._leftTitleStyle ? 'block-with-left-title has-band' : 'block-with-left-title';
+      const band = b._leftTitleStyle ? '<div class="block-left-title-band"></div>' : '';
+      return `<div class="${wrapCls}"><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div>${band}${wrapOnly}</div>${addBtn}`;
     }
     return wrapOnly + addBtn;
   }
   if (b._leftTitle && depth <= 1) {
     const ltStyle = b._leftTitleStyle ? ` style="${b._leftTitleStyle}"` : '';
-    return `<div class="block-with-left-title"><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div><div>${inner}</div></div>`;
+    const wrapCls = b._leftTitleStyle ? 'block-with-left-title has-band' : 'block-with-left-title';
+    const band = b._leftTitleStyle ? '<div class="block-left-title-band"></div>' : '';
+    return `<div class="${wrapCls}"><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div>${band}<div>${inner}</div></div>`;
   }
   return inner;
 }
