@@ -415,7 +415,7 @@ const SCRIPT_DATA = {
           thirdTitle: "✨ La bonne nouvelle",
           thirdStyle: "news-red",
           third: [
-            { type: "normal", _noBorder: true, text: "<ul style=\"margin:0;padding-left:20px\"><li style=\"line-height:1.6\">MAIS la <strong>bonne nouvelle</strong> c'est que :<ul style=\"margin:4px 0 0 0;padding-left:22px\"><li style=\"line-height:1.6\"><strong>TOUT</strong> ce que vous m'avez partagé a du sens, est <strong>explicable</strong></li><li style=\"line-height:1.6\">Mais <strong>SURTOUT</strong> que c'est <strong>solutionnable</strong> !</li><li style=\"line-height:1.6\">ET que je peux vous <strong>accompagner</strong> pour les troubles du sommeil de [prénom_enfant]</li></ul></li></ul>" },
+            { type: "normal", text: "<ul style=\"margin:0;padding-left:20px\"><li style=\"line-height:1.6\">MAIS la <strong>bonne nouvelle</strong> c'est que :<ul style=\"margin:4px 0 0 0;padding-left:22px\"><li style=\"line-height:1.6\"><strong>TOUT</strong> ce que vous m'avez partagé a du sens, est <strong>explicable</strong></li><li style=\"line-height:1.6\">Mais <strong>SURTOUT</strong> que c'est <strong>solutionnable</strong> !</li><li style=\"line-height:1.6\">ET que je peux vous <strong>accompagner</strong> pour les troubles du sommeil de [prénom_enfant]</li></ul></li></ul>" },
           ],
           right: [
             {
@@ -2617,8 +2617,8 @@ const SCRIPT_DATA = {
         {
           label: "OUI", emoji: "✅", style: "action-green", _pillStyle: true, mutexGroup: "conclusion-obj",
           blocks: [
-            { type: "question", _leftTitle: "Questions ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "Est-ce qu'il vous **reste des questions** ?" },
-            { type: "question", _leftTitle: "Quand ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "**QUAND** est-ce que vous **PENSEZ** **pouvoir commencer** à **mettre ces changements en place** ?" },
+            { type: "question", _leftTitle: "Questions ?", _leftTitleStyle: "background:#dcfce7;color:#166534", text: "Est-ce qu'il vous **reste des questions** ?" },
+            { type: "question", _leftTitle: "Quand ?", _leftTitleStyle: "background:#dcfce7;color:#166534", text: "**QUAND** est-ce que vous **PENSEZ** **pouvoir commencer** à **mettre ces changements en place** ?" },
             {
               type: "option", label: "🔥 Si Pas pris de RDV", style: "purple", _compactClosed: true,
               blocks: [
