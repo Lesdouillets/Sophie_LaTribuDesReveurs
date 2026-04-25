@@ -1913,8 +1913,12 @@
     }
     .block-option.action.open-action .block-normal:not(.block-purple-dark) { border: none !important; box-shadow: none !important; background: #ffffff !important; }
     /* Restaurer le contour de carte sur les blocs normaux qui ont un titre latéral (apparence cohérente avec I. Accueil) */
+    /* On préserve la ligne verticale (border-left 3px) qui sépare le titre du contenu */
     .block-option.action.open-action .block-with-left-title .block-normal:not(.block-purple-dark) {
-      border: 1px solid var(--border) !important;
+      border-top: 1px solid var(--border) !important;
+      border-right: 1px solid var(--border) !important;
+      border-bottom: 1px solid var(--border) !important;
+      border-left: 3px solid var(--cat-main, #cbd5e0) !important;
       box-shadow: var(--shadow) !important;
       background: var(--card-bg) !important;
     }
@@ -8190,7 +8194,11 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
       let wrapStyle = '';
       if (b._leftTitleStyle) {
         const bgMatch = b._leftTitleStyle.match(/background\s*:\s*([^;]+)/);
-        if (bgMatch) wrapStyle = ` style="background:${bgMatch[1]}"`;
+        const catMainMatch = b._leftTitleStyle.match(/--cat-main\s*:\s*([^;]+)/);
+        const styleParts = [];
+        if (bgMatch) styleParts.push(`background:${bgMatch[1].trim()}`);
+        if (catMainMatch) styleParts.push(`--cat-main:${catMainMatch[1].trim()}`);
+        if (styleParts.length) wrapStyle = ` style="${styleParts.join(';')}"`;
       }
       return `<div class="block-with-left-title"${wrapStyle}><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div>${wrapOnly}</div>${addBtn}`;
     }
@@ -8838,7 +8846,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
 
   if (b.type === 'pb_intro') {
     const pb = state.client.problematique;
-    const prenom = state.client.prenomEnfant || '[prénom]';
+    const prenom = substituteVars('[prénom_enfant]');
     if (pb && pb.trim()) {
       const pbHtml = pb.replace(/\n/g, '<br>');
       return `<div class="block block-normal"><ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Maintenant, je vais <strong>reprendre votre problématique</strong><br>et APRÈS vous allez <strong>m'expliquer CE QUI se passe exactement</strong> pour le sommeil de ${prenom}.</li></ul><div class="pb-recap-intro" style="margin-top:14px">• <u>Donc, vous m'avez écrit :</u></div><div class="pb-recap-text"><em>${pbHtml}</em></div><div style="background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin-top:14px;font-weight:400;line-height:1.7">❓ Est-ce que c'est <strong>toujours d'actualité</strong> ?</div></div>`;
@@ -8859,7 +8867,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const objHtml = obj.replace(/\n/g, '<br>');
       return `<div class="block block-normal"><ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Alors maintenant, j'aimerais <strong>savoir</strong> quels sont vos <strong>objectifs aujourd'hui</strong></li><li style="margin-bottom:3px;line-height:1.65">Je vais <strong>relire CE QUE vous m'avez marqué</strong>… pour être <strong>sûre qu'on est bien alignés</strong>.</li></ul><div class="pb-recap-intro" style="margin-top:14px">• <u>Vous m'avez écrit :</u></div><div class="pb-recap-text"><em>${objHtml}</em></div><div style="background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin-top:14px;font-weight:400;line-height:1.7"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start"><span>❓</span><span>•</span><span>Est-ce que ça <strong>correspond toujours</strong> à ce que vous <strong>souhaitez aujourd'hui</strong> ?</span><span></span><span>•</span><span>Est-ce que vous avez <strong>quelque chose</strong> à <strong>ajouter</strong> ou <strong>ajuster</strong> ?</span></div></div></div>`;
     } else {
-      const prenom = state.client.prenomEnfant || '[prénom]';
+      const prenom = substituteVars('[prénom_enfant]');
       return `<div class="block block-question"><div class="q-text"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start"><span>❓</span><span>•</span><span>J'aimerais maintenant <strong>savoir quels sont vos objectifs</strong> aujourd'hui pour ${prenom}.</span><span></span><span>•</span><span>Qu'est-ce que vous <strong>souhaitez idéalement mettre en place</strong> ?</span></div></div></div>`;
     }
   }
