@@ -1918,6 +1918,12 @@
       box-shadow: var(--shadow) !important;
       background: var(--card-bg) !important;
     }
+    /* Restaurer le contour de carte sur les blocs normaux dans les options "Difficultés identifiées" (V. Diagnostic) */
+    .block-option.action.action-purple-inside.open-action .block-normal:not(.block-purple-dark) {
+      border: 1px solid var(--border) !important;
+      box-shadow: var(--shadow) !important;
+      background: var(--card-bg) !important;
+    }
     /* Préserver le style violet pointillé sur les blocs _purpleDark à l'intérieur des options action */
     .block-option.action.open-action .block-normal.block-purple-dark {
       border: 3px dashed #a78bfa !important;
