@@ -110,7 +110,9 @@
       "Bash(git commit -m 'Leviers identifies : '\\\\''Souhait d'\\\\''un lit ouvert'\\\\'' apres '\\\\''Lit ouvert trop tot'\\\\'' *)",
       "Bash(git commit -m 'Souhait lit ouvert jeune : masque la pb si age >= 24 mois \\(>= 2 ans\\) *)",
       "Bash(git commit -m 'Souhait lit ouvert jeune : seuil 24 -> 36 mois \\(>= 3 ans masque\\) *)",
-      "Bash(git commit -m 'Changement de lit OPTION 2 sub-option 2 '\\\\''Si > 2,5 ans'\\\\'' rempli + filtre age sur embeddedActions *)"
+      "Bash(git commit -m 'Changement de lit OPTION 2 sub-option 2 '\\\\''Si > 2,5 ans'\\\\'' rempli + filtre age sur embeddedActions *)",
+      "Bash(awk '/function onFicheClientPbChange/,/^}/' \"/c/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")",
+      "Bash(git commit -m 'Sync solutions/sub-checkboxes immediat sur changement pb \\(fiche client + V. Diagnostic\\) *)"
     ]
   }
 }
