@@ -7942,6 +7942,18 @@ function navigateTo(idx) {
     hideSolutionsReminder();
     if (state.solutionsReminderInterval) { clearInterval(state.solutionsReminderInterval); state.solutionsReminderInterval = null; }
   }
+  // Alerte Tétine : si pb "Dépendance tétine" cochée mais aucune sous-option choisie (Garder/Supprimer/Hybride),
+  // prévenir à l'arrivée sur VIII. Plan d'action
+  if (newSection && newSection.id === 'plan_action'
+      && state.selectedPbs && state.selectedPbs.has('strategie_tetine')) {
+    const choices = state.tickboxChoices || {};
+    const hasSubChoice = choices['strategie_tetine_choice']
+      || choices['obj_tetine_static']
+      || state.selectedPbs.has('souhait_tetine');
+    if (!hasSubChoice) {
+      setTimeout(() => alert('⚠️ La problématique « Dépendance tétine » est cochée mais aucune sous-option n\'a été choisie.\n\nMerci de choisir : Garder / Supprimer / Hybride dans IV. Objectifs ou V. Diagnostic.'), 100);
+    }
+  }
 }
 
 // Retour à V. Diagnostic depuis une section conditionnelle, en restaurant le scroll
