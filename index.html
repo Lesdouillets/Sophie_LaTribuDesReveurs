@@ -8889,6 +8889,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       return min === Infinity ? 1e9 : min;
     };
     const visibleItems = items.filter(it => {
+      // alwaysShowAll : flag sur le bloc → affiche tous les items, indépendamment des pbs
+      // (utilisé dans Plan d'action env_chambre/env_lit_card pour permettre de cocher
+      //  un levier env oublié dans la fiche client)
+      if (b.alwaysShowAll) return true;
       // Si aucun pb n'est défini, on affiche toujours l'item (utilisé dans les cards de solutions)
       if (!it.pb) return true;
       const pbs = Array.isArray(it.pb) ? it.pb : [it.pb];

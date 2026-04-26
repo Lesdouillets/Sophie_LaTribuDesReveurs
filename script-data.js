@@ -2521,6 +2521,7 @@ const SCRIPT_DATA = {
               {
                 type: "courbe_cards_grid",
                 theme: "violet",
+                alwaysShowAll: true,
                 items: [
                   { id: "env_apprivoiser", emoji: "🛌", label: "Apprivoiser la chambre", blocks: [
                     { type: "normal", _leftTitle: "Pourquoi ?", text: "- La chambre devrait être **connue**\n- Ne devrait **pas** être juste **liée au sommeil** et à la **séparation ⇒ mais un lieu de vie** comme le salon" },
@@ -2560,6 +2561,7 @@ const SCRIPT_DATA = {
               {
                 type: "courbe_cards_grid",
                 theme: "violet",
+                alwaysShowAll: true,
                 items: [
                   { id: "env_lit", emoji: "🛏", label: "Lit ouvert trop tôt", pb: "env_lit_ouvert", blocks: [
                     { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
