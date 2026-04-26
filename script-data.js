@@ -2764,8 +2764,8 @@ const SCRIPT_DATA = {
               }
             ]
           },
-          { id: "env_enfant_plus_25", label: "Enfant + 2,5 ans", cardLabel: "Enfant + 2,5 ans", cardEmoji: "🧒",
-            showIfAgeMinMonths: 30,
+          { id: "env_enfant_plus_25", label: "Enfant + 18 mois", cardLabel: "Enfant + 18 mois", cardEmoji: "🧒",
+            showIfAgeMinMonths: 18,
             blocks: [
               {
                 type: "courbe_cards_grid",
