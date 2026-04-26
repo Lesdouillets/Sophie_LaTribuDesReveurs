@@ -9431,8 +9431,11 @@ function renderSolutionsCheckboxes() {
         <span class="sol-row-label">${ch.label || ch.id}</span>
       </label>${subRows}</div>`;
     }).join('');
+    const bulkBtns = children.length > 1
+      ? `<span class="sol-bulk-btns"><button type="button" class="sol-bulk-btn sol-bulk-check" onclick="checkAllSolutionsInCat('${cat.id}')" title="Tout cocher">Tout ✓</button><button type="button" class="sol-bulk-btn sol-bulk-uncheck" onclick="uncheckAllSolutionsInCat('${cat.id}')" title="Tout décocher">Tout ✗</button></span>`
+      : '';
     return `<div class="sol-group" data-cat="${cat.id}">
-      <div class="sol-group-title" style="color:${c.dark};border-color:${c.main}">${cat.emoji || ''} ${cat.title}</div>
+      <div class="sol-group-title" style="color:${c.dark};border-color:${c.main}"><span>${cat.emoji || ''} ${cat.title}</span>${bulkBtns}</div>
       <div class="sol-group-rows">${rows}</div>
     </div>`;
   }).filter(Boolean).join('');
@@ -10992,6 +10995,27 @@ function closeCourbeCard(btnEl) {
   }, 60);
 }
 window.closeCourbeCard = closeCourbeCard;
+
+// Tout cocher / Tout décocher les enfants d'une catégorie dans "Solutions identifiées"
+function checkAllSolutionsInCat(catId) {
+  const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
+  const cat = sols.find(c => c.id === catId);
+  if (!cat) return;
+  (cat.children || []).forEach(ch => {
+    if (!state.selectedSolutions.has(ch.id)) toggleSolution(ch.id, true);
+  });
+}
+window.checkAllSolutionsInCat = checkAllSolutionsInCat;
+
+function uncheckAllSolutionsInCat(catId) {
+  const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
+  const cat = sols.find(c => c.id === catId);
+  if (!cat) return;
+  (cat.children || []).forEach(ch => {
+    if (state.selectedSolutions.has(ch.id)) toggleSolution(ch.id, false);
+  });
+}
+window.uncheckAllSolutionsInCat = uncheckAllSolutionsInCat;
 
 // Toggle d'une case env (Chambre/Lit) depuis la liste compacte des Solutions identifiées
 // Reflète/contrôle state.courbeCardsTicked (état partagé avec les grids V. Diagnostic + Plan d'action env)
