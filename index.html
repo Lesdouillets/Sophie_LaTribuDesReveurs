@@ -572,43 +572,42 @@
       box-shadow: var(--shadow);
       overflow: hidden;
     }
-    /* Police des items Problématiques alignée sur Solutions identifiées (.sol-row-label)
-       — s'applique à la fiche client, au clone V. Diagnostic Leviers identifiés et au clone modal
-       Note : .pb-item EST le <label> ; on stylise le label directement */
+    /* Police des items Problématiques alignée sur Solutions identifiées + décroissance par niveau */
+    /* TEST DEBUG : !important + tailles très contrastées pour vérifier que la CSS se charge */
     .problematiques-grid .pb-item:not(.pb-title-style-l1):not(.pb-title-style):not(.pb-consequence-style),
     #modal-pb-list .pb-item:not(.pb-title-style-l1):not(.pb-title-style):not(.pb-consequence-style),
     #diag-pb-container .pb-item:not(.pb-title-style-l1):not(.pb-title-style):not(.pb-consequence-style) {
-      font-size: 13px;
-      line-height: 1.3;
-      color: #334155;
-      font-weight: 400;
+      font-size: 13px !important;
+      line-height: 1.3 !important;
+      color: #334155 !important;
+      font-weight: 400 !important;
     }
     .problematiques-grid .pb-item.checked,
     #modal-pb-list .pb-item.checked,
     #diag-pb-container .pb-item.checked {
-      color: #0f172a;
-      font-weight: 700;
+      color: #0f172a !important;
+      font-weight: 700 !important;
     }
-    /* Décroissance progressive de la police par niveau de profondeur (sub-parents et items) */
+    /* Décroissance progressive de la police par niveau de profondeur */
     .problematiques-grid .pb-category.pb-level-1 > .pb-category-title,
     #modal-pb-list .pb-category.pb-level-1 > .pb-category-title,
     #diag-pb-container .pb-category.pb-level-1 > .pb-category-title {
-      font-size: 13px;
+      font-size: 13px !important;
     }
     .problematiques-grid .pb-category.pb-level-1 > .pb-items > .pb-item,
     #modal-pb-list .pb-category.pb-level-1 > .pb-items > .pb-item,
     #diag-pb-container .pb-category.pb-level-1 > .pb-items > .pb-item {
-      font-size: 12.5px;
+      font-size: 12px !important;
     }
     .problematiques-grid .pb-category.pb-level-2 > .pb-items > .pb-item,
     #modal-pb-list .pb-category.pb-level-2 > .pb-items > .pb-item,
     #diag-pb-container .pb-category.pb-level-2 > .pb-items > .pb-item {
-      font-size: 12px;
+      font-size: 11px !important;
     }
     .problematiques-grid .pb-category.pb-level-3 > .pb-items > .pb-item,
     #modal-pb-list .pb-category.pb-level-3 > .pb-items > .pb-item,
     #diag-pb-container .pb-category.pb-level-3 > .pb-items > .pb-item {
-      font-size: 11.5px;
+      font-size: 10px !important;
     }
     .leviers-identifies-header {
       background: linear-gradient(90deg, #3b4e72, #6c82a8);
