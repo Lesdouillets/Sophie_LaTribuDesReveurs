@@ -2699,9 +2699,11 @@ const SCRIPT_DATA = {
                           ]
                         },
                         {
-                          label: "OPTION : Retour du lit ouvert ⇒ Lit à barreaux", emoji: "🔁", style: "purple", _pillStyle: true, mutexGroup: "chgmt-lit-options",
+                          label: "OPTION : Lit sol ⇒ lit barreaux", emoji: "🔙", style: "purple", _pillStyle: true, mutexGroup: "chgmt-lit-options",
                           blocks: [
-                            { type: "normal", text: "À compléter" }
+                            { type: "normal",
+                              text: "- Le **passage d'un lit ouvert** ⇒ vers **un lit à barreaux**, ne doit **PAS être vécu** comme **une régression**\n- C'est souvent **un passage transitoire**, le **temps** que le **sommeil s'apaise**\n- Il sera **tout à fait possible** de **revenir à un lit ouvert + tard** !\n\n---\n\n- **Si** vous **devez revenir à un lit à barreaux**, je vous conseille de **faire de ce changement une fête** :\n  - De **montrer de la joie** QUAND **vous allez re-monter** son lit\n  - vous pouvez aussi lui proposer un **nouveau Doudou** que votre enfant pourrait choisir\n  - vous pouvez également **investir** dans de **nouveaux draps**, un **nouveau pyjama**… qui là aussi, pourrait être choisi par votre enfant\n\n---\n\n- Il **faut savoir** que **beaucoup d'enfants apprécient** de **revenir** à un **lit + sécurisant** pour eux !\n\n"
+                            }
                           ]
                         }
                       ]
