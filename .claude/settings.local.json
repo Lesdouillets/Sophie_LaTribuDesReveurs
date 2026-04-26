@@ -83,7 +83,9 @@
       "Bash(git commit -m 'Lit : ajoute Doudou \\(>=3 mois\\), Tresse de tour de lit, Positionnement du lit *)",
       "Bash(git commit -m 'Lit : ajoute Hauteur sommier \\(7-29 mois\\) + Pas de couverture \\(<= 29 mois\\) *)",
       "Bash(git commit -m 'Nouvelle section solution '\\\\''Enfant + 2,5 ans'\\\\'' \\(cachee si age < 30 mois\\) *)",
-      "Bash(git commit -m 'trailingInfoButton : support showIfAgeMin/MaxMonths pour cacher selon age *)"
+      "Bash(git commit -m 'trailingInfoButton : support showIfAgeMin/MaxMonths pour cacher selon age *)",
+      "Bash(awk 'NR>=2517 && NR<=2712' \"/c/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")",
+      "Bash(git commit -m 'Env de sommeil : remplace '\\\\''E.'\\\\'' par '\\\\''enfant'\\\\'' dans les 4 occurrences validees *)"
     ]
   }
 }
