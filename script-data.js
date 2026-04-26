@@ -2703,7 +2703,18 @@ const SCRIPT_DATA = {
                   ] },
                   { id: "env_veilleuse", emoji: "🌙", label: "Veilleuse (peur du noir)", blocks: [
                     { type: "normal", _leftTitle: "Pourquoi ?", text: "- Si votre enfant **exprime une peur du noir**" },
-                    { type: "normal", _leftTitle: "Conseils", text: "- Avant 2,5–3 ans, la **peur du noir est rare** (voire absente).\n- Mais **chaque enfant est différent.**\n\n- Si vous **choisissez d'utiliser une veilleuse** ⇒ je vous invite à la **laisser allumée toute la nuit**, pour qu'il puisse **retrouver les mêmes conditions** durant ses **micro-réveils**\n- Vous pouvez aussi lui donner une **version portative**, que vous pouvez disposer près de votre enfant, s'il **souhaite se déplacer** (ex : aux toilettes)" }
+                    { type: "normal", _leftTitle: "Conseils",
+                      text: "- Avant 2,5–3 ans, la **peur du noir est rare** (voire absente).\n- Mais **chaque enfant est différent.**\n\n- Si vous **choisissez d'utiliser une veilleuse** ⇒ je vous invite à la **laisser allumée toute la nuit**, pour qu'il puisse **retrouver les mêmes conditions** durant ses **micro-réveils**",
+                      trailingInfoButtons: [
+                        {
+                          label: "Veilleuse portative",
+                          title: "Veilleuse portative",
+                          blocks: [
+                            { type: "normal", text: "- Vous pouvez aussi lui donner une **version portative**, que vous pouvez disposer près de votre enfant, s'il **souhaite se déplacer** (ex : aux toilettes)" }
+                          ]
+                        }
+                      ]
+                    }
                   ] },
                   { id: "env_reveil", emoji: "⏰", label: "Réveil", blocks: [
                     { type: "normal", _leftTitle: "Pourquoi ?", text: "- Pour l'aider à **savoir quand sortir du lit.**" },
