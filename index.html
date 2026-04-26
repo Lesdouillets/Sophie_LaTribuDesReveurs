@@ -10820,7 +10820,11 @@ function onFicheClientPbChange() {
       state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
       syncPbsToFicheClient();
       syncPbsHighlights();
+      // Sync solutions/sous-checkboxes immediatement (independant de la section affichee)
+      if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
       rebuildAfterPbChange();
+      if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
+      if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
       autoSaveActiveConsultation();
     } catch (err) {
       console.error('[onFicheClientPbChange] Erreur :', err);
@@ -10852,6 +10856,10 @@ function onDiagnosticPbChange() {
     state.selectedPbs = new Set([...document.querySelectorAll('.diag-pb:checked')].map(cb=>cb.value));
     syncPbsToFicheClient();
     syncPbsHighlights();
+    // Sync solutions/sous-checkboxes immediatement (independant de la section affichee)
+    if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
+    if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
+    if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
     const savedId = state.sections[state.currentIdx]?.id;
     buildSidebarPbPanel();
     buildSections();
