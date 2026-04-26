@@ -8323,11 +8323,12 @@ function getEffectiveAgeMonths() {
 function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
   return (blocks||[]).map((b,i) => {
     // Cacher le bloc si une des problématiques indiquées dans hideIfPb est cochée
-    // EXCEPTION ciblée : souhait_tetine cochée VIA la tickbox de la carte → on garde la carte visible
+    // EXCEPTION : si la pb a été cochée VIA un tickbox (state.tickboxSyncedPbs),
+    // on garde le bloc visible → l'utilisateur peut re-cliquer le tickbox pour changer son choix
     if (b.hideIfPb) {
       const pbs = Array.isArray(b.hideIfPb) ? b.hideIfPb : [b.hideIfPb];
       const syncedSet = state.tickboxSyncedPbs || new Set();
-      if (pbs.some(pb => state.selectedPbs.has(pb) && !(pb === 'souhait_tetine' && syncedSet.has(pb)))) return '';
+      if (pbs.some(pb => state.selectedPbs.has(pb) && !syncedSet.has(pb))) return '';
     }
     // Afficher le bloc uniquement si la problématique indiquée dans showIfPb est cochée
     // EXCEPTION : si state.revealedLever correspond à une pb de showIfPb, on rend
