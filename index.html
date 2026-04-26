@@ -8571,8 +8571,37 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       'relationnel_lit_parental':'💬 Relation — Vient dans le lit parental', 'relationnel_conflit_autres':'💬 Relation — Conflit autres sujets', 'souhait_tetine':'🎯 Souhait — Suppression tétine', 'souhait_position_dorsale':'🎯 Souhait — Vers une position dorsale', 'souhait_changement_lit':'🎯 Souhait — Changement de lit', 'souhait_changement_chambre':'🎯 Souhait — Changement de chambre', 'souhait_changement_lit_chambre':'🎯 Souhait — Changement lit/chambre',
       'relationnel_rappels':'📢 Relation — Rappels multiples après le coucher',
     };
-    // Afficher checkboxes synchronisées (identiques à la fiche client) via clone
-    return `<div class="block block-leviers-identifies"><div class="leviers-identifies-header">⚙️ Leviers identifiés</div><div id="diag-pb-container"></div></div>`;
+    // Visuel compact-list identique à "Solutions identifiées" (couleurs catégorie, soulignement, bulk buttons)
+    const pbsByCategory = {};
+    Object.entries(leviersMap).forEach(([pbValue, label]) => {
+      const cat = getPbCategoryFromValue(pbValue);
+      if (!cat) return;
+      if (!pbsByCategory[cat]) pbsByCategory[cat] = [];
+      pbsByCategory[cat].push({ value: pbValue, label });
+    });
+    const catColors = {
+      confort_physique: { main: '#dc2626', dark: '#b91c1c' },
+      nutrition:        { main: '#f97316', dark: '#c2410c' },
+      rythme:           { main: '#22c55e', dark: '#166534' },
+      strategie:        { main: '#3b82f6', dark: '#1e3a8a' },
+      env:              { main: '#8b5cf6', dark: '#5b21b6' },
+      relationnel:      { main: '#ec4899', dark: '#be185d' },
+      souhait:          { main: '#6366f1', dark: '#4338ca' },
+    };
+    const catOrder = ['confort_physique', 'nutrition', 'rythme', 'strategie', 'env', 'relationnel', 'souhait'];
+    const compactGroups = catOrder.map(catId => {
+      const pbs = pbsByCategory[catId];
+      if (!pbs || pbs.length === 0) return '';
+      const c = catColors[catId] || { main:'#666', dark:'#333' };
+      const catLabel = (typeof PB_CATEGORY_LABELS !== 'undefined' && PB_CATEGORY_LABELS[catId]) ? PB_CATEGORY_LABELS[catId] : catId;
+      const bulkBtns = `<span class="sol-bulk-btns"><button type="button" class="sol-bulk-btn sol-bulk-check" onclick="checkAllPbsInCat('${catId}')" title="Tout cocher">Tout ✓</button><button type="button" class="sol-bulk-btn sol-bulk-uncheck" onclick="uncheckAllPbsInCat('${catId}')" title="Tout décocher">Tout ✗</button></span>`;
+      const rows = pbs.map(pb => {
+        const checked = state.selectedPbs.has(pb.value);
+        return `<div data-pb-id="${pb.value}"><label class="sol-row"><input type="checkbox" ${checked?'checked':''} onchange="togglePbFromCompact('${pb.value}', this.checked)"><span class="sol-row-label">${pb.label}</span></label></div>`;
+      }).join('');
+      return `<div class="sol-group" data-cat="${catId}"><div class="sol-group-title" style="color:${c.dark};border-color:${c.main}"><span>${catLabel}</span>${bulkBtns}</div><div class="sol-group-rows">${rows}</div></div>`;
+    }).filter(Boolean).join('');
+    return `<div class="block block-leviers-identifies"><div class="leviers-identifies-header">⚙️ Leviers identifiés</div><div class="solutions-identifiees-body">${compactGroups}</div></div>`;
   }
 
   if (b.type === 'leviers_count') {
@@ -11032,6 +11061,34 @@ function closeCourbeCard(btnEl) {
 }
 window.closeCourbeCard = closeCourbeCard;
 
+// Toggle d'une pb depuis le visuel compact "Leviers identifiés" en V. Diagnostic
+// Wrapper qui appelle togglePb (sync state + solutions + sections) puis sync fiche client + re-render
+function togglePbFromCompact(value, checked) {
+  togglePb(value, checked);
+  if (typeof syncPbsToFicheClient === 'function') syncPbsToFicheClient();
+  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+}
+window.togglePbFromCompact = togglePbFromCompact;
+
+// Tout cocher / Tout décocher les pbs d'une catégorie dans "Leviers identifiés"
+function checkAllPbsInCat(catId) {
+  const elements = document.querySelectorAll(`.block-leviers-identifies .sol-group[data-cat="${catId}"] [data-pb-id]`);
+  const pbs = [...elements].map(el => el.dataset.pbId).filter(pb => !state.selectedPbs.has(pb));
+  pbs.forEach(pb => togglePb(pb, true));
+  if (typeof syncPbsToFicheClient === 'function') syncPbsToFicheClient();
+  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+}
+window.checkAllPbsInCat = checkAllPbsInCat;
+
+function uncheckAllPbsInCat(catId) {
+  const elements = document.querySelectorAll(`.block-leviers-identifies .sol-group[data-cat="${catId}"] [data-pb-id]`);
+  const pbs = [...elements].map(el => el.dataset.pbId).filter(pb => state.selectedPbs.has(pb));
+  pbs.forEach(pb => togglePb(pb, false));
+  if (typeof syncPbsToFicheClient === 'function') syncPbsToFicheClient();
+  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+}
+window.uncheckAllPbsInCat = uncheckAllPbsInCat;
+
 // Tout cocher / Tout décocher les enfants d'une catégorie dans "Solutions identifiées"
 function checkAllSolutionsInCat(catId) {
   const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
@@ -11207,8 +11264,6 @@ function refreshInlineConditionalSections() {
 function updateDiagLeviersCount() {
   const countEl = document.getElementById('diag-leviers-count-num');
   if (!countEl) return;
-  const container = document.getElementById('diag-pb-container');
-  if (!container) { countEl.textContent = '0'; return; }
   const catLabels = {
     confort_physique: '🩺 Confort physique',
     nutrition: '🍽️ Nutrition',
@@ -11218,14 +11273,13 @@ function updateDiagLeviersCount() {
     relationnel: '💬 Enjeux relationnels',
     // souhait : volontairement exclu
   };
-  // .diag-pb-cat est la version renommée de .pb-cat-checkbox dans le clone du diagnostic
-  const catCbs = container.querySelectorAll('.diag-pb-cat[data-cat]');
-  const checkedCats = [];
-  catCbs.forEach(cb => {
-    if (cb.checked && cb.dataset.cat !== 'souhait' && catLabels[cb.dataset.cat]) {
-      checkedCats.push(catLabels[cb.dataset.cat]);
-    }
+  // Lecture directe depuis state.selectedPbs (le compact "Leviers identifiés" n'a plus de structure DOM cat checkbox)
+  const checkedCatsSet = new Set();
+  (state.selectedPbs || new Set()).forEach(pb => {
+    const cat = getPbCategoryFromValue(pb);
+    if (cat && cat !== 'souhait' && catLabels[cat]) checkedCatsSet.add(cat);
   });
+  const checkedCats = [...checkedCatsSet].map(c => catLabels[c]);
   countEl.textContent = checkedCats.length;
   // Pluriel de "levier" : "s" seulement si > 1
   const sEl = document.getElementById('diag-leviers-s');
