@@ -9494,13 +9494,16 @@ function renderSolutionsCheckboxes() {
   }).join('');
 
   // Partie 3 : contenu de la catégorie active (intro + children cards + child content)
+  // On ne rend que si la catégorie active a encore au moins un enfant coché
+  // (sinon le bandeau resterait orphelin après décochage du dernier enfant)
   let activeContentHtml = '';
   if (activeCat) {
     const cat = sols.find(c => c.id === activeCat);
-    if (cat) {
+    const checkedChildrenForActive = cat ? (cat.children || []).filter(ch => state.selectedSolutions.has(ch.id)) : [];
+    if (cat && checkedChildrenForActive.length > 0) {
       const c = catColorMap[cat.id] || { main:'#666', dark:'#333' };
       const children = cat.children || [];
-      const checkedChildren = children.filter(ch => state.selectedSolutions.has(ch.id));
+      const checkedChildren = checkedChildrenForActive;
       const introHtml = Array.isArray(cat.introBlocks) && cat.introBlocks.length
         ? `<div class="sol-cat-intro" style="--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">${renderBlocks(cat.introBlocks, 'sol_' + cat.id)}</div>`
         : '';
