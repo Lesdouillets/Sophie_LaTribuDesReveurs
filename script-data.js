@@ -2409,6 +2409,7 @@ const SCRIPT_DATA = {
           { id: "strat_tetine", label: "Tétine", cardLabel: "Tétine", cardEmoji: "🍭", autoCheckIfPbs: ["souhait_tetine"],
             blocks: [
               { type: "normal",
+                _leftTitle: "Parler tétine",
                 showIfAnyOf: [
                   { pb: "souhait_tetine" },
                   { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } },
@@ -2417,6 +2418,7 @@ const SCRIPT_DATA = {
                 text: "- Maintenant, on **va parler \"tétine\"**\n  **PUISQU'on** EN A **discuté** ensemble\n  et que **vous souhaitez… la supprimer**"
               },
               { type: "normal",
+                _leftTitle: "Parler tétine",
                 showIfAnyOf: [
                   { tickbox: { cid: "strategie_tetine_choice", value: "garder" } },
                   { tickbox: { cid: "obj_tetine_static", value: "garder" } }
@@ -2424,6 +2426,7 @@ const SCRIPT_DATA = {
                 text: "- Maintenant, on **va parler \"tétine\"**\n  **PUISQU'on** EN A **discuté** ensemble\n  et que **vous souhaitez… la garder**"
               },
               { type: "normal",
+                _leftTitle: "Parler tétine",
                 showIfTickbox: [
                   { cid: "strategie_tetine_choice", value: "hybride" },
                   { cid: "obj_tetine_static", value: "hybride" }
@@ -2579,7 +2582,7 @@ const SCRIPT_DATA = {
         children: [
           { id: "sante_vitamine_d", label: "Vitamine D = Zyma D", cardLabel: "Vitamine D = Zyma D", cardEmoji: "☀️",
             blocks: [
-              { type: "normal", _leftTitle: "Zyma D = inconfort", _leftTitleStyle: "background:#ccfbf1;color:#0f766e;--cat-main:#14b8a6", text: "<img src=\"https://www.pharmacie-du-centre-albert.fr/resize/800x800/media/finish/img/normal/71/3400935358363-zymad-10-000-ui-ml-solution-buvable-en-gouttes.jpg\" alt=\"Zyma D\" style=\"float:right;height:180px;width:auto;max-width:180px;border-radius:8px;margin:0 0 8px 14px;object-fit:contain\">\n- Un **petit point rapide**, si vous êtes d'accord, sur la **vitamine D** que vous utilisez, la **Zyma D**\n\n- Il faut savoir que **certaines formulations, comme la Zyma D,** contiennent des **huiles essentielles**, notamment des huiles essentielles d'orange douce\n- **Chez certains enfants**, ça peut parfois **donner un inconfort digestif (sans que ce soit systématique du tout)**\n\n⇒ Si vous voulez, ça peut être **intéressant** :\n  - d'en **parler tranquillement à votre médecin**\n  - pour voir s'il existe une **alternative plus neutre**\n  - juste **pour tester** et **voir si ça change qqch** pour [prénom_enfant]" }
+              { type: "normal", _leftTitle: "Zyma D = inconfort digestif", _leftTitleStyle: "background:#ccfbf1;color:#0f766e;--cat-main:#14b8a6", text: "<img src=\"https://www.pharmacie-du-centre-albert.fr/resize/800x800/media/finish/img/normal/71/3400935358363-zymad-10-000-ui-ml-solution-buvable-en-gouttes.jpg\" alt=\"Zyma D\" style=\"float:right;height:180px;width:auto;max-width:180px;border-radius:8px;margin:0 0 8px 14px;object-fit:contain\">\n- Un **petit point rapide**, si vous êtes d'accord, sur la **vitamine D** que vous utilisez, la **Zyma D**\n\n- Il faut savoir que **certaines formulations, comme la Zyma D,** contiennent des **huiles essentielles**, notamment des huiles essentielles d'orange douce\n- **Chez certains enfants**, ça peut parfois **donner un inconfort digestif (sans que ce soit systématique du tout)**\n\n⇒ Si vous voulez, ça peut être **intéressant** :\n  - d'en **parler tranquillement à votre médecin**\n  - pour voir s'il existe une **alternative plus neutre**\n  - juste **pour tester** et **voir si ça change qqch** pour [prénom_enfant]" }
             ]
           },
           { id: "sante_bouche_ouverte", label: "Dort la bouche ouverte", cardLabel: "Dort la bouche ouverte", cardEmoji: "😮",
