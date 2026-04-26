@@ -5629,6 +5629,7 @@ let state = {
   // Sidebar "Par problématique" : scroll mémorisé de V. Diagnostic + catégories développées
   diagScrollTop: 0,
   pbSidebarExpanded: new Set(),
+  planSidebarExpanded: new Set(),
 };
 
 // Nettoyage des overrides — supprimer TOUT pour forcer la re-sync
@@ -7684,6 +7685,8 @@ function buildSidebar() {
     groupDiv.appendChild(childrenDiv);
     condContainer.appendChild(groupDiv);
   });
+  // Ajouter l'arborescence des solutions (APLV, RGO, tétine…) sous "Plan d'action"
+  if (typeof buildSidebarPlanSolutions === 'function') buildSidebarPlanSolutions();
   updateTimeProgress();
   } catch (err) {
     console.error('[buildSidebar] Erreur :', err);
@@ -7694,6 +7697,58 @@ function buildSidebar() {
 function toggleSidebarPbCategory(cat) {
   if (state.pbSidebarExpanded.has(cat)) state.pbSidebarExpanded.delete(cat);
   else state.pbSidebarExpanded.add(cat);
+  buildSidebar();
+}
+
+// Sidebar "Plan d'action" — arborescence des solutions (APLV, RGO, tétine…)
+// groupées par catégorie, avec mêmes règles que "Par problématique" :
+// titre blanc si la solution est cochée, grisé si non.
+function buildSidebarPlanSolutions() {
+  const planContainer = document.getElementById('nav-plan');
+  if (!planContainer) return;
+  const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
+  if (!sols.length) return;
+  const planActionIdx = state.sections.findIndex(s => s.id === 'plan_action');
+  const catOrder = ['confort_physique', 'nutrition', 'rythme', 'strategie', 'env', 'relationnel', 'sante'];
+  catOrder.forEach(catId => {
+    const cat = sols.find(c => c.id === catId);
+    if (!cat) return;
+    const children = cat.children || [];
+    if (children.length === 0) return;
+    const isExpanded = state.planSidebarExpanded.has(catId);
+    const anyActive = children.some(ch => state.selectedSolutions && state.selectedSolutions.has(ch.id));
+    const groupDiv = document.createElement('div');
+    groupDiv.className = 'nav-group' + (isExpanded ? ' expanded' : '') + (anyActive ? '' : ' all-inactive');
+    const header = document.createElement('div');
+    header.className = 'nav-group-header' + (anyActive ? '' : ' inactive-levier');
+    header.innerHTML = `<span class="nav-group-arrow">${isExpanded ? '▾' : '▸'}</span><span class="nav-group-label">${cat.emoji || ''} ${cat.title}</span>`;
+    header.onclick = () => toggleSidebarPlanCategory(catId);
+    groupDiv.appendChild(header);
+    const childrenDiv = document.createElement('div');
+    childrenDiv.className = 'nav-group-children';
+    if (!isExpanded) childrenDiv.style.display = 'none';
+    children.forEach(ch => {
+      const isActive = state.selectedSolutions && state.selectedSolutions.has(ch.id);
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'nav-item nav-child' + (isActive ? '' : ' inactive-levier');
+      const emoji = ch.cardEmoji || ch.emoji || '🔹';
+      const label = ch.cardLabel || ch.label || ch.id;
+      itemDiv.innerHTML = `<span class="nav-emoji">${emoji}</span><span class="nav-title">${label}</span>`;
+      itemDiv.onclick = () => {
+        if (planActionIdx >= 0) navigateTo(planActionIdx);
+        state.solActiveCat = catId;
+        if (typeof renderCurrentSection === 'function') renderCurrentSection();
+      };
+      childrenDiv.appendChild(itemDiv);
+    });
+    groupDiv.appendChild(childrenDiv);
+    planContainer.appendChild(groupDiv);
+  });
+}
+
+function toggleSidebarPlanCategory(catId) {
+  if (state.planSidebarExpanded.has(catId)) state.planSidebarExpanded.delete(catId);
+  else state.planSidebarExpanded.add(catId);
   buildSidebar();
 }
 
@@ -9253,6 +9308,7 @@ function renderSolutionsCheckboxes() {
     strategie:        { main: '#3b82f6', dark: '#1e3a8a', light: '#eff6ff' },
     env:              { main: '#8b5cf6', dark: '#5b21b6', light: '#f5f3ff' },
     relationnel:      { main: '#ec4899', dark: '#be185d', light: '#fdf2f8' },
+    sante:            { main: '#14b8a6', dark: '#0f766e', light: '#f0fdfa' },
   };
   // Partie 1 : liste compacte "Leviers identifiés" style — groupée par catégorie
   const compactGroups = sols.map(cat => {
@@ -9311,6 +9367,7 @@ function renderSolutionsCheckboxes() {
     strategie: '#eff6ff',
     env: '#f5f3ff',
     relationnel: '#fdf2f8',
+    sante: '#f0fdfa',
   };
   const catsWithChecked = sols.filter(cat => (cat.children || []).some(ch => state.selectedSolutions.has(ch.id)));
   const activeCat = state.solActiveCat;
@@ -10583,6 +10640,7 @@ function filterDiagnosticSections(q) {
     env: { main: '#8b5cf6', dark: '#5b21b6', label: 'Env' },
     relationnel: { main: '#ec4899', dark: '#be185d', label: 'Relationnel' },
     confort_physique: { main: '#dc2626', dark: '#b91c1c', label: 'Confort' },
+    sante: { main: '#14b8a6', dark: '#0f766e', label: 'Santé' },
   };
   const escHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 

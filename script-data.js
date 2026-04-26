@@ -2516,6 +2516,21 @@ const SCRIPT_DATA = {
           // À compléter
         ]
       },
+      {
+        id: "sante", title: "Santé", emoji: "💊",
+        children: [
+          { id: "sante_vitamine_d", label: "Vitamine D", cardLabel: "Vitamine D", cardEmoji: "☀️",
+            blocks: [
+              { type: "normal", text: "À compléter" }
+            ]
+          },
+          { id: "sante_bouche_ouverte", label: "Dort la bouche ouverte", cardLabel: "Dort la bouche ouverte", cardEmoji: "😮",
+            blocks: [
+              { type: "normal", text: "À compléter" }
+            ]
+          },
+        ]
+      },
     ]
   },
 
