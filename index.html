@@ -9694,10 +9694,12 @@ function syncSolutionsFromPbs() {
 // Synchronise state.courbeCardsTicked (sous-checkboxes Chambre/Lit dans compact list)
 // depuis state.selectedPbs. Pour chaque item d'un courbe_cards_grid, si son it.pb est
 // cochée → it.id ajouté à courbeCardsTicked, sinon retiré.
-// Note : items sans pb (ex. env_apprivoiser) sont laissés sous contrôle manuel.
+// Note : items sans pb (ex. env_apprivoiser) ET items édités manuellement
+// (state.courbeCardsTickedManuallyEdited) sont laissés sous contrôle utilisateur.
 function syncSubChecklistFromPbs() {
   const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
   if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+  if (!state.courbeCardsTickedManuallyEdited) state.courbeCardsTickedManuallyEdited = new Set();
   sols.forEach(cat => {
     (cat.children || []).forEach(ch => {
       if (!Array.isArray(ch.blocks)) return;
@@ -9705,6 +9707,8 @@ function syncSubChecklistFromPbs() {
       if (!grid || !Array.isArray(grid.items)) return;
       grid.items.forEach(it => {
         if (!it.pb) return;
+        // Édition manuelle (clic sur la case) → respecter le choix utilisateur
+        if (state.courbeCardsTickedManuallyEdited.has(it.id)) return;
         const pbs = Array.isArray(it.pb) ? it.pb : [it.pb];
         const shouldCheck = pbs.some(p => state.selectedPbs && state.selectedPbs.has(p));
         if (shouldCheck) state.courbeCardsTicked.add(it.id);
@@ -11206,9 +11210,12 @@ window.uncheckAllSolutionsInCat = uncheckAllSolutionsInCat;
 function toggleCourbeCardTickFromSol(itId) {
   if (!itId) return;
   if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+  if (!state.courbeCardsTickedManuallyEdited) state.courbeCardsTickedManuallyEdited = new Set();
   const wasTicked = state.courbeCardsTicked.has(itId);
   if (wasTicked) state.courbeCardsTicked.delete(itId);
   else state.courbeCardsTicked.add(itId);
+  // Marquer comme édité manuellement → syncSubChecklistFromPbs ne touchera plus cet item
+  state.courbeCardsTickedManuallyEdited.add(itId);
   // Trouver la solution parente (Chambre / Lit) qui contient cet item
   const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
   let parentCh = null;
@@ -11944,6 +11951,7 @@ function newConsultation() {
     state.completedSet = new Set();
     state.courbeCardsActiveByGrid = {};
     state.courbeCardsTicked = new Set();
+    state.courbeCardsTickedManuallyEdited = new Set();
     state.cardPersonalTicks = new Set();
     state.solActiveCat = null;
     state.solActiveChildByCat = {};
@@ -11991,6 +11999,7 @@ function autoSaveActiveConsultation() {
         decouverteNotes: state.decouverteNotes || {},
         courbeCardsActiveByGrid: state.courbeCardsActiveByGrid || {},
         courbeCardsTicked: state.courbeCardsTicked ? [...state.courbeCardsTicked] : [],
+        courbeCardsTickedManuallyEdited: state.courbeCardsTickedManuallyEdited ? [...state.courbeCardsTickedManuallyEdited] : [],
         cardPersonalTicks: state.cardPersonalTicks ? [...state.cardPersonalTicks] : [],
         selectedSolutions: state.selectedSolutions ? [...state.selectedSolutions] : [],
         selectedSolutionsManuallyEdited: state.selectedSolutionsManuallyEdited ? [...state.selectedSolutionsManuallyEdited] : [],
@@ -12070,6 +12079,7 @@ function restoreActiveConsultation() {
     state.selectedSolutions = new Set(snap.selectedSolutions || []);
     state.selectedSolutionsManuallyEdited = new Set(snap.selectedSolutionsManuallyEdited || []);
     state.courbeCardsTicked = new Set(snap.courbeCardsTicked || []);
+    state.courbeCardsTickedManuallyEdited = new Set(snap.courbeCardsTickedManuallyEdited || []);
     // Migration : si l'ancienne sauvegarde n'a pas cardPersonalTicks, hériter de courbeCardsTicked
     // (avant le split, courbeCardsTicked servait aussi pour les ticks de cartes)
     state.cardPersonalTicks = new Set(snap.cardPersonalTicks || snap.courbeCardsTicked || []);
