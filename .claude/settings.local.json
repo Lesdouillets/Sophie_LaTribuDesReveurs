@@ -69,7 +69,9 @@
       "Bash(curl -s \"https://raw.githubusercontent.com/Lesdouillets/Sophie_LaTribuDesReveurs/main/script-data.js\")",
       "Bash(curl -s \"https://raw.githubusercontent.com/Lesdouillets/Sophie_LaTribuDesReveurs/main/index.html\")",
       "Bash(git commit -m 'Compact list Chambre/Lit : sous-checkboxes respectent aussi alwaysShowAll *)",
-      "Bash(git commit -m 'Obscurite : 2 bandeaux jaunes deroulants \\(jour/nuit + peur du noir\\) *)"
+      "Bash(git commit -m 'Obscurite : 2 bandeaux jaunes deroulants \\(jour/nuit + peur du noir\\) *)",
+      "Bash(git commit -m 'Obscurite : ajoute titre '\\\\''Conseils'\\\\'' sur le 2e bloc *)",
+      "Bash(git commit -m 'Obscurite : 2 boutons jaunes lateraux trailingInfoButtons \\(standardisation\\) *)"
     ]
   }
 }
