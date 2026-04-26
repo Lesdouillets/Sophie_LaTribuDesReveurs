@@ -2571,21 +2571,35 @@ const SCRIPT_DATA = {
                       ]
                     }
                   ] },
-                  { id: "env_rit", emoji: "🌙", label: "Rituel absent / court", pb: "env_rituel", blocks: [
-                    { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
-                    { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
-                  ] },
-                  { id: "env_cad", emoji: "🗺", label: "Cadre non clair", pb: "env_cadre", blocks: [
-                    { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
-                    { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
-                  ] },
-                  { id: "env_stim", emoji: "👀", label: "Stimulations visuelles", pb: "env_stimulations", blocks: [
-                    { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
-                    { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
+                  { id: "env_stim", emoji: "👀", label: "Simplifier l'environnement", pb: "env_stimulations", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- Les E. ont **de grandes capacités** pour **résister** aux **distractions / stimulations**" },
+                    { type: "normal", _leftTitle: "Conseils", text: "- Je vous invite à **réduire les stimulations visuelles** *(stickers au mur, mobile, guirlandes lumineuses, veilleuse trop forte, jouets dans le lit, peluches sur les étagères, cacher la penderie avec des rideaux…)*\n- Je vous encourage **à ranger la chambre** pour éviter d'être **happé par l'envie de jouer** avec les jouets éparpillés dans la chambre !\n- Je vous invite à **créer un environnement cosy** en :\n  - Réduisant la chambre si grande chambre (ex : paravents) ⚠ bruits\n  - Mettant des meubles bas, pour l'autonomie (cf. Montessori)\n  - Ajoutant des rideaux\n  - Positionnant un tapis si carrelage (cosy + atténuer les bruits)\n  - N'hésitez pas à utiliser un éclairage indirect et diffus aux teintes chaudes\n  - ⇒ **Misez sur la déco au sol**" }
                   ] },
                   { id: "env_ecr", emoji: "📱", label: "Écrans", pb: "env_ecrans", blocks: [
                     { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
                     { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
+                  ] },
+                  { id: "env_plan_change", emoji: "🚼", label: "Plan de change", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- Le change peut être **associé à un moment désagréable** ou à une **source d'excitation**" },
+                    { type: "normal", _leftTitle: "Conseils", text: "- Si vous le pouvez, je vous invite à mettre le **plan de change / tapis transportable** en **dehors de la chambre**\n- Vous pouvez aussi le **laisser dans la chambre** si le change est un **moment agréable**\n- ⚠ Pour un **nouveau-né** : c'est **OK de garder le plan de change** dans la chambre (pour ne pas trop stimuler BB)" }
+                  ] },
+                  { id: "env_bruits", emoji: "🔊", label: "Bruits de la maison", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- **La vie continue !**" },
+                    { type: "normal", _leftTitle: "Conseils",
+                      text: "- Je vous invite à **continuer** les **bruits ambiants** *(ex : tirer la chasse, faire la vaisselle, parler, écouter de la musique…)*\n- ⚠️ Les **bruits blancs** peuvent créer une nouvelle dépendance ! (OK jusque 8 semaines)",
+                      trailingInfoButtons: [
+                        {
+                          label: "Bruits temporaires",
+                          title: "Bruits temporaires",
+                          blocks: [
+                            { type: "normal", text: "- **Si bruits temporaires (ex : travaux dans la rue)**\n  - **OK** pour mettre **TEMPORAIREMENT des bruits blancs** sur **TOUT le temps** de la nuit / sieste" }
+                          ]
+                        }
+                      ]
+                    }
+                  ] },
+                  { id: "env_humidite", emoji: "💧", label: "Taux d'humidité", blocks: [
+                    { type: "normal", _leftTitle: "Conseils", text: "- Viser un **taux d'humidité entre 40 et 60 %**" }
                   ] },
                 ]
               }
