@@ -11155,22 +11155,38 @@ function toggleCourbeCardTickFromSol(itId) {
   const wasTicked = state.courbeCardsTicked.has(itId);
   if (wasTicked) state.courbeCardsTicked.delete(itId);
   else state.courbeCardsTicked.add(itId);
-  // Auto-cocher la solution parente (Chambre/Lit) quand on coche un enfant
-  if (!wasTicked) {
-    const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
-    sols.forEach(cat => {
-      (cat.children || []).forEach(ch => {
-        if (!Array.isArray(ch.blocks)) return;
-        const grid = ch.blocks.find(b => b && b.type === 'courbe_cards_grid');
-        if (!grid || !Array.isArray(grid.items)) return;
-        if (grid.items.some(it => it.id === itId)) {
-          if (!state.selectedSolutions) state.selectedSolutions = new Set();
-          if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
-          state.selectedSolutions.add(ch.id);
-          state.selectedSolutionsManuallyEdited.add(ch.id);
-        }
-      });
-    });
+  // Trouver la solution parente (Chambre / Lit) qui contient cet item
+  const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
+  let parentCh = null;
+  let parentItems = null;
+  for (const cat of sols) {
+    for (const ch of (cat.children || [])) {
+      if (!Array.isArray(ch.blocks)) continue;
+      const grid = ch.blocks.find(b => b && b.type === 'courbe_cards_grid');
+      if (!grid || !Array.isArray(grid.items)) continue;
+      if (grid.items.some(it => it.id === itId)) {
+        parentCh = ch;
+        parentItems = grid.items;
+        break;
+      }
+    }
+    if (parentCh) break;
+  }
+  if (parentCh) {
+    if (!state.selectedSolutions) state.selectedSolutions = new Set();
+    if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
+    if (!wasTicked) {
+      // Coche enfant → coche parent
+      state.selectedSolutions.add(parentCh.id);
+      state.selectedSolutionsManuallyEdited.add(parentCh.id);
+    } else {
+      // Décoche enfant → si aucun autre enfant tické → décoche parent
+      const anyChildTicked = parentItems.some(it => state.courbeCardsTicked.has(it.id));
+      if (!anyChildTicked) {
+        state.selectedSolutions.delete(parentCh.id);
+        state.selectedSolutionsManuallyEdited.add(parentCh.id);
+      }
+    }
   }
   if (typeof renderCurrentSection === 'function') renderCurrentSection();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
