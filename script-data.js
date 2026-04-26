@@ -2617,6 +2617,36 @@ const SCRIPT_DATA = {
                     { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
                     { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
                   ] },
+                  { id: "env_doudou", emoji: "🧸", label: "Doudou", showIfAgeMinMonths: 3, blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- Le **sommeil** est associé à une **période de séparation**\n  ⇒ un **doudou** peut **servir d'objet transitionnel**" },
+                    { type: "normal", _leftTitle: "Conseils",
+                      text: "- Je vous encourage à introduire **un Doudou** pour le sommeil de **[prénom_enfant]** :\n  - Lavable\n  - Non-lumineux\n  - Plat pour ne pas rouler\n  - Non-musical\n  - En plusieurs exemplaires\n\n- N'hésitez pas à :\n  - Faire des **roulements** pour **garder la même usure + odeur**\n  - À **dormir avec** pour mettre **votre odeur** sur Doudou\n  - **Investir Doudou**, en lui **parlant**\n  - Soyez **heureux de le retrouver** dans le lit\n- Je vous encourage à **laisser Doudou dans le lit**, pour être **heureux de le retrouver** au moment de dormir\n  Doudou devrait être **lié seulement au sommeil** et **NON PAS** transporté **durant les temps d'éveil**",
+                      trailingInfoButtons: [
+                        {
+                          label: "L'investissement prend du temps",
+                          title: "L'investissement d'un Doudou prend du temps",
+                          blocks: [
+                            { type: "normal", text: "- L'**investissement** d'un Doudou **par un enfant** prend du **temps** (ça peut prendre plusieurs mois)\n  ⇒ Soyez **persévérant** et **continuez à parler** à ce petit Doudou !" }
+                          ]
+                        },
+                        {
+                          label: "Doudou Atelier Bombus",
+                          title: "Doudou de l'atelier Bombus",
+                          blocks: [
+                            { type: "normal", text: "- Il existe les Doudou de l'**atelier *Bombus***, avec une Maman Doudou et son BB Doudou qui peuvent se **détacher pour** que **chacun puisse avoir sa partie** quand il y a **séparation** :\n  - Le petit Doudou « BB » ⇒ pour rester avec Maman\n  - Le grand Doudou « Maman » ⇒ pour rester avec BB" }
+                          ]
+                        }
+                      ]
+                    }
+                  ] },
+                  { id: "env_tresse", emoji: "🪢", label: "Tresse de tour de lit", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- Les enfants apprécient de **caler le haut de leur crâne** contre une **paroi** à la fois **ferme mais molle**, cela leur **rappelle** quand ils étaient dans le **ventre de Maman**" },
+                    { type: "normal", _leftTitle: "Conseils", text: "- Je vous invite à **ajouter une tresse de tour de lit**, qui est **moins haute** qu'un **tour de lit** classique. Je vous conseille de la choisir :\n  - **Assez grande / ou d'en ajouter plusieurs** à la suite, pour qu'elle fasse le **tour du lit** afin que BB retrouve les **mêmes conditions partout** dans son lit s'il bouge\n  - Privilégier une tresse **avec des lanières** pour les attacher aux barreaux et qu'elle ne soit **pas volante** dans le lit, ce qui pourrait **être dangereux**\n\n- ⚠️ Je préfère aussi **vous avertir que l'OMS recommande de ne rien mettre dans le lit avant l'âge de 1 an** pour prévenir la Mort Inattendue du Nourrisson\n- Il **existe** des **alarmes de respiration** qui peuvent **vous rassurer** (mais ne **préviennent pas à 100 %** la Mort Inattendue du Nourrisson) :\n  - Chaussette connectée (ex : Owlet) — jusque 18 mois (13,6 kg)\n  - Alarme de respiration (ex : Nanny Care) — jusque 7 mois (jusqu'à ce que BB bouge pour éviter les fausses alertes)" }
+                  ] },
+                  { id: "env_position_lit", emoji: "🛌", label: "Positionnement du lit", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- Les enfants ont **besoin de « nichage »**, pour se sentir en sécurité et se ré-assurer\n  *Imaginez-vous vous retrouver dans la + grande chambre d'un château, on peut se sentir « vulnérable »*" },
+                    { type: "normal", _leftTitle: "Conseils", text: "- N'hésitez pas, si la chambre le permet, de **déplacer le lit dans un coin** OU de **créer un lit cabane** (ex : avec un ciel de lit sécuritaire que l'enfant ne puisse pas tirer) pour **limiter la sensation « d'exposition »**\n- Essayez de **positionner le lit** de façon à ce que votre enfant puisse **voir la porte** de sa chambre et donc qui rentre et sort : cela diminue le risque d'alerte inconsciente" }
+                  ] },
                 ]
               }
             ]
