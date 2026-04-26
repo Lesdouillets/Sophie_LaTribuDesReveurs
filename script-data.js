@@ -2647,6 +2647,25 @@ const SCRIPT_DATA = {
                     { type: "normal", _leftTitle: "Pourquoi ?", text: "- Les enfants ont **besoin de « nichage »**, pour se sentir en sécurité et se ré-assurer\n  *Imaginez-vous vous retrouver dans la + grande chambre d'un château, on peut se sentir « vulnérable »*" },
                     { type: "normal", _leftTitle: "Conseils", text: "- N'hésitez pas, si la chambre le permet, de **déplacer le lit dans un coin** OU de **créer un lit cabane** (ex : avec un ciel de lit sécuritaire que l'enfant ne puisse pas tirer) pour **limiter la sensation « d'exposition »**\n- Essayez de **positionner le lit** de façon à ce que votre enfant puisse **voir la porte** de sa chambre et donc qui rentre et sort : cela diminue le risque d'alerte inconsciente" }
                   ] },
+                  { id: "env_hauteur_sommier", emoji: "📏", label: "Hauteur sommier", showIfAgeMinMonths: 7, showIfAgeMaxMonths: 29, blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- Les enfants qui sont **en âge d'être mobile** peuvent facilement **se tenir aux barreaux** du lit et **tomber**" },
+                    { type: "normal", _leftTitle: "Conseils", text: "- Je vous invite à **diminuer la hauteur du sommier** afin d'**éviter tout risque d'accident**" }
+                  ] },
+                  { id: "env_pas_couverture", emoji: "🛏️", label: "Pas de couverture", showIfAgeMaxMonths: 29, blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?",
+                      text: "- Un E. de cet âge n'a **PAS la maturité suffisante** pour **remettre sa couverture SEUL quand il a froid**\n- et donc il risque de **vous appeler** pour **la remettre**",
+                      trailingInfoButtons: [
+                        {
+                          label: "Si < 1 an",
+                          title: "Si l'enfant a moins d'1 an",
+                          blocks: [
+                            { type: "normal", text: "- En plus, il y a un **risque d'étouffement** avec la couverture\n- c'est pour ça que l'OMS **déconseille la présence d'objets** dans le lit avant l'**âge d'1 an**" }
+                          ]
+                        }
+                      ]
+                    },
+                    { type: "normal", _leftTitle: "Conseils", text: "- C'est pour ça que je vous **déconseille l'utilisation de couverture** avant l'âge de **2,5-3 ans**\n- Mais par contre, je vous recommanderais plus l'**utilisation d'une gigoteuse** ou d'un **supiyama** (avec des jambes)" }
+                  ] },
                 ]
               }
             ]
