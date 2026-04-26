@@ -60,7 +60,12 @@
       "Bash(git commit -m 'Auto-decoche parent Chambre/Lit quand dernier enfant decoche *)",
       "Bash(git commit -m 'Bloquer decocher parent Chambre/Lit si un enfant est encore tique *)",
       "Bash(git commit -m 'Retire l'\\\\''alerte sur blocage decoche parent Chambre/Lit \\(silencieux\\) *)",
-      "Bash(git commit -m 'Contenu Obscurite : Pourquoi \\(encadre bleu\\) + Conseils \\(sans encadre, avec ampoules\\) *)"
+      "Bash(git commit -m 'Contenu Obscurite : Pourquoi \\(encadre bleu\\) + Conseils \\(sans encadre, avec ampoules\\) *)",
+      "Bash(node -e \"require\\('./script-data.js'\\); console.log\\('OK script-data.js parses'\\)\")",
+      "Bash(where node *)",
+      "Bash(where.exe node.exe)",
+      "Bash(git commit -m 'Plan d'\\\\''action : grille Chambre/Lit affiche tous les items \\(alwaysShowAll\\) *)",
+      "Bash(git commit -m 'Split state ticks cartes \\(cardPersonalTicks\\) vs sous-checkboxes \\(courbeCardsTicked\\) *)"
     ]
   }
 }
