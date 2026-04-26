@@ -2506,8 +2506,65 @@ const SCRIPT_DATA = {
       },
       {
         id: "env", title: "Environnement de sommeil", emoji: "🏠",
+        introBlocks: [
+          { type: "normal", text: "- Maintenant, je vous **propose d'aborder** un **nouveau levier : \"l'environnement de sommeil\"** de [prénom_enfant]\n- C'est **qqch** sur LEQUEL on PEUT **agir ASSEZ facilement**, mais qu'on a **souvent tendance à négliger**… **alors** qu'il **joue un rôle clé** dans la **qualité du sommeil.**\n- **Pour bien s'endormir** et **réussir à enchaîner les cycles**, un BB a **besoin d'un environnement** qui lui **envoie des repères clairs** : *\"c'est le moment du dodo.\"*" },
+          { type: "normal", text: "- Comme on ne **connait pas** encore les **sensibilités** de [prénom_enfant] **par rapport** à son **environnement de sommeil,**\n- Moi, je voulais vous **partager quelques pistes** POUR rendre son **cadre du sommeil :**\n  - le + **confortable**\n  - **+ optimal possible.**\n- Le **but** n'est **PAS** de **tout changer**, mais de vous **donner des idées** pour **créer un environnement apaisant** pour [prénom_enfant].\n- **Concrètement**, il y a **plusieurs éléments** sur lesquels **on peut jouer**…" },
+        ],
         children: [
-          // À compléter
+          { id: "env_chambre", label: "Chambre", cardLabel: "Chambre", cardEmoji: "🛏",
+            autoCheckIfPbs: ["env_obscurite", "env_temperature", "env_rituel", "env_cadre", "env_stimulations", "env_ecrans"],
+            blocks: [
+              {
+                type: "courbe_cards_grid",
+                theme: "violet",
+                items: [
+                  { id: "env_apprivoiser", emoji: "🛌", label: "Apprivoiser la chambre", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- La chambre devrait être **connue**\n- Ne devrait **pas** être juste **liée au sommeil** et à la **séparation ⇒ mais un lieu de vie** comme le salon\n- N'hésitez pas **à jouer** **dans la chambre** dans la journée avec **toute la famille** (⚠️ **PAS dans le lit** …**SAUF si le lit est nouveau** pour l'E.)\n- Vous pouvez installer un petit **coin lecture** pour le rituel du soir\n- 💡 Si vous le **passez dans sa chambre :** N'hésitez pas à **garder le même lit** et les mêmes **draps**" },
+                    { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
+                  ] },
+                  { id: "env_obs", emoji: "🌑", label: "Obscurité insuffisante", pb: "env_obscurite", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
+                    { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
+                  ] },
+                  { id: "env_temp", emoji: "🌡", label: "Température trop élevée", pb: "env_temperature", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
+                    { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
+                  ] },
+                  { id: "env_rit", emoji: "🌙", label: "Rituel absent / court", pb: "env_rituel", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
+                    { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
+                  ] },
+                  { id: "env_cad", emoji: "🗺", label: "Cadre non clair", pb: "env_cadre", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
+                    { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
+                  ] },
+                  { id: "env_stim", emoji: "👀", label: "Stimulations visuelles", pb: "env_stimulations", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
+                    { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
+                  ] },
+                  { id: "env_ecr", emoji: "📱", label: "Écrans", pb: "env_ecrans", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
+                    { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
+                  ] },
+                ]
+              }
+            ]
+          },
+          { id: "env_lit_card", label: "Lit", cardLabel: "Lit", cardEmoji: "🛏️",
+            autoCheckIfPbs: ["env_lit_ouvert"],
+            blocks: [
+              {
+                type: "courbe_cards_grid",
+                theme: "violet",
+                items: [
+                  { id: "env_lit", emoji: "🛏", label: "Lit ouvert trop tôt", pb: "env_lit_ouvert", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
+                    { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
+                  ] },
+                ]
+              }
+            ]
+          },
         ]
       },
       {
