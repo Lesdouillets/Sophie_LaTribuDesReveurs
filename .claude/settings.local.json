@@ -93,7 +93,9 @@
       "Bash(git commit -m 'Env de sommeil : nouvelle section Changement \\(3 sous-items, contenu A completer\\) *)",
       "Bash(git commit -m 'Changement : texte intro '\\\\''Vous vouliez aussi des solutions pour ...'\\\\'' avant les 3 cartes *)",
       "Bash(git commit -m 'Changement lit + chambre : contenu Conseils + OPTION purple + 2 boutons mutex *)",
-      "Bash(git commit -m 'Si la place de le monter : +ligne conditionnelle allaitement +bloc '\\\\''En parallele'\\\\'' *)"
+      "Bash(git commit -m 'Si la place de le monter : +ligne conditionnelle allaitement +bloc '\\\\''En parallele'\\\\'' *)",
+      "Bash(git checkout *)",
+      "Bash(git commit -m 'Changement lit + chambre : [LE_LA] support + bandeau vert pour '\\\\''Si la place'\\\\'' *)"
     ]
   }
 }
