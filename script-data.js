@@ -2519,8 +2519,8 @@ const SCRIPT_DATA = {
                 theme: "violet",
                 items: [
                   { id: "env_apprivoiser", emoji: "🛌", label: "Apprivoiser la chambre", blocks: [
-                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- La chambre devrait être **connue**\n- Ne devrait **pas** être juste **liée au sommeil** et à la **séparation ⇒ mais un lieu de vie** comme le salon\n- N'hésitez pas **à jouer** **dans la chambre** dans la journée avec **toute la famille** (⚠️ **PAS dans le lit** …**SAUF si le lit est nouveau** pour l'E.)\n- Vous pouvez installer un petit **coin lecture** pour le rituel du soir\n- 💡 Si vous le **passez dans sa chambre :** N'hésitez pas à **garder le même lit** et les mêmes **draps**" },
-                    { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- La chambre devrait être **connue**\n- Ne devrait **pas** être juste **liée au sommeil** et à la **séparation ⇒ mais un lieu de vie** comme le salon" },
+                    { type: "normal", _leftTitle: "Conseils", text: "- N'hésitez pas **à jouer** **dans la chambre** dans la journée avec **toute la famille** (⚠️ **PAS dans le lit** …**SAUF si le lit est nouveau** pour l'E.)\n- Vous pouvez installer un petit **coin lecture** pour le rituel du soir\n[if_pb:souhait_changement_lit,souhait_changement_lit_chambre]\n- 💡 Si vous le **passez dans sa chambre :** N'hésitez pas à **garder le même lit** et les mêmes **draps**\n[/if_pb]" }
                   ] },
                   { id: "env_obs", emoji: "🌑", label: "Obscurité insuffisante", pb: "env_obscurite", blocks: [
                     { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },

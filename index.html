@@ -9894,6 +9894,12 @@ function renderViciousCircleSVG(s1, s2, s3, s4, uid) {
 
 function substituteVars(text) {
   if (!text) return '';
+  // Conditionnel inline : [if_pb:pb1,pb2]contenu[/if_pb] → contenu visible si au moins une pb listée est cochée
+  text = String(text).replace(/\[if_pb:([^\]]+)\]([\s\S]*?)\[\/if_pb\]/g, (m, pbs, content) => {
+    const pbList = pbs.split(',').map(p => p.trim()).filter(Boolean);
+    const matched = pbList.some(p => state.selectedPbs && state.selectedPbs.has(p));
+    return matched ? content : '';
+  });
   const c = state.client;
   const parents = [c.prenomParent1, c.prenomParent2].filter(Boolean).join(' & ');
   const pb = c.problematique || '[problématique]';
