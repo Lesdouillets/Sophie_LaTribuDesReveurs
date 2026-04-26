@@ -2674,6 +2674,7 @@ const SCRIPT_DATA = {
           { id: "env_changement", label: "Changement", cardLabel: "Changement", cardEmoji: "🔄",
             autoCheckIfPbs: ["souhait_changement_lit", "souhait_changement_chambre", "souhait_changement_lit_chambre"],
             blocks: [
+              { type: "normal", text: "- Vous vouliez aussi des **solutions** pour …" },
               {
                 type: "courbe_cards_grid",
                 theme: "violet",
