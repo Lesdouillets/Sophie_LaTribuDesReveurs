@@ -9348,6 +9348,32 @@ function renderSolutionsCheckboxes() {
           opts.map(o => `<label style="display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer"><input type="radio" name="sol-tetine-sub" value="${o.val}" ${tchoice===o.val?'checked':''} onchange="setTickboxChoiceFromSol('strategie_tetine_choice','${o.val}')"> ${o.label}</label>`).join('') +
           `</div>`;
       }
+      // Sous-options pour Chambre / Lit : checkboxes reflétant state.courbeCardsTicked
+      // (état partagé avec la grid V. Diagnostic env et la grid Plan d'action env)
+      if (ch.id === 'env_chambre' || ch.id === 'env_lit_card') {
+        const findGridItems = (blocks) => {
+          if (!Array.isArray(blocks)) return [];
+          for (const b of blocks) {
+            if (b && b.type === 'courbe_cards_grid' && Array.isArray(b.items)) return b.items;
+          }
+          return [];
+        };
+        const gridItems = findGridItems(ch.blocks);
+        const visibleItems = gridItems.filter(it => {
+          if (!it.pb) return true;
+          const pbs = Array.isArray(it.pb) ? it.pb : [it.pb];
+          return pbs.some(p => state.selectedPbs && state.selectedPbs.has(p));
+        });
+        if (visibleItems.length > 0) {
+          if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+          subRows = `<div class="sol-row-sub" style="padding-left:30px;display:flex;flex-direction:column;gap:4px;margin-top:4px">` +
+            visibleItems.map(it => {
+              const itTicked = state.courbeCardsTicked.has(it.id);
+              return `<label style="display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer"><input type="checkbox" ${itTicked?'checked':''} onchange="toggleCourbeCardTickFromSol('${it.id}')"> ${it.emoji || ''} ${it.label || it.id}</label>`;
+            }).join('') +
+            `</div>`;
+        }
+      }
       return `<div data-sol-id="${ch.id}"><label class="sol-row">
         <input type="checkbox" ${checked?'checked':''} onchange="toggleSolution('${ch.id}', this.checked)">
         <span class="sol-row-label">${ch.label || ch.id}</span>
@@ -10903,6 +10929,18 @@ function closeCourbeCard(btnEl) {
   }, 60);
 }
 window.closeCourbeCard = closeCourbeCard;
+
+// Toggle d'une case env (Chambre/Lit) depuis la liste compacte des Solutions identifiées
+// Reflète/contrôle state.courbeCardsTicked (état partagé avec les grids V. Diagnostic + Plan d'action env)
+function toggleCourbeCardTickFromSol(itId) {
+  if (!itId) return;
+  if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+  if (state.courbeCardsTicked.has(itId)) state.courbeCardsTicked.delete(itId);
+  else state.courbeCardsTicked.add(itId);
+  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.toggleCourbeCardTickFromSol = toggleCourbeCardTickFromSol;
 
 function toggleCourbeCardTick(tickEl) {
   if (!tickEl) return;
