@@ -4713,6 +4713,7 @@
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_cadre"> <span>Cadre non clair</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_stimulations"> <span>Stimulations visuelles</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_ecrans"> <span>Ecrans</span></label>
+                  <label class="pb-item"><input type="checkbox" name="pb" value="souhait_lit_ouvert_jeune"> <span>Souhait d'un lit ouvert mais trop petit</span></label>
                 </div>
               </div>
               <div class="pb-category">
@@ -7434,7 +7435,7 @@ function isProblematiqueMatched(problematiqueId, selectedPbs) {
   // Cas particulier : la section "Environnement de sommeil" est active
   // si la case parente "Environnement de sommeil" est cochée OU l'une des sous-cases env_*.
   if (problematiqueId === 'env_general') {
-    const envPbs = ['env_obscurite','env_temperature','env_lit_ouvert','env_rituel','env_cadre','env_stimulations','env_ecrans'];
+    const envPbs = ['env_obscurite','env_temperature','env_lit_ouvert','env_rituel','env_cadre','env_stimulations','env_ecrans','souhait_lit_ouvert_jeune'];
     if (envPbs.some(id => selectedPbs.has(id))) return true;
     const envCat = document.querySelector('.pb-cat-checkbox[data-cat="env"]:checked, .modal-pb-cat[data-cat="env"]:checked, .diag-pb-cat[data-cat="env"]:checked');
     return !!envCat;
