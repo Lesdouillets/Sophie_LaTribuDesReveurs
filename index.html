@@ -4704,15 +4704,15 @@
     <div class="sidebar" id="sidebar">
       <div class="sidebar-section-label">Sections obligatoires</div>
       <div id="nav-required"></div>
-      <div class="sidebar-section-label" style="margin-top:10px">Par problématique</div>
+      <div class="sidebar-section-label collapsible" style="margin-top:10px" data-section-key="conditional" onclick="toggleSidebarSection('conditional')"><span class="ssl-arrow">▾</span><span>Par problématique</span></div>
       <div id="nav-conditional"></div>
-      <div class="sidebar-section-label" style="margin-top:10px">Plan d'action</div>
-      <div id="nav-plan"></div>
       <div class="sidebar-search-wrap">
         <input type="text" id="sidebar-search" placeholder="🔍 Rechercher une section…" oninput="filterSidebar(this.value)">
       </div>
       <div class="sidebar-pb-toggle" onclick="toggleSidebarPb()">⚙️ Modifier les problématiques</div>
       <div class="sidebar-pb-panel" id="sidebar-pb-panel"></div>
+      <div class="sidebar-section-label collapsible" style="margin-top:10px" data-section-key="plan" onclick="toggleSidebarSection('plan')"><span class="ssl-arrow">▾</span><span>Plan d'action</span></div>
+      <div id="nav-plan"></div>
     </div>
 
     <!-- CONTENT -->
@@ -5655,6 +5655,7 @@ let state = {
   diagScrollTop: 0,
   pbSidebarExpanded: new Set(),
   planSidebarExpanded: new Set(),
+  sidebarSectionCollapsed: new Set(),
 };
 
 // Nettoyage des overrides — supprimer TOUT pour forcer la re-sync
@@ -7712,11 +7713,27 @@ function buildSidebar() {
   });
   // Ajouter l'arborescence des solutions (APLV, RGO, tétine…) sous "Plan d'action"
   if (typeof buildSidebarPlanSolutions === 'function') buildSidebarPlanSolutions();
+  // Appliquer l'état collapsed/expanded des sections déroulantes (Par problématique / Plan d'action)
+  ['conditional', 'plan'].forEach(key => {
+    const label = document.querySelector(`#sidebar .sidebar-section-label.collapsible[data-section-key="${key}"]`);
+    if (label) label.classList.toggle('collapsed', !!(state.sidebarSectionCollapsed && state.sidebarSectionCollapsed.has(key)));
+  });
   updateTimeProgress();
   } catch (err) {
     console.error('[buildSidebar] Erreur :', err);
   }
 }
+
+// Toggle d'une section déroulante de la sidebar (Par problématique / Plan d'action)
+function toggleSidebarSection(key) {
+  if (!state.sidebarSectionCollapsed) state.sidebarSectionCollapsed = new Set();
+  if (state.sidebarSectionCollapsed.has(key)) state.sidebarSectionCollapsed.delete(key);
+  else state.sidebarSectionCollapsed.add(key);
+  const label = document.querySelector(`#sidebar .sidebar-section-label.collapsible[data-section-key="${key}"]`);
+  if (label) label.classList.toggle('collapsed', state.sidebarSectionCollapsed.has(key));
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.toggleSidebarSection = toggleSidebarSection;
 
 // Expand/collapse d'une catégorie parente dans la sidebar "Par problématique"
 function toggleSidebarPbCategory(cat) {
