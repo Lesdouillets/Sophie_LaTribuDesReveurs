@@ -9687,6 +9687,31 @@ function syncSolutionsFromPbs() {
       else state.selectedSolutions.delete(ch.id);
     });
   });
+  // Sync sous-checkboxes du compact list (env_obs, env_temp, etc.) depuis les pbs
+  syncSubChecklistFromPbs();
+}
+
+// Synchronise state.courbeCardsTicked (sous-checkboxes Chambre/Lit dans compact list)
+// depuis state.selectedPbs. Pour chaque item d'un courbe_cards_grid, si son it.pb est
+// cochée → it.id ajouté à courbeCardsTicked, sinon retiré.
+// Note : items sans pb (ex. env_apprivoiser) sont laissés sous contrôle manuel.
+function syncSubChecklistFromPbs() {
+  const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
+  if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+  sols.forEach(cat => {
+    (cat.children || []).forEach(ch => {
+      if (!Array.isArray(ch.blocks)) return;
+      const grid = ch.blocks.find(b => b && b.type === 'courbe_cards_grid');
+      if (!grid || !Array.isArray(grid.items)) return;
+      grid.items.forEach(it => {
+        if (!it.pb) return;
+        const pbs = Array.isArray(it.pb) ? it.pb : [it.pb];
+        const shouldCheck = pbs.some(p => state.selectedPbs && state.selectedPbs.has(p));
+        if (shouldCheck) state.courbeCardsTicked.add(it.id);
+        else state.courbeCardsTicked.delete(it.id);
+      });
+    });
+  });
 }
 
 function toggleSolution(id, checked) {
