@@ -10607,7 +10607,11 @@ function applyPbChanges() {
   }
   syncPbsToFicheClient();
   syncPbsHighlights();
+  // Synchroniser les solutions + sous-checkboxes Chambre/Lit depuis les pbs
+  if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
   rebuildAfterPbChange();
+  if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
+  if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
   autoSaveActiveConsultation();
 }
 
