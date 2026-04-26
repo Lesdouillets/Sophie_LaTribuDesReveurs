@@ -2622,10 +2622,6 @@ const SCRIPT_DATA = {
                 theme: "violet",
                 alwaysShowAll: true,
                 items: [
-                  { id: "env_lit", emoji: "🛏", label: "Lit ouvert trop tôt", pb: "env_lit_ouvert", blocks: [
-                    { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
-                    { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
-                  ] },
                   { id: "env_doudou", emoji: "🧸", label: "Doudou", showIfAgeMinMonths: 3, blocks: [
                     { type: "normal", _leftTitle: "Pourquoi ?", text: "- Le **sommeil** est associé à une **période de séparation**\n  ⇒ un **doudou** peut **servir d'objet transitionnel**" },
                     { type: "normal", _leftTitle: "Conseils",
