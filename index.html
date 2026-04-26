@@ -11727,7 +11727,11 @@ function initPbCategoryToggles() {
     }
     // Fermer par défaut lors de la première initialisation, ouvrir si cases cochées
     if (!title.dataset.toggleInit) {
-      const hasChecked = [...items.querySelectorAll('input[type="checkbox"]')].some(cb => cb.checked);
+      // Considère aussi la case du TITRE quand elle est cochable (value attribute, pas auto-only)
+      // pour que les items restent dépliés après un re-render quand le titre est coché
+      const titleCb = title.querySelector('input[type="checkbox"]');
+      const titleCochableChecked = titleCb && titleCb.hasAttribute('value') && !titleCb.dataset.autoOnly && titleCb.checked;
+      const hasChecked = titleCochableChecked || [...items.querySelectorAll('input[type="checkbox"]')].some(cb => cb.checked);
       if (hasChecked) {
         items.classList.remove('collapsed');
         const arrow = title.querySelector('.pb-cat-arrow');
