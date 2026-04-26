@@ -9332,14 +9332,23 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
 
   const cls = { normal:'block-normal', important:'block-important', conseil:'block-conseil', conseil_vert:'block-conseil-vert', empathie:'block-empathie' }[b.type] || 'block-normal';
-  const hasTrailing = !!(b.trailingInfoButton || (Array.isArray(b.trailingInfoButtons) && b.trailingInfoButtons.length));
-  const extraCls = (b._purpleDark ? ' block-purple-dark' : '') + (b._noBorder ? ' block-no-border' : '') + (hasTrailing ? ' block-has-trailing' : '') + (b._catBg ? ' block-cat-bg' : '');
   // Boutons "💡 Plus d'infos" flottants à droite DANS le bloc (optionnel)
   // Supporte `trailingInfoButton` (singulier) OU `trailingInfoButtons` (array)
   let trailingBtnHtml = '';
-  const trailingBtnsList = [];
-  if (b.trailingInfoButton) trailingBtnsList.push(b.trailingInfoButton);
-  if (Array.isArray(b.trailingInfoButtons)) trailingBtnsList.push(...b.trailingInfoButtons);
+  const trailingBtnsListRaw = [];
+  if (b.trailingInfoButton) trailingBtnsListRaw.push(b.trailingInfoButton);
+  if (Array.isArray(b.trailingInfoButtons)) trailingBtnsListRaw.push(...b.trailingInfoButtons);
+  // Filtre par âge (showIfAgeMinMonths / showIfAgeMaxMonths) — utilise âge corrigé si dispo, sinon réel
+  const trailingBtnsList = trailingBtnsListRaw.filter(tb => {
+    if (tb.showIfAgeMinMonths == null && tb.showIfAgeMaxMonths == null) return true;
+    const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
+    if (age == null) return false; // pas d'âge → cacher par prudence
+    if (tb.showIfAgeMinMonths != null && age < tb.showIfAgeMinMonths) return false;
+    if (tb.showIfAgeMaxMonths != null && age > tb.showIfAgeMaxMonths) return false;
+    return true;
+  });
+  const hasTrailing = trailingBtnsList.length > 0;
+  const extraCls = (b._purpleDark ? ' block-purple-dark' : '') + (b._noBorder ? ' block-no-border' : '') + (hasTrailing ? ' block-has-trailing' : '') + (b._catBg ? ' block-cat-bg' : '');
   if (trailingBtnsList.length) {
     window.__infoButtons = window.__infoButtons || {};
     const btnsInner = trailingBtnsList.map((tb, tbi) => {

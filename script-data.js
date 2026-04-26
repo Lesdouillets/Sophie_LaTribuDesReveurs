@@ -2658,6 +2658,7 @@ const SCRIPT_DATA = {
                         {
                           label: "Si < 1 an",
                           title: "Si l'enfant a moins d'1 an",
+                          showIfAgeMaxMonths: 11,
                           blocks: [
                             { type: "normal", text: "- En plus, il y a un **risque d'étouffement** avec la couverture\n- c'est pour ça que l'OMS **déconseille la présence d'objets** dans le lit avant l'**âge d'1 an**" }
                           ]
