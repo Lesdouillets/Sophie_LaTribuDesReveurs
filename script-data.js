@@ -2704,7 +2704,22 @@ const SCRIPT_DATA = {
                         {
                           label: "OPTION : Lit à barreaux ⇒ Lit ouvert", emoji: "🛌", style: "purple", _pillStyle: true, mutexGroup: "chgmt-lit-options",
                           blocks: [
-                            { type: "normal", text: "À compléter" }
+                            { type: "normal", text: "", embeddedActions: [
+                              {
+                                label: "Si souhait dès maintenant", emoji: "🛌", style: "purple", _pillStyle: true, mutexGroup: "chgmt-lit-opt2-sub",
+                                blocks: [
+                                  { type: "normal",
+                                    text: "- Vous m'avez dit que vous **souhaitez passer à un lit de grand** dès **maintenant**\n- Je vous conseille de :\n  - quand même **garder son lit à barreaux** (ou lit parapluie) **dans sa chambre** pour **lui donner** la **possibilité de choisir** ET de **revenir** dedans **si** le **changement est trop rapide** pour lui\n  - Je vous invite à **rendre son nouveau lit** le + **agréable possible**\n    - Avec des **nouveaux draps** qu'il **pourra choisir** + n'hésitez pas à **dormir avec** pour **mettre votre odeur**\n    - Avec un **nouveau pyjama de grand** !\n[if_age_min:12]\n    - **OPTION : Si il a + d'1 an**\n      - Vous pouvez aussi mettre un **coussin d'allaitement** pour garder ce côté « nichage »\n      - Si c'est un **lit cabane**, vous pouvez **mettre des rideaux au dessus** pour le côté « cocon » (⚠️ que les rideaux ne puissent pas être tirés)\n      - ⚠️ Attention, à cet **âge encore jeune**, la **multiplication d'éléments DANS et AUTOUR** du lit, **augmente** les **risques d'étouffement**\n[/if_age_min]\n  - Cependant, je vous **DÉCONSEILLE** l'**utilisation** de **couette ou couverture** :\n    - **Avant l'âge de 2,5-3 ans**, un enfant n'a **pas la maturité suffisante** pour **remettre** la couette **s'il a froid**\n      ⇒ il va donc **vous appeler** pour la remettre\n    - De plus, ce **type d'élément**… **augmente** le **risque d'étouffement**\n      ⇒ **À la place**, je vous **conseillerai** plutôt une **gigoteuse** ou un **sur-pyjama** avec des jambes\n\n- 💡 Si il a la **possibilité de tomber de son lit**, vous pouvez **installer une couette d'invités** sur le sol pour **amortir la chute au cas où**\n\n"
+                                  }
+                                ]
+                              },
+                              {
+                                label: "[À compléter sub-option 2]", emoji: "❓", style: "purple", _pillStyle: true, mutexGroup: "chgmt-lit-opt2-sub",
+                                blocks: [
+                                  { type: "normal", text: "À compléter" }
+                                ]
+                              }
+                            ] }
                           ]
                         },
                         {

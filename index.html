@@ -10260,6 +10260,19 @@ function substituteVars(text) {
     const matched = alimList.some(v => alim.includes(v) || allaitMode.includes(v));
     return matched ? content : '';
   });
+  // Conditionnel inline : [if_age_min:N]contenu[/if_age_min] → visible si âge >= N mois
+  // (utilise âge corrigé si dispo, sinon âge réel — comme showIfAgeMinMonths)
+  text = String(text).replace(/\[if_age_min:(\d+)\]([\s\S]*?)\[\/if_age_min\]/g, (m, n, content) => {
+    const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
+    if (age == null) return ''; // pas d'âge → cacher par prudence
+    return age >= parseInt(n, 10) ? content : '';
+  });
+  // Conditionnel inline : [if_age_max:N]contenu[/if_age_max] → visible si âge <= N mois
+  text = String(text).replace(/\[if_age_max:(\d+)\]([\s\S]*?)\[\/if_age_max\]/g, (m, n, content) => {
+    const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
+    if (age == null) return '';
+    return age <= parseInt(n, 10) ? content : '';
+  });
   const c = state.client;
   const parents = [c.prenomParent1, c.prenomParent2].filter(Boolean).join(' & ');
   const pb = c.problematique || '[problématique]';
@@ -10903,6 +10916,13 @@ function selectTickboxChoice(el) {
   if (cid === 'obj_position_sommeil') {
     const currentValue = wasSelected ? null : el.dataset.value;
     setPb('souhait_position_dorsale', currentValue === 'dorsale');
+    syncChanged = true;
+  }
+  // env_souhait_lit_ouvert_jeune_choice → souhait_changement_lit (cocher si "aller", décocher sinon)
+  // → cascade : env_changement (parent solution) auto-cochée + env_chgmt_lit (sous-checkbox) auto-cochée
+  if (cid === 'env_souhait_lit_ouvert_jeune_choice') {
+    const currentValue = wasSelected ? null : el.dataset.value;
+    setPb('souhait_changement_lit', currentValue === 'aller');
     syncChanged = true;
   }
   // obj_tetine_static ou strategie_tetine_choice → souhait_tetine (cocher si "supprimer", décocher sinon)
