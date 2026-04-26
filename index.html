@@ -9685,6 +9685,30 @@ function toggleSolution(id, checked) {
   if (!state.selectedSolutions) state.selectedSolutions = new Set();
   if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
   if (!state.tickboxChoices) state.tickboxChoices = {};
+  // Empêcher décocher une solution parente (ex. Chambre/Lit) si au moins un enfant est tické
+  if (!checked) {
+    const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
+    let parentCh = null;
+    let blockingItemLabel = null;
+    for (const cat of sols) {
+      for (const ch of (cat.children || [])) {
+        if (ch.id !== id) continue;
+        parentCh = ch;
+        if (!Array.isArray(ch.blocks)) break;
+        const grid = ch.blocks.find(b => b && b.type === 'courbe_cards_grid');
+        if (!grid || !Array.isArray(grid.items) || !state.courbeCardsTicked) break;
+        const tickedItem = grid.items.find(it => state.courbeCardsTicked.has(it.id));
+        if (tickedItem) blockingItemLabel = tickedItem.label || tickedItem.id;
+        break;
+      }
+      if (parentCh) break;
+    }
+    if (blockingItemLabel) {
+      alert(`⚠️ Pour décocher « ${parentCh.label || parentCh.id} », il faut d'abord décocher tous ses enfants (« ${blockingItemLabel} » est encore coché).`);
+      renderCurrentSection(); // remet la case à son état précédent
+      return;
+    }
+  }
   // Règle : on ne peut cocher Tétine que si un sous-choix (Garder/Supprimer/Hybride) est actif
   if (id === 'strat_tetine' && checked) {
     const choices = state.tickboxChoices || {};
