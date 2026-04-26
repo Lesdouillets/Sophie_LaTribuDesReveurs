@@ -10249,6 +10249,16 @@ function substituteVars(text) {
     const matched = pbList.some(p => state.selectedPbs && state.selectedPbs.has(p));
     return matched ? content : '';
   });
+  // Conditionnel inline : [if_alim:val1,val2]contenu[/if_alim] → contenu visible si au moins une valeur d'alimentation listée correspond
+  // (match contre state.client.alimentation OU state.client.allaitementMode, comme showIfAlim au niveau bloc)
+  text = String(text).replace(/\[if_alim:([^\]]+)\]([\s\S]*?)\[\/if_alim\]/g, (m, alims, content) => {
+    const alimList = alims.split(',').map(a => a.trim()).filter(Boolean);
+    const c = (state && state.client) || {};
+    const alim = Array.isArray(c.alimentation) ? c.alimentation : [];
+    const allaitMode = Array.isArray(c.allaitementMode) ? c.allaitementMode : [];
+    const matched = alimList.some(v => alim.includes(v) || allaitMode.includes(v));
+    return matched ? content : '';
+  });
   const c = state.client;
   const parents = [c.prenomParent1, c.prenomParent2].filter(Boolean).join(' & ');
   const pb = c.problematique || '[problématique]';
@@ -10319,6 +10329,7 @@ function substituteVars(text) {
     .replace(/\[moteur_motrice\]/g, isFille ? 'motrice' : 'moteur')
     .replace(/\[le_la\]/g, isFille ? 'la' : 'le')
     .replace(/\[Le_La\]/g, isFille ? 'La' : 'Le')
+    .replace(/\[LE_LA\]/g, isFille ? 'LA' : 'LE')
     .replace(/\[eveille_eveillee\]/g, isFille ? 'éveillée' : 'éveillé')
     .replace(/\[fatigue_fatiguee\]/g, isFille ? 'fatiguée' : 'fatigué')
     .replace(/\[pose_posee\]/g, isFille ? 'posée' : 'posé')

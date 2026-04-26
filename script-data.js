@@ -2697,7 +2697,7 @@ const SCRIPT_DATA = {
                       type: "option", label: "OPTION : Si PAS de place de le monter", emoji: "🚫", style: "action", _pillStyle: true, mutexGroup: "chgmt-lit-chambre-place",
                       blocks: [
                         { type: "normal",
-                          text: "- Vous pouvez directement **monter son lit** dans SA **nouvelle chambre**\n- Je vous encourage néanmoins à :\n  - **dormir avec ses nouveaux draps** ⇒ pour **garder des repères olfactifs**\n  - lui **montrer son lit** avec beaucoup de **joie**\n  - lui **verbaliser souvent** que *« c'est **ici qu'il a dormir**, parce que **c'est un grand** maintenant ! »*\n  - Vous pouvez aussi **LE mettre dans son lit**, durant ses **temps d'éveil** ⇒ pour qu'il se **familiarise avec les lieux**, en le stimulant",
+                          text: "- Vous pouvez directement **monter son lit** dans SA **nouvelle chambre**\n- Je vous encourage néanmoins à :\n  - **dormir avec ses nouveaux draps** ⇒ pour **garder des repères olfactifs**\n  - lui **montrer son lit** avec beaucoup de **joie**\n  - lui **verbaliser souvent** que *« c'est **ici qu'il a dormir**, parce que **c'est un grand** maintenant ! »*\n  - Vous pouvez aussi **[LE_LA] mettre dans son lit**, durant ses **temps d'éveil** ⇒ pour qu'il se **familiarise avec les lieux**, en le stimulant",
                           trailingInfoButton: {
                             label: "Rassurer dans le nouvel environnement",
                             title: "Rassurer dans le nouvel environnement",
@@ -2709,9 +2709,9 @@ const SCRIPT_DATA = {
                       ]
                     },
                     {
-                      type: "option", label: "OPTION : Si la place de le monter", emoji: "✅", style: "action", _pillStyle: true, mutexGroup: "chgmt-lit-chambre-place",
+                      type: "option", label: "OPTION : Si la place de le monter", emoji: "✅", style: "action-green", _pillStyle: true, mutexGroup: "chgmt-lit-chambre-place",
                       blocks: [
-                        { type: "normal", text: "- Je vous encourage à :\n  - **dormir avec ses nouveaux draps**, pour **garder des repères olfactifs**\n  - lui **montrer son lit** avec beaucoup de **joie**\n  - lui **verbaliser souvent** que *« c'est **ici qu'il a dormir**, parce que **c'est un grand** maintenant ! »*\n  - Vous pouvez aussi **LE mettre dans son lit**, durant ses **temps d'éveil** pour qu'il se **familiarise avec les lieux**, en le stimulant\n- Ensuite, **éloignez** physiquement **SON nouveau lit** de VOTRE lit, si vous avez la place" },
+                        { type: "normal", text: "- Je vous encourage à :\n  - **dormir avec ses nouveaux draps**, pour **garder des repères olfactifs**\n  - lui **montrer son lit** avec beaucoup de **joie**\n  - lui **verbaliser souvent** que *« c'est **ici qu'il a dormir**, parce que **c'est un grand** maintenant ! »*\n  - Vous pouvez aussi **[LE_LA] mettre dans son lit**, durant ses **temps d'éveil** pour qu'il se **familiarise avec les lieux**, en le stimulant\n- Ensuite, **éloignez** physiquement **SON nouveau lit** de VOTRE lit, si vous avez la place" },
                         { type: "normal", showIfAlim: ["Allaitement au sein", "Allaitement au biberon", "Allaitement mixte"], text: "  - et notamment **LOIN de la Maman**, pour les **odeurs de lait**" },
                         { type: "normal", text: "- **En parallèle**, je vous encourage à **« apprivoiser » SA chambre**, pour qu'elle soit :\n  - un lieu **connu et apprécié**\n    ⇒ N'hésitez à **jouer dans la chambre** durant les **temps d'éveil** ⇒ pour qu'elle ne soit **PAS** SEULEMENT **liée au sommeil**\n- Enfin, vous pouvez **passer [prénom_enfant] dans sa chambre**" }
                       ]
