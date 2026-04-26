@@ -2550,8 +2550,26 @@ const SCRIPT_DATA = {
                     }
                   ] },
                   { id: "env_temp", emoji: "🌡", label: "Température trop élevée", pb: "env_temperature", blocks: [
-                    { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
-                    { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- Les chambres sur-chauffées :\n  - **freinent l'endormissement** (la T° corporelle a besoin de diminuer pour s'endormir)\n  - et **fragmentent le sommeil**" },
+                    { type: "normal", _leftTitle: "Conseils",
+                      text: "- Je vous conseille de **viser** une T° **entre 18 et 19°**",
+                      trailingInfoButtons: [
+                        {
+                          label: "Adapter l'habillage",
+                          title: "Adapter l'habillage",
+                          blocks: [
+                            { type: "normal", text: "- Vous pouvez **adapter l'habillage** plutôt que de **chauffer davantage !**" }
+                          ]
+                        },
+                        {
+                          label: "Mains / pieds froids",
+                          title: "Mains / pieds froids",
+                          blocks: [
+                            { type: "normal", text: "- Les **mains/pieds froids** d'un BB ne veulent **pas dire qu'il a froid** ⇒ **Se fier à la nuque / creux du cou**" }
+                          ]
+                        }
+                      ]
+                    }
                   ] },
                   { id: "env_rit", emoji: "🌙", label: "Rituel absent / court", pb: "env_rituel", blocks: [
                     { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
