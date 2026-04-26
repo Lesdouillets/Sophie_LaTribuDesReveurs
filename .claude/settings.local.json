@@ -102,7 +102,10 @@
       "Bash(git commit -m 'Changement lit + chambre : retire bouton jaune Rassurer, met le 💡 en derniere ligne dans les 2 options *)",
       "Bash(git commit -m 'Changement de chambre : retire bouton jaune, met le 💡 '\\\\''draps sales'\\\\'' en derniere ligne du Conseils *)",
       "Bash(git commit -m 'Changement de lit : 1 bloc Conseils + 3 boutons mutex violets \\(Cododo->barreau rempli, 2 autres en placeholder\\) *)",
-      "Bash(git commit -m 'Changement de lit OPTION 3 : Lit sol => lit barreaux \\(contenu rempli\\) *)"
+      "Bash(git commit -m 'Changement de lit OPTION 3 : Lit sol => lit barreaux \\(contenu rempli\\) *)",
+      "Bash(git commit -m 'V. Diagnostic env : nouveau item '\\\\''Souhait d'\\\\''un lit ouvert mais trop petit'\\\\'' \\(< 2 ans\\) *)",
+      "Bash(git commit -m 'Souhait lit ouvert jeune : inverse les emoticones \\(Rester=✅ positive, Aller=❌ negative\\) *)",
+      "Bash(git commit -m 'Nouvelle pb '\\\\''souhait_lit_ouvert_jeune'\\\\'' \\(sous Env de sommeil\\) *)"
     ]
   }
 }
