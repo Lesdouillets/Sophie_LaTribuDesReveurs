@@ -4713,7 +4713,7 @@
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_cadre"> <span>Cadre non clair</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_stimulations"> <span>Stimulations visuelles</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_ecrans"> <span>Ecrans</span></label>
-                  <label class="pb-item"><input type="checkbox" name="pb" value="souhait_lit_ouvert_jeune"> <span>Souhait d'un lit ouvert mais trop petit</span></label>
+                  <label class="pb-item" data-hide-if-age-min="24"><input type="checkbox" name="pb" value="souhait_lit_ouvert_jeune"> <span>Souhait d'un lit ouvert mais trop petit</span></label>
                 </div>
               </div>
               <div class="pb-category">
@@ -7079,6 +7079,8 @@ function computeClientFields() {
   updateDiversifN1Visibility();
   // Masquer "Lit ouvert trop tôt" dans les 3 containers si ≥ 3 ans
   if (typeof applyEnvLitOuvertVisibility === 'function') applyEnvLitOuvertVisibility();
+  // Masquer les pbs avec data-hide-if-age-min/max selon l'âge
+  if (typeof syncPbsAgeVisibility === 'function') syncPbsAgeVisibility();
   // Auto-sauvegarde silencieuse (debounced 600ms) pour persister les champs fiche
   if (typeof autoSaveFiche === 'function') autoSaveFiche();
 }
@@ -10670,6 +10672,8 @@ function clonePbGridFor(targetId, cbClass, onchangeFunc) {
   initPbCategoryToggles();
   // Appliquer la visibilité de "Lit ouvert trop tôt" selon l'âge (≥ 3 ans → masqué)
   applyEnvLitOuvertVisibility();
+  // Appliquer la visibilité générique des pbs avec data-hide-if-age-min/max
+  if (typeof syncPbsAgeVisibility === 'function') syncPbsAgeVisibility();
 }
 
 function buildModalPbList() {
@@ -11547,6 +11551,22 @@ function updateDiagLeviersCount() {
       listEl.innerHTML = checkedCats.map(name => `<li>${name}</li>`).join('');
     }
   }
+}
+
+// Cache les .pb-item ayant data-hide-if-age-min/max selon l'âge effectif (corrigé sinon réel)
+// → utilisé pour masquer des pbs non pertinentes par âge dans la fiche client, modal et clone V. Diagnostic
+function syncPbsAgeVisibility() {
+  const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
+  document.querySelectorAll('.pb-item[data-hide-if-age-min]').forEach(el => {
+    const minAge = parseInt(el.dataset.hideIfAgeMin, 10);
+    if (isNaN(minAge)) return;
+    el.style.display = (age != null && age >= minAge) ? 'none' : '';
+  });
+  document.querySelectorAll('.pb-item[data-hide-if-age-max]').forEach(el => {
+    const maxAge = parseInt(el.dataset.hideIfAgeMax, 10);
+    if (isNaN(maxAge)) return;
+    el.style.display = (age != null && age <= maxAge) ? 'none' : '';
+  });
 }
 
 // Sync le surlignage vert sur fiche client
