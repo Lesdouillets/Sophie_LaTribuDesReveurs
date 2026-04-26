@@ -9665,15 +9665,23 @@ function renderSolutionsCheckboxes() {
 function syncSolutionsFromPbs() {
   const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
   if (!state.selectedSolutions) state.selectedSolutions = new Set();
+  if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
   sols.forEach(cat => {
     (cat.children || []).forEach(ch => {
       const pbs = Array.isArray(ch.autoCheckIfPbs) ? ch.autoCheckIfPbs : [];
       // Pas de pb associée définie → solution gérée manuellement uniquement, ne pas toucher
       if (pbs.length === 0) return;
-      const shouldCheck = pbs.some(p => state.selectedPbs.has(p));
-      // Lien bidirectionnel strict : la solution suit l'état des pbs dans les 2 sens
-      if (shouldCheck) state.selectedSolutions.add(ch.id);
-      else state.selectedSolutions.delete(ch.id);
+      const shouldCheck = pbs.some(p => state.selectedPbs && state.selectedPbs.has(p));
+      // Lien bidirectionnel strict si pb sélectionnée : pb cochée → solution forcée cochée
+      // (l'utilisateur ne peut pas décocher manuellement tant que la pb est sélectionnée)
+      if (shouldCheck) {
+        state.selectedSolutions.add(ch.id);
+      } else if (!state.selectedSolutionsManuallyEdited.has(ch.id)) {
+        // Aucune pb sélectionnée ET pas d'édition manuelle → auto-décocher
+        // (préserve la suppression auto quand l'utilisateur décoche la pb)
+        state.selectedSolutions.delete(ch.id);
+      }
+      // Sinon : aucune pb sélectionnée + édition manuelle → respecter le choix utilisateur
     });
   });
 }
