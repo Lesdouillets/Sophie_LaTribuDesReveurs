@@ -9559,17 +9559,20 @@ function renderSolutionsCheckboxes() {
           opts.map(o => `<label style="display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer"><input type="radio" name="sol-tetine-sub" value="${o.val}" ${tchoice===o.val?'checked':''} onchange="setTickboxChoiceFromSol('strategie_tetine_choice','${o.val}')"> ${o.label}</label>`).join('') +
           `</div>`;
       }
-      // Sous-options pour Chambre / Lit : checkboxes reflétant state.courbeCardsTicked
-      // (état partagé avec la grid V. Diagnostic env et la grid Plan d'action env)
-      if (ch.id === 'env_chambre' || ch.id === 'env_lit_card') {
-        const findGridBlock = (blocks) => {
-          if (!Array.isArray(blocks)) return null;
-          for (const b of blocks) {
-            if (b && b.type === 'courbe_cards_grid' && Array.isArray(b.items)) return b;
-          }
-          return null;
-        };
-        const gridBlock = findGridBlock(ch.blocks);
+      // Sous-options : checkboxes reflétant state.courbeCardsTicked
+      // S'applique à toute solution (ch) ayant un courbe_cards_grid avec alwaysShowAll
+      // dans ses blocks (Chambre, Lit, Enfant + 2,5 ans, etc.)
+      // → on évite d'afficher des sous-checkboxes pour des grids non-pertinents (ex. conf_rgo)
+      const findGridBlock = (blocks) => {
+        if (!Array.isArray(blocks)) return null;
+        for (const b of blocks) {
+          if (b && b.type === 'courbe_cards_grid' && b.alwaysShowAll && Array.isArray(b.items)) return b;
+        }
+        return null;
+      };
+      const gridBlockOnCh = findGridBlock(ch.blocks);
+      if (gridBlockOnCh) {
+        const gridBlock = gridBlockOnCh;
         const gridItems = gridBlock ? gridBlock.items : [];
         const alwaysAll = !!(gridBlock && gridBlock.alwaysShowAll);
         // Filtre d'âge (showIfAgeMinMonths/Max) — utilise âge corrigé si dispo, sinon réel
