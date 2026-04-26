@@ -119,7 +119,9 @@
       "Bash(git commit -m 'Tickbox-choices : texte/question reste visible apres selection \\(re-clicker possible\\) *)",
       "Bash(git commit -m 'Lit \\(solutions\\) : supprime sous-item env_lit \\(Lit ouvert trop tot\\) *)",
       "Bash(git commit -m 'Hauteur sommier : retire la limite max d'\\\\''age \\(visible des 7 mois sans limite haute\\) *)",
-      "Bash(git commit -m 'Renomme '\\\\''Enfant + 2,5 ans'\\\\'' -> '\\\\''Enfant + 18 mois'\\\\'' + visible des 18 mois *)"
+      "Bash(git commit -m 'Renomme '\\\\''Enfant + 2,5 ans'\\\\'' -> '\\\\''Enfant + 18 mois'\\\\'' + visible des 18 mois *)",
+      "Bash(git commit -m 'Restructure Changement de lit + lit+chambre en sous-cartes \\(courbe_cards_grid\\) *)",
+      "Bash(git commit -m 'Preserver l'\\\\''etat '\\\\''open'\\\\'' des options apres re-render lie a un clic tickbox *)"
     ]
   }
 }
