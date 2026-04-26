@@ -8888,16 +8888,17 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       });
       return min === Infinity ? 1e9 : min;
     };
-    const visibleItems = items.filter(it => {
-      // alwaysShowAll : flag sur le bloc → affiche tous les items, indépendamment des pbs
-      // (utilisé dans Plan d'action env_chambre/env_lit_card pour permettre de cocher
-      //  un levier env oublié dans la fiche client)
-      if (b.alwaysShowAll) return true;
-      // Si aucun pb n'est défini, on affiche toujours l'item (utilisé dans les cards de solutions)
-      if (!it.pb) return true;
-      const pbs = Array.isArray(it.pb) ? it.pb : [it.pb];
-      return pbs.some(p => state.selectedPbs.has(p));
-    }).sort((a, b) => itemMinOrderIdx(a) - itemMinOrderIdx(b));
+    const visibleItems = b.alwaysShowAll
+      // Plan d'action env_chambre/env_lit_card : afficher uniquement les items
+      // dont la sous-checkbox du compact list est cochée (state.courbeCardsTicked).
+      // Ordre = ordre du fichier script-data (pas de tri par pb).
+      ? items.filter(it => state.courbeCardsTicked && state.courbeCardsTicked.has(it.id))
+      // V. Diagnostic env grid (et autres) : filtre par pb sélectionnée + tri par ordre du modal
+      : items.filter(it => {
+          if (!it.pb) return true;
+          const pbs = Array.isArray(it.pb) ? it.pb : [it.pb];
+          return pbs.some(p => state.selectedPbs.has(p));
+        }).sort((a, b) => itemMinOrderIdx(a) - itemMinOrderIdx(b));
     if (visibleItems.length === 0) return '';
     const gridPath = `${sectionId||'x'}__${path||'main'}`;
     const activeId = state.courbeCardsActiveByGrid[gridPath] || null;
