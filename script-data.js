@@ -2671,6 +2671,30 @@ const SCRIPT_DATA = {
               }
             ]
           },
+          { id: "env_changement", label: "Changement", cardLabel: "Changement", cardEmoji: "🔄",
+            autoCheckIfPbs: ["souhait_changement_lit", "souhait_changement_chambre", "souhait_changement_lit_chambre"],
+            blocks: [
+              {
+                type: "courbe_cards_grid",
+                theme: "violet",
+                alwaysShowAll: true,
+                items: [
+                  { id: "env_chgmt_lit", emoji: "🛏", label: "Changement de lit", pb: "souhait_changement_lit", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
+                    { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
+                  ] },
+                  { id: "env_chgmt_chambre", emoji: "🚪", label: "Changement de chambre", pb: "souhait_changement_chambre", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
+                    { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
+                  ] },
+                  { id: "env_chgmt_lit_chambre", emoji: "🔄", label: "Changement de lit + chambre", pb: "souhait_changement_lit_chambre", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
+                    { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
+                  ] },
+                ]
+              }
+            ]
+          },
           { id: "env_enfant_plus_25", label: "Enfant + 2,5 ans", cardLabel: "Enfant + 2,5 ans", cardEmoji: "🧒",
             showIfAgeMinMonths: 30,
             blocks: [
