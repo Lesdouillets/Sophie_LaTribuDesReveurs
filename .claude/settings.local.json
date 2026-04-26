@@ -78,7 +78,11 @@
       "Bash(git commit -m 'Sub-checkbox manualEdit override : clic manuel non ecrase par sync pbs *)",
       "Bash(git commit -m 'Modal pb : applyPbChanges declenche aussi syncSolutionsFromPbs + updateSolutionsModal *)",
       "Bash(git commit -m 'Clear manualEdit lie a la pb qui change → sync auto reprend la main *)",
-      "Bash(git commit -m 'Chambre items : Temperature + Stimulations remplis, Rituel+Cadre supprimes, +3 nouveaux *)"
+      "Bash(git commit -m 'Chambre items : Temperature + Stimulations remplis, Rituel+Cadre supprimes, +3 nouveaux *)",
+      "Bash(git commit -m 'Plan de change : cache si enfant < 7 mois \\(age corrige sinon reel\\) *)",
+      "Bash(git commit -m 'Lit : ajoute Doudou \\(>=3 mois\\), Tresse de tour de lit, Positionnement du lit *)",
+      "Bash(git commit -m 'Lit : ajoute Hauteur sommier \\(7-29 mois\\) + Pas de couverture \\(<= 29 mois\\) *)",
+      "Bash(git commit -m 'Nouvelle section solution '\\\\''Enfant + 2,5 ans'\\\\'' \\(cachee si age < 30 mois\\) *)"
     ]
   }
 }
