@@ -100,7 +100,9 @@
       "Bash(git commit -m 'Changement lit + chambre Conseils : retire lignes vides + 1 ligne vide apres '\\\\''Monter son nouveau lit'\\\\'' *)",
       "Bash(git commit -m 'Changement de chambre : 1 bloc Conseils \\(Pourquoi supprime, OPTION purple inline, conditionnel allaitement, +bouton drap sales\\) *)",
       "Bash(git commit -m 'Changement lit + chambre : retire bouton jaune Rassurer, met le 💡 en derniere ligne dans les 2 options *)",
-      "Bash(git commit -m 'Changement de chambre : retire bouton jaune, met le 💡 '\\\\''draps sales'\\\\'' en derniere ligne du Conseils *)"
+      "Bash(git commit -m 'Changement de chambre : retire bouton jaune, met le 💡 '\\\\''draps sales'\\\\'' en derniere ligne du Conseils *)",
+      "Bash(git commit -m 'Changement de lit : 1 bloc Conseils + 3 boutons mutex violets \\(Cododo->barreau rempli, 2 autres en placeholder\\) *)",
+      "Bash(git commit -m 'Changement de lit OPTION 3 : Lit sol => lit barreaux \\(contenu rempli\\) *)"
     ]
   }
 }
