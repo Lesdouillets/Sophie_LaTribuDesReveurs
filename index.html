@@ -9562,20 +9562,15 @@ function renderSolutionsCheckboxes() {
 function syncSolutionsFromPbs() {
   const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
   if (!state.selectedSolutions) state.selectedSolutions = new Set();
-  if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
   sols.forEach(cat => {
     (cat.children || []).forEach(ch => {
       const pbs = Array.isArray(ch.autoCheckIfPbs) ? ch.autoCheckIfPbs : [];
+      // Pas de pb associée définie → solution gérée manuellement uniquement, ne pas toucher
+      if (pbs.length === 0) return;
       const shouldCheck = pbs.some(p => state.selectedPbs.has(p));
-      if (shouldCheck) {
-        // Auto-check TOUJOURS quand une pb associée est cochée (le lien pb → solution est garanti)
-        state.selectedSolutions.add(ch.id);
-      } else {
-        // Pas de pb associée cochée : ne décoche QUE si l'utilisateur n'a pas explicitement coché manuellement
-        if (!state.selectedSolutionsManuallyEdited.has(ch.id)) {
-          state.selectedSolutions.delete(ch.id);
-        }
-      }
+      // Lien bidirectionnel strict : la solution suit l'état des pbs dans les 2 sens
+      if (shouldCheck) state.selectedSolutions.add(ch.id);
+      else state.selectedSolutions.delete(ch.id);
     });
   });
 }
