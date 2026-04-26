@@ -10945,17 +10945,21 @@ function selectTickboxChoice(el) {
   }
   // env_souhait_lit_ouvert_jeune_choice → souhait_changement_lit (cocher si "aller", décocher sinon)
   // → cascade : env_chgmt_lit (sous-checkbox Changement de lit) auto-cochée
+  // → AUSSI : auto-coche la sous-sous-carte env_chgmt_lit_barreau_ouvert dans courbeCardsTicked
   // souhait_lit_ouvert_jeune reste cochée dans tous les cas (la carte V. Diagnostic reste visible
   // → l'utilisatrice peut re-cliquer 'aller' / 'rester' à volonté)
   // Mutex : si on coche "aller", on décoche les autres souhait_changement_* (pas souhait_lit_ouvert_jeune)
   if (cid === 'env_souhait_lit_ouvert_jeune_choice') {
     const currentValue = wasSelected ? null : el.dataset.value;
+    if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
     if (currentValue === 'aller') {
       setPb('souhait_changement_chambre', false);
       setPb('souhait_changement_lit_chambre', false);
       setPb('souhait_changement_lit', true);
+      state.courbeCardsTicked.add('env_chgmt_lit_barreau_ouvert');
     } else {
       setPb('souhait_changement_lit', false);
+      state.courbeCardsTicked.delete('env_chgmt_lit_barreau_ouvert');
     }
     syncChanged = true;
   }

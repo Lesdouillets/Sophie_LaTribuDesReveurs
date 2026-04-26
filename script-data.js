@@ -2686,49 +2686,37 @@ const SCRIPT_DATA = {
                 alwaysShowAll: true,
                 items: [
                   { id: "env_chgmt_lit", emoji: "🛏", label: "Changement de lit", pb: ["souhait_changement_lit", "souhait_lit_ouvert_jeune"], blocks: [
-                    { type: "normal", _leftTitle: "Conseils",
-                      text: "",
-                      embeddedActions: [
-                        {
-                          label: "OPTION : Cododo ⇒ Lit à barreaux", emoji: "🛏", style: "purple", _pillStyle: true, mutexGroup: "chgmt-lit-options",
-                          blocks: [
-                            { type: "normal",
-                              text: "- Si v**ous souhaitez** le passer **de son cododo** ⇒ à son **lit à barreaux / parapluie**\n- Je vous invite à :\n  - d'une part, à **fermer le cododo** quand il dort actuellement… **si ce n'est déjà fait**\n  - **dormir avec ses nouveaux draps**, pour **garder des repères olfactifs**\n  - lui **montrer son lit** avec beaucoup de **joie**\n  - lui **verbaliser souvent** que *« c'est ici qu'il a dormir, parce que **c'est un grand** maintenant ! »*\n  - Vous pouvez aussi **[LE_LA] mettre dans son lit**, durant ses **temps d'éveil** pour qu'il se **familiarise avec les lieux**\n\n- 💡 N'hésitez pas **les 1ers jours**, à **vous écouter**, et le **prendre dans les bras** pour le **rassurer dans ce nouvel environnement**\n\n"
+                    {
+                      type: "courbe_cards_grid",
+                      theme: "violet",
+                      items: [
+                        { id: "env_chgmt_lit_cododo_barreau", emoji: "🛏", label: "Cododo ⇒ Lit à barreaux", blocks: [
+                          { type: "normal", text: "- Si v**ous souhaitez** le passer **de son cododo** ⇒ à son **lit à barreaux / parapluie**\n- Je vous invite à :\n  - d'une part, à **fermer le cododo** quand il dort actuellement… **si ce n'est déjà fait**\n  - **dormir avec ses nouveaux draps**, pour **garder des repères olfactifs**\n  - lui **montrer son lit** avec beaucoup de **joie**\n  - lui **verbaliser souvent** que *« c'est ici qu'il a dormir, parce que **c'est un grand** maintenant ! »*\n  - Vous pouvez aussi **[LE_LA] mettre dans son lit**, durant ses **temps d'éveil** pour qu'il se **familiarise avec les lieux**\n\n- 💡 N'hésitez pas **les 1ers jours**, à **vous écouter**, et le **prendre dans les bras** pour le **rassurer dans ce nouvel environnement**\n\n" }
+                        ] },
+                        { id: "env_chgmt_lit_barreau_ouvert", emoji: "🛌", label: "Lit à barreaux ⇒ Lit ouvert", blocks: [
+                          { type: "normal", text: "", embeddedActions: [
+                            {
+                              label: "Si souhait dès maintenant", emoji: "🛌", style: "purple", _pillStyle: true, mutexGroup: "chgmt-lit-bo-sub",
+                              blocks: [
+                                { type: "normal",
+                                  text: "- Vous m'avez dit que vous **souhaitez passer à un lit de grand** dès **maintenant**\n- Je vous conseille de :\n  - quand même **garder son lit à barreaux** (ou lit parapluie) **dans sa chambre** pour **lui donner** la **possibilité de choisir** ET de **revenir** dedans **si** le **changement est trop rapide** pour lui\n  - Je vous invite à **rendre son nouveau lit** le + **agréable possible**\n    - Avec des **nouveaux draps** qu'il **pourra choisir** + n'hésitez pas à **dormir avec** pour **mettre votre odeur**\n    - Avec un **nouveau pyjama de grand** !\n[if_age_min:12]\n    - **OPTION : Si il a + d'1 an**\n      - Vous pouvez aussi mettre un **coussin d'allaitement** pour garder ce côté « nichage »\n      - Si c'est un **lit cabane**, vous pouvez **mettre des rideaux au dessus** pour le côté « cocon » (⚠️ que les rideaux ne puissent pas être tirés)\n      - ⚠️ Attention, à cet **âge encore jeune**, la **multiplication d'éléments DANS et AUTOUR** du lit, **augmente** les **risques d'étouffement**\n[/if_age_min]\n  - Cependant, je vous **DÉCONSEILLE** l'**utilisation** de **couette ou couverture** :\n    - **Avant l'âge de 2,5-3 ans**, un enfant n'a **pas la maturité suffisante** pour **remettre** la couette **s'il a froid**\n      ⇒ il va donc **vous appeler** pour la remettre\n    - De plus, ce **type d'élément**… **augmente** le **risque d'étouffement**\n      ⇒ **À la place**, je vous **conseillerai** plutôt une **gigoteuse** ou un **sur-pyjama** avec des jambes\n\n- 💡 Si il a la **possibilité de tomber de son lit**, vous pouvez **installer une couette d'invités** sur le sol pour **amortir la chute au cas où**\n\n"
+                                }
+                              ]
+                            },
+                            {
+                              label: "Si > 2,5 ans", emoji: "🛌", style: "purple", _pillStyle: true, mutexGroup: "chgmt-lit-bo-sub",
+                              showIfAgeMinMonths: 30,
+                              blocks: [
+                                { type: "normal",
+                                  text: "- La **transition vers un lit de grand** est une **étape importante** pour un enfant\n- **mais** elle peut **aussi** être **source d'inquiétudes**\n\n- Je vous conseille de :\n  - quand même **garder son lit à barreaux** (ou lit parapluie) **dans sa chambre** pour **lui donner** la **possibilité de choisir** ET de **revenir** dedans **si** le **changement est trop rapide** pour lui\n  - Je vous invite à **rendre son nouveau lit** le **+ agréable possible**\n    - Avec des **nouveaux draps** qu'il **pourra choisir** + n'hésitez pas à **dormir avec** pour **mettre votre odeur**\n    - Avec un **nouveau pyjama de grand** !\n    - Vous pouvez aussi mettre un **coussin d'allaitement** pour garder ce côté « nichage »\n    - Si c'est un **lit cabane**, n'hésitez pas à **mettre des rideaux au dessus** pour le côté « cocon » (⚠️ que les rideaux ne puissent pas être tirés)\n\n  - 💡 S'il a la **possibilité de tomber de son lit**, vous pouvez **installer une couette d'invités** sur le sol pour **amortir la chute au cas où**\n\n  - Je vous conseille aussi d'**avoir des « options »** SI [prénom_enfant] **sort de sa chambre** !\n    - Car c'est **possible que ça arrive**… et ça peut être **potentiellement dangereux** si elle se **balade dans toute la maison** !\n    - ⇒ Je pense, par exemple :\n      - à une petite **chainette sur la porte**\n      - à mettre une barrière d'escalier :\n        - soit devant **sa porte**\n        - soit devant **d'autres portes** où vous ne **voulez pas qu'elle accède** *(ex : cuisine, garage…)*\n      - ou fermer sa porte à clé\n    - ⇒ **ce sont des idées**, je vous **laisse réfléchir** à ce qui **pourrait vous convenir le +**\n\n"
+                                }
+                              ]
                             }
-                          ]
-                        },
-                        {
-                          label: "OPTION : Lit à barreaux ⇒ Lit ouvert", emoji: "🛌", style: "purple", _pillStyle: true, mutexGroup: "chgmt-lit-options",
-                          blocks: [
-                            { type: "normal", text: "", embeddedActions: [
-                              {
-                                label: "Si souhait dès maintenant", emoji: "🛌", style: "purple", _pillStyle: true, mutexGroup: "chgmt-lit-opt2-sub",
-                                blocks: [
-                                  { type: "normal",
-                                    text: "- Vous m'avez dit que vous **souhaitez passer à un lit de grand** dès **maintenant**\n- Je vous conseille de :\n  - quand même **garder son lit à barreaux** (ou lit parapluie) **dans sa chambre** pour **lui donner** la **possibilité de choisir** ET de **revenir** dedans **si** le **changement est trop rapide** pour lui\n  - Je vous invite à **rendre son nouveau lit** le + **agréable possible**\n    - Avec des **nouveaux draps** qu'il **pourra choisir** + n'hésitez pas à **dormir avec** pour **mettre votre odeur**\n    - Avec un **nouveau pyjama de grand** !\n[if_age_min:12]\n    - **OPTION : Si il a + d'1 an**\n      - Vous pouvez aussi mettre un **coussin d'allaitement** pour garder ce côté « nichage »\n      - Si c'est un **lit cabane**, vous pouvez **mettre des rideaux au dessus** pour le côté « cocon » (⚠️ que les rideaux ne puissent pas être tirés)\n      - ⚠️ Attention, à cet **âge encore jeune**, la **multiplication d'éléments DANS et AUTOUR** du lit, **augmente** les **risques d'étouffement**\n[/if_age_min]\n  - Cependant, je vous **DÉCONSEILLE** l'**utilisation** de **couette ou couverture** :\n    - **Avant l'âge de 2,5-3 ans**, un enfant n'a **pas la maturité suffisante** pour **remettre** la couette **s'il a froid**\n      ⇒ il va donc **vous appeler** pour la remettre\n    - De plus, ce **type d'élément**… **augmente** le **risque d'étouffement**\n      ⇒ **À la place**, je vous **conseillerai** plutôt une **gigoteuse** ou un **sur-pyjama** avec des jambes\n\n- 💡 Si il a la **possibilité de tomber de son lit**, vous pouvez **installer une couette d'invités** sur le sol pour **amortir la chute au cas où**\n\n"
-                                  }
-                                ]
-                              },
-                              {
-                                label: "Si > 2,5 ans", emoji: "🛌", style: "purple", _pillStyle: true, mutexGroup: "chgmt-lit-opt2-sub",
-                                showIfAgeMinMonths: 30,
-                                blocks: [
-                                  { type: "normal",
-                                    text: "- La **transition vers un lit de grand** est une **étape importante** pour un enfant\n- **mais** elle peut **aussi** être **source d'inquiétudes**\n\n- Je vous conseille de :\n  - quand même **garder son lit à barreaux** (ou lit parapluie) **dans sa chambre** pour **lui donner** la **possibilité de choisir** ET de **revenir** dedans **si** le **changement est trop rapide** pour lui\n  - Je vous invite à **rendre son nouveau lit** le **+ agréable possible**\n    - Avec des **nouveaux draps** qu'il **pourra choisir** + n'hésitez pas à **dormir avec** pour **mettre votre odeur**\n    - Avec un **nouveau pyjama de grand** !\n    - Vous pouvez aussi mettre un **coussin d'allaitement** pour garder ce côté « nichage »\n    - Si c'est un **lit cabane**, n'hésitez pas à **mettre des rideaux au dessus** pour le côté « cocon » (⚠️ que les rideaux ne puissent pas être tirés)\n\n  - 💡 S'il a la **possibilité de tomber de son lit**, vous pouvez **installer une couette d'invités** sur le sol pour **amortir la chute au cas où**\n\n  - Je vous conseille aussi d'**avoir des « options »** SI [prénom_enfant] **sort de sa chambre** !\n    - Car c'est **possible que ça arrive**… et ça peut être **potentiellement dangereux** si elle se **balade dans toute la maison** !\n    - ⇒ Je pense, par exemple :\n      - à une petite **chainette sur la porte**\n      - à mettre une barrière d'escalier :\n        - soit devant **sa porte**\n        - soit devant **d'autres portes** où vous ne **voulez pas qu'elle accède** *(ex : cuisine, garage…)*\n      - ou fermer sa porte à clé\n    - ⇒ **ce sont des idées**, je vous **laisse réfléchir** à ce qui **pourrait vous convenir le +**\n\n"
-                                  }
-                                ]
-                              }
-                            ] }
-                          ]
-                        },
-                        {
-                          label: "OPTION : Lit sol ⇒ lit barreaux", emoji: "🔙", style: "purple", _pillStyle: true, mutexGroup: "chgmt-lit-options",
-                          blocks: [
-                            { type: "normal",
-                              text: "- Le **passage d'un lit ouvert** ⇒ vers **un lit à barreaux**, ne doit **PAS être vécu** comme **une régression**\n- C'est souvent **un passage transitoire**, le **temps** que le **sommeil s'apaise**\n- Il sera **tout à fait possible** de **revenir à un lit ouvert + tard** !\n\n---\n\n- **Si** vous **devez revenir à un lit à barreaux**, je vous conseille de **faire de ce changement une fête** :\n  - De **montrer de la joie** QUAND **vous allez re-monter** son lit\n  - vous pouvez aussi lui proposer un **nouveau Doudou** que votre enfant pourrait choisir\n  - vous pouvez également **investir** dans de **nouveaux draps**, un **nouveau pyjama**… qui là aussi, pourrait être choisi par votre enfant\n\n---\n\n- Il **faut savoir** que **beaucoup d'enfants apprécient** de **revenir** à un **lit + sécurisant** pour eux !\n\n"
-                            }
-                          ]
-                        }
+                          ] }
+                        ] },
+                        { id: "env_chgmt_lit_sol_barreau", emoji: "🔙", label: "Lit sol ⇒ lit barreaux", blocks: [
+                          { type: "normal", text: "- Le **passage d'un lit ouvert** ⇒ vers **un lit à barreaux**, ne doit **PAS être vécu** comme **une régression**\n- C'est souvent **un passage transitoire**, le **temps** que le **sommeil s'apaise**\n- Il sera **tout à fait possible** de **revenir à un lit ouvert + tard** !\n\n---\n\n- **Si** vous **devez revenir à un lit à barreaux**, je vous conseille de **faire de ce changement une fête** :\n  - De **montrer de la joie** QUAND **vous allez re-monter** son lit\n  - vous pouvez aussi lui proposer un **nouveau Doudou** que votre enfant pourrait choisir\n  - vous pouvez également **investir** dans de **nouveaux draps**, un **nouveau pyjama**… qui là aussi, pourrait être choisi par votre enfant\n\n---\n\n- Il **faut savoir** que **beaucoup d'enfants apprécient** de **revenir** à un **lit + sécurisant** pour eux !\n\n" }
+                        ] }
                       ]
                     }
                   ] },
@@ -2737,26 +2725,22 @@ const SCRIPT_DATA = {
                       text: "…Pour le **passage vers sa chambre**\n\n- Je vous **invite à commencer** par :\n<div style=\"background:#f5f0ff;border:3px dashed #a78bfa;border-radius:16px;padding:14px 20px;margin:10px 0;box-shadow:0 2px 8px rgba(167,139,250,0.18)\"><strong>OPTION :</strong> fermer le cododo</div>\n- **Éloigner SON** lit de VOTRE lit, toujours dans votre chambre[if_alim:Allaitement au sein,Allaitement au biberon,Allaitement mixte]\n  - et notamment **LOIN de la Maman**, pour les **odeurs de lait**[/if_alim]\n- **En parallèle**, je vous encourage à **« apprivoiser » la chambre**, pour qu'elle soit :\n  - un lieu **connu et apprécié**\n    ⇒ N'hésitez à **jouer dans la chambre** durant les **temps d'éveil** pour qu'elle ne soit **PAS** SEULEMENT **liée au sommeil**\n- Ensuite, vous pourrez **mettre le lit dans SA chambre**\n\n- 💡 Je vous conseille de **garder les draps « sales »**, pour **maintenir des repères olfactifs**\n\n"
                     }
                   ] },
-                  { id: "env_chgmt_lit_chambre", emoji: "🔄", label: "Changement de lit + chambre", pb: "souhait_changement_lit_chambre", blocks: [
+                  { id: "env_chgmt_lit_chambre", emoji: "🔄", label: "Changement de lit + chambre (cododo ⇒ lit barreaux)", pb: "souhait_changement_lit_chambre", blocks: [
                     { type: "normal", _leftTitle: "Conseils",
-                      text: "- Si vous voulez faire la transition :\n  - vers un nouveau lit\n  - ET une nouvelle chambre\n- Je vous **invite à commencer par** :\n<div style=\"background:#f5f0ff;border:3px dashed #a78bfa;border-radius:16px;padding:14px 20px;margin:10px 0;box-shadow:0 2px 8px rgba(167,139,250,0.18)\"><strong>OPTION :</strong> fermer le cododo</div>\n- Monter **son nouveau lit** dans **VOTRE chambre**\n\n",
-                      embeddedActions: [
-                        {
-                          label: "OPTION : Si PAS de place de le monter", emoji: "🚫", style: "action", _pillStyle: true, mutexGroup: "chgmt-lit-chambre-place",
-                          blocks: [
-                            { type: "normal",
-                              text: "- Vous pouvez directement **monter son lit** dans SA **nouvelle chambre**\n- Je vous encourage néanmoins à :\n  - **dormir avec ses nouveaux draps** ⇒ pour **garder des repères olfactifs**\n  - lui **montrer son lit** avec beaucoup de **joie**\n  - lui **verbaliser souvent** que *« c'est **ici qu'il a dormir**, parce que **c'est un grand** maintenant ! »*\n  - Vous pouvez aussi **[LE_LA] mettre dans son lit**, durant ses **temps d'éveil** ⇒ pour qu'il se **familiarise avec les lieux**, en le stimulant\n\n- 💡 N'hésitez pas **les 1ers jours**, à **vous écouter**, et le **prendre dans les bras** pour le **RASSURER dans ce nouvel environnement**\n\n"
-                            }
-                          ]
-                        },
-                        {
-                          label: "OPTION : Si la place de le monter", emoji: "✅", style: "action-green", _pillStyle: true, mutexGroup: "chgmt-lit-chambre-place",
-                          blocks: [
-                            { type: "normal", text: "- Je vous encourage à :\n  - **dormir avec ses nouveaux draps**, pour **garder des repères olfactifs**\n  - lui **montrer son lit** avec beaucoup de **joie**\n  - lui **verbaliser souvent** que *« c'est **ici qu'il a dormir**, parce que **c'est un grand** maintenant ! »*\n  - Vous pouvez aussi **[LE_LA] mettre dans son lit**, durant ses **temps d'éveil** pour qu'il se **familiarise avec les lieux**, en le stimulant\n- Ensuite, **éloignez** physiquement **SON nouveau lit** de VOTRE lit, si vous avez la place" },
-                            { type: "normal", showIfAlim: ["Allaitement au sein", "Allaitement au biberon", "Allaitement mixte"], text: "  - et notamment **LOIN de la Maman**, pour les **odeurs de lait**" },
-                            { type: "normal", text: "- **En parallèle**, je vous encourage à **« apprivoiser » SA chambre**, pour qu'elle soit :\n  - un lieu **connu et apprécié**\n    ⇒ N'hésitez à **jouer dans la chambre** durant les **temps d'éveil** ⇒ pour qu'elle ne soit **PAS** SEULEMENT **liée au sommeil**\n- Enfin, vous pouvez **passer [prénom_enfant] dans sa chambre**\n\n- 💡 N'hésitez pas **les 1ers jours**, à **vous écouter**, et le **prendre dans les bras** pour le **RASSURER dans ce nouvel environnement**\n\n" }
-                          ]
-                        }
+                      text: "- Si vous voulez faire la transition :\n  - vers un nouveau lit\n  - ET une nouvelle chambre\n- Je vous **invite à commencer par** :\n<div style=\"background:#f5f0ff;border:3px dashed #a78bfa;border-radius:16px;padding:14px 20px;margin:10px 0;box-shadow:0 2px 8px rgba(167,139,250,0.18)\"><strong>OPTION :</strong> fermer le cododo</div>\n- Monter **son nouveau lit** dans **VOTRE chambre**\n\n"
+                    },
+                    {
+                      type: "courbe_cards_grid",
+                      theme: "violet",
+                      items: [
+                        { id: "env_chgmt_lc_no_place", emoji: "🚫", label: "Si PAS de place de le monter", blocks: [
+                          { type: "normal", text: "- Vous pouvez directement **monter son lit** dans SA **nouvelle chambre**\n- Je vous encourage néanmoins à :\n  - **dormir avec ses nouveaux draps** ⇒ pour **garder des repères olfactifs**\n  - lui **montrer son lit** avec beaucoup de **joie**\n  - lui **verbaliser souvent** que *« c'est **ici qu'il a dormir**, parce que **c'est un grand** maintenant ! »*\n  - Vous pouvez aussi **[LE_LA] mettre dans son lit**, durant ses **temps d'éveil** ⇒ pour qu'il se **familiarise avec les lieux**, en le stimulant\n\n- 💡 N'hésitez pas **les 1ers jours**, à **vous écouter**, et le **prendre dans les bras** pour le **RASSURER dans ce nouvel environnement**\n\n" }
+                        ] },
+                        { id: "env_chgmt_lc_with_place", emoji: "✅", label: "Si la place de le monter", blocks: [
+                          { type: "normal", text: "- Je vous encourage à :\n  - **dormir avec ses nouveaux draps**, pour **garder des repères olfactifs**\n  - lui **montrer son lit** avec beaucoup de **joie**\n  - lui **verbaliser souvent** que *« c'est **ici qu'il a dormir**, parce que **c'est un grand** maintenant ! »*\n  - Vous pouvez aussi **[LE_LA] mettre dans son lit**, durant ses **temps d'éveil** pour qu'il se **familiarise avec les lieux**, en le stimulant\n- Ensuite, **éloignez** physiquement **SON nouveau lit** de VOTRE lit, si vous avez la place" },
+                          { type: "normal", showIfAlim: ["Allaitement au sein", "Allaitement au biberon", "Allaitement mixte"], text: "  - et notamment **LOIN de la Maman**, pour les **odeurs de lait**" },
+                          { type: "normal", text: "- **En parallèle**, je vous encourage à **« apprivoiser » SA chambre**, pour qu'elle soit :\n  - un lieu **connu et apprécié**\n    ⇒ N'hésitez à **jouer dans la chambre** durant les **temps d'éveil** ⇒ pour qu'elle ne soit **PAS** SEULEMENT **liée au sommeil**\n- Enfin, vous pouvez **passer [prénom_enfant] dans sa chambre**\n\n- 💡 N'hésitez pas **les 1ers jours**, à **vous écouter**, et le **prendre dans les bras** pour le **RASSURER dans ce nouvel environnement**\n\n" }
+                        ] }
                       ]
                     }
                   ] },
