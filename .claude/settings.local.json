@@ -114,7 +114,8 @@
       "Bash(awk '/function onFicheClientPbChange/,/^}/' \"/c/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")",
       "Bash(git commit -m 'Sync solutions/sub-checkboxes immediat sur changement pb \\(fiche client + V. Diagnostic\\) *)",
       "Bash(git commit -m 'Fiche client env : '\\\\''Souhait d'\\\\''un lit ouvert'\\\\'' deplace juste sous '\\\\''Lit ouvert trop tot'\\\\'' *)",
-      "Bash(git commit -m 'Cocher '\\\\''Souhait d'\\\\''un lit ouvert'\\\\'' declenche cascade env_changement + env_chgmt_lit *)"
+      "Bash(git commit -m 'Cocher '\\\\''Souhait d'\\\\''un lit ouvert'\\\\'' declenche cascade env_changement + env_chgmt_lit *)",
+      "Bash(git commit -m 'Mutex souhait_changement_* : ajoute souhait_lit_ouvert_jeune au groupe + force mutex programmatique sur tickbox '\\\\''aller'\\\\'' *)"
     ]
   }
 }
