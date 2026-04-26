@@ -10991,9 +10991,23 @@ function selectTickboxChoice(el) {
     if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
   }
   if (syncChanged) {
+    // Capturer les options actuellement ouvertes (par label) pour les restaurer apres re-render
+    // → evite que les cartes/options se referment apres un clic tickbox
+    const openLabels = [...document.querySelectorAll('.block-option.open-action')]
+      .map(opt => opt.querySelector('.option-label-text')?.textContent || '')
+      .filter(Boolean);
     if (typeof buildSections === 'function') buildSections();
     if (typeof buildSidebar === 'function') buildSidebar();
     if (typeof renderCurrentSection === 'function') renderCurrentSection();
+    // Restaurer les options qui etaient ouvertes
+    if (openLabels.length) {
+      setTimeout(() => {
+        document.querySelectorAll('.block-option').forEach(opt => {
+          const lbl = opt.querySelector('.option-label-text')?.textContent || '';
+          if (lbl && openLabels.includes(lbl)) opt.classList.add('open-action');
+        });
+      }, 0);
+    }
   }
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
   // Détection de conflit entre les choix tétine (garder/supprimer)
