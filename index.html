@@ -7798,7 +7798,9 @@ function buildSidebarPbPanel() {
     {value:'env_obscurite',label:'🌑 Obscurité'},{value:'env_temperature',label:'🌡️ Température'},{value:'env_lit_ouvert',label:'🛏️ Lit ouvert'},{value:'env_rituel',label:'🌙 Rituel'},{value:'env_cadre',label:'🗺️ Cadre clair'},{value:'env_stimulations',label:'👀 Stimulations'},{value:'env_ecrans',label:'📱 Ecrans'},
     {value:'relationnel_lit_parental',label:'💬 Vient dans le lit parental'},{value:'relationnel_conflit_autres',label:'💬 Conflit autres sujets'},{value:'relationnel_rappels',label:'📢 Rappels multiples'},{value:'souhait_tetine',label:'🎯 Suppression tétine'},{value:'souhait_position_dorsale',label:'🎯 Position dorsale'},{value:'souhait_changement_lit',label:'🎯 Changement de lit'},{value:'souhait_changement_chambre',label:'🎯 Changement de chambre'},{value:'souhait_changement_lit_chambre',label:'🎯 Changement lit/chambre'},
   ];
-  document.getElementById('sidebar-pb-panel').innerHTML = ALL_PBS.map(pb => `
+  const panel = document.getElementById('sidebar-pb-panel');
+  if (!panel) return; // Panel retiré du sidebar — fonction conservée pour compat
+  panel.innerHTML = ALL_PBS.map(pb => `
     <label class="sidebar-pb-item">
       <input type="checkbox" id="spb-${pb.value}" ${state.selectedPbs.has(pb.value)?'checked':''}
         onchange="togglePb('${pb.value}',this.checked)">
@@ -7806,7 +7808,10 @@ function buildSidebarPbPanel() {
     </label>`).join('');
 }
 
-function toggleSidebarPb() { document.getElementById('sidebar-pb-panel').classList.toggle('open'); }
+function toggleSidebarPb() {
+  const panel = document.getElementById('sidebar-pb-panel');
+  if (panel) panel.classList.toggle('open');
+}
 
 function filterSidebar(query) {
   const q = query.toLowerCase().trim();
