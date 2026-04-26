@@ -8682,7 +8682,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     // Clic → contenu s'affiche juste après la grille. Plus de banner parent séparé.
     const checkedSections = SCRIPT_DATA.conditional.filter(s => s.problematiqueId && isProblematiqueMatched(s.problematiqueId, state.selectedPbs));
     if (checkedSections.length === 0) return '';
-    if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+    if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
     if (!state.courbeCardsActiveByGrid) state.courbeCardsActiveByGrid = {};
     const gridPath = 'diagnostic_inline_sections';
     const catColors = {
@@ -8722,7 +8722,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const colors = catColors[cat] || { main:'#9ca3af', light:'#f3f4f6', dark:'#4b5563' };
       const catEmoji = catEmojis[cat] || '📄';
       const cardId = 'cat_' + cat;
-      const ticked = state.courbeCardsTicked.has(cardId);
+      const ticked = state.cardPersonalTicks.has(cardId);
       const isActive = activeId === cardId;
       const isDimmed = activeId && activeId !== cardId;
       const dimmedCls = isDimmed ? ' dimmed' : '';
@@ -8867,7 +8867,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   // Grille de cartes pour "Courbe de poids qui diminue" — chaque carte regroupe un levier (ou plusieurs sous-leviers)
   if (b.type === 'courbe_cards_grid') {
     const items = Array.isArray(b.items) ? b.items : [];
-    if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+    if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
     if (!state.courbeCardsActiveByGrid) state.courbeCardsActiveByGrid = {};
     // Filtrer : ne garder que les items dont au moins une pb est cochée
     // Puis trier dans l'ordre du modal (source grid de la fiche client)
@@ -8909,7 +8909,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     };
     const cardsHtml = visibleItems.map((it, idx) => {
       const cardId = it.id || `ccg-${idx}`;
-      const ticked = state.courbeCardsTicked.has(cardId);
+      const ticked = state.cardPersonalTicks.has(cardId);
       const isActive = activeId === cardId;
       const isDimmed = activeId && activeId !== cardId;
       const dimmedCls = isDimmed ? ' dimmed' : '';
@@ -9590,8 +9590,8 @@ function renderSolutionsCheckboxes() {
       ? `background:linear-gradient(90deg,${c.dark},${c.main});color:white;border:3px solid ${c.dark};box-shadow:0 6px 18px ${c.main}66`
       : `border:3px solid ${c.main};background:${pastel};box-shadow:0 2px 8px ${c.main}33`;
     const parentCardId = 'cat_' + cat.id;
-    if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
-    const parentTicked = state.courbeCardsTicked.has(parentCardId);
+    if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
+    const parentTicked = state.cardPersonalTicks.has(parentCardId);
     return `<div class="courbe-card${activeCls} diag-cat-card" data-card-id="${parentCardId}" data-section-cat="${cat.id}" data-sol-cat="${cat.id}" style="${activeStyle}" onclick="setSolActiveCat('${cat.id}')">
       <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${parentTicked ? '✅' : '☐'}</span>
       <span class="ccc-emoji">${cat.emoji || '📄'}</span>
@@ -9617,8 +9617,8 @@ function renderSolutionsCheckboxes() {
       const activeChildId = (state.solActiveChildByCat && state.solActiveChildByCat[cat.id]) || null;
       const cardsHtml = checkedChildren.length ? `<div class="sol-child-cards">` + checkedChildren.map(ch => {
         const isActive = activeChildId === ch.id;
-        if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
-        const childTicked = state.courbeCardsTicked.has(ch.id);
+        if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
+        const childTicked = state.cardPersonalTicks.has(ch.id);
         return `<div class="sol-child-card${isActive?' active':''}" data-card-id="${ch.id}" style="border-color:${c.main};${isActive?'background:'+c.main+';color:#fff':'background:#fff'}" onclick="toggleSolChildCard('${cat.id}','${ch.id}')">
           <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${childTicked ? '✅' : '☐'}</span>
           <span class="solc-emoji">${ch.cardEmoji || '📄'}</span>
@@ -11037,17 +11037,17 @@ function gotoSearchResult(cat, idxInPath, sectionId, blockIdx, childId) {
   const inputBefore = document.querySelector('.diag-search-input');
   const q = inputBefore ? inputBefore.value : '';
   if (!state.courbeCardsActiveByGrid) state.courbeCardsActiveByGrid = {};
-  if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+  if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
   // 1. Activer la card parent (catégorie)
   const parentGridPath = 'diagnostic_inline_sections';
   const parentCardId = 'cat_' + cat;
   state.courbeCardsActiveByGrid[parentGridPath] = parentCardId;
-  state.courbeCardsTicked.add(parentCardId);
+  state.cardPersonalTicks.add(parentCardId);
   // 2. Activer la sous-carte courbe_cards_grid si applicable
   if (sectionId && childId && typeof blockIdx === 'number' && blockIdx >= 0) {
     const childGridPath = `${sectionId}__${blockIdx}`;
     state.courbeCardsActiveByGrid[childGridPath] = childId;
-    state.courbeCardsTicked.add(childId);
+    state.cardPersonalTicks.add(childId);
   }
   // 3. Re-rendre
   renderCurrentSection();
@@ -11093,7 +11093,7 @@ function openCourbeCard(cardEl) {
   if (!cardEl) return;
   const cardId = cardEl.dataset.cardId;
   if (!cardId) return;
-  if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+  if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
   if (!state.courbeCardsActiveByGrid) state.courbeCardsActiveByGrid = {};
   const gridPath = cardEl.closest('.courbe-cards-grid-wrap')?.dataset.gridPath || 'main';
   // Toggle : si on re-clique sur la carte déjà active de cette grille, on ferme
@@ -11101,7 +11101,7 @@ function openCourbeCard(cardEl) {
     delete state.courbeCardsActiveByGrid[gridPath];
   } else {
     state.courbeCardsActiveByGrid[gridPath] = cardId;
-    state.courbeCardsTicked.add(cardId);
+    state.cardPersonalTicks.add(cardId);
   }
   renderCurrentSection();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
@@ -11172,7 +11172,8 @@ function uncheckAllSolutionsInCat(catId) {
 window.uncheckAllSolutionsInCat = uncheckAllSolutionsInCat;
 
 // Toggle d'une case env (Chambre/Lit) depuis la liste compacte des Solutions identifiées
-// Reflète/contrôle state.courbeCardsTicked (état partagé avec les grids V. Diagnostic + Plan d'action env)
+// Reflète/contrôle state.courbeCardsTicked (état des sous-checkboxes du compact list,
+// indépendant de state.cardPersonalTicks utilisé par les ticks ☐/✅ des cartes)
 function toggleCourbeCardTickFromSol(itId) {
   if (!itId) return;
   if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
@@ -11223,12 +11224,14 @@ function toggleCourbeCardTick(tickEl) {
   if (!card) return;
   const cardId = card.dataset.cardId;
   if (!cardId) return;
-  if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
-  if (state.courbeCardsTicked.has(cardId)) {
-    state.courbeCardsTicked.delete(cardId);
+  // state.cardPersonalTicks : purement perso (où en est la consultante)
+  // → n'influence rien d'autre (ni sous-checkboxes, ni parent, ni sync V. Diagnostic)
+  if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
+  if (state.cardPersonalTicks.has(cardId)) {
+    state.cardPersonalTicks.delete(cardId);
     tickEl.textContent = '☐';
   } else {
-    state.courbeCardsTicked.add(cardId);
+    state.cardPersonalTicks.add(cardId);
     tickEl.textContent = '✅';
   }
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
@@ -11912,6 +11915,7 @@ function newConsultation() {
     state.completedSet = new Set();
     state.courbeCardsActiveByGrid = {};
     state.courbeCardsTicked = new Set();
+    state.cardPersonalTicks = new Set();
     state.solActiveCat = null;
     state.solActiveChildByCat = {};
     clearActiveConsultation();
@@ -11958,6 +11962,7 @@ function autoSaveActiveConsultation() {
         decouverteNotes: state.decouverteNotes || {},
         courbeCardsActiveByGrid: state.courbeCardsActiveByGrid || {},
         courbeCardsTicked: state.courbeCardsTicked ? [...state.courbeCardsTicked] : [],
+        cardPersonalTicks: state.cardPersonalTicks ? [...state.cardPersonalTicks] : [],
         selectedSolutions: state.selectedSolutions ? [...state.selectedSolutions] : [],
         selectedSolutionsManuallyEdited: state.selectedSolutionsManuallyEdited ? [...state.selectedSolutionsManuallyEdited] : [],
         savedAt: Date.now()
@@ -12036,6 +12041,9 @@ function restoreActiveConsultation() {
     state.selectedSolutions = new Set(snap.selectedSolutions || []);
     state.selectedSolutionsManuallyEdited = new Set(snap.selectedSolutionsManuallyEdited || []);
     state.courbeCardsTicked = new Set(snap.courbeCardsTicked || []);
+    // Migration : si l'ancienne sauvegarde n'a pas cardPersonalTicks, hériter de courbeCardsTicked
+    // (avant le split, courbeCardsTicked servait aussi pour les ticks de cartes)
+    state.cardPersonalTicks = new Set(snap.cardPersonalTicks || snap.courbeCardsTicked || []);
     // Re-peupler le formulaire + reconstruire l'UI
     populateFormFromClient(state.client);
     buildSections();
