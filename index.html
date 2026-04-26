@@ -10943,6 +10943,23 @@ function selectTickboxChoice(el) {
     setPb('souhait_position_dorsale', currentValue === 'dorsale');
     syncChanged = true;
   }
+  // env_lit_ouvert_apres_1an / env_lit_ouvert_avant_1an : tickbox dans la carte V. Diagnostic
+  // "Lit ouvert trop tôt". Si "supprimer" (= revenir à un lit à barreaux) → cascade :
+  // setPb souhait_changement_lit + coche sub-card env_chgmt_lit_sol_barreau dans solutions.
+  if (cid === 'env_lit_ouvert_apres_1an' || cid === 'env_lit_ouvert_avant_1an') {
+    const currentValue = wasSelected ? null : el.dataset.value;
+    if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+    if (currentValue === 'supprimer') {
+      setPb('souhait_changement_chambre', false);
+      setPb('souhait_changement_lit_chambre', false);
+      setPb('souhait_changement_lit', true);
+      state.courbeCardsTicked.add('env_chgmt_lit_sol_barreau');
+    } else {
+      setPb('souhait_changement_lit', false);
+      state.courbeCardsTicked.delete('env_chgmt_lit_sol_barreau');
+    }
+    syncChanged = true;
+  }
   // env_souhait_lit_ouvert_jeune_choice → souhait_changement_lit (cocher si "aller", décocher sinon)
   // → cascade : env_chgmt_lit (sous-checkbox Changement de lit) auto-cochée
   // → AUSSI : auto-coche la sous-sous-carte env_chgmt_lit_barreau_ouvert dans courbeCardsTicked
