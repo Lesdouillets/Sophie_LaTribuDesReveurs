@@ -2652,7 +2652,7 @@ const SCRIPT_DATA = {
                     { type: "normal", _leftTitle: "Pourquoi ?", text: "- Les enfants ont **besoin de « nichage »**, pour se sentir en sécurité et se ré-assurer\n  *Imaginez-vous vous retrouver dans la + grande chambre d'un château, on peut se sentir « vulnérable »*" },
                     { type: "normal", _leftTitle: "Conseils", text: "- N'hésitez pas, si la chambre le permet, de **déplacer le lit dans un coin** OU de **créer un lit cabane** (ex : avec un ciel de lit sécuritaire que l'enfant ne puisse pas tirer) pour **limiter la sensation « d'exposition »**\n- Essayez de **positionner le lit** de façon à ce que votre enfant puisse **voir la porte** de sa chambre et donc qui rentre et sort : cela diminue le risque d'alerte inconsciente" }
                   ] },
-                  { id: "env_hauteur_sommier", emoji: "📏", label: "Hauteur sommier", showIfAgeMinMonths: 7, showIfAgeMaxMonths: 29, blocks: [
+                  { id: "env_hauteur_sommier", emoji: "📏", label: "Hauteur sommier", showIfAgeMinMonths: 7, blocks: [
                     { type: "normal", _leftTitle: "Pourquoi ?", text: "- Les enfants qui sont **en âge d'être mobile** peuvent facilement **se tenir aux barreaux** du lit et **tomber**" },
                     { type: "normal", _leftTitle: "Conseils", text: "- Je vous invite à **diminuer la hauteur du sommier** afin d'**éviter tout risque d'accident**" }
                   ] },
