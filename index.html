@@ -594,6 +594,53 @@
     #diag-pb-container .pb-category.pb-level-1 > .pb-category-title {
       font-size: 13px !important;
     }
+    /* Style "Solutions identifiées" pour le titre TOP-LEVEL uniquement (parents principaux)
+       — fond transparent + bordure inférieure colorée selon la catégorie */
+    .problematiques-grid .pb-category-title:has(.pb-cat-checkbox),
+    #modal-pb-list .pb-category-title:has(.pb-cat-checkbox),
+    #diag-pb-container .pb-category-title:has(.pb-cat-checkbox) {
+      background: transparent !important;
+      border-radius: 0 !important;
+      padding: 4px 0 !important;
+      border-bottom: 2px solid #94a3b8;
+      margin-bottom: 6px;
+    }
+    /* Couleur de la bordure par catégorie */
+    .problematiques-grid .pb-category-title:has(.pb-cat-checkbox[data-cat="confort_physique"]),
+    #modal-pb-list .pb-category-title:has(.pb-cat-checkbox[data-cat="confort_physique"]),
+    #diag-pb-container .pb-category-title:has(.pb-cat-checkbox[data-cat="confort_physique"]) {
+      border-bottom-color: #dc2626;
+    }
+    .problematiques-grid .pb-category-title:has(.pb-cat-checkbox[data-cat="nutrition"]),
+    #modal-pb-list .pb-category-title:has(.pb-cat-checkbox[data-cat="nutrition"]),
+    #diag-pb-container .pb-category-title:has(.pb-cat-checkbox[data-cat="nutrition"]) {
+      border-bottom-color: #f97316;
+    }
+    .problematiques-grid .pb-category-title:has(.pb-cat-checkbox[data-cat="rythme"]),
+    #modal-pb-list .pb-category-title:has(.pb-cat-checkbox[data-cat="rythme"]),
+    #diag-pb-container .pb-category-title:has(.pb-cat-checkbox[data-cat="rythme"]) {
+      border-bottom-color: #22c55e;
+    }
+    .problematiques-grid .pb-category-title:has(.pb-cat-checkbox[data-cat="strategie"]),
+    #modal-pb-list .pb-category-title:has(.pb-cat-checkbox[data-cat="strategie"]),
+    #diag-pb-container .pb-category-title:has(.pb-cat-checkbox[data-cat="strategie"]) {
+      border-bottom-color: #3b82f6;
+    }
+    .problematiques-grid .pb-category-title:has(.pb-cat-checkbox[data-cat="env"]),
+    #modal-pb-list .pb-category-title:has(.pb-cat-checkbox[data-cat="env"]),
+    #diag-pb-container .pb-category-title:has(.pb-cat-checkbox[data-cat="env"]) {
+      border-bottom-color: #8b5cf6;
+    }
+    .problematiques-grid .pb-category-title:has(.pb-cat-checkbox[data-cat="relationnel"]),
+    #modal-pb-list .pb-category-title:has(.pb-cat-checkbox[data-cat="relationnel"]),
+    #diag-pb-container .pb-category-title:has(.pb-cat-checkbox[data-cat="relationnel"]) {
+      border-bottom-color: #ec4899;
+    }
+    .problematiques-grid .pb-category-title:has(.pb-cat-checkbox[data-cat="souhait"]),
+    #modal-pb-list .pb-category-title:has(.pb-cat-checkbox[data-cat="souhait"]),
+    #diag-pb-container .pb-category-title:has(.pb-cat-checkbox[data-cat="souhait"]) {
+      border-bottom-color: #6366f1;
+    }
     .problematiques-grid .pb-category.pb-level-1 > .pb-items > .pb-item,
     #modal-pb-list .pb-category.pb-level-1 > .pb-items > .pb-item,
     #diag-pb-container .pb-category.pb-level-1 > .pb-items > .pb-item {
