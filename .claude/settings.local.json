@@ -53,7 +53,14 @@
       "WebFetch(domain:hopitauxnord-u-pariscite.aphp.fr)",
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(git commit -m 'Fix click sur cases Solutions identifiees \\(Confort physique, Chambre\\) *)",
+      "Bash(git commit -m 'Permettre de decocher manuellement une solution auto-cochee *)",
+      "Bash(git commit -m 'Auto-coche parent Chambre/Lit quand on coche un enfant *)",
+      "Bash(git commit -m 'Auto-decoche parent Chambre/Lit quand dernier enfant decoche *)",
+      "Bash(git commit -m 'Bloquer decocher parent Chambre/Lit si un enfant est encore tique *)",
+      "Bash(git commit -m 'Retire l'\\\\''alerte sur blocage decoche parent Chambre/Lit \\(silencieux\\) *)",
+      "Bash(git commit -m 'Contenu Obscurite : Pourquoi \\(encadre bleu\\) + Conseils \\(sans encadre, avec ampoules\\) *)"
     ]
   }
 }
