@@ -3523,6 +3523,16 @@
     }
     .sol-active-content .sol-cat-intro { padding: 14px 20px; }
     .sol-active-content .sol-cat-intro .block { background: transparent !important; border: none !important; box-shadow: none !important; padding: 4px 0 !important; }
+    /* Exception : restaurer le contour de carte sur les blocs avec titre latéral dans l'intro de catégorie */
+    .sol-active-content .sol-cat-intro .block-with-left-title .block-normal:not(.block-purple-dark) {
+      background: var(--card-bg) !important;
+      border-top: 1px solid var(--border) !important;
+      border-right: 1px solid var(--border) !important;
+      border-bottom: 1px solid var(--border) !important;
+      border-left: 3px solid var(--cat-main, #cbd5e0) !important;
+      box-shadow: var(--shadow) !important;
+      padding: 16px 20px !important;
+    }
     .sol-active-content .sol-child-cards { padding: 14px 20px; margin: 0; }
     .sol-active-content .sol-child-content { margin: 0 20px 20px; }
 
@@ -9469,7 +9479,7 @@ function renderSolutionsCheckboxes() {
       const children = cat.children || [];
       const checkedChildren = children.filter(ch => state.selectedSolutions.has(ch.id));
       const introHtml = Array.isArray(cat.introBlocks) && cat.introBlocks.length
-        ? `<div class="sol-cat-intro">${renderBlocks(cat.introBlocks, 'sol_' + cat.id)}</div>`
+        ? `<div class="sol-cat-intro" style="--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">${renderBlocks(cat.introBlocks, 'sol_' + cat.id)}</div>`
         : '';
       const activeChildId = (state.solActiveChildByCat && state.solActiveChildByCat[cat.id]) || null;
       const cardsHtml = checkedChildren.length ? `<div class="sol-child-cards">` + checkedChildren.map(ch => {
