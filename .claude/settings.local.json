@@ -73,7 +73,8 @@
       "Bash(git commit -m 'Obscurite : ajoute titre '\\\\''Conseils'\\\\'' sur le 2e bloc *)",
       "Bash(git commit -m 'Obscurite : 2 boutons jaunes lateraux trailingInfoButtons \\(standardisation\\) *)",
       "Bash(git commit -m 'Obscurite Conseils : ligne vide entre '\\\\''re-introduire'\\\\'' et '\\\\''Comment faire'\\\\'' *)",
-      "Bash(git commit -m 'Plan d'\\\\''action grid : filtre par sous-checkboxes cochees \\(compact list\\) + ordre script-data *)"
+      "Bash(git commit -m 'Plan d'\\\\''action grid : filtre par sous-checkboxes cochees \\(compact list\\) + ordre script-data *)",
+      "Bash(git commit -m 'Sync sous-checkboxes Chambre/Lit depuis pbs \\(env_obscurite -> env_obs, etc.\\) *)"
     ]
   }
 }
