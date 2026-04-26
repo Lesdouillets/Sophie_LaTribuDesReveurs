@@ -470,6 +470,18 @@
       letter-spacing: 1.2px; color: rgba(255,255,255,0.35);
       padding: 12px 18px 5px;
     }
+    /* Variante collapsible : label cliquable avec flèche */
+    .sidebar-section-label.collapsible {
+      cursor: pointer;
+      display: flex; align-items: center; gap: 6px;
+      transition: color 0.15s;
+    }
+    .sidebar-section-label.collapsible:hover { color: rgba(255,255,255,0.7); }
+    .sidebar-section-label.collapsible .ssl-arrow {
+      font-size: 9px; transition: transform 0.2s;
+    }
+    .sidebar-section-label.collapsible.collapsed .ssl-arrow { transform: rotate(-90deg); }
+    .sidebar-section-label.collapsible.collapsed + div { display: none; }
     .nav-item {
       display: flex; align-items: center; gap: 9px;
       padding: 9px 18px; cursor: pointer;
@@ -3379,12 +3391,25 @@
       padding: 10px 12px;
     }
     .sol-child-card {
+      position: relative;
       flex: 1 1 140px; min-width: 140px; max-width: 220px;
       padding: 12px 14px; border: 2px solid; border-radius: 12px;
       cursor: pointer; background: #fff;
       display: flex; flex-direction: column; align-items: center; gap: 6px;
       transition: transform 0.1s, box-shadow 0.15s;
     }
+    .sol-child-card .ccc-tick {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.12s;
+      padding: 2px;
+    }
+    .sol-child-card .ccc-tick:hover { transform: scale(1.15); }
     .sol-child-card:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
     .sol-child-card.active { box-shadow: 0 4px 14px rgba(0,0,0,0.18); }
     .sol-child-card .solc-emoji { font-size: 28px; line-height: 1; }
@@ -8022,7 +8047,7 @@ function renderCurrentSection() {
   </div>`;
   // Bouton spécial "Passer : Progressivité & Gestion des émotions" après les nav, uniquement sur VI. Objectifs revus
   if (section.id === 'objectifs_revus') {
-    html += `<div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn-nav btn-next" style="flex-direction:column;padding:11px 22px;line-height:1.25;align-items:center;gap:2px" onclick="const i=state.sections.findIndex(s=>s.id==='plan_action'); if(i>=0) navigateTo(i);"><span style="font-size:13px;opacity:0.9;font-weight:500">⏭️ Passer :</span><span>Progressivité &amp; Gestion des émotions</span></button></div>`;
+    html += `<div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn-nav btn-next" style="flex-direction:column;padding:11px 22px;line-height:1.25;align-items:center;gap:2px" onclick="const i=state.sections.findIndex(s=>s.id==='plan_action'); if(i>=0) navigateTo(i);"><span>⏭️ Passer :</span><span style="font-size:13px;opacity:0.9;font-weight:500">Progressivité &amp; Gestion des émotions</span></button></div>`;
   }
   area.innerHTML = html;
   // Marquer les parents qui contiennent 2+ boutons action frères (pour le centrage CSS)
@@ -9407,7 +9432,11 @@ function renderSolutionsCheckboxes() {
     const activeStyle = isActive
       ? `background:linear-gradient(90deg,${c.dark},${c.main});color:white;border:3px solid ${c.dark};box-shadow:0 6px 18px ${c.main}66`
       : `border:3px solid ${c.main};background:${pastel};box-shadow:0 2px 8px ${c.main}33`;
-    return `<div class="courbe-card${activeCls} diag-cat-card" data-section-cat="${cat.id}" data-sol-cat="${cat.id}" style="${activeStyle}" onclick="setSolActiveCat('${cat.id}')">
+    const parentCardId = 'cat_' + cat.id;
+    if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+    const parentTicked = state.courbeCardsTicked.has(parentCardId);
+    return `<div class="courbe-card${activeCls} diag-cat-card" data-card-id="${parentCardId}" data-section-cat="${cat.id}" data-sol-cat="${cat.id}" style="${activeStyle}" onclick="setSolActiveCat('${cat.id}')">
+      <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${parentTicked ? '✅' : '☐'}</span>
       <span class="ccc-emoji">${cat.emoji || '📄'}</span>
       <span class="ccc-title">${cat.title}</span>
       ${subTitles ? `<span class="ccc-subtitle">${subTitles}</span>` : ''}
@@ -9428,7 +9457,10 @@ function renderSolutionsCheckboxes() {
       const activeChildId = (state.solActiveChildByCat && state.solActiveChildByCat[cat.id]) || null;
       const cardsHtml = checkedChildren.length ? `<div class="sol-child-cards">` + checkedChildren.map(ch => {
         const isActive = activeChildId === ch.id;
-        return `<div class="sol-child-card${isActive?' active':''}" style="border-color:${c.main};${isActive?'background:'+c.main+';color:#fff':'background:#fff'}" onclick="toggleSolChildCard('${cat.id}','${ch.id}')">
+        if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+        const childTicked = state.courbeCardsTicked.has(ch.id);
+        return `<div class="sol-child-card${isActive?' active':''}" data-card-id="${ch.id}" style="border-color:${c.main};${isActive?'background:'+c.main+';color:#fff':'background:#fff'}" onclick="toggleSolChildCard('${cat.id}','${ch.id}')">
+          <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${childTicked ? '✅' : '☐'}</span>
           <span class="solc-emoji">${ch.cardEmoji || '📄'}</span>
           <span class="solc-label">${ch.cardLabel || ch.label || ch.id}</span>
         </div>`;
@@ -10944,7 +10976,7 @@ window.toggleCourbeCardTickFromSol = toggleCourbeCardTickFromSol;
 
 function toggleCourbeCardTick(tickEl) {
   if (!tickEl) return;
-  const card = tickEl.closest('.courbe-card');
+  const card = tickEl.closest('[data-card-id]');
   if (!card) return;
   const cardId = card.dataset.cardId;
   if (!cardId) return;
