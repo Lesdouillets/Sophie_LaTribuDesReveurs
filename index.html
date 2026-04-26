@@ -9612,7 +9612,24 @@ function renderSolutionsCheckboxes() {
           subRows = `<div class="sol-row-sub" style="padding-left:30px;display:flex;flex-direction:column;gap:4px;margin-top:4px">` +
             visibleItems.map(it => {
               const itTicked = state.courbeCardsTicked.has(it.id);
-              return `<label style="display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer"><input type="checkbox" ${itTicked?'checked':''} onchange="toggleCourbeCardTickFromSol('${it.id}')"> ${it.emoji || ''} ${it.label || it.id}</label>`;
+              // Sous-sous-checkboxes : si l'item lui-même a un courbe_cards_grid dans ses blocks
+              // (ex. env_chgmt_lit → Cododo→Barreaux / Barreaux→Ouvert / Sol→Barreaux)
+              let nestedSubRows = '';
+              if (Array.isArray(it.blocks)) {
+                const nestedGrid = it.blocks.find(b => b && b.type === 'courbe_cards_grid' && Array.isArray(b.items));
+                if (nestedGrid) {
+                  const nestedVisible = nestedGrid.items.filter(sub => !isHiddenByAge(sub));
+                  if (nestedVisible.length) {
+                    nestedSubRows = `<div style="padding-left:24px;display:flex;flex-direction:column;gap:3px;margin-top:3px">` +
+                      nestedVisible.map(sub => {
+                        const subTicked = state.courbeCardsTicked.has(sub.id);
+                        return `<label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><input type="checkbox" ${subTicked?'checked':''} onchange="toggleCourbeCardTickFromSol('${sub.id}')"> ${sub.emoji || ''} ${sub.label || sub.id}</label>`;
+                      }).join('') +
+                      `</div>`;
+                  }
+                }
+              }
+              return `<div><label style="display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer"><input type="checkbox" ${itTicked?'checked':''} onchange="toggleCourbeCardTickFromSol('${it.id}')"> ${it.emoji || ''} ${it.label || it.id}</label>${nestedSubRows}</div>`;
             }).join('') +
             `</div>`;
         }
@@ -10953,6 +10970,9 @@ function selectTickboxChoice(el) {
       setPb('souhait_changement_chambre', false);
       setPb('souhait_changement_lit_chambre', false);
       setPb('souhait_changement_lit', true);
+      // Mutex : un seul sous-sous-enfant de Changement de lit cochée à la fois
+      state.courbeCardsTicked.delete('env_chgmt_lit_cododo_barreau');
+      state.courbeCardsTicked.delete('env_chgmt_lit_barreau_ouvert');
       state.courbeCardsTicked.add('env_chgmt_lit_sol_barreau');
     } else {
       setPb('souhait_changement_lit', false);
@@ -10973,6 +10993,9 @@ function selectTickboxChoice(el) {
       setPb('souhait_changement_chambre', false);
       setPb('souhait_changement_lit_chambre', false);
       setPb('souhait_changement_lit', true);
+      // Mutex : un seul sous-sous-enfant de Changement de lit cochée à la fois
+      state.courbeCardsTicked.delete('env_chgmt_lit_cododo_barreau');
+      state.courbeCardsTicked.delete('env_chgmt_lit_sol_barreau');
       state.courbeCardsTicked.add('env_chgmt_lit_barreau_ouvert');
     } else {
       setPb('souhait_changement_lit', false);
@@ -11398,20 +11421,36 @@ function toggleCourbeCardTickFromSol(itId) {
   else state.courbeCardsTicked.add(itId);
   // Marquer comme édité manuellement → syncSubChecklistFromPbs ne touchera plus cet item
   state.courbeCardsTickedManuallyEdited.add(itId);
-  // Trouver la solution parente (Chambre / Lit) qui contient cet item
+  // Chercher la chaîne de parents : (cat) → ch (solution) → it (sub-item, niveau 1) → sub (sub-sub-item, niveau 2)
+  // itId peut être à 2 niveaux : direct enfant d'un ch.blocks grid (niveau 1)
+  // OU enfant d'un it.blocks grid (niveau 2, ex. env_chgmt_lit_cododo_barreau dans env_chgmt_lit)
   const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
-  let parentCh = null;
-  let parentItems = null;
+  let parentCh = null;       // solution (env_chambre, env_lit_card, env_changement, etc.)
+  let parentItems = null;     // items du grid contenant itId (pour anyChildTicked check)
+  let intermediateItId = null; // niveau 1 si itId est niveau 2 (= it.id à cocher aussi en cascade)
   for (const cat of sols) {
     for (const ch of (cat.children || [])) {
       if (!Array.isArray(ch.blocks)) continue;
       const grid = ch.blocks.find(b => b && b.type === 'courbe_cards_grid');
       if (!grid || !Array.isArray(grid.items)) continue;
+      // Match niveau 1 : itId est directement dans grid.items
       if (grid.items.some(it => it.id === itId)) {
         parentCh = ch;
         parentItems = grid.items;
         break;
       }
+      // Match niveau 2 : itId est dans un nested grid (it.blocks contient un courbe_cards_grid)
+      for (const it of grid.items) {
+        if (!Array.isArray(it.blocks)) continue;
+        const nestedGrid = it.blocks.find(b => b && b.type === 'courbe_cards_grid');
+        if (nestedGrid && Array.isArray(nestedGrid.items) && nestedGrid.items.some(sub => sub.id === itId)) {
+          parentCh = ch;
+          parentItems = nestedGrid.items;
+          intermediateItId = it.id;
+          break;
+        }
+      }
+      if (parentCh) break;
     }
     if (parentCh) break;
   }
@@ -11419,15 +11458,26 @@ function toggleCourbeCardTickFromSol(itId) {
     if (!state.selectedSolutions) state.selectedSolutions = new Set();
     if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
     if (!wasTicked) {
-      // Coche enfant → coche parent
+      // Coche enfant → coche parent (solution) + intermédiaire si niveau 2
       state.selectedSolutions.add(parentCh.id);
       state.selectedSolutionsManuallyEdited.add(parentCh.id);
+      if (intermediateItId) {
+        state.courbeCardsTicked.add(intermediateItId);
+        state.courbeCardsTickedManuallyEdited.add(intermediateItId);
+      }
     } else {
-      // Décoche enfant → si aucun autre enfant tické → décoche parent
+      // Décoche enfant → si aucun autre enfant tické dans le grid → décoche parent
       const anyChildTicked = parentItems.some(it => state.courbeCardsTicked.has(it.id));
       if (!anyChildTicked) {
-        state.selectedSolutions.delete(parentCh.id);
-        state.selectedSolutionsManuallyEdited.add(parentCh.id);
+        if (intermediateItId) {
+          // Niveau 2 : décocher l'intermédiaire (la décoche du grand-parent suivra naturellement
+          // au prochain sync si plus aucun enfant niveau 1 tické)
+          state.courbeCardsTicked.delete(intermediateItId);
+          state.courbeCardsTickedManuallyEdited.add(intermediateItId);
+        } else {
+          state.selectedSolutions.delete(parentCh.id);
+          state.selectedSolutionsManuallyEdited.add(parentCh.id);
+        }
       }
     }
   }
