@@ -2681,7 +2681,7 @@ const SCRIPT_DATA = {
             ]
           },
           { id: "env_changement", label: "Changement", cardLabel: "Changement", cardEmoji: "🔄",
-            autoCheckIfPbs: ["souhait_changement_lit", "souhait_changement_chambre", "souhait_changement_lit_chambre"],
+            autoCheckIfPbs: ["souhait_changement_lit", "souhait_changement_chambre", "souhait_changement_lit_chambre", "souhait_lit_ouvert_jeune"],
             blocks: [
               { type: "normal", text: "- Vous vouliez aussi des **solutions** pour …" },
               {
@@ -2689,7 +2689,7 @@ const SCRIPT_DATA = {
                 theme: "violet",
                 alwaysShowAll: true,
                 items: [
-                  { id: "env_chgmt_lit", emoji: "🛏", label: "Changement de lit", pb: "souhait_changement_lit", blocks: [
+                  { id: "env_chgmt_lit", emoji: "🛏", label: "Changement de lit", pb: ["souhait_changement_lit", "souhait_lit_ouvert_jeune"], blocks: [
                     { type: "normal", _leftTitle: "Conseils",
                       text: "",
                       embeddedActions: [
