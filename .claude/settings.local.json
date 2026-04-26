@@ -87,7 +87,9 @@
       "Bash(awk 'NR>=2517 && NR<=2712' \"/c/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")",
       "Bash(git commit -m 'Env de sommeil : remplace '\\\\''E.'\\\\'' par '\\\\''enfant'\\\\'' dans les 4 occurrences validees *)",
       "Bash(awk 'NR<=2337 && /id:\\\\s*\"[^\"]+\"/{lastid=$0; lastline=NR} END{print lastline\": \"lastid}' \"/c/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")",
-      "Bash(git commit -m 'Sous-checkboxes generalisees aux grids alwaysShowAll \\(Enfant + 2,5 ans inclus\\) *)"
+      "Bash(git commit -m 'Sous-checkboxes generalisees aux grids alwaysShowAll \\(Enfant + 2,5 ans inclus\\) *)",
+      "Bash(git commit -m 'Veilleuse Pourquoi : retire la 2e puce '\\\\''ou s'\\\\''il souhaite se deplacer'\\\\'' *)",
+      "Bash(git commit -m 'Veilleuse : trailingInfoButton '\\\\''Veilleuse portative'\\\\'' + retire ligne dupliquee dans Conseils *)"
     ]
   }
 }
