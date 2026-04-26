@@ -10943,14 +10943,15 @@ function selectTickboxChoice(el) {
     syncChanged = true;
   }
   // env_souhait_lit_ouvert_jeune_choice → souhait_changement_lit (cocher si "aller", décocher sinon)
-  // → cascade : env_changement (parent solution) auto-cochée + env_chgmt_lit (sous-checkbox) auto-cochée
-  // Mutex : si on coche "aller", on décoche les autres souhait_changement_* + souhait_lit_ouvert_jeune
+  // → cascade : env_chgmt_lit (sous-checkbox Changement de lit) auto-cochée
+  // souhait_lit_ouvert_jeune reste cochée dans tous les cas (la carte V. Diagnostic reste visible
+  // → l'utilisatrice peut re-cliquer 'aller' / 'rester' à volonté)
+  // Mutex : si on coche "aller", on décoche les autres souhait_changement_* (pas souhait_lit_ouvert_jeune)
   if (cid === 'env_souhait_lit_ouvert_jeune_choice') {
     const currentValue = wasSelected ? null : el.dataset.value;
     if (currentValue === 'aller') {
       setPb('souhait_changement_chambre', false);
       setPb('souhait_changement_lit_chambre', false);
-      setPb('souhait_lit_ouvert_jeune', false);
       setPb('souhait_changement_lit', true);
     } else {
       setPb('souhait_changement_lit', false);
