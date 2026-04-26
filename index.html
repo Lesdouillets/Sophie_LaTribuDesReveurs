@@ -8890,13 +8890,24 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       });
       return min === Infinity ? 1e9 : min;
     };
+    // Helper : item caché par filtre d'âge (showIfAgeMinMonths / showIfAgeMaxMonths)
+    // Utilise âge corrigé si dispo, sinon âge réel (cf. getEffectiveAgeMonths)
+    const isHiddenByAge = (it) => {
+      if (it.showIfAgeMinMonths == null && it.showIfAgeMaxMonths == null) return false;
+      const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
+      if (age == null) return true; // pas d'âge → cacher par prudence
+      if (it.showIfAgeMinMonths != null && age < it.showIfAgeMinMonths) return true;
+      if (it.showIfAgeMaxMonths != null && age > it.showIfAgeMaxMonths) return true;
+      return false;
+    };
     const visibleItems = b.alwaysShowAll
       // Plan d'action env_chambre/env_lit_card : afficher uniquement les items
       // dont la sous-checkbox du compact list est cochée (state.courbeCardsTicked).
       // Ordre = ordre du fichier script-data (pas de tri par pb).
-      ? items.filter(it => state.courbeCardsTicked && state.courbeCardsTicked.has(it.id))
+      ? items.filter(it => !isHiddenByAge(it) && state.courbeCardsTicked && state.courbeCardsTicked.has(it.id))
       // V. Diagnostic env grid (et autres) : filtre par pb sélectionnée + tri par ordre du modal
       : items.filter(it => {
+          if (isHiddenByAge(it)) return false;
           if (!it.pb) return true;
           const pbs = Array.isArray(it.pb) ? it.pb : [it.pb];
           return pbs.some(p => state.selectedPbs.has(p));
@@ -9543,7 +9554,17 @@ function renderSolutionsCheckboxes() {
         const gridBlock = findGridBlock(ch.blocks);
         const gridItems = gridBlock ? gridBlock.items : [];
         const alwaysAll = !!(gridBlock && gridBlock.alwaysShowAll);
+        // Filtre d'âge (showIfAgeMinMonths/Max) — utilise âge corrigé si dispo, sinon réel
+        const isHiddenByAge = (it) => {
+          if (it.showIfAgeMinMonths == null && it.showIfAgeMaxMonths == null) return false;
+          const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
+          if (age == null) return true;
+          if (it.showIfAgeMinMonths != null && age < it.showIfAgeMinMonths) return true;
+          if (it.showIfAgeMaxMonths != null && age > it.showIfAgeMaxMonths) return true;
+          return false;
+        };
         const visibleItems = gridItems.filter(it => {
+          if (isHiddenByAge(it)) return false;
           if (alwaysAll) return true;
           if (!it.pb) return true;
           const pbs = Array.isArray(it.pb) ? it.pb : [it.pb];

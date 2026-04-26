@@ -2579,7 +2579,7 @@ const SCRIPT_DATA = {
                     { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
                     { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
                   ] },
-                  { id: "env_plan_change", emoji: "🚼", label: "Plan de change", blocks: [
+                  { id: "env_plan_change", emoji: "🚼", label: "Plan de change", showIfAgeMinMonths: 7, blocks: [
                     { type: "normal", _leftTitle: "Pourquoi ?", text: "- Le change peut être **associé à un moment désagréable** ou à une **source d'excitation**" },
                     { type: "normal", _leftTitle: "Conseils", text: "- Si vous le pouvez, je vous invite à mettre le **plan de change / tapis transportable** en **dehors de la chambre**\n- Vous pouvez aussi le **laisser dans la chambre** si le change est un **moment agréable**\n- ⚠ Pour un **nouveau-né** : c'est **OK de garder le plan de change** dans la chambre (pour ne pas trop stimuler BB)" }
                   ] },
