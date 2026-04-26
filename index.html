@@ -9671,17 +9671,12 @@ function syncSolutionsFromPbs() {
       const pbs = Array.isArray(ch.autoCheckIfPbs) ? ch.autoCheckIfPbs : [];
       // Pas de pb associée définie → solution gérée manuellement uniquement, ne pas toucher
       if (pbs.length === 0) return;
+      // Édition manuelle (clic sur la case) → respecter le choix utilisateur, ne plus auto-sync
+      if (state.selectedSolutionsManuallyEdited.has(ch.id)) return;
+      // Mode auto : la solution suit l'état de ses pbs
       const shouldCheck = pbs.some(p => state.selectedPbs && state.selectedPbs.has(p));
-      // Lien bidirectionnel strict si pb sélectionnée : pb cochée → solution forcée cochée
-      // (l'utilisateur ne peut pas décocher manuellement tant que la pb est sélectionnée)
-      if (shouldCheck) {
-        state.selectedSolutions.add(ch.id);
-      } else if (!state.selectedSolutionsManuallyEdited.has(ch.id)) {
-        // Aucune pb sélectionnée ET pas d'édition manuelle → auto-décocher
-        // (préserve la suppression auto quand l'utilisateur décoche la pb)
-        state.selectedSolutions.delete(ch.id);
-      }
-      // Sinon : aucune pb sélectionnée + édition manuelle → respecter le choix utilisateur
+      if (shouldCheck) state.selectedSolutions.add(ch.id);
+      else state.selectedSolutions.delete(ch.id);
     });
   });
 }
