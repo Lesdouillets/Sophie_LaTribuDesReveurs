@@ -50,7 +50,10 @@
       "Bash(perl -i -pe \"s/tps alimentation/tps d'alim/g\" script-data.js)",
       "Bash(perl -i -CS -pe \"s/15 mois – 2 ans/15 mois - 2 ans/g\" script-data.js)",
       "Bash(awk '/conditional:\\\\s*\\\\[|solutions:|planAction:\\\\s*\\\\[|conclusion:/{print NR\": \"$0}' script-data.js)",
-      "WebFetch(domain:hopitauxnord-u-pariscite.aphp.fr)"
+      "WebFetch(domain:hopitauxnord-u-pariscite.aphp.fr)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
     ]
   }
 }
