@@ -107,7 +107,10 @@
       "Bash(git commit -m 'Souhait lit ouvert jeune : inverse les emoticones \\(Rester=✅ positive, Aller=❌ negative\\) *)",
       "Bash(git commit -m 'Nouvelle pb '\\\\''souhait_lit_ouvert_jeune'\\\\'' \\(sous Env de sommeil\\) *)",
       "Bash(git commit -m 'Changement de lit OPTION 2 : sub-option 1 \\(Si souhait des maintenant\\) avec contenu + cascade pb depuis tickbox V. Diagnostic *)",
-      "Bash(git commit -m 'Leviers identifies : '\\\\''Souhait d'\\\\''un lit ouvert'\\\\'' apres '\\\\''Lit ouvert trop tot'\\\\'' *)"
+      "Bash(git commit -m 'Leviers identifies : '\\\\''Souhait d'\\\\''un lit ouvert'\\\\'' apres '\\\\''Lit ouvert trop tot'\\\\'' *)",
+      "Bash(git commit -m 'Souhait lit ouvert jeune : masque la pb si age >= 24 mois \\(>= 2 ans\\) *)",
+      "Bash(git commit -m 'Souhait lit ouvert jeune : seuil 24 -> 36 mois \\(>= 3 ans masque\\) *)",
+      "Bash(git commit -m 'Changement de lit OPTION 2 sub-option 2 '\\\\''Si > 2,5 ans'\\\\'' rempli + filtre age sur embeddedActions *)"
     ]
   }
 }
