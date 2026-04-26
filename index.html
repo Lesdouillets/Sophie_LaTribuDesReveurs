@@ -9688,24 +9688,20 @@ function toggleSolution(id, checked) {
   // Empêcher décocher une solution parente (ex. Chambre/Lit) si au moins un enfant est tické
   if (!checked) {
     const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
-    let parentCh = null;
-    let blockingItemLabel = null;
+    let blockedByChild = false;
     for (const cat of sols) {
       for (const ch of (cat.children || [])) {
         if (ch.id !== id) continue;
-        parentCh = ch;
         if (!Array.isArray(ch.blocks)) break;
         const grid = ch.blocks.find(b => b && b.type === 'courbe_cards_grid');
         if (!grid || !Array.isArray(grid.items) || !state.courbeCardsTicked) break;
-        const tickedItem = grid.items.find(it => state.courbeCardsTicked.has(it.id));
-        if (tickedItem) blockingItemLabel = tickedItem.label || tickedItem.id;
+        if (grid.items.some(it => state.courbeCardsTicked.has(it.id))) blockedByChild = true;
         break;
       }
-      if (parentCh) break;
+      if (blockedByChild) break;
     }
-    if (blockingItemLabel) {
-      alert(`⚠️ Pour décocher « ${parentCh.label || parentCh.id} », il faut d'abord décocher tous ses enfants (« ${blockingItemLabel} » est encore coché).`);
-      renderCurrentSection(); // remet la case à son état précédent
+    if (blockedByChild) {
+      renderCurrentSection(); // remet la case à son état précédent, sans alerte
       return;
     }
   }
