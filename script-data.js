@@ -2681,8 +2681,31 @@ const SCRIPT_DATA = {
                 alwaysShowAll: true,
                 items: [
                   { id: "env_chgmt_lit", emoji: "🛏", label: "Changement de lit", pb: "souhait_changement_lit", blocks: [
-                    { type: "normal", _leftTitle: "Pourquoi ?", text: "À compléter" },
-                    { type: "normal", _leftTitle: "Conseils", text: "À compléter" }
+                    { type: "normal", _leftTitle: "Conseils",
+                      text: "",
+                      embeddedActions: [
+                        {
+                          label: "OPTION : Cododo ⇒ Lit à barreaux", emoji: "🛏", style: "purple", _pillStyle: true, mutexGroup: "chgmt-lit-options",
+                          blocks: [
+                            { type: "normal",
+                              text: "- Si v**ous souhaitez** le passer **de son cododo** ⇒ à son **lit à barreaux / parapluie**\n- Je vous invite à :\n  - d'une part, à **fermer le cododo** quand il dort actuellement… **si ce n'est déjà fait**\n  - **dormir avec ses nouveaux draps**, pour **garder des repères olfactifs**\n  - lui **montrer son lit** avec beaucoup de **joie**\n  - lui **verbaliser souvent** que *« c'est ici qu'il a dormir, parce que **c'est un grand** maintenant ! »*\n  - Vous pouvez aussi **[LE_LA] mettre dans son lit**, durant ses **temps d'éveil** pour qu'il se **familiarise avec les lieux**\n\n- 💡 N'hésitez pas **les 1ers jours**, à **vous écouter**, et le **prendre dans les bras** pour le **rassurer dans ce nouvel environnement**\n\n"
+                            }
+                          ]
+                        },
+                        {
+                          label: "OPTION : Lit à barreaux ⇒ Lit ouvert", emoji: "🛌", style: "purple", _pillStyle: true, mutexGroup: "chgmt-lit-options",
+                          blocks: [
+                            { type: "normal", text: "À compléter" }
+                          ]
+                        },
+                        {
+                          label: "OPTION : Retour du lit ouvert ⇒ Lit à barreaux", emoji: "🔁", style: "purple", _pillStyle: true, mutexGroup: "chgmt-lit-options",
+                          blocks: [
+                            { type: "normal", text: "À compléter" }
+                          ]
+                        }
+                      ]
+                    }
                   ] },
                   { id: "env_chgmt_chambre", emoji: "🚪", label: "Changement de chambre", pb: "souhait_changement_chambre", blocks: [
                     { type: "normal", _leftTitle: "Conseils",
