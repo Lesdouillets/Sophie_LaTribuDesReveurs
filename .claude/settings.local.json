@@ -77,7 +77,8 @@
       "Bash(git commit -m 'Sync sous-checkboxes Chambre/Lit depuis pbs \\(env_obscurite -> env_obs, etc.\\) *)",
       "Bash(git commit -m 'Sub-checkbox manualEdit override : clic manuel non ecrase par sync pbs *)",
       "Bash(git commit -m 'Modal pb : applyPbChanges declenche aussi syncSolutionsFromPbs + updateSolutionsModal *)",
-      "Bash(git commit -m 'Clear manualEdit lie a la pb qui change → sync auto reprend la main *)"
+      "Bash(git commit -m 'Clear manualEdit lie a la pb qui change → sync auto reprend la main *)",
+      "Bash(git commit -m 'Chambre items : Temperature + Stimulations remplis, Rituel+Cadre supprimes, +3 nouveaux *)"
     ]
   }
 }
