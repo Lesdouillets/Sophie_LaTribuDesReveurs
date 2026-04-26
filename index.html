@@ -7954,6 +7954,8 @@ function filterSidebar(query) {
 
 function togglePb(value, checked) {
   if (checked) state.selectedPbs.add(value); else state.selectedPbs.delete(value);
+  // Clear manualEdit pour solutions/sous-items lies a cette pb : sync auto reprend la main
+  if (typeof clearManualEditForPb === 'function') clearManualEditForPb(value);
   // Si la pb souhait_tetine est cochée → propager vers "supprimer" dans les choix tétine
   if (value === 'souhait_tetine') {
     if (!state.tickboxChoices) state.tickboxChoices = {};
@@ -9670,6 +9672,32 @@ function renderSolutionsCheckboxes() {
 
 // Synchro : pour chaque solution qui n'a pas été manuellement éditée,
 // la cocher si au moins une pb de autoCheckIfPbs est cochée.
+// Clear le flag manualEdit pour les solutions et sous-items liés à une pb donnée.
+// Appelé quand une pb change (modal ou fiche client) → le clic auto reprend le contrôle
+// pour les items concernés, sans toucher aux manualEdits sur d'autres catégories.
+function clearManualEditForPb(pb) {
+  if (!pb) return;
+  if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
+  if (!state.courbeCardsTickedManuallyEdited) state.courbeCardsTickedManuallyEdited = new Set();
+  const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
+  sols.forEach(cat => {
+    (cat.children || []).forEach(ch => {
+      if (Array.isArray(ch.autoCheckIfPbs) && ch.autoCheckIfPbs.includes(pb)) {
+        state.selectedSolutionsManuallyEdited.delete(ch.id);
+      }
+      if (!Array.isArray(ch.blocks)) return;
+      const grid = ch.blocks.find(b => b && b.type === 'courbe_cards_grid');
+      if (!grid || !Array.isArray(grid.items)) return;
+      grid.items.forEach(it => {
+        const itPbs = Array.isArray(it.pb) ? it.pb : (it.pb ? [it.pb] : []);
+        if (itPbs.includes(pb)) {
+          state.courbeCardsTickedManuallyEdited.delete(it.id);
+        }
+      });
+    });
+  });
+}
+
 function syncSolutionsFromPbs() {
   const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
   if (!state.selectedSolutions) state.selectedSolutions = new Set();
@@ -10599,7 +10627,14 @@ function modalSelectCat(btn, checked) {
 function applyPbChanges() {
   const savedId = state.sections[state.currentIdx]?.id;
   const prevHadSouhaitTetine = state.selectedPbs && state.selectedPbs.has('souhait_tetine');
+  const prevPbs = state.selectedPbs ? new Set(state.selectedPbs) : new Set();
   state.selectedPbs = new Set([...document.querySelectorAll('.modal-pb:checked')].map(cb=>cb.value));
+  // Pour chaque pb dont l'état a changé, clear le manualEdit des solutions/sous-items liés
+  // → permet au sync auto de reprendre la main sur ces items spécifiques
+  const allPbs = new Set([...prevPbs, ...state.selectedPbs]);
+  allPbs.forEach(pb => {
+    if (prevPbs.has(pb) !== state.selectedPbs.has(pb)) clearManualEditForPb(pb);
+  });
   const nowHasSouhaitTetine = state.selectedPbs.has('souhait_tetine');
   // Si souhait_tetine a changé via le modal → appliquer la logique tétine (sync tickboxes / solution)
   if (prevHadSouhaitTetine !== nowHasSouhaitTetine) {
