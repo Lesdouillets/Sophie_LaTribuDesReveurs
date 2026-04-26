@@ -65,7 +65,8 @@
       "Bash(where node *)",
       "Bash(where.exe node.exe)",
       "Bash(git commit -m 'Plan d'\\\\''action : grille Chambre/Lit affiche tous les items \\(alwaysShowAll\\) *)",
-      "Bash(git commit -m 'Split state ticks cartes \\(cardPersonalTicks\\) vs sous-checkboxes \\(courbeCardsTicked\\) *)"
+      "Bash(git commit -m 'Split state ticks cartes \\(cardPersonalTicks\\) vs sous-checkboxes \\(courbeCardsTicked\\) *)",
+      "Bash(curl -s \"https://raw.githubusercontent.com/Lesdouillets/Sophie_LaTribuDesReveurs/main/script-data.js\")"
     ]
   }
 }
