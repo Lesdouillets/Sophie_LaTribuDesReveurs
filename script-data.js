@@ -2519,14 +2519,14 @@ const SCRIPT_DATA = {
       {
         id: "sante", title: "Santé", emoji: "💊",
         children: [
-          { id: "sante_vitamine_d", label: "Vitamine D", cardLabel: "Vitamine D", cardEmoji: "☀️",
+          { id: "sante_vitamine_d", label: "Vitamine D = Zyma D", cardLabel: "Vitamine D = Zyma D", cardEmoji: "☀️",
             blocks: [
-              { type: "normal", text: "À compléter" }
+              { type: "normal", text: "<img src=\"https://www.pharmacie-du-centre-albert.fr/resize/800x800/media/finish/img/normal/71/3400935358363-zymad-10-000-ui-ml-solution-buvable-en-gouttes.jpg\" alt=\"Zyma D\" style=\"float:right;height:180px;width:auto;max-width:180px;border-radius:8px;margin:0 0 8px 14px;object-fit:contain\">\n\n- Un **petit point rapide**, si vous êtes d'accord, sur la **vitamine D** que vous utilisez, la **Zyma D**\n\n- Il faut savoir que **certaines formulations, comme la Zyma D,** contiennent des **huiles essentielles**, notamment des huiles essentielles d'orange douce\n- **Chez certains enfants**, ça peut parfois **donner un inconfort digestif (sans que ce soit systématique du tout)**\n\n⇒ Si vous voulez, ça peut être **intéressant** :\n  - d'en **parler tranquillement à votre médecin**\n  - pour voir s'il existe une **alternative plus neutre**\n  - juste **pour tester** et **voir si ça change qqch** pour [prénom_enfant]" }
             ]
           },
           { id: "sante_bouche_ouverte", label: "Dort la bouche ouverte", cardLabel: "Dort la bouche ouverte", cardEmoji: "😮",
             blocks: [
-              { type: "normal", text: "À compléter" }
+              { type: "normal", text: "<div style=\"float:right;width:220px;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:10px;padding:12px 14px;margin:0 0 10px 14px;font-size:13.5px;line-height:1.55;color:#7c2d12\"><div style=\"font-weight:800;margin-bottom:8px;text-align:center;font-size:14px\">💡 Symptômes</div><ul style=\"margin:0;padding-left:18px;list-style:disc\"><li><strong>Ronflements</strong></li><li><strong>Fatigué</strong> même si longues nuits</li><li><strong>Dort dans positions particulières</strong> pour se <strong>dégager voies respiratoires</strong> (ex : fesses relevées)</li><li>Apnée du sommeil : <strong>Pauses respiratoires</strong></li><li><strong>Allergies :</strong> Amygdale/végétations gonflées donc petit trou pour respirer</li></ul></div>\n\n- Vous m'avez dit que [prénom_enfant] **dort la bouche ouverte**\n- Parfois, ça peut **simplement** être **lié** à une **petite gêne au niveau du nez OU de la respiration** :\n  - le nez un peu encombré car on est malade\n  - ou des **amygdales un peu volumineuses**\n\n- Et dans certains cas, ça peut aussi être lié à :\n  - un **terrain allergique**\n  - ou à des **pauses respiratoires pendant le sommeil**\n\n⇒ Ça peut être intéressant d'en **parler avec votre médecin** :\n  - juste pour **faire un petit point sur sa respiration pendant la nuit**\n  - et **vérifier que tout est OK pour lui**" }
             ]
           },
         ]
