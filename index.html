@@ -9376,12 +9376,23 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   // Boutons action embarqués à l'intérieur du bloc texte (via embeddedActions)
   let embeddedHtml = '';
   if (Array.isArray(b.embeddedActions) && b.embeddedActions.length) {
-    embeddedHtml = `<div class="embedded-actions" contenteditable="false">` +
-      b.embeddedActions.map((opt, oi) => {
-        const sub = { type: 'option', ...opt };
-        return renderBlockInner(sub, oi, sectionId, (depth||0)+1, `${path||i}.ea.${oi}`);
-      }).join('') +
-    `</div>`;
+    // Filtre par âge sur chaque action embarquée (showIfAgeMinMonths / showIfAgeMaxMonths)
+    const visibleActions = b.embeddedActions.filter(opt => {
+      if (opt.showIfAgeMinMonths == null && opt.showIfAgeMaxMonths == null) return true;
+      const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
+      if (age == null) return false;
+      if (opt.showIfAgeMinMonths != null && age < opt.showIfAgeMinMonths) return false;
+      if (opt.showIfAgeMaxMonths != null && age > opt.showIfAgeMaxMonths) return false;
+      return true;
+    });
+    if (visibleActions.length) {
+      embeddedHtml = `<div class="embedded-actions" contenteditable="false">` +
+        visibleActions.map((opt, oi) => {
+          const sub = { type: 'option', ...opt };
+          return renderBlockInner(sub, oi, sectionId, (depth||0)+1, `${path||i}.ea.${oi}`);
+        }).join('') +
+      `</div>`;
+    }
   }
   // Si embeddedQuestion défini : englober question + boutons dans une bulle rose intégrée au bloc
   let embeddedBlockHtml = embeddedHtml;

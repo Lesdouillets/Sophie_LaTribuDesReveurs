@@ -2714,9 +2714,12 @@ const SCRIPT_DATA = {
                                 ]
                               },
                               {
-                                label: "[À compléter sub-option 2]", emoji: "❓", style: "purple", _pillStyle: true, mutexGroup: "chgmt-lit-opt2-sub",
+                                label: "Si > 2,5 ans", emoji: "🛌", style: "purple", _pillStyle: true, mutexGroup: "chgmt-lit-opt2-sub",
+                                showIfAgeMinMonths: 30,
                                 blocks: [
-                                  { type: "normal", text: "À compléter" }
+                                  { type: "normal",
+                                    text: "- La **transition vers un lit de grand** est une **étape importante** pour un enfant\n- **mais** elle peut **aussi** être **source d'inquiétudes**\n\n- Je vous conseille de :\n  - quand même **garder son lit à barreaux** (ou lit parapluie) **dans sa chambre** pour **lui donner** la **possibilité de choisir** ET de **revenir** dedans **si** le **changement est trop rapide** pour lui\n  - Je vous invite à **rendre son nouveau lit** le **+ agréable possible**\n    - Avec des **nouveaux draps** qu'il **pourra choisir** + n'hésitez pas à **dormir avec** pour **mettre votre odeur**\n    - Avec un **nouveau pyjama de grand** !\n    - Vous pouvez aussi mettre un **coussin d'allaitement** pour garder ce côté « nichage »\n    - Si c'est un **lit cabane**, n'hésitez pas à **mettre des rideaux au dessus** pour le côté « cocon » (⚠️ que les rideaux ne puissent pas être tirés)\n\n  - 💡 S'il a la **possibilité de tomber de son lit**, vous pouvez **installer une couette d'invités** sur le sol pour **amortir la chute au cas où**\n\n  - Je vous conseille aussi d'**avoir des « options »** SI [prénom_enfant] **sort de sa chambre** !\n    - Car c'est **possible que ça arrive**… et ça peut être **potentiellement dangereux** si elle se **balade dans toute la maison** !\n    - ⇒ Je pense, par exemple :\n      - à une petite **chainette sur la porte**\n      - à mettre une barrière d'escalier :\n        - soit devant **sa porte**\n        - soit devant **d'autres portes** où vous ne **voulez pas qu'elle accède** *(ex : cuisine, garage…)*\n      - ou fermer sa porte à clé\n    - ⇒ **ce sont des idées**, je vous **laisse réfléchir** à ce qui **pourrait vous convenir le +**\n\n"
+                                  }
                                 ]
                               }
                             ] }
