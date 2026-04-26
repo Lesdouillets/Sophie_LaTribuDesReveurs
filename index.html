@@ -9601,7 +9601,7 @@ function setSolActiveCat(catId) {
 }
 window.setSolActiveCat = setSolActiveCat;
 
-// Modal flottant top-right — liste des solutions cochées
+// Modal flottant top-right — liste des solutions avec cases cliquables (sync avec "Solutions identifiées")
 function updateSolutionsModal() {
   const modal = document.getElementById('solutions-modal');
   if (!modal) return;
@@ -9612,14 +9612,18 @@ function updateSolutionsModal() {
   const parts = [];
   let total = 0;
   sols.forEach(cat => {
-    const checked = (cat.children || []).filter(ch => state.selectedSolutions.has(ch.id));
-    if (checked.length === 0) return;
-    total += checked.length;
+    const children = cat.children || [];
+    if (children.length === 0) return;
+    const checkedCount = children.filter(ch => state.selectedSolutions.has(ch.id)).length;
+    total += checkedCount;
     parts.push(`<div class="solmod-cat"><div class="solmod-cat-title">${cat.emoji||''} ${cat.title}</div>` +
-      checked.map(ch => `<div class="solmod-item">✓ ${ch.label || ch.id}</div>`).join('') +
+      children.map(ch => {
+        const isChecked = state.selectedSolutions.has(ch.id);
+        return `<label class="solmod-item" style="display:flex;align-items:center;gap:6px;padding:4px 8px;cursor:pointer"><input type="checkbox" ${isChecked?'checked':''} onchange="toggleSolution('${ch.id}', this.checked)"><span>${ch.label || ch.id}</span></label>`;
+      }).join('') +
       `</div>`);
   });
-  body.innerHTML = parts.length ? parts.join('') : '<div class="solmod-empty"><em>Aucune solution cochée pour l\'instant.</em></div>';
+  body.innerHTML = parts.length ? parts.join('') : '<div class="solmod-empty"><em>Aucune solution disponible.</em></div>';
   count.textContent = total;
   if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
 }
