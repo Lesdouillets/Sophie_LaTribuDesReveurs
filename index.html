@@ -9503,10 +9503,19 @@ function renderSolutionsCheckboxes() {
     relationnel:      { main: '#ec4899', dark: '#be185d', light: '#fdf2f8' },
     sante:            { main: '#14b8a6', dark: '#0f766e', light: '#f0fdfa' },
   };
+  // Helper : ch (solution enfant) caché par filtre d'âge
+  const isChHiddenByAge = (ch) => {
+    if (ch.showIfAgeMinMonths == null && ch.showIfAgeMaxMonths == null) return false;
+    const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
+    if (age == null) return true;
+    if (ch.showIfAgeMinMonths != null && age < ch.showIfAgeMinMonths) return true;
+    if (ch.showIfAgeMaxMonths != null && age > ch.showIfAgeMaxMonths) return true;
+    return false;
+  };
   // Partie 1 : liste compacte "Leviers identifiés" style — groupée par catégorie
   const compactGroups = sols.map(cat => {
     const c = catColorMap[cat.id] || { main:'#666', dark:'#333' };
-    const children = cat.children || [];
+    const children = (cat.children || []).filter(ch => !isChHiddenByAge(ch));
     if (!children.length) return '';
     const rows = children.map(ch => {
       let checked = state.selectedSolutions.has(ch.id);
@@ -9604,12 +9613,12 @@ function renderSolutionsCheckboxes() {
     relationnel: '#fdf2f8',
     sante: '#f0fdfa',
   };
-  const catsWithChecked = sols.filter(cat => (cat.children || []).some(ch => state.selectedSolutions.has(ch.id)));
+  const catsWithChecked = sols.filter(cat => (cat.children || []).some(ch => !isChHiddenByAge(ch) && state.selectedSolutions.has(ch.id)));
   const activeCat = state.solActiveCat;
   const parentCardsHtml = catsWithChecked.map(cat => {
     const c = catColorMap[cat.id] || { main:'#666', dark:'#333' };
     const pastel = catPastelMap[cat.id] || '#f5f5f5';
-    const checkedChildren = (cat.children || []).filter(ch => state.selectedSolutions.has(ch.id));
+    const checkedChildren = (cat.children || []).filter(ch => !isChHiddenByAge(ch) && state.selectedSolutions.has(ch.id));
     const isActive = activeCat === cat.id;
     const subTitles = checkedChildren.map(ch => ch.cardLabel || ch.label || ch.id).join(' / ');
     const activeCls = isActive ? ' active' : '';
@@ -9633,7 +9642,7 @@ function renderSolutionsCheckboxes() {
   let activeContentHtml = '';
   if (activeCat) {
     const cat = sols.find(c => c.id === activeCat);
-    const checkedChildrenForActive = cat ? (cat.children || []).filter(ch => state.selectedSolutions.has(ch.id)) : [];
+    const checkedChildrenForActive = cat ? (cat.children || []).filter(ch => !isChHiddenByAge(ch) && state.selectedSolutions.has(ch.id)) : [];
     if (cat && checkedChildrenForActive.length > 0) {
       const c = catColorMap[cat.id] || { main:'#666', dark:'#333' };
       const children = cat.children || [];
