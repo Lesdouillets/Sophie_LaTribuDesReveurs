@@ -3480,20 +3480,20 @@
       border-bottom: 2px solid;
       display: flex; align-items: center; justify-content: space-between; gap: 8px;
     }
-    .sol-bulk-btns { display: inline-flex; gap: 6px; }
+    .sol-bulk-btns { display: inline-flex; gap: 6px; margin-left: auto; flex-shrink: 0; }
     .sol-bulk-btn {
       font-family: inherit; font-size: 11px; font-weight: 700;
       padding: 3px 10px; border-radius: 999px;
-      border: 1.5px solid; background: #fff; cursor: pointer;
+      background: #fff; cursor: pointer;
       transition: background 0.15s, transform 0.1s;
       letter-spacing: 0.2px; text-transform: none;
     }
     .sol-bulk-btn:hover { transform: translateY(-1px); }
     .sol-bulk-btn:active { transform: translateY(0); }
-    .sol-bulk-check { color: #166534; border-color: #86efac; }
-    .sol-bulk-check:hover { background: #f0fdf4; }
-    .sol-bulk-uncheck { color: #b91c1c; border-color: #fca5a5; }
-    .sol-bulk-uncheck:hover { background: #fef2f2; }
+    .sol-bulk-check { color: #166534 !important; border: 1.5px solid #86efac !important; }
+    .sol-bulk-check:hover { background: #f0fdf4 !important; }
+    .sol-bulk-uncheck { color: #b91c1c !important; border: 1.5px solid #fca5a5 !important; }
+    .sol-bulk-uncheck:hover { background: #fef2f2 !important; }
     .sol-group-rows { display: flex; flex-direction: column; gap: 2px; }
     .sol-row {
       display: flex; align-items: center; gap: 8px;
