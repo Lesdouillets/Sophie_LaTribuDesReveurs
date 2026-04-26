@@ -4709,7 +4709,7 @@
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_obscurite"> <span>Obscurité insuffisante</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_temperature"> <span>Température trop élevée</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_lit_ouvert"> <span>Lit ouvert trop tôt</span></label>
-                  <label class="pb-item" data-hide-if-age-min="36"><input type="checkbox" name="pb" value="souhait_lit_ouvert_jeune"> <span>Souhait d'un lit ouvert mais trop petit</span></label>
+                  <label class="pb-item" data-hide-if-age-min="36"><input type="checkbox" name="pb" value="souhait_lit_ouvert_jeune" data-exclusive="souhait_changement"> <span>Souhait d'un lit ouvert mais trop petit</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_rituel"> <span>Rituel absent ou trop court</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_cadre"> <span>Cadre non clair</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="env_stimulations"> <span>Stimulations visuelles</span></label>
@@ -10944,9 +10944,17 @@ function selectTickboxChoice(el) {
   }
   // env_souhait_lit_ouvert_jeune_choice → souhait_changement_lit (cocher si "aller", décocher sinon)
   // → cascade : env_changement (parent solution) auto-cochée + env_chgmt_lit (sous-checkbox) auto-cochée
+  // Mutex : si on coche "aller", on décoche les autres souhait_changement_* + souhait_lit_ouvert_jeune
   if (cid === 'env_souhait_lit_ouvert_jeune_choice') {
     const currentValue = wasSelected ? null : el.dataset.value;
-    setPb('souhait_changement_lit', currentValue === 'aller');
+    if (currentValue === 'aller') {
+      setPb('souhait_changement_chambre', false);
+      setPb('souhait_changement_lit_chambre', false);
+      setPb('souhait_lit_ouvert_jeune', false);
+      setPb('souhait_changement_lit', true);
+    } else {
+      setPb('souhait_changement_lit', false);
+    }
     syncChanged = true;
   }
   // obj_tetine_static ou strategie_tetine_choice → souhait_tetine (cocher si "supprimer", décocher sinon)
