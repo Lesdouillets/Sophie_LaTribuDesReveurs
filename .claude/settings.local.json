@@ -144,7 +144,21 @@
       "mcp__Claude_Preview__preview_start",
       "Bash(where python *)",
       "Bash(grep -c '\\\\\\\\\"tbc-icon\\\\\\\\\\\\\\\\\\\\\\\\\">✅</span><span>Garder</span>' script-data.js)",
-      "Bash(grep -n 'subTitles ? `<span class=\"ccc-subtitle\"' index.html)"
+      "Bash(grep -n 'subTitles ? `<span class=\"ccc-subtitle\"' index.html)",
+      "Bash(grep -vE '^[-+]{3}|^[-+] *$')",
+      "Bash(echo \"=== 'l a dit' au lieu de 'l\\\\\\\\'a dit' ===\")",
+      "Bash(grep -oE \"\\\\\\\\bs'enqu[a-zé]+\\\\\\\\b\" script-data.js)",
+      "Bash(grep -nE \"l'enjeux\\\\b|l\\\\\\\\\\\\\\\\'enjeux\" script-data.js)",
+      "Bash(grep -nE \"n'est.{1,10}l'enjeu\" script-data.js)",
+      "Bash(grep -oE \"\\\\\\\\bSoigner\\\\\\\\b|\\\\\\\\bsoigner\\\\\\\\b\" script-data.js)",
+      "Bash(grep -nE \"aurez d.{1,4}j.{0,3} expliqu\" script-data.js)",
+      "Bash(echo \"=== Espace + apostrophe ' '\\\\\\\\'' ===\")",
+      "Bash(grep -oE \"[a-z] \\\\\\\\'[a-z]\" script-data.js)",
+      "Bash(echo \"=== '\\\\\\\\'' au lieu de l'apostrophe ===\")",
+      "Bash(grep -nE 'PAS l[\\\\\\\\\\\\\\\\]?\\\\\\\\\\\\?'\\\\\\\\\\\\\\\\\\\\?'enjeu' script-data.js)",
+      "Bash(grep -oE '\\\\\\\\b\\([a-zàâäéèêëïîôöùûüÿ]+\\)  +\\\\\\\\1\\\\\\\\b' script-data.js)",
+      "Bash(echo \"=== espaces multiples ' \\\\\\\\s+ ' \\(entre mots, hors HTML\\) ===\")",
+      "Bash(echo \"=== avec linebreak ' les bébé\\\\\\\\\\\\\\\\n' ===\")"
     ]
   }
 }
