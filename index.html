@@ -8982,15 +8982,18 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         const subs = getActiveSublabels(activeItem);
         const subsBannerHtml = subs.length ? ` — ${subs.join(' · ')}` : '';
         const bannerLabel = `${activeItem.emoji || ''} ${substituteVars(activeItem.label || '')}${subsBannerHtml}`;
-        // Boutons Fermer : caches en singleItemMode (pas de toggle possible)
-        const closeBtnTop = singleItemMode ? '' : `<button type="button" class="courbe-card-close" onclick="closeCourbeCard(this)">✕ Fermer</button>`;
-        const closeBtnBottom = singleItemMode ? '' : `<button type="button" class="courbe-card-close courbe-card-close-bottom" onclick="closeCourbeCard(this)">✕ Fermer</button>`;
-        contentHtml = `<div class="courbe-card-content" data-card-id="${activeId}">
-          <div class="courbe-card-banner">${bannerLabel}</div>
-          ${closeBtnTop}
-          ${inner}
-          ${closeBtnBottom}
-        </div>`;
+        // En singleItemMode : pas de banner ni d'encadre courbe-card-content
+        // (on rend les blocs directement, comme pour les solutions sans grid)
+        if (singleItemMode) {
+          contentHtml = inner;
+        } else {
+          contentHtml = `<div class="courbe-card-content" data-card-id="${activeId}">
+            <div class="courbe-card-banner">${bannerLabel}</div>
+            <button type="button" class="courbe-card-close" onclick="closeCourbeCard(this)">✕ Fermer</button>
+            ${inner}
+            <button type="button" class="courbe-card-close courbe-card-close-bottom" onclick="closeCourbeCard(this)">✕ Fermer</button>
+          </div>`;
+        }
       }
     }
     const themeCls = b.theme ? ` theme-${b.theme}` : '';
