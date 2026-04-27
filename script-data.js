@@ -2133,7 +2133,7 @@ const SCRIPT_DATA = {
               ]
             },
             {
-              id: "env_ecr", emoji: "📱", label: "Écrans",
+              id: "env_ecr", emoji: "📺", label: "Écrans",
               pb: "env_ecrans",
               blocks: [
                 { type: "normal", showIfPb: "env_ecrans", text: "- Aujourd'hui, **[prénom_enfant]** est en **contact, direct ou indirect, avec des écrans**…\n- C'est un peu **inévitable de nos jours**\n- mais **malheureusement**, ça peut **jouer sur son sommeil**\n\n- Vous savez, les **écrans diffusent** une **lumière…** qu'on appelle **« lumière bleue »**, qui est assez **proche de celle du soleil.**\n- Du coup, le **cerveau** :\n  - peut être confus\n  - et penser que c'est encore le « jour »\n  - et avoir du **mal à se mettre en mode « dodo »**…\n\n  ⇒ Résultat :\n  - **La production de la mélatonine** (l'hormone qui prépare au sommeil) peut être **retardée**\n  - Et **le passage du train du Sommeil** peut **passer un peu + tard que prévu**" },

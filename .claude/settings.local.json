@@ -159,7 +159,11 @@
       "Bash(grep -oE '\\\\\\\\b\\([a-zàâäéèêëïîôöùûüÿ]+\\)  +\\\\\\\\1\\\\\\\\b' script-data.js)",
       "Bash(echo \"=== espaces multiples ' \\\\\\\\s+ ' \\(entre mots, hors HTML\\) ===\")",
       "Bash(echo \"=== avec linebreak ' les bébé\\\\\\\\\\\\\\\\n' ===\")",
-      "Bash(grep -n \"addEventListener.'click', e => { if\\(e.target===e.currentTarget\\) togglePbModal\" index.html)"
+      "Bash(grep -n \"addEventListener.'click', e => { if\\(e.target===e.currentTarget\\) togglePbModal\" index.html)",
+      "Bash(grep -oE '\\\\{ id: \"[^\"]+\", emoji: \"[^\"]+\",' script-data.js)",
+      "Bash(grep -cE '^\\\\s*\\\\{ id: \"[^\"]+\", emoji: ' script-data.js)",
+      "Bash(grep -oE '\\\\{ id: \"[a-z_]+\", label: \"[^\"]+\", cardLabel:[^,]+, cardEmoji: \"[^\"]+\"' script-data.js)",
+      "Bash(grep -oE '\\\\{ id: \"[a-z_]+\", label: \"[^\"]+\", cardLabel:[^,]+, blocks:' script-data.js)"
     ]
   }
 }
