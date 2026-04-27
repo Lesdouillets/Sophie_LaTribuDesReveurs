@@ -9612,7 +9612,8 @@ function resolveTetineConflict(choice) {
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 
-function renderSolutionsCheckboxes() {
+function renderSolutionsCheckboxes(opts) {
+  const compactOnly = opts && opts.compactOnly;
   const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
   if (!sols.length) return '<div class="block block-normal"><em>(Aucune solution configurée.)</em></div>';
   syncSolutionsFromPbs();
@@ -9779,11 +9780,12 @@ function renderSolutionsCheckboxes() {
       if (grid && state.courbeCardsTicked) {
         const tickedItems = grid.items.filter(it => state.courbeCardsTicked.has(it.id));
         if (tickedItems.length) {
-          return tickedItems.map(it => it.label || it.id);
+          return tickedItems.map(it => `${it.emoji ? it.emoji + ' ' : ''}${it.label || it.id}`);
         }
       }
     }
-    return [ch.cardLabel || ch.label || ch.id];
+    const label = ch.cardLabel || ch.label || ch.id;
+    return [`${ch.cardEmoji ? ch.cardEmoji + ' ' : ''}${label}`];
   };
   const parentCardsHtml = catsWithChecked.map(cat => {
     const c = catColorMap[cat.id] || { main:'#666', dark:'#333' };
@@ -9882,6 +9884,11 @@ function renderSolutionsCheckboxes() {
     }
   }
 
+  if (compactOnly) {
+    return `<div class="block block-solutions-identifiees" style="border:none;box-shadow:none;margin:0">
+      <div class="solutions-identifiees-body">${compactGroups}</div>
+    </div>`;
+  }
   return `<div class="block block-solutions-identifiees">
     <div class="solutions-identifiees-header">🧩 Solutions identifiées</div>
     <div class="solutions-identifiees-body">${compactGroups}</div>
@@ -10160,7 +10167,7 @@ function updateSolutionsModal() {
   if (!body || !count) return;
   // Reutilise le meme rendering que la section X. Validation pour avoir
   // les memes couleurs, structure (parent + enfants + sous-enfants) et handlers
-  body.innerHTML = (typeof renderSolutionsCheckboxes === 'function') ? renderSolutionsCheckboxes() : '';
+  body.innerHTML = (typeof renderSolutionsCheckboxes === 'function') ? renderSolutionsCheckboxes({ compactOnly: true }) : '';
   // Compte total des solutions cochees
   const total = state.selectedSolutions ? state.selectedSolutions.size : 0;
   count.textContent = total;
