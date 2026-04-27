@@ -2855,7 +2855,7 @@ const SCRIPT_DATA = {
                         text: "- Si les **couchers** sont à des **heures différentes,**\n- Je vous conseille de **faire 2 rituels différents** pour que **chacun ait SON moment**\n  - On **couche le 1er enfant** dans sa chambre\n  - Et on **couche le 2nd ensuite**\n\n- 💡 Je vous conseille d'**attendre au moins 20min** après son coucher …qu'il soit en **sommeil profond** pour **coucher le 2nd**"
                       },
                       { type: "normal", _purpleDark: true,
-                        text: "**OPTION : le plus grand se couche en dernier**\n\n- Vous pouvez **dire au + grand**, de **faire le super-héro** et se **rentrer discrètement** dans la chambre"
+                        text: "**OPTION : le plus grand se couche en dernier**\n\n- Vous pouvez **dire au + grand**, de **faire le super-héro** et se **rentrer discrètement** dans la chambre\n  - 💡 Vous pouvez lui confier une **petite veilleuse portative** par exemple"
                       },
                       { type: "normal", text: "- 💡 Un **changement** peut prendre **plusieurs semaines**.\n- Au **bout d'1 mois,** vous **pourrez évaluer** si OUI ou NON, la **chambre commune** est **ce qui leur correspond**" }
                     ]
