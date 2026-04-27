@@ -124,7 +124,9 @@
       "Bash(git commit -m 'Preserver l'\\\\''etat '\\\\''open'\\\\'' des options apres re-render lie a un clic tickbox *)",
       "Bash(git commit -m 'Tickbox V. Diag '\\\\''Lit ouvert trop tot'\\\\'' supprimer => coche env_chgmt_lit_sol_barreau *)",
       "Bash(git commit -m 'Sous-sous-checkboxes Changement de lit + cascade niveau 2 + mutex *)",
-      "Bash(git commit -m 'Re-applique cascades tickbox -> sous-sous-checkboxes a chaque syncSolutionsFromPbs *)"
+      "Bash(git commit -m 'Re-applique cascades tickbox -> sous-sous-checkboxes a chaque syncSolutionsFromPbs *)",
+      "Bash(git commit -m 'Si PAS de place : ajoute conditionnel allaitement '\\\\''LOIN de la Maman'\\\\'' apres '\\\\''monter son lit dans SA nouvelle chambre'\\\\'' *)",
+      "Bash(git commit -m 'Renomme '\\\\''Changement de lit + chambre'\\\\'' partout en '\\\\''... \\(cododo => Lit barreaux\\)'\\\\'' *)"
     ]
   }
 }
