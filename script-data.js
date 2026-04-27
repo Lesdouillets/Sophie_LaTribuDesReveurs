@@ -2931,7 +2931,7 @@ const SCRIPT_DATA = {
     emoji: "✅",
     blocks: [
       { type: "question", _leftTitle: "Valeurs OK ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "Est-ce que **TOUT** ce que je **vous ai proposé** vous **correspond à vos valeurs**?" },
-      { type: "obj_rappel",
+      { type: "obj_rappel", _leftTitle: "Objectifs", _leftTitleStyle: "background:#2d3f5c;color:#fff",
         embeddedQuestion: "Est-ce que j'ai <strong>répondu à CES objectifs</strong> ?",
         embeddedQuestionFallback: "Est-ce que j'ai <strong>répondu à vos objectifs</strong> ?",
         _embeddedQuestionLeftTitle: "Objectifs OK ?",

@@ -1,4 +1,4 @@
-const CACHE = 'tdr-v1000';
+const CACHE = 'tdr-v1001';
 const ASSETS = ['./index.html', './script-data.js'];
 
 self.addEventListener('install', e => {
