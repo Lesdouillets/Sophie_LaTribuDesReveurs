@@ -3702,10 +3702,13 @@
     .solmod-count-badge { font-size: 12px; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px; }
     .solmod-toggle { display: none; }
     .solmod-body {
-      padding: 10px 12px; max-height: 400px; overflow-y: auto;
+      padding: 10px 12px; max-height: 70vh; overflow-y: auto;
       background: #fff;
-      display: block !important;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px 24px;
     }
+    @media (max-width: 900px) { .solmod-body { grid-template-columns: 1fr; } }
     .solmod-cat { margin-bottom: 10px; }
     .solmod-cat:last-child { margin-bottom: 0; }
     .solmod-cat-title {
@@ -5408,13 +5411,12 @@
 </div><!-- /app-screen -->
 
 <!-- MODAL DROPDOWN SOLUTIONS (déclenché par btn 🧭 du header) -->
-<div class="solutions-modal-wrap" id="solutions-modal" style="display:none">
-  <div class="solmod-header">
-    <span class="solmod-icon">🧭</span>
-    <span class="solmod-title">Solutions identifiées</span>
-    <span class="solmod-count-badge">(<span id="solutions-modal-count">0</span>)</span>
+<div class="modal-overlay" id="solutions-modal">
+  <div class="modal-box" style="width:90vw;max-width:1200px;max-height:90vh">
+    <button class="modal-close" onclick="toggleSolutionsModal()">✕</button>
+    <h3>🧭 Solutions identifiées <span style="font-size:13px;color:#999;font-weight:400">(<span id="solutions-modal-count">0</span>)</span></h3>
+    <div class="solmod-body" id="solutions-modal-body"></div>
   </div>
-  <div class="solmod-body" id="solutions-modal-body"></div>
 </div>
 
 <!-- PANNEAU NOTES FLOTTANT (visible pendant consultation) -->
@@ -10178,9 +10180,8 @@ window.updateSolutionsModal = updateSolutionsModal;
 function toggleSolutionsModal() {
   const modal = document.getElementById('solutions-modal');
   if (!modal) return;
-  const isVisible = modal.style.display === 'block';
-  modal.style.display = isVisible ? 'none' : 'block';
-  if (!isVisible) {
+  modal.classList.toggle('open');
+  if (modal.classList.contains('open')) {
     if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
     updateSolutionsModal();
   }
@@ -12683,6 +12684,7 @@ function toggleFullscreen() {
 }
 
 document.getElementById('pb-modal').addEventListener('click', e => { if(e.target===e.currentTarget) togglePbModal(); });
+document.getElementById('solutions-modal').addEventListener('click', e => { if(e.target===e.currentTarget) toggleSolutionsModal(); });
 document.getElementById('edit-block-modal').addEventListener('click', e => { if(e.target===e.currentTarget) closeEditBlockModal(); });
 document.getElementById('add-block-modal').addEventListener('click', e => { if(e.target===e.currentTarget) document.getElementById('add-block-modal').classList.remove('open'); });
 
