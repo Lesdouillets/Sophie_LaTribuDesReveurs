@@ -128,7 +128,8 @@
       "Bash(git commit -m 'Si PAS de place : ajoute conditionnel allaitement '\\\\''LOIN de la Maman'\\\\'' apres '\\\\''monter son lit dans SA nouvelle chambre'\\\\'' *)",
       "Bash(git commit -m 'Renomme '\\\\''Changement de lit + chambre'\\\\'' partout en '\\\\''... \\(cododo => Lit barreaux\\)'\\\\'' *)",
       "Bash(git commit -m 'Changement de lit + chambre : 2 choix repassent en embeddedActions dans le bloc Conseils *)",
-      "Bash(git commit -m 'X. Validation : fusionne obj_rappel + question '\\\\''Objectifs OK ?'\\\\'' dans le meme bloc *)"
+      "Bash(git commit -m 'X. Validation : fusionne obj_rappel + question '\\\\''Objectifs OK ?'\\\\'' dans le meme bloc *)",
+      "Bash(git commit -m 'Validation Objectifs OK : '\\\\''CES objectifs'\\\\'' si obj renseignes, '\\\\''VOS objectifs'\\\\'' sinon *)"
     ]
   }
 }
