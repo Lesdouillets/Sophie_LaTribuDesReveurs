@@ -2934,7 +2934,7 @@ const SCRIPT_DATA = {
       { type: "obj_rappel", _leftTitle: "Objectifs", _leftTitleStyle: "background:#2d3f5c;color:#fff",
         embeddedQuestion: "Est-ce que j'ai <strong>répondu à CES objectifs</strong> ?",
         embeddedQuestionFallback: "Est-ce que j'ai <strong>répondu à vos objectifs</strong> ?",
-        _embeddedQuestionLeftTitle: "Objectifs OK ?",
+        _embeddedQuestionLeftTitle: "Objectifs",
         _embeddedQuestionLeftTitleStyle: "background:#2d3f5c;color:#fff",
         embeddedActions: [
         {
