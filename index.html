@@ -9761,8 +9761,12 @@ function renderSolutionsCheckboxes() {
       const introHtml = Array.isArray(cat.introBlocks) && cat.introBlocks.length
         ? `<div class="sol-cat-intro" style="--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">${renderBlocks(cat.introBlocks, 'sol_' + cat.id)}</div>`
         : '';
-      const activeChildId = (state.solActiveChildByCat && state.solActiveChildByCat[cat.id]) || null;
-      const cardsHtml = checkedChildren.length ? `<div class="sol-child-cards">` + checkedChildren.map(ch => {
+      // Si 1 seul enfant coche : afficher directement son contenu (pas de grille de sous-cards)
+      const singleChildMode = checkedChildren.length === 1;
+      const activeChildId = singleChildMode
+        ? checkedChildren[0].id
+        : ((state.solActiveChildByCat && state.solActiveChildByCat[cat.id]) || null);
+      const cardsHtml = (!singleChildMode && checkedChildren.length) ? `<div class="sol-child-cards">` + checkedChildren.map(ch => {
         const isActive = activeChildId === ch.id;
         if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
         const childTicked = state.cardPersonalTicks.has(ch.id);
@@ -9963,6 +9967,16 @@ function toggleSolution(id, checked) {
   if (checked) state.selectedSolutions.add(id);
   else state.selectedSolutions.delete(id);
   state.selectedSolutionsManuallyEdited.add(id);
+  // Mutex : enfants de la categorie 'changement' s'excluent mutuellement (1 option active a la fois)
+  const CHGMT_MUTEX_IDS = ['env_chgmt_lit', 'env_chgmt_chambre', 'env_chgmt_lit_chambre'];
+  if (checked && CHGMT_MUTEX_IDS.includes(id)) {
+    CHGMT_MUTEX_IDS.forEach(other => {
+      if (other !== id) {
+        state.selectedSolutions.delete(other);
+        state.selectedSolutionsManuallyEdited.delete(other);
+      }
+    });
+  }
   updateSolutionsModal();
   if (typeof buildSections === 'function') buildSections();
   if (typeof buildSidebar === 'function') buildSidebar();
