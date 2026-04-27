@@ -2930,7 +2930,8 @@ const SCRIPT_DATA = {
         ],
         children: [
           { id: "rel_refus_nourrir", label: "Refus de se nourrir", cardLabel: "Refus de se nourrir", cardEmoji: "🍽", blocks: [
-            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+            { type: "normal", _leftTitle: "Excitant de communiquer même si ça implique de refuser de manger", text: "- Comme on l'a dit plus tôt, il n'y a **rien de plus excitant** que de **communiquer avec Papa et Maman…**\nEt même si l'**idée implique** de **refuser de manger**\nCar comme ça, il **continue à maintenir le contact** avec vous" },
+            { type: "normal", _leftTitle: "Conseil", text: "- Je vous **proposerais de vous détacher** un peu **de l'enjeu autour de la nourriture**\n- **S'il mange ou pas ⇒** ça lui appartient. C'est :\n  - **SON pouvoir**\n  - et vous ne pouvez **pas le forcer**\n\n- Par contre, vous, **VOTRE rôle**, c'est de **tenir le cadre du repas**\n- Concrètement :\n  - **s'il reste à table**, qu'il **mange ou pas ⇒** le **repas continue** dans un **moment convivial**\n  - on discute, on partage, on passe un bon moment\n- En revanche :\n  - s'il **quitte la table**\n  - s'il **joue avec la nourriture**, met les pieds sur la table ou déborde du cadre\n    - ⇒ le **repas est terminé pour lui**\n- Et s'il vous **demande de venir jouer** :\n*« **Non**, là c'est le **moment du repas**, JE **reste à table** avec tout le monde »*\n\n- L'**idée**, ce n'est **PAS de rentrer** dans le **rapport de force**\n- C'est simplement de **ne PAS mettre l'attention sur « il mange / il ne mange pas »**, et de **se recentrer sur autre chose**" }
           ] },
           { id: "rel_vomi", label: "Vomi", cardLabel: "Vomi", cardEmoji: "🤢", blocks: [
             { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
