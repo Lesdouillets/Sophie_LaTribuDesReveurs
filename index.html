@@ -11178,11 +11178,18 @@ function selectTickboxChoice(el) {
     if (typeof buildSidebar === 'function') buildSidebar();
     if (typeof renderCurrentSection === 'function') renderCurrentSection();
     // Restaurer les options qui etaient ouvertes
+    // (open-action SEUL ne suffit pas : .option-content est display:none sans .open
+    //  → il faut aussi ajouter .open au content + bouton Fermer + texte du toggle)
     if (openLabels.length) {
       setTimeout(() => {
         document.querySelectorAll('.block-option').forEach(opt => {
           const lbl = opt.querySelector('.option-label-text')?.textContent || '';
-          if (lbl && openLabels.includes(lbl)) opt.classList.add('open-action');
+          if (!lbl || !openLabels.includes(lbl)) return;
+          // Si deja ouvert, ne rien faire (eviter double-toggle qui refermerait)
+          const content = opt.querySelector(':scope > .option-content');
+          if (!content || content.classList.contains('open')) return;
+          const header = opt.querySelector(':scope > .option-header');
+          if (header && typeof toggleOption === 'function') toggleOption(header);
         });
       }, 0);
     }
