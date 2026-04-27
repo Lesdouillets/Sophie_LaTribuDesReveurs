@@ -9223,7 +9223,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       if (b.embeddedQuestion) {
         const fakeQuestion = {
           type: 'question',
-          text: b.embeddedQuestion,
+          // Si fallback (pas d'obj) : texte alternatif (b.embeddedQuestionFallback) ou par défaut le texte principal
+          text: b.embeddedQuestionFallback || b.embeddedQuestion,
           embeddedActions: b.embeddedActions,
           _leftTitle: b._embeddedQuestionLeftTitle,
           _leftTitleStyle: b._embeddedQuestionLeftTitleStyle
