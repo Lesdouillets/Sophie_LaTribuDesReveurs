@@ -2812,8 +2812,11 @@ const SCRIPT_DATA = {
           { id: "env_chgmt_chambre", label: "Changement de chambre", cardLabel: "Changement de chambre", cardEmoji: "🚪",
             autoCheckIfPbs: ["souhait_changement_chambre"],
             blocks: [
+                    { type: "normal", _leftTitle: "Quelle transition ?",
+                      text: "- Vous **souhaitez passer** **[prénom_enfant]** dans **sa chambre**"
+                    },
                     { type: "normal", _leftTitle: "Conseils",
-                      text: "…Pour le **passage vers sa chambre**\n\n- Je vous **invite à commencer** par :\n<div style=\"background:#f5f0ff;border:3px dashed #a78bfa;border-radius:16px;padding:14px 20px;margin:10px 0;box-shadow:0 2px 8px rgba(167,139,250,0.18)\"><strong>OPTION :</strong> fermer le cododo</div>\n- **Éloigner SON** lit de VOTRE lit, toujours dans votre chambre[if_alim:Allaitement au sein,Allaitement au biberon,Allaitement mixte]\n  - et notamment **LOIN de la Maman**, pour les **odeurs de lait**[/if_alim]\n- **En parallèle**, je vous encourage à **« apprivoiser » la chambre**, pour qu'elle soit :\n  - un lieu **connu et apprécié**\n    ⇒ N'hésitez à **jouer dans la chambre** durant les **temps d'éveil** pour qu'elle ne soit **PAS** SEULEMENT **liée au sommeil**\n- Ensuite, vous pourrez **mettre le lit dans SA chambre**\n\n- 💡 Je vous conseille de **garder les draps « sales »**, pour **maintenir des repères olfactifs**\n\n"
+                      text: "- Je vous **invite à commencer** par :\n<div style=\"background:#f5f0ff;border:3px dashed #a78bfa;border-radius:16px;padding:14px 20px;margin:10px 0;box-shadow:0 2px 8px rgba(167,139,250,0.18)\"><strong>OPTION :</strong> fermer le cododo</div>\n- **Éloigner SON** lit de VOTRE lit, toujours dans votre chambre[if_alim:Allaitement au sein,Allaitement au biberon,Allaitement mixte]\n  - et notamment **LOIN de la Maman**, pour les **odeurs de lait**[/if_alim]\n- **En parallèle**, je vous encourage à **« apprivoiser » la chambre**, pour qu'elle soit :\n  - un lieu **connu et apprécié**\n    ⇒ N'hésitez à **jouer dans la chambre** durant les **temps d'éveil** pour qu'elle ne soit **PAS** SEULEMENT **liée au sommeil**\n- Ensuite, vous pourrez **mettre le lit dans SA chambre**\n\n- 💡 Je vous conseille de **garder les draps « sales »**, pour **maintenir des repères olfactifs**\n\n"
                     }
                   ] },
           { id: "env_chgmt_lit_chambre", label: "Changement de lit + chambre (cododo ⇒ lit barreaux)", cardLabel: "Changement de lit + chambre", cardEmoji: "🔄",
