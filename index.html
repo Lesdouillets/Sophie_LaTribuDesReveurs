@@ -2988,6 +2988,24 @@
     .courbe-cards-grid-wrap { margin: 40px 0; text-align: center; }
     /* singleItemMode : pas de marge externe (le parent fournit deja l'espacement) */
     .courbe-cards-grid-wrap--single { margin: 0; }
+    /* Solutions identifiees : layout en colonne (vertical stack) pour les cartes parent
+       — meme disposition que Leviers identifies en V. Diagnostic */
+    .sol-parent-cards-grid-wrap > .courbe-cards-grid {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+    .sol-parent-cards-grid-wrap > .courbe-cards-grid > .courbe-card {
+      width: 100%;
+      max-width: 100%;
+      flex: 1 1 auto;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      text-align: left;
+      padding: 10px 16px;
+      gap: 12px;
+    }
     .courbe-cards-grid {
       display: flex;
       flex-wrap: wrap;
