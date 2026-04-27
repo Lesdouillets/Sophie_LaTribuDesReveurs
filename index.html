@@ -3575,7 +3575,16 @@
       letter-spacing: 0.3px; padding-bottom: 4px; margin-bottom: 4px;
       border-bottom: 2px solid;
       display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      cursor: pointer; user-select: none;
     }
+    .sol-group-title-text { display: inline-flex; align-items: center; gap: 6px; flex: 1; }
+    .sol-group-arrow { font-size: 11px; transition: transform 0.2s; display: inline-block; }
+    .sol-group.collapsed .sol-group-arrow { transform: rotate(-90deg); }
+    .sol-group.collapsed .sol-group-rows { display: none; }
+    .sol-row-arrow { font-size: 11px; transition: transform 0.2s; display: inline-block; cursor: pointer; padding: 0 4px; opacity: 0.7; }
+    .sol-row-arrow:hover { opacity: 1; }
+    .sol-row-collapsed .sol-row-arrow { transform: rotate(-90deg); }
+    .sol-row-collapsed .sol-row-sub { display: none; }
     .sol-bulk-btns { display: inline-flex; gap: 6px; margin-left: auto; flex-shrink: 0; }
     .sol-bulk-btn {
       font-family: inherit; font-size: 11px; font-weight: 700;
@@ -9672,16 +9681,25 @@ function renderSolutionsCheckboxes() {
             `</div>`;
         }
       }
-      return `<div data-sol-id="${ch.id}"><label class="sol-row">
+      // Wrapper de row : si subRows existe, ajouter une flèche cliquable pour collapser
+      const rowCollapsed = !!(state.solRowsCollapsed && state.solRowsCollapsed.has(ch.id));
+      const arrowHtml = subRows
+        ? `<span class="sol-row-arrow" onclick="event.preventDefault(); event.stopPropagation(); toggleSolRow('${ch.id}')" title="Replier / déplier">▾</span>`
+        : '';
+      const rowClass = rowCollapsed ? ' sol-row-collapsed' : '';
+      return `<div data-sol-id="${ch.id}" class="sol-row-wrap${rowClass}"><label class="sol-row">
         <input type="checkbox" ${checked?'checked':''} onchange="toggleSolution('${ch.id}', this.checked)">
         <span class="sol-row-label">${ch.label || ch.id}</span>
+        ${arrowHtml}
       </label>${subRows}</div>`;
     }).join('');
     const bulkBtns = children.length > 1
-      ? `<span class="sol-bulk-btns"><button type="button" class="sol-bulk-btn sol-bulk-check" onclick="checkAllSolutionsInCat('${cat.id}')" title="Tout cocher">Tout ✓</button><button type="button" class="sol-bulk-btn sol-bulk-uncheck" onclick="uncheckAllSolutionsInCat('${cat.id}')" title="Tout décocher">Tout ✗</button></span>`
+      ? `<span class="sol-bulk-btns"><button type="button" class="sol-bulk-btn sol-bulk-check" onclick="event.stopPropagation(); checkAllSolutionsInCat('${cat.id}')" title="Tout cocher">Tout ✓</button><button type="button" class="sol-bulk-btn sol-bulk-uncheck" onclick="event.stopPropagation(); uncheckAllSolutionsInCat('${cat.id}')" title="Tout décocher">Tout ✗</button></span>`
       : '';
-    return `<div class="sol-group" data-cat="${cat.id}">
-      <div class="sol-group-title" style="color:${c.dark};border-color:${c.main}"><span>${cat.emoji || ''} ${cat.title}</span>${bulkBtns}</div>
+    const groupCollapsed = !!(state.solGroupsCollapsed && state.solGroupsCollapsed.has(cat.id));
+    const groupClass = groupCollapsed ? ' collapsed' : '';
+    return `<div class="sol-group${groupClass}" data-cat="${cat.id}">
+      <div class="sol-group-title" style="color:${c.dark};border-color:${c.main}" onclick="toggleSolGroup('${cat.id}')"><span class="sol-group-title-text"><span class="sol-group-arrow">▾</span><span>${cat.emoji || ''} ${cat.title}</span></span>${bulkBtns}</div>
       <div class="sol-group-rows">${rows}</div>
     </div>`;
   }).filter(Boolean).join('');
@@ -9943,6 +9961,26 @@ function toggleSolution(id, checked) {
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.toggleSolution = toggleSolution;
+
+// Replier / déplier une catégorie parente dans Solutions identifiées (compact list)
+function toggleSolGroup(catId) {
+  if (!state.solGroupsCollapsed) state.solGroupsCollapsed = new Set();
+  if (state.solGroupsCollapsed.has(catId)) state.solGroupsCollapsed.delete(catId);
+  else state.solGroupsCollapsed.add(catId);
+  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.toggleSolGroup = toggleSolGroup;
+
+// Replier / déplier une sol-row qui a des sous-checkboxes (Chambre / Lit / etc.)
+function toggleSolRow(rowId) {
+  if (!state.solRowsCollapsed) state.solRowsCollapsed = new Set();
+  if (state.solRowsCollapsed.has(rowId)) state.solRowsCollapsed.delete(rowId);
+  else state.solRowsCollapsed.add(rowId);
+  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.toggleSolRow = toggleSolRow;
 
 function toggleSolChildCard(catId, childId) {
   if (!state.solActiveChildByCat) state.solActiveChildByCat = {};

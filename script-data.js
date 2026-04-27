@@ -2734,16 +2734,9 @@ const SCRIPT_DATA = {
       {
         id: "changement", title: "Changement", emoji: "🔄",
         children: [
-          { id: "env_changement", label: "Changement", cardLabel: "Changement", cardEmoji: "🔄",
-            autoCheckIfPbs: ["souhait_changement_lit", "souhait_changement_chambre", "souhait_changement_lit_chambre", "souhait_lit_ouvert_jeune"],
+          { id: "env_chgmt_lit", label: "Changement de lit", cardLabel: "Changement de lit", cardEmoji: "🛏",
+            autoCheckIfPbs: ["souhait_changement_lit", "souhait_lit_ouvert_jeune"],
             blocks: [
-              { type: "normal", text: "- Vous vouliez aussi des **solutions** pour …" },
-              {
-                type: "courbe_cards_grid",
-                theme: "violet",
-                alwaysShowAll: true,
-                items: [
-                  { id: "env_chgmt_lit", emoji: "🛏", label: "Changement de lit", pb: ["souhait_changement_lit", "souhait_lit_ouvert_jeune"], blocks: [
                     {
                       type: "courbe_cards_grid",
                       theme: "violet",
