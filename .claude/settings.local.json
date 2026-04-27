@@ -134,7 +134,8 @@
       "Bash(git commit -m 'X. Validation : ajoute _leftTitle '\\\\''Objectifs'\\\\'' sur obj_rappel \\(devant '\\\\''Pour rappel...'\\\\''\\) *)",
       "Bash(git commit -m 'Validation Objectifs : titre '\\\\''Objectifs'\\\\'' aussi en cas de fallback \\(pas d'\\\\''obj\\) *)",
       "Bash(git commit -m 'Changement lit + chambre : '\\\\''LOIN de la Maman'\\\\'' inline \\(parenthese\\) au lieu de bullet separe *)",
-      "Bash(git commit -m 'obj_rappel embedded question : utilise .block-question avec liseré rouge complet *)"
+      "Bash(git commit -m 'obj_rappel embedded question : utilise .block-question avec liseré rouge complet *)",
+      "Bash(git commit -m 'obj_rappel embedded question : boutons OUI/NON en dessous \\(flex column\\) *)"
     ]
   }
 }
