@@ -2925,8 +2925,28 @@ const SCRIPT_DATA = {
       },
       {
         id: "relationnel", title: "Enjeux relationnels", emoji: "💬",
+        introBlocks: [
+          { type: "normal", _leftTitle: "Remettre un cadre", text: "- Maintenant j'aimerai bien que l'on discute de **l'enjeu relationnel** qui s'**est installé** entre vous\n- Aujourd'hui, on sent :\n  - qu'il y a **qqch qui s'est installé** entre vous\n  - et que **ça joue** aussi sur **son sommeil.**\n\n- L'idée, ça va être de **remettre un cadre :**\n  - **clair**\n  - **et stable**.\n- Avec une règle toute simple :\n  - ***« la règle reste la même, quoi qu'il arrive »***\n\n- **Votre rôle**, ça va être :\n  - de **vous détacher du jeu relationnel** qui s'est installé\n  - de **ne pas sur-réagir émotionnellement**\n  - et de **rediriger l'attention ailleurs**" }
+        ],
         children: [
-          // À compléter
+          { id: "rel_refus_nourrir", label: "Refus de se nourrir", cardLabel: "Refus de se nourrir", cardEmoji: "🍽", blocks: [
+            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+          ] },
+          { id: "rel_vomi", label: "Vomi", cardLabel: "Vomi", cardEmoji: "🤢", blocks: [
+            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+          ] },
+          { id: "rel_mouille_lit", label: "Mouille son lit", cardLabel: "Mouille son lit", cardEmoji: "💧", blocks: [
+            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+          ] },
+          { id: "rel_se_fait_mal", label: "Se fait mal", cardLabel: "Se fait mal", cardEmoji: "🤕", blocks: [
+            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+          ] },
+          { id: "rel_jette_doudou", label: "Jette son doudou", cardLabel: "Jette son doudou", cardEmoji: "🧸", blocks: [
+            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+          ] },
+          { id: "rel_lit_parental", label: "Vient dans VOTRE lit", cardLabel: "Vient dans VOTRE lit", cardEmoji: "🛏", blocks: [
+            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+          ] }
         ]
       },
       {
