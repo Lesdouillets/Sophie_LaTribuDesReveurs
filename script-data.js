@@ -229,6 +229,9 @@ const PB_LABELS = {
   'souhait_tetine': 'Suppression de la tétine',
   'souhait_position_dorsale': 'Vers une position dorsale',
   'souhait_changement_lit': 'Changement de lit',
+  'souhait_chgmt_lit_cododo_barreau': 'Cododo ⇒ Lit à barreaux',
+  'souhait_chgmt_lit_barreau_ouvert': 'Lit à barreaux ⇒ Lit ouvert',
+  'souhait_chgmt_lit_sol_barreau': '(Retour) Lit ouvert ⇒ Lit à barreaux',
   'souhait_changement_chambre': 'Changement de chambre',
   'souhait_changement_lit_chambre': 'Changement de lit + chambre (cododo ⇒ Lit barreaux)',
 };
@@ -2742,10 +2745,10 @@ const SCRIPT_DATA = {
                       theme: "violet",
                       alwaysShowAll: true,
                       items: [
-                        { id: "env_chgmt_lit_cododo_barreau", emoji: "🛏", label: "Cododo ⇒ Lit à barreaux", blocks: [
+                        { id: "env_chgmt_lit_cododo_barreau", emoji: "🛏", label: "Cododo ⇒ Lit à barreaux", pb: "souhait_chgmt_lit_cododo_barreau", blocks: [
                           { type: "normal", text: "- Si v**ous souhaitez** le passer **de son cododo** ⇒ à son **lit à barreaux / parapluie**\n- Je vous invite à :\n  - d'une part, à **fermer le cododo** quand il dort actuellement… **si ce n'est déjà fait**\n  - **dormir avec ses nouveaux draps**, pour **garder des repères olfactifs**\n  - lui **montrer son lit** avec beaucoup de **joie**\n  - lui **verbaliser souvent** que *« c'est ici qu'il a dormir, parce que **c'est un grand** maintenant ! »*\n  - Vous pouvez aussi **[LE_LA] mettre dans son lit**, durant ses **temps d'éveil** pour qu'il se **familiarise avec les lieux**\n\n- 💡 N'hésitez pas **les 1ers jours**, à **vous écouter**, et le **prendre dans les bras** pour le **rassurer dans ce nouvel environnement**\n\n" }
                         ] },
-                        { id: "env_chgmt_lit_barreau_ouvert", emoji: "🛌", label: "Lit à barreaux ⇒ Lit ouvert", blocks: [
+                        { id: "env_chgmt_lit_barreau_ouvert", emoji: "🛌", label: "Lit à barreaux ⇒ Lit ouvert", pb: "souhait_chgmt_lit_barreau_ouvert", blocks: [
                           { type: "normal", text: "", embeddedActions: [
                             {
                               label: "Si souhait dès maintenant", emoji: "🛌", style: "purple", _pillStyle: true, mutexGroup: "chgmt-lit-bo-sub",
@@ -2766,7 +2769,7 @@ const SCRIPT_DATA = {
                             }
                           ] }
                         ] },
-                        { id: "env_chgmt_lit_sol_barreau", emoji: "🔙", label: "(Retour) Lit ouvert ⇒ Lit à barreaux", blocks: [
+                        { id: "env_chgmt_lit_sol_barreau", emoji: "🔙", label: "(Retour) Lit ouvert ⇒ Lit à barreaux", pb: "souhait_chgmt_lit_sol_barreau", blocks: [
                           { type: "normal", text: "- Le **passage d'un lit ouvert** ⇒ vers **un lit à barreaux**, ne doit **PAS être vécu** comme **une régression**\n- C'est souvent **un passage transitoire**, le **temps** que le **sommeil s'apaise**\n- Il sera **tout à fait possible** de **revenir à un lit ouvert + tard** !\n\n---\n\n- **Si** vous **devez revenir à un lit à barreaux**, je vous conseille de **faire de ce changement une fête** :\n  - De **montrer de la joie** QUAND **vous allez re-monter** son lit\n  - vous pouvez aussi lui proposer un **nouveau Doudou** que votre enfant pourrait choisir\n  - vous pouvez également **investir** dans de **nouveaux draps**, un **nouveau pyjama**… qui là aussi, pourrait être choisi par votre enfant\n\n---\n\n- Il **faut savoir** que **beaucoup d'enfants apprécient** de **revenir** à un **lit + sécurisant** pour eux !\n\n" }
                         ] }
                       ]
