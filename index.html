@@ -2986,6 +2986,8 @@
     .edit-block-wrap { position: relative; }
     /* Grille de cartes "Courbe de poids qui diminue" — 4 colonnes, cartes même taille */
     .courbe-cards-grid-wrap { margin: 40px 0; text-align: center; }
+    /* singleItemMode : pas de marge externe (le parent fournit deja l'espacement) */
+    .courbe-cards-grid-wrap--single { margin: 0; }
     .courbe-cards-grid {
       display: flex;
       flex-wrap: wrap;
@@ -9010,6 +9012,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       }
     }
     const themeCls = b.theme ? ` theme-${b.theme}` : '';
+    // En singleItemMode : pas de grille de cards (vide), pas de margin externe
+    if (singleItemMode) {
+      return `<div class="courbe-cards-grid-wrap${themeCls} courbe-cards-grid-wrap--single" data-grid-path="${gridPath}">${contentHtml}</div>`;
+    }
     return `<div class="courbe-cards-grid-wrap${themeCls}" data-grid-path="${gridPath}">
       <div class="courbe-cards-grid">${cardsHtml}</div>
       ${contentHtml}
