@@ -2884,6 +2884,58 @@ const SCRIPT_DATA = {
         ]
       },
       {
+        id: "journee", title: "Journée", emoji: "☀️",
+        children: [
+          { id: "journee_eveil", label: "Temps d'éveil", cardLabel: "Temps d'éveil", cardEmoji: "☀️",
+            blocks: [
+              {
+                type: "courbe_cards_grid",
+                alwaysShowAll: true,
+                items: [
+                  { id: "journee_reservoir", emoji: "💓", label: "Réservoir affectif", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- **REMPLIR son réservoir affectif**, ça va l'aider à **mieux vivre la séparation au moment** du coucher." },
+                    { type: "normal", _leftTitle: "Conseils", text: "- 💭 Il faut **VOIR** le **réservoir affectif** comme une **baignoire** :\n  - qu'on **remplit** dans **la journée**\n  - et qui va se « **vider » naturellement** pendant les **moments de séparation**… **comme au moment du coucher**\n\n- ⇒ **PLUS** la **baignoire est remplie**,\n- ⇒ PLUS la **séparation** devient **+ facile**\n- ⇒ … et PLUS il va **POUVOIR lâcher prise** au **moment du coucher**\n\n- Vous pouvez proposer **chaque jour** un **temps de qualité** (**15 min** suffisent).\n- L'idée, c'est d'être **vraiment disponible** : *Sans penser à la casserole qui chauffe, au travail, ou aux taches ménagères qui restent à faire !*\n- Pendant ce moment, on se met **à 100% avec lui**\n  - S'il fait **rouler des voitures**… ON fait **rouler des voitures**\n  - S'il les **fait voler**… alors ON les fait **voler aussi** 😄\n\n- ⇒ En fait, on lui montre qu'on :\n  - **s'intéresse à son monde**\n  - à ce qu'il fait\n  - à ce qu'il propose\n\n- ⇒ et ça :\n  - **renforce**\n  - **remplit son réservoir affectif**…\n  - ⇒ pour qu'il soit **+ facilement armé** pour une **prochaine séparation**" }
+                  ] },
+                  { id: "journee_motricite", emoji: "🏃", label: "Motricité libre", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- La **motricité libre**, ça va favoriser UNE **pression de sommeil suffisante**" },
+                    { type: "normal", _leftTitle: "Conseils", text: "- Je vous invite à laisser votre enfant :\n  - **libre** de ses mouvements, pendant ses **temps d'éveil**\n\n- ⇒ En **limitant** autant que possible le **transat OU le parc**\n\n- ⇒ L'**objectif**, c'est de le **laisser se dépenser physiquement**… pour qu'il **soit suffisamment « fatigué »** pour ses temps de sommeil" }
+                  ] },
+                  { id: "journee_sorties", emoji: "🌳", label: "Sorties en extérieur", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- Les **sorties en extérieur** vont l'**apaiser** et **favoriser l'oxygénation de son cerveau**" },
+                    { type: "normal", _leftTitle: "Conseils", text: "- Une **sortie quotidienne** peut faire **beaucoup de différence** (même 10 min !)\n\n- **Avant 8 mois** (ou avec 3 siestes) :\n  - La balade peut se faire **pendant une sieste** car les **temps d'éveil** sont **très courts** à cet âge là\n\n- **Après 8 mois** :\n  - Privilégier les balades **durant les temps d'éveil**\n  - Si possible **en motricité libre** (plutôt qu'assis en poussette)" }
+                  ] },
+                  { id: "journee_jouets", emoji: "🔋", label: "Jouets à piles", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- Les **jouets lumineux et sonores** peuvent créer une **sur-stimulation** pour le **cerveau** : *trop de lumière / bruits dans tous les sens !*\n- La **lumière bleue** de ces jeux peut AUSSI **retarder l'endormissement**, en **freinant** la sécrétion de **mélatonine** (l'hormone du sommeil)." },
+                    { type: "normal", _leftTitle: "Conseils", text: "- Je vous encourage à **limiter les jeux à piles**, surtout en fin de journée." }
+                  ] },
+                  { id: "journee_ecrans", emoji: "📺", label: "Écrans", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- La **lumière bleue** des écrans :\n  - **inhibe** la sécrétion de la **mélatonine** (hormone du sommeil)\n  - ⇒ et **va donc retarder l'endormissement**" },
+                    { type: "normal", _leftTitle: "Conseils", text: "- Je vous conseille de **limiter les écrans** avant le coucher *(TV allumée, téléphone, appels vidéo)*\n  - ⚠️ **MEME SI** l'**exposition est indirecte**\n\n- Et **si ce n'est pas possible**, idéalement dans les **2 heures qui précèdent le coucher**" }
+                  ] },
+                  { id: "journee_sucre", emoji: "🍩", label: "Sucre", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- Il faut savoir qu'une **consommation élevée** de sucre peut **exciter** votre enfant et **freiner son endormissement**" },
+                    { type: "normal", _leftTitle: "Conseils", text: "- Je vous suggère de **limiter le sucre**, surtout en fin de journée." }
+                  ] },
+                  { id: "journee_angoisse", emoji: "😟", label: "Angoisse de séparation", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- L'**angoisse de séparation** est un **pic de développement** qui peut **générer** du **stress et des pleurs**" },
+                    { type: "normal", _leftTitle: "Conseils", text: "- Pour **aider au mieux** [prénom_enfant] dans **cette phase**, vous pouvez par exemple :\n  - Jouer à **des « coucou-caché »**\n  - Proposer des **jeux de permanence de l'objet**\n  - **Parler DEPUIS une autre pièce** pour montrer que vous **êtes toujours là**\n\n- Si vous devez faire une sortie sans lui, je vous encourage à :\n  - ❌ **EVITER de partir SANS prévenir**\n    - ⇒ Sinon votre enfant pourra rester **en alerte permanente** *« car **Papa/Maman** peut **partir à tout moment** sans me le dire »*\n  - ✅ Et à l'inverse, faites des **retrouvailles** ⇒ un **vrai moment de joie**\n    - ⇒ pour qu'il **associe la séparation** à qqch de :\n      - **temporaire**\n      - et **rassurant**" }
+                  ] },
+                  { id: "journee_retournement", emoji: "🤸", label: "Retournement dos/ventre", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- Le **retournement dos/ventre** correspond à un **pic de développement**\n- mais souvent le BB **reste « coincé »** car il ne sait **pas revenir en arrière**" },
+                    { type: "normal", _leftTitle: "Conseils", text: "- Je vous encourage à faire ses **petits exercices** en **journée** :\n  - Proposer du « **tummy time** » ⇒ pour **renforcer le haut du corps**\n  - Vous pouvez aussi **presser son pied** ⇒ pour découvrir qu'il **PEUT plier le genou** et SE **faire basculer** (côté jambe tendue). ⚠️ Attention à la **position du bras** qui **peut être coincé**\n    - 💡 N'hésitez pas à **faire les exercices avec une turbulette**, pour **se mettre en conditions** comme dans **son lit**\n  - Vous pouvez utiliser une **arche** devant lui ⇒ pour qu'il **attrape les objets en LEVANT sa tête**\n\n- Tous ces **petits exercices** vont **l'aider** dans la **découverte du « retournement »** !" }
+                  ] },
+                  { id: "journee_lumiere", emoji: "☀️", label: "Exposition à la lumière", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- L'**exposition à la lumière naturelle** en journée aide à **réguler le rythme veille/sommeil**." },
+                    { type: "normal", _leftTitle: "Conseils", text: "- Je vous encourage à :\n  - **Aller en extérieur**\n  - **Ouvrir les volets dès le réveil**\n    - ⇒ pour **synchroniser son horloge biologique**" }
+                  ] }
+                ]
+              },
+              { type: "conseil_vert", _leftTitle: "👏 Encouragement", text: "- En **dehors de ces petits ajustements**, je vous **encourage à continuer** TOUT ce que vous faites pour [prénom_enfant]\n- Ça va **dans le bon sens** pour :\n  - **son développement**\n  - et **son sommeil !**\n- C'est **TOP !**" }
+            ]
+          }
+        ]
+      },
+      {
         id: "relationnel", title: "Enjeux relationnels", emoji: "💬",
         children: [
           // À compléter
