@@ -9742,12 +9742,26 @@ function renderSolutionsCheckboxes() {
   };
   const catsWithChecked = sols.filter(cat => (cat.children || []).some(ch => !isChHiddenByAge(ch) && state.selectedSolutions.has(ch.id)));
   const activeCat = state.solActiveCat;
+  // Helper : renvoie les labels des sous-items tickees (state.courbeCardsTicked) d'un enfant ;
+  // sinon fallback sur le label de l'enfant (cardLabel/label/id)
+  const getDisplayLabelsForChild = (ch) => {
+    if (Array.isArray(ch.blocks)) {
+      const grid = ch.blocks.find(b => b && b.type === 'courbe_cards_grid' && Array.isArray(b.items));
+      if (grid && state.courbeCardsTicked) {
+        const tickedItems = grid.items.filter(it => state.courbeCardsTicked.has(it.id));
+        if (tickedItems.length) {
+          return tickedItems.map(it => it.label || it.id);
+        }
+      }
+    }
+    return [ch.cardLabel || ch.label || ch.id];
+  };
   const parentCardsHtml = catsWithChecked.map(cat => {
     const c = catColorMap[cat.id] || { main:'#666', dark:'#333' };
     const pastel = catPastelMap[cat.id] || '#f5f5f5';
     const checkedChildren = (cat.children || []).filter(ch => !isChHiddenByAge(ch) && state.selectedSolutions.has(ch.id));
     const isActive = activeCat === cat.id;
-    const subTitles = checkedChildren.map(ch => ch.cardLabel || ch.label || ch.id).join(' / ');
+    const subTitles = checkedChildren.flatMap(ch => getDisplayLabelsForChild(ch)).join(' / ');
     const activeCls = isActive ? ' active' : '';
     const activeStyle = isActive
       ? `background:linear-gradient(90deg,${c.dark},${c.main});color:white;border:3px solid ${c.dark};box-shadow:0 6px 18px ${c.main}66`
@@ -9817,9 +9831,9 @@ function renderSolutionsCheckboxes() {
             `</div>`;
         }
       }
-      // Si singleChildMode : ajouter le nom de l'enfant a la banniere parent (comme V. Diagnostic)
+      // Si singleChildMode : ajouter le nom de l'enfant (ou ses sous-items tickees) a la banniere parent
       const singleChildLabel = singleChildMode
-        ? ` — ${checkedChildren[0].cardLabel || checkedChildren[0].label || checkedChildren[0].id}`
+        ? ` — ${getDisplayLabelsForChild(checkedChildren[0]).join(' / ')}`
         : '';
       activeContentHtml = `<div class="sol-active-content" style="border:3px solid ${c.main}">
         <div class="sol-active-banner" style="background:${c.main}">${cat.emoji || ''} ${cat.title}${singleChildLabel}</div>
