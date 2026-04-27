@@ -2895,7 +2895,7 @@ const SCRIPT_DATA = {
           ] },
           { id: "journee_sorties", label: "Sorties en extérieur", cardLabel: "Sorties en extérieur", cardEmoji: "🌳", blocks: [
             { type: "normal", _leftTitle: "Pourquoi ?", text: "- Les **sorties en extérieur** vont l'**apaiser** et **favoriser l'oxygénation de son cerveau**" },
-            { type: "normal", _leftTitle: "Conseils", text: "- Une **sortie quotidienne** peut faire **beaucoup de différence** (même 10 min !)\n\n- **Avant 8 mois** (ou avec 3 siestes) :\n  - La balade peut se faire **pendant une sieste** car les **temps d'éveil** sont **très courts** à cet âge là\n\n- **Après 8 mois** :\n  - Privilégier les balades **durant les temps d'éveil**\n  - Si possible **en motricité libre** (plutôt qu'assis en poussette)" }
+            { type: "normal", _leftTitle: "Conseils", text: "- Une **sortie quotidienne** peut faire **beaucoup de différence** (même 10 min !)\n[if_age_min:8]\n- Privilégier les balades **durant les temps d'éveil**\n- Si possible **en motricité libre** (plutôt qu'assis en poussette)\n[/if_age_min][if_age_max:7]\n- La balade peut se faire **pendant une sieste** car les **temps d'éveil** sont **très courts** à cet âge là\n[/if_age_max]" }
           ] },
           { id: "journee_jouets", label: "Jouets à piles", cardLabel: "Jouets à piles", cardEmoji: "🔋", blocks: [
             { type: "normal", _leftTitle: "Pourquoi ?", text: "- Les **jouets lumineux et sonores** peuvent créer une **sur-stimulation** pour le **cerveau** : *trop de lumière / bruits dans tous les sens !*\n- La **lumière bleue** de ces jeux peut AUSSI **retarder l'endormissement**, en **freinant** la sécrétion de **mélatonine** (l'hormone du sommeil)." },
