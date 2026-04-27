@@ -3592,8 +3592,8 @@
     .sol-group { width: 100%; }
     @media (max-width: 900px) { .solutions-identifiees-body { grid-template-columns: 1fr; } }
     .sol-group-title {
-      font-weight: 800; font-size: 12.5px; text-transform: uppercase;
-      letter-spacing: 0.3px; padding-bottom: 4px; margin-bottom: 4px;
+      font-weight: 800; font-size: 14px; text-transform: uppercase;
+      letter-spacing: 0.3px; padding-bottom: 5px; margin-bottom: 6px;
       border-bottom: 2px solid;
       display: flex; align-items: center; justify-content: space-between; gap: 8px;
       cursor: pointer; user-select: none;
@@ -3624,11 +3624,12 @@
     .sol-group-rows { display: flex; flex-direction: column; gap: 2px; }
     .sol-row {
       display: flex; align-items: center; gap: 8px;
-      padding: 4px 6px; border-radius: 4px; cursor: pointer;
-      font-size: 13px; line-height: 1.3;
+      padding: 5px 6px; border-radius: 4px; cursor: pointer;
+      font-size: 14.5px; line-height: 1.35;
     }
     .sol-row:hover { background: #f8fafc; }
     .sol-row input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; flex-shrink: 0; }
+    .sol-row-emoji { font-size: 16px; line-height: 1; flex-shrink: 0; }
     .sol-row-label { color: #334155; }
     .sol-row input[type="checkbox"]:checked + .sol-row-label { font-weight: 700; color: #0f172a; }
 
@@ -9739,9 +9740,10 @@ function renderSolutionsCheckboxes() {
         ? `<span class="sol-row-arrow" onclick="toggleSolRow('${ch.id}')" title="Replier / déplier">▾</span>`
         : '';
       const rowClass = rowCollapsed ? ' sol-row-collapsed' : '';
+      const chEmoji = ch.cardEmoji ? `<span class="sol-row-emoji">${ch.cardEmoji}</span>` : '';
       return `<div data-sol-id="${ch.id}" class="sol-row-wrap${rowClass}"><div class="sol-row-header"><label class="sol-row" style="flex:1">
         <input type="checkbox" ${checked?'checked':''} onchange="toggleSolution('${ch.id}', this.checked)">
-        <span class="sol-row-label">${ch.label || ch.id}</span>
+        ${chEmoji}<span class="sol-row-label">${ch.label || ch.id}</span>
       </label>${arrowHtml}</div>${subRows}</div>`;
     }).join('');
     const bulkBtns = children.length > 1
@@ -10156,22 +10158,11 @@ function updateSolutionsModal() {
   const body = document.getElementById('solutions-modal-body');
   const count = document.getElementById('solutions-modal-count');
   if (!body || !count) return;
-  const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
-  const parts = [];
-  let total = 0;
-  sols.forEach(cat => {
-    const children = cat.children || [];
-    if (children.length === 0) return;
-    const checkedCount = children.filter(ch => state.selectedSolutions.has(ch.id)).length;
-    total += checkedCount;
-    parts.push(`<div class="solmod-cat"><div class="solmod-cat-title">${cat.emoji||''} ${cat.title}</div>` +
-      children.map(ch => {
-        const isChecked = state.selectedSolutions.has(ch.id);
-        return `<label class="solmod-item" style="display:flex;align-items:center;gap:6px;padding:4px 8px;cursor:pointer"><input type="checkbox" ${isChecked?'checked':''} onchange="toggleSolution('${ch.id}', this.checked)"><span>${ch.label || ch.id}</span></label>`;
-      }).join('') +
-      `</div>`);
-  });
-  body.innerHTML = parts.length ? parts.join('') : '<div class="solmod-empty"><em>Aucune solution disponible.</em></div>';
+  // Reutilise le meme rendering que la section X. Validation pour avoir
+  // les memes couleurs, structure (parent + enfants + sous-enfants) et handlers
+  body.innerHTML = (typeof renderSolutionsCheckboxes === 'function') ? renderSolutionsCheckboxes() : '';
+  // Compte total des solutions cochees
+  const total = state.selectedSolutions ? state.selectedSolutions.size : 0;
   count.textContent = total;
   if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
 }
