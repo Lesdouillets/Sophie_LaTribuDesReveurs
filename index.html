@@ -9762,7 +9762,7 @@ function renderSolutionsCheckboxes() {
     const pastel = catPastelMap[cat.id] || '#f5f5f5';
     const checkedChildren = (cat.children || []).filter(ch => !isChHiddenByAge(ch) && state.selectedSolutions.has(ch.id));
     const isActive = activeCat === cat.id;
-    const subTitles = checkedChildren.flatMap(ch => getDisplayLabelsForChild(ch)).join(' / ');
+    const subTitleLabels = checkedChildren.flatMap(ch => getDisplayLabelsForChild(ch));
     const activeCls = isActive ? ' active' : '';
     const activeStyle = isActive
       ? `background:linear-gradient(90deg,${c.dark},${c.main});color:white;border:3px solid ${c.dark};box-shadow:0 6px 18px ${c.main}66`
@@ -9774,7 +9774,7 @@ function renderSolutionsCheckboxes() {
       <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${parentTicked ? '✅' : '☐'}</span>
       <span class="ccc-emoji">${cat.emoji || '📄'}</span>
       <span class="ccc-title">${cat.title}</span>
-      ${subTitles ? `<span class="ccc-subtitle">${subTitles}</span>` : ''}
+      ${subTitleLabels.length ? `<span class="ccc-subs">${subTitleLabels.map(s => `<span class="ccc-sub-chip">${s}</span>`).join('')}</span>` : ''}
     </div>`;
   }).join('');
 
@@ -9832,12 +9832,8 @@ function renderSolutionsCheckboxes() {
             `</div>`;
         }
       }
-      // Si singleChildMode : ajouter le nom de l'enfant (ou ses sous-items tickees) a la banniere parent
-      const singleChildLabel = singleChildMode
-        ? ` — ${getDisplayLabelsForChild(checkedChildren[0]).join(' / ')}`
-        : '';
       activeContentHtml = `<div class="sol-active-content" style="border:3px solid ${c.main}">
-        <div class="sol-active-banner" style="background:${c.main}">${cat.emoji || ''} ${cat.title}${singleChildLabel}</div>
+        <div class="sol-active-banner" style="background:${c.main}">${cat.emoji || ''} ${cat.title}</div>
         ${introHtml}
         ${cardsHtml}
         ${childContentHtml}
