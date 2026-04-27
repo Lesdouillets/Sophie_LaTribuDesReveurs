@@ -8960,7 +8960,12 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     }).join('');
     let contentHtml = '';
     if (activeId) {
-      const activeItem = visibleItems.find(it => (it.id || '') === activeId) || items.find(it => it.id === activeId);
+      // Ne pas fallback sur items[] : si l'item n'est plus visible (pb decochee), reset l'activeId
+      // Sinon le banner du card precedemment ouvert reste affiche meme apres decochage de la pb
+      const activeItem = visibleItems.find(it => (it.id || '') === activeId);
+      if (!activeItem) {
+        delete state.courbeCardsActiveByGrid[gridPath];
+      }
       if (activeItem) {
         const innerBlocks = Array.isArray(activeItem.blocks) ? activeItem.blocks : [];
         const inner = renderBlocks(innerBlocks, sectionId, (depth||0)+1, `${path||i}.cc.${activeId}`);

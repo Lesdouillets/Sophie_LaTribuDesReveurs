@@ -2143,7 +2143,18 @@ const SCRIPT_DATA = {
             },
           ]
         },
-        { type: "question", _parentLevel: true, text: "Donc pour moi, **ces petites choses** sont pour moi **des petits cailloux** dans **l'engrenage du sommeil** sur lequel **on va travailler,**\n⇒ **pour offrir** à **[prénom_enfant]** les **meilleures conditions possibles** pour ses nuits et ses siestes\n\n⇒ Est-ce que ça **vous parle** tout ça ?" },
+        { type: "question", _parentLevel: true,
+          showIfAnyOf: [
+            { pb: "env_obscurite" },
+            { pb: "env_temperature" },
+            { pb: "env_lit_ouvert" },
+            { pb: "env_rituel" },
+            { pb: "env_cadre" },
+            { pb: "env_stimulations" },
+            { pb: "env_ecrans" }
+          ],
+          text: "Donc pour moi, **ces petites choses** sont pour moi **des petits cailloux** dans **l'engrenage du sommeil** sur lequel **on va travailler,**\n⇒ **pour offrir** à **[prénom_enfant]** les **meilleures conditions possibles** pour ses nuits et ses siestes\n\n⇒ Est-ce que ça **vous parle** tout ça ?"
+        },
       ]
     },
 
