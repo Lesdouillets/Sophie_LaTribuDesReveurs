@@ -2727,20 +2727,22 @@ const SCRIPT_DATA = {
                   ] },
                   { id: "env_chgmt_lit_chambre", emoji: "🔄", label: "Changement de lit + chambre (cododo ⇒ lit barreaux)", pb: "souhait_changement_lit_chambre", blocks: [
                     { type: "normal", _leftTitle: "Conseils",
-                      text: "- Si vous voulez faire la transition :\n  - vers un nouveau lit\n  - ET une nouvelle chambre\n- Je vous **invite à commencer par** :\n<div style=\"background:#f5f0ff;border:3px dashed #a78bfa;border-radius:16px;padding:14px 20px;margin:10px 0;box-shadow:0 2px 8px rgba(167,139,250,0.18)\"><strong>OPTION :</strong> fermer le cododo</div>\n- Monter **son nouveau lit** dans **VOTRE chambre**\n\n"
-                    },
-                    {
-                      type: "courbe_cards_grid",
-                      theme: "violet",
-                      items: [
-                        { id: "env_chgmt_lc_no_place", emoji: "🚫", label: "Si PAS de place de le monter", blocks: [
-                          { type: "normal", text: "- Vous pouvez directement **monter son lit** dans SA **nouvelle chambre**[if_alim:Allaitement au sein,Allaitement au biberon,Allaitement mixte]\n  - et notamment **LOIN de la Maman**, pour les **odeurs de lait**[/if_alim]\n- Je vous encourage néanmoins à :\n  - **dormir avec ses nouveaux draps** ⇒ pour **garder des repères olfactifs**\n  - lui **montrer son lit** avec beaucoup de **joie**\n  - lui **verbaliser souvent** que *« c'est **ici qu'il a dormir**, parce que **c'est un grand** maintenant ! »*\n  - Vous pouvez aussi **[LE_LA] mettre dans son lit**, durant ses **temps d'éveil** ⇒ pour qu'il se **familiarise avec les lieux**, en le stimulant\n\n- 💡 N'hésitez pas **les 1ers jours**, à **vous écouter**, et le **prendre dans les bras** pour le **RASSURER dans ce nouvel environnement**\n\n" }
-                        ] },
-                        { id: "env_chgmt_lc_with_place", emoji: "✅", label: "Si la place de le monter", blocks: [
-                          { type: "normal", text: "- Je vous encourage à :\n  - **dormir avec ses nouveaux draps**, pour **garder des repères olfactifs**\n  - lui **montrer son lit** avec beaucoup de **joie**\n  - lui **verbaliser souvent** que *« c'est **ici qu'il a dormir**, parce que **c'est un grand** maintenant ! »*\n  - Vous pouvez aussi **[LE_LA] mettre dans son lit**, durant ses **temps d'éveil** pour qu'il se **familiarise avec les lieux**, en le stimulant\n- Ensuite, **éloignez** physiquement **SON nouveau lit** de VOTRE lit, si vous avez la place" },
-                          { type: "normal", showIfAlim: ["Allaitement au sein", "Allaitement au biberon", "Allaitement mixte"], text: "  - et notamment **LOIN de la Maman**, pour les **odeurs de lait**" },
-                          { type: "normal", text: "- **En parallèle**, je vous encourage à **« apprivoiser » SA chambre**, pour qu'elle soit :\n  - un lieu **connu et apprécié**\n    ⇒ N'hésitez à **jouer dans la chambre** durant les **temps d'éveil** ⇒ pour qu'elle ne soit **PAS** SEULEMENT **liée au sommeil**\n- Enfin, vous pouvez **passer [prénom_enfant] dans sa chambre**\n\n- 💡 N'hésitez pas **les 1ers jours**, à **vous écouter**, et le **prendre dans les bras** pour le **RASSURER dans ce nouvel environnement**\n\n" }
-                        ] }
+                      text: "- Si vous voulez faire la transition :\n  - vers un nouveau lit\n  - ET une nouvelle chambre\n- Je vous **invite à commencer par** :\n<div style=\"background:#f5f0ff;border:3px dashed #a78bfa;border-radius:16px;padding:14px 20px;margin:10px 0;box-shadow:0 2px 8px rgba(167,139,250,0.18)\"><strong>OPTION :</strong> fermer le cododo</div>\n- Monter **son nouveau lit** dans **VOTRE chambre**\n\n",
+                      embeddedActions: [
+                        {
+                          label: "OPTION : Si PAS de place de le monter", emoji: "🚫", style: "action", _pillStyle: true, mutexGroup: "chgmt-lit-chambre-place",
+                          blocks: [
+                            { type: "normal", text: "- Vous pouvez directement **monter son lit** dans SA **nouvelle chambre**[if_alim:Allaitement au sein,Allaitement au biberon,Allaitement mixte]\n  - et notamment **LOIN de la Maman**, pour les **odeurs de lait**[/if_alim]\n- Je vous encourage néanmoins à :\n  - **dormir avec ses nouveaux draps** ⇒ pour **garder des repères olfactifs**\n  - lui **montrer son lit** avec beaucoup de **joie**\n  - lui **verbaliser souvent** que *« c'est **ici qu'il a dormir**, parce que **c'est un grand** maintenant ! »*\n  - Vous pouvez aussi **[LE_LA] mettre dans son lit**, durant ses **temps d'éveil** ⇒ pour qu'il se **familiarise avec les lieux**, en le stimulant\n\n- 💡 N'hésitez pas **les 1ers jours**, à **vous écouter**, et le **prendre dans les bras** pour le **RASSURER dans ce nouvel environnement**\n\n" }
+                          ]
+                        },
+                        {
+                          label: "OPTION : Si la place de le monter", emoji: "✅", style: "action-green", _pillStyle: true, mutexGroup: "chgmt-lit-chambre-place",
+                          blocks: [
+                            { type: "normal", text: "- Je vous encourage à :\n  - **dormir avec ses nouveaux draps**, pour **garder des repères olfactifs**\n  - lui **montrer son lit** avec beaucoup de **joie**\n  - lui **verbaliser souvent** que *« c'est **ici qu'il a dormir**, parce que **c'est un grand** maintenant ! »*\n  - Vous pouvez aussi **[LE_LA] mettre dans son lit**, durant ses **temps d'éveil** pour qu'il se **familiarise avec les lieux**, en le stimulant\n- Ensuite, **éloignez** physiquement **SON nouveau lit** de VOTRE lit, si vous avez la place" },
+                            { type: "normal", showIfAlim: ["Allaitement au sein", "Allaitement au biberon", "Allaitement mixte"], text: "  - et notamment **LOIN de la Maman**, pour les **odeurs de lait**" },
+                            { type: "normal", text: "- **En parallèle**, je vous encourage à **« apprivoiser » SA chambre**, pour qu'elle soit :\n  - un lieu **connu et apprécié**\n    ⇒ N'hésitez à **jouer dans la chambre** durant les **temps d'éveil** ⇒ pour qu'elle ne soit **PAS** SEULEMENT **liée au sommeil**\n- Enfin, vous pouvez **passer [prénom_enfant] dans sa chambre**\n\n- 💡 N'hésitez pas **les 1ers jours**, à **vous écouter**, et le **prendre dans les bras** pour le **RASSURER dans ce nouvel environnement**\n\n" }
+                          ]
+                        }
                       ]
                     }
                   ] },
