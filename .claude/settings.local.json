@@ -129,7 +129,10 @@
       "Bash(git commit -m 'Renomme '\\\\''Changement de lit + chambre'\\\\'' partout en '\\\\''... \\(cododo => Lit barreaux\\)'\\\\'' *)",
       "Bash(git commit -m 'Changement de lit + chambre : 2 choix repassent en embeddedActions dans le bloc Conseils *)",
       "Bash(git commit -m 'X. Validation : fusionne obj_rappel + question '\\\\''Objectifs OK ?'\\\\'' dans le meme bloc *)",
-      "Bash(git commit -m 'Validation Objectifs OK : '\\\\''CES objectifs'\\\\'' si obj renseignes, '\\\\''VOS objectifs'\\\\'' sinon *)"
+      "Bash(git commit -m 'Validation Objectifs OK : '\\\\''CES objectifs'\\\\'' si obj renseignes, '\\\\''VOS objectifs'\\\\'' sinon *)",
+      "Bash(git commit -m 'Statistiques \\(IX. Reformulation\\) : ne cache que la partie warning si en retard *)",
+      "Bash(git commit -m 'X. Validation : ajoute _leftTitle '\\\\''Objectifs'\\\\'' sur obj_rappel \\(devant '\\\\''Pour rappel...'\\\\''\\) *)",
+      "Bash(git commit -m 'Validation Objectifs : titre '\\\\''Objectifs'\\\\'' aussi en cas de fallback \\(pas d'\\\\''obj\\) *)"
     ]
   }
 }
