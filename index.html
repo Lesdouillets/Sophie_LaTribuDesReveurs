@@ -2803,7 +2803,7 @@
       border-radius: 14px !important;
     }
     /* Forcer le fond violet sur TOUS les .block-option.purple à l'intérieur d'un action ouvert
-       (couvre aussi "Si Pas pris de RDV" dans OUI) */
+       (couvre aussi "Si Pas pris de rendez-vous" dans OUI) */
     .block-option.action.open-action .block-option.purple {
       background: #f5f0ff !important;
       border: 2px solid #7c3aed !important;
@@ -4911,7 +4911,7 @@
       function createColorPaletteHTML(onClickFn) {
         return `<div class="color-palette-popup" style="display:none;position:absolute;bottom:100%;left:0;background:white;border:1.5px solid #ccc;border-radius:8px;padding:6px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:100;margin-bottom:4px">
           <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px">
-            ${COLOR_PALETTE.map(c => `<button type="button" onmousedown="event.preventDefault();${onClickFn}('${c.color}')" style="width:28px;height:28px;background:${c.color};border:1.5px solid #ddd;border-radius:4px;cursor:pointer" title="${c.name}"></button>`).join('')}
+            ${COLOR_PALETTenfantmap(c => `<button type="button" onmousedown="event.preventDefault();${onClickFn}('${c.color}')" style="width:28px;height:28px;background:${c.color};border:1.5px solid #ddd;border-radius:4px;cursor:pointer" title="${c.name}"></button>`).join('')}
           </div>
         </div>`;
       }
@@ -4971,7 +4971,7 @@
           </div>
           <div class="sos-section-body" contenteditable="true">
             <ul>
-              <li><strong>VOUS</strong> êtes les <strong>experts de votre BB</strong> ⇒ <strong>mon rôle,</strong> c'est simplement de <strong>vous apporter des repères et des outils</strong></li>
+              <li><strong>VOUS</strong> êtes les <strong>experts de votre bébé</strong> ⇒ <strong>mon rôle,</strong> c'est simplement de <strong>vous apporter des repères et des outils</strong></li>
               <li>On va <strong>avancer pas à pas :</strong>
                 <ul>
                   <li>en <strong>respectant votre rythme</strong></li>
@@ -4997,10 +4997,10 @@
                   <li>PAS de parents parfaits</li>
                   <li>NI de sommeil parfait</li>
                 </ul>
-                ⇒ l'objectif est simplement de <strong>comprendre comment fonctionne votre BB</strong> pour <strong>l'accompagner au mieux</strong>
+                ⇒ l'objectif est simplement de <strong>comprendre comment fonctionne votre bébé</strong> pour <strong>l'accompagner au mieux</strong>
               </li>
               <li>Vous avez <strong>déjà mis beaucoup de choses en place</strong> pour votre bébé ⇒ nous allons <strong>simplement peaufiner quelques éléments</strong> pour <strong>l'aider à mieux dormir</strong></li>
-              <li>Le <strong>sommeil d'un BB évolue beaucoup</strong> en grandissant ⇒ Du coup, c'est <strong>NORMAL</strong> de <strong>rencontrer des moments un peu + compliqués.</strong></li>
+              <li>Le <strong>sommeil d'un bébé évolue beaucoup</strong> en grandissant ⇒ Du coup, c'est <strong>NORMAL</strong> de <strong>rencontrer des moments un peu + compliqués.</strong></li>
             </ul>
           </div>
         </div>
@@ -5016,7 +5016,7 @@
               <li>Je <strong>comprends</strong></li>
               <li>C'est <strong>très difficile</strong> d'<strong>entendre</strong> son enfant pleurer</li>
               <li><strong>Personne n'aime ça</strong></li>
-              <li>Et si je peux vous <strong>rassurer tout de suite</strong> sur <strong>qqch d'important</strong> : c'est qu'<strong>on ne va PAS laisser votre enfant SEUL à pleurer.</strong></li>
+              <li>Et si je peux vous <strong>rassurer tout de suite</strong> sur <strong>quelque chose d'important</strong> : c'est qu'<strong>on ne va PAS laisser votre enfant SEUL à pleurer.</strong></li>
               <li><strong>Par contre</strong>, il y a une <strong>chose importante</strong> à <strong>comprendre</strong> sur les <strong>pleurs</strong> :<br>
                 ⇒ Les <strong>pleurs des enfants</strong> ne sont <strong>pas les mêmes</strong> que les <strong>pleurs des adultes.</strong>
               </li>
@@ -5032,13 +5032,13 @@
                 <ul>
                   <li><strong>Quitter</strong> ce qu'<strong>on connaît</strong>…</li>
                   <li><strong>Quitter</strong> ce qui <strong>nous rassure</strong>…</li>
-                  <li>Pour aller <strong>vers qqch</strong> de <strong>nouveau</strong>.</li>
+                  <li>Pour aller <strong>vers quelque chose</strong> de <strong>nouveau</strong>.</li>
                 </ul>
                 ⇒ Donc c'est <strong>possible qu'il proteste.</strong><br>
                 ⇒ C'est <strong>possible qu'il pleure</strong> pour dire : <em>"moi je <strong>préférais avant</strong>."</em><br>
                 ⇒ Et ça, c'est une réaction <strong>normale !</strong>
               </li>
-              <li>Votre enfant va aussi <strong>apprendre qqch de nouveau</strong> : <strong>trouver ses PROPRES stratégies pour s'endormir</strong>. Et ça, vous ne pouvez <strong>pas le faire à sa place !</strong> Un peu comme nous, adultes — on a <strong>TOUS notre façon de nous endormir</strong> : <em>certains sur le côté, d'autres sur le ventre, certains avec un bras en l'air…</em> On ne peut <strong>PAS dire à qqn : <em>"Tiens, dors comme moi, ça marchera."</em> NON</strong><br>
+              <li>Votre enfant va aussi <strong>apprendre quelque chose de nouveau</strong> : <strong>trouver ses PROPRES stratégies pour s'endormir</strong>. Et ça, vous ne pouvez <strong>pas le faire à sa place !</strong> Un peu comme nous, adultes — on a <strong>TOUS notre façon de nous endormir</strong> : <em>certains sur le côté, d'autres sur le ventre, certains avec un bras en l'air…</em> On ne peut <strong>PAS dire à quelqu'un : <em>"Tiens, dors comme moi, ça marchera."</em> NON</strong><br>
                 ⇒ Votre enfant va <strong>devoir découvrir ce qui fonctionne POUR LUI</strong>
               </li>
             </ul>
@@ -5049,9 +5049,9 @@
               </p>
               <p><strong>MAIS s'il vient près de vous</strong>, qu'il <strong>vous écoute</strong>, vous <strong>caresse doucement le dos</strong>, ou vous <strong>parle avec bienveillance</strong> :<br>
                 ⇒ La <strong>tristesse ne disparaîtra pas d'un coup</strong><br>
-                ⇒ <strong>Mais</strong> ça <strong>deviendra bcp + facile</strong> à vivre
+                ⇒ <strong>Mais</strong> ça <strong>deviendra beaucoup + facile</strong> à vivre
               </p>
-              <p>Pour un BB, c'est <strong>pareil</strong>. Il n'a <strong>pas besoin</strong> qu'on fasse <strong>disparaître ses pleurs</strong> tout de suite. Il a <strong>besoin</strong> de sentir <em>« Je ne suis <strong>pas seul.</strong> Maman/Papa est là. »</em><br>
+              <p>Pour un bébé, c'est <strong>pareil</strong>. Il n'a <strong>pas besoin</strong> qu'on fasse <strong>disparaître ses pleurs</strong> tout de suite. Il a <strong>besoin</strong> de sentir <em>« Je ne suis <strong>pas seul.</strong> Maman/Papa est là. »</em><br>
                 ⇒ C'est comme ça, qu'il va pouvoir <strong>traverser sereinement</strong> ce changement
               </p>
             </div>
@@ -5090,7 +5090,7 @@
               </li>
             </ul>
             <div class="sos-aside">
-              <p>Imaginez-vous qqn qui vous parle en chinois ! Vous ne comprendrez sûrement rien ! Mais vous comprendrez l'intonation, ou la douceur de la voix !</p>
+              <p>Imaginez-vous quelqu'un qui vous parle en chinois ! Vous ne comprendrez sûrement rien ! Mais vous comprendrez l'intonation, ou la douceur de la voix !</p>
             </div>
             <ul>
               <li>Tout ça, ça va <strong>l'aider</strong> à se sentir en <strong>sécurité</strong> pour <strong>traverser ses émotions</strong> — <strong>SANS être seul</strong> — <strong>SANS</strong> se sentir <strong>abandonné</strong></li>
@@ -5109,7 +5109,7 @@
               <li>Ce ne sont <strong>PAS de mauvaises habitudes</strong></li>
               <li>Vous avez <strong>fait au mieux AVEC</strong> ce que vous <strong>aviez à ce moment-là</strong></li>
               <li>Ce sont <strong>des solutions qui ont fonctionné à un moment donné</strong></li>
-              <li>Il n'existe <strong>PAS de manuel</strong> pour <strong>élever un BB</strong> :
+              <li>Il n'existe <strong>PAS de manuel</strong> pour <strong>élever un bébé</strong> :
                 <ul>
                   <li><strong>TOUS</strong> les parents <strong>tâtonnent</strong></li>
                   <li><strong>TOUS</strong> les parents <strong>ajustent</strong></li>
@@ -5134,7 +5134,7 @@
           <div class="sos-section-body" contenteditable="true">
             <ul>
               <li><strong>Bcp de parents</strong> ont <strong>cette peur</strong>. Rassurez-vous, c'est <strong>normal de s'inquiéter</strong></li>
-              <li>Les BB n'ont <strong>PAS encore de langage</strong> pour dire ce qu'ils ressentent ⇒ Les <strong>pleurs</strong> sont donc leur <strong>SEUL moyen de communication</strong></li>
+              <li>Les bébé n'ont <strong>PAS encore de langage</strong> pour dire ce qu'ils ressentent ⇒ Les <strong>pleurs</strong> sont donc leur <strong>SEUL moyen de communication</strong></li>
               <li>Ce n'est <strong>PAS le fait qu'ils pleurent</strong> qui est <strong>dangereux</strong></li>
               <li>Ce qui est problématique, c'est si les pleurs :
                 <ul>
@@ -5166,7 +5166,7 @@
           <div class="sos-section-body" contenteditable="true">
             <ul>
               <li>Les <strong>parents</strong> ont aussi des <strong>émotions</strong>. Elles font <strong>partie</strong> de la <strong>vie</strong> ⇒ Et c'est <strong>normal !</strong></li>
-              <li>On ne peut <strong>PAS</strong> tjs les <strong>cacher</strong>. Et il ne <strong>FAUT surtout PAS !</strong></li>
+              <li>On ne peut <strong>PAS</strong> toujours les <strong>cacher</strong>. Et il ne <strong>FAUT surtout PAS !</strong></li>
               <li>Parce qu'un enfant <strong>ressent tout</strong>. Il <strong>ne comprend</strong> peut-être <strong>pas les mots</strong>. Mais il capte les <strong>tensions</strong> et les <strong>émotions</strong> autour de lui ⇒ Alors <strong>cacher</strong> ses émotions peut <strong>créer</strong> de <strong>l'insécurité</strong></li>
               <li>Ce qu'il faut faire, c'est :
                 <ul>
@@ -5199,7 +5199,7 @@
                   <li>Ou une <strong>absence répétée</strong> de réponse <strong>aux besoins d'un enfant</strong></li>
                 </ul>
               </li>
-              <li>Alors <strong>EST-CE</strong> que <strong>laisser pleurer</strong> un <strong>BB : Seul, Longtemps, Sans réponse</strong>… ça peut être <strong>maltraitant</strong> ?<br>
+              <li>Alors <strong>EST-CE</strong> que <strong>laisser pleurer</strong> un <strong>bébé : Seul, Longtemps, Sans réponse</strong>… ça peut être <strong>maltraitant</strong> ?<br>
                 ⇒ <strong>OUI</strong>, ça peut l'être<br>
                 ⇒ Mais ce n'est <strong>PAS DU TOUT</strong> ce que <strong>je vous propose</strong>
               </li>
@@ -5226,9 +5226,9 @@
           </div>
           <div class="sos-section-body" contenteditable="true">
             <ul>
-              <li><strong>OUI</strong>, votre enfant a <strong>besoin de vous</strong>. Il aura <strong>tjs besoin de vous</strong>, même à 40 ans !</li>
+              <li><strong>OUI</strong>, votre enfant a <strong>besoin de vous</strong>. Il aura <strong>toujours besoin de vous</strong>, même à 40 ans !</li>
               <li>Il ne va <strong>PAS « apprendre à dormir »</strong> car il <strong>SAIT déjà DORMIR</strong>. Ce qu'il va <strong>apprendre</strong>, ce sont de <strong>nouvelles habitudes autour de l'endormissement</strong>. Et ça, vous ne pouvez <strong>PAS</strong> le faire <strong>à SA PLACE !</strong></li>
-              <li>Un peu <strong>comme</strong> pour nous, <strong>adultes</strong> : <strong>chacun a sa façon de s'endormir</strong> : <em>Certains sur le côté, d'autres sur le ventre, certains avec un bras en l'air…</em> On ne peut <strong>pas dire à qqn</strong> : <em>"<strong>Dors comme moi, ça marchera</strong>."</em> NON. Pour <strong>les enfants c'est pareil</strong><br>
+              <li>Un peu <strong>comme</strong> pour nous, <strong>adultes</strong> : <strong>chacun a sa façon de s'endormir</strong> : <em>Certains sur le côté, d'autres sur le ventre, certains avec un bras en l'air…</em> On ne peut <strong>pas dire à quelqu'un</strong> : <em>"<strong>Dors comme moi, ça marchera</strong>."</em> NON. Pour <strong>les enfants c'est pareil</strong><br>
                 ⇒ <strong>Votre enfant doit découvrir ce qui fonctionne pour lui</strong>
               </li>
               <li>Et c'est là que <strong>votre rôle</strong> prend <strong>tout son sens</strong> : C'est <strong>GRACE</strong> à ce <strong>LIEN FORT entre vous</strong> :
@@ -5254,7 +5254,7 @@
           <div class="sos-section-body" contenteditable="true">
             <ul>
               <li>Je veux vous <strong>rassurer</strong> tout de suite : <strong>ce n'est pas le cas</strong>.</li>
-              <li>Un BB n'a pas la <strong>maturité neurologique</strong> pour ça. Les pleurs ne sont <strong>donc PAS</strong> une <strong>stratégie</strong> ⇒ <strong>C'est simplement</strong> leur <strong>SEUL</strong> moyen de <strong>communication</strong></li>
+              <li>Un bébé n'a pas la <strong>maturité neurologique</strong> pour ça. Les pleurs ne sont <strong>donc PAS</strong> une <strong>stratégie</strong> ⇒ <strong>C'est simplement</strong> leur <strong>SEUL</strong> moyen de <strong>communication</strong></li>
               <li>Quand il pleure :
                 <ul>
                   <li>Il exprime un <strong>besoin</strong> <em>(« j'ai faim », « je suis fatigué »</em>…)</li>
@@ -5279,7 +5279,7 @@
           <div class="sos-section-body" contenteditable="true">
             <ul>
               <li>Je <strong>comprends</strong>. C'est <strong>très difficile</strong> d'<strong>entendre</strong> son enfant pleurer. <strong>Personne n'aime ça</strong>. Et souvent, comme parent, <strong>on se dit : <em>"S'il pleure, c'est que ça ne lui convient pas."</em></strong></li>
-              <li>Mais les <strong>pleurs</strong> peuvent <strong>vouloir dire bcp de choses</strong>. <strong>Parfois</strong> c'est :
+              <li>Mais les <strong>pleurs</strong> peuvent <strong>vouloir dire beaucoup de choses</strong>. <strong>Parfois</strong> c'est :
                 <ul>
                   <li>Un <strong>besoin</strong>,</li>
                   <li>Mais parfois c'est aussi une <strong>façon d'exprimer une frustration OU</strong> une <strong>réaction face à un changement</strong>.</li>
@@ -5289,7 +5289,7 @@
                 <ul>
                   <li><strong>Quitter</strong> ce qu'<strong>on connaît</strong>…</li>
                   <li><strong>Quitter</strong> ce qui <strong>nous rassure</strong>…</li>
-                  <li>Pour aller <strong>vers qqch</strong> de <strong>nouveau</strong>.</li>
+                  <li>Pour aller <strong>vers quelque chose</strong> de <strong>nouveau</strong>.</li>
                 </ul>
                 ⇒ Donc c'est <strong>possible qu'il proteste</strong><br>
                 ⇒ C'est <strong>possible qu'il pleure</strong> pour dire : <em>"moi je <strong>préférais avant</strong>."</em><br>
@@ -5318,7 +5318,7 @@
             <ul>
               <li>Je comprends que l'on puisse faire le <strong>raccourci</strong>. Mais l'<strong>endormissement autonome</strong> et l'<strong>entraînement au sommeil</strong> ce n'est <strong>pas</strong> du tout <strong>la même chose</strong></li>
               <li>L'<strong>entraînement au sommeil</strong> est une <strong>recherche de PERFORMANCE</strong>. L'<strong>objectif</strong> c'est que l'enfant <strong>DORME COÛTE QUE COÛTE</strong>, parfois <strong>peu importe ce qu'il ressent</strong></li>
-              <li>Tandis que <strong>l'endormissement autonome</strong> est une <strong>COMPÉTENCE</strong>. C'est qqch que l'enfant va apprendre et qui <strong>va se DÉVELOPPER à son rythme</strong>. L'<strong>objectif</strong> c'est qu'il se sente :
+              <li>Tandis que <strong>l'endormissement autonome</strong> est une <strong>COMPÉTENCE</strong>. C'est quelque chose que l'enfant va apprendre et qui <strong>va se DÉVELOPPER à son rythme</strong>. L'<strong>objectif</strong> c'est qu'il se sente :
                 <ul>
                   <li><strong>CAPABLE</strong></li>
                   <li><strong>SOUTENU</strong></li>
@@ -5341,7 +5341,7 @@
           </div>
           <div class="sos-section-body" contenteditable="true">
             <ul>
-              <li>Je veux <strong>être claire</strong> : l'endormissement <strong>autonome</strong> n'est <strong>PAS</strong> qqch d'<strong>obligatoire</strong>. Ça va <strong>DÉPENDRE</strong> de :
+              <li>Je veux <strong>être claire</strong> : l'endormissement <strong>autonome</strong> n'est <strong>PAS</strong> quelque chose d'<strong>obligatoire</strong>. Ça va <strong>DÉPENDRE</strong> de :
                 <ul>
                   <li>De <strong>votre enfant</strong></li>
                   <li>Et des <strong>BESOINS de chacun</strong></li>
@@ -5548,7 +5548,7 @@
     <div class="sos-section">
       <h3>🙂 Donner confiance aux parents</h3>
       <ul>
-        <li><strong>VOUS</strong> êtes les <strong>experts de votre BB</strong> → mon rôle : vous apporter des repères et des outils</li>
+        <li><strong>VOUS</strong> êtes les <strong>experts de votre bébé</strong> → mon rôle : vous apporter des repères et des outils</li>
         <li>On va avancer <strong>pas à pas</strong>, en respectant votre rythme et celui de votre enfant</li>
         <li>Il n'y a <strong>PAS 1 seule bonne façon de faire</strong> → l'important, c'est de trouver ce qui fonctionne pour VOTRE famille</li>
       </ul>
@@ -5558,7 +5558,7 @@
       <ul>
         <li>Il n'existe PAS de parents parfaits, NI de sommeil parfait</li>
         <li>Vous avez <strong>fait au mieux</strong> avec ce que vous aviez à ce moment-là</li>
-        <li>Le sommeil d'un BB évolue beaucoup → c'est <strong>NORMAL</strong> de rencontrer des moments plus compliqués</li>
+        <li>Le sommeil d'un bébé évolue beaucoup → c'est <strong>NORMAL</strong> de rencontrer des moments plus compliqués</li>
       </ul>
     </div>
     <div class="sos-section">
@@ -5590,7 +5590,7 @@
     <div class="sos-section">
       <h3>😤 "Il pleure pour manipuler / faire un caprice"</h3>
       <ul>
-        <li>Un BB n'a pas la <strong>maturité neurologique</strong> pour ça</li>
+        <li>Un bébé n'a pas la <strong>maturité neurologique</strong> pour ça</li>
         <li>Les pleurs ne sont PAS une stratégie → c'est leur <strong>seul moyen de communication</strong></li>
         <li>Quand il pleure fort, ce n'est pas un caprice, c'est : <em>"j'ai besoin de toi"</em></li>
       </ul>
@@ -6640,7 +6640,7 @@ async function saveClient() {
 
 // Auto-sauvegarde silencieuse (debounced) — lit les champs DOM de la fiche client,
 // met à jour state.client et appelle saveClient() pour persister (localStorage + Supabase).
-// Déclenchée à chaque modif d'un champ BB/Parents/Santé via computeClientFields().
+// Déclenchée à chaque modif d'un champ bébé/Parents/Santé via computeClientFields().
 let _autoSaveFicheTimer = null;
 function autoSaveFiche() {
   if (_autoSaveFicheTimer) clearTimeout(_autoSaveFicheTimer);
@@ -8100,7 +8100,7 @@ function returnToDiagnostic() {
 window.__infoButtons = window.__infoButtons || {};
 window.__activeInfoBtnId = null;
 
-// Panneau latéral "💡 Formules taille cible" (onglet BB / fiche client)
+// Panneau latéral "💡 Formules taille cible" (onglet bébé / fiche client)
 // Même comportement que le bouton "Causes du RGO" : panel qui slide in et réduit le contenu central.
 // Toggle : re-clic sur le bouton ou clic sur ✕ → ferme le panneau
 function showTailleCibleFormulas() {
@@ -8288,9 +8288,9 @@ function parseAgeStringToMonths(s) {
 function getBesoinNuit() {
   const mois = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
   if (mois == null) return '';
-  if (mois < 2) return '8h-10h (entrecoupé de tps d\'alimentation)';
-  if (mois < 4) return '9h-12h (1 à 3 tps d\'alimentation)';
-  if (mois < 8) return '10h-13h (1 à 3 tps d\'alimentation)';
+  if (mois < 2) return '8h-10h (entrecoupé de temps d\'alimentation)';
+  if (mois < 4) return '9h-12h (1 à 3 temps d\'alimentation)';
+  if (mois < 8) return '10h-13h (1 à 3 temps d\'alimentation)';
   if (mois < 15) return '10h-13h (moy. 11-12h ininterrompue)';
   if (mois < 48) return '10h-13h (moy. 11-12h ininterrompue)'; // 15 mois → avant 4 ans (3 ans, 3,5 ans restent dans cette tranche)
   return '11h-13h (moy. 11-12h)'; // 4 ans et +
@@ -9263,7 +9263,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         <tr><td style="${hd}">Consultation de suivi</td><td style="${td}">20min</td><td style="${td}">45€</td><td style="${td}"></td></tr>
         <tr><td style="${hd}"></td><td style="${td}">45 min</td><td style="${td}">90€</td><td style="${td}"></td></tr>
         <tr><td style="${hd}">WhatsApp</td><td style="${td}">1 sem.</td><td style="${td}">90€</td><td style="${td}">Délai rép. 24h</td></tr>
-        <tr><td style="${hd}">Semaine de suivi</td><td style="${td}">1 sem.</td><td style="${td}">18€ puis 150€</td><td style="${td}">2 RDV 20min + WhatsApp</td></tr>
+        <tr><td style="${hd}">Semaine de suivi</td><td style="${td}">1 sem.</td><td style="${td}">18€ puis 150€</td><td style="${td}">2 rendez-vous 20min + WhatsApp</td></tr>
         <tr><td style="${hd}">Lecture de courbes</td><td style="${td}">20min</td><td style="${td}">45€</td><td style="${td}"></td></tr>
       </table>
       <table style="border-collapse:collapse">
