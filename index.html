@@ -11075,6 +11075,9 @@ function selectTickboxChoice(el) {
       delete state.tickboxChoices['obj_chgmt_lit_type'];
       ['souhait_chgmt_lit_cododo_barreau','souhait_chgmt_lit_barreau_ouvert','souhait_chgmt_lit_sol_barreau'].forEach(pb => setPb(pb, false));
     }
+    // Propager pb → state.selectedSolutions (autoCheckIfPbs sur env_chgmt_lit / env_chgmt_chambre / env_chgmt_lit_chambre)
+    // + state.courbeCardsTicked si une sous-pb chgmt_lit est aussi cochée
+    if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
     // Si on selectionne "changer_lit" : faire defiler vers la sous-question apparue
     // Delai 400ms = apres re-render + openLabels restore + toggleOption scrollIntoView (50ms + smooth animation 300-500ms)
     // Direct scroll sur .content-area (scrollable container) plutot que scrollIntoView
