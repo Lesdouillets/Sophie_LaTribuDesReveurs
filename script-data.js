@@ -2843,7 +2843,7 @@ const SCRIPT_DATA = {
                       ]
                     }
           ] },
-          { id: "env_partage_chambre", label: "Partage de chambre", cardLabel: "Partage de chambre", cardEmoji: "🛏",
+          { id: "env_partage_chambre", label: "Partage de chambre", cardLabel: "Partage de chambre", cardEmoji: "👧👦",
             blocks: [
               { type: "normal", _leftTitle: "Essayer si ça convient à chacun",
                 text: "- Je vous conseille d'**essayer** si le **partage de chambre** peut **convenir à chacun** des enfants :",
