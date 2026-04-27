@@ -3573,7 +3573,7 @@
     .sol-floating-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(59,130,246,0.4); }
     .sol-floating-btn:active { transform: scale(0.98); }
     .sol-child-content .block { max-width: 100%; box-sizing: border-box; overflow-wrap: break-word; }
-    /* Bloc "🧭 Solutions identifiées" façon Leviers identifiés */
+    /* Bloc "🧩 Solutions identifiées" façon Leviers identifiés */
     .block-solutions-identifiees {
       background: white;
       border: 1.5px solid var(--border) !important;
@@ -3681,7 +3681,7 @@
     .sol-active-content .sol-child-cards { padding: 14px 20px; margin: 0; }
     .sol-active-content .sol-child-content { margin: 0 20px 20px; }
 
-    /* ═══ MODAL DROPDOWN SOLUTIONS (déclenché par btn header 🧭) ═══ */
+    /* ═══ MODAL DROPDOWN SOLUTIONS (déclenché par btn header 🧩) ═══ */
     .solutions-modal-wrap {
       position: fixed; top: 56px; right: 12px; z-index: 150;
       background: #fff; border: 2px solid #2d3f5c; border-radius: 12px;
@@ -4836,7 +4836,7 @@
       <button class="btn-edit-mode" id="btn-edit-mode" onclick="toggleEditMode()">✏️ Éditer</button>
       <button class="btn-icon" title="Outils SOS" onclick="toggleSosPanel()" style="font-size:17px">🆘</button>
       <button class="btn-icon" title="Ajuster les problématiques" onclick="togglePbModal()">⚙️</button>
-      <button class="btn-icon" id="btn-solutions" title="Solutions identifiées" onclick="toggleSolutionsModal()" style="position:relative;font-size:17px">🧭<span id="btn-solutions-badge" style="display:none;position:absolute;top:-2px;right:-2px;background:#dc2626;color:#fff;font-size:10px;font-weight:700;border-radius:9px;padding:0 5px;line-height:14px;min-width:14px;text-align:center">0</span></button>
+      <button class="btn-icon" id="btn-solutions" title="Solutions identifiées" onclick="toggleSolutionsModal()" style="position:relative;font-size:17px">🧩<span id="btn-solutions-badge" style="display:none;position:absolute;top:-2px;right:-2px;background:#dc2626;color:#fff;font-size:10px;font-weight:700;border-radius:9px;padding:0 5px;line-height:14px;min-width:14px;text-align:center">0</span></button>
       <button class="btn-icon" title="Nouvelle consultation" onclick="newConsultation()">🔄</button>
       <button class="btn-icon" title="Sessions sauvegardées" onclick="openSessionsModal()">📁</button>
       <button class="btn-icon" title="Se déconnecter" onclick="doLogout()" style="color:#ff7675">🚪</button>
@@ -5410,11 +5410,11 @@
   </div>
 </div><!-- /app-screen -->
 
-<!-- MODAL DROPDOWN SOLUTIONS (déclenché par btn 🧭 du header) -->
+<!-- MODAL DROPDOWN SOLUTIONS (déclenché par btn 🧩 du header) -->
 <div class="modal-overlay" id="solutions-modal">
   <div class="modal-box" style="width:90vw;max-width:1200px;max-height:90vh">
     <button class="modal-close" onclick="toggleSolutionsModal()">✕</button>
-    <h3>🧭 Solutions identifiées <span style="font-size:13px;color:#999;font-weight:400">(<span id="solutions-modal-count">0</span>)</span></h3>
+    <h3>🧩 Solutions identifiées <span style="font-size:13px;color:#999;font-weight:400">(<span id="solutions-modal-count">0</span>)</span></h3>
     <div class="solmod-body" id="solutions-modal-body"></div>
   </div>
 </div>
@@ -7574,7 +7574,7 @@ function initUI() {
       setTimeout(initNotesPosition, 200);
     }, 50);
   }
-  // Le modal Solutions reste caché par défaut ; il s'ouvre via le bouton 🧭 du header.
+  // Le modal Solutions reste caché par défaut ; il s'ouvre via le bouton 🧩 du header.
   // Mais on synchronise + on update le badge pour que le compteur soit correct.
   if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
   if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
@@ -9881,7 +9881,7 @@ function renderSolutionsCheckboxes() {
   }
 
   return `<div class="block block-solutions-identifiees">
-    <div class="solutions-identifiees-header">🧭 Solutions identifiées</div>
+    <div class="solutions-identifiees-header">🧩 Solutions identifiées</div>
     <div class="solutions-identifiees-body">${compactGroups}</div>
   </div>
   ${parentCardsHtml ? `<div class="courbe-cards-grid-wrap sol-parent-cards-grid-wrap"><div class="courbe-cards-grid diag-categories-grid">${parentCardsHtml}</div></div>${activeContentHtml}` : ''}`;

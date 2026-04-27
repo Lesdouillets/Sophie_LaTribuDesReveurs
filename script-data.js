@@ -551,7 +551,7 @@ const SCRIPT_DATA = {
     {
       id: "plan_action",
       title: "VIII. Plan d'action",
-      emoji: "🧭",
+      emoji: "🧩",
       blocks: [
         { type: "solutions_checkboxes" },
       ]
