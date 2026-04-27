@@ -2150,7 +2150,7 @@ const SCRIPT_DATA = {
             { pb: "env_stimulations" },
             { pb: "env_ecrans" }
           ],
-          text: "Donc pour moi, [if_pb_count_one:env_obscurite,env_temperature,env_lit_ouvert,env_rituel,env_cadre,env_stimulations,env_ecrans]**cette petite chose** est[/if_pb_count_one][if_pb_count_many:env_obscurite,env_temperature,env_lit_ouvert,env_rituel,env_cadre,env_stimulations,env_ecrans]**ces petites choses** sont[/if_pb_count_many] **des petits cailloux** dans **l'engrenage du sommeil** sur lequel **on va travailler,**\n⇒ **pour offrir** à **[prénom_enfant]** les **meilleures conditions possibles** pour ses nuits et ses siestes\n\n⇒ Est-ce que ça **vous parle** tout ça ?"
+          text: "Donc pour moi, [if_pb_count_one:env_obscurite,env_temperature,env_lit_ouvert,env_rituel,env_cadre,env_stimulations,env_ecrans]**cette petite chose** est **un petit caillou**[/if_pb_count_one][if_pb_count_many:env_obscurite,env_temperature,env_lit_ouvert,env_rituel,env_cadre,env_stimulations,env_ecrans]**ces petites choses** sont **des petits cailloux**[/if_pb_count_many] dans **l'engrenage du sommeil** sur lequel **on va travailler,**\n⇒ **pour offrir** à **[prénom_enfant]** les **meilleures conditions possibles** pour ses nuits et ses siestes\n\n⇒ Est-ce que ça **vous parle** tout ça ?"
         },
       ]
     },
