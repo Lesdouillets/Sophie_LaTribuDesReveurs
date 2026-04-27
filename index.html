@@ -8934,14 +8934,18 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         }).sort((a, b) => itemMinOrderIdx(a) - itemMinOrderIdx(b));
     if (visibleItems.length === 0) return '';
     const gridPath = `${sectionId||'x'}__${path||'main'}`;
-    const activeId = state.courbeCardsActiveByGrid[gridPath] || null;
+    // Si 1 seul item visible : auto-active, skip la grille de cards, texte deja deplie
+    const singleItemMode = visibleItems.length === 1;
+    const activeId = singleItemMode
+      ? (visibleItems[0].id || null)
+      : (state.courbeCardsActiveByGrid[gridPath] || null);
     const getActiveSublabels = (it) => {
       if (!it.sublabels) return [];
       return Object.entries(it.sublabels)
         .filter(([pb]) => state.selectedPbs.has(pb))
         .map(([, label]) => label);
     };
-    const cardsHtml = visibleItems.map((it, idx) => {
+    const cardsHtml = singleItemMode ? '' : visibleItems.map((it, idx) => {
       const cardId = it.id || `ccg-${idx}`;
       const ticked = state.cardPersonalTicks.has(cardId);
       const isActive = activeId === cardId;
@@ -8963,7 +8967,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       // Ne pas fallback sur items[] : si l'item n'est plus visible (pb decochee), reset l'activeId
       // Sinon le banner du card precedemment ouvert reste affiche meme apres decochage de la pb
       const activeItem = visibleItems.find(it => (it.id || '') === activeId);
-      if (!activeItem) {
+      if (!activeItem && !singleItemMode) {
         delete state.courbeCardsActiveByGrid[gridPath];
       }
       if (activeItem) {
@@ -8972,11 +8976,14 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         const subs = getActiveSublabels(activeItem);
         const subsBannerHtml = subs.length ? ` — ${subs.join(' · ')}` : '';
         const bannerLabel = `${activeItem.emoji || ''} ${substituteVars(activeItem.label || '')}${subsBannerHtml}`;
+        // Boutons Fermer : caches en singleItemMode (pas de toggle possible)
+        const closeBtnTop = singleItemMode ? '' : `<button type="button" class="courbe-card-close" onclick="closeCourbeCard(this)">✕ Fermer</button>`;
+        const closeBtnBottom = singleItemMode ? '' : `<button type="button" class="courbe-card-close courbe-card-close-bottom" onclick="closeCourbeCard(this)">✕ Fermer</button>`;
         contentHtml = `<div class="courbe-card-content" data-card-id="${activeId}">
           <div class="courbe-card-banner">${bannerLabel}</div>
-          <button type="button" class="courbe-card-close" onclick="closeCourbeCard(this)">✕ Fermer</button>
+          ${closeBtnTop}
           ${inner}
-          <button type="button" class="courbe-card-close courbe-card-close-bottom" onclick="closeCourbeCard(this)">✕ Fermer</button>
+          ${closeBtnBottom}
         </div>`;
       }
     }
