@@ -9814,6 +9814,8 @@ function syncSolutionsFromPbs() {
   });
   // Sync sous-checkboxes du compact list (env_obs, env_temp, etc.) depuis les pbs
   syncSubChecklistFromPbs();
+  // Re-applique les cascades tickbox -> sous-sous-checkboxes (env_chgmt_lit_*)
+  reapplyTickboxCascades();
 }
 
 // Synchronise state.courbeCardsTicked (sous-checkboxes Chambre/Lit dans compact list)
