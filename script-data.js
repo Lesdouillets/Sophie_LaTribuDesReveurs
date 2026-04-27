@@ -2881,8 +2881,8 @@ const SCRIPT_DATA = {
       },
       {
         id: "journee", title: "Journée", emoji: "☀️",
-        introBlocks: [
-          { type: "conseil_vert", _leftTitle: "👏 Encouragement", text: "- En **dehors de ces petits ajustements**, je vous **encourage à continuer** TOUT ce que vous faites pour [prénom_enfant]\n- Ça va **dans le bon sens** pour :\n  - **son développement**\n  - et **son sommeil !**\n- C'est **TOP !**" }
+        outroBlocks: [
+          { type: "normal", _leftTitle: "👏 Encouragement", text: "- En **dehors de ces petits ajustements**, je vous **encourage à continuer** TOUT ce que vous faites pour [prénom_enfant]\n- Ça va **dans le bon sens** pour :\n  - **son développement**\n  - et **son sommeil !**\n- C'est **TOP !**" }
         ],
         children: [
           { id: "journee_reservoir", label: "Réservoir affectif", cardLabel: "Réservoir affectif", cardEmoji: "💓", blocks: [

@@ -9816,6 +9816,9 @@ function renderSolutionsCheckboxes() {
       const introHtml = Array.isArray(cat.introBlocks) && cat.introBlocks.length
         ? `<div class="sol-cat-intro" style="--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">${renderBlocks(cat.introBlocks, 'sol_' + cat.id)}</div>`
         : '';
+      const outroHtml = Array.isArray(cat.outroBlocks) && cat.outroBlocks.length
+        ? `<div class="sol-cat-outro" style="--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'};margin-top:14px">${renderBlocks(cat.outroBlocks, 'sol_outro_' + cat.id)}</div>`
+        : '';
       // Si 1 seul enfant coche : afficher directement son contenu (pas de grille de sous-cards)
       const singleChildMode = checkedChildren.length === 1;
       const activeChildId = singleChildMode
@@ -9866,6 +9869,7 @@ function renderSolutionsCheckboxes() {
         ${introHtml}
         ${cardsHtml}
         ${childContentHtml}
+        ${outroHtml}
       </div>`;
     }
   }
