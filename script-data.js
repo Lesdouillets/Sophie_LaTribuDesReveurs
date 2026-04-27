@@ -2853,7 +2853,10 @@ const SCRIPT_DATA = {
                   blocks: [
                     { type: "normal", text: "- S'il y a un **besoin de lumière** chez **1 enfant** (à cause d'une **peur du noir**) mais que l'**autre a besoin du noir complet**, vous pouvez :\n  - Donner une **petite veilleuse** au + grand, qu'il pourra **allumer DE TEMPS EN TEMPS** pour se rassurer\n  - Installer un **paravent** entre les 2 lits" }
                   ]
-                },
+                }
+              },
+              { type: "normal", _leftTitle: "Conseils",
+                text: "",
                 embeddedActions: [
                   {
                     label: "Si les couchers à des heures différentes", emoji: "⏰", style: "action", _pillStyle: true, mutexGroup: "partage-chambre-coucher",
