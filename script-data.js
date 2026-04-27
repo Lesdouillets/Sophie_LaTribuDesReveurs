@@ -2774,7 +2774,6 @@ const SCRIPT_DATA = {
             blocks: [
                     {
                       type: "courbe_cards_grid",
-                      theme: "violet",
                       alwaysShowAll: true,
                       items: [
                         { id: "env_chgmt_lit_cododo_barreau", emoji: "🛏", label: "Cododo ⇒ Lit à barreaux", pb: "souhait_chgmt_lit_cododo_barreau", blocks: [
