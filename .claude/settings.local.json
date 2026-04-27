@@ -158,7 +158,8 @@
       "Bash(grep -nE 'PAS l[\\\\\\\\\\\\\\\\]?\\\\\\\\\\\\?'\\\\\\\\\\\\\\\\\\\\?'enjeu' script-data.js)",
       "Bash(grep -oE '\\\\\\\\b\\([a-zàâäéèêëïîôöùûüÿ]+\\)  +\\\\\\\\1\\\\\\\\b' script-data.js)",
       "Bash(echo \"=== espaces multiples ' \\\\\\\\s+ ' \\(entre mots, hors HTML\\) ===\")",
-      "Bash(echo \"=== avec linebreak ' les bébé\\\\\\\\\\\\\\\\n' ===\")"
+      "Bash(echo \"=== avec linebreak ' les bébé\\\\\\\\\\\\\\\\n' ===\")",
+      "Bash(grep -n \"addEventListener.'click', e => { if\\(e.target===e.currentTarget\\) togglePbModal\" index.html)"
     ]
   }
 }
