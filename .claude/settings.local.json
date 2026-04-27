@@ -123,7 +123,8 @@
       "Bash(git commit -m 'Restructure Changement de lit + lit+chambre en sous-cartes \\(courbe_cards_grid\\) *)",
       "Bash(git commit -m 'Preserver l'\\\\''etat '\\\\''open'\\\\'' des options apres re-render lie a un clic tickbox *)",
       "Bash(git commit -m 'Tickbox V. Diag '\\\\''Lit ouvert trop tot'\\\\'' supprimer => coche env_chgmt_lit_sol_barreau *)",
-      "Bash(git commit -m 'Sous-sous-checkboxes Changement de lit + cascade niveau 2 + mutex *)"
+      "Bash(git commit -m 'Sous-sous-checkboxes Changement de lit + cascade niveau 2 + mutex *)",
+      "Bash(git commit -m 'Re-applique cascades tickbox -> sous-sous-checkboxes a chaque syncSolutionsFromPbs *)"
     ]
   }
 }
