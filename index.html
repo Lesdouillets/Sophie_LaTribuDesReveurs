@@ -3588,8 +3588,9 @@
       color: white; font-size: 15px; font-weight: 800;
       letter-spacing: 0.4px; padding: 12px 20px;
     }
-    .solutions-identifiees-body { padding: 12px 20px; display: flex; flex-direction: column; gap: 18px; }
+    .solutions-identifiees-body { padding: 12px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px 24px; }
     .sol-group { width: 100%; }
+    @media (max-width: 900px) { .solutions-identifiees-body { grid-template-columns: 1fr; } }
     .sol-group-title {
       font-weight: 800; font-size: 12.5px; text-transform: uppercase;
       letter-spacing: 0.3px; padding-bottom: 4px; margin-bottom: 4px;
