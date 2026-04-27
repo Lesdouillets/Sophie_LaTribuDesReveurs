@@ -9817,8 +9817,12 @@ function renderSolutionsCheckboxes() {
             `</div>`;
         }
       }
+      // Si singleChildMode : ajouter le nom de l'enfant a la banniere parent (comme V. Diagnostic)
+      const singleChildLabel = singleChildMode
+        ? ` — ${checkedChildren[0].cardLabel || checkedChildren[0].label || checkedChildren[0].id}`
+        : '';
       activeContentHtml = `<div class="sol-active-content" style="border:3px solid ${c.main}">
-        <div class="sol-active-banner" style="background:${c.main}">${cat.emoji || ''} ${cat.title}</div>
+        <div class="sol-active-banner" style="background:${c.main}">${cat.emoji || ''} ${cat.title}${singleChildLabel}</div>
         ${introHtml}
         ${cardsHtml}
         ${childContentHtml}
