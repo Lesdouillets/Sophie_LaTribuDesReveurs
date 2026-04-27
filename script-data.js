@@ -2931,8 +2931,11 @@ const SCRIPT_DATA = {
     emoji: "✅",
     blocks: [
       { type: "question", _leftTitle: "Valeurs OK ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "Est-ce que **TOUT** ce que je **vous ai proposé** vous **correspond à vos valeurs**?" },
-      { type: "obj_rappel" },
-      { type: "question", _leftTitle: "Objectifs OK ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "Est-ce que j'ai <strong>répondu à vos objectifs</strong> ?", embeddedActions: [
+      { type: "obj_rappel",
+        embeddedQuestion: "Est-ce que j'ai <strong>répondu à vos objectifs</strong> ?",
+        _embeddedQuestionLeftTitle: "Objectifs OK ?",
+        _embeddedQuestionLeftTitleStyle: "background:#2d3f5c;color:#fff",
+        embeddedActions: [
         {
           label: "OUI", emoji: "✅", style: "action-green", _pillStyle: true, mutexGroup: "conclusion-obj",
           blocks: [

@@ -9218,11 +9218,41 @@ function renderBlockInner(b, i, sectionId, depth, path) {
 
   if (b.type === 'obj_rappel') {
     const obj = state.client.objectifs;
-    if (!obj) return '';
+    // Si pas d'objectif renseigné : fallback sur le rendu d'un bloc question pur (avec b.embeddedQuestion / b.embeddedActions)
+    if (!obj) {
+      if (b.embeddedQuestion) {
+        const fakeQuestion = {
+          type: 'question',
+          text: b.embeddedQuestion,
+          embeddedActions: b.embeddedActions,
+          _leftTitle: b._embeddedQuestionLeftTitle,
+          _leftTitleStyle: b._embeddedQuestionLeftTitleStyle
+        };
+        return renderBlockInner(fakeQuestion, i, sectionId, depth, path);
+      }
+      return '';
+    }
+    // Obj existe → render rappel + (optionnellement) question avec boutons embarqués dans le meme bloc
     const objHtml = obj.replace(/\n/g, '<br>');
+    let questionHtml = '';
+    if (b.embeddedQuestion) {
+      const qText = substituteVars(b.embeddedQuestion);
+      // Boutons action embarques
+      let actionsHtml = '';
+      if (Array.isArray(b.embeddedActions) && b.embeddedActions.length) {
+        actionsHtml = `<div class="embedded-actions" contenteditable="false" style="margin-top:14px">` +
+          b.embeddedActions.map((opt, oi) => {
+            const sub = { type: 'option', ...opt };
+            return renderBlockInner(sub, oi, sectionId, (depth||0)+1, `${path||i}.ea.${oi}`);
+          }).join('') +
+        `</div>`;
+      }
+      questionHtml = `<div class="pb-recap-question" style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(0,0,0,0.08)"><div class="q-text" contenteditable="true">${qText}</div>${actionsHtml}</div>`;
+    }
     return `<div class="block block-pb-recap">
       <div class="pb-recap-intro">• <u>Pour rappel, vos objectifs étaient :</u></div>
       <div class="pb-recap-text"><em>${objHtml}</em></div>
+      ${questionHtml}
     </div>`;
   }
 
