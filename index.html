@@ -11065,6 +11065,26 @@ function selectTickboxChoice(el) {
     const currentValue = wasSelected ? null : el.dataset.value;
     const targetPb = currentValue ? mapping[currentValue] : null;
     if (targetPb) setPb(targetPb, true);
+    // Si on quitte "changer_lit" (passe à autre option ou désélection), reset la sous-question + ses pbs
+    if (currentValue !== 'changer_lit') {
+      delete state.tickboxChoices['obj_chgmt_lit_type'];
+      ['souhait_chgmt_lit_cododo_barreau','souhait_chgmt_lit_barreau_ouvert','souhait_chgmt_lit_sol_barreau'].forEach(pb => setPb(pb, false));
+    }
+    syncChanged = true;
+  }
+  // obj_chgmt_lit_type → souhait_chgmt_lit_* (mutex parmi les 3 sous-pbs de Changement de lit)
+  if (cid === 'obj_chgmt_lit_type') {
+    const mapping = {
+      cododo_barreau: 'souhait_chgmt_lit_cododo_barreau',
+      barreau_ouvert: 'souhait_chgmt_lit_barreau_ouvert',
+      sol_barreau: 'souhait_chgmt_lit_sol_barreau'
+    };
+    Object.values(mapping).forEach(pb => setPb(pb, false));
+    const currentValue = wasSelected ? null : el.dataset.value;
+    const targetPb = currentValue ? mapping[currentValue] : null;
+    if (targetPb) setPb(targetPb, true);
+    // Propager pb → state.courbeCardsTicked (sub-checkbox dans Solutions identifiées)
+    if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
     syncChanged = true;
   }
   // obj_position_sommeil → souhait_position_dorsale (cocher si "dorsale", décocher si "ventrale")

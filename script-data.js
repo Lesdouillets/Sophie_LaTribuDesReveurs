@@ -355,7 +355,20 @@ const SCRIPT_DATA = {
                 { icon: "❌", label: "Changer de chambre", value: "changer_chambre", variant: "negative" },
                 { icon: "❌", label: "Changer de lit et de chambre", value: "changer_lit_chambre", variant: "negative" }
               ]
-            }}
+            }},
+            { type: "question",
+              showIfTickbox: { cid: "obj_lieu_sommeil", value: "changer_lit" },
+              text: "Quel **type de transition** souhaitez-vous ?",
+              choice: {
+                id: "obj_chgmt_lit_type",
+                required: true,
+                options: [
+                  { icon: "🛏", label: "Cododo ⇒ Lit à barreaux", value: "cododo_barreau", variant: "negative" },
+                  { icon: "🛌", label: "Lit à barreaux ⇒ Lit ouvert", value: "barreau_ouvert", variant: "negative" },
+                  { icon: "🔙", label: "(Retour) Lit ouvert ⇒ Lit à barreaux", value: "sol_barreau", variant: "negative" }
+                ]
+              }
+            }
           ]
         },
         {
