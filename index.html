@@ -9251,7 +9251,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         `</div>`;
       }
       // Bloc question avec liseré rouge complet (meme style que .block-question standard)
-      questionHtml = `<div class="block block-question" style="margin-top:14px"><div class="q-text" contenteditable="true">${innerHtml}</div>${actionsHtml}</div>`;
+      // Force stack vertical : texte au-dessus, boutons OUI/NON en dessous
+      questionHtml = `<div class="block block-question" style="margin-top:14px;display:flex;flex-direction:column;align-items:stretch;gap:10px"><div class="q-text" contenteditable="true">${innerHtml}</div>${actionsHtml}</div>`;
     }
     return `<div class="block block-pb-recap">
       <div class="pb-recap-intro">• <u>Pour rappel, vos objectifs étaient :</u></div>
