@@ -3515,6 +3515,12 @@
       margin: 14px 0 0; padding: 14px 18px;
       overflow: hidden; box-sizing: border-box;
     }
+    /* singleChildMode : pas de double liseré (le sol-active-content parent fournit deja la bordure) */
+    .sol-child-content--single {
+      border: none;
+      border-radius: 0;
+      margin: 0;
+    }
     .sol-floating-btns {
       position: fixed; right: 30px; bottom: 120px;
       display: flex; flex-direction: column; gap: 14px;
@@ -9800,7 +9806,9 @@ function renderSolutionsCheckboxes() {
               return `<button type="button" class="sol-floating-btn" onclick="openInfoPanel('${fbId}')" title="${fbTitle}">${svg}<div class="sol-floating-btn-content"><span style="font-size:28px">${fb.emoji||'💡'}</span><span style="font-size:13px">${substituteVars(fb.label||'')}</span></div></button>`;
             }).join('') + '</div>';
           }
-          childContentHtml = `<div class="sol-child-content" style="position:relative;border-color:${c.main};--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">` +
+          // En singleChildMode, retirer la bordure interne (sinon double liseré avec sol-active-content)
+          const childContentExtraClass = singleChildMode ? ' sol-child-content--single' : '';
+          childContentHtml = `<div class="sol-child-content${childContentExtraClass}" style="position:relative;border-color:${c.main};--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">` +
             floatingBtnsHtml +
             renderBlocks(activeChild.blocks, 'sol_' + cat.id + '_' + activeChild.id) +
             `</div>`;
