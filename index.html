@@ -11076,13 +11076,24 @@ function selectTickboxChoice(el) {
       ['souhait_chgmt_lit_cododo_barreau','souhait_chgmt_lit_barreau_ouvert','souhait_chgmt_lit_sol_barreau'].forEach(pb => setPb(pb, false));
     }
     // Si on selectionne "changer_lit" : faire defiler vers la sous-question apparue
-    // Delai 200ms = apres le re-render (sync) + openLabels restore (timeout 0)
-    // + toggleOption scrollIntoView (timeout 50) → on scroll en dernier vers la sous-question
+    // Delai 400ms = apres re-render + openLabels restore + toggleOption scrollIntoView (50ms + smooth animation 300-500ms)
+    // Direct scroll sur .content-area (scrollable container) plutot que scrollIntoView
+    // qui peut etre annule par les autres scrolls en cours
     if (currentValue === 'changer_lit') {
       setTimeout(() => {
         const subQ = document.querySelector('.block-tickbox-choice[data-choice-id="obj_chgmt_lit_type"]');
-        if (subQ) subQ.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 200);
+        if (!subQ) return;
+        const contentArea = document.getElementById('content-area');
+        if (contentArea) {
+          const rect = subQ.getBoundingClientRect();
+          const containerRect = contentArea.getBoundingClientRect();
+          // Cible : centre du bloc au centre du viewport du container
+          const targetScrollTop = contentArea.scrollTop + (rect.top - containerRect.top) - (containerRect.height / 2 - rect.height / 2);
+          contentArea.scrollTo({ top: Math.max(0, targetScrollTop), behavior: 'smooth' });
+        } else {
+          subQ.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 400);
     }
     syncChanged = true;
   }
