@@ -4732,7 +4732,7 @@
                   <label class="pb-item"><input type="checkbox" class="pb-sub-parent" data-subgroup="souhait_changement"> <span>Changement chambre/lit <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span></span></label>
                   <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="souhait_changement_lit" data-exclusive="souhait_changement" data-subgroup-child="souhait_changement"> <span>Changement de lit</span></label>
                   <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="souhait_changement_chambre" data-exclusive="souhait_changement" data-subgroup-child="souhait_changement"> <span>Changement de chambre</span></label>
-                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="souhait_changement_lit_chambre" data-exclusive="souhait_changement" data-subgroup-child="souhait_changement"> <span>Changement de lit + chambre</span></label>
+                  <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="souhait_changement_lit_chambre" data-exclusive="souhait_changement" data-subgroup-child="souhait_changement"> <span>Changement de lit + chambre (cododo ⇒ Lit barreaux)</span></label>
                 </div>
               </div>
             </div>
@@ -8666,7 +8666,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       'env_rituel':'🌙 Environnement — Rituel absent ou trop court',
       'env_cadre':'🗺 Environnement — Cadre non clair / incohérent',
       'env_stimulations':'👀 Environnement — Stimulations visuelles', 'env_ecrans':'📱 Environnement — Ecrans',
-      'relationnel_lit_parental':'💬 Relation — Vient dans le lit parental', 'relationnel_conflit_autres':'💬 Relation — Conflit autres sujets', 'souhait_tetine':'🎯 Souhait — Suppression tétine', 'souhait_position_dorsale':'🎯 Souhait — Vers une position dorsale', 'souhait_changement_lit':'🎯 Souhait — Changement de lit', 'souhait_changement_chambre':'🎯 Souhait — Changement de chambre', 'souhait_changement_lit_chambre':'🎯 Souhait — Changement lit/chambre',
+      'relationnel_lit_parental':'💬 Relation — Vient dans le lit parental', 'relationnel_conflit_autres':'💬 Relation — Conflit autres sujets', 'souhait_tetine':'🎯 Souhait — Suppression tétine', 'souhait_position_dorsale':'🎯 Souhait — Vers une position dorsale', 'souhait_changement_lit':'🎯 Souhait — Changement de lit', 'souhait_changement_chambre':'🎯 Souhait — Changement de chambre', 'souhait_changement_lit_chambre':'🎯 Souhait — Changement lit + chambre (cododo ⇒ Lit barreaux)',
       'relationnel_rappels':'📢 Relation — Rappels multiples après le coucher',
     };
     // Afficher checkboxes synchronisées (identiques à la fiche client) via clone
@@ -12929,7 +12929,7 @@ function generateCRHtml(s) {
     'env_obscurite':'Obscurité insuffisante', 'env_temperature':'Température élevée',
     'env_lit_ouvert':'Lit ouvert trop tôt', 'env_rituel':'Rituel absent / trop court',
     'env_cadre':'Cadre non clair', 'env_stimulations':'Stimulations visuelles', 'env_ecrans':'Ecrans',
-    'relationnel_lit_parental':'Vient dans le lit parental', 'relationnel_conflit_autres':'Conflit autres sujets', 'relationnel_rappels':'Multiples rappels après le coucher', 'souhait_tetine':'Suppression de la tétine', 'souhait_position_dorsale':'Vers une position dorsale', 'souhait_changement_lit':'Changement de lit', 'souhait_changement_chambre':'Changement de chambre', 'souhait_changement_lit_chambre':'Changement de lit + chambre',
+    'relationnel_lit_parental':'Vient dans le lit parental', 'relationnel_conflit_autres':'Conflit autres sujets', 'relationnel_rappels':'Multiples rappels après le coucher', 'souhait_tetine':'Suppression de la tétine', 'souhait_position_dorsale':'Vers une position dorsale', 'souhait_changement_lit':'Changement de lit', 'souhait_changement_chambre':'Changement de chambre', 'souhait_changement_lit_chambre':'Changement de lit + chambre (cododo ⇒ Lit barreaux)',
   };
 
   const pbTags = (s.selectedPbs || []).map(pb => `<span class="cr-tag">${pbLabels[pb]||pb}</span>`).join('');

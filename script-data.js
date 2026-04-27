@@ -230,7 +230,7 @@ const PB_LABELS = {
   'souhait_position_dorsale': 'Vers une position dorsale',
   'souhait_changement_lit': 'Changement de lit',
   'souhait_changement_chambre': 'Changement de chambre',
-  'souhait_changement_lit_chambre': 'Changement de lit + chambre',
+  'souhait_changement_lit_chambre': 'Changement de lit + chambre (cododo ⇒ Lit barreaux)',
 };
 
 const SCRIPT_DATA = {
