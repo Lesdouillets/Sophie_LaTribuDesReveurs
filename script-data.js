@@ -2065,7 +2065,6 @@ const SCRIPT_DATA = {
           showIfAnyOf: [
             { pb: "env_obscurite" },
             { pb: "env_temperature" },
-            { pb: "env_lit_ouvert" },
             { pb: "env_rituel" },
             { pb: "env_cadre" },
             { pb: "env_stimulations" },
@@ -2146,7 +2145,6 @@ const SCRIPT_DATA = {
           showIfAnyOf: [
             { pb: "env_obscurite" },
             { pb: "env_temperature" },
-            { pb: "env_lit_ouvert" },
             { pb: "env_rituel" },
             { pb: "env_cadre" },
             { pb: "env_stimulations" },
