@@ -6578,12 +6578,14 @@ async function saveClient() {
   const c = state.client;
   if (!c || !c.prenomEnfant) return;
   c.savedAt = new Date().toISOString();
-  const id = clientId(c);
-  c._id = id;
+  // Préserver l'_id stable : si déjà défini (client existant chargé), ne pas le recalculer
+  // → évite de créer une nouvelle fiche quand on change nomFamille / prenomParent1
+  if (!c._id) c._id = clientId(c);
+  const id = c._id;
 
   // 1. Save locally
   const saved = JSON.parse(localStorage.getItem('tdr_clients') || '[]');
-  const idx = saved.findIndex(s => s._id === id || (s.prenomEnfant === c.prenomEnfant && s.nomFamille === c.nomFamille));
+  const idx = saved.findIndex(s => s._id === id);
   if (idx >= 0) saved[idx] = c; else saved.push(c);
   localStorage.setItem('tdr_clients', JSON.stringify(saved));
 

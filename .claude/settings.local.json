@@ -135,7 +135,8 @@
       "Bash(git commit -m 'Validation Objectifs : titre '\\\\''Objectifs'\\\\'' aussi en cas de fallback \\(pas d'\\\\''obj\\) *)",
       "Bash(git commit -m 'Changement lit + chambre : '\\\\''LOIN de la Maman'\\\\'' inline \\(parenthese\\) au lieu de bullet separe *)",
       "Bash(git commit -m 'obj_rappel embedded question : utilise .block-question avec liseré rouge complet *)",
-      "Bash(git commit -m 'obj_rappel embedded question : boutons OUI/NON en dessous \\(flex column\\) *)"
+      "Bash(git commit -m 'obj_rappel embedded question : boutons OUI/NON en dessous \\(flex column\\) *)",
+      "Bash(git commit -m 'Nouvelle categorie '\\\\''Changement'\\\\'' parent \\(separee de Env de sommeil\\) *)"
     ]
   }
 }
