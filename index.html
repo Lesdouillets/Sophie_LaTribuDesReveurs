@@ -9238,17 +9238,20 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     let questionHtml = '';
     if (b.embeddedQuestion) {
       const qText = substituteVars(b.embeddedQuestion);
-      // Boutons action embarques
+      const isRawHtml = /^\s*<\w+/.test(b.embeddedQuestion);
+      const innerHtml = isRawHtml ? qText : `❓ ${qText}`;
+      // Boutons action embarques (memе rendu que dans un bloc question standard)
       let actionsHtml = '';
       if (Array.isArray(b.embeddedActions) && b.embeddedActions.length) {
-        actionsHtml = `<div class="embedded-actions" contenteditable="false" style="margin-top:14px">` +
+        actionsHtml = `<div class="embedded-actions" contenteditable="false">` +
           b.embeddedActions.map((opt, oi) => {
             const sub = { type: 'option', ...opt };
             return renderBlockInner(sub, oi, sectionId, (depth||0)+1, `${path||i}.ea.${oi}`);
           }).join('') +
         `</div>`;
       }
-      questionHtml = `<div class="pb-recap-question" style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(0,0,0,0.08)"><div class="q-text" contenteditable="true">${qText}</div>${actionsHtml}</div>`;
+      // Bloc question avec liseré rouge complet (meme style que .block-question standard)
+      questionHtml = `<div class="block block-question" style="margin-top:14px"><div class="q-text" contenteditable="true">${innerHtml}</div>${actionsHtml}</div>`;
     }
     return `<div class="block block-pb-recap">
       <div class="pb-recap-intro">• <u>Pour rappel, vos objectifs étaient :</u></div>
