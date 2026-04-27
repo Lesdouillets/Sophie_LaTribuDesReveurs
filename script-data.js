@@ -2845,7 +2845,35 @@ const SCRIPT_DATA = {
           ] },
           { id: "env_partage_chambre", label: "Partage de chambre", cardLabel: "Partage de chambre", cardEmoji: "🛏",
             blocks: [
-              { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+              { type: "normal", _leftTitle: "Conseils",
+                text: "- Je vous conseille d'**essayer** si le **partage de chambre** peut **convenir à chacun** des enfants :",
+                embeddedActions: [
+                  {
+                    label: "Si les couchers à des heures différentes", emoji: "⏰", style: "action", _pillStyle: true, mutexGroup: "partage-chambre-coucher",
+                    blocks: [
+                      { type: "normal",
+                        text: "- Si les **couchers** sont à des **heures différentes,**\n- Je vous conseille de **faire 2 rituels différents** pour que **chacun ait SON moment**\n  - On **couche le 1er enfant** dans sa chambre\n  - Et on **couche le 2nd ensuite**\n\n- 💡 Je vous conseille d'**attendre au moins 20min** après son coucher …qu'il soit en **sommeil profond** pour **coucher le 2nd**",
+                        embeddedActions: [
+                          {
+                            label: "OPTION : le plus grand se couche en dernier", emoji: "🦸", style: "action-green", _pillStyle: true,
+                            blocks: [
+                              { type: "normal", text: "- Vous pouvez **dire au + grand**, de **faire le super-héro** et se **rentrer discrètement** dans la chambre\n\n<details style=\"border:1.5px solid #fcd34d;border-radius:10px;background:#fffbeb;padding:10px 14px;margin:10px 0\"><summary style=\"cursor:pointer;font-weight:800;color:#92400e;user-select:none;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px\"><span>💡 Si besoin de lumière chez 1 enfant</span><span style=\"font-size:13px\">▾</span></summary><div style=\"margin-top:10px;line-height:1.7\">Vous pouvez lui confier une <strong>petite veilleuse portative</strong> par exemple</div></details>" }
+                            ]
+                          }
+                        ]
+                      },
+                      { type: "normal", text: "- 💡 Un **changement** peut prendre **plusieurs semaines**.\n- Au **bout d'1 mois,** vous **pourrez évaluer** si OUI ou NON, la **chambre commune** est **ce qui leur correspond**" }
+                    ]
+                  },
+                  {
+                    label: "Si les couchers à même heure", emoji: "👥", style: "action-green", _pillStyle: true, mutexGroup: "partage-chambre-coucher",
+                    blocks: [
+                      { type: "normal", text: "- Si les **couchers** se font au **même moment**\n- N'hésitez pas à faire un **rituel commun** et **coucher** les enfants **en même temps**" },
+                      { type: "normal", text: "- 💡 Un **changement** peut prendre **plusieurs semaines**.\n- Au **bout d'1 mois,** vous **pourrez évaluer** si OUI ou NON, la **chambre commune** est **ce qui leur correspond**" }
+                    ]
+                  }
+                ]
+              }
             ]
           },
         ]
