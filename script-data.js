@@ -2062,7 +2062,18 @@ const SCRIPT_DATA = {
       title: "Environnement de sommeil",
       emoji: "🏠",
       blocks: [
-        { type: "normal", text: "- Aujourd'hui je vois **une /plusieurs petite(s) chose(s)** QU'ON **pourrait ré-ajuster** dans l'**environnement de sommeil** de **[prénom_enfant]**.\n- L'environnement de sommeil, c'est **qqch:**\n  - **SUR LEQUEL** on PEUT **agir ASSEZ facilement**\n  - mais qu'on a **souvent tendance à négliger**\n  - … POURTANT ça **joue un rôle clé** dans la **qualité du sommeil.**\n\n- Je vois des choses au niveau de :" },
+        { type: "normal",
+          showIfAnyOf: [
+            { pb: "env_obscurite" },
+            { pb: "env_temperature" },
+            { pb: "env_lit_ouvert" },
+            { pb: "env_rituel" },
+            { pb: "env_cadre" },
+            { pb: "env_stimulations" },
+            { pb: "env_ecrans" }
+          ],
+          text: "- Aujourd'hui je vois **une /plusieurs petite(s) chose(s)** QU'ON **pourrait ré-ajuster** dans l'**environnement de sommeil** de **[prénom_enfant]**.\n- L'environnement de sommeil, c'est **qqch:**\n  - **SUR LEQUEL** on PEUT **agir ASSEZ facilement**\n  - mais qu'on a **souvent tendance à négliger**\n  - … POURTANT ça **joue un rôle clé** dans la **qualité du sommeil.**\n\n- Je vois des choses au niveau de :"
+        },
         {
           type: "courbe_cards_grid",
           theme: "violet",
