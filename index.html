@@ -10360,6 +10360,14 @@ function substituteVars(text) {
     if (age == null) return '';
     return age <= parseInt(n, 10) ? content : '';
   });
+  // Conditionnel inline : [if_minutes_left_min:N]contenu[/if_minutes_left_min]
+  // → visible si au moins N minutes restantes avant heureFin (= consultante PAS en retard)
+  text = String(text).replace(/\[if_minutes_left_min:(\d+)\]([\s\S]*?)\[\/if_minutes_left_min\]/g, (m, n, content) => {
+    const endTs = state.heureFin ? (state.heureFin instanceof Date ? state.heureFin.getTime() : Number(state.heureFin)) : null;
+    if (!endTs) return content; // pas d'heure de fin → on montre par défaut
+    const minutesLeft = Math.floor((endTs - Date.now()) / 60000);
+    return minutesLeft >= parseInt(n, 10) ? content : '';
+  });
   const c = state.client;
   const parents = [c.prenomParent1, c.prenomParent2].filter(Boolean).join(' & ');
   const pb = c.problematique || '[problématique]';
