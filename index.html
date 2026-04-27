@@ -11075,6 +11075,15 @@ function selectTickboxChoice(el) {
       delete state.tickboxChoices['obj_chgmt_lit_type'];
       ['souhait_chgmt_lit_cododo_barreau','souhait_chgmt_lit_barreau_ouvert','souhait_chgmt_lit_sol_barreau'].forEach(pb => setPb(pb, false));
     }
+    // Si on selectionne "changer_lit" : faire defiler vers la sous-question apparue
+    // Delai 200ms = apres le re-render (sync) + openLabels restore (timeout 0)
+    // + toggleOption scrollIntoView (timeout 50) → on scroll en dernier vers la sous-question
+    if (currentValue === 'changer_lit') {
+      setTimeout(() => {
+        const subQ = document.querySelector('.block-tickbox-choice[data-choice-id="obj_chgmt_lit_type"]');
+        if (subQ) subQ.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 200);
+    }
     syncChanged = true;
   }
   // obj_chgmt_lit_type → souhait_chgmt_lit_* (mutex parmi les 3 sous-pbs de Changement de lit)
