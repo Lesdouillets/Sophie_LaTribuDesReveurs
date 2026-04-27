@@ -8984,8 +8984,9 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         const bannerLabel = `${activeItem.emoji || ''} ${substituteVars(activeItem.label || '')}${subsBannerHtml}`;
         // En singleItemMode : pas de banner ni d'encadre courbe-card-content
         // (on rend les blocs directement, comme pour les solutions sans grid)
+        // Wrap text-align:left pour annuler le 'text-align:center' herite de .courbe-cards-grid-wrap
         if (singleItemMode) {
-          contentHtml = inner;
+          contentHtml = `<div style="text-align:left">${inner}</div>`;
         } else {
           contentHtml = `<div class="courbe-card-content" data-card-id="${activeId}">
             <div class="courbe-card-banner">${bannerLabel}</div>
