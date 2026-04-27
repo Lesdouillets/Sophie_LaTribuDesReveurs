@@ -2767,7 +2767,7 @@ const SCRIPT_DATA = {
         ]
       },
       {
-        id: "changement", title: "Changement", emoji: "🔄",
+        id: "changement", title: "Écueils", emoji: "🔄",
         children: [
           { id: "env_chgmt_lit", label: "Changement de lit", cardLabel: "Changement de lit", cardEmoji: "🛏",
             autoCheckIfPbs: ["souhait_changement_lit", "souhait_lit_ouvert_jeune"],
@@ -2843,6 +2843,11 @@ const SCRIPT_DATA = {
                       ]
                     }
           ] },
+          { id: "env_partage_chambre", label: "Partage de chambre", cardLabel: "Partage de chambre", cardEmoji: "🛏",
+            blocks: [
+              { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+            ]
+          },
         ]
       },
       {
