@@ -3662,10 +3662,13 @@
       color: white; padding: 10px 16px;
       font-weight: 800; font-size: 15px;
     }
-    .sol-active-content .sol-cat-intro { padding: 14px 20px; }
-    .sol-active-content .sol-cat-intro .block { background: transparent !important; border: none !important; box-shadow: none !important; padding: 4px 0 !important; }
-    /* Exception : restaurer le contour de carte sur les blocs avec titre latéral dans l'intro de catégorie */
-    .sol-active-content .sol-cat-intro .block-with-left-title .block-normal:not(.block-purple-dark) {
+    .sol-active-content .sol-cat-intro,
+    .sol-active-content .sol-cat-outro { padding: 14px 20px; }
+    .sol-active-content .sol-cat-intro .block,
+    .sol-active-content .sol-cat-outro .block { background: transparent !important; border: none !important; box-shadow: none !important; padding: 4px 0 !important; }
+    /* Exception : restaurer le contour de carte sur les blocs avec titre latéral dans l'intro/outro de catégorie */
+    .sol-active-content .sol-cat-intro .block-with-left-title .block-normal:not(.block-purple-dark),
+    .sol-active-content .sol-cat-outro .block-with-left-title .block-normal:not(.block-purple-dark) {
       background: var(--card-bg) !important;
       border-top: 1px solid var(--border) !important;
       border-right: 1px solid var(--border) !important;
