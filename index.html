@@ -9782,7 +9782,11 @@ function renderSolutionsCheckboxes() {
     const pastel = catPastelMap[cat.id] || '#f5f5f5';
     const checkedChildren = (cat.children || []).filter(ch => !isChHiddenByAge(ch) && state.selectedSolutions.has(ch.id));
     const isActive = activeCat === cat.id;
-    const subTitleLabels = checkedChildren.flatMap(ch => getDisplayLabelsForChild(ch));
+    // Si 1 seul enfant coche : pastilles des sous-items tickees (petits-enfants).
+    // Sinon (2+ enfants) : pastilles avec les noms des enfants directs.
+    const subTitleLabels = checkedChildren.length === 1
+      ? getDisplayLabelsForChild(checkedChildren[0])
+      : checkedChildren.map(ch => ch.cardLabel || ch.label || ch.id);
     const activeCls = isActive ? ' active' : '';
     const activeStyle = isActive
       ? `background:linear-gradient(90deg,${c.dark},${c.main});color:white;border:3px solid ${c.dark};box-shadow:0 6px 18px ${c.main}66`
