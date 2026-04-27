@@ -11628,11 +11628,28 @@ function toggleCourbeCardTickFromSol(itId) {
   if (!itId) return;
   if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
   if (!state.courbeCardsTickedManuallyEdited) state.courbeCardsTickedManuallyEdited = new Set();
+  if (!state.selectedSolutions) state.selectedSolutions = new Set();
+  if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
   const wasTicked = state.courbeCardsTicked.has(itId);
   if (wasTicked) state.courbeCardsTicked.delete(itId);
   else state.courbeCardsTicked.add(itId);
   // Marquer comme édité manuellement → syncSubChecklistFromPbs ne touchera plus cet item
   state.courbeCardsTickedManuallyEdited.add(itId);
+  // Mutex : si on coche une des 3 sous-checkboxes de env_chgmt_lit
+  // → uncheck les 2 autres + uncheck env_chgmt_chambre / env_chgmt_lit_chambre (top-level mutex)
+  const CHGMT_LIT_SUBS = ['env_chgmt_lit_cododo_barreau', 'env_chgmt_lit_barreau_ouvert', 'env_chgmt_lit_sol_barreau'];
+  if (!wasTicked && CHGMT_LIT_SUBS.includes(itId)) {
+    CHGMT_LIT_SUBS.forEach(sub => {
+      if (sub !== itId) {
+        state.courbeCardsTicked.delete(sub);
+        state.courbeCardsTickedManuallyEdited.add(sub);
+      }
+    });
+    ['env_chgmt_chambre', 'env_chgmt_lit_chambre'].forEach(other => {
+      state.selectedSolutions.delete(other);
+      state.selectedSolutionsManuallyEdited.add(other);
+    });
+  }
   // Chercher la chaîne de parents : (cat) → ch (solution) → it (sub-item, niveau 1) → sub (sub-sub-item, niveau 2)
   // itId peut être à 2 niveaux : direct enfant d'un ch.blocks grid (niveau 1)
   // OU enfant d'un it.blocks grid (niveau 2, ex. env_chgmt_lit_cododo_barreau dans env_chgmt_lit)
