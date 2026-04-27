@@ -9944,6 +9944,21 @@ function syncSolutionsFromPbs() {
   syncSubChecklistFromPbs();
   // Re-applique les cascades tickbox -> sous-sous-checkboxes (env_chgmt_lit_*)
   reapplyTickboxCascades();
+  // Solutions avec courbe_cards_grid alwaysShowAll : parent state derive de l'etat des enfants
+  // (ex. env_chambre, env_lit_card, env_chgmt_lit, journee_eveil)
+  // Override le flag manualEdited pour ces parents auto-piloted.
+  if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+  sols.forEach(cat => {
+    (cat.children || []).forEach(ch => {
+      if (!Array.isArray(ch.blocks)) return;
+      const grid = ch.blocks.find(b => b && b.type === 'courbe_cards_grid' && b.alwaysShowAll);
+      if (!grid || !Array.isArray(grid.items)) return;
+      const anyChildTicked = grid.items.some(it => state.courbeCardsTicked.has(it.id));
+      if (anyChildTicked) state.selectedSolutions.add(ch.id);
+      else state.selectedSolutions.delete(ch.id);
+      state.selectedSolutionsManuallyEdited.delete(ch.id);
+    });
+  });
 }
 
 // Synchronise state.courbeCardsTicked (sous-checkboxes Chambre/Lit dans compact list)
@@ -9979,6 +9994,31 @@ function toggleSolution(id, checked) {
   if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
   if (!state.courbeCardsTickedManuallyEdited) state.courbeCardsTickedManuallyEdited = new Set();
   if (!state.tickboxChoices) state.tickboxChoices = {};
+  // Solutions avec courbe_cards_grid alwaysShowAll : parent auto-pilote par les enfants.
+  // Bloquer le toggle manuel : forcer l'etat depuis les sous-checkboxes (state.courbeCardsTicked)
+  // (ex. env_chambre, env_lit_card, env_chgmt_lit, journee_eveil)
+  {
+    const allSols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
+    for (const cat of allSols) {
+      let found = false;
+      for (const ch of (cat.children || [])) {
+        if (ch.id !== id) continue;
+        if (!Array.isArray(ch.blocks)) { found = true; break; }
+        const grid = ch.blocks.find(b => b && b.type === 'courbe_cards_grid' && b.alwaysShowAll);
+        if (grid && Array.isArray(grid.items)) {
+          const anyChildTicked = grid.items.some(it => state.courbeCardsTicked.has(it.id));
+          if (anyChildTicked) state.selectedSolutions.add(id);
+          else state.selectedSolutions.delete(id);
+          state.selectedSolutionsManuallyEdited.delete(id);
+          renderCurrentSection();
+          return;
+        }
+        found = true;
+        break;
+      }
+      if (found) break;
+    }
+  }
   // Decochage parent → cascade : decocher aussi les sous-checkboxes (state.courbeCardsTicked)
   // pour permettre un decochage propre meme avec sous-items actifs
   if (!checked) {
