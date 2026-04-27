@@ -10423,6 +10423,20 @@ function substituteVars(text) {
     const minutesLeft = Math.floor((endTs - Date.now()) / 60000);
     return minutesLeft >= parseInt(n, 10) ? content : '';
   });
+  // Conditionnel inline : [if_pb_count_one:pb1,pb2,...]contenu[/if_pb_count_one]
+  // → contenu visible si EXACTEMENT 1 des pbs listees est cochee
+  text = String(text).replace(/\[if_pb_count_one:([^\]]+)\]([\s\S]*?)\[\/if_pb_count_one\]/g, (m, pbs, content) => {
+    const pbList = pbs.split(',').map(p => p.trim()).filter(Boolean);
+    const count = pbList.filter(p => state.selectedPbs && state.selectedPbs.has(p)).length;
+    return count === 1 ? content : '';
+  });
+  // Conditionnel inline : [if_pb_count_many:pb1,pb2,...]contenu[/if_pb_count_many]
+  // → contenu visible si 2+ des pbs listees sont cochees
+  text = String(text).replace(/\[if_pb_count_many:([^\]]+)\]([\s\S]*?)\[\/if_pb_count_many\]/g, (m, pbs, content) => {
+    const pbList = pbs.split(',').map(p => p.trim()).filter(Boolean);
+    const count = pbList.filter(p => state.selectedPbs && state.selectedPbs.has(p)).length;
+    return count >= 2 ? content : '';
+  });
   const c = state.client;
   const parents = [c.prenomParent1, c.prenomParent2].filter(Boolean).join(' & ');
   const pb = c.problematique || '[problématique]';

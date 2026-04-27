@@ -2070,7 +2070,7 @@ const SCRIPT_DATA = {
             { pb: "env_stimulations" },
             { pb: "env_ecrans" }
           ],
-          text: "- Aujourd'hui je vois **une /plusieurs petite(s) chose(s)** QU'ON **pourrait ré-ajuster** dans l'**environnement de sommeil** de **[prénom_enfant]**.\n- L'environnement de sommeil, c'est **qqch:**\n  - **SUR LEQUEL** on PEUT **agir ASSEZ facilement**\n  - mais qu'on a **souvent tendance à négliger**\n  - … POURTANT ça **joue un rôle clé** dans la **qualité du sommeil.**\n\n- Je vois des choses au niveau de :"
+          text: "- Aujourd'hui je vois [if_pb_count_one:env_obscurite,env_temperature,env_lit_ouvert,env_rituel,env_cadre,env_stimulations,env_ecrans]**une petite chose**[/if_pb_count_one][if_pb_count_many:env_obscurite,env_temperature,env_lit_ouvert,env_rituel,env_cadre,env_stimulations,env_ecrans]**plusieurs petites choses**[/if_pb_count_many] QU'ON **pourrait ré-ajuster** dans l'**environnement de sommeil** de **[prénom_enfant]**.\n- L'environnement de sommeil, c'est **qqch:**\n  - **SUR LEQUEL** on PEUT **agir ASSEZ facilement**\n  - mais qu'on a **souvent tendance à négliger**\n  - … POURTANT ça **joue un rôle clé** dans la **qualité du sommeil.**\n\n- Je vois des choses au niveau de :"
         },
         {
           type: "courbe_cards_grid",
@@ -2150,7 +2150,7 @@ const SCRIPT_DATA = {
             { pb: "env_stimulations" },
             { pb: "env_ecrans" }
           ],
-          text: "Donc pour moi, **ces petites choses** sont pour moi **des petits cailloux** dans **l'engrenage du sommeil** sur lequel **on va travailler,**\n⇒ **pour offrir** à **[prénom_enfant]** les **meilleures conditions possibles** pour ses nuits et ses siestes\n\n⇒ Est-ce que ça **vous parle** tout ça ?"
+          text: "Donc pour moi, [if_pb_count_one:env_obscurite,env_temperature,env_lit_ouvert,env_rituel,env_cadre,env_stimulations,env_ecrans]**cette petite chose** est[/if_pb_count_one][if_pb_count_many:env_obscurite,env_temperature,env_lit_ouvert,env_rituel,env_cadre,env_stimulations,env_ecrans]**ces petites choses** sont[/if_pb_count_many] **des petits cailloux** dans **l'engrenage du sommeil** sur lequel **on va travailler,**\n⇒ **pour offrir** à **[prénom_enfant]** les **meilleures conditions possibles** pour ses nuits et ses siestes\n\n⇒ Est-ce que ça **vous parle** tout ça ?"
         },
       ]
     },
