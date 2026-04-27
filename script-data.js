@@ -2846,7 +2846,14 @@ const SCRIPT_DATA = {
           { id: "env_partage_chambre", label: "Partage de chambre", cardLabel: "Partage de chambre", cardEmoji: "🛏",
             blocks: [
               { type: "normal", _leftTitle: "Essayer si ça convient à chacun",
-                text: "- Je vous conseille d'**essayer** si le **partage de chambre** peut **convenir à chacun** des enfants :\n\n<details style=\"border:1.5px solid #fcd34d;border-radius:10px;background:#fffbeb;padding:10px 14px;margin:10px 0\"><summary style=\"cursor:pointer;font-weight:800;color:#92400e;user-select:none;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px\"><span>💡 Si besoin de lumière chez 1 enfant et pas l'autre</span><span style=\"font-size:13px\">▾</span></summary><div style=\"margin-top:10px;line-height:1.7\">S'il y a un <strong>besoin de lumière</strong> chez <strong>1 enfant</strong> (à cause d'une <strong>peur du noir</strong>) mais que l'<strong>autre a besoin du noir complet</strong>, vous pouvez :<ul style=\"margin:8px 0 0 22px;padding:0\"><li>Donner une <strong>petite veilleuse</strong> au + grand, qu'il pourra <strong>allumer DE TEMPS EN TEMPS</strong> pour se rassurer</li><li>Installer un <strong>paravent</strong> entre les 2 lits</li></ul></div></details>",
+                text: "- Je vous conseille d'**essayer** si le **partage de chambre** peut **convenir à chacun** des enfants :",
+                trailingInfoButton: {
+                  label: "Si besoin de lumière chez 1 enfant et pas l'autre",
+                  title: "Si besoin de lumière chez 1 enfant et pas l'autre",
+                  blocks: [
+                    { type: "normal", text: "- S'il y a un **besoin de lumière** chez **1 enfant** (à cause d'une **peur du noir**) mais que l'**autre a besoin du noir complet**, vous pouvez :\n  - Donner une **petite veilleuse** au + grand, qu'il pourra **allumer DE TEMPS EN TEMPS** pour se rassurer\n  - Installer un **paravent** entre les 2 lits" }
+                  ]
+                },
                 embeddedActions: [
                   {
                     label: "Si les couchers à des heures différentes", emoji: "⏰", style: "action", _pillStyle: true, mutexGroup: "partage-chambre-coucher",
