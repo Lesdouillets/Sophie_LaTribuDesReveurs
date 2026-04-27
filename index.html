@@ -3581,8 +3581,9 @@
     .sol-group-arrow { font-size: 11px; transition: transform 0.2s; display: inline-block; }
     .sol-group.collapsed .sol-group-arrow { transform: rotate(-90deg); }
     .sol-group.collapsed .sol-group-rows { display: none; }
-    .sol-row-arrow { font-size: 11px; transition: transform 0.2s; display: inline-block; cursor: pointer; padding: 0 4px; opacity: 0.7; }
-    .sol-row-arrow:hover { opacity: 1; }
+    .sol-row-header { display: flex; align-items: center; gap: 4px; }
+    .sol-row-arrow { font-size: 11px; transition: transform 0.2s; display: inline-block; cursor: pointer; padding: 4px 8px; opacity: 0.7; }
+    .sol-row-arrow:hover { opacity: 1; background: #f1f5f9; border-radius: 4px; }
     .sol-row-collapsed .sol-row-arrow { transform: rotate(-90deg); }
     .sol-row-collapsed .sol-row-sub { display: none; }
     .sol-bulk-btns { display: inline-flex; gap: 6px; margin-left: auto; flex-shrink: 0; }
@@ -9682,16 +9683,16 @@ function renderSolutionsCheckboxes() {
         }
       }
       // Wrapper de row : si subRows existe, ajouter une flèche cliquable pour collapser
+      // (la flèche est OUT du <label> pour ne pas déclencher le toggle de la checkbox)
       const rowCollapsed = !!(state.solRowsCollapsed && state.solRowsCollapsed.has(ch.id));
       const arrowHtml = subRows
-        ? `<span class="sol-row-arrow" onclick="event.preventDefault(); event.stopPropagation(); toggleSolRow('${ch.id}')" title="Replier / déplier">▾</span>`
+        ? `<span class="sol-row-arrow" onclick="toggleSolRow('${ch.id}')" title="Replier / déplier">▾</span>`
         : '';
       const rowClass = rowCollapsed ? ' sol-row-collapsed' : '';
-      return `<div data-sol-id="${ch.id}" class="sol-row-wrap${rowClass}"><label class="sol-row">
+      return `<div data-sol-id="${ch.id}" class="sol-row-wrap${rowClass}"><div class="sol-row-header"><label class="sol-row" style="flex:1">
         <input type="checkbox" ${checked?'checked':''} onchange="toggleSolution('${ch.id}', this.checked)">
         <span class="sol-row-label">${ch.label || ch.id}</span>
-        ${arrowHtml}
-      </label>${subRows}</div>`;
+      </label>${arrowHtml}</div>${subRows}</div>`;
     }).join('');
     const bulkBtns = children.length > 1
       ? `<span class="sol-bulk-btns"><button type="button" class="sol-bulk-btn sol-bulk-check" onclick="event.stopPropagation(); checkAllSolutionsInCat('${cat.id}')" title="Tout cocher">Tout ✓</button><button type="button" class="sol-bulk-btn sol-bulk-uncheck" onclick="event.stopPropagation(); uncheckAllSolutionsInCat('${cat.id}')" title="Tout décocher">Tout ✗</button></span>`
