@@ -9925,25 +9925,25 @@ function syncSubChecklistFromPbs() {
 function toggleSolution(id, checked) {
   if (!state.selectedSolutions) state.selectedSolutions = new Set();
   if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
+  if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+  if (!state.courbeCardsTickedManuallyEdited) state.courbeCardsTickedManuallyEdited = new Set();
   if (!state.tickboxChoices) state.tickboxChoices = {};
-  // Empêcher décocher une solution parente (ex. Chambre/Lit) si au moins un enfant est tické
+  // Decochage parent → cascade : decocher aussi les sous-checkboxes (state.courbeCardsTicked)
+  // pour permettre un decochage propre meme avec sous-items actifs
   if (!checked) {
     const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
-    let blockedByChild = false;
     for (const cat of sols) {
       for (const ch of (cat.children || [])) {
         if (ch.id !== id) continue;
         if (!Array.isArray(ch.blocks)) break;
         const grid = ch.blocks.find(b => b && b.type === 'courbe_cards_grid');
-        if (!grid || !Array.isArray(grid.items) || !state.courbeCardsTicked) break;
-        if (grid.items.some(it => state.courbeCardsTicked.has(it.id))) blockedByChild = true;
+        if (!grid || !Array.isArray(grid.items)) break;
+        grid.items.forEach(it => {
+          state.courbeCardsTicked.delete(it.id);
+          state.courbeCardsTickedManuallyEdited.delete(it.id);
+        });
         break;
       }
-      if (blockedByChild) break;
-    }
-    if (blockedByChild) {
-      renderCurrentSection(); // remet la case à son état précédent, sans alerte
-      return;
     }
   }
   // Règle : on ne peut cocher Tétine que si un sous-choix (Garder/Supprimer/Hybride) est actif
@@ -9975,12 +9975,21 @@ function toggleSolution(id, checked) {
   else state.selectedSolutions.delete(id);
   state.selectedSolutionsManuallyEdited.add(id);
   // Mutex : enfants de la categorie 'changement' s'excluent mutuellement (1 option active a la fois)
+  // + vider les 3 sous-checkboxes de env_chgmt_lit si on bascule sur chambre / lit_chambre
   const CHGMT_MUTEX_IDS = ['env_chgmt_lit', 'env_chgmt_chambre', 'env_chgmt_lit_chambre'];
+  const CHGMT_LIT_SUBS = ['env_chgmt_lit_cododo_barreau', 'env_chgmt_lit_barreau_ouvert', 'env_chgmt_lit_sol_barreau'];
   if (checked && CHGMT_MUTEX_IDS.includes(id)) {
     CHGMT_MUTEX_IDS.forEach(other => {
       if (other !== id) {
         state.selectedSolutions.delete(other);
-        state.selectedSolutionsManuallyEdited.delete(other);
+        state.selectedSolutionsManuallyEdited.add(other);
+        // Si l'autre est env_chgmt_lit, vider aussi ses 3 sous-checkboxes
+        if (other === 'env_chgmt_lit') {
+          CHGMT_LIT_SUBS.forEach(sub => {
+            state.courbeCardsTicked.delete(sub);
+            state.courbeCardsTickedManuallyEdited.add(sub);
+          });
+        }
       }
     });
   }
