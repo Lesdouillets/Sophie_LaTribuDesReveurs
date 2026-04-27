@@ -364,8 +364,7 @@ const SCRIPT_DATA = {
                 required: true,
                 options: [
                   { icon: "🛏", label: "Cododo ⇒ Lit à barreaux", value: "cododo_barreau", variant: "negative" },
-                  { icon: "🛌", label: "Lit à barreaux ⇒ Lit ouvert", value: "barreau_ouvert", variant: "negative" },
-                  { icon: "🔙", label: "(Retour) Lit ouvert ⇒ Lit à barreaux", value: "sol_barreau", variant: "negative" }
+                  { icon: "🛌", label: "Lit à barreaux ⇒ Lit ouvert", value: "barreau_ouvert", variant: "negative" }
                 ]
               }
             }
