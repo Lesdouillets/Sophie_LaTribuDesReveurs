@@ -137,7 +137,9 @@
       "Bash(git commit -m 'obj_rappel embedded question : utilise .block-question avec liseré rouge complet *)",
       "Bash(git commit -m 'obj_rappel embedded question : boutons OUI/NON en dessous \\(flex column\\) *)",
       "Bash(git commit -m 'Nouvelle categorie '\\\\''Changement'\\\\'' parent \\(separee de Env de sommeil\\) *)",
-      "Bash(git commit -m 'Fix : changer le nom de famille d'\\\\''un enfant existant ne cree plus une nouvelle fiche *)"
+      "Bash(git commit -m 'Fix : changer le nom de famille d'\\\\''un enfant existant ne cree plus une nouvelle fiche *)",
+      "Bash(node --check script-data.js)",
+      "PowerShell(node --check script-data.js 2>&1)"
     ]
   }
 }
