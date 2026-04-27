@@ -2676,6 +2676,64 @@ const SCRIPT_DATA = {
               }
             ]
           },
+          { id: "env_enfant_plus_25", label: "Enfant + 18 mois", cardLabel: "Enfant + 18 mois", cardEmoji: "🧒",
+            showIfAgeMinMonths: 18,
+            blocks: [
+              {
+                type: "courbe_cards_grid",
+                theme: "violet",
+                alwaysShowAll: true,
+                items: [
+                  { id: "env_coin_proprete", emoji: "🚽", label: "Coin propreté", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- Pour favoriser **l'autonomie** de votre enfant." },
+                    { type: "normal", _leftTitle: "Conseils",
+                      text: "- Vous pouvez **aménager un petit coin** dans la chambre\n- Vous pouvez par exemple **préparer à l'avance** dans **sa chambre** :\n  - Une gourde\n  - De quoi gérer les besoins : pot, papier toilette, lingettes, couches, petite poubelle\n  - Un pyjama de rechange\n  - Des mouchoirs",
+                      trailingInfoButtons: [
+                        {
+                          label: "Petite penderie murale",
+                          title: "Petite penderie murale",
+                          blocks: [
+                            { type: "normal", text: "- Vous pouvez aussi ajouter une **petite penderie murale** avec des poches (comme à l'arrière des sièges des voitures) pour **tout regrouper.**" }
+                          ]
+                        },
+                        {
+                          label: "Veilleuse portative",
+                          title: "Veilleuse portative",
+                          blocks: [
+                            { type: "normal", text: "- Une **veilleuse portative** peut aussi être **utile** pour pouvoir se **déplacer en toute confiance.**" }
+                          ]
+                        }
+                      ]
+                    }
+                  ] },
+                  { id: "env_veilleuse", emoji: "🌙", label: "Veilleuse (peur du noir)", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- Si votre enfant **exprime une peur du noir**" },
+                    { type: "normal", _leftTitle: "Conseils",
+                      text: "- Avant 2,5–3 ans, la **peur du noir est rare** (voire absente).\n- Mais **chaque enfant est différent.**\n\n- Si vous **choisissez d'utiliser une veilleuse** ⇒ je vous invite à la **laisser allumée toute la nuit**, pour qu'il puisse **retrouver les mêmes conditions** durant ses **micro-réveils**",
+                      trailingInfoButtons: [
+                        {
+                          label: "Veilleuse portative",
+                          title: "Veilleuse portative",
+                          blocks: [
+                            { type: "normal", text: "- Vous pouvez aussi lui donner une **version portative**, que vous pouvez disposer près de votre enfant, s'il **souhaite se déplacer** (ex : aux toilettes)" }
+                          ]
+                        }
+                      ]
+                    }
+                  ] },
+                  { id: "env_reveil", emoji: "⏰", label: "Réveil", blocks: [
+                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- Pour l'aider à **savoir quand sortir du lit.**" },
+                    { type: "normal", _leftTitle: "Conseils", text: "- **Si** votre enfant a la **maturité** pour **faire le lien** entre le **symbole** (le lapin qui dort) et **leur propre sommeil.**\n- ⚠️ Je vous invite à toujours **respecter la règle** « si le **lapin dort,** votre enfant n'est **pas sorti du lit** » ⇒ Sinon il **risque** de ne **PAS suivre NON PLUS la règle** !\n- Je vous conseille de placer le réveil **hors de portée** de [prénom_enfant] pour éviter les **réglages involontaires** !\n- Si la **lumière** est **trop forte**, vous pouvez l'**adoucir** avec un **lange** ou un **papier calque**" }
+                  ] },
+                ]
+              }
+            ]
+          },
+        ]
+      },
+      {
+        id: "changement", title: "Changement", emoji: "🔄",
+        children: [
           { id: "env_changement", label: "Changement", cardLabel: "Changement", cardEmoji: "🔄",
             autoCheckIfPbs: ["souhait_changement_lit", "souhait_changement_chambre", "souhait_changement_lit_chambre", "souhait_lit_ouvert_jeune"],
             blocks: [
@@ -2744,59 +2802,6 @@ const SCRIPT_DATA = {
                         }
                       ]
                     }
-                  ] },
-                ]
-              }
-            ]
-          },
-          { id: "env_enfant_plus_25", label: "Enfant + 18 mois", cardLabel: "Enfant + 18 mois", cardEmoji: "🧒",
-            showIfAgeMinMonths: 18,
-            blocks: [
-              {
-                type: "courbe_cards_grid",
-                theme: "violet",
-                alwaysShowAll: true,
-                items: [
-                  { id: "env_coin_proprete", emoji: "🚽", label: "Coin propreté", blocks: [
-                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- Pour favoriser **l'autonomie** de votre enfant." },
-                    { type: "normal", _leftTitle: "Conseils",
-                      text: "- Vous pouvez **aménager un petit coin** dans la chambre\n- Vous pouvez par exemple **préparer à l'avance** dans **sa chambre** :\n  - Une gourde\n  - De quoi gérer les besoins : pot, papier toilette, lingettes, couches, petite poubelle\n  - Un pyjama de rechange\n  - Des mouchoirs",
-                      trailingInfoButtons: [
-                        {
-                          label: "Petite penderie murale",
-                          title: "Petite penderie murale",
-                          blocks: [
-                            { type: "normal", text: "- Vous pouvez aussi ajouter une **petite penderie murale** avec des poches (comme à l'arrière des sièges des voitures) pour **tout regrouper.**" }
-                          ]
-                        },
-                        {
-                          label: "Veilleuse portative",
-                          title: "Veilleuse portative",
-                          blocks: [
-                            { type: "normal", text: "- Une **veilleuse portative** peut aussi être **utile** pour pouvoir se **déplacer en toute confiance.**" }
-                          ]
-                        }
-                      ]
-                    }
-                  ] },
-                  { id: "env_veilleuse", emoji: "🌙", label: "Veilleuse (peur du noir)", blocks: [
-                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- Si votre enfant **exprime une peur du noir**" },
-                    { type: "normal", _leftTitle: "Conseils",
-                      text: "- Avant 2,5–3 ans, la **peur du noir est rare** (voire absente).\n- Mais **chaque enfant est différent.**\n\n- Si vous **choisissez d'utiliser une veilleuse** ⇒ je vous invite à la **laisser allumée toute la nuit**, pour qu'il puisse **retrouver les mêmes conditions** durant ses **micro-réveils**",
-                      trailingInfoButtons: [
-                        {
-                          label: "Veilleuse portative",
-                          title: "Veilleuse portative",
-                          blocks: [
-                            { type: "normal", text: "- Vous pouvez aussi lui donner une **version portative**, que vous pouvez disposer près de votre enfant, s'il **souhaite se déplacer** (ex : aux toilettes)" }
-                          ]
-                        }
-                      ]
-                    }
-                  ] },
-                  { id: "env_reveil", emoji: "⏰", label: "Réveil", blocks: [
-                    { type: "normal", _leftTitle: "Pourquoi ?", text: "- Pour l'aider à **savoir quand sortir du lit.**" },
-                    { type: "normal", _leftTitle: "Conseils", text: "- **Si** votre enfant a la **maturité** pour **faire le lien** entre le **symbole** (le lapin qui dort) et **leur propre sommeil.**\n- ⚠️ Je vous invite à toujours **respecter la règle** « si le **lapin dort,** votre enfant n'est **pas sorti du lit** » ⇒ Sinon il **risque** de ne **PAS suivre NON PLUS la règle** !\n- Je vous conseille de placer le réveil **hors de portée** de [prénom_enfant] pour éviter les **réglages involontaires** !\n- Si la **lumière** est **trop forte**, vous pouvez l'**adoucir** avec un **lange** ou un **papier calque**" }
                   ] },
                 ]
               }
