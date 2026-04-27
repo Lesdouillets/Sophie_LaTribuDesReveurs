@@ -2437,6 +2437,11 @@ const SCRIPT_DATA = {
       },
       {
         id: "nutrition", title: "Nutrition", emoji: "🍽️",
+        introBlocks: [
+          { type: "normal", _leftTitle: "Alimentation et sommeil",
+            text: "- On va maintenant **prendre un moment** pour parler de **l'alimentation**\nParce que c'est un sujet **VRAIMENT important**\n\n- Et en réalité, **alimentation et sommeil sont INTERCONNECTES**…\n- ⇒ **S'il** y a un soucis **dans l'alimentation ⇒** ça aura un **impact sur son sommeil**\n\n---\n\n- Un bébé qui va :\n  - **manger A SA faim**,\n  - dans de **bonnes conditions**\n  - et POUR QUI **la digestion se passe bien**,\n  - ⇒ ça sera **beaucoup + facile** pour lui d'**aller vers le sommeil**\n\n---\n\n- L'idée ici, ce n'est pas de **tout changer**,\nmais plutôt de voir **ce qui peut être ajusté FACILEMENT**"
+          }
+        ],
         children: [
           // À compléter
         ]
