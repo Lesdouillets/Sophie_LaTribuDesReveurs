@@ -140,7 +140,9 @@
       "Bash(git commit -m 'Fix : changer le nom de famille d'\\\\''un enfant existant ne cree plus une nouvelle fiche *)",
       "Bash(node --check script-data.js)",
       "PowerShell(node --check script-data.js 2>&1)",
-      "Bash(grep -n 'option-label-text\"\\\\|option-label-text\\\\\\\\\\\\|class=\"option-label-text\"' index.html)"
+      "Bash(grep -n 'option-label-text\"\\\\|option-label-text\\\\\\\\\\\\|class=\"option-label-text\"' index.html)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(where python *)"
     ]
   }
 }
