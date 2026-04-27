@@ -142,7 +142,8 @@
       "PowerShell(node --check script-data.js 2>&1)",
       "Bash(grep -n 'option-label-text\"\\\\|option-label-text\\\\\\\\\\\\|class=\"option-label-text\"' index.html)",
       "mcp__Claude_Preview__preview_start",
-      "Bash(where python *)"
+      "Bash(where python *)",
+      "Bash(grep -c '\\\\\\\\\"tbc-icon\\\\\\\\\\\\\\\\\\\\\\\\\">✅</span><span>Garder</span>' script-data.js)"
     ]
   }
 }
