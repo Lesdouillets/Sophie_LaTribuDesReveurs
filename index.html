@@ -9445,34 +9445,44 @@ function renderBlockInner(b, i, sectionId, depth, path) {
 
   const cls = { normal:'block-normal', important:'block-important', conseil:'block-conseil', conseil_vert:'block-conseil-vert', empathie:'block-empathie' }[b.type] || 'block-normal';
   // Boutons info inline ancrés à un bullet via marqueur {{infobtn:N}} dans le texte
-  // Chaque marqueur ancre un info-btn absolu en haut-droit du <li> qui le contient
-  // (chaque <li> reçoit position:relative;padding-right:220px pour réserver l'espace)
+  // Mode par défaut : info-btn absolu en haut-droit du <li> (le <li> reçoit
+  // position:relative;padding-right:220px;min-height:46px pour réserver l'espace)
+  // Mode `compact: true` : bouton inline-flex à la place du marqueur (plus petit,
+  // pas de modif de <li>, ne grandit pas la hauteur du bloc)
   if (Array.isArray(b.inlineInfoButtons) && b.inlineInfoButtons.length) {
     window.__infoButtons = window.__infoButtons || {};
-    const btnHtmls = {};
+    const absoluteBtnHtmls = {};
     b.inlineInfoButtons.forEach((ib, ibi) => {
       const btnId = `info-btn-${sectionId||'x'}-${String(path||i).replace(/\./g,'-')}-inline-${ibi}`;
       const ibLabel = substituteVars(ib.label || 'Plus d\'infos');
       const ibTitle = substituteVars(ib.title || ib.label || 'Informations');
       const ibContent = renderBlocks(Array.isArray(ib.blocks) ? ib.blocks : [], sectionId, (depth||0)+1, path||String(i));
       window.__infoButtons[btnId] = { title: ibTitle, content: ibContent };
-      btnHtmls[ibi] = `<button type="button" class="info-btn inline-right" contenteditable="false" onclick="openInfoPanel('${btnId}')" style="position:absolute;top:0;right:0;width:200px;min-width:0;text-align:center;padding:10px 14px 10px 36px;font-size:13px;box-sizing:border-box;margin:0"><span class="info-btn-emoji" style="position:absolute;left:12px;top:50%;transform:translateY(-50%)">💡</span><span>${ibLabel}</span></button>`;
-    });
-    // Post-process le HTML rendu : remplace chaque <li>{{infobtn:N}}...</li>
-    // par un <li position:relative;padding-right:220px> avec le bouton positionné absolument
-    // Le marqueur DOIT être en début de bullet (juste après "- ") pour éviter de matcher
-    // un <li> englobant qui contiendrait des <li> imbriqués (regex non-greedy mal calibré).
-    text = text.replace(/<li([^>]*)>\s*\{\{infobtn:(\d+)\}\}([\s\S]*?)<\/li>/g, (m, attrs, idx, content) => {
-      const btnHtml = btnHtmls[parseInt(idx, 10)] || '';
-      const extraStyle = 'position:relative;padding-right:220px;min-height:46px';
-      let newAttrs;
-      if (/style="/.test(attrs)) {
-        newAttrs = attrs.replace(/style="([^"]*)"/, (_sm, s) => `style="${s};${extraStyle}"`);
+      if (ib.compact) {
+        // Inline compact : bouton tient sur la ligne du texte, pas de hauteur réservée
+        const compactBtn = `<button type="button" contenteditable="false" onclick="openInfoPanel('${btnId}')" style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;background:#fef9e0;border:1.5px solid #f5d778;border-radius:6px;font-size:12.5px;font-weight:700;color:#7c2d12;cursor:pointer;margin-left:8px;vertical-align:middle;font-family:inherit"><span style="font-size:13px">💡</span><span>${ibLabel}</span></button>`;
+        text = text.split(`{{infobtn:${ibi}}}`).join(compactBtn);
       } else {
-        newAttrs = attrs + ` style="${extraStyle}"`;
+        absoluteBtnHtmls[ibi] = `<button type="button" class="info-btn inline-right" contenteditable="false" onclick="openInfoPanel('${btnId}')" style="position:absolute;top:0;right:0;width:200px;min-width:0;text-align:center;padding:10px 14px 10px 36px;font-size:13px;box-sizing:border-box;margin:0"><span class="info-btn-emoji" style="position:absolute;left:12px;top:50%;transform:translateY(-50%)">💡</span><span>${ibLabel}</span></button>`;
       }
-      return `<li${newAttrs}>${btnHtml}${content}</li>`;
     });
+    // Post-process le HTML rendu pour les marqueurs en mode absolu uniquement :
+    // remplace chaque <li>{{infobtn:N}}...</li> par un <li position:relative;padding-right:220px;min-height:46px>
+    // avec le bouton positionné absolument
+    if (Object.keys(absoluteBtnHtmls).length) {
+      text = text.replace(/<li([^>]*)>\s*\{\{infobtn:(\d+)\}\}([\s\S]*?)<\/li>/g, (m, attrs, idx, content) => {
+        const btnHtml = absoluteBtnHtmls[parseInt(idx, 10)];
+        if (!btnHtml) return m;
+        const extraStyle = 'position:relative;padding-right:220px;min-height:46px';
+        let newAttrs;
+        if (/style="/.test(attrs)) {
+          newAttrs = attrs.replace(/style="([^"]*)"/, (_sm, s) => `style="${s};${extraStyle}"`);
+        } else {
+          newAttrs = attrs + ` style="${extraStyle}"`;
+        }
+        return `<li${newAttrs}>${btnHtml}${content}</li>`;
+      });
+    }
   }
   // Boutons "💡 Plus d'infos" flottants à droite DANS le bloc (optionnel)
   // Supporte `trailingInfoButton` (singulier) OU `trailingInfoButtons` (array)
