@@ -9827,34 +9827,14 @@ function renderSolutionsCheckboxes(opts) {
   const getDisplayLabelsForChild = (ch) => {
     if (Array.isArray(ch.blocks)) {
       const grid = ch.blocks.find(b => b && b.type === 'courbe_cards_grid' && Array.isArray(b.items));
-      if (grid) {
-        // 1) Sous-cartes tickees → afficher leurs labels
-        if (state.courbeCardsTicked) {
-          const tickedItems = grid.items.filter(it => state.courbeCardsTicked.has(it.id));
-          if (tickedItems.length) {
-            return tickedItems.map(it => `${it.emoji ? it.emoji + ' ' : ''}${it.label || it.id}`);
-          }
+      if (grid && state.courbeCardsTicked) {
+        const tickedItems = grid.items.filter(it => state.courbeCardsTicked.has(it.id));
+        // EXACTEMENT 1 sous-carte tickée : afficher son label (à la place du nom du parent)
+        if (tickedItems.length === 1) {
+          const it = tickedItems[0];
+          return [`${it.emoji ? it.emoji + ' ' : ''}${it.label || it.id}`];
         }
-        // 2) Aucune sous-carte tickee : fallback sur les sous-cartes VISIBLES
-        // (filtrage age + pb, comme le rendu courbe_cards_grid) — au lieu d'afficher
-        // le nom du parent enfant ("Diversification") en pastille.
-        const isHiddenByAge = (it) => {
-          if (it.showIfAgeMinMonths == null && it.showIfAgeMaxMonths == null) return false;
-          const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
-          if (age == null) return true;
-          if (it.showIfAgeMinMonths != null && age < it.showIfAgeMinMonths) return true;
-          if (it.showIfAgeMaxMonths != null && age > it.showIfAgeMaxMonths) return true;
-          return false;
-        };
-        const visibleItems = grid.items.filter(it => {
-          if (isHiddenByAge(it)) return false;
-          if (!it.pb) return true;
-          const pbs = Array.isArray(it.pb) ? it.pb : [it.pb];
-          return pbs.some(p => state.selectedPbs && state.selectedPbs.has(p));
-        });
-        if (visibleItems.length) {
-          return visibleItems.map(it => `${it.emoji ? it.emoji + ' ' : ''}${it.label || it.id}`);
-        }
+        // Sinon (2+ tickées ou aucune) : on tombe sur le label du parent (cardLabel) plus bas
       }
     }
     const label = ch.cardLabel || ch.label || ch.id;
