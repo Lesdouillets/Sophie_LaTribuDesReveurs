@@ -2439,7 +2439,35 @@ const SCRIPT_DATA = {
             { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
           ] },
           { id: "nutri_diversification", label: "Diversification", cardLabel: "Diversification", cardEmoji: "🥄", blocks: [
-            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+            {
+              type: "courbe_cards_grid",
+              items: [
+                {
+                  id: "nutri_div_feculents", emoji: "🍞", label: "Féculents",
+                  blocks: [
+                    { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                  ]
+                },
+                {
+                  id: "nutri_div_gras", emoji: "🥑", label: "Gras",
+                  blocks: [
+                    { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                  ]
+                },
+                {
+                  id: "nutri_div_lait_poudre", emoji: "🥄", label: "Manque d'apport de lait",
+                  blocks: [
+                    { type: "normal", _leftTitle: "Ajout cuillérée lait en poudre", text: "- À compléter" }
+                  ]
+                },
+                {
+                  id: "nutri_div_lait_timing", emoji: "⏰", label: "Lait AVANT/après la diversification",
+                  blocks: [
+                    { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                  ]
+                }
+              ]
+            }
           ] }
         ]
       },
