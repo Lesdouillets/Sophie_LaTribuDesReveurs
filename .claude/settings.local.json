@@ -168,7 +168,12 @@
       "Bash(where py *)",
       "Bash(where npx *)",
       "Bash(grep -o \"diététicienne nutritionniste pédiatrique\\\\\\(<\\\\\\\\\\\\\\\\\\\\\\\\/strong>\\\\\\)\\\\?\\\\[if_alim_not\\\\\\(:Diversification\\\\\\)\\\\?\\\\]\" \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")",
-      "Bash(grep -o \"if_alim_not:Diversification.\\\\{1,80\\\\}\" \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")"
+      "Bash(grep -o \"if_alim_not:Diversification.\\\\{1,80\\\\}\" \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")",
+      "Bash(node -c \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")",
+      "Bash(py -c \"print\\('test'\\)\")",
+      "PowerShell($path = \"C:\\\\Users\\\\sophi\\\\OneDrive\\\\Documents\\\\GitHub\\\\Sophie_LaTribuDesReveurs\\\\script-data.js\"; $content = Get-Content $path -Raw -Encoding UTF8; Add-Type -AssemblyName \"System.Web.Extensions\"; try { $null = [Microsoft.JScript.Eval]::JScriptEvaluate\\(\"var SCRIPT_DATA = null; \\(function\\(\\){}\\)\\(\\)\", [Microsoft.JScript.Vsa.VsaEngine]::CreateEngine\\(\\)\\); \"JS engine OK\" } catch { \"JS engine error: $_\" })",
+      "PowerShell($path = \"C:\\\\Users\\\\sophi\\\\OneDrive\\\\Documents\\\\GitHub\\\\Sophie_LaTribuDesReveurs\\\\script-data.js\"; $content = Get-Content $path -Raw -Encoding UTF8; $openBraces = \\($content.ToCharArray\\(\\) | Where-Object { $_ -eq '{' }\\).Count; $closeBraces = \\($content.ToCharArray\\(\\) | Where-Object { $_ -eq '}' }\\).Count; \"Open: $openBraces Close: $closeBraces Diff: $\\($openBraces - $closeBraces\\)\")",
+      "Bash(awk '/<!-- Pas assez de féculents/{flag=1} flag{print NR\": \"$0; if\\(/Conséquences : Mange la nuit/\\){flag=0}}' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")"
     ]
   }
 }
