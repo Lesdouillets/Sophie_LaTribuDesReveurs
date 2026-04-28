@@ -2467,6 +2467,14 @@ const SCRIPT_DATA = {
                   id: "nutri_lait_biberon", emoji: "🍼", label: "Biberon",
                   alim: ["Jus végétal", "Lait animal", "Biberon lait infantile", "Allaitement mixte", "Allaitement au biberon"],
                   blocks: [
+                    {
+                      type: "courbe_cards_grid",
+                      alwaysShowAll: true,
+                      items: [
+                        {
+                          id: "nutri_lait_biberon_jusveg", emoji: "🌱", label: "Jus végétal",
+                          alim: ["Jus végétal"],
+                          blocks: [
             {
               type: "normal", _leftTitle: "Lait végétal = PAS avant 3 ans",
               showIfAlim: "Jus végétal",
@@ -2482,7 +2490,7 @@ const SCRIPT_DATA = {
                   ]
                 },
                 {
-                  label: "Comparatif jus vs lait",
+                  label: "Jus. vs lait infantile",
                   title: "📊 Comparatif jus végétaux vs lait infantile et laits animaux (pour 100ml)",
                   blocks: [
                     { type: "normal", _noBorder: true, text: "<div style=\"overflow-x:auto\"><table style=\"border-collapse:collapse;width:100%;table-layout:fixed;font-size:12.5px;line-height:1.3;color:#1e293b;background:#fff\"><colgroup><col style=\"width:10%\"><col style=\"width:10%\"><col style=\"width:10%\"><col style=\"width:10%\"><col style=\"width:10%\"><col style=\"width:10%\"><col style=\"width:10%\"><col style=\"width:10%\"><col style=\"width:10%\"><col style=\"width:10%\"></colgroup><thead><tr><th style=\"background:#fee2e2;border:1px solid #94a3b8;padding:6px;text-align:center;color:#991b1b\">Pour 100ml</th><th style=\"background:#fef3c7;border:1px solid #94a3b8;padding:6px;text-align:center\">PPN</th><th style=\"background:#dbeafe;border:1px solid #94a3b8;padding:6px;text-align:center\">🐴 Jument</th><th style=\"background:#dbeafe;border:1px solid #94a3b8;padding:6px;text-align:center\">🐐 Chèvre</th><th style=\"background:#dbeafe;border:1px solid #94a3b8;padding:6px;text-align:center\">🐄 Vache</th><th style=\"background:#dbeafe;border:1px solid #94a3b8;padding:6px;text-align:center\">🐑 Brebis</th><th style=\"background:#dcfce7;border:1px solid #94a3b8;padding:6px;text-align:center\">Riz</th><th style=\"background:#dcfce7;border:1px solid #94a3b8;padding:6px;text-align:center\">Soja</th><th style=\"background:#dcfce7;border:1px solid #94a3b8;padding:6px;text-align:center\">Amande</th><th style=\"background:#dcfce7;border:1px solid #94a3b8;padding:6px;text-align:center\">Noisette</th></tr></thead><tbody><tr><td style=\"border:1px solid #94a3b8;padding:6px;font-weight:700;background:#f8fafc;text-align:center\">P (g)</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">1,4</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">2,4</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">3,3</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">3,3</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">5,7</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">0,2</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">3,9</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">0,7</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">0,8</td></tr><tr><td style=\"border:1px solid #94a3b8;padding:6px;font-weight:700;background:#f8fafc;text-align:center\">L (g)</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">3,4</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">1,7</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">2,8</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">3,6</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">7</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">1,0</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">2,1</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">1,7</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">2,4</td></tr><tr><td style=\"border:1px solid #94a3b8;padding:6px;font-weight:700;background:#f8fafc;text-align:center\">G (g)</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">7,6</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">6,1</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">4,3</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">4,8</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">4,5</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">8,5</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">1,0</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">1,6</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">6,5</td></tr><tr><td style=\"border:1px solid #94a3b8;padding:6px;font-weight:700;background:#f8fafc;text-align:center\">Énergie (kcal)</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">67</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">50</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">56</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">65</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">103</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">43</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">38</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">25</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">51</td></tr><tr><td style=\"border:1px solid #94a3b8;padding:6px;font-weight:700;background:#f8fafc;text-align:center\">Fer (mg)</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">0,8</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">0,06</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">0,05</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">0,01</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">0,4</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">0</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">?</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">?</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">?</td></tr><tr><td style=\"border:1px solid #94a3b8;padding:6px;font-weight:700;background:#f8fafc;text-align:center\">Ca (mg)</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">51</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">87</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">134</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">120</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">199</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">0</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">0</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">40</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">0</td></tr><tr><td style=\"border:1px solid #94a3b8;padding:6px;font-weight:700;background:#f8fafc;text-align:center\">Na (mg)</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">19</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">20</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">50</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">44</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">44</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">90</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">30</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">55</td><td style=\"border:1px solid #94a3b8;padding:6px;text-align:center\">50</td></tr></tbody></table></div>" }
@@ -2495,7 +2503,13 @@ const SCRIPT_DATA = {
               showIfAlim: "Jus végétal",
               showIfAgeMaxMonths: 35,
               text: "- ⇒ Donc **si c'est possible** pour vous, **l'idée** serait plutôt de :\n  - **revenir vers un lait infantile ou maternel** qui sera **mieux adapté aux besoins** de [prénom_enfant]\n  - qui pourra **mieux lui « tenir » au ventre**\n    ⇒ pour **l'aider à avoir un sommeil moins fragmenté**\n\n<div style=\"background:#fef3c7;border:2px solid #f59e0b;border-radius:10px;padding:12px 16px;margin:12px 0;font-size:14px;line-height:1.5\"><strong>⚠️ 💵💰 Je sais que le coût peut être un frein :</strong><ul style=\"margin:6px 0 0 0;padding-left:22px\"><li>Dans ces cas-là, <strong><em>Santé Publique France</em></strong> propose aux <strong>familles aux faibles revenus</strong>, de donner <strong>comme alternative au lait pédiatrique</strong> :<br>⇒ du <strong>lait de vache</strong> <em>(de préférence <strong>lait entier UHT</strong>)</em></li></ul></div>"
-            },
+            }
+                          ]
+                        },
+                        {
+                          id: "nutri_lait_biberon_animal", emoji: "🥛", label: "Lait animal",
+                          alim: ["Lait animal"],
+                          blocks: [
             {
               type: "normal", _leftTitle: "Lait animal = PAS avant 3 ans",
               showIfAlim: "Lait animal",
@@ -2514,6 +2528,30 @@ const SCRIPT_DATA = {
               showIfAlim: "Lait animal",
               showIfAgeMaxMonths: 35,
               text: "- ⇒ Donc **si c'est possible** pour vous, **l'idée** serait plutôt de :\n  - **revenir vers un lait infantile ou maternel** qui sera **mieux adapté aux besoins** de [prénom_enfant]\n  - qui pourra **mieux lui « tenir » au ventre**\n    ⇒ pour **l'aider à avoir un sommeil moins fragmenté**\n\n<div style=\"background:#fef3c7;border:2px solid #f59e0b;border-radius:10px;padding:12px 16px;margin:12px 0;font-size:14px;line-height:1.5\"><strong>⚠️ 💵💰 Je sais que le coût peut être un frein :</strong><ul style=\"margin:6px 0 0 0;padding-left:22px\"><li>Dans ces cas-là, <strong><em>Santé Publique France</em></strong> propose aux <strong>familles aux faibles revenus</strong>, de donner <strong>comme alternative au lait pédiatrique</strong> :<br>⇒ du <strong>lait de vache</strong> <em>(de préférence <strong>lait entier UHT</strong>)</em></li></ul></div>"
+            }
+                  ]
+                },
+                {
+                  id: "nutri_lait_biberon_quantite", emoji: "📏", label: "Quantité",
+                  blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }]
+                },
+                {
+                  id: "nutri_lait_biberon_espacement", emoji: "⏱️", label: "Espacement",
+                  blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }]
+                },
+                {
+                  id: "nutri_lait_biberon_tetine", emoji: "🍼", label: "Tétine de biberon",
+                  blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }]
+                },
+                {
+                  id: "nutri_lait_biberon_position", emoji: "📐", label: "Position idéale du biberon",
+                  blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }]
+                },
+                {
+                  id: "nutri_lait_biberon_restitution", emoji: "🔄", label: "Restitution du biberon",
+                  blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }]
+                }
+              ]
             }
                   ]
                 },
