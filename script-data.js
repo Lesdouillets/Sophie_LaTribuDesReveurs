@@ -2489,7 +2489,7 @@ const SCRIPT_DATA = {
                   ]
                 },
                 {
-                  id: "nutri_div_lait_timing", emoji: "⏰", label: "Lait AVANT/après la diversification",
+                  id: "nutri_div_lait_timing", emoji: "🍼🥑", label: "Lait AVANT/APRES la diversification",
                   pb: [
                     "nutri_inversion_lait_solide",
                     "nutri_inf_inversion_lait_solide",
