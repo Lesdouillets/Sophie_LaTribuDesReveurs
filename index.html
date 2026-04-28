@@ -9515,7 +9515,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const btnStyle = trailingBtnsList.length > 1
         ? 'position:relative;display:block;width:100%;min-width:0;text-align:center;margin-bottom:8px;padding:10px 14px 10px 36px;font-size:13px;box-sizing:border-box'
         : 'position:relative;display:block;width:100%;min-width:0;text-align:center;padding:10px 14px 10px 36px;font-size:13px;box-sizing:border-box';
-      return `<button type="button" class="${cls}" contenteditable="false" onclick="openInfoPanel('${btnId}')" style="${btnStyle}"><span class="info-btn-emoji" style="position:absolute;left:12px;top:50%;transform:translateY(-50%)">💡</span><span>${label}</span></button>`;
+      const btnEmoji = tb.emoji || '💡';
+      return `<button type="button" class="${cls}" contenteditable="false" onclick="openInfoPanel('${btnId}')" style="${btnStyle}"><span class="info-btn-emoji" style="position:absolute;left:12px;top:50%;transform:translateY(-50%)">${btnEmoji}</span><span>${label}</span></button>`;
     }).join('');
     trailingBtnHtml = trailingBtnsList.length > 1
       ? `<div class="info-btns-stack" contenteditable="false" style="width:200px;float:right;margin:0 0 10px 14px">${btnsInner}</div>`
