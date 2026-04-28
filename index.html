@@ -10007,15 +10007,20 @@ function syncSolutionsFromPbs() {
   const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
   if (!state.selectedSolutions) state.selectedSolutions = new Set();
   if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
+  // Récupérer alim/allaitMode pour le sync via autoCheckIfAlim
+  const c = (state && state.client) || {};
+  const alimSet = new Set([...(Array.isArray(c.alimentation) ? c.alimentation : []), ...(Array.isArray(c.allaitementMode) ? c.allaitementMode : [])]);
   sols.forEach(cat => {
     (cat.children || []).forEach(ch => {
       const pbs = Array.isArray(ch.autoCheckIfPbs) ? ch.autoCheckIfPbs : [];
-      // Pas de pb associée définie → solution gérée manuellement uniquement, ne pas toucher
-      if (pbs.length === 0) return;
+      const alims = Array.isArray(ch.autoCheckIfAlim) ? ch.autoCheckIfAlim : [];
+      // Pas de pb ni d'alim associés → solution gérée manuellement uniquement, ne pas toucher
+      if (pbs.length === 0 && alims.length === 0) return;
       // Édition manuelle (clic sur la case) → respecter le choix utilisateur, ne plus auto-sync
       if (state.selectedSolutionsManuallyEdited.has(ch.id)) return;
-      // Mode auto : la solution suit l'état de ses pbs
-      const shouldCheck = pbs.some(p => state.selectedPbs && state.selectedPbs.has(p));
+      // Mode auto : la solution suit l'état de ses pbs OU de ses alim
+      const shouldCheck = pbs.some(p => state.selectedPbs && state.selectedPbs.has(p))
+        || alims.some(a => alimSet.has(a));
       if (shouldCheck) state.selectedSolutions.add(ch.id);
       else state.selectedSolutions.delete(ch.id);
     });
