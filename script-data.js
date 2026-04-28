@@ -2489,7 +2489,9 @@ const SCRIPT_DATA = {
                     "nutri_div_fec_inversion_lait_solide"
                   ],
                   blocks: [
-                    { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                    { type: "normal", _leftTitle: "Conseils",
+                      text: "[if_age_max:11]- Avant l'âge d'**1 an**, les **apports lactés** constituent la **source n°1 d'apports nutritionnels** des enfants\n  ⇒ Je vous conseille donc de **donner** le **lait AVANT** la diversification[/if_age_max][if_age_max:6]\n\n- La **diversification** c'est surtout une **phase de découverte** pour **explorer** :\n  - les **goûts**\n  - les **textures**\n  - mais ce n'est **PAS ELLE** qui **couvre les besoins principaux**\n  ⇒ L'**objectif de la diversification** n'est **PAS la quantité** mais… **l'exploration**\n  ⇒ ⚠️ Et très important ⇒ la **diversification** ne **vient PAS remplacer** le LAIT… mais **le compléter**[/if_age_max][if_age_min:12]- Après l'âge d'**1 an**, la **diversification** constitue la **source n°1 d'apports nutritionnels** des enfants\n  ⇒ Je vous conseille donc de **donner la diversification AVANT** le lait[/if_age_min]"
+                    }
                   ]
                 }
               ]
