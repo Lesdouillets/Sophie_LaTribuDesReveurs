@@ -2513,17 +2513,15 @@ const SCRIPT_DATA = {
             },
             {
               type: "normal",
-              text: "- 💡 Pour le **soir**, vous pouvez proposer le **repas… 1h-1h30 avant le coucher**{{infobtn:0}}",
-              inlineInfoButtons: [
-                {
-                  compact: true,
-                  label: "Diététicienne pédiatrique",
-                  title: "💉 Diététicienne nutritionniste pédiatrique : Tiffany Deroyer",
-                  blocks: [
-                    { type: "normal", text: "- 💉 **Diététicienne nutritionniste pédiatrique : Tiffany Deroyer** *(chez Fée Dodo)*\n  ⇒ Souvent **pris en charge par la Mutuelle**" }
-                  ]
-                }
-              ]
+              text: "- 💡 Pour le **soir**, vous pouvez proposer le **repas… 1h-1h30 avant le coucher**",
+              trailingInfoButton: {
+                label: "Diététicienne pédiatrique",
+                title: "💉 Diététicienne nutritionniste pédiatrique",
+                blocks: [
+                  { type: "normal", text: "- 💉 **Diététicienne nutritionniste pédiatrique : Tiffany Deroyer** *(chez Fée Dodo)*\n  ⇒ Souvent **pris en charge par la Mutuelle**" },
+                  { type: "normal", _noBorder: true, text: "<table style=\"border-collapse:collapse;width:100%;font-size:13px;line-height:1.4;margin-top:10px\"><thead><tr><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:left\">Spécialité</th><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:left\">Nom</th><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:center\">Tarif</th><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:left\">Réseau</th><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:left\">Remarque</th></tr></thead><tbody><tr><td rowspan=\"2\" style=\"border:1px solid #94a3b8;padding:8px;background:#f8fafc;font-weight:700;vertical-align:top\">Consultante en lactation IBCLC</td><td style=\"border:1px solid #94a3b8;padding:8px\">Fanny Rieussec <em>(Objectif Tétées)</em></td><td style=\"border:1px solid #94a3b8;padding:8px;text-align:center\">95€</td><td style=\"border:1px solid #94a3b8;padding:8px\">Réseau Fée Dodo</td><td style=\"border:1px solid #94a3b8;padding:8px\"></td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px\">Cécile Sérillon <em>(SOS allaitement 33)</em></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td></tr><tr><td rowspan=\"2\" style=\"border:1px solid #94a3b8;padding:8px;background:#f8fafc;font-weight:700;vertical-align:top\">Diététicienne nutritionniste pédiatrique</td><td style=\"border:1px solid #94a3b8;padding:8px\">Tiffany Deroyer</td><td style=\"border:1px solid #94a3b8;padding:8px;text-align:center\">75€</td><td style=\"border:1px solid #94a3b8;padding:8px\">Réseau Fée Dodo</td><td style=\"border:1px solid #94a3b8;padding:8px\">Souvent pris en charge par la Mutuelle</td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px\">Julia Mellanger <em>(L'avocate Nutritionniste)</em></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\">⚠️ En Suisse</td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px;background:#f8fafc;font-weight:700\">Frein restrictif</td><td style=\"border:1px solid #94a3b8;padding:8px\">Virginie Ferrandez <em>(Parents en confiance)</em></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px;background:#f8fafc;font-weight:700\">Frein Restrictif</td><td style=\"border:1px solid #94a3b8;padding:8px\">Annuaire Chirobliss <em>(chiropracteurs)</em></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td></tr></tbody></table>" }
+                ]
+              }
             }
           ] }
         ]
