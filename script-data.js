@@ -2445,7 +2445,7 @@ const SCRIPT_DATA = {
                 {
                   id: "nutri_div_feculents", emoji: "🍞", label: "Féculents",
                   blocks: [
-                    { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                    { type: "normal", _leftTitle: "Conseils", text: "- Les enfants ont **besoin** de **grossir** pour **pouvoir grandir !**\n- Je vous encourage à **enrichir ses purées de** : [if_age_max:5]**25 % de féculents**[/if_age_max][if_age_min:6]**50 % de féculents**[/if_age_min]" }
                   ]
                 },
                 {
