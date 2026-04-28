@@ -9449,9 +9449,11 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       window.__infoButtons[btnId] = { title: ibTitle, content: ibContent };
       btnHtmls[ibi] = `<button type="button" class="info-btn inline-right" contenteditable="false" onclick="openInfoPanel('${btnId}')" style="position:absolute;top:0;right:0;width:200px;min-width:0;text-align:center;padding:10px 14px 10px 36px;font-size:13px;box-sizing:border-box;margin:0"><span class="info-btn-emoji" style="position:absolute;left:12px;top:50%;transform:translateY(-50%)">💡</span><span>${ibLabel}</span></button>`;
     });
-    // Post-process le HTML rendu : remplace chaque <li>...{{infobtn:N}}...</li>
+    // Post-process le HTML rendu : remplace chaque <li>{{infobtn:N}}...</li>
     // par un <li position:relative;padding-right:220px> avec le bouton positionné absolument
-    text = text.replace(/<li([^>]*)>([\s\S]*?)\{\{infobtn:(\d+)\}\}([\s\S]*?)<\/li>/g, (m, attrs, before, idx, after) => {
+    // Le marqueur DOIT être en début de bullet (juste après "- ") pour éviter de matcher
+    // un <li> englobant qui contiendrait des <li> imbriqués (regex non-greedy mal calibré).
+    text = text.replace(/<li([^>]*)>\s*\{\{infobtn:(\d+)\}\}([\s\S]*?)<\/li>/g, (m, attrs, idx, content) => {
       const btnHtml = btnHtmls[parseInt(idx, 10)] || '';
       const extraStyle = 'position:relative;padding-right:220px;min-height:46px';
       let newAttrs;
@@ -9460,7 +9462,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       } else {
         newAttrs = attrs + ` style="${extraStyle}"`;
       }
-      return `<li${newAttrs}>${btnHtml}${before}${after}</li>`;
+      return `<li${newAttrs}>${btnHtml}${content}</li>`;
     });
   }
   // Boutons "💡 Plus d'infos" flottants à droite DANS le bloc (optionnel)
