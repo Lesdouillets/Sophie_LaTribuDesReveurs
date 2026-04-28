@@ -2472,15 +2472,7 @@ const SCRIPT_DATA = {
                     },
                     {
                       type: "normal", _leftTitle: "1 cc pour 100g",
-                      text: "- Je vous encourage à **rajouter** :\n  - **1 cuillère à café** pour **100g** de **purée/compote** de **« bonnes huiles »**\n    - **Huiles** : huile de colza, olive, noix, *Quintesens* Bébé 5 huiles BIO *(colza, tournesol x2, lin, algue)*\n    - ⚠️ Huile d'olive à mélanger avec une autre huile car riche en **oméga 9** et moins en **oméga 3**\n    - ⚠️ C'est à mettre **après cuisson** de la purée/compote",
-                      trailingInfoButton: {
-                        label: "Quintesens 5 huiles bébé (bio)",
-                        title: "Quintesens 5 huiles bébé (bio)",
-                        blocks: [
-                          { type: "normal", text: "- **Huiles** : colza, tournesol x2, lin, algue" },
-                          { type: "normal", _noBorder: true, text: "<div style=\"text-align:center;margin-top:10px\"><img src=\"https://www.quintesens-bio.com/cdn/shop/files/1_-_L_huile_BEBE.png?v=1769616803&width=1000\" alt=\"Quintesens 5 huiles bébé\" style=\"max-width:200px;height:auto;border:1px solid #cbd5e0;border-radius:6px;background:#fff;padding:6px\"></div>" }
-                        ]
-                      }
+                      text: "<span contenteditable=\"false\" style=\"display:inline-block;width:160px;float:right;margin:0 0 10px 14px;text-align:center\"><img src=\"https://www.quintesens-bio.com/cdn/shop/files/1_-_L_huile_BEBE.png?v=1769616803&width=1000\" alt=\"Quintesens 5 huiles bébé\" style=\"max-width:160px;height:auto;border:1px solid #cbd5e0;border-radius:6px;background:#fff;padding:6px\"></span>- Je vous encourage à **rajouter** :\n  - **1 cuillère à café** pour **100g** de **purée/compote** de **« bonnes huiles »**\n    - **Huiles** : huile de colza, olive, noix, *Quintesens* Bébé 5 huiles BIO *(colza, tournesol x2, lin, algue)*\n    - ⚠️ Huile d'olive à mélanger avec une autre huile car riche en **oméga 9** et moins en **oméga 3**\n    - ⚠️ C'est à mettre **après cuisson** de la purée/compote"
                     },
                     {
                       type: "normal", _leftTitle: "Oléagineux",
