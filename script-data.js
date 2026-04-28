@@ -2434,7 +2434,17 @@ const SCRIPT_DATA = {
                 }
               ]
             },
-            { type: "normal", _leftTitle: "Résumé", _catBg: true, text: "- **En résumé**,\n- avec un **bébé qui a du reflux**, on va surtout **l'aider à digérer tranquillement** :\n  - En **fractionnant les repas**, plutôt que de donner de grandes quantités d'un coup\n  - En **gardant bébé bien vertical** après les repas, pendant environ 20 minutes\n  - En **favorisant un environnement calme** et une **routine régulière**, car stress et fatigue peuvent accentuer le reflux\n- **Avec** ces **petits changements**, [prénom_enfant] sera **beaucoup + à l'aise**… et trouvera plus facilement le **chemin du sommeil.**" },
+            {
+              type: "normal", _leftTitle: "Résumé", _catBg: true,
+              text: "- **En résumé**,\n- avec un **bébé qui a du reflux**, on va surtout **l'aider à digérer tranquillement** :\n  - En **fractionnant les repas**, plutôt que de donner de grandes quantités d'un coup\n  - En **gardant bébé bien vertical** après les repas, pendant environ 20 minutes\n  - En **favorisant un environnement calme** et une **routine régulière**, car stress et fatigue peuvent accentuer le reflux\n- **Avec** ces **petits changements**, [prénom_enfant] sera **beaucoup + à l'aise**… et trouvera plus facilement le **chemin du sommeil.**",
+              trailingInfoButton: {
+                label: "Parents en Confiance",
+                title: "Parents en Confiance",
+                blocks: [
+                  { type: "normal", text: "- **Virginie Ferrandez** *(Infirmière IBCLC)* de **Parents en Confiance** *(Instagram)* peut aussi **vous aider** pour **comprendre** et **soulager le RGO** de [prénom_enfant]" }
+                ]
+              }
+            },
           ]},
         ]
       },
