@@ -166,7 +166,9 @@
       "Bash(grep -oE '\\\\{ id: \"[a-z_]+\", label: \"[^\"]+\", cardLabel:[^,]+, blocks:' script-data.js)",
       "Bash(grep -n -E '^\\\\s*<div class=\"problematiques-grid\"|^\\\\s*</div><!-- /problematiques-grid|^          <div>$|^            </div>$' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")",
       "Bash(where py *)",
-      "Bash(where npx *)"
+      "Bash(where npx *)",
+      "Bash(grep -o \"diététicienne nutritionniste pédiatrique\\\\\\(<\\\\\\\\\\\\\\\\\\\\\\\\/strong>\\\\\\)\\\\?\\\\[if_alim_not\\\\\\(:Diversification\\\\\\)\\\\?\\\\]\" \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")",
+      "Bash(grep -o \"if_alim_not:Diversification.\\\\{1,80\\\\}\" \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")"
     ]
   }
 }
