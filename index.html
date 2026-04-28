@@ -9923,8 +9923,11 @@ function renderSolutionsCheckboxes(opts) {
         }
       }
       // En singleChildMode : pastille avec le nom de l'enfant (style courbe-card-banner) sous la banniere parent
+      // ⚠️ Utilise getDisplayLabelsForChild pour respecter la règle :
+      //    - exactement 1 sous-carte tickée → nom de la sous-carte (ex: "🥑 Gras")
+      //    - sinon → nom du parent (ex: "🥄 Diversification")
       const singleChildPastille = singleChildMode
-        ? `<div class="sol-single-child-chip" style="background:linear-gradient(90deg,${c.dark},${c.main})">${checkedChildren[0].cardEmoji || ''} ${checkedChildren[0].cardLabel || checkedChildren[0].label || checkedChildren[0].id}</div>`
+        ? `<div class="sol-single-child-chip" style="background:linear-gradient(90deg,${c.dark},${c.main})">${getDisplayLabelsForChild(checkedChildren[0]).join(' / ')}</div>`
         : '';
       activeContentHtml = `<div class="sol-active-content" style="border:3px solid ${c.main}">
         <div class="sol-active-banner" style="background:${c.main}">${cat.emoji || ''} ${cat.title}</div>
