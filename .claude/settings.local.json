@@ -163,7 +163,10 @@
       "Bash(grep -oE '\\\\{ id: \"[^\"]+\", emoji: \"[^\"]+\",' script-data.js)",
       "Bash(grep -cE '^\\\\s*\\\\{ id: \"[^\"]+\", emoji: ' script-data.js)",
       "Bash(grep -oE '\\\\{ id: \"[a-z_]+\", label: \"[^\"]+\", cardLabel:[^,]+, cardEmoji: \"[^\"]+\"' script-data.js)",
-      "Bash(grep -oE '\\\\{ id: \"[a-z_]+\", label: \"[^\"]+\", cardLabel:[^,]+, blocks:' script-data.js)"
+      "Bash(grep -oE '\\\\{ id: \"[a-z_]+\", label: \"[^\"]+\", cardLabel:[^,]+, blocks:' script-data.js)",
+      "Bash(grep -n -E '^\\\\s*<div class=\"problematiques-grid\"|^\\\\s*</div><!-- /problematiques-grid|^          <div>$|^            </div>$' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")",
+      "Bash(where py *)",
+      "Bash(where npx *)"
     ]
   }
 }
