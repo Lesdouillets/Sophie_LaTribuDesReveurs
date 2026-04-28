@@ -2437,7 +2437,12 @@ const SCRIPT_DATA = {
           }
         ],
         children: [
-          // À compléter
+          { id: "nutri_lait", label: "Lait", cardLabel: "Lait", cardEmoji: "🍼", blocks: [
+            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+          ] },
+          { id: "nutri_diversification", label: "Diversification", cardLabel: "Diversification", cardEmoji: "🥄", blocks: [
+            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+          ] }
         ]
       },
       {
