@@ -6064,6 +6064,15 @@ function toggleTypeLait() {
   const hasAllaitement = allaitement?.checked || mixte?.checked;
   const allaitGroup = document.getElementById('allaitement-mode-group');
   if (allaitGroup) allaitGroup.style.display = hasAllaitement ? 'flex' : 'none';
+  // Si le groupe est caché (ni Allaitement maternel ni mixte), décocher les sous-modes
+  // pour ne PAS laisser de valeurs résiduelles dans state.client.allaitementMode
+  // (sinon les conditionnels [if_alim:Allaitement au sein/biberon] matchent à tort)
+  if (!hasAllaitement) {
+    document.querySelectorAll('input[name="allaitement_mode"]:checked').forEach(cb => {
+      cb.checked = false;
+      cb.closest('.pb-item')?.classList.remove('checked');
+    });
+  }
   const volGroup = document.getElementById('nutri-volume-group');
   if (volGroup) volGroup.style.display = allaitement?.checked ? 'none' : '';
   const teteeGroup = document.getElementById('nutri-tetee-group');
