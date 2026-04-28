@@ -3588,9 +3588,9 @@
       color: white; font-size: 15px; font-weight: 800;
       letter-spacing: 0.4px; padding: 12px 20px;
     }
-    .solutions-identifiees-body { padding: 12px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px 24px; }
-    .sol-group { width: 100%; }
-    @media (max-width: 900px) { .solutions-identifiees-body { grid-template-columns: 1fr; } }
+    .solutions-identifiees-body { padding: 12px 20px; columns: 2; column-gap: 24px; }
+    .sol-group { width: 100%; break-inside: avoid; page-break-inside: avoid; -webkit-column-break-inside: avoid; margin-bottom: 18px; display: inline-block; }
+    @media (max-width: 900px) { .solutions-identifiees-body { columns: 1; } }
     .sol-group-title {
       font-weight: 800; font-size: 14px; text-transform: uppercase;
       letter-spacing: 0.3px; padding-bottom: 5px; margin-bottom: 6px;
