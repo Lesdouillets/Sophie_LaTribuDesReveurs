@@ -2479,6 +2479,12 @@ const SCRIPT_DATA = {
                   ]
                 }
               ]
+            },
+            {
+              type: "normal", _leftTitle: "Conseils",
+              showIfAlim: "Jus végétal",
+              showIfAgeMaxMonths: 35,
+              text: "- ⇒ Donc **si c'est possible** pour vous, **l'idée** serait plutôt de :\n  - **revenir vers un lait infantile ou maternel** qui sera **mieux adapté aux besoins** de [prénom_enfant]\n  - qui pourra **mieux lui « tenir » au ventre**\n    ⇒ pour **l'aider à avoir un sommeil moins fragmenté**\n\n<div style=\"background:#fef3c7;border:2px solid #f59e0b;border-radius:10px;padding:12px 16px;margin:12px 0;font-size:14px;line-height:1.5\"><strong>⚠️ 💵💰 Je sais que le coût peut être un frein :</strong><ul style=\"margin:6px 0 0 0;padding-left:22px\"><li>Dans ces cas-là, <strong><em>Santé Publique France</em></strong> propose aux <strong>familles aux faibles revenus</strong>, de donner <strong>comme alternative au lait pédiatrique</strong> :<br>⇒ du <strong>lait de vache</strong> <em>(de préférence <strong>lait entier UHT</strong>)</em></li></ul></div>"
             }
           ] },
           { id: "nutri_diversification", label: "Diversification", cardLabel: "Diversification", cardEmoji: "🥄",
