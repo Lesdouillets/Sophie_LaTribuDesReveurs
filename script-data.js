@@ -2455,6 +2455,7 @@ const SCRIPT_DATA = {
             blocks: [
             {
               type: "courbe_cards_grid",
+              alwaysShowAll: true,
               items: [
                 {
                   id: "nutri_div_feculents", emoji: "🍞", label: "Féculents",
