@@ -9435,25 +9435,33 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
 
   const cls = { normal:'block-normal', important:'block-important', conseil:'block-conseil', conseil_vert:'block-conseil-vert', empathie:'block-empathie' }[b.type] || 'block-normal';
-  // Boutons info inline ancrés à une phrase via marqueur {{infobtn:N}} dans le texte
-  // Chaque entrée : { label, title, blocks } — se rend comme un info-btn flottant à droite
-  // au point d'insertion du marqueur (float:right depuis ce point ⇒ texte wrap à gauche)
-  // Boutons info inline ancrés à une phrase via marqueur {{infobtn:N}} dans le texte
-  // Remplace les marqueurs par un info-btn flottant à droite (texte wrap à gauche)
+  // Boutons info inline ancrés à un bullet via marqueur {{infobtn:N}} dans le texte
+  // Chaque marqueur ancre un info-btn absolu en haut-droit du <li> qui le contient
+  // (chaque <li> reçoit position:relative;padding-right:220px pour réserver l'espace)
   if (Array.isArray(b.inlineInfoButtons) && b.inlineInfoButtons.length) {
     window.__infoButtons = window.__infoButtons || {};
-    let mutated = b.text || '';
+    const btnHtmls = {};
     b.inlineInfoButtons.forEach((ib, ibi) => {
       const btnId = `info-btn-${sectionId||'x'}-${String(path||i).replace(/\./g,'-')}-inline-${ibi}`;
       const ibLabel = substituteVars(ib.label || 'Plus d\'infos');
       const ibTitle = substituteVars(ib.title || ib.label || 'Informations');
       const ibContent = renderBlocks(Array.isArray(ib.blocks) ? ib.blocks : [], sectionId, (depth||0)+1, path||String(i));
       window.__infoButtons[btnId] = { title: ibTitle, content: ibContent };
-      const btnHtml = `<span contenteditable="false" style="display:inline-block;width:200px;float:right;margin:0 0 6px 14px"><button type="button" class="info-btn inline-right" contenteditable="false" onclick="openInfoPanel('${btnId}')" style="position:relative;display:block;width:100%;min-width:0;text-align:center;padding:10px 14px 10px 36px;font-size:13px;box-sizing:border-box"><span class="info-btn-emoji" style="position:absolute;left:12px;top:50%;transform:translateY(-50%)">💡</span><span>${ibLabel}</span></button></span>`;
-      mutated = mutated.split(`{{infobtn:${ibi}}}`).join(btnHtml);
+      btnHtmls[ibi] = `<button type="button" class="info-btn inline-right" contenteditable="false" onclick="openInfoPanel('${btnId}')" style="position:absolute;top:0;right:0;width:200px;min-width:0;text-align:center;padding:10px 14px 10px 36px;font-size:13px;box-sizing:border-box;margin:0"><span class="info-btn-emoji" style="position:absolute;left:12px;top:50%;transform:translateY(-50%)">💡</span><span>${ibLabel}</span></button>`;
     });
-    // Remplace `text` (déjà calculé en haut via substituteVars) par la version mutée
-    text = substituteVars(mutated);
+    // Post-process le HTML rendu : remplace chaque <li>...{{infobtn:N}}...</li>
+    // par un <li position:relative;padding-right:220px> avec le bouton positionné absolument
+    text = text.replace(/<li([^>]*)>([\s\S]*?)\{\{infobtn:(\d+)\}\}([\s\S]*?)<\/li>/g, (m, attrs, before, idx, after) => {
+      const btnHtml = btnHtmls[parseInt(idx, 10)] || '';
+      const extraStyle = 'position:relative;padding-right:220px;min-height:46px';
+      let newAttrs;
+      if (/style="/.test(attrs)) {
+        newAttrs = attrs.replace(/style="([^"]*)"/, (_sm, s) => `style="${s};${extraStyle}"`);
+      } else {
+        newAttrs = attrs + ` style="${extraStyle}"`;
+      }
+      return `<li${newAttrs}>${btnHtml}${before}${after}</li>`;
+    });
   }
   // Boutons "💡 Plus d'infos" flottants à droite DANS le bloc (optionnel)
   // Supporte `trailingInfoButton` (singulier) OU `trailingInfoButtons` (array)
