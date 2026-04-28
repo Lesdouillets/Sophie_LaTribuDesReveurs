@@ -4917,7 +4917,7 @@
       function createColorPaletteHTML(onClickFn) {
         return `<div class="color-palette-popup" style="display:none;position:absolute;bottom:100%;left:0;background:white;border:1.5px solid #ccc;border-radius:8px;padding:6px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:100;margin-bottom:4px">
           <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px">
-            ${COLOR_PALETTenfantmap(c => `<button type="button" onmousedown="event.preventDefault();${onClickFn}('${c.color}')" style="width:28px;height:28px;background:${c.color};border:1.5px solid #ddd;border-radius:4px;cursor:pointer" title="${c.name}"></button>`).join('')}
+            ${COLOR_PALETTE.map(c => `<button type="button" onmousedown="event.preventDefault();${onClickFn}('${c.color}')" style="width:28px;height:28px;background:${c.color};border:1.5px solid #ddd;border-radius:4px;cursor:pointer" title="${c.name}"></button>`).join('')}
           </div>
         </div>`;
       }
