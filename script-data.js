@@ -2477,7 +2477,7 @@ const SCRIPT_DATA = {
                   id: "nutri_div_lait_poudre", emoji: "🥄", label: "Manque d'apport de lait",
                   blocks: [
                     { type: "normal", _leftTitle: "Ajout cuillérée lait en poudre",
-                      text: "- Si vous avez des **difficultés** pour **rajouter + de lait** dans **son alimentation**\n- Je vous suggère aussi de :\n  - **Cuisiner des recettes** à base de :\n    - **lait infantile reconstitué** *(eau + poudre)*\n    - ou **lait maternel** *(pancake, flan, yaourt…)*\n  - Ajouter des **cuillérées de lait en poudre** pour **compléter ses purées ou compotes**\n    ⇒ ⚠️ À **vérifier** auprès d'une **diététicienne nutritionniste pédiatrique**"
+                      text: "- Si vous avez des **difficultés** pour **rajouter + de lait** dans **son alimentation**\n- Je vous suggère aussi de :\n  - **Cuisiner des recettes** à base de :\n    - **lait infantile reconstitué** *(eau + poudre)*\n    - ou **lait maternel** *(pancake, flan, yaourt…)*\n  - Ajouter des **cuillérées de lait en poudre** pour **compléter ses purées ou compotes**\n    <span style=\"color:#c0392b\">⇒ ⚠️ À **vérifier** auprès d'une **diététicienne nutritionniste pédiatrique**</span>"
                     }
                   ]
                 },
