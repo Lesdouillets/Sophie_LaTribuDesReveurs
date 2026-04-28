@@ -2513,14 +2513,7 @@ const SCRIPT_DATA = {
             },
             {
               type: "normal",
-              text: "- 💡 Pour le **soir**, vous pouvez proposer le **repas… 1h-1h30 avant le coucher**",
-              trailingInfoButton: {
-                label: "Diététicienne pédiatrique",
-                title: "💉 Diététicienne nutritionniste pédiatrique : Tiffany Deroyer",
-                blocks: [
-                  { type: "normal", text: "- 💉 **Diététicienne nutritionniste pédiatrique : Tiffany Deroyer** *(chez Fée Dodo)*\n  ⇒ Souvent **pris en charge par la Mutuelle**" }
-                ]
-              }
+              text: "- 💡 Pour le **soir**, vous pouvez proposer le **repas… 1h-1h30 avant le coucher**"
             }
           ] }
         ]
