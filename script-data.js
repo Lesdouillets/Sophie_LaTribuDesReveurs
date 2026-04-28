@@ -2462,6 +2462,19 @@ const SCRIPT_DATA = {
                 },
                 {
                   id: "nutri_div_lait_timing", emoji: "⏰", label: "Lait AVANT/après la diversification",
+                  pb: [
+                    "nutri_inversion_lait_solide",
+                    "nutri_inf_inversion_lait_solide",
+                    "nutri_ta_inversion_lait_solide",
+                    "nutri_lok_long_inversion_lait_solide",
+                    "nutri_lok_court_inversion_lait_solide",
+                    "nutri_lok_la_inversion_lait_solide",
+                    "nutri_lok_jv_inversion_lait_solide",
+                    "nutri_lok_ijn_inversion_lait_solide",
+                    "nutri_lok_n1_inversion_lait_solide",
+                    "nutri_div_n1_inversion_lait_solide",
+                    "nutri_div_fec_inversion_lait_solide"
+                  ],
                   blocks: [
                     { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
                   ]
