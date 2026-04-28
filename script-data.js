@@ -2452,8 +2452,12 @@ const SCRIPT_DATA = {
                   id: "nutri_div_gras", emoji: "🥑", label: "Gras",
                   blocks: [
                     {
-                      type: "normal", _leftTitle: "Conseils",
-                      text: "- Un **bébé** va **quadrupler son poids de naissance** entre **0 et 3 ans** *(même à l'adolescence ce n'est pas aussi exponentiel !)*\n  ⇒ **Besoin de bon gras**\n    ⇒ Qui contribue à son **bon développement**, notamment **celui de son cerveau**\n\n- Je vous encourage à **rajouter** :\n  - **1 cuillère à café** pour **100g** de **purée/compote** de **« bonnes huiles »**\n    - **Huiles** : huile de colza, olive, noix, *Quintesens* Bébé 5 huiles BIO *(colza, tournesol x2, lin, algue)*\n    - ⚠️ Huile d'olive à mélanger avec une autre huile car riche en **oméga 9** et moins en **oméga 3**\n    - ⚠️ C'est à mettre **après cuisson** de la purée/compote\n\n- Je vous invite aussi à **introduire** :\n  - les **purées d'oléagineux** *(riche en fer, magnésium, oméga 3…)*\n    - *Beurre de cacahouètes non salées/sucrées*\n    - *Purée d'amandes*\n    - *Noisettes*\n    - *Noix de cajou*\n    - ⚠️ Si les **allergènes** ont été **introduits**",
+                      type: "normal", _leftTitle: "Quadrupler son poids de naissance",
+                      text: "- Un **bébé** va **quadrupler son poids de naissance** entre **0 et 3 ans** *(même à l'adolescence ce n'est pas aussi exponentiel !)*\n  ⇒ **Besoin de bon gras**\n    ⇒ Qui contribue à son **bon développement**, notamment **celui de son cerveau**"
+                    },
+                    {
+                      type: "normal", _leftTitle: "1 cc pour 100g",
+                      text: "- Je vous encourage à **rajouter** :\n  - **1 cuillère à café** pour **100g** de **purée/compote** de **« bonnes huiles »**\n    - **Huiles** : huile de colza, olive, noix, *Quintesens* Bébé 5 huiles BIO *(colza, tournesol x2, lin, algue)*\n    - ⚠️ Huile d'olive à mélanger avec une autre huile car riche en **oméga 9** et moins en **oméga 3**\n    - ⚠️ C'est à mettre **après cuisson** de la purée/compote",
                       trailingInfoButton: {
                         label: "Quintesens 5 huiles bébé (bio)",
                         title: "Quintesens 5 huiles bébé (bio)",
@@ -2462,6 +2466,10 @@ const SCRIPT_DATA = {
                           { type: "normal", _noBorder: true, text: "<div style=\"text-align:center;margin-top:10px\"><img src=\"https://www.quintesens-bio.com/cdn/shop/files/1_-_L_huile_BEBE.png?v=1769616803&width=1000\" alt=\"Quintesens 5 huiles bébé\" style=\"max-width:200px;height:auto;border:1px solid #cbd5e0;border-radius:6px;background:#fff;padding:6px\"></div>" }
                         ]
                       }
+                    },
+                    {
+                      type: "normal", _leftTitle: "Oléagineux",
+                      text: "- Je vous invite aussi à **introduire** :\n  - les **purées d'oléagineux** *(riche en fer, magnésium, oméga 3…)*\n    - *Beurre de cacahouètes non salées/sucrées*\n    - *Purée d'amandes*\n    - *Noisettes*\n    - *Noix de cajou*\n    - ⚠️ Si les **allergènes** ont été **introduits**"
                     }
                   ]
                 },
