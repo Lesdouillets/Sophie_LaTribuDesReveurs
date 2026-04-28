@@ -10055,17 +10055,22 @@ function syncSubChecklistFromPbs() {
   const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
   if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
   if (!state.courbeCardsTickedManuallyEdited) state.courbeCardsTickedManuallyEdited = new Set();
+  // Récupérer alim/allaitMode pour le sync via it.alim sur les sous-cartes
+  const c = (state && state.client) || {};
+  const alimSet = new Set([...(Array.isArray(c.alimentation) ? c.alimentation : []), ...(Array.isArray(c.allaitementMode) ? c.allaitementMode : [])]);
   sols.forEach(cat => {
     (cat.children || []).forEach(ch => {
       if (!Array.isArray(ch.blocks)) return;
       const grid = ch.blocks.find(b => b && b.type === 'courbe_cards_grid');
       if (!grid || !Array.isArray(grid.items)) return;
       grid.items.forEach(it => {
-        if (!it.pb) return;
+        if (!it.pb && !it.alim) return;
         // Édition manuelle (clic sur la case) → respecter le choix utilisateur
         if (state.courbeCardsTickedManuallyEdited.has(it.id)) return;
-        const pbs = Array.isArray(it.pb) ? it.pb : [it.pb];
-        const shouldCheck = pbs.some(p => state.selectedPbs && state.selectedPbs.has(p));
+        const pbs = it.pb ? (Array.isArray(it.pb) ? it.pb : [it.pb]) : [];
+        const alims = it.alim ? (Array.isArray(it.alim) ? it.alim : [it.alim]) : [];
+        const shouldCheck = pbs.some(p => state.selectedPbs && state.selectedPbs.has(p))
+          || alims.some(a => alimSet.has(a));
         if (shouldCheck) state.courbeCardsTicked.add(it.id);
         else state.courbeCardsTicked.delete(it.id);
       });
