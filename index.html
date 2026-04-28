@@ -12271,10 +12271,12 @@ document.addEventListener('change', function(e) {
         parent.checked = true;
         parent.closest('.pb-item')?.classList.add('checked');
         // Si le parent a une exclusivité, décocher les autres du groupe + leurs children
+        // ⚠️ Skip aussi les "other" qui ont la même valeur que parent : même pb logique
+        // dans une autre grille (fiche/modal/diag) — sinon on uncheck nos propres enfants.
         if (parent.dataset.exclusive) {
           const group = parent.dataset.exclusive;
           document.querySelectorAll(`input[data-exclusive="${group}"]`).forEach(other => {
-            if (other !== parent) {
+            if (other !== parent && other.value !== parent.value) {
               if (other.value) {
                 document.querySelectorAll(`input[data-auto-parent="${other.value}"]`).forEach(child => {
                   child.checked = false;
