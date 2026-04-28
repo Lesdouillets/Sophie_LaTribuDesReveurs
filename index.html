@@ -10586,6 +10586,16 @@ function substituteVars(text) {
     const allMatched = alimList.every(v => combined.has(v));
     return allMatched ? content : '';
   });
+  // Conditionnel inline : [if_alim_not:val1,val2]contenu[/if_alim_not] → contenu visible
+  // si AUCUNE des valeurs listées n'est présente (négation).
+  text = String(text).replace(/\[if_alim_not:([^\]]+)\]([\s\S]*?)\[\/if_alim_not\]/g, (m, alims, content) => {
+    const alimList = alims.split(',').map(a => a.trim()).filter(Boolean);
+    const c = (state && state.client) || {};
+    const alim = Array.isArray(c.alimentation) ? c.alimentation : [];
+    const allaitMode = Array.isArray(c.allaitementMode) ? c.allaitementMode : [];
+    const noneMatched = !alimList.some(v => alim.includes(v) || allaitMode.includes(v));
+    return noneMatched ? content : '';
+  });
   // Conditionnel inline : [if_age_min:N]contenu[/if_age_min] → visible si âge >= N mois
   // (utilise âge corrigé si dispo, sinon âge réel — comme showIfAgeMinMonths)
   text = String(text).replace(/\[if_age_min:(\d+)\]([\s\S]*?)\[\/if_age_min\]/g, (m, n, content) => {
