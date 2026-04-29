@@ -179,7 +179,9 @@
       "PowerShell(try { $content = Get-Content -Raw script-data.js; $opens = \\([regex]::Matches\\($content, '\\\\{'\\)\\).Count; $closes = \\([regex]::Matches\\($content, '\\\\}'\\)\\).Count; $brackOpens = \\([regex]::Matches\\($content, '\\\\['\\)\\).Count; $brackCloses = \\([regex]::Matches\\($content, '\\\\]'\\)\\).Count; Write-Output \"{ count: $opens\"; Write-Output \"} count: $closes\"; Write-Output \"[ count: $brackOpens\"; Write-Output \"] count: $brackCloses\" } catch { Write-Output \"Error: $_\" })",
       "Bash(awk 'NR>=4161 && /class=\"setup-section\"/{print NR\": \"$0}' index.html)",
       "Bash(awk 'NR>=4203 && /<\\\\/div>/ && /tab-/{print NR\": \"$0; exit}' index.html)",
-      "Bash(awk 'NR>=4203 && NR<=5000 && /^      <\\\\/div>$/{print NR; exit}' index.html)"
+      "Bash(awk 'NR>=4203 && NR<=5000 && /^      <\\\\/div>$/{print NR; exit}' index.html)",
+      "Bash(awk 'NR==3043' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")",
+      "Bash(node -e \"require\\('./script-data.js'\\); console.log\\('OK', Object.keys\\(SCRIPT_DATA\\).length, 'top keys'\\)\")"
     ]
   }
 }
