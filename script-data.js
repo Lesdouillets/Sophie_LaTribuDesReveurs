@@ -3026,22 +3026,13 @@ const SCRIPT_DATA = {
               {
                 type: "normal", _leftTitle: "Étapes du rituel",
                 showIfAgeMinMonths: 16,
-                text: "<ol style=\"margin:6px 0 14px 22px;padding:0;line-height:1.75\"><li>{{infobtn:0}}<strong>Bain</strong> <em>(10 minutes maximum)</em> avec <strong>chanson mantra</strong><ul style=\"margin:4px 0 8px 18px;list-style:disc\"><li>Repère temporel</li><li>Immersion du bain = apaisant</li></ul></li><li><strong>Change + pyjama</strong> <em>(évitez les massages)</em></li><li><strong>Repas</strong></li><li><strong>Temps de jeux</strong></li><li><strong>Passage à la salle de bain</strong> <em>(dents, couches, pot…)</em></li><li><strong>« Bonne nuit »</strong> aux personnes qui ne prennent pas part au rituel, à l'extérieur de la chambre</li><li><strong>Fermer les rideaux</strong></li><li><strong>OPTION : Biberon ou tétée</strong> — <strong>Temps de nutrition</strong> dans la chambre avec la <strong>lumière TAMISÉE</strong>, <span style=\"color:#dc2626\">⚠️ <strong>SANS s'endormir</strong></span></li><li><strong>Histoire</strong> <em>(5 minutes maximum)</em></li><li><strong>Câlins et bisous</strong> en disant bien que c'est <strong>le dernier</strong></li><li><strong>Posez l'enfant dans le lit, ÉVEILLÉ</strong>, avec <strong>doudou</strong></li></ol>\n<div style=\"margin-top:10px\">{{infobtn:1}}</div>",
+                text: "<ol style=\"margin:6px 0 14px 22px;padding:0;line-height:1.75\"><li>{{infobtn:0}}<strong>Bain</strong> <em>(10 minutes maximum)</em> avec <strong>chanson mantra</strong><ul style=\"margin:4px 0 8px 18px;list-style:disc\"><li>Repère temporel</li><li>Immersion du bain = apaisant</li></ul></li><li><strong>Change + pyjama</strong> <em>(évitez les massages)</em></li><li><strong>Repas</strong></li><li><strong>Temps de jeux</strong></li><li><strong>Passage à la salle de bain</strong> <em>(dents, couches, pot…)</em></li><li><strong>« Bonne nuit »</strong> aux personnes qui ne prennent pas part au rituel, à l'extérieur de la chambre</li><li><strong>Fermer les rideaux</strong></li><li><strong>OPTION : Biberon ou tétée</strong> — <strong>Temps de nutrition</strong> dans la chambre avec la <strong>lumière TAMISÉE</strong>, <span style=\"color:#dc2626\">⚠️ <strong>SANS s'endormir</strong></span></li><li><strong>Histoire</strong> <em>(5 minutes maximum)</em></li><li><strong>Câlins et bisous</strong> en disant bien que c'est <strong>le dernier</strong></li><li><strong>Posez l'enfant dans le lit, ÉVEILLÉ</strong>, avec <strong>doudou</strong></li></ol>\n<div style=\"margin-top:14px\"><div style=\"font-weight:700;font-size:14px;margin-bottom:6px;color:#1e293b\">📖 Livre de Rituel <span style=\"font-weight:400;font-style:italic;color:#64748b\">— avec toutes les étapes (étiquettes photo + lumières pour signaler chaque étape)</span></div><div style=\"width:100%;max-width:480px;aspect-ratio:16/9;overflow:hidden;border-radius:10px;border:1px solid #e5e7eb;margin:0\"><img src=\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkXs2XJrz9JOek95UAARgp9sC9WPac9izFmA&s\" alt=\"Livre de rituel For kids\" style=\"width:100%;height:100%;object-fit:cover;object-position:center;display:block\"></div></div>",
                 inlineInfoButtons: [
                   {
                     label: "Eau florale",
                     title: "Eau florale",
                     blocks: [
                       { type: "normal", text: "**Eau florale** *(= hydrolat)* : fleur d'oranger, camomille romaine ou lavande fine **BIO**" }
-                    ]
-                  },
-                  {
-                    label: "Livre de Rituel",
-                    title: "Livre de Rituel",
-                    compact: true,
-                    blocks: [
-                      { type: "normal", text: "**Livre de Rituel** avec toutes les étapes (étiquettes photo + lumières pour signaler chaque étape) :" },
-                      { type: "normal", _noBorder: true, text: "<img src=\"livre-rituel-for-kids.jpg\" alt=\"Livre de rituel For kids — étiquettes pyjama, change, repas, dents…\" style=\"max-width:100%;height:auto;border-radius:10px;display:block;margin:8px 0;border:1px solid #e5e7eb\">" }
                     ]
                   }
                 ]
