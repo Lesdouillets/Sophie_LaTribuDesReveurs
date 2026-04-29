@@ -4780,6 +4780,12 @@
             </div>
           </div>
         </div>
+
+        <div class="setup-section">
+          <h3>🧩 Solutions identifiées</h3>
+          <p style="font-size:12px;color:#999;margin-bottom:14px">Synchronisé automatiquement avec le modal Solutions (🧩 dans le header) et VIII. Plan d'action.</p>
+          <div id="fiche-solutions-container"></div>
+        </div>
       </div>
 
     </div><!-- /setup-right-body -->
@@ -6381,6 +6387,11 @@ function populateFormFromClient(c) {
   if (typeof syncMedicalToConfort === 'function') syncMedicalToConfort();
   // Validation mode d'allaitement après chargement
   if (typeof enforceAllaitementMode === 'function') enforceAllaitementMode();
+  // Rebuild state.selectedPbs depuis les checkboxes restaurées + sync solutions + render fiche solutions
+  state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb => cb.value));
+  if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
+  if (typeof updateFicheSolutions === 'function') updateFicheSolutions();
+  if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
 }
 
 function loadClient(idx) {
@@ -10301,8 +10312,21 @@ function updateSolutionsModal() {
   const total = state.selectedSolutions ? state.selectedSolutions.size : 0;
   count.textContent = total;
   if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
+  // Sync avec la section "Solutions identifiées" de la fiche client (onglet Consultation)
+  if (typeof updateFicheSolutions === 'function') updateFicheSolutions();
 }
 window.updateSolutionsModal = updateSolutionsModal;
+
+// Render la section "Solutions identifiées" dans la fiche client (onglet Consultation).
+// Utilise le même rendering que le modal pour conserver une UX cohérente et des handlers partagés
+// (toggleSolution / toggleCourbeCardTickFromSol mettent à jour state + déclenchent renderCurrentSection
+//  + updateSolutionsModal qui rappelle cette fonction → triple sync fiche / modal / VIII Plan d'action).
+function updateFicheSolutions() {
+  const container = document.getElementById('fiche-solutions-container');
+  if (!container) return;
+  container.innerHTML = (typeof renderSolutionsCheckboxes === 'function') ? renderSolutionsCheckboxes({ compactOnly: true }) : '';
+}
+window.updateFicheSolutions = updateFicheSolutions;
 
 function toggleSolutionsModal() {
   const modal = document.getElementById('solutions-modal');

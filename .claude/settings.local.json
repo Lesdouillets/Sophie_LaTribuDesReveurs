@@ -176,7 +176,10 @@
       "Bash(awk '/<!-- Pas assez de féculents/{flag=1} flag{print NR\": \"$0; if\\(/Conséquences : Mange la nuit/\\){flag=0}}' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/index.html\")",
       "Bash(awk 'NR>=2367 && /_leftTitle: \"Résumé\"/' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")",
       "Bash(awk '/showIfAlim: \"Lait animal\"/{flag=1} flag{print NR\": \"$0; if\\(/nutri_lait_allaitement/\\){exit}}' \"C:/Users/sophi/OneDrive/Documents/GitHub/Sophie_LaTribuDesReveurs/script-data.js\")",
-      "PowerShell(try { $content = Get-Content -Raw script-data.js; $opens = \\([regex]::Matches\\($content, '\\\\{'\\)\\).Count; $closes = \\([regex]::Matches\\($content, '\\\\}'\\)\\).Count; $brackOpens = \\([regex]::Matches\\($content, '\\\\['\\)\\).Count; $brackCloses = \\([regex]::Matches\\($content, '\\\\]'\\)\\).Count; Write-Output \"{ count: $opens\"; Write-Output \"} count: $closes\"; Write-Output \"[ count: $brackOpens\"; Write-Output \"] count: $brackCloses\" } catch { Write-Output \"Error: $_\" })"
+      "PowerShell(try { $content = Get-Content -Raw script-data.js; $opens = \\([regex]::Matches\\($content, '\\\\{'\\)\\).Count; $closes = \\([regex]::Matches\\($content, '\\\\}'\\)\\).Count; $brackOpens = \\([regex]::Matches\\($content, '\\\\['\\)\\).Count; $brackCloses = \\([regex]::Matches\\($content, '\\\\]'\\)\\).Count; Write-Output \"{ count: $opens\"; Write-Output \"} count: $closes\"; Write-Output \"[ count: $brackOpens\"; Write-Output \"] count: $brackCloses\" } catch { Write-Output \"Error: $_\" })",
+      "Bash(awk 'NR>=4161 && /class=\"setup-section\"/{print NR\": \"$0}' index.html)",
+      "Bash(awk 'NR>=4203 && /<\\\\/div>/ && /tab-/{print NR\": \"$0; exit}' index.html)",
+      "Bash(awk 'NR>=4203 && NR<=5000 && /^      <\\\\/div>$/{print NR; exit}' index.html)"
     ]
   }
 }
