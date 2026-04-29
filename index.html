@@ -3832,7 +3832,8 @@
     .sieste-group-left.var-3 { background: #ffedd5; color: #c2410c; }
     .sieste-group-left.var-2 { background: #dbeafe; color: #1e40af; }
     .sieste-group-left.var-1 { background: #dcfce7; color: #166534; }
-    .sieste-group-left.var-other { background: #f3e8ff; color: #6b21a8; font-size: 20px; }
+    .sieste-group-left.var-tc { background: #f3e8ff; color: #6b21a8; font-size: 18px; }
+    .sieste-group-left.var-other { background: #fee2e2; color: #991b1b; font-size: 20px; }
     .sieste-group-right { display: flex; flex-direction: column; gap: 6px; justify-content: center; }
     .sieste-row {
       display: flex; align-items: center; gap: 10px;
@@ -4261,13 +4262,18 @@
             </div>
 
             <div class="sieste-group">
-              <div class="sieste-group-left var-other">Autre</div>
+              <div class="sieste-group-left var-tc">Temps<br>calme</div>
               <div class="sieste-group-right">
                 <label class="sieste-row" data-age-min="48">
                   <input type="radio" name="sieste" value="4a-plus-tc" onchange="onSiesteChange()">
                   <span class="sieste-label">4 ans + (Temps calme)</span>
                 </label>
-                <div style="height:18px"></div>
+              </div>
+            </div>
+
+            <div class="sieste-group">
+              <div class="sieste-group-left var-other">Autre</div>
+              <div class="sieste-group-right">
                 <label class="sieste-row">
                   <input type="radio" name="sieste" value="pas-de-changement" onchange="onSiesteChange()">
                   <span class="sieste-label">Pas de changement</span>
