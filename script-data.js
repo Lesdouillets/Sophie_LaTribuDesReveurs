@@ -2587,6 +2587,7 @@ const SCRIPT_DATA = {
               items: [
                 {
                   id: "nutri_div_feculents", emoji: "🍞", label: "Féculents",
+                  pb: ["nutri_div_feculents", "nutri_autre_feculents", "nutri_inf_autre_feculents", "nutri_lok_long_autre_feculents", "nutri_lok_court_autre_feculents", "nutri_lok_la_autre_feculents", "nutri_lok_jv_autre_feculents", "nutri_lok_ijn_autre_feculents", "nutri_div_n1_autre_feculents"],
                   blocks: [
                     { type: "normal", _leftTitle: "Conseils", text: "- Les enfants ont **besoin** de **grossir** pour **pouvoir grandir !**\n- Je vous encourage à **enrichir ses purées de** : [if_age_max:5]**25 % de féculents**[/if_age_max][if_age_min:6]**50 % de féculents**[/if_age_min]" }
                   ]
