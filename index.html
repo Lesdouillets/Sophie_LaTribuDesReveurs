@@ -3881,9 +3881,9 @@
       border-left: 3px solid var(--cat-main, #166534);
       margin-bottom: 0;
     }
-    /* Pastille verte avec l'âge cible — affichée AU-DESSUS de "Heure de réveil" (empilage vertical) */
+    /* Pastille verte avec l'âge cible — TOUJOURS au-dessus de "Heure de réveil" (block + width:fit-content) */
     .emploi-temps-age-pill {
-      display: inline-block; padding: 7px 16px; margin-bottom: 12px;
+      display: block; width: fit-content; padding: 7px 16px; margin-bottom: 12px;
       background: #166534; color: #fff;
       border-radius: 999px; font-weight: 700; font-size: 13.5px;
       letter-spacing: 0.4px; box-shadow: 0 2px 6px rgba(22, 101, 52, 0.25);
@@ -6632,9 +6632,15 @@ function renderEmploiDuTempsInner(b, wakeUpStr, blockKey) {
   });
   // Render rows : Activité | Horaire | Durée | Hypothèse (sans emoji ; le marqueur "Zzz" est CSS sur kind-sieste)
   const escape = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-  // Bornes du warning "Pas après" (calculé avant les rows pour pouvoir l'injecter dans la dernière sieste)
-  const noPasApresStart = _etMinToHHMM(coucherMin - 120);
-  const noPasApresEnd = _etMinToHHMM(coucherMin - 90);
+  // Bornes du warning "Pas après" — configurable via b.warnOffsets ([start, end] minutes depuis coucher).
+  // Default = [-120, -90] (4-6m, 6-8m, 8-10m). Pour 8-15m / 15-20m → [-150, -120].
+  // Pour textes fixes (ex. 15m-3a "Pas après 12h30") → utiliser b.warnText.
+  const _warnOffsets = Array.isArray(b.warnOffsets) ? b.warnOffsets : [-120, -90];
+  const noPasApresStart = _etMinToHHMM(coucherMin + _warnOffsets[0]);
+  const noPasApresEnd = _etMinToHHMM(coucherMin + _warnOffsets[1]);
+  const _warnMainText = b.warnText
+    ? String(b.warnText)
+    : (_warnOffsets[0] === _warnOffsets[1] ? `Pas après ${noPasApresStart}` : `Pas après ${noPasApresStart}-${noPasApresEnd}`);
   let lastSiesteIdx = -1;
   for (let i = computed.length - 1; i >= 0; i--) {
     if (computed[i].row.kind === 'sieste') { lastSiesteIdx = i; break; }
@@ -6659,7 +6665,7 @@ function renderEmploiDuTempsInner(b, wakeUpStr, blockKey) {
     const isLastSieste = (idx === lastSiesteIdx);
     const warnSub = b.warnSubtitle ? `<span class="et-warn-sub">${escape(b.warnSubtitle)}</span>` : '';
     const warnBubble = isLastSieste
-      ? `<div class="et-last-sieste-warn"><span><span class="et-warn-icon">⚠️</span>Pas après ${noPasApresStart}-${noPasApresEnd}</span>${warnSub}</div>`
+      ? `<div class="et-last-sieste-warn"><span><span class="et-warn-icon">⚠️</span>${escape(_warnMainText)}</span>${warnSub}</div>`
       : '';
     const trClass = `kind-${r.kind}${isLastSieste ? ' et-last-sieste' : ''}`;
     return `<tr class="${trClass}"><td>${labelHtml}</td><td>${timeCell}</td><td>${rangeCell}</td><td>${hypCell}${warnBubble}</td></tr>`;

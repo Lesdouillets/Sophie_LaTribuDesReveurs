@@ -2798,76 +2798,146 @@ const SCRIPT_DATA = {
                   "TE = Temps d'Éveil (1h30-2h mini d'éveil entre 2 siestes)"
                 ]
               },
-              // ─── Placeholders pour les 5 autres âges (à compléter en lisant les feuilles Excel correspondantes) ───
+              // ─── 8-15 mois (2 siestes) — basé sur sheet7 "Emploi 8-14mois" ───
               {
                 type: "emploi_du_temps",
                 showIfSieste: "8-15m",
                 scheduleKey: "8-15m",
                 _leftTitle: "Emploi du temps",
                 _leftTitleStyle: "background:#dcfce7;color:#166534;--cat-main:#22c55e;font-size:14px",
-                ageLabel: "8-15 mois (2 siestes) — à compléter",
+                ageLabel: "8-15 mois (2 siestes)",
+                warnSubtitle: "(2h-2h30 mini d'éveil)",
+                warnOffsets: [-150, -120],
                 wakeUpDefault: "07:00",
                 rows: [
                   { kind: "wake", label: "Réveil" },
+                  { kind: "te", label: "TE 1 : Réveil, change, manger, jouer", durationMin: 120, durationRange: "1h45-2h" },
+                  { kind: "sieste", label: "SIESTE 1 (dans le lit)", durationMin: 120, durationRange: "1h à 2h30/3h" },
+                  { kind: "te", label: "TE 2 : Réveil, change, manger, jouer", durationMin: 180, durationRange: "2h30-3h" },
+                  { kind: "milestone", label: "Repas diversification (midi)", staticTime: "11h-12h" },
+                  { kind: "sieste", label: "SIESTE 2 (dans le lit)", durationMin: 120, durationRange: "1h à 2h30/3h" },
+                  { kind: "te", label: "TE 3 : Réveil, change, manger, rituel, dernier tps nutrition", durationMin: 180, durationRange: "jusque 4h" },
+                  { kind: "milestone", label: "Repas diversification (soir)", offsetFromCoucherMin: -60 },
+                  { kind: "milestone", label: "Rituel de la nuit", offsetFromCoucherMin: -30 },
                   { kind: "coucher", label: "Coucher pour la nuit", labelHint: "(19h-19h30)" }
                 ],
-                notes: ["⚠ Données à compléter depuis l'onglet Excel \"Emploi 8-14mois (2 siestes)\""]
+                notes: [
+                  "Heures de coucher du soir / siestes / lever du matin = fixes",
+                  "Possible d'inverser la durée des siestes",
+                  "TE = Temps d'Éveil (2h-2h30 mini d'éveil entre 2 siestes)"
+                ]
               },
+              // ─── 15-20 mois (2 siestes) — basé sur sheet8 "Emploi 14-20mois" ───
               {
                 type: "emploi_du_temps",
                 showIfSieste: "15-20m",
                 scheduleKey: "15-20m",
                 _leftTitle: "Emploi du temps",
                 _leftTitleStyle: "background:#dcfce7;color:#166534;--cat-main:#22c55e;font-size:14px",
-                ageLabel: "15-20 mois (2 siestes) — à compléter",
+                ageLabel: "15-20 mois (2 siestes)",
+                warnSubtitle: "(2h-2h30 mini d'éveil)",
+                warnOffsets: [-150, -120],
                 wakeUpDefault: "07:00",
                 rows: [
                   { kind: "wake", label: "Réveil" },
-                  { kind: "coucher", label: "Coucher pour la nuit" }
+                  { kind: "te", label: "TE 1 : Réveil, change, manger, jouer", durationMin: 120, durationRange: "2h" },
+                  { kind: "sieste", label: "SIESTE 1 (dans le lit)", durationMin: 120, durationRange: "1h à 2h30/3h" },
+                  { kind: "te", label: "TE 2 : Réveil, change, manger, jouer", durationMin: 180, durationRange: "2h30-3h" },
+                  { kind: "milestone", label: "Repas diversification (midi)", staticTime: "11h-12h" },
+                  { kind: "sieste", label: "SIESTE 2 (dans le lit)", durationMin: 90, durationRange: "1h à 2h30/3h" },
+                  { kind: "te", label: "TE 3 : Réveil, change, manger, rituel, dernier tps nutrition", durationMin: 210, durationRange: "jusque 4h" },
+                  { kind: "milestone", label: "Repas diversification (soir)", offsetFromCoucherMin: -75 },
+                  { kind: "milestone", label: "Rituel de la nuit", offsetFromCoucherMin: -30 },
+                  { kind: "coucher", label: "Coucher pour la nuit", labelHint: "(19h-19h30)" }
                 ],
-                notes: ["⚠ Données à compléter depuis l'onglet Excel \"Emploi 14-20mois (2 siestes)\""]
+                notes: [
+                  "Heures de coucher du soir / siestes / lever du matin = fixes",
+                  "Possible d'inverser la durée des siestes",
+                  "TE = Temps d'Éveil (2h-2h30 mini d'éveil entre 2 siestes)"
+                ]
               },
+              // ─── 15 mois - 3 ans (1 sieste) — basé sur sheet9 ───────────────
               {
                 type: "emploi_du_temps",
                 showIfSieste: "15m-3a",
                 scheduleKey: "15m-3a",
                 _leftTitle: "Emploi du temps",
                 _leftTitleStyle: "background:#dcfce7;color:#166534;--cat-main:#22c55e;font-size:14px",
-                ageLabel: "15 mois - 3 ans (1 sieste) — à compléter",
+                ageLabel: "15 mois - 3 ans (1 sieste)",
+                warnSubtitle: "(4h mini d'éveil)",
+                warnText: "Pas après 12h30 (fixe)",
                 wakeUpDefault: "07:00",
                 rows: [
                   { kind: "wake", label: "Réveil" },
+                  { kind: "te", label: "TE 1 : Réveil, change, manger, jouer", durationMin: 270, durationRange: "4h-5h" },
+                  { kind: "milestone", label: "Repas diversification (midi)", staticTime: "11h-12h" },
+                  { kind: "sieste", label: "SIESTE (dans le lit)", durationMin: 150, durationRange: "2h à 4h" },
+                  { kind: "te", label: "TE 2 : Réveil, change, manger, rituel", durationMin: 300, durationRange: "4h-5h" },
+                  { kind: "milestone", label: "Bain", offsetFromCoucherMin: -75 },
+                  { kind: "milestone", label: "Repas diversification (soir)", offsetFromCoucherMin: -60 },
+                  { kind: "milestone", label: "Rituel de la nuit", offsetFromCoucherMin: -30 },
                   { kind: "coucher", label: "Coucher pour la nuit", labelHint: "(19h30-20h)" }
                 ],
-                notes: ["⚠ Données à compléter depuis l'onglet Excel \"Emploi 15mois-3ans (1 sieste)\""]
+                notes: [
+                  "Heures de lever et coucher fixes",
+                  "Permet de couper la journée en 2, aidé par la baisse de la vigilance / T°",
+                  "NE plus se référer au TE mais à des heures fixes de coucher (siestes/nuit)"
+                ]
               },
+              // ─── 4 ans (1 sieste) — basé sur sheet10 ────────────────────────
               {
                 type: "emploi_du_temps",
                 showIfSieste: "4a-plus",
                 scheduleKey: "4a-plus",
                 _leftTitle: "Emploi du temps",
                 _leftTitleStyle: "background:#dcfce7;color:#166534;--cat-main:#22c55e;font-size:14px",
-                ageLabel: "4 ans + (1 sieste) — à compléter",
+                ageLabel: "4 ans + (1 sieste)",
+                warnSubtitle: "(5h mini d'éveil)",
+                warnText: "Pas après 12h30 (fixe)",
                 wakeUpDefault: "07:00",
                 rows: [
                   { kind: "wake", label: "Réveil" },
-                  { kind: "coucher", label: "Coucher pour la nuit" }
+                  { kind: "te", label: "TE 1 : Réveil, change, manger, jouer", durationMin: 270, durationRange: "4h-5h" },
+                  { kind: "milestone", label: "Repas diversification (midi)", staticTime: "11h-12h" },
+                  { kind: "sieste", label: "SIESTE (dans le lit)", durationMin: 150, durationRange: "2h à 4h" },
+                  { kind: "te", label: "TE 2 : Réveil, change, manger, rituel", durationMin: 300, durationRange: "4h-5h" },
+                  { kind: "milestone", label: "Bain", offsetFromCoucherMin: -75 },
+                  { kind: "milestone", label: "Repas diversification (soir)", offsetFromCoucherMin: -60 },
+                  { kind: "milestone", label: "Rituel de la nuit", offsetFromCoucherMin: -30 },
+                  { kind: "coucher", label: "Coucher pour la nuit", labelHint: "(19h30-20h)" }
                 ],
-                notes: ["⚠ Données à compléter depuis l'onglet Excel \"Emploi 4ans (1 sieste)\""]
+                notes: [
+                  "Heures de lever et coucher fixes",
+                  "Permet de couper la journée en 2",
+                  "NE plus se référer au TE mais à des heures fixes de coucher (siestes/nuit)"
+                ]
               },
+              // ─── 4 ans + (Temps calme) — basé sur sheet11 ───────────────────
               {
                 type: "emploi_du_temps",
                 showIfSieste: "4a-plus-tc",
                 scheduleKey: "4a-plus-tc",
                 _leftTitle: "Emploi du temps",
                 _leftTitleStyle: "background:#dcfce7;color:#166534;--cat-main:#22c55e;font-size:14px",
-                ageLabel: "4 ans + (Temps calme) — à compléter",
+                ageLabel: "4 ans + (Temps calme)",
+                warnText: "Pas après 12h30 (fixe)",
                 wakeUpDefault: "07:00",
                 rows: [
                   { kind: "wake", label: "Réveil" },
-                  { kind: "coucher", label: "Coucher pour la nuit" }
+                  { kind: "te", label: "TE 1 : Réveil, change, manger, jouer", durationMin: 360, durationRange: "5h-6h" },
+                  { kind: "milestone", label: "Repas diversification (midi)", staticTime: "11h-12h" },
+                  { kind: "sieste", label: "TPS CALME (dans le lit)", durationMin: 45, durationRange: "45min" },
+                  { kind: "te", label: "TE 2 : Réveil, change, manger, rituel", durationMin: 360, durationRange: "5h-6h" },
+                  { kind: "milestone", label: "Repas diversification (soir)", offsetFromCoucherMin: -60 },
+                  { kind: "milestone", label: "Rituel de la nuit", offsetFromCoucherMin: -30 },
+                  { kind: "coucher", label: "Coucher pour la nuit", labelHint: "(19h30-20h)" }
                 ],
-                notes: ["⚠ Données à compléter depuis l'onglet Excel \"Emploi 4 ans + (tps calme)\""]
+                notes: [
+                  "Heures de lever et coucher fixes",
+                  "Permet de couper la journée en 2",
+                  "NE plus se référer au TE mais à des heures fixes",
+                  "Tps calme : dans le lit, ~45 min, pas une sieste"
+                ]
               }
             ]
           },
