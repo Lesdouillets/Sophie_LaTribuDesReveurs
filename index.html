@@ -3871,10 +3871,18 @@
       font-size: 16px; padding: 6px 10px; border: 1.5px solid #d97706;
       border-radius: 6px; font-variant-numeric: tabular-nums; font-weight: 600;
     }
-    /* Le bloc emploi du temps utilise le wrap auto _leftTitle (.block-with-left-title) qui pose
-       la bande titre verticale à gauche. Je dois ajouter explicitement le liseré vert vertical
-       car .emploi-temps-block n'est pas un .block standard et ne match pas la règle native. */
-    .emploi-temps-block { padding: 12px 14px; background: #fff; border-radius: 0 8px 8px 0; }
+    /* Le bloc emploi du temps utilise le wrap auto _leftTitle (.block-with-left-title).
+       Je reproduis le style standard de .block-normal (utilisé par les blocs APLV/Nutrition/etc.)
+       pour avoir les mêmes coins arrondis, la même bordure et le même ombrage que les autres blocs. */
+    .emploi-temps-block {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px 20px;
+      margin-bottom: 14px;
+      line-height: 1.75;
+    }
     .block-with-left-title > .edit-block-wrap > .emploi-temps-block,
     .block-with-left-title > .emploi-temps-block {
       border-left: 3px solid var(--cat-main, #166534);
@@ -3899,6 +3907,8 @@
       border-bottom: 2px solid #1e293b;
     }
     .emploi-temps-tbl td { padding: 9px 12px; border-bottom: 1px solid #e5e7eb; vertical-align: middle; color: #1e293b; }
+    /* Ligne verticale séparatrice entre la colonne Activité (1ère) et Horaire (2ème) */
+    .emploi-temps-tbl th:nth-child(1), .emploi-temps-tbl td:nth-child(1) { border-right: 1.5px solid #cbd5e1; }
     /* Colonne Activité : texte sur 1 seule ligne (s'auto-dimensionne au plus long label) ;
        les autres colonnes ont des largeurs fixes raisonnables ; table-layout auto + width:fit-content
        sur la table → pas de colonne vide à droite */
