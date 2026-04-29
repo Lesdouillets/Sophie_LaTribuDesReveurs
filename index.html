@@ -3877,7 +3877,7 @@
        le tableau ne touche pas la bordure verte. */
     .emploi-temps-block { padding: 12px 14px; background: #fff; border-radius: 0 8px 8px 0; }
     .emploi-temps-tbl {
-      width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px;
+      width: fit-content; border-collapse: separate; border-spacing: 0; font-size: 14px;
       background: #fff; border: 1.5px solid #cbd5e1;
       border-radius: 8px;
       /* overflow:visible nécessaire pour que la bulle BD du warning déborde à droite */
@@ -3888,11 +3888,13 @@
       border-bottom: 2px solid #1e293b;
     }
     .emploi-temps-tbl td { padding: 9px 12px; border-bottom: 1px solid #e5e7eb; vertical-align: middle; color: #1e293b; }
-    /* Colonne Activité réduite (les labels longs wrappent) ; les autres colonnes prennent le reste */
-    .emploi-temps-tbl th:nth-child(1), .emploi-temps-tbl td:nth-child(1) { width: 260px; max-width: 260px; white-space: normal; }
-    .emploi-temps-tbl th:nth-child(2), .emploi-temps-tbl td:nth-child(2) { width: 130px; }
-    .emploi-temps-tbl th:nth-child(3), .emploi-temps-tbl td:nth-child(3) { width: 120px; }
-    .emploi-temps-tbl th:nth-child(4), .emploi-temps-tbl td:nth-child(4) { width: auto; }
+    /* Colonne Activité : texte sur 1 seule ligne (s'auto-dimensionne au plus long label) ;
+       les autres colonnes ont des largeurs fixes raisonnables ; table-layout auto + width:fit-content
+       sur la table → pas de colonne vide à droite */
+    .emploi-temps-tbl th:nth-child(1), .emploi-temps-tbl td:nth-child(1) { white-space: nowrap; padding-right: 18px; }
+    .emploi-temps-tbl th:nth-child(2), .emploi-temps-tbl td:nth-child(2) { width: 130px; white-space: nowrap; }
+    .emploi-temps-tbl th:nth-child(3), .emploi-temps-tbl td:nth-child(3) { width: 130px; white-space: nowrap; }
+    .emploi-temps-tbl th:nth-child(4), .emploi-temps-tbl td:nth-child(4) { width: 130px; white-space: nowrap; }
     /* Réveil + Coucher : juste en gras, fond blanc, séparateurs un peu plus marqués */
     .emploi-temps-tbl tr.kind-wake td { font-weight: 700; border-bottom: 2px solid #cbd5e1; }
     .emploi-temps-tbl tr.kind-coucher td { font-weight: 700; border-top: 2px solid #cbd5e1; }
