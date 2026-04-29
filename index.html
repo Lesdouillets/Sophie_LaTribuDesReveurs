@@ -6708,7 +6708,9 @@ function onScheduleHypothesisChange(inputEl) {
   try { notes = JSON.parse(notesJson); } catch (e) {}
   const wakeUpInput = block.querySelector('.emploi-temps-input');
   const wakeUp = wakeUpInput ? wakeUpInput.value : '07:00';
-  const fakeBlock = { rows, notes };
+  let warnExtras = {};
+  try { warnExtras = JSON.parse(block.dataset.warnExtras || '{}'); } catch (e) {}
+  const fakeBlock = { rows, notes, ...warnExtras };
   const contentEl = block.querySelector('.emploi-temps-content');
   if (!contentEl) return;
   // Mémoriser la position du curseur pour le re-focus après re-render
@@ -6737,7 +6739,9 @@ function onScheduleWakeUpChange(inputEl) {
   let rows = [], notes = [];
   try { rows = JSON.parse(rowsJson); } catch (e) {}
   try { notes = JSON.parse(notesJson); } catch (e) {}
-  const fakeBlock = { rows, notes };
+  let warnExtras = {};
+  try { warnExtras = JSON.parse(block.dataset.warnExtras || '{}'); } catch (e) {}
+  const fakeBlock = { rows, notes, ...warnExtras };
   const contentEl = block.querySelector('.emploi-temps-content');
   if (contentEl) contentEl.innerHTML = renderEmploiDuTempsInner(fakeBlock, wakeUp, blockKey);
 }
@@ -9496,7 +9500,12 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const innerHtml = renderEmploiDuTempsInner(b, wakeUp, blockKey);
     const escAttr = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
     const agePillHtml = b.ageLabel ? `<div class="emploi-temps-age-pill">${escAttr(b.ageLabel)}</div>` : '';
-    return `<div class="emploi-temps-block" data-emploi-block-id="${blockId}" data-block-key="${escAttr(blockKey)}" data-rows='${JSON.stringify(rows).replace(/'/g, '&#39;')}' data-notes='${JSON.stringify(b.notes || []).replace(/'/g, '&#39;')}'>
+    const _warnExtras = {};
+    if (b.warnText != null) _warnExtras.warnText = b.warnText;
+    if (b.warnSubtitle != null) _warnExtras.warnSubtitle = b.warnSubtitle;
+    if (Array.isArray(b.warnOffsets)) _warnExtras.warnOffsets = b.warnOffsets;
+    const warnExtrasAttr = JSON.stringify(_warnExtras).replace(/'/g, '&#39;');
+    return `<div class="emploi-temps-block" data-emploi-block-id="${blockId}" data-block-key="${escAttr(blockKey)}" data-rows='${JSON.stringify(rows).replace(/'/g, '&#39;')}' data-notes='${JSON.stringify(b.notes || []).replace(/'/g, '&#39;')}' data-warn-extras='${warnExtrasAttr}'>
       ${agePillHtml}
       <div class="emploi-temps-input-wrap">
         <label for="${blockId}-wake">⏰ Heure de réveil :</label>
