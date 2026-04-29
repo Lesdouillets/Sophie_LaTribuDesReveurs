@@ -2678,6 +2678,36 @@ const SCRIPT_DATA = {
             hideIfSieste: ["pas-de-changement"],
             autoCheckIfSieste: ["2-4m", "4-6m", "6-8m", "8-10m", "8-15m", "15-20m", "15m-3a", "4a-plus", "4a-plus-tc"],
             blocks: [
+              // ─── 2-4 mois (4 siestes) ─────────────────────────────────────
+              {
+                type: "emploi_du_temps",
+                showIfSieste: "2-4m",
+                scheduleKey: "2-4m",
+                _leftTitle: "Emploi du temps",
+                _leftTitleStyle: "background:#dcfce7;color:#166534;--cat-main:#22c55e;font-size:14px",
+                ageLabel: "2-4 mois (4 siestes)",
+                warnSubtitle: "(1h30 mini d'éveil)",
+                wakeUpDefault: "08:00",
+                rows: [
+                  { kind: "wake", label: "Réveil" },
+                  { kind: "te", label: "TE 1 : Réveil, change, manger, jouer", durationMin: 45, durationRange: "45min à 1h" },
+                  { kind: "sieste", label: "SIESTE 1 (dans le lit)", durationMin: 90, durationRange: "1h à 2/3h" },
+                  { kind: "te", label: "TE 2 : Réveil, change, manger, jouer", durationMin: 90, durationRange: "1h15 à 1h30" },
+                  { kind: "sieste", label: "SIESTE 2 (dans le lit)", durationMin: 90, durationRange: "1h à 2/3h" },
+                  { kind: "te", label: "TE 3 : Réveil, change, manger, jouer", durationMin: 90, durationRange: "1h15 à 1h30" },
+                  { kind: "sieste", label: "SIESTE 3 (dans le lit ou poussette/portage)", durationMin: 90, durationRange: "1h à 2/3h" },
+                  { kind: "te", label: "TE 4 : Réveil, change, manger, jouer", durationMin: 90, durationRange: "1h15 à 1h30" },
+                  { kind: "sieste", label: "SIESTE 4 (dans le lit ou poussette/portage)", durationMin: 90, durationRange: "1h à 2/3h" },
+                  { kind: "te", label: "TE 5 : Réveil, change, manger, rituel, dernier tps nutrition", durationMin: 90, durationRange: "1h30" },
+                  { kind: "milestone", label: "Rituel de la nuit (dont 2ème bib/tétée du TE)", offsetFromCoucherMin: -30 },
+                  { kind: "coucher", label: "Coucher pour la nuit", labelHint: "(20h max sauf si décalage cohérent)" }
+                ],
+                notes: [
+                  "Peut faire des siestes de 30min à 4h (majoritairement 1h et 2/3h)",
+                  "TE = Temps d'Éveil"
+                ]
+              },
+              // ─── 4-6 mois (3 siestes) ─────────────────────────────────────
               {
                 type: "emploi_du_temps",
                 showIfSieste: "4-6m",
