@@ -3876,9 +3876,14 @@
        qui pose la bande verticale verte foncée à gauche. On ajoute du padding pour que
        le tableau ne touche pas la bordure verte. */
     .emploi-temps-block { padding: 12px 14px; background: #fff; border-radius: 0 8px 8px 0; }
-    /* Pastille verte avec l'âge cible affichée au-dessus de "Heure de réveil" */
+    /* Header row : pastille âge + heure de réveil sur la même ligne */
+    .emploi-temps-header-row {
+      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    /* Pastille verte avec l'âge cible */
     .emploi-temps-age-pill {
-      display: inline-block; padding: 7px 16px; margin-bottom: 12px;
+      display: inline-block; padding: 7px 16px;
       background: #166534; color: #fff;
       border-radius: 999px; font-weight: 700; font-size: 13.5px;
       letter-spacing: 0.4px; box-shadow: 0 2px 6px rgba(22, 101, 52, 0.25);
