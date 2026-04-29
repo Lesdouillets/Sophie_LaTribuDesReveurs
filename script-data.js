@@ -2682,8 +2682,9 @@ const SCRIPT_DATA = {
                 type: "emploi_du_temps",
                 showIfSieste: "4-6m",
                 scheduleKey: "4-6m",
-                _leftTitle: "4-6 mois (3 siestes)",
+                _leftTitle: "Emploi du temps",
                 _leftTitleStyle: "background:#dcfce7;color:#166534;--cat-main:#22c55e;font-size:14px",
+                ageLabel: "4-6 mois (3 siestes)",
                 wakeUpDefault: "07:00",
                 rows: [
                   { kind: "wake", label: "Réveil" },

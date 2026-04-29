@@ -3876,6 +3876,13 @@
        qui pose la bande verticale verte foncée à gauche. On ajoute du padding pour que
        le tableau ne touche pas la bordure verte. */
     .emploi-temps-block { padding: 12px 14px; background: #fff; border-radius: 0 8px 8px 0; }
+    /* Pastille verte avec l'âge cible affichée au-dessus de "Heure de réveil" */
+    .emploi-temps-age-pill {
+      display: inline-block; padding: 7px 16px; margin-bottom: 12px;
+      background: #166534; color: #fff;
+      border-radius: 999px; font-weight: 700; font-size: 13.5px;
+      letter-spacing: 0.4px; box-shadow: 0 2px 6px rgba(22, 101, 52, 0.25);
+    }
     .emploi-temps-tbl {
       width: fit-content; border-collapse: separate; border-spacing: 0; font-size: 14px;
       background: #fff; border: 1.5px solid #cbd5e1;
@@ -3891,13 +3898,13 @@
     /* Colonne Activité : texte sur 1 seule ligne (s'auto-dimensionne au plus long label) ;
        les autres colonnes ont des largeurs fixes raisonnables ; table-layout auto + width:fit-content
        sur la table → pas de colonne vide à droite */
-    .emploi-temps-tbl th:nth-child(1), .emploi-temps-tbl td:nth-child(1) { white-space: nowrap; padding-right: 18px; }
+    .emploi-temps-tbl th:nth-child(1), .emploi-temps-tbl td:nth-child(1) { white-space: nowrap; min-width: 420px; padding-right: 32px; }
     .emploi-temps-tbl th:nth-child(2), .emploi-temps-tbl td:nth-child(2) { width: 130px; white-space: nowrap; }
     .emploi-temps-tbl th:nth-child(3), .emploi-temps-tbl td:nth-child(3) { width: 130px; white-space: nowrap; }
     .emploi-temps-tbl th:nth-child(4), .emploi-temps-tbl td:nth-child(4) { width: 130px; white-space: nowrap; }
-    /* Réveil + Coucher : juste en gras, fond blanc, séparateurs un peu plus marqués */
-    .emploi-temps-tbl tr.kind-wake td { font-weight: 700; border-bottom: 2px solid #cbd5e1; }
-    .emploi-temps-tbl tr.kind-coucher td { font-weight: 700; border-top: 2px solid #cbd5e1; }
+    /* Réveil + Coucher : juste en gras, sans séparateur gris spécial */
+    .emploi-temps-tbl tr.kind-wake td { font-weight: 700; }
+    .emploi-temps-tbl tr.kind-coucher td { font-weight: 700; }
     /* TE : aspect neutre, pas de fond */
     .emploi-temps-tbl tr.kind-te td { background: #fff; }
     /* SIESTE : seul fond coloré (violet pâle) + marqueur "Zzz" en CSS */
@@ -9455,7 +9462,9 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const wakeUp = wakeUpStored || wakeUpDefault;
     const innerHtml = renderEmploiDuTempsInner(b, wakeUp, blockKey);
     const escAttr = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+    const agePillHtml = b.ageLabel ? `<div class="emploi-temps-age-pill">${escAttr(b.ageLabel)}</div>` : '';
     return `<div class="emploi-temps-block" data-emploi-block-id="${blockId}" data-block-key="${escAttr(blockKey)}" data-rows='${JSON.stringify(rows).replace(/'/g, '&#39;')}' data-notes='${JSON.stringify(b.notes || []).replace(/'/g, '&#39;')}'>
+      ${agePillHtml}
       <div class="emploi-temps-input-wrap">
         <label for="${blockId}-wake">⏰ Heure de réveil :</label>
         <input id="${blockId}-wake" class="emploi-temps-input" type="time" value="${wakeUp}" oninput="onScheduleWakeUpChange(this)">
