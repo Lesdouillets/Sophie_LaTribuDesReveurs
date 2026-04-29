@@ -3863,22 +3863,31 @@
     /* Bloc emploi_du_temps : tableau interactif horaire en cascade depuis l'heure de réveil */
     .emploi-temps-block { margin: 12px 0; }
     .emploi-temps-input-wrap {
-      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-      margin-bottom: 14px; padding: 12px 16px;
-      background: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 12px;
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-bottom: 14px; padding: 8px 12px;
+      background: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 10px;
     }
     .emploi-temps-input-wrap label { font-weight: 600; color: #92400e; font-size: 14px; }
     .emploi-temps-input {
       font-size: 16px; padding: 6px 10px; border: 1.5px solid #d97706;
       border-radius: 6px; font-variant-numeric: tabular-nums; font-weight: 600;
     }
-    .emploi-temps-tbl { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; background: #fff; }
-    .emploi-temps-tbl th {
-      text-align: left; padding: 8px 10px; background: #f8fafc; color: #475569;
-      font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
-      border-bottom: 2px solid #cbd5e1;
+    /* Le bloc emploi du temps utilise le wrap auto _leftTitle (.block-with-left-title)
+       qui pose la bande verticale verte foncée à gauche. On ajoute du padding pour que
+       le tableau ne touche pas la bordure verte. */
+    .emploi-temps-block { padding: 12px 14px; background: #fff; border-radius: 0 8px 8px 0; }
+    .emploi-temps-tbl {
+      width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px;
+      background: #fff; border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      /* overflow:visible nécessaire pour que la bulle BD du warning déborde à droite */
     }
-    .emploi-temps-tbl td { padding: 9px 10px; border-bottom: 1px solid #e5e7eb; vertical-align: middle; color: #1e293b; }
+    .emploi-temps-tbl th {
+      text-align: left; padding: 11px 12px; background: #d1fae5; color: #064e3b;
+      font-weight: 800; font-size: 13.5px; text-transform: uppercase; letter-spacing: 0.6px;
+      border-bottom: 2px solid #166534;
+    }
+    .emploi-temps-tbl td { padding: 9px 12px; border-bottom: 1px solid #e5e7eb; vertical-align: middle; color: #1e293b; }
     /* Réveil + Coucher : juste en gras, fond blanc, séparateurs un peu plus marqués */
     .emploi-temps-tbl tr.kind-wake td { font-weight: 700; border-bottom: 2px solid #cbd5e1; }
     .emploi-temps-tbl tr.kind-coucher td { font-weight: 700; border-top: 2px solid #cbd5e1; }
@@ -3890,8 +3899,9 @@
       content: "Zzz "; font-style: italic; font-weight: 800; color: #8b5cf6;
       letter-spacing: -0.5px; margin-right: 6px;
     }
-    /* Milestone : italique gris, fond blanc */
+    /* Milestone : italique gris, fond blanc, label aligné à droite (différencie visuellement) */
     .emploi-temps-tbl tr.kind-milestone td { background: #fff; color: #64748b; font-style: italic; }
+    .emploi-temps-tbl tr.kind-milestone td:first-child { text-align: right; }
     .emploi-temps-tbl .et-time { font-weight: 700; font-variant-numeric: tabular-nums; font-size: 14px; white-space: nowrap; }
     .emploi-temps-tbl .et-range { font-size: 12px; opacity: 0.75; font-style: italic; white-space: nowrap; }
     .emploi-temps-tbl .et-hint { font-size: 11.5px; opacity: 0.7; margin-left: 6px; font-style: italic; }
@@ -6588,9 +6598,9 @@ function renderEmploiDuTempsInner(b, wakeUpStr, blockKey) {
       else if (c.time != null) timeCell = `<span class="et-time">${_etMinToHHMM(c.time)}</span>`;
       else timeCell = '<span class="et-time">—</span>';
     }
-    return `<tr class="kind-${r.kind}"><td>${labelHtml}</td><td>${rangeCell}</td><td>${hypCell}</td><td>${timeCell}</td></tr>`;
+    return `<tr class="kind-${r.kind}"><td>${labelHtml}</td><td>${timeCell}</td><td>${rangeCell}</td><td>${hypCell}</td></tr>`;
   }).join('');
-  const tableHtml = `<table class="emploi-temps-tbl"><thead><tr><th>Activité</th><th>Durée</th><th>Hypothèse</th><th>Horaire</th></tr></thead><tbody>${rowsHtml}</tbody></table>`;
+  const tableHtml = `<table class="emploi-temps-tbl"><thead><tr><th>Activité</th><th>Horaire</th><th>Durée</th><th>Hypothèse</th></tr></thead><tbody>${rowsHtml}</tbody></table>`;
   const noPasApresStart = _etMinToHHMM(coucherMin - 120);
   const noPasApresEnd = _etMinToHHMM(coucherMin - 90);
   let notesHtml = `<div class="emploi-temps-notes-warn">⚠️ Sieste : Pas après ${noPasApresStart}-${noPasApresEnd}</div>`;
@@ -9412,7 +9422,6 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       <div class="emploi-temps-input-wrap">
         <label for="${blockId}-wake">⏰ Heure de réveil :</label>
         <input id="${blockId}-wake" class="emploi-temps-input" type="time" value="${wakeUp}" oninput="onScheduleWakeUpChange(this)">
-        <span style="font-size:12px;color:#92400e;font-style:italic">Modifie l'heure → tout l'emploi du temps recalcule en cascade.</span>
       </div>
       <div class="emploi-temps-content">${innerHtml}</div>
     </div>`;
