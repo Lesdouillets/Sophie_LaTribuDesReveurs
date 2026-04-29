@@ -2680,6 +2680,7 @@ const SCRIPT_DATA = {
               {
                 type: "emploi_du_temps",
                 showIfSieste: "4-6m",
+                scheduleKey: "4-6m",
                 _leftTitle: "4-6 mois (3 siestes)",
                 wakeUpDefault: "07:00",
                 rows: [
