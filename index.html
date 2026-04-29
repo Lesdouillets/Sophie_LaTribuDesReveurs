@@ -3813,17 +3813,27 @@
     .pb-cat-btn.all:hover { background: #d8f3dc; border-color: var(--primary-light); }
     .pb-cat-btn.none { color: #e74c3c; }
     .pb-cat-btn.none:hover { background: #ffeaea; border-color: #e74c3c; }
-    /* Onglet Sieste : option A (sections groupées par nombre de siestes) + glow doré sur cases qui matchent l'âge */
-    .sieste-section-title {
+    /* Onglet Sieste : option A v2 — grille 2 colonnes (count gauche en gros, options droite) + glow doré */
+    .sieste-group {
+      display: grid; grid-template-columns: 140px 1fr;
+      gap: 14px; margin-bottom: 14px; align-items: stretch;
+    }
+    .sieste-group-left {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      border-radius: 12px; padding: 16px 10px;
+      font-weight: 800; font-size: 28px; line-height: 1.05;
+      text-align: center;
+    }
+    .sieste-group-left .sieste-group-sub {
       font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
-      color: #64748b; margin: 28px 0 8px; padding: 0 4px;
-      display: flex; align-items: center; gap: 10px;
+      margin-top: 4px; opacity: 0.85;
     }
-    .sieste-section-title:first-child { margin-top: 4px; }
-    .sieste-section-title::before, .sieste-section-title::after {
-      content: ""; flex: 1; height: 1px; background: #e2e8f0;
-    }
-    .sieste-section-title .sieste-section-emoji { font-size: 14px; }
+    .sieste-group-left.var-4 { background: #fef3c7; color: #92400e; }
+    .sieste-group-left.var-3 { background: #ffedd5; color: #c2410c; }
+    .sieste-group-left.var-2 { background: #dbeafe; color: #1e40af; }
+    .sieste-group-left.var-1 { background: #dcfce7; color: #166534; }
+    .sieste-group-left.var-other { background: #f3e8ff; color: #6b21a8; font-size: 20px; }
+    .sieste-group-right { display: flex; flex-direction: column; gap: 6px; justify-content: center; }
     .sieste-row {
       display: flex; align-items: center; gap: 10px;
       padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 10px;
@@ -4193,66 +4203,76 @@
         <div class="setup-section">
           <h3>💤 Sieste cible</h3>
           <p style="font-size:12px;color:#999;margin-bottom:14px">Choisis l'objectif de siestes pour cet enfant <strong>(obligatoire, 1 seule case)</strong>. Les cases qui correspondent à l'âge de [prénom_enfant] glow en doré — l'effet s'arrête dès qu'une case est sélectionnée.</p>
-          <div id="sieste-options" style="display:flex;flex-direction:column;max-width:540px">
-            <div class="sieste-section-title"><span class="sieste-section-emoji">💤×4</span><span>4 siestes</span></div>
-            <div style="display:flex;flex-direction:column;gap:6px">
-              <label class="sieste-row" data-age-min="2" data-age-max="4">
-                <input type="radio" name="sieste" value="2-4m" onchange="onSiesteChange()">
-                <span class="sieste-label">2-4 mois</span>
-              </label>
+          <div id="sieste-options" style="max-width:560px">
+            <div class="sieste-group">
+              <div class="sieste-group-left var-4">4<div class="sieste-group-sub">siestes</div></div>
+              <div class="sieste-group-right">
+                <label class="sieste-row" data-age-min="2" data-age-max="4">
+                  <input type="radio" name="sieste" value="2-4m" onchange="onSiesteChange()">
+                  <span class="sieste-label">2-4 mois</span>
+                </label>
+              </div>
             </div>
 
-            <div class="sieste-section-title"><span class="sieste-section-emoji">💤×3</span><span>3 siestes</span></div>
-            <div style="display:flex;flex-direction:column;gap:6px">
-              <label class="sieste-row" data-age-min="4" data-age-max="6">
-                <input type="radio" name="sieste" value="4-6m" onchange="onSiesteChange()">
-                <span class="sieste-label">4-6 mois</span>
-              </label>
-              <label class="sieste-row" data-age-min="6" data-age-max="8">
-                <input type="radio" name="sieste" value="6-8m" onchange="onSiesteChange()">
-                <span class="sieste-label">6-8 mois</span>
-              </label>
-              <label class="sieste-row" data-age-min="8" data-age-max="10">
-                <input type="radio" name="sieste" value="8-10m" onchange="onSiesteChange()">
-                <span class="sieste-label">8-10 mois</span>
-              </label>
+            <div class="sieste-group">
+              <div class="sieste-group-left var-3">3<div class="sieste-group-sub">siestes</div></div>
+              <div class="sieste-group-right">
+                <label class="sieste-row" data-age-min="4" data-age-max="6">
+                  <input type="radio" name="sieste" value="4-6m" onchange="onSiesteChange()">
+                  <span class="sieste-label">4-6 mois</span>
+                </label>
+                <label class="sieste-row" data-age-min="6" data-age-max="8">
+                  <input type="radio" name="sieste" value="6-8m" onchange="onSiesteChange()">
+                  <span class="sieste-label">6-8 mois</span>
+                </label>
+                <label class="sieste-row" data-age-min="8" data-age-max="10">
+                  <input type="radio" name="sieste" value="8-10m" onchange="onSiesteChange()">
+                  <span class="sieste-label">8-10 mois</span>
+                </label>
+              </div>
             </div>
 
-            <div class="sieste-section-title"><span class="sieste-section-emoji">💤×2</span><span>2 siestes</span></div>
-            <div style="display:flex;flex-direction:column;gap:6px">
-              <label class="sieste-row" data-age-min="8" data-age-max="15">
-                <input type="radio" name="sieste" value="8-15m" onchange="onSiesteChange()">
-                <span class="sieste-label">8-15 mois</span>
-              </label>
-              <label class="sieste-row" data-age-min="15" data-age-max="20">
-                <input type="radio" name="sieste" value="15-20m" onchange="onSiesteChange()">
-                <span class="sieste-label">15-20 mois</span>
-              </label>
+            <div class="sieste-group">
+              <div class="sieste-group-left var-2">2<div class="sieste-group-sub">siestes</div></div>
+              <div class="sieste-group-right">
+                <label class="sieste-row" data-age-min="8" data-age-max="15">
+                  <input type="radio" name="sieste" value="8-15m" onchange="onSiesteChange()">
+                  <span class="sieste-label">8-15 mois</span>
+                </label>
+                <label class="sieste-row" data-age-min="15" data-age-max="20">
+                  <input type="radio" name="sieste" value="15-20m" onchange="onSiesteChange()">
+                  <span class="sieste-label">15-20 mois</span>
+                </label>
+              </div>
             </div>
 
-            <div class="sieste-section-title"><span class="sieste-section-emoji">💤×1</span><span>1 sieste</span></div>
-            <div style="display:flex;flex-direction:column;gap:6px">
-              <label class="sieste-row" data-age-min="15" data-age-max="36">
-                <input type="radio" name="sieste" value="15m-3a" onchange="onSiesteChange()">
-                <span class="sieste-label">15 mois - 3 ans (inclus)</span>
-              </label>
-              <label class="sieste-row" data-age-min="48">
-                <input type="radio" name="sieste" value="4a-plus" onchange="onSiesteChange()">
-                <span class="sieste-label">4 ans +</span>
-              </label>
+            <div class="sieste-group">
+              <div class="sieste-group-left var-1">1<div class="sieste-group-sub">sieste</div></div>
+              <div class="sieste-group-right">
+                <label class="sieste-row" data-age-min="15" data-age-max="36">
+                  <input type="radio" name="sieste" value="15m-3a" onchange="onSiesteChange()">
+                  <span class="sieste-label">15 mois - 3 ans (inclus)</span>
+                </label>
+                <label class="sieste-row" data-age-min="48">
+                  <input type="radio" name="sieste" value="4a-plus" onchange="onSiesteChange()">
+                  <span class="sieste-label">4 ans +</span>
+                </label>
+              </div>
             </div>
 
-            <div class="sieste-section-title"><span>Autre</span></div>
-            <div style="display:flex;flex-direction:column;gap:6px">
-              <label class="sieste-row" data-age-min="48">
-                <input type="radio" name="sieste" value="4a-plus-tc" onchange="onSiesteChange()">
-                <span class="sieste-label">4 ans + (Temps calme)</span>
-              </label>
-              <div style="height:18px"></div>
-              <label class="sieste-row">
-                <input type="radio" name="sieste" value="pas-de-changement" onchange="onSiesteChange()">
-                <span class="sieste-label">Pas de changement</span>
-              </label>
+            <div class="sieste-group">
+              <div class="sieste-group-left var-other">Autre</div>
+              <div class="sieste-group-right">
+                <label class="sieste-row" data-age-min="48">
+                  <input type="radio" name="sieste" value="4a-plus-tc" onchange="onSiesteChange()">
+                  <span class="sieste-label">4 ans + (Temps calme)</span>
+                </label>
+                <div style="height:18px"></div>
+                <label class="sieste-row">
+                  <input type="radio" name="sieste" value="pas-de-changement" onchange="onSiesteChange()">
+                  <span class="sieste-label">Pas de changement</span>
+                </label>
+              </div>
             </div>
           </div>
         </div>
