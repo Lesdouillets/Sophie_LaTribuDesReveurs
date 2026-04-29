@@ -3872,18 +3872,18 @@
       font-size: 16px; padding: 6px 10px; border: 1.5px solid #d97706;
       border-radius: 6px; font-variant-numeric: tabular-nums; font-weight: 600;
     }
-    /* Le bloc emploi du temps utilise le wrap auto _leftTitle (.block-with-left-title)
-       qui pose la bande verticale verte foncée à gauche. On ajoute du padding pour que
-       le tableau ne touche pas la bordure verte. */
+    /* Le bloc emploi du temps utilise le wrap auto _leftTitle (.block-with-left-title) qui pose
+       la bande titre verticale à gauche. Je dois ajouter explicitement le liseré vert vertical
+       car .emploi-temps-block n'est pas un .block standard et ne match pas la règle native. */
     .emploi-temps-block { padding: 12px 14px; background: #fff; border-radius: 0 8px 8px 0; }
-    /* Header row : pastille âge + heure de réveil sur la même ligne */
-    .emploi-temps-header-row {
-      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-      margin-bottom: 14px;
+    .block-with-left-title > .edit-block-wrap > .emploi-temps-block,
+    .block-with-left-title > .emploi-temps-block {
+      border-left: 3px solid var(--cat-main, #166534);
+      margin-bottom: 0;
     }
-    /* Pastille verte avec l'âge cible */
+    /* Pastille verte avec l'âge cible — affichée AU-DESSUS de "Heure de réveil" (empilage vertical) */
     .emploi-temps-age-pill {
-      display: inline-block; padding: 7px 16px;
+      display: inline-block; padding: 7px 16px; margin-bottom: 12px;
       background: #166534; color: #fff;
       border-radius: 999px; font-weight: 700; font-size: 13.5px;
       letter-spacing: 0.4px; box-shadow: 0 2px 6px rgba(22, 101, 52, 0.25);
@@ -3903,7 +3903,7 @@
     /* Colonne Activité : texte sur 1 seule ligne (s'auto-dimensionne au plus long label) ;
        les autres colonnes ont des largeurs fixes raisonnables ; table-layout auto + width:fit-content
        sur la table → pas de colonne vide à droite */
-    .emploi-temps-tbl th:nth-child(1), .emploi-temps-tbl td:nth-child(1) { white-space: nowrap; min-width: 420px; padding-right: 32px; }
+    .emploi-temps-tbl th:nth-child(1), .emploi-temps-tbl td:nth-child(1) { white-space: nowrap; min-width: 540px; padding-right: 32px; }
     .emploi-temps-tbl th:nth-child(2), .emploi-temps-tbl td:nth-child(2) { width: 130px; white-space: nowrap; }
     .emploi-temps-tbl th:nth-child(3), .emploi-temps-tbl td:nth-child(3) { width: 130px; white-space: nowrap; }
     .emploi-temps-tbl th:nth-child(4), .emploi-temps-tbl td:nth-child(4) { width: 130px; white-space: nowrap; }
