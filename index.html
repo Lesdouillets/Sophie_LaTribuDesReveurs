@@ -3872,22 +3872,29 @@
       font-size: 16px; padding: 6px 10px; border: 1.5px solid #d97706;
       border-radius: 6px; font-variant-numeric: tabular-nums; font-weight: 600;
     }
-    .emploi-temps-tbl { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; }
+    .emploi-temps-tbl { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; background: #fff; }
     .emploi-temps-tbl th {
-      text-align: left; padding: 8px 10px; background: #f1f5f9; color: #334155;
+      text-align: left; padding: 8px 10px; background: #f8fafc; color: #475569;
       font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
       border-bottom: 2px solid #cbd5e1;
     }
-    .emploi-temps-tbl td { padding: 9px 10px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
-    .emploi-temps-tbl tr.kind-wake td { background: #fef3c7; color: #92400e; font-weight: 600; }
-    .emploi-temps-tbl tr.kind-te td { background: #dbeafe; color: #1e3a8a; }
-    .emploi-temps-tbl tr.kind-sieste td { background: #ede9fe; color: #5b21b6; }
-    .emploi-temps-tbl tr.kind-milestone td { background: #f3f4f6; color: #475569; font-style: italic; }
-    .emploi-temps-tbl tr.kind-coucher td { background: #1e293b; color: #fff; font-weight: 600; }
+    .emploi-temps-tbl td { padding: 9px 10px; border-bottom: 1px solid #e5e7eb; vertical-align: middle; color: #1e293b; }
+    /* Réveil + Coucher : juste en gras, fond blanc, séparateurs un peu plus marqués */
+    .emploi-temps-tbl tr.kind-wake td { font-weight: 700; border-bottom: 2px solid #cbd5e1; }
+    .emploi-temps-tbl tr.kind-coucher td { font-weight: 700; border-top: 2px solid #cbd5e1; }
+    /* TE : aspect neutre, pas de fond */
+    .emploi-temps-tbl tr.kind-te td { background: #fff; }
+    /* SIESTE : seul fond coloré (violet pâle) + marqueur "Zzz" en CSS */
+    .emploi-temps-tbl tr.kind-sieste td { background: #f5f3ff; color: #5b21b6; }
+    .emploi-temps-tbl tr.kind-sieste td:first-child::before {
+      content: "Zzz "; font-style: italic; font-weight: 800; color: #8b5cf6;
+      letter-spacing: -0.5px; margin-right: 6px;
+    }
+    /* Milestone : italique gris, fond blanc */
+    .emploi-temps-tbl tr.kind-milestone td { background: #fff; color: #64748b; font-style: italic; }
     .emploi-temps-tbl .et-time { font-weight: 700; font-variant-numeric: tabular-nums; font-size: 14px; white-space: nowrap; }
-    .emploi-temps-tbl .et-icon { display: inline-block; margin-right: 6px; }
     .emploi-temps-tbl .et-range { font-size: 12px; opacity: 0.75; font-style: italic; white-space: nowrap; }
-    .emploi-temps-tbl .et-hint { font-size: 11.5px; opacity: 0.8; margin-left: 6px; font-style: italic; }
+    .emploi-temps-tbl .et-hint { font-size: 11.5px; opacity: 0.7; margin-left: 6px; font-style: italic; }
     .emploi-temps-tbl .et-hyp-input {
       width: 70px; padding: 4px 7px; border: 1.5px solid #cbd5e1; border-radius: 6px;
       font-size: 13px; font-weight: 600; text-align: center; font-variant-numeric: tabular-nums;
@@ -6563,13 +6570,11 @@ function renderEmploiDuTempsInner(b, wakeUpStr, blockKey) {
       c.time = coucherMin + c.row.offsetFromCoucherMin;
     }
   });
-  // Render rows : Activité | Durée range | Hypothèse | Horaire
-  const iconMap = { wake: '⏰', te: '☀️', sieste: '💤', milestone: '🍽️', coucher: '🌙' };
+  // Render rows : Activité | Durée range | Hypothèse | Horaire (sans emoji ; le marqueur "Zzz" est CSS sur kind-sieste)
   const escape = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const rowsHtml = computed.map(c => {
     const r = c.row;
-    const icon = r.icon || iconMap[r.kind] || '•';
-    const labelHtml = `<span class="et-icon">${icon}</span>${escape(r.label)}${r.labelHint ? ` <span class="et-hint">${escape(r.labelHint)}</span>` : ''}`;
+    const labelHtml = `${escape(r.label)}${r.labelHint ? ` <span class="et-hint">${escape(r.labelHint)}</span>` : ''}`;
     let rangeCell = '', hypCell = '', timeCell = '';
     if (r.kind === 'te' || r.kind === 'sieste') {
       rangeCell = r.durationRange ? `<span class="et-range">${escape(r.durationRange)}</span>` : '';
@@ -7228,9 +7233,32 @@ function editClientInConsultation(tab) {
     </div>`;
 }
 
+// Validation : la sieste cible est obligatoire pour entrer/poursuivre la consultation.
+// Vérifie DOM puis state.client. Si aucune valeur → alerte + redirige sur l'onglet Sieste (en setup-screen).
+function validateSiesteOrRedirect() {
+  const fromDom = document.querySelector('input[name="sieste"]:checked')?.value;
+  const fromState = (state && state.client && state.client.sieste) || '';
+  if (!fromDom && !fromState) {
+    alert("Merci de sélectionner une sieste cible dans l'onglet Sieste (obligatoire).");
+    document.getElementById('app-screen').style.display = 'none';
+    document.getElementById('setup-screen').style.display = 'flex';
+    showSetupTab('tab-sieste', document.querySelector('.setup-tab[onclick*="tab-sieste"]'));
+    return false;
+  }
+  // DOM vide mais state a la valeur → restaurer le radio
+  if (!fromDom && fromState) {
+    const sEl = document.querySelector(`input[name="sieste"][value="${fromState}"]`);
+    if (sEl) sEl.checked = true;
+  }
+  return true;
+}
+window.validateSiesteOrRedirect = validateSiesteOrRedirect;
+
 async function resumeConsultation() {
   // saveFicheOnly met à jour state.client avec les données du formulaire + sauvegarde
   try { await saveFicheOnly(); } catch(e) { console.warn('saveFicheOnly error:', e); }
+  // Validation sieste obligatoire (bloque la reprise si pas de sieste sélectionnée)
+  if (!validateSiesteOrRedirect()) return;
   state._returningFromConsult = false;
   document.getElementById('setup-screen').style.display = 'none';
   document.getElementById('app-screen').style.display = 'flex';
@@ -7594,13 +7622,8 @@ function startConsultation() {
       return;
     }
   }
-  // Vérifier que la sieste cible est sélectionnée (obligatoire)
-  const siesteChecked = document.querySelector('input[name="sieste"]:checked');
-  if (!siesteChecked) {
-    alert("Merci de sélectionner une sieste cible dans l'onglet Sieste (obligatoire).");
-    showSetupTab('tab-sieste', document.querySelector('.setup-tab[onclick*="tab-sieste"]'));
-    return;
-  }
+  // Vérifier que la sieste cible est sélectionnée (obligatoire) — partagé avec resume/restore
+  if (typeof validateSiesteOrRedirect === 'function' && !validateSiesteOrRedirect()) return;
   const consultDate2 = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
   const dateNaiss = document.getElementById('date-naissance')?.value;
   const dateTerme = document.getElementById('date-terme')?.value;
@@ -13351,6 +13374,11 @@ function restoreActiveConsultation() {
     buildSections();
     adaptSectionsToClient();
     initUI();
+    // Validation sieste obligatoire pour reprendre une consultation existante
+    // (snapshots d'avant l'ajout du champ sieste arrivent ici sans valeur)
+    if (typeof validateSiesteOrRedirect === 'function' && !validateSiesteOrRedirect()) {
+      return false;
+    }
     document.getElementById('setup-screen').style.display = 'none';
     document.getElementById('app-screen').style.display = 'flex';
     return true;

@@ -2689,13 +2689,13 @@ const SCRIPT_DATA = {
                   { kind: "te", label: "TE 1 : Réveil, change, manger, jouer", durationMin: 90, durationRange: "1h15-1h30" },
                   { kind: "sieste", label: "SIESTE 1 (dans le lit)", durationMin: 120, durationRange: "1h30 à 2h15/3h" },
                   { kind: "te", label: "TE 2 : Réveil, change, manger, jouer", durationMin: 120, durationRange: "1h30-2h" },
-                  { kind: "milestone", label: "Si repas diversification (midi)", staticTime: "11h-12h", icon: "🥄" },
+                  { kind: "milestone", label: "Si repas diversification (midi)", staticTime: "11h-12h" },
                   { kind: "sieste", label: "SIESTE 2 (dans le lit)", durationMin: 120, durationRange: "1h30 à 2h15/3h" },
                   { kind: "te", label: "TE 3 : Réveil, change, manger, jouer", durationMin: 120, durationRange: "1h30-2h" },
                   { kind: "sieste", label: "SIESTE 3 (dans le lit ou poussette/portage)", durationMin: 45, durationRange: "30-45 min" },
                   { kind: "te", label: "TE 4 : Réveil, change, manger, rituel, dernier tps nutrition", durationMin: 105, durationRange: "1h30-1h45" },
-                  { kind: "milestone", label: "Si repas diversification (soir)", offsetFromCoucherMin: -60, icon: "🥄" },
-                  { kind: "milestone", label: "Rituel de la nuit", offsetFromCoucherMin: -30, icon: "🛁" },
+                  { kind: "milestone", label: "Si repas diversification (soir)", offsetFromCoucherMin: -60 },
+                  { kind: "milestone", label: "Rituel de la nuit", offsetFromCoucherMin: -30 },
                   { kind: "coucher", label: "Coucher pour la nuit", labelHint: "(4-6 mois : 20h)" }
                 ],
                 notes: [
