@@ -3813,6 +3813,37 @@
     .pb-cat-btn.all:hover { background: #d8f3dc; border-color: var(--primary-light); }
     .pb-cat-btn.none { color: #e74c3c; }
     .pb-cat-btn.none:hover { background: #ffeaea; border-color: #e74c3c; }
+    /* Onglet Sieste : option B (badge compact) + glow doré sur cases qui matchent l'âge */
+    .sieste-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 10px;
+      cursor: pointer; transition: background .15s, border-color .15s;
+      background: #fff;
+    }
+    .sieste-row:hover { background: #f8fafc; }
+    .sieste-row input[type="radio"] { margin: 0; cursor: pointer; }
+    .sieste-row .sieste-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 56px; padding: 3px 10px; border-radius: 12px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.3px;
+      background: #f1f5f9; color: #475569;
+    }
+    .sieste-row .sieste-badge-4 { background: #fef3c7; color: #92400e; }
+    .sieste-row .sieste-badge-3 { background: #ffedd5; color: #c2410c; }
+    .sieste-row .sieste-badge-2 { background: #dbeafe; color: #1e40af; }
+    .sieste-row .sieste-badge-1 { background: #dcfce7; color: #166534; }
+    .sieste-row .sieste-badge-other { background: #f3e8ff; color: #6b21a8; }
+    .sieste-row .sieste-label { font-size: 14px; color: var(--text); }
+    .sieste-row.sieste-selected { background: #ecfeff; border-color: #06b6d4; }
+    @keyframes sieste-glow-pulse {
+      0%, 100% { box-shadow: 0 0 6px rgba(245, 158, 11, 0.45), 0 0 0 0 rgba(245, 158, 11, 0.0); border-color: #f59e0b; }
+      50%      { box-shadow: 0 0 22px rgba(245, 158, 11, 0.95), 0 0 36px rgba(245, 158, 11, 0.55); border-color: #d97706; }
+    }
+    .sieste-row.sieste-glow {
+      border-color: #f59e0b !important;
+      background: #fffbeb !important;
+      animation: sieste-glow-pulse 1.6s ease-in-out infinite;
+    }
   </style>
 </head>
 <body>
@@ -3889,6 +3920,7 @@
       <button class="setup-tab active" onclick="showSetupTab('tab-bebe', this)">👶 Bébé</button>
       <button class="setup-tab" onclick="showSetupTab('tab-parents', this)">👨‍👩‍👧 Parents</button>
       <button class="setup-tab" onclick="showSetupTab('tab-sante', this)">🍼 Santé</button>
+      <button class="setup-tab" onclick="showSetupTab('tab-sieste', this)">💤 Sieste</button>
       <button class="setup-tab" onclick="showSetupTab('tab-consult', this)">📋 Consultation</button>
     </div>
 
@@ -4153,6 +4185,78 @@
             <label style="font-size:13px;font-weight:600;color:var(--text-light);display:block;margin-bottom:6px">📝 Notes médicales libres</label>
             <textarea id="notes-medicales" rows="3" placeholder="Allergies, traitements, antécédents…"
               style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;resize:vertical"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TAB SIESTE ── -->
+      <div id="tab-sieste" class="tab-pane">
+        <div class="setup-section">
+          <h3>💤 Sieste cible</h3>
+          <p style="font-size:12px;color:#999;margin-bottom:14px">Choisis l'objectif de siestes pour cet enfant <strong>(obligatoire, 1 seule case)</strong>. Les cases qui correspondent à l'âge de [prénom_enfant] glow en doré — l'effet s'arrête dès qu'une case est sélectionnée.</p>
+          <div id="sieste-options" style="display:flex;flex-direction:column;gap:8px;max-width:540px">
+            <label class="sieste-row" data-age-min="2" data-age-max="4">
+              <input type="radio" name="sieste" value="2-4m" onchange="onSiesteChange()">
+              <span class="sieste-badge sieste-badge-4">💤×4</span>
+              <span class="sieste-label">2-4 mois</span>
+            </label>
+
+            <div style="height:6px"></div>
+
+            <label class="sieste-row" data-age-min="4" data-age-max="6">
+              <input type="radio" name="sieste" value="4-6m" onchange="onSiesteChange()">
+              <span class="sieste-badge sieste-badge-3">💤×3</span>
+              <span class="sieste-label">4-6 mois</span>
+            </label>
+            <label class="sieste-row" data-age-min="6" data-age-max="8">
+              <input type="radio" name="sieste" value="6-8m" onchange="onSiesteChange()">
+              <span class="sieste-badge sieste-badge-3">💤×3</span>
+              <span class="sieste-label">6-8 mois</span>
+            </label>
+            <label class="sieste-row" data-age-min="8" data-age-max="10">
+              <input type="radio" name="sieste" value="8-10m" onchange="onSiesteChange()">
+              <span class="sieste-badge sieste-badge-3">💤×3</span>
+              <span class="sieste-label">8-10 mois</span>
+            </label>
+
+            <div style="height:6px"></div>
+
+            <label class="sieste-row" data-age-min="8" data-age-max="15">
+              <input type="radio" name="sieste" value="8-15m" onchange="onSiesteChange()">
+              <span class="sieste-badge sieste-badge-2">💤×2</span>
+              <span class="sieste-label">8-15 mois</span>
+            </label>
+            <label class="sieste-row" data-age-min="15" data-age-max="20">
+              <input type="radio" name="sieste" value="15-20m" onchange="onSiesteChange()">
+              <span class="sieste-badge sieste-badge-2">💤×2</span>
+              <span class="sieste-label">15-20 mois</span>
+            </label>
+
+            <div style="height:6px"></div>
+
+            <label class="sieste-row" data-age-min="15" data-age-max="36">
+              <input type="radio" name="sieste" value="15m-3a" onchange="onSiesteChange()">
+              <span class="sieste-badge sieste-badge-1">💤×1</span>
+              <span class="sieste-label">15 mois - 3 ans (inclus)</span>
+            </label>
+            <label class="sieste-row" data-age-min="48">
+              <input type="radio" name="sieste" value="4a-plus" onchange="onSiesteChange()">
+              <span class="sieste-badge sieste-badge-1">💤×1</span>
+              <span class="sieste-label">4 ans +</span>
+            </label>
+
+            <div style="height:6px"></div>
+
+            <label class="sieste-row" data-age-min="48">
+              <input type="radio" name="sieste" value="4a-plus-tc" onchange="onSiesteChange()">
+              <span class="sieste-badge sieste-badge-other">—</span>
+              <span class="sieste-label">4 ans + (Temps calme)</span>
+            </label>
+            <label class="sieste-row">
+              <input type="radio" name="sieste" value="pas-de-changement" onchange="onSiesteChange()">
+              <span class="sieste-badge sieste-badge-other">—</span>
+              <span class="sieste-label">Pas de changement</span>
+            </label>
           </div>
         </div>
       </div>
@@ -6236,7 +6340,44 @@ function showSetupTab(tabId, btn) {
   document.querySelectorAll('.setup-tab').forEach(b => b.classList.remove('active'));
   document.getElementById(tabId)?.classList.add('active');
   btn?.classList.add('active');
+  // Refresh glow doré sur Sieste à chaque ouverture (au cas où l'âge a changé)
+  if (tabId === 'tab-sieste' && typeof updateSiesteHighlight === 'function') updateSiesteHighlight();
 }
+
+// Onglet Sieste : highlight doré sur cases qui matchent l'âge effectif (corrigé sinon réel).
+// Le glow s'arrête dès qu'une case est sélectionnée. Plages [data-age-min, data-age-max] inclusives.
+function updateSiesteHighlight() {
+  const rows = document.querySelectorAll('.sieste-row');
+  if (!rows.length) return;
+  const radios = document.querySelectorAll('input[name="sieste"]');
+  const anySelected = [...radios].some(r => r.checked);
+  // Mettre à jour la classe "selected" pour le visuel cyan
+  rows.forEach(row => {
+    const r = row.querySelector('input[name="sieste"]');
+    row.classList.toggle('sieste-selected', !!(r && r.checked));
+  });
+  // Glow : seulement si AUCUNE case n'est sélectionnée
+  rows.forEach(row => row.classList.remove('sieste-glow'));
+  if (anySelected) return;
+  const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
+  if (age == null) return;
+  rows.forEach(row => {
+    const minAttr = row.dataset.ageMin;
+    const maxAttr = row.dataset.ageMax;
+    if (minAttr == null && maxAttr == null) return; // "Pas de changement" → jamais glow
+    const min = minAttr != null ? parseFloat(minAttr) : null;
+    const max = maxAttr != null ? parseFloat(maxAttr) : null;
+    const matches = (min == null || age >= min) && (max == null || age <= max);
+    if (matches) row.classList.add('sieste-glow');
+  });
+}
+window.updateSiesteHighlight = updateSiesteHighlight;
+
+function onSiesteChange() {
+  updateSiesteHighlight();
+  if (typeof autoSaveFiche === 'function') autoSaveFiche();
+}
+window.onSiesteChange = onSiesteChange;
 
 async function loadSavedClients() {
   updateEnseigneUI();
@@ -6358,6 +6499,9 @@ function populateFormFromClient(c) {
   document.querySelectorAll('input[name="allaitement_mode"]').forEach(cb => cb.checked = false);
   (c.allaitementMode||[]).forEach(v => { const el = document.querySelector(`input[name="allaitement_mode"][value="${v}"]`); if (el) el.checked = true; });
   toggleTypeLait();
+  // Restaurer la sieste cible (radio unique)
+  document.querySelectorAll('input[name="sieste"]').forEach(r => r.checked = false);
+  if (c.sieste) { const sEl = document.querySelector(`input[name="sieste"][value="${c.sieste}"]`); if (sEl) sEl.checked = true; }
   document.querySelectorAll('input[name="pb"]').forEach(cb => cb.checked = false);
   (c.pbs||[]).forEach(pb => { const el = document.querySelector(`input[name="pb"][value="${pb}"]`); if (el) el.checked = true; });
   document.querySelectorAll('.pb-item').forEach(el => el.classList.toggle('checked', el.querySelector('input')?.checked));
@@ -6689,6 +6833,7 @@ function autoSaveFiche() {
     c.typeLait = document.getElementById('type-lait')?.value || '';
     c.alimentation = [...document.querySelectorAll('input[name="alim"]:checked')].map(x => x.value);
     c.allaitementMode = [...document.querySelectorAll('input[name="allaitement_mode"]:checked')].map(x => x.value);
+    c.sieste = document.querySelector('input[name="sieste"]:checked')?.value || '';
     c.rgo = document.getElementById('medical-rgo')?.checked || false;
     c.aplvSuspecte = document.getElementById('medical-aplv-susp')?.checked || false;
     c.aplvConfirme = document.getElementById('medical-aplv-conf')?.checked || false;
@@ -7145,6 +7290,8 @@ function computeClientFields() {
   if (typeof applyEnvLitOuvertVisibility === 'function') applyEnvLitOuvertVisibility();
   // Masquer les pbs avec data-hide-if-age-min/max selon l'âge
   if (typeof syncPbsAgeVisibility === 'function') syncPbsAgeVisibility();
+  // Refresh glow doré sur cases Sieste (l'âge effectif a peut-être changé)
+  if (typeof updateSiesteHighlight === 'function') updateSiesteHighlight();
   // Auto-sauvegarde silencieuse (debounced 600ms) pour persister les champs fiche
   if (typeof autoSaveFiche === 'function') autoSaveFiche();
 }
