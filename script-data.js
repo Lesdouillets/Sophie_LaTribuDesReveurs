@@ -2735,7 +2735,8 @@ const SCRIPT_DATA = {
                   "Heures de coucher du soir et lever du matin = fixes",
                   "Possible d'inverser la durée des siestes",
                   "Journée de 12h à vérifier",
-                  "TE = Temps d'Éveil (1h30-1h45 mini d'éveil entre 2 siestes)"
+                  "TE = Temps d'Éveil",
+                  "Dernier TE avant le coucher : 1h30-1h45 mini d'éveil"
                 ]
               },
               // ─── 6-8 mois (3 siestes) — basé sur sheet5 "Emploi 7 mois" ──
@@ -2765,7 +2766,8 @@ const SCRIPT_DATA = {
                 notes: [
                   "Heures de coucher du soir et lever du matin = fixes",
                   "Possible d'inverser la durée des siestes",
-                  "TE = Temps d'Éveil (1h30-2h mini d'éveil entre 2 siestes)"
+                  "TE = Temps d'Éveil",
+                  "Dernier TE avant le coucher : 1h30-2h mini d'éveil"
                 ]
               },
               // ─── 8-10 mois (3 siestes) — basé sur sheet6 ─────────────────
@@ -2795,7 +2797,8 @@ const SCRIPT_DATA = {
                 notes: [
                   "Heures de coucher du soir et lever du matin = fixes",
                   "Possible d'inverser la durée des siestes",
-                  "TE = Temps d'Éveil (1h30-2h mini d'éveil entre 2 siestes)"
+                  "TE = Temps d'Éveil",
+                  "Dernier TE avant le coucher : 1h30-2h mini d'éveil"
                 ]
               },
               // ─── 8-15 mois (2 siestes) — basé sur sheet7 "Emploi 8-14mois" ───
@@ -2824,7 +2827,8 @@ const SCRIPT_DATA = {
                 notes: [
                   "Heures de coucher du soir / siestes / lever du matin = fixes",
                   "Possible d'inverser la durée des siestes",
-                  "TE = Temps d'Éveil (2h-2h30 mini d'éveil entre 2 siestes)"
+                  "TE = Temps d'Éveil",
+                  "Dernier TE avant le coucher : 2h-2h30 mini d'éveil"
                 ]
               },
               // ─── 15-20 mois (2 siestes) — basé sur sheet8 "Emploi 14-20mois" ───
@@ -2853,7 +2857,8 @@ const SCRIPT_DATA = {
                 notes: [
                   "Heures de coucher du soir / siestes / lever du matin = fixes",
                   "Possible d'inverser la durée des siestes",
-                  "TE = Temps d'Éveil (2h-2h30 mini d'éveil entre 2 siestes)"
+                  "TE = Temps d'Éveil",
+                  "Dernier TE avant le coucher : 2h-2h30 mini d'éveil"
                 ]
               },
               // ─── 15 mois - 3 ans (1 sieste) — basé sur sheet9 ───────────────
