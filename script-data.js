@@ -2685,6 +2685,7 @@ const SCRIPT_DATA = {
                 _leftTitle: "Emploi du temps",
                 _leftTitleStyle: "background:#dcfce7;color:#166534;--cat-main:#22c55e;font-size:14px",
                 ageLabel: "4-6 mois (3 siestes)",
+                warnSubtitle: "(1h30-1h45 mini d'éveil)",
                 wakeUpDefault: "07:00",
                 rows: [
                   { kind: "wake", label: "Réveil" },
