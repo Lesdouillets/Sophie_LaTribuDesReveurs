@@ -2990,14 +2990,61 @@ const SCRIPT_DATA = {
                 ]
               },
               {
-                type: "normal", _leftTitle: "Tranche d'âge n°2 (à définir)",
-                showIfAgeMinMonths: 3, showIfAgeMaxMonths: 11,
-                text: "- À compléter"
+                type: "normal", _noBorder: true,
+                showIfAgeMinMonths: 3, showIfAgeMaxMonths: 15,
+                text: "<div style=\"display:inline-block;padding:7px 16px;background:#166534;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(22,101,52,0.25)\">2-15 mois</div>"
               },
               {
-                type: "normal", _leftTitle: "Tranche d'âge n°3 (à définir)",
-                showIfAgeMinMonths: 12,
-                text: "- À compléter"
+                type: "normal", _leftTitle: "À quoi ça sert ?",
+                showIfAgeMinMonths: 3, showIfAgeMaxMonths: 15,
+                text: "- Si on **continue dans la journée**, on peut **parler rapidement** du **rituel du soir**\n- Ça dure entre 20 et 30 minutes :\n  - Pas trop long : pour que l'enfant **se rappelle** que c'est **toujours le rituel du soir**\n  - Pas trop court : pour que l'enfant puisse se **mettre en mode « dodo »**\n- Je vous encourage à faire **2 temps d'alimentation** sur le **dernier temps d'éveil** : **après la sieste** ET **pendant le rituel**[if_alim:Allaitement au biberon,Allaitement mixte,Biberon lait infantile] <span style=\"color:#dc2626\">— ça rappelle les **tétées groupées** des bébés allaités</span>[/if_alim]"
+              },
+              {
+                type: "normal", _leftTitle: "Étapes du rituel",
+                showIfAgeMinMonths: 3, showIfAgeMaxMonths: 15,
+                text: "[if_pb_not:rgo_seul]<ol style=\"margin:6px 0 14px 22px;padding:0;line-height:1.75\"><li>{{infobtn:0}}<strong>Bain</strong> <em>(10 minutes maximum)</em> avec <strong>chanson mantra</strong><ul style=\"margin:4px 0 8px 18px;list-style:disc\"><li>Repère temporel</li><li>Immersion du bain = apaisant</li></ul></li><li><strong>« Bonne nuit »</strong> aux personnes qui ne prennent pas part au rituel, à l'extérieur de la chambre</li><li><strong>Fermer les rideaux</strong></li><li><div style=\"display:flex;gap:14px;align-items:flex-start\"><div style=\"flex:1;min-width:0\"><strong>Temps de nutrition</strong> dans la chambre avec la <strong>lumière TAMISÉE</strong>, <span style=\"color:#dc2626\">⚠️ <strong>SANS s'endormir</strong></span></div><div style=\"width:360px;flex-shrink:0;background:#fef9e0;border:1.5px solid #f5d778;border-radius:8px;padding:8px 12px;font-size:12.5px;line-height:1.45;color:#7c2d12;font-weight:500;box-sizing:border-box\">⚠️ <strong>S'il/si elle s'endort au biberon/sein</strong> :<br>Déplacer le temps d'alimentation <strong>AVANT le bain</strong></div></div></li><li><strong>Câlins et bisous</strong></li><li><span style=\"color:#dc2626\"><strong>Chanson du dodo</strong></span></li><li><strong>Posez l'enfant dans le lit, ÉVEILLÉ</strong>, avec <strong>doudou</strong></li></ol>[/if_pb_not][if_pb:rgo_seul]<ol style=\"margin:6px 0 14px 22px;padding:0;line-height:1.75\"><li><div style=\"display:flex;gap:14px;align-items:flex-start\"><div style=\"flex:1;min-width:0\"><strong>Temps de nutrition</strong> dans la chambre avec la <strong>lumière TAMISÉE</strong>, <span style=\"color:#dc2626\">⚠️ <strong>SANS s'endormir</strong></span>, <em>ça vous permettra de le verticaliser durant tout son temps d'éveil</em></div><div style=\"width:360px;flex-shrink:0;background:#fef9e0;border:1.5px solid #f5d778;border-radius:8px;padding:8px 12px;font-size:12.5px;line-height:1.45;color:#7c2d12;font-weight:500;box-sizing:border-box\">⚠️ <strong>S'il/si elle s'endort au biberon/sein</strong> :<br>Déplacer le temps d'alimentation <strong>AVANT le bain</strong></div></div></li><li>{{infobtn:0}}<strong>Bain</strong> <em>(10 minutes maximum)</em> avec <strong>chanson mantra</strong><ul style=\"margin:4px 0 8px 18px;list-style:disc\"><li>Repère temporel</li><li>Immersion du bain = apaisant</li></ul></li><li><strong>« Bonne nuit »</strong> aux personnes qui ne prennent pas part au rituel, à l'extérieur de la chambre</li><li><strong>Fermer les rideaux</strong></li><li><strong>Câlins et bisous</strong></li><li><span style=\"color:#dc2626\"><strong>Chanson du dodo</strong></span></li><li><strong>Posez l'enfant dans le lit, ÉVEILLÉ</strong>, avec <strong>doudou</strong></li></ol>[/if_pb]\n<div style=\"background:#fee2e2;border:2px solid #dc2626;border-radius:10px;padding:10px 14px;margin:10px 0;font-size:14px;line-height:1.5;color:#991b1b\"><strong>⛔ Pas d'histoire avant 18 mois</strong> — trop stimulant</div>",
+                inlineInfoButtons: [
+                  {
+                    label: "Eau florale",
+                    title: "Eau florale",
+                    blocks: [
+                      { type: "normal", text: "**Eau florale** *(= hydrolat)* : fleur d'oranger, camomille romaine ou lavande fine **BIO**" }
+                    ]
+                  }
+                ]
+              },
+              {
+                type: "normal", _noBorder: true,
+                showIfAgeMinMonths: 16,
+                text: "<div style=\"display:inline-block;padding:7px 16px;background:#166534;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(22,101,52,0.25)\">Plus de 15 mois</div>"
+              },
+              {
+                type: "normal", _leftTitle: "À quoi ça sert ?",
+                showIfAgeMinMonths: 16,
+                text: "- Si on **continue dans la journée**, on peut **parler rapidement** du **rituel du soir**\n- Ça dure entre 20 et 30 minutes :\n  - Pas trop long : pour que l'enfant **se rappelle** que c'est **toujours le rituel du soir**\n  - Pas trop court : pour que l'enfant puisse se **mettre en mode « dodo »**"
+              },
+              {
+                type: "normal", _leftTitle: "Étapes du rituel",
+                showIfAgeMinMonths: 16,
+                text: "<ol style=\"margin:6px 0 14px 22px;padding:0;line-height:1.75\"><li>{{infobtn:0}}<strong>Bain</strong> <em>(10 minutes maximum)</em> avec <strong>chanson mantra</strong><ul style=\"margin:4px 0 8px 18px;list-style:disc\"><li>Repère temporel</li><li>Immersion du bain = apaisant</li></ul></li><li><strong>Change + pyjama</strong> <em>(évitez les massages)</em></li><li><strong>Repas</strong></li><li><strong>Temps de jeux</strong></li><li><strong>Passage à la salle de bain</strong> <em>(dents, couches, pot…)</em></li><li><strong>« Bonne nuit »</strong> aux personnes qui ne prennent pas part au rituel, à l'extérieur de la chambre</li><li><strong>Fermer les rideaux</strong></li><li><strong>OPTION : Biberon ou tétée</strong> — <strong>Temps de nutrition</strong> dans la chambre avec la <strong>lumière TAMISÉE</strong>, <span style=\"color:#dc2626\">⚠️ <strong>SANS s'endormir</strong></span></li><li><strong>Histoire</strong> <em>(5 minutes maximum)</em></li><li><strong>Câlins et bisous</strong> en disant bien que c'est <strong>le dernier</strong></li><li><strong>Posez l'enfant dans le lit, ÉVEILLÉ</strong>, avec <strong>doudou</strong></li></ol>\n<div style=\"margin-top:10px\">{{infobtn:1}}</div>",
+                inlineInfoButtons: [
+                  {
+                    label: "Eau florale",
+                    title: "Eau florale",
+                    blocks: [
+                      { type: "normal", text: "**Eau florale** *(= hydrolat)* : fleur d'oranger, camomille romaine ou lavande fine **BIO**" }
+                    ]
+                  },
+                  {
+                    label: "Livre de Rituel",
+                    title: "Livre de Rituel",
+                    compact: true,
+                    blocks: [
+                      { type: "normal", text: "**Livre de Rituel** avec toutes les étapes (étiquettes photo + lumières pour signaler chaque étape) :" },
+                      { type: "normal", _noBorder: true, text: "<img src=\"livre-rituel-for-kids.jpg\" alt=\"Livre de rituel For kids — étiquettes pyjama, change, repas, dents…\" style=\"max-width:100%;height:auto;border-radius:10px;display:block;margin:8px 0;border:1px solid #e5e7eb\">" }
+                    ]
+                  }
+                ]
               }
             ]
           }
