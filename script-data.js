@@ -2672,9 +2672,34 @@ const SCRIPT_DATA = {
         ]
       },
       {
-        id: "rythme", title: "Rythme (Organisation de la journée)", emoji: "⏰",
+        id: "rythme", title: "Organisation de la journée", emoji: "⏰",
         children: [
-          // À compléter
+          { id: "rythme_emploi_du_temps", label: "Emploi du temps", cardLabel: "Emploi du temps", cardEmoji: "📅",
+            hideIfSieste: ["pas-de-changement"],
+            blocks: [
+              { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+            ]
+          },
+          { id: "rythme_siestes", label: "Siestes", cardLabel: "Siestes", cardEmoji: "💤",
+            hideIfSieste: ["pas-de-changement"],
+            blocks: [
+              { type: "normal", _leftTitle: "4 siestes (2-4 mois)", showIfSieste: "2-4m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "3 siestes (4-6 mois)", showIfSieste: "4-6m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "3 siestes (6-8 mois)", showIfSieste: "6-8m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "3 siestes (8-10 mois)", showIfSieste: "8-10m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "2 siestes (8-15 mois)", showIfSieste: "8-15m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "2 siestes (15-20 mois)", showIfSieste: "15-20m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "1 sieste (15 mois - 3 ans)", showIfSieste: "15m-3a", text: "- À compléter" },
+              { type: "normal", _leftTitle: "1 sieste (4 ans +)", showIfSieste: "4a-plus", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Temps calme (4 ans +)", showIfSieste: "4a-plus-tc", text: "- À compléter" }
+            ]
+          },
+          { id: "rythme_rituel_du_soir", label: "Rituel du soir", cardLabel: "Rituel du soir", cardEmoji: "🌙",
+            hideIfSieste: ["pas-de-changement"],
+            blocks: [
+              { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+            ]
+          }
         ]
       },
       {

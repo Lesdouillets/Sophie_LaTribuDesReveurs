@@ -6409,6 +6409,10 @@ window.updateSiesteHighlight = updateSiesteHighlight;
 
 function onSiesteChange() {
   updateSiesteHighlight();
+  // Maj live de state.client.sieste (sans attendre le debounce 600ms d'autoSaveFiche)
+  // pour que le re-render des solutions reflète immédiatement le choix sieste.
+  if (state && state.client) state.client.sieste = document.querySelector('input[name="sieste"]:checked')?.value || '';
+  if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
   if (typeof autoSaveFiche === 'function') autoSaveFiche();
 }
 window.onSiesteChange = onSiesteChange;
@@ -8653,6 +8657,13 @@ function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
       const matches = vals.some(v => alim.includes(v) || allaitMode.includes(v));
       if (!matches) return '';
     }
+    // Condition sieste — match contre c.sieste (radio choisie dans onglet Sieste)
+    if (b.showIfSieste) {
+      const vals = Array.isArray(b.showIfSieste) ? b.showIfSieste : [b.showIfSieste];
+      const c = (state && state.client) || {};
+      const sieste = c.sieste || '';
+      if (!vals.includes(sieste)) return '';
+    }
     const path = parentPath ? parentPath + '.' + i : '' + i;
     return renderBlock(b, i, sectionId, depth, path);
   }).join('');
@@ -9882,7 +9893,7 @@ function renderSolutionsCheckboxes(opts) {
     relationnel:      { main: '#ec4899', dark: '#be185d', light: '#fdf2f8' },
     sante:            { main: '#14b8a6', dark: '#0f766e', light: '#f0fdfa' },
   };
-  // Helper : ch (solution enfant) caché par filtre d'âge ou par filtre alim (ch.showIfAlim)
+  // Helper : ch (solution enfant) caché par filtre d'âge, alim (ch.showIfAlim), ou sieste (ch.hideIfSieste)
   const isChHiddenByAge = (ch) => {
     if (ch.showIfAgeMinMonths != null || ch.showIfAgeMaxMonths != null) {
       const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
@@ -9896,6 +9907,10 @@ function renderSolutionsCheckboxes(opts) {
       const alim = Array.isArray(c.alimentation) ? c.alimentation : [];
       const allaitMode = Array.isArray(c.allaitementMode) ? c.allaitementMode : [];
       if (!vals.some(v => alim.includes(v) || allaitMode.includes(v))) return true;
+    }
+    if (Array.isArray(ch.hideIfSieste) && ch.hideIfSieste.length) {
+      const sieste = (state && state.client && state.client.sieste) || '';
+      if (sieste && ch.hideIfSieste.includes(sieste)) return true;
     }
     return false;
   };
