@@ -3936,7 +3936,7 @@
       box-shadow: 0 4px 14px rgba(220, 38, 38, 0.45);
       z-index: 10;
     }
-    .et-last-sieste-warn::before { content: "⚠️ "; margin-right: 4px; }
+    .et-last-sieste-warn .et-warn-icon { margin-right: 4px; }
     /* Pointe BD : triangle plein rouge (avec bordure rouge foncé pour cohérence) */
     .et-last-sieste-warn::after {
       content: ""; position: absolute;
@@ -6632,7 +6632,7 @@ function renderEmploiDuTempsInner(b, wakeUpStr, blockKey) {
     // Bulle BD du warning "Pas après HH:MM" attachée à la dernière sieste (déborde à droite)
     const isLastSieste = (idx === lastSiesteIdx);
     const warnBubble = isLastSieste
-      ? `<div class="et-last-sieste-warn">Pas après ${noPasApresStart}-${noPasApresEnd}</div>`
+      ? `<div class="et-last-sieste-warn"><span class="et-warn-icon">⚠️</span> Pas après ${noPasApresStart}-${noPasApresEnd}</div>`
       : '';
     const trClass = `kind-${r.kind}${isLastSieste ? ' et-last-sieste' : ''}`;
     return `<tr class="${trClass}"><td>${labelHtml}</td><td>${timeCell}</td><td>${rangeCell}</td><td>${hypCell}${warnBubble}</td></tr>`;
