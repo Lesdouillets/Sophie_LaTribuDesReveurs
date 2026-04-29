@@ -2676,6 +2676,7 @@ const SCRIPT_DATA = {
         children: [
           { id: "rythme_emploi_du_temps", label: "Emploi du temps", cardLabel: "Emploi du temps", cardEmoji: "📅",
             hideIfSieste: ["pas-de-changement"],
+            autoCheckIfSieste: ["2-4m", "4-6m", "6-8m", "8-10m", "8-15m", "15-20m", "15m-3a", "4a-plus", "4a-plus-tc"],
             blocks: [
               {
                 type: "emploi_du_temps",
@@ -2708,6 +2709,7 @@ const SCRIPT_DATA = {
           },
           { id: "rythme_siestes", label: "Siestes", cardLabel: "Siestes", cardEmoji: "💤",
             hideIfSieste: ["pas-de-changement"],
+            autoCheckIfSieste: ["2-4m", "4-6m", "6-8m", "8-10m", "8-15m", "15-20m", "15m-3a", "4a-plus", "4a-plus-tc"],
             blocks: [
               { type: "normal", _leftTitle: "4 siestes (2-4 mois)", showIfSieste: "2-4m", text: "- À compléter" },
               { type: "normal", _leftTitle: "3 siestes (4-6 mois)", showIfSieste: "4-6m", text: "- À compléter" },
@@ -2722,6 +2724,7 @@ const SCRIPT_DATA = {
           },
           { id: "rythme_rituel_du_soir", label: "Rituel du soir", cardLabel: "Rituel du soir", cardEmoji: "🌙",
             hideIfSieste: ["pas-de-changement"],
+            autoCheckIfSieste: ["2-4m", "4-6m", "6-8m", "8-10m", "8-15m", "15-20m", "15m-3a", "4a-plus", "4a-plus-tc"],
             blocks: [
               { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
             ]

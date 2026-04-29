@@ -3850,8 +3850,16 @@
     .sieste-row:hover { background: var(--sieste-bg-hover, #f8fafc); }
     .sieste-row input[type="radio"] { margin: 0; cursor: pointer; }
     .sieste-row .sieste-label { font-size: 14px; }
-    .sieste-row.sieste-selected { background: #ecfeff; border-color: #06b6d4; color: var(--text); }
-    .sieste-row.sieste-selected:hover { background: #cffafe; }
+    .sieste-row.sieste-selected {
+      background: #06b6d4 !important; border-color: #0891b2 !important;
+      color: #fff !important; font-weight: 700;
+      box-shadow: 0 2px 10px rgba(6, 182, 212, 0.35);
+    }
+    .sieste-row.sieste-selected::before {
+      content: "✓"; display: inline-block; margin-right: 6px;
+      font-weight: 900; font-size: 16px; color: #fff;
+    }
+    .sieste-row.sieste-selected:hover { background: #0891b2 !important; }
     /* Bloc emploi_du_temps : tableau interactif horaire en cascade depuis l'heure de réveil */
     .emploi-temps-block { margin: 12px 0; }
     .emploi-temps-input-wrap {
@@ -7616,6 +7624,7 @@ function startConsultation() {
   const tc = (!isNaN(taillePere) && !isNaN(tailleMere) && sexe) ? Math.round((taillePere + tailleMere + (sexe==='Fille'?-13:13))/2) : null;
 
   state.client = {
+    ...(state.client || {}),
     prenomEnfant,
     nomFamille: document.getElementById('nom-famille-enfant')?.value.trim() || '',
     ageEnfant: document.getElementById('age-enfant').value.trim() || (ageReel?.str || ''),
@@ -7648,7 +7657,9 @@ function startConsultation() {
     sexeParent2: document.getElementById('sexe-parent2')?.value || 'papa',
     roleParents: document.getElementById('role-parents')?.value || 'les deux parents',
     problematique: document.getElementById('problematique-text').value.trim(),
-    objectifs: document.getElementById('objectifs-text').value.trim()
+    objectifs: document.getElementById('objectifs-text').value.trim(),
+    // Onglet Sieste + Emploi du temps : DOM = source de vérité au moment de démarrer la consult
+    sieste: document.querySelector('input[name="sieste"]:checked')?.value || (state.client && state.client.sieste) || ''
   };
   state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
   state.completedSet = new Set();
@@ -10503,17 +10514,20 @@ function syncSolutionsFromPbs() {
   // Récupérer alim/allaitMode pour le sync via autoCheckIfAlim
   const c = (state && state.client) || {};
   const alimSet = new Set([...(Array.isArray(c.alimentation) ? c.alimentation : []), ...(Array.isArray(c.allaitementMode) ? c.allaitementMode : [])]);
+  const siesteVal = c.sieste || '';
   sols.forEach(cat => {
     (cat.children || []).forEach(ch => {
       const pbs = Array.isArray(ch.autoCheckIfPbs) ? ch.autoCheckIfPbs : [];
       const alims = Array.isArray(ch.autoCheckIfAlim) ? ch.autoCheckIfAlim : [];
-      // Pas de pb ni d'alim associés → solution gérée manuellement uniquement, ne pas toucher
-      if (pbs.length === 0 && alims.length === 0) return;
+      const siestes = Array.isArray(ch.autoCheckIfSieste) ? ch.autoCheckIfSieste : [];
+      // Pas de critère auto associé → solution gérée manuellement uniquement, ne pas toucher
+      if (pbs.length === 0 && alims.length === 0 && siestes.length === 0) return;
       // Édition manuelle (clic sur la case) → respecter le choix utilisateur, ne plus auto-sync
       if (state.selectedSolutionsManuallyEdited.has(ch.id)) return;
-      // Mode auto : la solution suit l'état de ses pbs OU de ses alim
+      // Mode auto : la solution suit l'état de ses pbs OU de ses alim OU de la sieste cible
       const shouldCheck = pbs.some(p => state.selectedPbs && state.selectedPbs.has(p))
-        || alims.some(a => alimSet.has(a));
+        || alims.some(a => alimSet.has(a))
+        || (siesteVal && siestes.includes(siesteVal));
       if (shouldCheck) state.selectedSolutions.add(ch.id);
       else state.selectedSolutions.delete(ch.id);
     });
