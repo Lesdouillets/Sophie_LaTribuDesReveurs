@@ -3852,6 +3852,45 @@
     .sieste-row .sieste-label { font-size: 14px; }
     .sieste-row.sieste-selected { background: #ecfeff; border-color: #06b6d4; color: var(--text); }
     .sieste-row.sieste-selected:hover { background: #cffafe; }
+    /* Bloc emploi_du_temps : tableau interactif horaire en cascade depuis l'heure de réveil */
+    .emploi-temps-block { margin: 12px 0; }
+    .emploi-temps-input-wrap {
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      margin-bottom: 14px; padding: 12px 16px;
+      background: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 12px;
+    }
+    .emploi-temps-input-wrap label { font-weight: 600; color: #92400e; font-size: 14px; }
+    .emploi-temps-input {
+      font-size: 16px; padding: 6px 10px; border: 1.5px solid #d97706;
+      border-radius: 6px; font-variant-numeric: tabular-nums; font-weight: 600;
+    }
+    .emploi-temps-table { display: flex; flex-direction: column; gap: 6px; }
+    .emploi-temps-row {
+      display: grid; grid-template-columns: 150px 1fr; gap: 14px;
+      align-items: center; padding: 10px 14px; border-radius: 10px;
+      border: 1.5px solid; font-size: 14px; line-height: 1.35;
+    }
+    .emploi-temps-row.kind-wake { background: #fef3c7; border-color: #f59e0b; color: #92400e; font-weight: 600; }
+    .emploi-temps-row.kind-te { background: #dbeafe; border-color: #93c5fd; color: #1e3a8a; }
+    .emploi-temps-row.kind-sieste { background: #ede9fe; border-color: #c4b5fd; color: #5b21b6; }
+    .emploi-temps-row.kind-milestone { background: #f3f4f6; border-color: #d1d5db; color: #475569; font-style: italic; }
+    .emploi-temps-row.kind-coucher { background: #1e293b; border-color: #0f172a; color: #fff; font-weight: 600; }
+    .emploi-temps-time { font-weight: 700; font-variant-numeric: tabular-nums; font-size: 15px; }
+    .emploi-temps-time small { display: block; font-size: 11px; font-weight: 500; opacity: 0.85; margin-top: 2px; }
+    .emploi-temps-row .et-icon { display: inline-block; margin-right: 6px; }
+    .emploi-temps-row .et-duration-hint { font-size: 12px; opacity: 0.8; margin-left: 6px; }
+    .emploi-temps-notes {
+      margin-top: 12px; padding: 10px 14px;
+      background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px;
+      font-size: 12.5px; color: #7c2d12;
+    }
+    .emploi-temps-notes-warn {
+      margin-top: 8px; padding: 8px 12px;
+      background: #fee2e2; border: 1.5px solid #f87171; border-radius: 8px;
+      font-size: 13px; color: #991b1b; font-weight: 600;
+    }
+    .emploi-temps-notes ul { margin: 4px 0 0 20px; padding: 0; }
+    .emploi-temps-notes li { margin-bottom: 3px; }
     @keyframes sieste-glow-pulse {
       0%, 100% { box-shadow: 0 0 6px rgba(245, 158, 11, 0.45), 0 0 0 0 rgba(245, 158, 11, 0.0); border-color: #f59e0b; }
       50%      { box-shadow: 0 0 22px rgba(245, 158, 11, 0.95), 0 0 36px rgba(245, 158, 11, 0.55); border-color: #d97706; }
@@ -6417,6 +6456,117 @@ function onSiesteChange() {
 }
 window.onSiesteChange = onSiesteChange;
 
+// ─── Helpers Emploi du temps ─────────────────────────────────────
+function _etParseHHMMtoMin(s) {
+  if (!s || typeof s !== 'string') return 7 * 60;
+  const m = s.match(/^(\d{1,2}):(\d{2})/);
+  if (!m) return 7 * 60;
+  const h = parseInt(m[1], 10) || 0;
+  const mn = parseInt(m[2], 10) || 0;
+  return ((h * 60) + mn) % 1440;
+}
+function _etMinToHHMM(min) {
+  const m = ((min % 1440) + 1440) % 1440;
+  const h = Math.floor(m / 60);
+  const mn = m % 60;
+  return String(h).padStart(2, '0') + ':' + String(mn).padStart(2, '0');
+}
+function _etFormatDuration(min) {
+  if (min < 60) return min + ' min';
+  const h = Math.floor(min / 60);
+  const mn = min % 60;
+  return mn === 0 ? h + 'h' : h + 'h' + String(mn).padStart(2, '0');
+}
+// Calcule la cascade des horaires depuis l'heure de réveil et retourne le HTML du tableau + notes.
+function renderEmploiDuTempsInner(b, wakeUpStr) {
+  const wakeUpMin = _etParseHHMMtoMin(wakeUpStr);
+  const rows = Array.isArray(b.rows) ? b.rows : [];
+  // Pass 1 : cascade TE/Sieste/Coucher
+  let cur = wakeUpMin;
+  let coucherMin = null;
+  const computed = rows.map(r => {
+    const c = { row: r };
+    if (r.kind === 'wake') {
+      c.time = cur;
+    } else if (r.kind === 'te' || r.kind === 'sieste') {
+      c.start = cur;
+      c.end = cur + (r.durationMin || 0);
+      cur = c.end;
+    } else if (r.kind === 'coucher') {
+      c.time = cur;
+      coucherMin = cur;
+    } else if (r.kind === 'milestone') {
+      if (r.staticTime) c.staticTime = r.staticTime;
+      // offsetFromCoucherMin → traité en pass 2
+    }
+    return c;
+  });
+  // Pass 2 : milestones avec offsetFromCoucherMin
+  if (coucherMin == null) {
+    // pas de row "coucher" explicite → coucher = currentTime final
+    coucherMin = cur;
+  }
+  computed.forEach(c => {
+    if (c.row.kind === 'milestone' && c.row.offsetFromCoucherMin != null) {
+      c.time = coucherMin + c.row.offsetFromCoucherMin;
+    }
+  });
+  // Render rows
+  const iconMap = { wake: '⏰', te: '☀️', sieste: '💤', milestone: '🍽️', coucher: '🌙' };
+  const rowsHtml = computed.map(c => {
+    const r = c.row;
+    const icon = r.icon || iconMap[r.kind] || '•';
+    const label = (r.label || '').replace(/</g, '&lt;');
+    const labelHint = r.labelHint ? ` <span class="et-duration-hint">${r.labelHint.replace(/</g, '&lt;')}</span>` : '';
+    let timeCell = '';
+    if (r.kind === 'wake' || r.kind === 'coucher') {
+      timeCell = `<div class="emploi-temps-time">${_etMinToHHMM(c.time)}</div>`;
+    } else if (r.kind === 'te' || r.kind === 'sieste') {
+      const dur = r.durationMin ? _etFormatDuration(r.durationMin) : '';
+      const range = r.durationRange ? `<small>${r.durationRange}</small>` : '';
+      timeCell = `<div class="emploi-temps-time">${_etMinToHHMM(c.start)} – ${_etMinToHHMM(c.end)}<small>${dur}${r.durationRange ? ' · ' + r.durationRange : ''}</small></div>`;
+    } else if (r.kind === 'milestone') {
+      if (c.staticTime) timeCell = `<div class="emploi-temps-time">~ ${c.staticTime}</div>`;
+      else if (c.time != null) timeCell = `<div class="emploi-temps-time">${_etMinToHHMM(c.time)}</div>`;
+      else timeCell = `<div class="emploi-temps-time">—</div>`;
+    }
+    return `<div class="emploi-temps-row kind-${r.kind}">
+      ${timeCell}
+      <div><span class="et-icon">${icon}</span>${label}${labelHint}</div>
+    </div>`;
+  }).join('');
+  // Notes : "Pas après {coucher-2h}-{coucher-1h30}" + autres notes statiques
+  const noPasApresStart = _etMinToHHMM(coucherMin - 120);
+  const noPasApresEnd = _etMinToHHMM(coucherMin - 90);
+  let notesHtml = `<div class="emploi-temps-notes-warn">⚠️ Sieste : Pas après ${noPasApresStart}-${noPasApresEnd}</div>`;
+  if (Array.isArray(b.notes) && b.notes.length) {
+    notesHtml += `<div class="emploi-temps-notes"><strong>📝 Remarques</strong><ul>${b.notes.map(n => `<li>${String(n).replace(/</g, '&lt;')}</li>`).join('')}</ul></div>`;
+  }
+  return `<div class="emploi-temps-table">${rowsHtml}</div>${notesHtml}`;
+}
+window.renderEmploiDuTempsInner = renderEmploiDuTempsInner;
+
+function onScheduleWakeUpChange(inputEl) {
+  if (!inputEl) return;
+  const wakeUp = inputEl.value || '07:00';
+  // Persister dans state.client + autosave
+  if (!state.client) state.client = {};
+  state.client.scheduleWakeUp = wakeUp;
+  if (typeof autoSaveFiche === 'function') autoSaveFiche();
+  // Re-render uniquement le contenu du bloc parent (pas tout renderCurrentSection pour rester réactif)
+  const block = inputEl.closest('.emploi-temps-block');
+  if (!block) return;
+  const rowsJson = block.dataset.rows || '[]';
+  const notesJson = block.dataset.notes || '[]';
+  let rows = [], notes = [];
+  try { rows = JSON.parse(rowsJson); } catch (e) {}
+  try { notes = JSON.parse(notesJson); } catch (e) {}
+  const fakeBlock = { rows, notes };
+  const contentEl = block.querySelector('.emploi-temps-content');
+  if (contentEl) contentEl.innerHTML = renderEmploiDuTempsInner(fakeBlock, wakeUp);
+}
+window.onScheduleWakeUpChange = onScheduleWakeUpChange;
+
 async function loadSavedClients() {
   updateEnseigneUI();
   let saved = JSON.parse(localStorage.getItem('tdr_clients') || '[]');
@@ -6872,6 +7022,8 @@ function autoSaveFiche() {
     c.alimentation = [...document.querySelectorAll('input[name="alim"]:checked')].map(x => x.value);
     c.allaitementMode = [...document.querySelectorAll('input[name="allaitement_mode"]:checked')].map(x => x.value);
     c.sieste = document.querySelector('input[name="sieste"]:checked')?.value || '';
+    // scheduleWakeUp est mis à jour live par onScheduleWakeUpChange ; on conserve la valeur courante
+    c.scheduleWakeUp = c.scheduleWakeUp || '';
     c.rgo = document.getElementById('medical-rgo')?.checked || false;
     c.aplvSuspecte = document.getElementById('medical-aplv-susp')?.checked || false;
     c.aplvConfirme = document.getElementById('medical-aplv-conf')?.checked || false;
@@ -9125,6 +9277,26 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const btnInlineStyle = b.width ? ` style="width:${b.width};min-width:0"` : '';
     const alignCls = b.align === 'right' ? ' info-btn-align-right' : '';
     return `<div class="info-btn-wrap${alignCls}"><button type="button" class="info-btn"${btnInlineStyle} onclick="openInfoPanel('${btnId}')"><span class="info-btn-emoji">💡</span><span>${label}</span></button></div>`;
+  }
+
+  // Tableau interactif "Emploi du temps" — cascade depuis heure de réveil (B3 dans l'Excel original).
+  // Cf. fichier consultation.xlsx, onglets "Emploi X mois (Y siestes)".
+  if (b.type === 'emploi_du_temps') {
+    const blockId = `et-${sectionId||'x'}-${String(path||i).replace(/\./g,'-')}`;
+    const rows = Array.isArray(b.rows) ? b.rows : [];
+    const wakeUpDefault = b.wakeUpDefault || '07:00';
+    // Heure de réveil persistée dans state.client.scheduleWakeUp (partagée entre âges)
+    const wakeUpStored = (state && state.client && state.client.scheduleWakeUp) || '';
+    const wakeUp = wakeUpStored || wakeUpDefault;
+    const innerHtml = renderEmploiDuTempsInner(b, wakeUp);
+    return `<div class="emploi-temps-block" data-emploi-block-id="${blockId}" data-rows='${JSON.stringify(rows).replace(/'/g, '&#39;')}' data-notes='${JSON.stringify(b.notes || []).replace(/'/g, '&#39;')}'>
+      <div class="emploi-temps-input-wrap">
+        <label for="${blockId}-wake">⏰ Heure de réveil :</label>
+        <input id="${blockId}-wake" class="emploi-temps-input" type="time" value="${wakeUp}" oninput="onScheduleWakeUpChange(this)">
+        <span style="font-size:12px;color:#92400e;font-style:italic">Modifie l'heure → tout l'emploi du temps recalcule en cascade.</span>
+      </div>
+      <div class="emploi-temps-content">${innerHtml}</div>
+    </div>`;
   }
 
   // Grille de cartes pour "Courbe de poids qui diminue" — chaque carte regroupe un levier (ou plusieurs sous-leviers)
