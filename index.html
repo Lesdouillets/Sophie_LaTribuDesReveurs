@@ -3813,38 +3813,45 @@
     .pb-cat-btn.all:hover { background: #d8f3dc; border-color: var(--primary-light); }
     .pb-cat-btn.none { color: #e74c3c; }
     .pb-cat-btn.none:hover { background: #ffeaea; border-color: #e74c3c; }
-    /* Onglet Sieste : option A v2 — grille 2 colonnes (count gauche en gros, options droite) + glow doré */
+    /* Onglet Sieste : option A v2 — grille 2 colonnes (count gauche en gros, options droite, même fond pastel)
+       + glow doré sur les cases qui matchent l'âge.
+       Couleurs propagées via variables CSS (--sieste-bg, --sieste-fg, --sieste-bg-hover) sur .sieste-group. */
     .sieste-group {
       display: grid; grid-template-columns: 140px 1fr;
       gap: 14px; margin-bottom: 14px; align-items: stretch;
+      --sieste-bg: #f1f5f9; --sieste-fg: #475569; --sieste-bg-hover: #e2e8f0;
     }
+    .sieste-group.var-4 { --sieste-bg: #fef3c7; --sieste-fg: #92400e; --sieste-bg-hover: #fde68a; }
+    .sieste-group.var-3 { --sieste-bg: #ffedd5; --sieste-fg: #c2410c; --sieste-bg-hover: #fed7aa; }
+    .sieste-group.var-2 { --sieste-bg: #dbeafe; --sieste-fg: #1e40af; --sieste-bg-hover: #bfdbfe; }
+    .sieste-group.var-1 { --sieste-bg: #dcfce7; --sieste-fg: #166534; --sieste-bg-hover: #bbf7d0; }
+    .sieste-group.var-tc { --sieste-bg: #f3e8ff; --sieste-fg: #6b21a8; --sieste-bg-hover: #e9d5ff; }
+    .sieste-group.var-other { --sieste-bg: #fee2e2; --sieste-fg: #991b1b; --sieste-bg-hover: #fecaca; }
     .sieste-group-left {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       border-radius: 12px; padding: 16px 10px;
       font-weight: 800; font-size: 28px; line-height: 1.05;
       text-align: center;
+      background: var(--sieste-bg); color: var(--sieste-fg);
     }
+    .sieste-group.var-tc .sieste-group-left { font-size: 18px; }
+    .sieste-group.var-other .sieste-group-left { font-size: 20px; }
     .sieste-group-left .sieste-group-sub {
       font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
       margin-top: 4px; opacity: 0.85;
     }
-    .sieste-group-left.var-4 { background: #fef3c7; color: #92400e; }
-    .sieste-group-left.var-3 { background: #ffedd5; color: #c2410c; }
-    .sieste-group-left.var-2 { background: #dbeafe; color: #1e40af; }
-    .sieste-group-left.var-1 { background: #dcfce7; color: #166534; }
-    .sieste-group-left.var-tc { background: #f3e8ff; color: #6b21a8; font-size: 18px; }
-    .sieste-group-left.var-other { background: #fee2e2; color: #991b1b; font-size: 20px; }
     .sieste-group-right { display: flex; flex-direction: column; gap: 6px; justify-content: center; }
     .sieste-row {
       display: flex; align-items: center; gap: 10px;
       padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 10px;
       cursor: pointer; transition: background .15s, border-color .15s;
-      background: #fff;
+      background: var(--sieste-bg, #fff); color: var(--sieste-fg, var(--text));
     }
-    .sieste-row:hover { background: #f8fafc; }
+    .sieste-row:hover { background: var(--sieste-bg-hover, #f8fafc); }
     .sieste-row input[type="radio"] { margin: 0; cursor: pointer; }
-    .sieste-row .sieste-label { font-size: 14px; color: var(--text); }
-    .sieste-row.sieste-selected { background: #ecfeff; border-color: #06b6d4; }
+    .sieste-row .sieste-label { font-size: 14px; }
+    .sieste-row.sieste-selected { background: #ecfeff; border-color: #06b6d4; color: var(--text); }
+    .sieste-row.sieste-selected:hover { background: #cffafe; }
     @keyframes sieste-glow-pulse {
       0%, 100% { box-shadow: 0 0 6px rgba(245, 158, 11, 0.45), 0 0 0 0 rgba(245, 158, 11, 0.0); border-color: #f59e0b; }
       50%      { box-shadow: 0 0 22px rgba(245, 158, 11, 0.95), 0 0 36px rgba(245, 158, 11, 0.55); border-color: #d97706; }
@@ -4205,8 +4212,8 @@
           <h3>💤 Sieste cible</h3>
           <p style="font-size:12px;color:#999;margin-bottom:14px">Choisis l'objectif de siestes pour cet enfant <strong>(obligatoire, 1 seule case)</strong>. Les cases qui correspondent à l'âge de [prénom_enfant] glow en doré — l'effet s'arrête dès qu'une case est sélectionnée.</p>
           <div id="sieste-options" style="max-width:560px">
-            <div class="sieste-group">
-              <div class="sieste-group-left var-4">4<div class="sieste-group-sub">siestes</div></div>
+            <div class="sieste-group var-4">
+              <div class="sieste-group-left">4<div class="sieste-group-sub">siestes</div></div>
               <div class="sieste-group-right">
                 <label class="sieste-row" data-age-min="2" data-age-max="4">
                   <input type="radio" name="sieste" value="2-4m" onchange="onSiesteChange()">
@@ -4215,8 +4222,8 @@
               </div>
             </div>
 
-            <div class="sieste-group">
-              <div class="sieste-group-left var-3">3<div class="sieste-group-sub">siestes</div></div>
+            <div class="sieste-group var-3">
+              <div class="sieste-group-left">3<div class="sieste-group-sub">siestes</div></div>
               <div class="sieste-group-right">
                 <label class="sieste-row" data-age-min="4" data-age-max="6">
                   <input type="radio" name="sieste" value="4-6m" onchange="onSiesteChange()">
@@ -4233,8 +4240,8 @@
               </div>
             </div>
 
-            <div class="sieste-group">
-              <div class="sieste-group-left var-2">2<div class="sieste-group-sub">siestes</div></div>
+            <div class="sieste-group var-2">
+              <div class="sieste-group-left">2<div class="sieste-group-sub">siestes</div></div>
               <div class="sieste-group-right">
                 <label class="sieste-row" data-age-min="8" data-age-max="15">
                   <input type="radio" name="sieste" value="8-15m" onchange="onSiesteChange()">
@@ -4247,10 +4254,10 @@
               </div>
             </div>
 
-            <div class="sieste-group">
-              <div class="sieste-group-left var-1">1<div class="sieste-group-sub">sieste</div></div>
+            <div class="sieste-group var-1">
+              <div class="sieste-group-left">1<div class="sieste-group-sub">sieste</div></div>
               <div class="sieste-group-right">
-                <label class="sieste-row" data-age-min="15" data-age-max="36">
+                <label class="sieste-row" data-age-min="15" data-age-max="36" data-age-inclusive="true">
                   <input type="radio" name="sieste" value="15m-3a" onchange="onSiesteChange()">
                   <span class="sieste-label">15 mois - 3 ans (inclus)</span>
                 </label>
@@ -4261,8 +4268,8 @@
               </div>
             </div>
 
-            <div class="sieste-group">
-              <div class="sieste-group-left var-tc">Temps<br>calme</div>
+            <div class="sieste-group var-tc">
+              <div class="sieste-group-left">Temps<br>calme</div>
               <div class="sieste-group-right">
                 <label class="sieste-row" data-age-min="48">
                   <input type="radio" name="sieste" value="4a-plus-tc" onchange="onSiesteChange()">
@@ -4271,8 +4278,8 @@
               </div>
             </div>
 
-            <div class="sieste-group">
-              <div class="sieste-group-left var-other">Autre</div>
+            <div class="sieste-group var-other">
+              <div class="sieste-group-left">Autre</div>
               <div class="sieste-group-right">
                 <label class="sieste-row">
                   <input type="radio" name="sieste" value="pas-de-changement" onchange="onSiesteChange()">
@@ -6390,8 +6397,12 @@ function updateSiesteHighlight() {
     if (minAttr == null && maxAttr == null) return; // "Pas de changement" → jamais glow
     const min = minAttr != null ? parseFloat(minAttr) : null;
     const max = maxAttr != null ? parseFloat(maxAttr) : null;
-    const matches = (min == null || age >= min) && (max == null || age <= max);
-    if (matches) row.classList.add('sieste-glow');
+    // Max exclusif par défaut (à 8 mois → on highlight 8-10 et 8-15, PAS 6-8).
+    // Sauf si data-age-inclusive="true" (ex. "15 mois - 3 ans (inclus)" doit matcher 36 mois).
+    const inclusive = row.dataset.ageInclusive === 'true';
+    const matchMax = max == null || (inclusive ? age <= max : age < max);
+    const matchMin = min == null || age >= min;
+    if (matchMin && matchMax) row.classList.add('sieste-glow');
   });
 }
 window.updateSiesteHighlight = updateSiesteHighlight;
