@@ -10057,10 +10057,39 @@ function syncSolutionsFromPbs() {
   syncSubChecklistFromPbs();
   // Re-applique les cascades tickbox -> sous-sous-checkboxes (env_chgmt_lit_*)
   reapplyTickboxCascades();
-  // Solutions avec courbe_cards_grid alwaysShowAll : parent state derive de l'etat des enfants
-  // (ex. env_chambre, env_lit_card, env_chgmt_lit, journee_eveil)
-  // Override le flag manualEdited pour ces parents auto-piloted.
+  // Cascade niveau 1 ← niveau 2 puis niveau 0 ← niveau 1
+  applyParentTickCascade();
+}
+
+// Cascade tick parent ← enfants pour empêcher un parent d'être tické sans enfant tické :
+// - Niveau 1 (sous-cartes courbe_cards_grid avec grid imbriqué, ex. nutri_lait_biberon) ← Niveau 2 (sous-sous-cartes)
+// - Niveau 0 (solutions avec courbe_cards_grid alwaysShowAll, ex. nutri_lait, nutri_diversification) ← Niveau 1
+// Les flags manuallyEdited sont OVERRIDE (parent strictement sous contrôle des enfants).
+function applyParentTickCascade() {
+  const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
   if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+  if (!state.courbeCardsTickedManuallyEdited) state.courbeCardsTickedManuallyEdited = new Set();
+  if (!state.selectedSolutions) state.selectedSolutions = new Set();
+  if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
+  // Niveau 1 ← Niveau 2 : sous-carte tickée iff au moins une sous-sous-carte est tickée
+  sols.forEach(cat => {
+    (cat.children || []).forEach(ch => {
+      if (!Array.isArray(ch.blocks)) return;
+      ch.blocks.forEach(b => {
+        if (!b || b.type !== 'courbe_cards_grid' || !Array.isArray(b.items)) return;
+        b.items.forEach(it => {
+          if (!Array.isArray(it.blocks)) return;
+          const nestedGrid = it.blocks.find(nb => nb && nb.type === 'courbe_cards_grid' && Array.isArray(nb.items));
+          if (!nestedGrid) return;
+          const anyChildTicked = nestedGrid.items.some(sub => state.courbeCardsTicked.has(sub.id));
+          if (anyChildTicked) state.courbeCardsTicked.add(it.id);
+          else state.courbeCardsTicked.delete(it.id);
+          state.courbeCardsTickedManuallyEdited.delete(it.id);
+        });
+      });
+    });
+  });
+  // Niveau 0 ← Niveau 1 : solution tickée iff au moins un item du grid alwaysShowAll est tické
   sols.forEach(cat => {
     (cat.children || []).forEach(ch => {
       if (!Array.isArray(ch.blocks)) return;
@@ -11859,6 +11888,43 @@ function toggleCourbeCardTickFromSol(itId) {
   else state.courbeCardsTicked.add(itId);
   // Marquer comme édité manuellement → syncSubChecklistFromPbs ne touchera plus cet item
   state.courbeCardsTickedManuallyEdited.add(itId);
+  // Cascade DOWN : si on décoche un parent (ex. Biberon), décocher aussi tous ses descendants
+  // (jusveg, animal, quantité, etc.) pour préserver "un enfant a toujours ses parents tickés"
+  if (wasTicked) {
+    const findItemById = (blocks, id) => {
+      if (!Array.isArray(blocks)) return null;
+      for (const b of blocks) {
+        if (!b || b.type !== 'courbe_cards_grid' || !Array.isArray(b.items)) continue;
+        for (const it of b.items) {
+          if (it.id === id) return it;
+          const nested = findItemById(it.blocks, id);
+          if (nested) return nested;
+        }
+      }
+      return null;
+    };
+    const untickAllDescendants = (it) => {
+      if (!Array.isArray(it.blocks)) return;
+      it.blocks.forEach(b => {
+        if (!b || b.type !== 'courbe_cards_grid' || !Array.isArray(b.items)) return;
+        b.items.forEach(sub => {
+          state.courbeCardsTicked.delete(sub.id);
+          state.courbeCardsTickedManuallyEdited.add(sub.id);
+          untickAllDescendants(sub);
+        });
+      });
+    };
+    const allSolsForDown = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
+    let foundIt = null;
+    for (const cat of allSolsForDown) {
+      for (const ch of (cat.children || [])) {
+        foundIt = findItemById(ch.blocks, itId);
+        if (foundIt) break;
+      }
+      if (foundIt) break;
+    }
+    if (foundIt) untickAllDescendants(foundIt);
+  }
   // Mutex : si on coche une des 3 sous-checkboxes de env_chgmt_lit
   // → uncheck les 2 autres + uncheck env_chgmt_chambre / env_chgmt_lit_chambre (top-level mutex)
   const CHGMT_LIT_SUBS = ['env_chgmt_lit_cododo_barreau', 'env_chgmt_lit_barreau_ouvert', 'env_chgmt_lit_sol_barreau'];
@@ -11934,6 +12000,8 @@ function toggleCourbeCardTickFromSol(itId) {
       }
     }
   }
+  // Cascade : empêche parent d'être tické sans enfant tické (override toute édition manuelle parent)
+  if (typeof applyParentTickCascade === 'function') applyParentTickCascade();
   if (typeof renderCurrentSection === 'function') renderCurrentSection();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
