@@ -3883,11 +3883,16 @@
       /* overflow:visible nécessaire pour que la bulle BD du warning déborde à droite */
     }
     .emploi-temps-tbl th {
-      text-align: left; padding: 11px 12px; background: #d1fae5; color: #064e3b;
+      text-align: left; padding: 11px 12px; background: #475569; color: #fff;
       font-weight: 800; font-size: 13.5px; text-transform: uppercase; letter-spacing: 0.6px;
-      border-bottom: 2px solid #166534;
+      border-bottom: 2px solid #1e293b;
     }
     .emploi-temps-tbl td { padding: 9px 12px; border-bottom: 1px solid #e5e7eb; vertical-align: middle; color: #1e293b; }
+    /* Colonne Activité réduite (les labels longs wrappent) ; les autres colonnes prennent le reste */
+    .emploi-temps-tbl th:nth-child(1), .emploi-temps-tbl td:nth-child(1) { width: 260px; max-width: 260px; white-space: normal; }
+    .emploi-temps-tbl th:nth-child(2), .emploi-temps-tbl td:nth-child(2) { width: 130px; }
+    .emploi-temps-tbl th:nth-child(3), .emploi-temps-tbl td:nth-child(3) { width: 120px; }
+    .emploi-temps-tbl th:nth-child(4), .emploi-temps-tbl td:nth-child(4) { width: auto; }
     /* Réveil + Coucher : juste en gras, fond blanc, séparateurs un peu plus marqués */
     .emploi-temps-tbl tr.kind-wake td { font-weight: 700; border-bottom: 2px solid #cbd5e1; }
     .emploi-temps-tbl tr.kind-coucher td { font-weight: 700; border-top: 2px solid #cbd5e1; }
