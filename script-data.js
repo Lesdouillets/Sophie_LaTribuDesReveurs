@@ -2532,7 +2532,7 @@ const SCRIPT_DATA = {
                   ]
                 },
                 {
-                  id: "nutri_lait_biberon_quantite", emoji: "📏", label: "Quantité",
+                  id: "nutri_lait_biberon_quantite", emoji: "🔢", label: "Quantité",
                   blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }]
                 },
                 {
@@ -2540,7 +2540,7 @@ const SCRIPT_DATA = {
                   blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }]
                 },
                 {
-                  id: "nutri_lait_biberon_tetine", emoji: "🍼", label: "Tétine de biberon",
+                  id: "nutri_lait_biberon_tetine", emoji: "🫧", label: "Tétine de biberon",
                   blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }]
                 },
                 {
@@ -2565,7 +2565,8 @@ const SCRIPT_DATA = {
               ]
             }
           ] },
-          { id: "nutri_diversification", label: "Diversification", cardLabel: "Diversification", cardEmoji: "🥄",
+          { id: "nutri_diversification", label: "Diversification", cardLabel: "Diversification", cardEmoji: "🍴",
+            showIfAlim: ["Diversification"],
             autoCheckIfPbs: [
               "nutri_inversion_lait_solide",
               "nutri_inf_inversion_lait_solide",

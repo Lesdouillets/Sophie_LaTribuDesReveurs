@@ -8947,14 +8947,24 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       });
       return min === Infinity ? 1e9 : min;
     };
-    // Helper : item caché par filtre d'âge (showIfAgeMinMonths / showIfAgeMaxMonths)
+    // Helper : item caché par filtre d'âge (showIfAgeMinMonths/Max) ou alim (it.alim ou it.showIfAlim)
     // Utilise âge corrigé si dispo, sinon âge réel (cf. getEffectiveAgeMonths)
+    // Filtre alim : si it.alim/showIfAlim est défini, item caché si aucune valeur ne match c.alimentation/allaitementMode
     const isHiddenByAge = (it) => {
-      if (it.showIfAgeMinMonths == null && it.showIfAgeMaxMonths == null) return false;
-      const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
-      if (age == null) return true; // pas d'âge → cacher par prudence
-      if (it.showIfAgeMinMonths != null && age < it.showIfAgeMinMonths) return true;
-      if (it.showIfAgeMaxMonths != null && age > it.showIfAgeMaxMonths) return true;
+      if (it.showIfAgeMinMonths != null || it.showIfAgeMaxMonths != null) {
+        const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
+        if (age == null) return true; // pas d'âge → cacher par prudence
+        if (it.showIfAgeMinMonths != null && age < it.showIfAgeMinMonths) return true;
+        if (it.showIfAgeMaxMonths != null && age > it.showIfAgeMaxMonths) return true;
+      }
+      const alimConds = it.showIfAlim || it.alim;
+      if (alimConds) {
+        const vals = Array.isArray(alimConds) ? alimConds : [alimConds];
+        const c = (state && state.client) || {};
+        const alim = Array.isArray(c.alimentation) ? c.alimentation : [];
+        const allaitMode = Array.isArray(c.allaitementMode) ? c.allaitementMode : [];
+        if (!vals.some(v => alim.includes(v) || allaitMode.includes(v))) return true;
+      }
       return false;
     };
     const visibleItems = b.alwaysShowAll
@@ -9679,13 +9689,21 @@ function renderSolutionsCheckboxes(opts) {
     relationnel:      { main: '#ec4899', dark: '#be185d', light: '#fdf2f8' },
     sante:            { main: '#14b8a6', dark: '#0f766e', light: '#f0fdfa' },
   };
-  // Helper : ch (solution enfant) caché par filtre d'âge
+  // Helper : ch (solution enfant) caché par filtre d'âge ou par filtre alim (ch.showIfAlim)
   const isChHiddenByAge = (ch) => {
-    if (ch.showIfAgeMinMonths == null && ch.showIfAgeMaxMonths == null) return false;
-    const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
-    if (age == null) return true;
-    if (ch.showIfAgeMinMonths != null && age < ch.showIfAgeMinMonths) return true;
-    if (ch.showIfAgeMaxMonths != null && age > ch.showIfAgeMaxMonths) return true;
+    if (ch.showIfAgeMinMonths != null || ch.showIfAgeMaxMonths != null) {
+      const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
+      if (age == null) return true;
+      if (ch.showIfAgeMinMonths != null && age < ch.showIfAgeMinMonths) return true;
+      if (ch.showIfAgeMaxMonths != null && age > ch.showIfAgeMaxMonths) return true;
+    }
+    if (ch.showIfAlim) {
+      const vals = Array.isArray(ch.showIfAlim) ? ch.showIfAlim : [ch.showIfAlim];
+      const c = (state && state.client) || {};
+      const alim = Array.isArray(c.alimentation) ? c.alimentation : [];
+      const allaitMode = Array.isArray(c.allaitementMode) ? c.allaitementMode : [];
+      if (!vals.some(v => alim.includes(v) || allaitMode.includes(v))) return true;
+    }
     return false;
   };
   // Partie 1 : liste compacte "Leviers identifiés" style — groupée par catégorie
@@ -9742,13 +9760,23 @@ function renderSolutionsCheckboxes(opts) {
         const gridBlock = gridBlockOnCh;
         const gridItems = gridBlock ? gridBlock.items : [];
         const alwaysAll = !!(gridBlock && gridBlock.alwaysShowAll);
-        // Filtre d'âge (showIfAgeMinMonths/Max) — utilise âge corrigé si dispo, sinon réel
+        // Filtre d'âge (showIfAgeMinMonths/Max) + filtre alim (it.alim/showIfAlim)
+        // Utilise âge corrigé si dispo, sinon réel
         const isHiddenByAge = (it) => {
-          if (it.showIfAgeMinMonths == null && it.showIfAgeMaxMonths == null) return false;
-          const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
-          if (age == null) return true;
-          if (it.showIfAgeMinMonths != null && age < it.showIfAgeMinMonths) return true;
-          if (it.showIfAgeMaxMonths != null && age > it.showIfAgeMaxMonths) return true;
+          if (it.showIfAgeMinMonths != null || it.showIfAgeMaxMonths != null) {
+            const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
+            if (age == null) return true;
+            if (it.showIfAgeMinMonths != null && age < it.showIfAgeMinMonths) return true;
+            if (it.showIfAgeMaxMonths != null && age > it.showIfAgeMaxMonths) return true;
+          }
+          const alimConds = it.showIfAlim || it.alim;
+          if (alimConds) {
+            const vals = Array.isArray(alimConds) ? alimConds : [alimConds];
+            const c = (state && state.client) || {};
+            const alim = Array.isArray(c.alimentation) ? c.alimentation : [];
+            const allaitMode = Array.isArray(c.allaitementMode) ? c.allaitementMode : [];
+            if (!vals.some(v => alim.includes(v) || allaitMode.includes(v))) return true;
+          }
           return false;
         };
         const visibleItems = gridItems.filter(it => {
@@ -10058,22 +10086,27 @@ function syncSubChecklistFromPbs() {
   // Récupérer alim/allaitMode pour le sync via it.alim sur les sous-cartes
   const c = (state && state.client) || {};
   const alimSet = new Set([...(Array.isArray(c.alimentation) ? c.alimentation : []), ...(Array.isArray(c.allaitementMode) ? c.allaitementMode : [])]);
+  function walkBlocks(blocks) {
+    if (!Array.isArray(blocks)) return;
+    blocks.forEach(b => {
+      if (!b || b.type !== 'courbe_cards_grid' || !Array.isArray(b.items)) return;
+      b.items.forEach(it => {
+        if ((it.pb || it.alim) && !state.courbeCardsTickedManuallyEdited.has(it.id)) {
+          const pbs = it.pb ? (Array.isArray(it.pb) ? it.pb : [it.pb]) : [];
+          const alims = it.alim ? (Array.isArray(it.alim) ? it.alim : [it.alim]) : [];
+          const shouldCheck = pbs.some(p => state.selectedPbs && state.selectedPbs.has(p))
+            || alims.some(a => alimSet.has(a));
+          if (shouldCheck) state.courbeCardsTicked.add(it.id);
+          else state.courbeCardsTicked.delete(it.id);
+        }
+        // Recurse: items peuvent contenir des blocks avec leur propre courbe_cards_grid (sous-sous-cartes)
+        walkBlocks(it.blocks);
+      });
+    });
+  }
   sols.forEach(cat => {
     (cat.children || []).forEach(ch => {
-      if (!Array.isArray(ch.blocks)) return;
-      const grid = ch.blocks.find(b => b && b.type === 'courbe_cards_grid');
-      if (!grid || !Array.isArray(grid.items)) return;
-      grid.items.forEach(it => {
-        if (!it.pb && !it.alim) return;
-        // Édition manuelle (clic sur la case) → respecter le choix utilisateur
-        if (state.courbeCardsTickedManuallyEdited.has(it.id)) return;
-        const pbs = it.pb ? (Array.isArray(it.pb) ? it.pb : [it.pb]) : [];
-        const alims = it.alim ? (Array.isArray(it.alim) ? it.alim : [it.alim]) : [];
-        const shouldCheck = pbs.some(p => state.selectedPbs && state.selectedPbs.has(p))
-          || alims.some(a => alimSet.has(a));
-        if (shouldCheck) state.courbeCardsTicked.add(it.id);
-        else state.courbeCardsTicked.delete(it.id);
-      });
+      walkBlocks(ch.blocks);
     });
   });
 }
