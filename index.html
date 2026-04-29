@@ -11256,6 +11256,12 @@ function substituteVars(text) {
     const matched = pbList.some(p => state.selectedPbs && state.selectedPbs.has(p));
     return matched ? content : '';
   });
+  // Conditionnel inline : [if_pb_not:pb1,pb2]contenu[/if_pb_not] → contenu visible si AUCUNE pb listée n'est cochée
+  text = String(text).replace(/\[if_pb_not:([^\]]+)\]([\s\S]*?)\[\/if_pb_not\]/g, (m, pbs, content) => {
+    const pbList = pbs.split(',').map(p => p.trim()).filter(Boolean);
+    const anyMatched = pbList.some(p => state.selectedPbs && state.selectedPbs.has(p));
+    return anyMatched ? '' : content;
+  });
   // Conditionnel inline : [if_alim:val1,val2]contenu[/if_alim] → contenu visible si au moins une valeur d'alimentation listée correspond
   // (match contre state.client.alimentation OU state.client.allaitementMode, comme showIfAlim au niveau bloc)
   text = String(text).replace(/\[if_alim:([^\]]+)\]([\s\S]*?)\[\/if_alim\]/g, (m, alims, content) => {
