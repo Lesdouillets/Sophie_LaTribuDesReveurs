@@ -6601,9 +6601,16 @@ function renderEmploiDuTempsInner(b, wakeUpStr, blockKey) {
       c.time = coucherMin + c.row.offsetFromCoucherMin;
     }
   });
-  // Render rows : Activité | Durée range | Hypothèse | Horaire (sans emoji ; le marqueur "Zzz" est CSS sur kind-sieste)
+  // Render rows : Activité | Horaire | Durée | Hypothèse (sans emoji ; le marqueur "Zzz" est CSS sur kind-sieste)
   const escape = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-  const rowsHtml = computed.map(c => {
+  // Bornes du warning "Pas après" (calculé avant les rows pour pouvoir l'injecter dans la dernière sieste)
+  const noPasApresStart = _etMinToHHMM(coucherMin - 120);
+  const noPasApresEnd = _etMinToHHMM(coucherMin - 90);
+  let lastSiesteIdx = -1;
+  for (let i = computed.length - 1; i >= 0; i--) {
+    if (computed[i].row.kind === 'sieste') { lastSiesteIdx = i; break; }
+  }
+  const rowsHtml = computed.map((c, idx) => {
     const r = c.row;
     const labelHtml = `${escape(r.label)}${r.labelHint ? ` <span class="et-hint">${escape(r.labelHint)}</span>` : ''}`;
     let rangeCell = '', hypCell = '', timeCell = '';
@@ -6619,14 +6626,18 @@ function renderEmploiDuTempsInner(b, wakeUpStr, blockKey) {
       else if (c.time != null) timeCell = `<span class="et-time">${_etMinToHHMM(c.time)}</span>`;
       else timeCell = '<span class="et-time">—</span>';
     }
-    return `<tr class="kind-${r.kind}"><td>${labelHtml}</td><td>${timeCell}</td><td>${rangeCell}</td><td>${hypCell}</td></tr>`;
+    // Bulle BD du warning "Pas après HH:MM" attachée à la dernière sieste (déborde à droite)
+    const isLastSieste = (idx === lastSiesteIdx);
+    const warnBubble = isLastSieste
+      ? `<div class="et-last-sieste-warn">Pas après ${noPasApresStart}-${noPasApresEnd}</div>`
+      : '';
+    const trClass = `kind-${r.kind}${isLastSieste ? ' et-last-sieste' : ''}`;
+    return `<tr class="${trClass}"><td>${labelHtml}</td><td>${timeCell}</td><td>${rangeCell}</td><td>${hypCell}${warnBubble}</td></tr>`;
   }).join('');
   const tableHtml = `<table class="emploi-temps-tbl"><thead><tr><th>Activité</th><th>Horaire</th><th>Durée</th><th>Hypothèse</th></tr></thead><tbody>${rowsHtml}</tbody></table>`;
-  const noPasApresStart = _etMinToHHMM(coucherMin - 120);
-  const noPasApresEnd = _etMinToHHMM(coucherMin - 90);
-  let notesHtml = `<div class="emploi-temps-notes-warn">⚠️ Sieste : Pas après ${noPasApresStart}-${noPasApresEnd}</div>`;
+  let notesHtml = '';
   if (Array.isArray(b.notes) && b.notes.length) {
-    notesHtml += `<div class="emploi-temps-notes"><strong>📝 Remarques</strong><ul>${b.notes.map(n => `<li>${escape(n)}</li>`).join('')}</ul></div>`;
+    notesHtml = `<div class="emploi-temps-notes"><strong>📝 Remarques</strong><ul>${b.notes.map(n => `<li>${escape(n)}</li>`).join('')}</ul></div>`;
   }
   return tableHtml + notesHtml;
 }
