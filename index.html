@@ -10576,7 +10576,7 @@ function renderSolutionsCheckboxes(opts) {
     const activeCls = isActive ? ' active' : '';
     const vividBorder = catVividBorderMap[cat.id] || c.dark;
     const activeStyle = isActive
-      ? `background:linear-gradient(90deg,${c.dark},${c.main});color:white;border:3px solid ${vividBorder};box-shadow:0 6px 18px ${c.main}66`
+      ? `background:${c.main};color:white;border:3px solid ${vividBorder};box-shadow:0 6px 18px ${c.main}66`
       : `border:3px solid ${vividBorder};background:${pastel};box-shadow:0 2px 8px ${vividBorder}33`;
     const parentCardId = 'cat_' + cat.id;
     if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
