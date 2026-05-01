@@ -12685,6 +12685,18 @@ function checkAllSolutionsInCat(catId) {
   if (!cat) return;
   (cat.children || []).forEach(ch => {
     if (!state.selectedSolutions.has(ch.id)) toggleSolution(ch.id, true);
+    // Sous-items dans courbe_cards_grid (ex: env Chambre/Lit avec items chambre1/chambre2/...)
+    if (Array.isArray(ch.blocks)) {
+      ch.blocks.forEach(b => {
+        if (b && b.type === 'courbe_cards_grid' && Array.isArray(b.items)) {
+          b.items.forEach(it => {
+            if (!state.courbeCardsTicked || !state.courbeCardsTicked.has(it.id)) {
+              toggleCourbeCardTickFromSol(it.id);
+            }
+          });
+        }
+      });
+    }
   });
 }
 window.checkAllSolutionsInCat = checkAllSolutionsInCat;
@@ -12695,6 +12707,18 @@ function uncheckAllSolutionsInCat(catId) {
   if (!cat) return;
   (cat.children || []).forEach(ch => {
     if (state.selectedSolutions.has(ch.id)) toggleSolution(ch.id, false);
+    // Sous-items dans courbe_cards_grid
+    if (Array.isArray(ch.blocks)) {
+      ch.blocks.forEach(b => {
+        if (b && b.type === 'courbe_cards_grid' && Array.isArray(b.items)) {
+          b.items.forEach(it => {
+            if (state.courbeCardsTicked && state.courbeCardsTicked.has(it.id)) {
+              toggleCourbeCardTickFromSol(it.id);
+            }
+          });
+        }
+      });
+    }
   });
 }
 window.uncheckAllSolutionsInCat = uncheckAllSolutionsInCat;
