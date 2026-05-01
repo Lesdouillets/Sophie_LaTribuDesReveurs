@@ -2958,47 +2958,47 @@ const SCRIPT_DATA = {
               { type: "normal", _leftTitle: "Comment faire?", showIfAgeMaxMonths: 2, showIfSieste: [""], text: "- À compléter" },
               { type: "normal", _leftTitle: "Rituel de lever", showIfAgeMaxMonths: 2, showIfSieste: [""], text: "- À compléter" },
               // ─── 2-4 mois (4 siestes) ───────────────────────────────────
-              { type: "normal", _leftTitle: "Intro", showIfSieste: "2-4m", text: "- À compléter" },
-              { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "2-4m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Intro", showIfSieste: "2-4m", text: "- Maintenant qu'on a **parcouru ensemble** un **emploi du temps type** pour un enfant de cette tranche d'âge\n- On va **s'attaquer aux siestes**!\n- Moi,  je vous **propose** de **voir:**\n  - **le déroulé d'une sieste**\n  - et les **différentes façons d'intervenir** en cas de **siestes courtes**" },
+              { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "2-4m", text: "- Dure entre 2 et 5 min\n<ol style=\"margin:8px 0 0 22px;padding:0;line-height:1.75\"><li><strong>Changer</strong> l'enfant hors de la chambre</li><li>Le mettre dans des <strong>habits confortables</strong> (possibilité de le laisser en <strong>pyjama</strong> pour son <strong>1er TE</strong>)</li><li>⚠️Ne pas oublier la <strong>gigoteuse</strong>!</li><li>Fermer les rideaux pour obtenir une obscurité de 10/10</li><li><strong>Câlins</strong> et bisous</li><li><strong>Chanson du dodo</strong></li><li>Posez l'enfant dans le lit, <strong>EVEILLE,</strong> avec doudou</li><li>Dire \"Bonne sieste mon chéri\"</li></ol><div style=\"background:#fef9e0;border:1.5px solid #f5d778;border-radius:10px;padding:10px 14px;margin-top:12px;font-size:13.5px;line-height:1.6;color:#7c2d12\">💡 <strong>Cycle circadien Ok ⇒ Obscurité</strong><br>Le <strong>cycle circadien</strong> se met en place autour de <strong>8 semaines</strong> ⇒ il n'y a <strong>pas de risque</strong> de <strong>confusion jour/nuit</strong></div><div style=\"background:#fef9e0;border:1.5px solid #f5d778;border-radius:10px;padding:10px 14px;margin-top:8px;font-size:13.5px;line-height:1.6;color:#7c2d12\">💡 <strong>Si siestes Ok =+ en + de lumière</strong><br>Quand les <strong>siestes se seront apaisées</strong> ⇒ vous aurez la <strong>possibilité</strong> de mettre de <strong>+ en +de lumière dans la chambre</strong></div>" },
               { type: "normal", _leftTitle: "Comment faire?", showIfSieste: "2-4m", text: "- À compléter" },
               { type: "normal", _leftTitle: "Rituel de lever", showIfSieste: "2-4m", text: "- À compléter" },
               // ─── 4-6 mois (3 siestes) ───────────────────────────────────
-              { type: "normal", _leftTitle: "Intro", showIfSieste: "4-6m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Intro", showIfSieste: "4-6m", text: "- Maintenant qu'on a **parcouru ensemble** un **emploi du temps type** pour un enfant de cette tranche d'âge\n- On va **s'attaquer aux siestes**!\n- Moi,  je vous **propose** de **voir:**\n  - **le déroulé d'une sieste**\n  - et les **différentes façons d'intervenir** en cas de **siestes courtes**" },
               { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "4-6m", text: "- À compléter" },
               { type: "normal", _leftTitle: "Comment faire?", showIfSieste: "4-6m", text: "- À compléter" },
               { type: "normal", _leftTitle: "Rituel de lever", showIfSieste: "4-6m", text: "- À compléter" },
               // ─── 6-8 mois (3 siestes) ───────────────────────────────────
-              { type: "normal", _leftTitle: "Intro", showIfSieste: "6-8m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Intro", showIfSieste: "6-8m", text: "- Maintenant qu'on a **parcouru ensemble** un **emploi du temps type** pour un enfant de cette tranche d'âge\n- On va **s'attaquer aux siestes**!\n- Moi,  je vous **propose** de **voir:**\n  - **le déroulé d'une sieste**\n  - et les **différentes façons d'intervenir** en cas de **siestes courtes**" },
               { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "6-8m", text: "- À compléter" },
               { type: "normal", _leftTitle: "Comment faire?", showIfSieste: "6-8m", text: "- À compléter" },
               { type: "normal", _leftTitle: "Rituel de lever", showIfSieste: "6-8m", text: "- À compléter" },
               // ─── 8-10 mois (3 siestes) ──────────────────────────────────
-              { type: "normal", _leftTitle: "Intro", showIfSieste: "8-10m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Intro", showIfSieste: "8-10m", text: "- Maintenant qu'on a **parcouru ensemble** un **emploi du temps type** pour un enfant de cette tranche d'âge\n- On va **s'attaquer aux siestes**!\n- Moi,  je vous **propose** de **voir:**\n  - **le déroulé d'une sieste**\n  - et les **différentes façons d'intervenir** en cas de **siestes courtes**" },
               { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "8-10m", text: "- À compléter" },
               { type: "normal", _leftTitle: "Comment faire?", showIfSieste: "8-10m", text: "- À compléter" },
               { type: "normal", _leftTitle: "Rituel de lever", showIfSieste: "8-10m", text: "- À compléter" },
               // ─── 8-15 mois (2 siestes) ──────────────────────────────────
-              { type: "normal", _leftTitle: "Intro", showIfSieste: "8-15m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Intro", showIfSieste: "8-15m", text: "- Maintenant qu'on a **parcouru ensemble** un **emploi du temps type** pour un enfant de cette tranche d'âge\n- On va **s'attaquer aux siestes**!\n- Moi,  je vous **propose** de **voir:**\n  - **le déroulé d'une sieste**\n  - et les **différentes façons d'intervenir** en cas de **siestes courtes**" },
               { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "8-15m", text: "- À compléter" },
               { type: "normal", _leftTitle: "Comment faire?", showIfSieste: "8-15m", text: "- À compléter" },
               { type: "normal", _leftTitle: "Rituel de lever", showIfSieste: "8-15m", text: "- À compléter" },
               // ─── 15-20 mois (2 siestes) ─────────────────────────────────
-              { type: "normal", _leftTitle: "Intro", showIfSieste: "15-20m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Intro", showIfSieste: "15-20m", text: "- Maintenant qu'on a **parcouru ensemble** un **emploi du temps type** pour un enfant de cette tranche d'âge\n- On va **s'attaquer aux siestes**!\n- Moi,  je vous **propose** de **voir:**\n  - **le déroulé d'une sieste**\n  - et les **différentes façons d'intervenir** en cas de **siestes courtes**" },
               { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "15-20m", text: "- À compléter" },
               { type: "normal", _leftTitle: "Comment faire?", showIfSieste: "15-20m", text: "- À compléter" },
               { type: "normal", _leftTitle: "Rituel de lever", showIfSieste: "15-20m", text: "- À compléter" },
               // ─── 15 mois - 3 ans (1 sieste) ─────────────────────────────
-              { type: "normal", _leftTitle: "Intro", showIfSieste: "15m-3a", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Intro", showIfSieste: "15m-3a", text: "- Maintenant qu'on a **parcouru ensemble** un **emploi du temps type** pour un enfant de cette tranche d'âge\n- On va **s'attaquer aux siestes**!\n- Moi,  je vous **propose** de **voir:**\n  - **le déroulé d'une sieste**\n  - et les **différentes façons d'intervenir** en cas de **siestes courtes**" },
               { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "15m-3a", text: "- À compléter" },
               { type: "normal", _leftTitle: "Comment faire?", showIfSieste: "15m-3a", text: "- À compléter" },
               { type: "normal", _leftTitle: "Rituel de lever", showIfSieste: "15m-3a", text: "- À compléter" },
               // ─── 4 ans + (1 sieste) ─────────────────────────────────────
-              { type: "normal", _leftTitle: "Intro", showIfSieste: "4a-plus", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Intro", showIfSieste: "4a-plus", text: "- Maintenant qu'on a **parcouru ensemble** un **emploi du temps type** pour un enfant de cette tranche d'âge\n- On va **s'attaquer aux siestes**!\n- Moi,  je vous **propose** de **voir:**\n  - **le déroulé d'une sieste**\n  - et les **différentes façons d'intervenir** en cas de **siestes courtes**" },
               { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "4a-plus", text: "- À compléter" },
               { type: "normal", _leftTitle: "Comment faire?", showIfSieste: "4a-plus", text: "- À compléter" },
               { type: "normal", _leftTitle: "Rituel de lever", showIfSieste: "4a-plus", text: "- À compléter" },
               // ─── 4 ans + (Temps calme) ──────────────────────────────────
-              { type: "normal", _leftTitle: "Intro", showIfSieste: "4a-plus-tc", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Intro", showIfSieste: "4a-plus-tc", text: "- Maintenant qu'on a **parcouru ensemble** un **emploi du temps type** pour un enfant de cette tranche d'âge\n- On va **s'attaquer aux siestes**!\n- Moi,  je vous **propose** de **voir:**\n  - **le déroulé d'une sieste**\n  - et les **différentes façons d'intervenir** en cas de **siestes courtes**" },
               { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "4a-plus-tc", text: "- À compléter" },
               { type: "normal", _leftTitle: "Comment faire?", showIfSieste: "4a-plus-tc", text: "- À compléter" },
               { type: "normal", _leftTitle: "Rituel de lever", showIfSieste: "4a-plus-tc", text: "- À compléter" }
