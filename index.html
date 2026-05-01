@@ -10355,14 +10355,14 @@ function renderSolutionsCheckboxes(opts) {
   if (!sols.length) return '<div class="block block-normal"><em>(Aucune solution configurée.)</em></div>';
   syncSolutionsFromPbs();
   const catColorMap = {
-    confort_physique: { main: '#dc2626', dark: '#b91c1c', light: '#fef2f2' },
-    nutrition:        { main: '#f97316', dark: '#c2410c', light: '#fff7ed' },
-    rythme:           { main: '#22c55e', dark: '#166534', light: '#f0fdf4' },
-    strategie:        { main: '#3b82f6', dark: '#1e3a8a', light: '#eff6ff' },
-    env:              { main: '#8b5cf6', dark: '#5b21b6', light: '#f5f3ff' },
-    changement:       { main: '#6366f1', dark: '#4338ca', light: '#e0e7ff' },
+    confort_physique: { main: '#c8918a', dark: '#7a3838', light: '#e8b8b0' },
+    nutrition:        { main: '#b3835c', dark: '#704526', light: '#dbab84' },
+    rythme:           { main: '#7da589', dark: '#4a6b54', light: '#bdd1c4' },
+    strategie:        { main: '#7e93ad', dark: '#3e506f', light: '#b8c4d6' },
+    env:              { main: '#9d83b0', dark: '#4f3d62', light: '#c9b6d6' },
+    changement:       { main: '#8089a8', dark: '#3d4570', light: '#bbc1d8' },
     journee:          { main: '#92400e', dark: '#78350f', light: '#fef3c7' },
-    relationnel:      { main: '#ec4899', dark: '#be185d', light: '#fdf2f8' },
+    relationnel:      { main: '#c98aa8', dark: '#5e3a52', light: '#f0c0d8' },
     sante:            { main: '#14b8a6', dark: '#0f766e', light: '#f0fdfa' },
   };
   // Helper : ch (solution enfant) caché par filtre d'âge, alim (ch.showIfAlim), ou sieste (ch.hideIfSieste)
@@ -10529,6 +10529,20 @@ function renderSolutionsCheckboxes(opts) {
     relationnel: '#fdf2f8',
     sante: '#f0fdfa',
   };
+  // Couleurs VIVES — utilisées uniquement pour le contour des cartes parent (VIII Plan d'action / modal Solution)
+  // Permet d'avoir une bordure clairement reconnaissable (rouge confort, orange nutrition, etc.)
+  // tout en gardant la palette sage muette pour le reste (bandeaux, gradients, banners...)
+  const catVividBorderMap = {
+    confort_physique: '#b91c1c',
+    nutrition: '#ea580c',
+    rythme: '#166534',
+    strategie: '#1e3a8a',
+    env: '#5b21b6',
+    changement: '#4338ca',
+    journee: '#78350f',
+    relationnel: '#be185d',
+    sante: '#0f766e',
+  };
   const catsWithChecked = sols.filter(cat => (cat.children || []).some(ch => !isChHiddenByAge(ch) && state.selectedSolutions.has(ch.id)));
   const activeCat = state.solActiveCat;
   // Helper : renvoie les labels des sous-items tickees (state.courbeCardsTicked) d'un enfant ;
@@ -10560,9 +10574,10 @@ function renderSolutionsCheckboxes(opts) {
       ? getDisplayLabelsForChild(checkedChildren[0])
       : checkedChildren.map(ch => ch.cardLabel || ch.label || ch.id);
     const activeCls = isActive ? ' active' : '';
+    const vividBorder = catVividBorderMap[cat.id] || c.dark;
     const activeStyle = isActive
-      ? `background:linear-gradient(90deg,${c.dark},${c.main});color:white;border:3px solid ${c.dark};box-shadow:0 6px 18px ${c.main}66`
-      : `border:3px solid ${c.dark};background:${pastel};box-shadow:0 2px 8px ${c.dark}33`;
+      ? `background:linear-gradient(90deg,${c.dark},${c.main});color:white;border:3px solid ${vividBorder};box-shadow:0 6px 18px ${c.main}66`
+      : `border:3px solid ${vividBorder};background:${pastel};box-shadow:0 2px 8px ${vividBorder}33`;
     const parentCardId = 'cat_' + cat.id;
     if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
     const parentTicked = state.cardPersonalTicks.has(parentCardId);
@@ -12312,12 +12327,12 @@ function filterDiagnosticSections(q) {
   const qLower = q.toLowerCase();
   const reEsc = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const catColorMap = {
-    nutrition: { main: '#f97316', dark: '#c2410c', label: 'Nutrition' },
-    rythme: { main: '#22c55e', dark: '#166534', label: 'Rythme' },
-    strategie: { main: '#3b82f6', dark: '#1e3a8a', label: 'Stratégie' },
-    env: { main: '#8b5cf6', dark: '#5b21b6', label: 'Env' },
-    relationnel: { main: '#ec4899', dark: '#be185d', label: 'Relationnel' },
-    confort_physique: { main: '#dc2626', dark: '#b91c1c', label: 'Confort' },
+    nutrition: { main: '#b3835c', dark: '#704526', label: 'Nutrition' },
+    rythme: { main: '#7da589', dark: '#4a6b54', label: 'Rythme' },
+    strategie: { main: '#7e93ad', dark: '#3e506f', label: 'Stratégie' },
+    env: { main: '#9d83b0', dark: '#4f3d62', label: 'Env' },
+    relationnel: { main: '#c98aa8', dark: '#5e3a52', label: 'Relationnel' },
+    confort_physique: { main: '#c8918a', dark: '#7a3838', label: 'Confort' },
     sante: { main: '#14b8a6', dark: '#0f766e', label: 'Santé' },
   };
   const escHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
