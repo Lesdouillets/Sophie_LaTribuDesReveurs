@@ -3119,6 +3119,12 @@
     .diag-cat-card[data-section-cat="relationnel"] .ccc-subtitle { color: #be185d !important; }
     .diag-cat-card[data-section-cat="confort_physique"] .ccc-title,
     .diag-cat-card[data-section-cat="confort_physique"] .ccc-subtitle { color: #b91c1c !important; }
+    /* Journée : bloc-titre marron avec liseré jaune (cas spécial — couleurs inversées vs. autres catégories) */
+    [data-section-cat="journee"] .block-left-title {
+      background: #92400e !important;
+      color: #fef3c7 !important;
+      border: 2px solid #fcd34d !important;
+    }
     /* Carte active = texte blanc (override les règles ci-dessus) */
     .diag-cat-card.active .ccc-title,
     .diag-cat-card.active .ccc-subtitle { color: white !important; }
@@ -10621,10 +10627,10 @@ function renderSolutionsCheckboxes(opts) {
       const children = cat.children || [];
       const checkedChildren = checkedChildrenForActive;
       const introHtml = Array.isArray(cat.introBlocks) && cat.introBlocks.length
-        ? `<div class="sol-cat-intro" style="--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">${renderBlocks(cat.introBlocks, 'sol_' + cat.id)}</div>`
+        ? `<div class="sol-cat-intro" data-section-cat="${cat.id}" style="--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">${renderBlocks(cat.introBlocks, 'sol_' + cat.id)}</div>`
         : '';
       const outroHtml = Array.isArray(cat.outroBlocks) && cat.outroBlocks.length
-        ? `<div class="sol-cat-outro" style="--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'};margin-top:14px">${renderBlocks(cat.outroBlocks, 'sol_outro_' + cat.id)}</div>`
+        ? `<div class="sol-cat-outro" data-section-cat="${cat.id}" style="--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'};margin-top:14px">${renderBlocks(cat.outroBlocks, 'sol_outro_' + cat.id)}</div>`
         : '';
       // Si 1 seul enfant coche : afficher directement son contenu (pas de grille de sous-cards)
       const singleChildMode = checkedChildren.length === 1;
@@ -10660,7 +10666,7 @@ function renderSolutionsCheckboxes(opts) {
           }
           // En singleChildMode, retirer la bordure interne (sinon double liseré avec sol-active-content)
           const childContentExtraClass = singleChildMode ? ' sol-child-content--single' : '';
-          childContentHtml = `<div class="sol-child-content${childContentExtraClass}" style="position:relative;border-color:${c.main};--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">` +
+          childContentHtml = `<div class="sol-child-content${childContentExtraClass}" data-section-cat="${cat.id}" style="position:relative;border-color:${c.main};--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">` +
             floatingBtnsHtml +
             renderBlocks(activeChild.blocks, 'sol_' + cat.id + '_' + activeChild.id) +
             `</div>`;
@@ -10710,12 +10716,12 @@ function renderSolutionsCheckboxes(opts) {
         }).join('') + `</div>`;
         envChildContentOverride = '';
         if (activeItem && Array.isArray(activeItem.blocks) && activeItem.blocks.length) {
-          envChildContentOverride = `<div class="sol-child-content" style="position:relative;border-color:${c.main};--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">` +
+          envChildContentOverride = `<div class="sol-child-content" data-section-cat="${cat.id}" style="position:relative;border-color:${c.main};--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">` +
             renderBlocks(activeItem.blocks, 'sol_' + cat.id + '_' + activeItem.id) +
             `</div>`;
         }
       }
-      activeContentHtml = `<div class="sol-active-content" style="border:3px solid ${c.main}">
+      activeContentHtml = `<div class="sol-active-content" data-section-cat="${cat.id}" style="border:3px solid ${c.main}">
         <div class="sol-active-banner" style="background:${c.main}">${cat.emoji || ''} ${cat.title}</div>
         ${envCardsOverride !== null ? '' : singleChildPastille}
         ${introHtml}
