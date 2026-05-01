@@ -10459,8 +10459,10 @@ function renderSolutionsCheckboxes(opts) {
           { val: 'supprimer', label: '❌ Supprimer' },
           { val: 'hybride', label: '🔀 Hybride' }
         ];
+        // Nom unique par panneau (compactOnly vs main vs fiche) pour éviter les conflits de groupe radio
+        const tetineRadioName = 'sol-tetine-sub-' + (compactOnly ? 'cmp' : 'main') + '-' + Math.random().toString(36).slice(2,8);
         subRows = `<div class="sol-row-sub" style="padding-left:30px;display:flex;flex-direction:column;gap:4px;margin-top:4px">` +
-          opts.map(o => `<label style="display:flex;align-items:center;gap:6px;font-size:14px;cursor:pointer"><input type="radio" name="sol-tetine-sub" value="${o.val}" ${tchoice===o.val?'checked':''} onchange="setTickboxChoiceFromSol('strategie_tetine_choice','${o.val}')"> ${o.label}</label>`).join('') +
+          opts.map(o => `<label style="display:flex;align-items:center;gap:6px;font-size:14px;cursor:pointer"><input type="radio" name="${tetineRadioName}" value="${o.val}" ${tchoice===o.val?'checked':''} onchange="setTickboxChoiceFromSol('strategie_tetine_choice','${o.val}')"> ${o.label}</label>`).join('') +
           `</div>`;
       }
       // Sous-options : checkboxes reflétant state.courbeCardsTicked
