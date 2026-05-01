@@ -2955,15 +2955,51 @@ const SCRIPT_DATA = {
               { type: "normal", _leftTitle: "Rituel de sieste", showIfAgeMaxMonths: 2, text: "- Dure entre 2 et 5 min\n<ol style=\"margin:8px 0 0 22px;padding:0;line-height:1.75\"><li>Changer l'enfant</li><li>Le mettre dans des habits confortables (possibilité de le laisser en pyjama pour son 1er TE)</li><li><span style=\"color:#dc2626\">Possibilité de l'emmailloter</span></li><li>⚠️Ne pas oublier la gigoteuse!</li><li><span style=\"color:#dc2626\">Laisser les rideaux ouverts (pour aider à la mise en place du cycle circadien)</span></li><li>Câlins et bisous</li><li>Chanson du dodo</li><li>Posez l'enfant dans le lit, EVEILLE, avec doudou</li><li>Dire \"Bonne sieste mon chéri\"</li></ol>" },
               { type: "normal", _leftTitle: "Comment faire?", showIfAgeMaxMonths: 2, text: "- À compléter" },
               { type: "normal", _leftTitle: "Rituel de lever", showIfAgeMaxMonths: 2, text: "- À compléter" },
-              { type: "normal", _leftTitle: "4 siestes (2-4 mois)", showIfSieste: "2-4m", text: "- À compléter" },
-              { type: "normal", _leftTitle: "3 siestes (4-6 mois)", showIfSieste: "4-6m", text: "- À compléter" },
-              { type: "normal", _leftTitle: "3 siestes (6-8 mois)", showIfSieste: "6-8m", text: "- À compléter" },
-              { type: "normal", _leftTitle: "3 siestes (8-10 mois)", showIfSieste: "8-10m", text: "- À compléter" },
-              { type: "normal", _leftTitle: "2 siestes (8-15 mois)", showIfSieste: "8-15m", text: "- À compléter" },
-              { type: "normal", _leftTitle: "2 siestes (15-20 mois)", showIfSieste: "15-20m", text: "- À compléter" },
-              { type: "normal", _leftTitle: "1 sieste (15 mois - 3 ans)", showIfSieste: "15m-3a", text: "- À compléter" },
-              { type: "normal", _leftTitle: "1 sieste (4 ans +)", showIfSieste: "4a-plus", text: "- À compléter" },
-              { type: "normal", _leftTitle: "Temps calme (4 ans +)", showIfSieste: "4a-plus-tc", text: "- À compléter" }
+              // ─── 2-4 mois (4 siestes) ───────────────────────────────────
+              { type: "normal", _leftTitle: "Intro", showIfSieste: "2-4m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "2-4m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Comment faire?", showIfSieste: "2-4m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de lever", showIfSieste: "2-4m", text: "- À compléter" },
+              // ─── 4-6 mois (3 siestes) ───────────────────────────────────
+              { type: "normal", _leftTitle: "Intro", showIfSieste: "4-6m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "4-6m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Comment faire?", showIfSieste: "4-6m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de lever", showIfSieste: "4-6m", text: "- À compléter" },
+              // ─── 6-8 mois (3 siestes) ───────────────────────────────────
+              { type: "normal", _leftTitle: "Intro", showIfSieste: "6-8m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "6-8m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Comment faire?", showIfSieste: "6-8m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de lever", showIfSieste: "6-8m", text: "- À compléter" },
+              // ─── 8-10 mois (3 siestes) ──────────────────────────────────
+              { type: "normal", _leftTitle: "Intro", showIfSieste: "8-10m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "8-10m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Comment faire?", showIfSieste: "8-10m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de lever", showIfSieste: "8-10m", text: "- À compléter" },
+              // ─── 8-15 mois (2 siestes) ──────────────────────────────────
+              { type: "normal", _leftTitle: "Intro", showIfSieste: "8-15m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "8-15m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Comment faire?", showIfSieste: "8-15m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de lever", showIfSieste: "8-15m", text: "- À compléter" },
+              // ─── 15-20 mois (2 siestes) ─────────────────────────────────
+              { type: "normal", _leftTitle: "Intro", showIfSieste: "15-20m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "15-20m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Comment faire?", showIfSieste: "15-20m", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de lever", showIfSieste: "15-20m", text: "- À compléter" },
+              // ─── 15 mois - 3 ans (1 sieste) ─────────────────────────────
+              { type: "normal", _leftTitle: "Intro", showIfSieste: "15m-3a", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "15m-3a", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Comment faire?", showIfSieste: "15m-3a", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de lever", showIfSieste: "15m-3a", text: "- À compléter" },
+              // ─── 4 ans + (1 sieste) ─────────────────────────────────────
+              { type: "normal", _leftTitle: "Intro", showIfSieste: "4a-plus", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "4a-plus", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Comment faire?", showIfSieste: "4a-plus", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de lever", showIfSieste: "4a-plus", text: "- À compléter" },
+              // ─── 4 ans + (Temps calme) ──────────────────────────────────
+              { type: "normal", _leftTitle: "Intro", showIfSieste: "4a-plus-tc", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "4a-plus-tc", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Comment faire?", showIfSieste: "4a-plus-tc", text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de lever", showIfSieste: "4a-plus-tc", text: "- À compléter" }
             ]
           },
           { id: "rythme_rituel_du_soir", label: "Rituel du soir", cardLabel: "Rituel du soir", cardEmoji: "🌙",
