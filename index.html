@@ -965,7 +965,7 @@
       padding: 14px;
     }
     .inline-conditional-category-group[data-category="confort_physique"] { border-color: #c8918a; background: #e8b8b0; }
-    .inline-conditional-category-group[data-category="nutrition"]       { border-color: #b3835c; background: #dbab84; }
+    .inline-conditional-category-group[data-category="nutrition"]       { border-color: #d4845a; background: #f0c9a5; }
     .inline-conditional-category-group[data-category="rythme"]          { border-color: #7da589; background: #bdd1c4; }
     .inline-conditional-category-group[data-category="strategie"]       { border-color: #7e93ad; background: #b8c4d6; }
     .inline-conditional-category-group[data-category="env"]             { border-color: #9d83b0; background: #c9b6d6; }
@@ -998,7 +998,7 @@
     .inline-conditional-category-group.collapsed .inline-conditional-section { display: none; }
     .inline-conditional-category-group.collapsed .inline-conditional-parent-banner { margin-bottom: 0; }
     .inline-conditional-parent-banner[data-category="confort_physique"] { background: #7a3838; }
-    .inline-conditional-parent-banner[data-category="nutrition"]       { background: #704526; }
+    .inline-conditional-parent-banner[data-category="nutrition"]       { background: #a05a1c; }
     .inline-conditional-parent-banner[data-category="rythme"]          { background: #4a6b54; }
     .inline-conditional-parent-banner[data-category="strategie"]       { background: #3e506f; }
     .inline-conditional-parent-banner[data-category="env"]             { background: #4f3d62; }
@@ -10356,7 +10356,7 @@ function renderSolutionsCheckboxes(opts) {
   syncSolutionsFromPbs();
   const catColorMap = {
     confort_physique: { main: '#c8918a', dark: '#7a3838', light: '#e8b8b0' },
-    nutrition:        { main: '#b3835c', dark: '#704526', light: '#dbab84' },
+    nutrition:        { main: '#d4845a', dark: '#a05a1c', light: '#f0c9a5' },
     rythme:           { main: '#7da589', dark: '#4a6b54', light: '#bdd1c4' },
     strategie:        { main: '#7e93ad', dark: '#3e506f', light: '#b8c4d6' },
     env:              { main: '#9d83b0', dark: '#4f3d62', light: '#c9b6d6' },
@@ -10615,7 +10615,7 @@ function renderSolutionsCheckboxes(opts) {
         const isActive = activeChildId === ch.id;
         if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
         const childTicked = state.cardPersonalTicks.has(ch.id);
-        return `<div class="sol-child-card${isActive?' active':''}" data-card-id="${ch.id}" style="border-color:${c.dark};${isActive?'background:linear-gradient(90deg,'+c.dark+','+c.main+');color:#fff':'background:#fff;color:'+c.dark}" onclick="toggleSolChildCard('${cat.id}','${ch.id}')">
+        return `<div class="sol-child-card${isActive?' active':''}" data-card-id="${ch.id}" style="border-color:${c.dark};${isActive?'background:'+c.dark+';color:#fff':'background:#fff;color:'+c.dark}" onclick="toggleSolChildCard('${cat.id}','${ch.id}')">
           <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${childTicked ? '✅' : '☐'}</span>
           <span class="solc-emoji">${ch.cardEmoji || '📄'}</span>
           <span class="solc-label">${ch.cardLabel || ch.label || ch.id}</span>
@@ -12327,7 +12327,7 @@ function filterDiagnosticSections(q) {
   const qLower = q.toLowerCase();
   const reEsc = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const catColorMap = {
-    nutrition: { main: '#b3835c', dark: '#704526', label: 'Nutrition' },
+    nutrition: { main: '#d4845a', dark: '#a05a1c', label: 'Nutrition' },
     rythme: { main: '#7da589', dark: '#4a6b54', label: 'Rythme' },
     strategie: { main: '#7e93ad', dark: '#3e506f', label: 'Stratégie' },
     env: { main: '#9d83b0', dark: '#4f3d62', label: 'Env' },
