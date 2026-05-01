@@ -10851,13 +10851,32 @@ function syncSolutionsFromPbs() {
 // - Niveau 1 (sous-cartes courbe_cards_grid avec grid imbriqué, ex. nutri_lait_biberon) ← Niveau 2 (sous-sous-cartes)
 // - Niveau 0 (solutions avec courbe_cards_grid alwaysShowAll, ex. nutri_lait, nutri_diversification) ← Niveau 1
 // Les flags manuallyEdited sont OVERRIDE (parent strictement sous contrôle des enfants).
+// ⚠️ Seuls les items VISIBLES (passant filtre âge/alim) sont comptés — sinon des items cachés
+// peuvent maintenir le parent coché alors que l'utilisateur ne peut pas les voir/décocher.
 function applyParentTickCascade() {
   const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
   if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
   if (!state.courbeCardsTickedManuallyEdited) state.courbeCardsTickedManuallyEdited = new Set();
   if (!state.selectedSolutions) state.selectedSolutions = new Set();
   if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
-  // Niveau 1 ← Niveau 2 : sous-carte tickée iff au moins une sous-sous-carte est tickée
+  // Helper : item caché par filtre âge/alim
+  const c = (state && state.client) || {};
+  const alimSet = new Set([...(Array.isArray(c.alimentation) ? c.alimentation : []), ...(Array.isArray(c.allaitementMode) ? c.allaitementMode : [])]);
+  const isItemHidden = (it) => {
+    if (it.showIfAgeMinMonths != null || it.showIfAgeMaxMonths != null) {
+      const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
+      if (age == null) return true;
+      if (it.showIfAgeMinMonths != null && age < it.showIfAgeMinMonths) return true;
+      if (it.showIfAgeMaxMonths != null && age > it.showIfAgeMaxMonths) return true;
+    }
+    const alimConds = it.showIfAlim || it.alim;
+    if (alimConds) {
+      const vals = Array.isArray(alimConds) ? alimConds : [alimConds];
+      if (!vals.some(v => alimSet.has(v))) return true;
+    }
+    return false;
+  };
+  // Niveau 1 ← Niveau 2 : sous-carte tickée iff au moins une sous-sous-carte VISIBLE est tickée
   sols.forEach(cat => {
     (cat.children || []).forEach(ch => {
       if (!Array.isArray(ch.blocks)) return;
@@ -10867,7 +10886,7 @@ function applyParentTickCascade() {
           if (!Array.isArray(it.blocks)) return;
           const nestedGrid = it.blocks.find(nb => nb && nb.type === 'courbe_cards_grid' && Array.isArray(nb.items));
           if (!nestedGrid) return;
-          const anyChildTicked = nestedGrid.items.some(sub => state.courbeCardsTicked.has(sub.id));
+          const anyChildTicked = nestedGrid.items.some(sub => !isItemHidden(sub) && state.courbeCardsTicked.has(sub.id));
           if (anyChildTicked) state.courbeCardsTicked.add(it.id);
           else state.courbeCardsTicked.delete(it.id);
           state.courbeCardsTickedManuallyEdited.delete(it.id);
@@ -10875,13 +10894,13 @@ function applyParentTickCascade() {
       });
     });
   });
-  // Niveau 0 ← Niveau 1 : solution tickée iff au moins un item du grid alwaysShowAll est tické
+  // Niveau 0 ← Niveau 1 : solution tickée iff au moins un item VISIBLE du grid alwaysShowAll est tické
   sols.forEach(cat => {
     (cat.children || []).forEach(ch => {
       if (!Array.isArray(ch.blocks)) return;
       const grid = ch.blocks.find(b => b && b.type === 'courbe_cards_grid' && b.alwaysShowAll);
       if (!grid || !Array.isArray(grid.items)) return;
-      const anyChildTicked = grid.items.some(it => state.courbeCardsTicked.has(it.id));
+      const anyChildTicked = grid.items.some(it => !isItemHidden(it) && state.courbeCardsTicked.has(it.id));
       if (anyChildTicked) state.selectedSolutions.add(ch.id);
       else state.selectedSolutions.delete(ch.id);
       state.selectedSolutionsManuallyEdited.delete(ch.id);
