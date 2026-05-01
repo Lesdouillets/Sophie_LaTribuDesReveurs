@@ -609,43 +609,43 @@
     .problematiques-grid .pb-category-title:has([data-cat="confort_physique"]),
     #modal-pb-list .pb-category-title:has([data-cat="confort_physique"]),
     #diag-pb-container .pb-category-title:has([data-cat="confort_physique"]) {
-      border-bottom-color: #c8918a;
+      border-bottom-color: #7a3838;
       color: #7a3838;
     }
     .problematiques-grid .pb-category-title:has([data-cat="nutrition"]),
     #modal-pb-list .pb-category-title:has([data-cat="nutrition"]),
     #diag-pb-container .pb-category-title:has([data-cat="nutrition"]) {
-      border-bottom-color: #b3835c;
+      border-bottom-color: #704526;
       color: #704526;
     }
     .problematiques-grid .pb-category-title:has([data-cat="rythme"]),
     #modal-pb-list .pb-category-title:has([data-cat="rythme"]),
     #diag-pb-container .pb-category-title:has([data-cat="rythme"]) {
-      border-bottom-color: #7da589;
+      border-bottom-color: #4a6b54;
       color: #4a6b54;
     }
     .problematiques-grid .pb-category-title:has([data-cat="strategie"]),
     #modal-pb-list .pb-category-title:has([data-cat="strategie"]),
     #diag-pb-container .pb-category-title:has([data-cat="strategie"]) {
-      border-bottom-color: #7e93ad;
+      border-bottom-color: #3e506f;
       color: #3e506f;
     }
     .problematiques-grid .pb-category-title:has([data-cat="env"]),
     #modal-pb-list .pb-category-title:has([data-cat="env"]),
     #diag-pb-container .pb-category-title:has([data-cat="env"]) {
-      border-bottom-color: #9d83b0;
+      border-bottom-color: #4f3d62;
       color: #4f3d62;
     }
     .problematiques-grid .pb-category-title:has([data-cat="relationnel"]),
     #modal-pb-list .pb-category-title:has([data-cat="relationnel"]),
     #diag-pb-container .pb-category-title:has([data-cat="relationnel"]) {
-      border-bottom-color: #c98aa8;
+      border-bottom-color: #5e3a52;
       color: #5e3a52;
     }
     .problematiques-grid .pb-category-title:has([data-cat="souhait"]),
     #modal-pb-list .pb-category-title:has([data-cat="souhait"]),
     #diag-pb-container .pb-category-title:has([data-cat="souhait"]) {
-      border-bottom-color: #8089a8;
+      border-bottom-color: #3d4570;
       color: #3d4570;
     }
     .problematiques-grid .pb-category.pb-level-1 > .pb-items > .pb-item,
@@ -3915,15 +3915,16 @@
     }
     .block-with-left-title > .edit-block-wrap > .emploi-temps-block,
     .block-with-left-title > .emploi-temps-block {
-      border-left: 3px solid var(--cat-main, #166534);
+      border-left: 3px solid var(--cat-main, #7da589);
+      margin-top: 0;
       margin-bottom: 0;
     }
-    /* Pastille verte avec l'âge cible — TOUJOURS au-dessus de "Heure de réveil" (block + width:fit-content) */
+    /* Pastille avec l'âge cible — TOUJOURS au-dessus de "Heure de réveil" (block + width:fit-content) */
     .emploi-temps-age-pill {
       display: block; width: fit-content; padding: 7px 16px; margin-bottom: 12px;
-      background: #166534; color: #fff;
+      background: #4a6b54; color: #fff;
       border-radius: 999px; font-weight: 700; font-size: 13.5px;
-      letter-spacing: 0.4px; box-shadow: 0 2px 6px rgba(22, 101, 52, 0.25);
+      letter-spacing: 0.4px; box-shadow: 0 2px 6px rgba(74, 107, 84, 0.25);
     }
     .emploi-temps-tbl {
       width: fit-content; border-collapse: separate; border-spacing: 0; font-size: 14px;
@@ -10518,14 +10519,14 @@ function renderSolutionsCheckboxes(opts) {
 
   // Partie 2 : grid des cards parent (réutilise les classes de V. Diagnostic courbe-card + diag-cat-card)
   const catPastelMap = {
-    confort_physique: '#fef2f2',
-    nutrition: '#fff7ed',
-    rythme: '#f0fdf4',
-    strategie: '#eff6ff',
-    env: '#f5f3ff',
-    changement: '#e0e7ff',
+    confort_physique: '#e8b8b0',
+    nutrition: '#dbab84',
+    rythme: '#bdd1c4',
+    strategie: '#b8c4d6',
+    env: '#c9b6d6',
+    changement: '#bbc1d8',
     journee: '#fef3c7',
-    relationnel: '#fdf2f8',
+    relationnel: '#f0c0d8',
     sante: '#f0fdfa',
   };
   const catsWithChecked = sols.filter(cat => (cat.children || []).some(ch => !isChHiddenByAge(ch) && state.selectedSolutions.has(ch.id)));
@@ -10561,7 +10562,7 @@ function renderSolutionsCheckboxes(opts) {
     const activeCls = isActive ? ' active' : '';
     const activeStyle = isActive
       ? `background:linear-gradient(90deg,${c.dark},${c.main});color:white;border:3px solid ${c.dark};box-shadow:0 6px 18px ${c.main}66`
-      : `border:3px solid ${c.main};background:${pastel};box-shadow:0 2px 8px ${c.main}33`;
+      : `border:3px solid ${c.dark};background:${pastel};box-shadow:0 2px 8px ${c.dark}33`;
     const parentCardId = 'cat_' + cat.id;
     if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
     const parentTicked = state.cardPersonalTicks.has(parentCardId);
