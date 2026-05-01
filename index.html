@@ -12786,9 +12786,9 @@ function uncheckAllSolutionsInCat(catId) {
     if (!hasGrid) {
       // Toujours appeler toggleSolution(false) pour les solutions sans grid —
       // efface aussi les sous-choix (ex: strat_tetine → tetine_choice) via la cascade interne.
+      // toggleSolution marque déjà l'item comme manuallyEdited → ça empêche syncSolutionsFromPbs
+      // de re-cocher automatiquement les items avec autoCheckIfPbs/Sieste/Alim.
       toggleSolution(ch.id, false);
-      // Effacer le flag manuallyEdited pour préserver la sync PB → solution
-      state.selectedSolutionsManuallyEdited.delete(ch.id);
     }
   });
   if (touchedGrid) {
