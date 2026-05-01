@@ -10611,7 +10611,7 @@ function renderSolutionsCheckboxes(opts) {
       const activeChildId = singleChildMode
         ? checkedChildren[0].id
         : ((state.solActiveChildByCat && state.solActiveChildByCat[cat.id]) || null);
-      const cardsHtml = (!singleChildMode && checkedChildren.length) ? `<div class="sol-child-cards">` + checkedChildren.map(ch => {
+      const cardsHtml = checkedChildren.length ? `<div class="sol-child-cards">` + checkedChildren.map(ch => {
         const isActive = activeChildId === ch.id;
         if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
         const childTicked = state.cardPersonalTicks.has(ch.id);
@@ -10650,13 +10650,15 @@ function renderSolutionsCheckboxes(opts) {
       // ⚠️ Utilise getDisplayLabelsForChild pour respecter la règle :
       //    - exactement 1 sous-carte tickée → nom de la sous-carte (ex: "🥑 Gras")
       //    - sinon → nom du parent (ex: "🥄 Diversification")
-      const singleChildPastille = singleChildMode
-        ? `<div class="sol-single-child-chip" style="background:linear-gradient(90deg,${c.dark},${c.main})">${getDisplayLabelsForChild(checkedChildren[0]).join(' / ')}</div>`
-        : '';
+      // Plus de pastille en singleChildMode — on affiche désormais la carte unique active dans cardsHtml
+      const singleChildPastille = '';
       // Cas spécial env (Environnement de sommeil) : on saute les enfants chambre/lit
-      // et on affiche directement les petits-enfants combinés des grilles courbe_cards_grid
-      // (la structure dans le compactGroups "Solutions identifiées" reste inchangée)
-      let envFlattenedContentHtml = null;
+      // et on affiche directement les petits-enfants des grilles courbe_cards_grid combinées,
+      // mais rendus comme des sol-child-cards (pour avoir le même look que les autres catégories
+      // — petites cartes côte à côte, sans dégradé)
+      // La structure dans le compactGroups "Solutions identifiées" reste inchangée.
+      let envCardsOverride = null;
+      let envChildContentOverride = null;
       if (cat.id === 'env') {
         const combinedItems = [];
         checkedChildren.forEach(ch => {
@@ -10668,17 +10670,30 @@ function renderSolutionsCheckboxes(opts) {
             });
           }
         });
-        const syntheticBlock = { type: 'courbe_cards_grid', theme: 'violet', alwaysShowAll: true, items: combinedItems };
-        envFlattenedContentHtml = `<div class="sol-child-content sol-child-content--single" style="position:relative;border-color:${c.main};--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">` +
-          renderBlocks([syntheticBlock], 'sol_' + cat.id + '_combined') +
-          `</div>`;
+        const envActiveItemId = (state.solActiveChildByCat && state.solActiveChildByCat[cat.id]) || null;
+        const activeItem = combinedItems.find(it => it.id === envActiveItemId);
+        envCardsOverride = `<div class="sol-child-cards">` + combinedItems.map(it => {
+          const isActive = envActiveItemId === it.id;
+          const ticked = state.courbeCardsTicked && state.courbeCardsTicked.has(it.id);
+          return `<div class="sol-child-card${isActive?' active':''}" data-card-id="${it.id}" style="border-color:${c.dark};${isActive?'background:'+c.main+';color:#fff':'background:#fff;color:'+c.dark}" onclick="toggleSolChildCard('${cat.id}','${it.id}')">
+            <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${ticked ? '✅' : '☐'}</span>
+            <span class="solc-emoji">${it.emoji || '📄'}</span>
+            <span class="solc-label">${it.label || it.id}</span>
+          </div>`;
+        }).join('') + `</div>`;
+        envChildContentOverride = '';
+        if (activeItem && Array.isArray(activeItem.blocks) && activeItem.blocks.length) {
+          envChildContentOverride = `<div class="sol-child-content" style="position:relative;border-color:${c.main};--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">` +
+            renderBlocks(activeItem.blocks, 'sol_' + cat.id + '_' + activeItem.id) +
+            `</div>`;
+        }
       }
       activeContentHtml = `<div class="sol-active-content" style="border:3px solid ${c.main}">
         <div class="sol-active-banner" style="background:${c.main}">${cat.emoji || ''} ${cat.title}</div>
-        ${envFlattenedContentHtml ? '' : singleChildPastille}
+        ${envCardsOverride !== null ? '' : singleChildPastille}
         ${introHtml}
-        ${envFlattenedContentHtml ? '' : cardsHtml}
-        ${envFlattenedContentHtml || childContentHtml}
+        ${envCardsOverride !== null ? envCardsOverride : cardsHtml}
+        ${envCardsOverride !== null ? envChildContentOverride : childContentHtml}
         ${outroHtml}
       </div>`;
     }
