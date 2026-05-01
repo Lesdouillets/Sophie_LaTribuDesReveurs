@@ -3828,23 +3828,31 @@
     .sieste-group.var-tc { --sieste-bg: #f3e8ff; --sieste-fg: #6b21a8; --sieste-bg-hover: #e9d5ff; }
     .sieste-group.var-other { --sieste-bg: #fee2e2; --sieste-fg: #991b1b; --sieste-bg-hover: #fecaca; }
     .sieste-group.var-illim { --sieste-bg: #fce7f3; --sieste-fg: #9f1239; --sieste-bg-hover: #fbcfe8; }
-    /* Sous-cartes cliquables des cas de rendormissement (Comment faire?) */
-    .rendor-cards { display: flex; flex-direction: column; gap: 12px; }
+    /* Sous-cartes cliquables des cas de rendormissement (Comment faire?) — accordéon */
+    .rendor-cards { display: flex; flex-direction: column; gap: 10px; }
     .rendor-card {
       background: white; border: 1.5px solid #b3c9b9; border-radius: 8px;
-      overflow: hidden; transition: opacity 0.15s, box-shadow 0.15s, border-color 0.15s, transform 0.15s;
+      overflow: hidden; transition: box-shadow 0.15s, border-color 0.15s;
     }
     .rendor-card-header {
-      background: #d5e3d9; padding: 8px 14px; font-weight: 700; color: #5a7d63;
-      font-size: 13.5px; border-bottom: 1px solid #b3c9b9; cursor: pointer;
-      user-select: none; transition: background 0.15s;
+      background: #d5e3d9; padding: 10px 14px; font-weight: 700; color: #5a7d63;
+      font-size: 13.5px; cursor: pointer; user-select: none;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      transition: background 0.15s;
     }
     .rendor-card-header:hover { background: #c5dccd; }
-    .rendor-card-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
-    .rendor-card.is-active {
-      border-color: #5a7d63; box-shadow: 0 3px 10px rgba(90,125,99,0.28); transform: translateY(-1px);
+    .rendor-card-header::after {
+      content: '▾'; font-size: 13px; color: #5a7d63; flex-shrink: 0;
+      transition: transform 0.2s;
     }
+    .rendor-card-body {
+      padding: 12px 14px; flex-direction: column; gap: 10px;
+      display: none; border-top: 1px solid #b3c9b9;
+    }
+    .rendor-card.is-active { border-color: #5a7d63; box-shadow: 0 3px 10px rgba(90,125,99,0.18); }
     .rendor-card.is-active > .rendor-card-header { background: #b8d4c1; }
+    .rendor-card.is-active > .rendor-card-header::after { transform: rotate(180deg); }
+    .rendor-card.is-active > .rendor-card-body { display: flex; }
     .sieste-group-left {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       border-radius: 12px; padding: 16px 10px;
@@ -6802,20 +6810,12 @@ function onHoraireSouhaiteChange(inputEl) {
 }
 window.onHoraireSouhaiteChange = onHoraireSouhaiteChange;
 
-// Toggle de la sous-carte active dans la grille des cas de rendormissement (Comment faire? > Sieste)
+// Accordéon des sous-cartes de rendormissement (Comment faire? > Sieste) — chaque carte se replie/déplie indépendamment
 function setRendorCard(headerEl) {
   if (!headerEl) return;
   const card = headerEl.closest('.rendor-card');
-  const wrap = headerEl.closest('.rendor-cards');
-  if (!card || !wrap) return;
-  const wasActive = card.classList.contains('is-active');
-  wrap.querySelectorAll('.rendor-card').forEach(c => c.classList.remove('is-active'));
-  if (wasActive) {
-    wrap.removeAttribute('data-active');
-  } else {
-    card.classList.add('is-active');
-    wrap.setAttribute('data-active', '1');
-  }
+  if (!card) return;
+  card.classList.toggle('is-active');
 }
 window.setRendorCard = setRendorCard;
 
