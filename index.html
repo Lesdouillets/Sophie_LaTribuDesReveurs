@@ -12766,15 +12766,18 @@ function checkAllSolutionsInCat(catId) {
       });
     }
     if (!hasGrid) {
-      if (!state.selectedSolutions.has(ch.id)) toggleSolution(ch.id, true);
+      state.selectedSolutions.add(ch.id);
       // Effacer le flag manuallyEdited pour préserver la sync PB → solution
       state.selectedSolutionsManuallyEdited.delete(ch.id);
     }
   });
-  if (touchedGrid) {
-    if (typeof renderCurrentSection === 'function') renderCurrentSection();
-    if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
-  }
+  if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
+  if (typeof buildSections === 'function') buildSections();
+  if (typeof buildSidebar === 'function') buildSidebar();
+  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+  if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
+  if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.checkAllSolutionsInCat = checkAllSolutionsInCat;
 
