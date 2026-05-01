@@ -3598,13 +3598,12 @@
       letter-spacing: 0.4px; padding: 12px 20px;
     }
     .solutions-identifiees-body { padding: 12px 20px; columns: 2; column-gap: 24px; }
-    .sol-group { width: 100%; break-inside: avoid; page-break-inside: avoid; -webkit-column-break-inside: avoid; margin-bottom: 18px; display: inline-block; }
+    .sol-group { width: 100%; break-inside: avoid; page-break-inside: avoid; -webkit-column-break-inside: avoid; margin-bottom: 18px; display: inline-block; border-left: 5px solid; padding-left: 12px; }
     @media (max-width: 900px) { .solutions-identifiees-body { columns: 1; } }
     .sol-group-title {
       font-weight: 800; font-size: 15px; text-transform: uppercase;
-      letter-spacing: 0.3px; padding: 4px 0 5px 12px; margin-bottom: 6px;
+      letter-spacing: 0.3px; padding-bottom: 5px; margin-bottom: 6px;
       border-bottom: 2px solid;
-      border-left: 5px solid;
       display: flex; align-items: center; justify-content: space-between; gap: 8px;
       cursor: pointer; user-select: none;
     }
@@ -10519,7 +10518,7 @@ function renderSolutionsCheckboxes(opts) {
       : '';
     const groupCollapsed = !!(state.solGroupsCollapsed && state.solGroupsCollapsed.has(cat.id));
     const groupClass = groupCollapsed ? ' collapsed' : '';
-    return `<div class="sol-group${groupClass}" data-cat="${cat.id}">
+    return `<div class="sol-group${groupClass}" data-cat="${cat.id}" style="border-left-color:${c.dark}">
       <div class="sol-group-title" style="color:${c.dark};border-color:${c.dark}" onclick="toggleSolGroup('${cat.id}')"><span class="sol-group-title-text"><span class="sol-group-arrow">▾</span><span>${cat.emoji || ''} ${cat.title}</span></span>${bulkBtns}</div>
       <div class="sol-group-rows">${rows}</div>
     </div>`;
