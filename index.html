@@ -12801,17 +12801,21 @@ function uncheckAllSolutionsInCat(catId) {
       });
     }
     if (!hasGrid) {
-      // Décochage direct sans passer par toggleSolution (qui marque manuallyEdited et casse les liens PB).
       state.selectedSolutions.delete(ch.id);
-      state.selectedSolutionsManuallyEdited.delete(ch.id);
-      // Cas spécial strat_tetine : effacer aussi les sous-choix mais NE PAS toucher au PB
-      if (ch.id === 'strat_tetine' && state.tickboxChoices) {
-        // ⚠️ NE PAS toucher state.tickboxChoices ni state.selectedPbs → liens préservés
+      // Marquer manuallyEdited UNIQUEMENT pour les items avec autoCheck (PB/Sieste/Alim) :
+      // sinon la sync va les re-cocher immédiatement, rendant Tout ✗ inutile.
+      // Pour les items sans autoCheck, on ne marque pas → comportement normal (rien à re-cocher).
+      const hasAutoCheck = (Array.isArray(ch.autoCheckIfPbs) && ch.autoCheckIfPbs.length)
+        || (Array.isArray(ch.autoCheckIfAlim) && ch.autoCheckIfAlim.length)
+        || (Array.isArray(ch.autoCheckIfSieste) && ch.autoCheckIfSieste.length);
+      if (hasAutoCheck) {
+        state.selectedSolutionsManuallyEdited.add(ch.id);
+      } else {
+        state.selectedSolutionsManuallyEdited.delete(ch.id);
       }
     }
   });
-  // Re-synchroniser depuis les PBs : si une solution est tied à une PB encore sélectionnée,
-  // elle sera re-cochée automatiquement (comportement attendu : "le lien gagne").
+  // Re-synchroniser depuis les PBs (les items non marqués manuallyEdited seront re-cochés si lien actif)
   if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
   if (typeof renderCurrentSection === 'function') renderCurrentSection();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
