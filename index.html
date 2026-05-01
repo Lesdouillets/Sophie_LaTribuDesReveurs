@@ -3827,6 +3827,7 @@
     .sieste-group.var-1 { --sieste-bg: #dcfce7; --sieste-fg: #166534; --sieste-bg-hover: #bbf7d0; }
     .sieste-group.var-tc { --sieste-bg: #f3e8ff; --sieste-fg: #6b21a8; --sieste-bg-hover: #e9d5ff; }
     .sieste-group.var-other { --sieste-bg: #fee2e2; --sieste-fg: #991b1b; --sieste-bg-hover: #fecaca; }
+    .sieste-group.var-illim { --sieste-bg: #fce7f3; --sieste-fg: #9f1239; --sieste-bg-hover: #fbcfe8; }
     .sieste-group-left {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       border-radius: 12px; padding: 16px 10px;
@@ -3836,6 +3837,7 @@
     }
     .sieste-group.var-tc .sieste-group-left { font-size: 18px; }
     .sieste-group.var-other .sieste-group-left { font-size: 20px; }
+    .sieste-group.var-illim .sieste-group-left { font-size: 15px; }
     .sieste-group-left .sieste-group-sub {
       font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
       margin-top: 4px; opacity: 0.85;
@@ -4343,6 +4345,16 @@
           <h3>💤 Sieste cible</h3>
           <p style="font-size:12px;color:#999;margin-bottom:14px">Choisis l'objectif de siestes pour cet enfant <strong>(obligatoire, 1 seule case)</strong>. Les cases qui correspondent à l'âge de [prénom_enfant] glow en doré — l'effet s'arrête dès qu'une case est sélectionnée.</p>
           <div id="sieste-options" style="max-width:560px">
+            <div class="sieste-group var-illim">
+              <div class="sieste-group-left">Siestes<br>illimitées</div>
+              <div class="sieste-group-right">
+                <label class="sieste-row" data-age-min="0" data-age-max="2">
+                  <input type="radio" name="sieste" value="0-2m" onchange="onSiesteChange()">
+                  <span class="sieste-label">0-2 mois</span>
+                </label>
+              </div>
+            </div>
+
             <div class="sieste-group var-4">
               <div class="sieste-group-left">4<div class="sieste-group-sub">siestes</div></div>
               <div class="sieste-group-right">
