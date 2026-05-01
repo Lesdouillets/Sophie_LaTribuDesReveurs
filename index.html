@@ -8287,13 +8287,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // ⚠️ NETTOYAGE 1-FOIS — restaure les liens PB → solution cassés par les actions bulk précédentes.
   // À retirer après le prochain rechargement de l'utilisateur.
   try {
-    if (!localStorage.getItem('__bulk_links_cleaned_v1')) {
+    if (!localStorage.getItem('__bulk_links_cleaned_v2')) {
       if (state.selectedSolutionsManuallyEdited && state.selectedSolutionsManuallyEdited.clear) state.selectedSolutionsManuallyEdited.clear();
       if (state.courbeCardsTickedManuallyEdited && state.courbeCardsTickedManuallyEdited.clear) state.courbeCardsTickedManuallyEdited.clear();
       if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
       if (typeof renderCurrentSection === 'function') renderCurrentSection();
       if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
-      localStorage.setItem('__bulk_links_cleaned_v1', '1');
+      localStorage.setItem('__bulk_links_cleaned_v2', '1');
       console.log('[bulk-links-cleanup] Drapeaux manuallyEdited effacés, liens PB→solution restaurés.');
     }
   } catch(e) { console.warn('[bulk-links-cleanup]', e); }
