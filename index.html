@@ -10570,9 +10570,29 @@ function renderSolutionsCheckboxes(opts) {
     const isActive = activeCat === cat.id;
     // Si 1 seul enfant coche : pastilles des sous-items tickees (petits-enfants).
     // Sinon (2+ enfants) : pastilles avec les noms des enfants directs.
-    const subTitleLabels = checkedChildren.length === 1
-      ? getDisplayLabelsForChild(checkedChildren[0])
-      : checkedChildren.map(ch => ch.cardLabel || ch.label || ch.id);
+    // Cas spécial env : montrer les petits-enfants tickés (Obscurité insuffisante, Tresse de lit, etc.)
+    // au lieu de Chambre/Lit, puisque la hiérarchie est aplanie dans le rendu env.
+    const subTitleLabels = (cat.id === 'env')
+      ? (() => {
+          const labels = [];
+          checkedChildren.forEach(ch => {
+            if (Array.isArray(ch.blocks)) {
+              ch.blocks.forEach(b => {
+                if (b && b.type === 'courbe_cards_grid' && Array.isArray(b.items)) {
+                  b.items.forEach(it => {
+                    if (state.courbeCardsTicked && state.courbeCardsTicked.has(it.id)) {
+                      labels.push(`${it.emoji ? it.emoji + ' ' : ''}${it.label || it.id}`);
+                    }
+                  });
+                }
+              });
+            }
+          });
+          return labels;
+        })()
+      : (checkedChildren.length === 1
+          ? getDisplayLabelsForChild(checkedChildren[0])
+          : checkedChildren.map(ch => ch.cardLabel || ch.label || ch.id));
     const activeCls = isActive ? ' active' : '';
     const vividBorder = catVividBorderMap[cat.id] || c.dark;
     const activeStyle = isActive
