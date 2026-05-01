@@ -3025,6 +3025,7 @@ const SCRIPT_DATA = {
           },
           { id: "rythme_rituel_du_soir", label: "Rituel du soir", cardLabel: "Rituel du soir", cardEmoji: "🌙",
             hideIfSieste: ["pas-de-changement"],
+            autoCheckIfPbs: ["env_rituel"],
             autoCheckIfSieste: ["2-4m", "4-6m", "6-8m", "8-10m", "8-15m", "15-20m", "15m-3a", "4a-plus", "4a-plus-tc"],
             blocks: [
               {
