@@ -11021,6 +11021,16 @@ function toggleSolution(id, checked) {
       }
     });
   }
+  // Mutex : confort_physique APLV / Conseils RGO s'excluent mutuellement
+  const CONFORT_MUTEX_IDS = ['conf_aplv', 'conf_rgo'];
+  if (checked && CONFORT_MUTEX_IDS.includes(id)) {
+    CONFORT_MUTEX_IDS.forEach(other => {
+      if (other !== id) {
+        state.selectedSolutions.delete(other);
+        state.selectedSolutionsManuallyEdited.add(other);
+      }
+    });
+  }
   updateSolutionsModal();
   if (typeof buildSections === 'function') buildSections();
   if (typeof buildSidebar === 'function') buildSidebar();
