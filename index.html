@@ -8284,19 +8284,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   // Tentative de restauration d'une consultation active après hard refresh
   try { if (typeof restoreActiveConsultation === 'function') restoreActiveConsultation(); } catch(e) { console.warn('[restore on load]', e); }
-  // ⚠️ NETTOYAGE 1-FOIS — restaure les liens PB → solution cassés par les actions bulk précédentes.
-  // À retirer après le prochain rechargement de l'utilisateur.
-  try {
-    if (!localStorage.getItem('__bulk_links_cleaned_v2')) {
-      if (state.selectedSolutionsManuallyEdited && state.selectedSolutionsManuallyEdited.clear) state.selectedSolutionsManuallyEdited.clear();
-      if (state.courbeCardsTickedManuallyEdited && state.courbeCardsTickedManuallyEdited.clear) state.courbeCardsTickedManuallyEdited.clear();
-      if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
-      if (typeof renderCurrentSection === 'function') renderCurrentSection();
-      if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
-      localStorage.setItem('__bulk_links_cleaned_v2', '1');
-      console.log('[bulk-links-cleanup] Drapeaux manuallyEdited effacés, liens PB→solution restaurés.');
-    }
-  } catch(e) { console.warn('[bulk-links-cleanup]', e); }
 });
 
 function updateTimeProgress() {
@@ -8694,11 +8681,20 @@ function togglePb(value, checked) {
     if (!state.selectedSolutions) state.selectedSolutions = new Set();
     if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
     if (checked) {
-      // PB souhait_tetine cochée → force le choix à "supprimer" partout (override conflit)
-      state.tickboxChoices['strategie_tetine_choice'] = 'supprimer';
-      state.tickboxChoices['obj_tetine_static'] = 'supprimer';
-      state.selectedSolutions.add('strat_tetine');
-      state.selectedSolutionsManuallyEdited.add('strat_tetine');
+      // Détecter un conflit : un tickbox existant ≠ "supprimer"
+      const existing1 = state.tickboxChoices['strategie_tetine_choice'];
+      const existing2 = state.tickboxChoices['obj_tetine_static'];
+      const hasConflict = (existing1 && existing1 !== 'supprimer') || (existing2 && existing2 !== 'supprimer');
+      if (hasConflict) {
+        // Ne pas écraser silencieusement — laisser le modal de conflit trancher
+        if (typeof openTetineConflictModal === 'function') openTetineConflictModal();
+      } else {
+        // Pas de conflit → propager
+        state.tickboxChoices['strategie_tetine_choice'] = 'supprimer';
+        state.tickboxChoices['obj_tetine_static'] = 'supprimer';
+        state.selectedSolutions.add('strat_tetine');
+        state.selectedSolutionsManuallyEdited.add('strat_tetine');
+      }
     } else {
       // Si on décoche la pb, on efface seulement si les tickboxes étaient à "supprimer"
       if (state.tickboxChoices['strategie_tetine_choice'] === 'supprimer') {
@@ -10537,11 +10533,7 @@ function renderSolutionsCheckboxes(opts) {
         ${chEmoji}<span class="sol-row-label">${ch.label || ch.id}</span>
       </label>${arrowHtml}</div>${subRows}</div>`;
     }).join('');
-    // Pas de boutons bulk pour confort_physique (cases mutex) et strategie (1 seule case avec PB/tickbox)
-    const NO_BULK_CATS = ['confort_physique', 'strategie'];
-    const bulkBtns = NO_BULK_CATS.includes(cat.id)
-      ? ''
-      : `<span class="sol-bulk-btns"><button type="button" class="sol-bulk-btn sol-bulk-check" onclick="event.stopPropagation(); checkAllSolutionsInCat('${cat.id}')" title="Tout cocher">Tout ✓</button><button type="button" class="sol-bulk-btn sol-bulk-uncheck" onclick="event.stopPropagation(); uncheckAllSolutionsInCat('${cat.id}')" title="Tout décocher">Tout ✗</button></span>`;
+    const bulkBtns = '';
     const groupCollapsed = !!(state.solGroupsCollapsed && state.solGroupsCollapsed.has(cat.id));
     const groupClass = groupCollapsed ? ' collapsed' : '';
     return `<div class="sol-group block-with-left-title${groupClass}" data-cat="${cat.id}">
@@ -10853,18 +10845,6 @@ function syncSolutionsFromPbs() {
   reapplyTickboxCascades();
   // Cascade niveau 1 ← niveau 2 puis niveau 0 ← niveau 1
   applyParentTickCascade();
-  // Enforcement mutex après sync (au cas où plusieurs PBs déclenchent des solutions exclusives)
-  // → garde uniquement le 1er item du groupe trouvé dans selectedSolutions
-  const MUTEX_GROUPS = [
-    ['conf_aplv', 'conf_rgo'],
-    ['env_chgmt_lit', 'env_chgmt_chambre', 'env_chgmt_lit_chambre'],
-  ];
-  MUTEX_GROUPS.forEach(group => {
-    const checkedInGroup = group.filter(id => state.selectedSolutions.has(id));
-    if (checkedInGroup.length > 1) {
-      checkedInGroup.slice(1).forEach(id => state.selectedSolutions.delete(id));
-    }
-  });
 }
 
 // Cascade tick parent ← enfants pour empêcher un parent d'être tické sans enfant tické :
@@ -11039,16 +11019,6 @@ function toggleSolution(id, checked) {
             state.courbeCardsTickedManuallyEdited.add(sub);
           });
         }
-      }
-    });
-  }
-  // Mutex : confort_physique APLV / Conseils RGO s'excluent mutuellement
-  const CONFORT_MUTEX_IDS = ['conf_aplv', 'conf_rgo'];
-  if (checked && CONFORT_MUTEX_IDS.includes(id)) {
-    CONFORT_MUTEX_IDS.forEach(other => {
-      if (other !== id) {
-        state.selectedSolutions.delete(other);
-        state.selectedSolutionsManuallyEdited.add(other);
       }
     });
   }
