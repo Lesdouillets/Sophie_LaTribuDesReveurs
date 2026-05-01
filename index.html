@@ -3828,8 +3828,8 @@
     .sieste-group.var-tc { --sieste-bg: #f3e8ff; --sieste-fg: #6b21a8; --sieste-bg-hover: #e9d5ff; }
     .sieste-group.var-other { --sieste-bg: #fee2e2; --sieste-fg: #991b1b; --sieste-bg-hover: #fecaca; }
     .sieste-group.var-illim { --sieste-bg: #fce7f3; --sieste-fg: #9f1239; --sieste-bg-hover: #fbcfe8; }
-    /* Sous-cartes cliquables des cas de rendormissement (Comment faire?) — accordéon */
-    .rendor-cards { display: flex; flex-direction: column; gap: 10px; }
+    /* Sous-cartes cliquables des cas de rendormissement (Comment faire?) — accordéon en ligne */
+    .rendor-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; align-items: start; }
     .rendor-card {
       background: white; border: 1.5px solid #b3c9b9; border-radius: 8px;
       overflow: hidden; transition: box-shadow 0.15s, border-color 0.15s;
@@ -11392,6 +11392,26 @@ function substituteVars(text) {
     const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
     if (age == null) return '';
     return age <= parseInt(n, 10) ? content : '';
+  });
+  // Conditionnel inline : [if_age_lt:N]contenu[/if_age_lt] → visible si âge fractionnaire (mois) < N
+  // Supporte les décimales (ex. [if_age_lt:3.5]). Calcul à partir des dates DOM, fallback sur calcAge si dispo.
+  text = String(text).replace(/\[if_age_lt:(\d+(?:\.\d+)?)\]([\s\S]*?)\[\/if_age_lt\]/g, (m, n, content) => {
+    const threshold = parseFloat(n);
+    if (isNaN(threshold)) return '';
+    const domGet = (id) => {
+      const el = (typeof document !== 'undefined') ? document.getElementById(id) : null;
+      return el ? (el.value || '').trim() : '';
+    };
+    const consultDate = domGet('consult-date') || new Date().toISOString().slice(0,10);
+    const dateNaiss = domGet('date-naissance');
+    const dateTerme = domGet('date-terme');
+    let refDate = dateNaiss;
+    if (dateTerme && dateNaiss && new Date(dateTerme) > new Date(dateNaiss)) refDate = dateTerme;
+    if (!refDate || !consultDate) return '';
+    const d = new Date(refDate), r = new Date(consultDate);
+    if (isNaN(d) || isNaN(r) || r < d) return '';
+    const months = ((r - d) / 86400000) / 30.4375;
+    return months < threshold ? content : '';
   });
   // Conditionnel inline : [if_minutes_left_min:N]contenu[/if_minutes_left_min]
   // → visible si au moins N minutes restantes avant heureFin (= consultante PAS en retard)
