@@ -10680,12 +10680,19 @@ function renderSolutionsCheckboxes(opts) {
       let envCardsOverride = null;
       let envChildContentOverride = null;
       if (cat.id === 'env') {
+        // Pour env : on aplanit les petits-enfants chambre/lit, mais on ne garde que ceux
+        // qui sont tickés (state.courbeCardsTicked) — comme les autres catégories filtrent
+        // par state.selectedSolutions
         const combinedItems = [];
         checkedChildren.forEach(ch => {
           if (Array.isArray(ch.blocks)) {
             ch.blocks.forEach(b => {
               if (b && b.type === 'courbe_cards_grid' && Array.isArray(b.items)) {
-                b.items.forEach(it => combinedItems.push(it));
+                b.items.forEach(it => {
+                  if (state.courbeCardsTicked && state.courbeCardsTicked.has(it.id)) {
+                    combinedItems.push(it);
+                  }
+                });
               }
             });
           }
