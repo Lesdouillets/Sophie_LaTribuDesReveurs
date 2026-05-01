@@ -8284,6 +8284,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   // Tentative de restauration d'une consultation active après hard refresh
   try { if (typeof restoreActiveConsultation === 'function') restoreActiveConsultation(); } catch(e) { console.warn('[restore on load]', e); }
+  // ⚠️ NETTOYAGE 1-FOIS — restaure les liens PB → solution cassés par les actions bulk précédentes.
+  // À retirer après le prochain rechargement de l'utilisateur.
+  try {
+    if (!localStorage.getItem('__bulk_links_cleaned_v1')) {
+      if (state.selectedSolutionsManuallyEdited && state.selectedSolutionsManuallyEdited.clear) state.selectedSolutionsManuallyEdited.clear();
+      if (state.courbeCardsTickedManuallyEdited && state.courbeCardsTickedManuallyEdited.clear) state.courbeCardsTickedManuallyEdited.clear();
+      if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
+      if (typeof renderCurrentSection === 'function') renderCurrentSection();
+      if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+      localStorage.setItem('__bulk_links_cleaned_v1', '1');
+      console.log('[bulk-links-cleanup] Drapeaux manuallyEdited effacés, liens PB→solution restaurés.');
+    }
+  } catch(e) { console.warn('[bulk-links-cleanup]', e); }
 });
 
 function updateTimeProgress() {
@@ -12785,15 +12798,13 @@ function uncheckAllSolutionsInCat(catId) {
     }
     if (!hasGrid) {
       // Cas spécial strat_tetine : toggleSolution(false) supprime le PB souhait_tetine,
-      // ce qui briserait le lien PB → solution. On gère manuellement pour préserver le PB.
+      // ce qui briserait le lien PB → solution. On gère manuellement pour préserver les liens.
       if (ch.id === 'strat_tetine') {
         state.selectedSolutions.delete('strat_tetine');
-        state.selectedSolutionsManuallyEdited.add('strat_tetine');
-        if (state.tickboxChoices) {
-          delete state.tickboxChoices['strategie_tetine_choice'];
-          delete state.tickboxChoices['obj_tetine_static'];
-        }
+        // ⚠️ NE PAS marquer comme manuallyEdited → permet à syncSolutionsFromPbs de re-cocher
+        // si l'utilisateur a encore le PB souhait_tetine ou un choix V Diagnostic
         // ⚠️ NE PAS toucher state.selectedPbs (souhait_tetine reste si l'utilisateur l'avait coché)
+        // ⚠️ NE PAS toucher state.tickboxChoices (Garder/Supprimer/Hybride en V Diagnostic restent)
       } else {
         // toggleSolution marque l'item comme manuallyEdited → ça empêche syncSolutionsFromPbs
         // de re-cocher automatiquement les items avec autoCheckIfPbs/Sieste/Alim.
