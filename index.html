@@ -9593,14 +9593,12 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const wakeUp = wakeUpStored || wakeUpDefault;
     const innerHtml = renderEmploiDuTempsInner(b, wakeUp, blockKey);
     const escAttr = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
-    const agePillHtml = b.ageLabel ? `<div class="emploi-temps-age-pill">${escAttr(b.ageLabel)}</div>` : '';
     const _warnExtras = {};
     if (b.warnText != null) _warnExtras.warnText = b.warnText;
     if (b.warnSubtitle != null) _warnExtras.warnSubtitle = b.warnSubtitle;
     if (Array.isArray(b.warnOffsets)) _warnExtras.warnOffsets = b.warnOffsets;
     const warnExtrasAttr = JSON.stringify(_warnExtras).replace(/'/g, '&#39;');
     return `<div class="emploi-temps-block" data-emploi-block-id="${blockId}" data-block-key="${escAttr(blockKey)}" data-rows='${JSON.stringify(rows).replace(/'/g, '&#39;')}' data-notes='${JSON.stringify(b.notes || []).replace(/'/g, '&#39;')}' data-warn-extras='${warnExtrasAttr}'>
-      ${agePillHtml}
       <div class="emploi-temps-input-wrap">
         <label for="${blockId}-wake">⏰ Heure de réveil :</label>
         <input id="${blockId}-wake" class="emploi-temps-input" type="time" value="${wakeUp}" oninput="onScheduleWakeUpChange(this)">

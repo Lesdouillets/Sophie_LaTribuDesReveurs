@@ -2679,6 +2679,7 @@ const SCRIPT_DATA = {
             autoCheckIfSieste: ["2-4m", "4-6m", "6-8m", "8-10m", "8-15m", "15-20m", "15m-3a", "4a-plus", "4a-plus-tc"],
             blocks: [
               // ─── 2-4 mois (4 siestes) ─────────────────────────────────────
+              { type: "normal", _noBorder: true, showIfSieste: "2-4m", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">2-4 mois (4 siestes)</div>" },
               {
                 type: "emploi_du_temps",
                 showIfSieste: "2-4m",
@@ -2708,6 +2709,7 @@ const SCRIPT_DATA = {
                 ]
               },
               // ─── 4-6 mois (3 siestes) ─────────────────────────────────────
+              { type: "normal", _noBorder: true, showIfSieste: "4-6m", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">4-6 mois (3 siestes)</div>" },
               {
                 type: "emploi_du_temps",
                 showIfSieste: "4-6m",
@@ -2740,6 +2742,7 @@ const SCRIPT_DATA = {
                 ]
               },
               // ─── 6-8 mois (3 siestes) — basé sur sheet5 "Emploi 7 mois" ──
+              { type: "normal", _noBorder: true, showIfSieste: "6-8m", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">6-8 mois (3 siestes)</div>" },
               {
                 type: "emploi_du_temps",
                 showIfSieste: "6-8m",
@@ -2771,6 +2774,7 @@ const SCRIPT_DATA = {
                 ]
               },
               // ─── 8-10 mois (3 siestes) — basé sur sheet6 ─────────────────
+              { type: "normal", _noBorder: true, showIfSieste: "8-10m", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">8-10 mois (3 siestes)</div>" },
               {
                 type: "emploi_du_temps",
                 showIfSieste: "8-10m",
@@ -2802,6 +2806,7 @@ const SCRIPT_DATA = {
                 ]
               },
               // ─── 8-15 mois (2 siestes) — basé sur sheet7 "Emploi 8-14mois" ───
+              { type: "normal", _noBorder: true, showIfSieste: "8-15m", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">8-15 mois (2 siestes)</div>" },
               {
                 type: "emploi_du_temps",
                 showIfSieste: "8-15m",
@@ -2832,6 +2837,7 @@ const SCRIPT_DATA = {
                 ]
               },
               // ─── 15-20 mois (2 siestes) — basé sur sheet8 "Emploi 14-20mois" ───
+              { type: "normal", _noBorder: true, showIfSieste: "15-20m", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">15-20 mois (2 siestes)</div>" },
               {
                 type: "emploi_du_temps",
                 showIfSieste: "15-20m",
@@ -2862,6 +2868,7 @@ const SCRIPT_DATA = {
                 ]
               },
               // ─── 15 mois - 3 ans (1 sieste) — basé sur sheet9 ───────────────
+              { type: "normal", _noBorder: true, showIfSieste: "15m-3a", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">15 mois - 3 ans (1 sieste)</div>" },
               {
                 type: "emploi_du_temps",
                 showIfSieste: "15m-3a",
@@ -2890,6 +2897,7 @@ const SCRIPT_DATA = {
                 ]
               },
               // ─── 4 ans (1 sieste) — basé sur sheet10 ────────────────────────
+              { type: "normal", _noBorder: true, showIfSieste: "4a-plus", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">4 ans + (1 sieste)</div>" },
               {
                 type: "emploi_du_temps",
                 showIfSieste: "4a-plus",
@@ -2918,6 +2926,7 @@ const SCRIPT_DATA = {
                 ]
               },
               // ─── 4 ans + (Temps calme) — basé sur sheet11 ───────────────────
+              { type: "normal", _noBorder: true, showIfSieste: "4a-plus-tc", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">4 ans + (Temps calme)</div>" },
               {
                 type: "emploi_du_temps",
                 showIfSieste: "4a-plus-tc",
