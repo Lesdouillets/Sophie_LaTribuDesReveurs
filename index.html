@@ -12683,9 +12683,36 @@ function checkAllSolutionsInCat(catId) {
   const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
   const cat = sols.find(c => c.id === catId);
   if (!cat) return;
+  if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+  if (!state.courbeCardsTickedManuallyEdited) state.courbeCardsTickedManuallyEdited = new Set();
+  if (!state.selectedSolutions) state.selectedSolutions = new Set();
+  if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
+  let touchedGrid = false;
   (cat.children || []).forEach(ch => {
-    if (!state.selectedSolutions.has(ch.id)) toggleSolution(ch.id, true);
+    // Si le child a un courbe_cards_grid alwaysShowAll, ce sont les sous-items qui sont les vraies cases.
+    // toggleSolution bloque le toggle manuel sur ces parents, donc on coche les sous-items directement.
+    let hasGrid = false;
+    if (Array.isArray(ch.blocks)) {
+      ch.blocks.forEach(b => {
+        if (b && b.type === 'courbe_cards_grid' && b.alwaysShowAll && Array.isArray(b.items)) {
+          hasGrid = true;
+          touchedGrid = true;
+          b.items.forEach(it => {
+            state.courbeCardsTicked.add(it.id);
+            state.courbeCardsTickedManuallyEdited.add(it.id);
+          });
+          state.selectedSolutions.add(ch.id);
+        }
+      });
+    }
+    if (!hasGrid && !state.selectedSolutions.has(ch.id)) {
+      toggleSolution(ch.id, true);
+    }
   });
+  if (touchedGrid) {
+    if (typeof renderCurrentSection === 'function') renderCurrentSection();
+    if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+  }
 }
 window.checkAllSolutionsInCat = checkAllSolutionsInCat;
 
@@ -12693,9 +12720,35 @@ function uncheckAllSolutionsInCat(catId) {
   const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
   const cat = sols.find(c => c.id === catId);
   if (!cat) return;
+  if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+  if (!state.courbeCardsTickedManuallyEdited) state.courbeCardsTickedManuallyEdited = new Set();
+  if (!state.selectedSolutions) state.selectedSolutions = new Set();
+  let touchedGrid = false;
   (cat.children || []).forEach(ch => {
-    if (state.selectedSolutions.has(ch.id)) toggleSolution(ch.id, false);
+    let hasGrid = false;
+    if (Array.isArray(ch.blocks)) {
+      ch.blocks.forEach(b => {
+        if (b && b.type === 'courbe_cards_grid' && b.alwaysShowAll && Array.isArray(b.items)) {
+          hasGrid = true;
+          touchedGrid = true;
+          b.items.forEach(it => {
+            state.courbeCardsTicked.delete(it.id);
+            state.courbeCardsTickedManuallyEdited.add(it.id);
+          });
+          state.selectedSolutions.delete(ch.id);
+        }
+      });
+    }
+    if (!hasGrid) {
+      // Toujours appeler toggleSolution(false) pour les solutions sans grid —
+      // efface aussi les sous-choix (ex: strat_tetine → tetine_choice) via la cascade interne.
+      toggleSolution(ch.id, false);
+    }
   });
+  if (touchedGrid) {
+    if (typeof renderCurrentSection === 'function') renderCurrentSection();
+    if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+  }
 }
 window.uncheckAllSolutionsInCat = uncheckAllSolutionsInCat;
 
