@@ -2929,7 +2929,7 @@ const SCRIPT_DATA = {
                 wakeUpDefault: "07:00",
                 rows: [
                   { kind: "wake", label: "Réveil" },
-                  { kind: "te", label: "Temps d'Éveil 1 : Réveil, change, manger, jouer", durationMin: 300, durationRange: "5h-6h" },
+                  { kind: "te", label: "Temps d'Éveil 1 : Réveil, change, manger, jouer", durationMin: 315, durationRange: "5h-6h" },
                   { kind: "milestone", label: "Repas diversification (midi)", staticTime: "11h-12h" },
                   { kind: "sieste", label: "TPS CALME (dans le lit)", durationMin: 45, durationRange: "45min" },
                   { kind: "te", label: "Temps d'Éveil 2 : Réveil, change, manger, rituel", durationMin: 360, durationRange: "5h-6h" },
