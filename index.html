@@ -8694,21 +8694,11 @@ function togglePb(value, checked) {
     if (!state.selectedSolutions) state.selectedSolutions = new Set();
     if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
     if (checked) {
-      // Détecter un conflit : un tickbox existant ≠ "supprimer"
-      const existing1 = state.tickboxChoices['strategie_tetine_choice'];
-      const existing2 = state.tickboxChoices['obj_tetine_static'];
-      const hasConflict = (existing1 && existing1 !== 'supprimer') || (existing2 && existing2 !== 'supprimer');
-      if (hasConflict) {
-        // Ne pas écraser silencieusement — laisser le modal de conflit trancher
-        // (souhait_tetine est déjà dans selectedPbs, les tickboxes gardent leur valeur)
-        if (typeof openTetineConflictModal === 'function') openTetineConflictModal();
-      } else {
-        // Pas de conflit → propager
-        state.tickboxChoices['strategie_tetine_choice'] = 'supprimer';
-        state.tickboxChoices['obj_tetine_static'] = 'supprimer';
-        state.selectedSolutions.add('strat_tetine');
-        state.selectedSolutionsManuallyEdited.add('strat_tetine');
-      }
+      // PB souhait_tetine cochée → force le choix à "supprimer" partout (override conflit)
+      state.tickboxChoices['strategie_tetine_choice'] = 'supprimer';
+      state.tickboxChoices['obj_tetine_static'] = 'supprimer';
+      state.selectedSolutions.add('strat_tetine');
+      state.selectedSolutionsManuallyEdited.add('strat_tetine');
     } else {
       // Si on décoche la pb, on efface seulement si les tickboxes étaient à "supprimer"
       if (state.tickboxChoices['strategie_tetine_choice'] === 'supprimer') {
