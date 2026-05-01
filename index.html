@@ -9161,7 +9161,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
       // Solution context : padding + marge externe pour que le liseré ne touche pas le contour de catégorie
       if (sectionId && sectionId.startsWith('sol_')) {
         styleParts.push('padding:6px');
-        styleParts.push('margin:8px 8px 14px');
+        styleParts.push('margin:20px 20px 20px');
       }
       if (styleParts.length) wrapStyle = ` style="${styleParts.join(';')}"`;
       return `<div class="block-with-left-title"${wrapStyle}><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div>${wrapOnly}</div>${addBtn}`;
