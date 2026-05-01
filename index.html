@@ -1231,10 +1231,11 @@
       background: var(--cat-light, #e2e8f0);
       border-radius: 8px;
     }
-    /* Liseré fin coloré autour du bloc titre+contenu dans un panel courbe-card-content
-       (ex: Conseils RGO → Rituel/Alim/Journée, Plan d'action env Chambre/Lit, V. Diagnostic env) */
-    .courbe-card-content .block-with-left-title {
-      border: 1px solid var(--cat-main, #cbd5e0);
+    /* Solution : marge externe pour que le bloc-titre ne touche pas le contour de la catégorie */
+    .sol-child-content .block-with-left-title,
+    .sol-cat-intro .block-with-left-title,
+    .sol-cat-outro .block-with-left-title {
+      margin: 8px 8px 14px !important;
     }
     .block-left-title {
       font-size: 13px;
@@ -3598,13 +3599,12 @@
       letter-spacing: 0.4px; padding: 12px 20px;
     }
     .solutions-identifiees-body { padding: 12px 20px; columns: 2; column-gap: 24px; }
-    .sol-group { width: 100%; break-inside: avoid; page-break-inside: avoid; -webkit-column-break-inside: avoid; margin-bottom: 18px; display: inline-block; }
+    .sol-group { width: 100%; break-inside: avoid; page-break-inside: avoid; -webkit-column-break-inside: avoid; margin-bottom: 18px; display: inline-block; border-left: 10px solid; padding-left: 14px; }
     @media (max-width: 900px) { .solutions-identifiees-body { columns: 1; } }
     .sol-group-title {
       font-weight: 800; font-size: 15px; text-transform: uppercase;
-      letter-spacing: 0.3px; padding: 4px 0 5px 12px; margin-bottom: 6px;
+      letter-spacing: 0.3px; padding-bottom: 5px; margin-bottom: 6px;
       border-bottom: 2px solid;
-      border-left: 5px solid;
       display: flex; align-items: center; justify-content: space-between; gap: 8px;
       cursor: pointer; user-select: none;
     }
@@ -9143,14 +9143,14 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
     if (b._leftTitle && depth <= 2) {
       const ltStyle = b._leftTitleStyle ? ` style="${b._leftTitleStyle}"` : '';
       let wrapStyle = '';
+      const styleParts = [];
       if (b._leftTitleStyle) {
         const bgMatch = b._leftTitleStyle.match(/background\s*:\s*([^;]+)/);
         const catMainMatch = b._leftTitleStyle.match(/--cat-main\s*:\s*([^;]+)/);
-        const styleParts = [];
         if (bgMatch) styleParts.push(`background:${bgMatch[1].trim()}`);
         if (catMainMatch) styleParts.push(`--cat-main:${catMainMatch[1].trim()}`);
-        if (styleParts.length) wrapStyle = ` style="${styleParts.join(';')}"`;
       }
+      if (styleParts.length) wrapStyle = ` style="${styleParts.join(';')}"`;
       return `<div class="block-with-left-title"${wrapStyle}><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div>${wrapOnly}</div>${addBtn}`;
     }
     return wrapOnly + addBtn;
@@ -10519,8 +10519,8 @@ function renderSolutionsCheckboxes(opts) {
       : '';
     const groupCollapsed = !!(state.solGroupsCollapsed && state.solGroupsCollapsed.has(cat.id));
     const groupClass = groupCollapsed ? ' collapsed' : '';
-    return `<div class="sol-group${groupClass}" data-cat="${cat.id}">
-      <div class="sol-group-title" style="color:${c.dark};border-color:${c.dark}" onclick="toggleSolGroup('${cat.id}')"><span class="sol-group-title-text"><span class="sol-group-arrow">▾</span><span>${cat.emoji || ''} ${cat.title}</span></span>${bulkBtns}</div>
+    return `<div class="sol-group${groupClass}" data-cat="${cat.id}" style="border-left-color:${c.main}">
+      <div class="sol-group-title" style="color:${c.main};border-color:${c.main}" onclick="toggleSolGroup('${cat.id}')"><span class="sol-group-title-text"><span class="sol-group-arrow">▾</span><span>${cat.emoji || ''} ${cat.title}</span></span>${bulkBtns}</div>
       <div class="sol-group-rows">${rows}</div>
     </div>`;
   }).filter(Boolean).join('');
