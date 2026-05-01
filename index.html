@@ -10354,14 +10354,14 @@ function renderSolutionsCheckboxes(opts) {
   if (!sols.length) return '<div class="block block-normal"><em>(Aucune solution configurée.)</em></div>';
   syncSolutionsFromPbs();
   const catColorMap = {
-    confort_physique: { main: '#dc2626', dark: '#b91c1c', light: '#fef2f2' },
-    nutrition:        { main: '#f97316', dark: '#c2410c', light: '#fff7ed' },
-    rythme:           { main: '#22c55e', dark: '#166534', light: '#f0fdf4' },
-    strategie:        { main: '#3b82f6', dark: '#1e3a8a', light: '#eff6ff' },
-    env:              { main: '#8b5cf6', dark: '#5b21b6', light: '#f5f3ff' },
-    changement:       { main: '#6366f1', dark: '#4338ca', light: '#e0e7ff' },
+    confort_physique: { main: '#c8918a', dark: '#7a3838', light: '#e8b8b0' },
+    nutrition:        { main: '#b3835c', dark: '#704526', light: '#dbab84' },
+    rythme:           { main: '#7da589', dark: '#4a6b54', light: '#bdd1c4' },
+    strategie:        { main: '#7e93ad', dark: '#3e506f', light: '#b8c4d6' },
+    env:              { main: '#9d83b0', dark: '#4f3d62', light: '#c9b6d6' },
+    changement:       { main: '#8089a8', dark: '#3d4570', light: '#bbc1d8' },
     journee:          { main: '#92400e', dark: '#78350f', light: '#fef3c7' },
-    relationnel:      { main: '#ec4899', dark: '#be185d', light: '#fdf2f8' },
+    relationnel:      { main: '#a986a0', dark: '#5e3a52', light: '#dabbcc' },
     sante:            { main: '#14b8a6', dark: '#0f766e', light: '#f0fdfa' },
   };
   // Helper : ch (solution enfant) caché par filtre d'âge, alim (ch.showIfAlim), ou sieste (ch.hideIfSieste)
@@ -12311,12 +12311,12 @@ function filterDiagnosticSections(q) {
   const qLower = q.toLowerCase();
   const reEsc = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const catColorMap = {
-    nutrition: { main: '#f97316', dark: '#c2410c', label: 'Nutrition' },
-    rythme: { main: '#22c55e', dark: '#166534', label: 'Rythme' },
-    strategie: { main: '#3b82f6', dark: '#1e3a8a', label: 'Stratégie' },
-    env: { main: '#8b5cf6', dark: '#5b21b6', label: 'Env' },
-    relationnel: { main: '#ec4899', dark: '#be185d', label: 'Relationnel' },
-    confort_physique: { main: '#dc2626', dark: '#b91c1c', label: 'Confort' },
+    nutrition: { main: '#b3835c', dark: '#704526', label: 'Nutrition' },
+    rythme: { main: '#7da589', dark: '#4a6b54', label: 'Rythme' },
+    strategie: { main: '#7e93ad', dark: '#3e506f', label: 'Stratégie' },
+    env: { main: '#9d83b0', dark: '#4f3d62', label: 'Env' },
+    relationnel: { main: '#a986a0', dark: '#5e3a52', label: 'Relationnel' },
+    confort_physique: { main: '#c8918a', dark: '#7a3838', label: 'Confort' },
     sante: { main: '#14b8a6', dark: '#0f766e', label: 'Santé' },
   };
   const escHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
