@@ -10381,7 +10381,7 @@ function renderSolutionsCheckboxes(opts) {
   if (!sols.length) return '<div class="block block-normal"><em>(Aucune solution configurée.)</em></div>';
   syncSolutionsFromPbs();
   const catColorMap = {
-    confort_physique: { main: '#dc2626', dark: '#b91c1c', light: '#fef2f2' },
+    confort_physique: { main: '#dc2626', dark: '#b91c1c', light: '#e8b8b0' },
     nutrition:        { main: '#d4845a', dark: '#a05a1c', light: '#e8c19a' },
     rythme:           { main: '#7da589', dark: '#4a6b54', light: '#bdd1c4' },
     strategie:        { main: '#5d7a99', dark: '#2a4060', light: '#b8c4d6' },
@@ -10532,13 +10532,11 @@ function renderSolutionsCheckboxes(opts) {
         ${chEmoji}<span class="sol-row-label">${ch.label || ch.id}</span>
       </label>${arrowHtml}</div>${subRows}</div>`;
     }).join('');
-    const bulkBtns = children.length > 1
-      ? `<span class="sol-bulk-btns"><button type="button" class="sol-bulk-btn sol-bulk-check" onclick="event.stopPropagation(); checkAllSolutionsInCat('${cat.id}')" title="Tout cocher">Tout ✓</button><button type="button" class="sol-bulk-btn sol-bulk-uncheck" onclick="event.stopPropagation(); uncheckAllSolutionsInCat('${cat.id}')" title="Tout décocher">Tout ✗</button></span>`
-      : '';
+    const bulkBtns = `<span class="sol-bulk-btns"><button type="button" class="sol-bulk-btn sol-bulk-check" onclick="event.stopPropagation(); checkAllSolutionsInCat('${cat.id}')" title="Tout cocher">Tout ✓</button><button type="button" class="sol-bulk-btn sol-bulk-uncheck" onclick="event.stopPropagation(); uncheckAllSolutionsInCat('${cat.id}')" title="Tout décocher">Tout ✗</button></span>`;
     const groupCollapsed = !!(state.solGroupsCollapsed && state.solGroupsCollapsed.has(cat.id));
     const groupClass = groupCollapsed ? ' collapsed' : '';
     return `<div class="sol-group block-with-left-title${groupClass}" data-cat="${cat.id}">
-      <div class="sol-group-title" style="background:${c.main};color:#fff;border-right:3px solid ${c.light}" onclick="toggleSolGroup('${cat.id}')"><span class="sol-group-arrow">▾</span><span>${cat.emoji || ''} ${cat.title}</span></div>
+      <div class="sol-group-title" style="background:${c.main};color:#fff;border-right:3px solid ${c.light}" onclick="toggleSolGroup('${cat.id}')"><span class="sol-group-arrow">▾</span><span style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:22px;line-height:1">${cat.emoji || ''}</span><span>${cat.title}</span></span></div>
       <div class="sol-group-content" style="border:2px solid ${c.light}">${bulkBtns}<div class="sol-group-rows">${rows}</div></div>
     </div>`;
   }).filter(Boolean).join('');
