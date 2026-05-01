@@ -10844,6 +10844,18 @@ function syncSolutionsFromPbs() {
   reapplyTickboxCascades();
   // Cascade niveau 1 ← niveau 2 puis niveau 0 ← niveau 1
   applyParentTickCascade();
+  // Enforcement mutex après sync (au cas où plusieurs PBs déclenchent des solutions exclusives)
+  // → garde uniquement le 1er item du groupe trouvé dans selectedSolutions
+  const MUTEX_GROUPS = [
+    ['conf_aplv', 'conf_rgo'],
+    ['env_chgmt_lit', 'env_chgmt_chambre', 'env_chgmt_lit_chambre'],
+  ];
+  MUTEX_GROUPS.forEach(group => {
+    const checkedInGroup = group.filter(id => state.selectedSolutions.has(id));
+    if (checkedInGroup.length > 1) {
+      checkedInGroup.slice(1).forEach(id => state.selectedSolutions.delete(id));
+    }
+  });
 }
 
 // Cascade tick parent ← enfants pour empêcher un parent d'être tické sans enfant tické :
