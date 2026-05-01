@@ -10362,12 +10362,12 @@ function renderSolutionsCheckboxes(opts) {
   syncSolutionsFromPbs();
   const catColorMap = {
     confort_physique: { main: '#dc2626', dark: '#b91c1c', light: '#fef2f2' },
-    nutrition:        { main: '#d4845a', dark: '#a05a1c', light: '#fff7ed' },
+    nutrition:        { main: '#d4845a', dark: '#a05a1c', light: '#e8c19a' },
     rythme:           { main: '#7da589', dark: '#4a6b54', light: '#bdd1c4' },
     strategie:        { main: '#5d7a99', dark: '#2a4060', light: '#b8c4d6' },
     env:              { main: '#9d83b0', dark: '#4f3d62', light: '#c9b6d6' },
     changement:       { main: '#8089a8', dark: '#3d4570', light: '#bbc1d8' },
-    journee:          { main: '#fcd34d', dark: '#92400e', light: '#fef3c7' },
+    journee:          { main: '#e6cc6b', dark: '#92400e', light: '#fef3c7' },
     relationnel:      { main: '#c98aa8', dark: '#5e3a52', light: '#f0c0d8' },
     sante:            { main: '#14b8a6', dark: '#0f766e', light: '#bdd6d2' },
   };
@@ -10678,14 +10678,15 @@ function renderSolutionsCheckboxes(opts) {
       //    - sinon → nom du parent (ex: "🥄 Diversification")
       // Plus de pastille en singleChildMode — on affiche désormais la carte unique active dans cardsHtml
       const singleChildPastille = '';
-      // Cas spécial env (Environnement de sommeil) : on saute les enfants chambre/lit
-      // et on affiche directement les petits-enfants des grilles courbe_cards_grid combinées,
-      // mais rendus comme des sol-child-cards (pour avoir le même look que les autres catégories
-      // — petites cartes côte à côte, sans dégradé)
+      // Cas spécial flatten : on saute le niveau enfant et on affiche directement les petits-enfants
+      // - env (Environnement de sommeil) : toujours (chambre/lit toujours sautés)
+      // - nutrition : uniquement quand 1 seul enfant est coché (lait OU diversification OU allaitement)
+      // Rendu en sol-child-cards pour matcher le look des autres catégories.
       // La structure dans le compactGroups "Solutions identifiées" reste inchangée.
+      const shouldFlattenChildren = (cat.id === 'env') || (cat.id === 'nutrition' && checkedChildren.length === 1);
       let envCardsOverride = null;
       let envChildContentOverride = null;
-      if (cat.id === 'env') {
+      if (shouldFlattenChildren) {
         // Pour env : on aplanit les petits-enfants chambre/lit, mais on ne garde que ceux
         // qui sont tickés (state.courbeCardsTicked) — comme les autres catégories filtrent
         // par state.selectedSolutions
