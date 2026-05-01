@@ -9151,14 +9151,19 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
     if (b._leftTitle && depth <= 2) {
       const ltStyle = b._leftTitleStyle ? ` style="${b._leftTitleStyle}"` : '';
       let wrapStyle = '';
+      const styleParts = [];
       if (b._leftTitleStyle) {
         const bgMatch = b._leftTitleStyle.match(/background\s*:\s*([^;]+)/);
         const catMainMatch = b._leftTitleStyle.match(/--cat-main\s*:\s*([^;]+)/);
-        const styleParts = [];
         if (bgMatch) styleParts.push(`background:${bgMatch[1].trim()}`);
         if (catMainMatch) styleParts.push(`--cat-main:${catMainMatch[1].trim()}`);
-        if (styleParts.length) wrapStyle = ` style="${styleParts.join(';')}"`;
       }
+      // Solution context : padding + marge externe pour que le liseré ne touche pas le contour de catégorie
+      if (sectionId && sectionId.startsWith('sol_')) {
+        styleParts.push('padding:6px');
+        styleParts.push('margin:8px 8px 14px');
+      }
+      if (styleParts.length) wrapStyle = ` style="${styleParts.join(';')}"`;
       return `<div class="block-with-left-title"${wrapStyle}><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div>${wrapOnly}</div>${addBtn}`;
     }
     return wrapOnly + addBtn;
