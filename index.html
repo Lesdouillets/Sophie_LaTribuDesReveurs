@@ -12817,7 +12817,11 @@ function uncheckAllSolutionsInCat(catId) {
   });
   // Re-synchroniser depuis les PBs (les items non marqués manuallyEdited seront re-cochés si lien actif)
   if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
+  if (typeof buildSections === 'function') buildSections();
+  if (typeof buildSidebar === 'function') buildSidebar();
   if (typeof renderCurrentSection === 'function') renderCurrentSection();
+  if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
+  if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.uncheckAllSolutionsInCat = uncheckAllSolutionsInCat;
