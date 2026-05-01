@@ -2950,11 +2950,13 @@ const SCRIPT_DATA = {
             hideIfSieste: ["pas-de-changement"],
             autoCheckIfSieste: ["2-4m", "4-6m", "6-8m", "8-10m", "8-15m", "15-20m", "15m-3a", "4a-plus", "4a-plus-tc"],
             blocks: [
-              // ─── 0-2 mois ───────────────────────────────────────────────
-              { type: "normal", _leftTitle: "Intro", showIfAgeMaxMonths: 2, text: "- Maintenant qu'on a **parcouru ensemble** un **emploi du temps type** pour un enfant de cette tranche d'âge\n- On va **s'attaquer aux siestes**!\n- Moi,  je vous **propose** de **voir:**\n  - **le déroulé d'une sieste**\n  - et les **différentes façons d'intervenir** en cas de **siestes courtes**" },
-              { type: "normal", _leftTitle: "Rituel de sieste", showIfAgeMaxMonths: 2, text: "- Dure entre 2 et 5 min\n<ol style=\"margin:8px 0 0 22px;padding:0;line-height:1.75\"><li>Changer l'enfant</li><li>Le mettre dans des habits confortables (possibilité de le laisser en pyjama pour son 1er TE)</li><li><span style=\"color:#dc2626\">Possibilité de l'emmailloter</span></li><li>⚠️Ne pas oublier la gigoteuse!</li><li><span style=\"color:#dc2626\">Laisser les rideaux ouverts (pour aider à la mise en place du cycle circadien)</span></li><li>Câlins et bisous</li><li>Chanson du dodo</li><li>Posez l'enfant dans le lit, EVEILLE, avec doudou</li><li>Dire \"Bonne sieste mon chéri\"</li></ol>" },
-              { type: "normal", _leftTitle: "Comment faire?", showIfAgeMaxMonths: 2, text: "- À compléter" },
-              { type: "normal", _leftTitle: "Rituel de lever", showIfAgeMaxMonths: 2, text: "- À compléter" },
+              // ─── 0-2 mois ─────────────────────────────────────────────────
+              // Affiché uniquement si aucune catégorie sieste n'a été cochée dans l'onglet Sieste
+              // (sinon le 2-4 mois prendrait le relais et on aurait des doublons à 2 mois)
+              { type: "normal", _leftTitle: "Intro", showIfAgeMaxMonths: 2, showIfSieste: [""], text: "- Maintenant qu'on a **parcouru ensemble** un **emploi du temps type** pour un enfant de cette tranche d'âge\n- On va **s'attaquer aux siestes**!\n- Moi,  je vous **propose** de **voir:**\n  - **le déroulé d'une sieste**\n  - et les **différentes façons d'intervenir** en cas de **siestes courtes**" },
+              { type: "normal", _leftTitle: "Rituel de sieste", showIfAgeMaxMonths: 2, showIfSieste: [""], text: "- Dure entre 2 et 5 min\n<ol style=\"margin:8px 0 0 22px;padding:0;line-height:1.75\"><li>Changer l'enfant</li><li>Le mettre dans des habits confortables (possibilité de le laisser en pyjama pour son 1er TE)</li><li><span style=\"color:#dc2626\">Possibilité de l'emmailloter</span></li><li>⚠️Ne pas oublier la gigoteuse!</li><li><span style=\"color:#dc2626\">Laisser les rideaux ouverts (pour aider à la mise en place du cycle circadien)</span></li><li>Câlins et bisous</li><li>Chanson du dodo</li><li>Posez l'enfant dans le lit, EVEILLE, avec doudou</li><li>Dire \"Bonne sieste mon chéri\"</li></ol>" },
+              { type: "normal", _leftTitle: "Comment faire?", showIfAgeMaxMonths: 2, showIfSieste: [""], text: "- À compléter" },
+              { type: "normal", _leftTitle: "Rituel de lever", showIfAgeMaxMonths: 2, showIfSieste: [""], text: "- À compléter" },
               // ─── 2-4 mois (4 siestes) ───────────────────────────────────
               { type: "normal", _leftTitle: "Intro", showIfSieste: "2-4m", text: "- À compléter" },
               { type: "normal", _leftTitle: "Rituel de sieste", showIfSieste: "2-4m", text: "- À compléter" },
