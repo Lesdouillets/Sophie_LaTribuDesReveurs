@@ -10519,14 +10519,14 @@ function renderSolutionsCheckboxes(opts) {
 
   // Partie 2 : grid des cards parent (réutilise les classes de V. Diagnostic courbe-card + diag-cat-card)
   const catPastelMap = {
-    confort_physique: '#e8b8b0',
-    nutrition: '#dbab84',
-    rythme: '#bdd1c4',
-    strategie: '#b8c4d6',
-    env: '#c9b6d6',
-    changement: '#bbc1d8',
+    confort_physique: '#fef2f2',
+    nutrition: '#fff7ed',
+    rythme: '#f0fdf4',
+    strategie: '#eff6ff',
+    env: '#f5f3ff',
+    changement: '#e0e7ff',
     journee: '#fef3c7',
-    relationnel: '#f0c0d8',
+    relationnel: '#fdf2f8',
     sante: '#f0fdfa',
   };
   const catsWithChecked = sols.filter(cat => (cat.children || []).some(ch => !isChHiddenByAge(ch) && state.selectedSolutions.has(ch.id)));
