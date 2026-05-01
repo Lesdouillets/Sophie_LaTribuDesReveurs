@@ -12701,6 +12701,28 @@ function closeCourbeCard(btnEl) {
 window.closeCourbeCard = closeCourbeCard;
 
 // Tout cocher / Tout décocher les enfants d'une catégorie dans "Solutions identifiées"
+// Helper : filtre âge/alim/sieste — même logique que isChHiddenByAge dans renderSolutionsCheckboxes
+function _isSolChildHidden(ch) {
+  if (ch.showIfAgeMinMonths != null || ch.showIfAgeMaxMonths != null) {
+    const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
+    if (age == null) return true;
+    if (ch.showIfAgeMinMonths != null && age < ch.showIfAgeMinMonths) return true;
+    if (ch.showIfAgeMaxMonths != null && age > ch.showIfAgeMaxMonths) return true;
+  }
+  if (ch.showIfAlim) {
+    const vals = Array.isArray(ch.showIfAlim) ? ch.showIfAlim : [ch.showIfAlim];
+    const c = (state && state.client) || {};
+    const alim = Array.isArray(c.alimentation) ? c.alimentation : [];
+    const allaitMode = Array.isArray(c.allaitementMode) ? c.allaitementMode : [];
+    if (!vals.some(v => alim.includes(v) || allaitMode.includes(v))) return true;
+  }
+  if (Array.isArray(ch.hideIfSieste) && ch.hideIfSieste.length) {
+    const sieste = (state && state.client && state.client.sieste) || '';
+    if (sieste && ch.hideIfSieste.includes(sieste)) return true;
+  }
+  return false;
+}
+
 function checkAllSolutionsInCat(catId) {
   const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
   const cat = sols.find(c => c.id === catId);
@@ -12709,7 +12731,7 @@ function checkAllSolutionsInCat(catId) {
   if (!state.selectedSolutions) state.selectedSolutions = new Set();
   if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
   let touchedGrid = false;
-  (cat.children || []).forEach(ch => {
+  (cat.children || []).filter(ch => !_isSolChildHidden(ch)).forEach(ch => {
     // Si le child a un courbe_cards_grid alwaysShowAll, ce sont les sous-items qui sont les vraies cases.
     // toggleSolution bloque le toggle manuel sur ces parents, donc on coche les sous-items directement.
     // ⚠️ Ne PAS ajouter à courbeCardsTickedManuallyEdited pour préserver la sync PB → solution
@@ -12747,7 +12769,7 @@ function uncheckAllSolutionsInCat(catId) {
   if (!state.selectedSolutions) state.selectedSolutions = new Set();
   if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
   let touchedGrid = false;
-  (cat.children || []).forEach(ch => {
+  (cat.children || []).filter(ch => !_isSolChildHidden(ch)).forEach(ch => {
     let hasGrid = false;
     if (Array.isArray(ch.blocks)) {
       ch.blocks.forEach(b => {
