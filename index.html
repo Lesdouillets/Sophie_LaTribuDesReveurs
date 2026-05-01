@@ -10600,7 +10600,7 @@ function renderSolutionsCheckboxes(opts) {
         const isActive = activeChildId === ch.id;
         if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
         const childTicked = state.cardPersonalTicks.has(ch.id);
-        return `<div class="sol-child-card${isActive?' active':''}" data-card-id="${ch.id}" style="border-color:${c.dark};${isActive?'background:'+c.dark+';color:#fff':'background:#fff;color:'+c.dark}" onclick="toggleSolChildCard('${cat.id}','${ch.id}')">
+        return `<div class="sol-child-card${isActive?' active':''}" data-card-id="${ch.id}" style="border-color:${c.dark};${isActive?'background:linear-gradient(90deg,'+c.dark+','+c.main+');color:#fff':'background:#fff;color:'+c.dark}" onclick="toggleSolChildCard('${cat.id}','${ch.id}')">
           <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${childTicked ? '✅' : '☐'}</span>
           <span class="solc-emoji">${ch.cardEmoji || '📄'}</span>
           <span class="solc-label">${ch.cardLabel || ch.label || ch.id}</span>
