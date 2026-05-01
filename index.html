@@ -3129,6 +3129,9 @@
       background: #92400e !important;
       color: #fef3c7 !important;
       border: 2px solid #fcd34d !important;
+      align-self: center !important;
+      margin: 6px !important;
+      border-radius: 8px !important;
     }
     /* Carte active = texte blanc (override les règles ci-dessus) */
     .diag-cat-card.active .ccc-title,
@@ -10374,7 +10377,7 @@ function renderSolutionsCheckboxes(opts) {
     changement:       { main: '#8089a8', dark: '#3d4570', light: '#bbc1d8' },
     journee:          { main: '#e6cc6b', dark: '#92400e', light: '#fef3c7' },
     relationnel:      { main: '#c98aa8', dark: '#5e3a52', light: '#f0c0d8' },
-    sante:            { main: '#14b8a6', dark: '#0f766e', light: '#bdd6d2' },
+    sante:            { main: '#7ba8a3', dark: '#3d6b67', light: '#bdd6d2' },
   };
   // Helper : ch (solution enfant) caché par filtre d'âge, alim (ch.showIfAlim), ou sieste (ch.hideIfSieste)
   const isChHiddenByAge = (ch) => {
@@ -12407,7 +12410,7 @@ function filterDiagnosticSections(q) {
     env: { main: '#9d83b0', dark: '#4f3d62', label: 'Env' },
     relationnel: { main: '#c98aa8', dark: '#5e3a52', label: 'Relationnel' },
     confort_physique: { main: '#dc2626', dark: '#b91c1c', label: 'Confort' },
-    sante: { main: '#14b8a6', dark: '#0f766e', label: 'Santé' },
+    sante: { main: '#7ba8a3', dark: '#3d6b67', label: 'Santé' },
   };
   const escHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
