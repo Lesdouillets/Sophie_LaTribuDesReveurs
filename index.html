@@ -1231,11 +1231,10 @@
       background: var(--cat-light, #e2e8f0);
       border-radius: 8px;
     }
-    /* Solution : marge externe pour que le bloc-titre ne touche pas le contour de la catégorie */
-    .sol-child-content .block-with-left-title,
-    .sol-cat-intro .block-with-left-title,
-    .sol-cat-outro .block-with-left-title {
-      margin: 8px 8px 14px !important;
+    /* Liseré fin coloré autour du bloc titre+contenu dans un panel courbe-card-content
+       (ex: Conseils RGO → Rituel/Alim/Journée, Plan d'action env Chambre/Lit, V. Diagnostic env) */
+    .courbe-card-content .block-with-left-title {
+      border: 1px solid var(--cat-main, #cbd5e0);
     }
     .block-left-title {
       font-size: 13px;
