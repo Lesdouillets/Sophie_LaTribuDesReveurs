@@ -10355,7 +10355,7 @@ function renderSolutionsCheckboxes(opts) {
   if (!sols.length) return '<div class="block block-normal"><em>(Aucune solution configurée.)</em></div>';
   syncSolutionsFromPbs();
   const catColorMap = {
-    confort_physique: { main: '#c8918a', dark: '#7a3838', light: '#e8b8b0' },
+    confort_physique: { main: '#dc2626', dark: '#b91c1c', light: '#fef2f2' },
     nutrition:        { main: '#d4845a', dark: '#a05a1c', light: '#f0c9a5' },
     rythme:           { main: '#7da589', dark: '#4a6b54', light: '#bdd1c4' },
     strategie:        { main: '#7e93ad', dark: '#3e506f', light: '#b8c4d6' },
@@ -12352,7 +12352,7 @@ function filterDiagnosticSections(q) {
     strategie: { main: '#7e93ad', dark: '#3e506f', label: 'Stratégie' },
     env: { main: '#9d83b0', dark: '#4f3d62', label: 'Env' },
     relationnel: { main: '#c98aa8', dark: '#5e3a52', label: 'Relationnel' },
-    confort_physique: { main: '#c8918a', dark: '#7a3838', label: 'Confort' },
+    confort_physique: { main: '#dc2626', dark: '#b91c1c', label: 'Confort' },
     sante: { main: '#14b8a6', dark: '#0f766e', label: 'Santé' },
   };
   const escHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
