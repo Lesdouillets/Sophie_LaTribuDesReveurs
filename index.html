@@ -12784,11 +12784,21 @@ function uncheckAllSolutionsInCat(catId) {
       });
     }
     if (!hasGrid) {
-      // Toujours appeler toggleSolution(false) pour les solutions sans grid —
-      // efface aussi les sous-choix (ex: strat_tetine → tetine_choice) via la cascade interne.
-      // toggleSolution marque déjà l'item comme manuallyEdited → ça empêche syncSolutionsFromPbs
-      // de re-cocher automatiquement les items avec autoCheckIfPbs/Sieste/Alim.
-      toggleSolution(ch.id, false);
+      // Cas spécial strat_tetine : toggleSolution(false) supprime le PB souhait_tetine,
+      // ce qui briserait le lien PB → solution. On gère manuellement pour préserver le PB.
+      if (ch.id === 'strat_tetine') {
+        state.selectedSolutions.delete('strat_tetine');
+        state.selectedSolutionsManuallyEdited.add('strat_tetine');
+        if (state.tickboxChoices) {
+          delete state.tickboxChoices['strategie_tetine_choice'];
+          delete state.tickboxChoices['obj_tetine_static'];
+        }
+        // ⚠️ NE PAS toucher state.selectedPbs (souhait_tetine reste si l'utilisateur l'avait coché)
+      } else {
+        // toggleSolution marque l'item comme manuallyEdited → ça empêche syncSolutionsFromPbs
+        // de re-cocher automatiquement les items avec autoCheckIfPbs/Sieste/Alim.
+        toggleSolution(ch.id, false);
+      }
     }
   });
   if (touchedGrid) {
