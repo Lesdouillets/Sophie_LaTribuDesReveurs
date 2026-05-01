@@ -1231,6 +1231,13 @@
       background: var(--cat-light, #e2e8f0);
       border-radius: 8px;
     }
+    /* Solution : ajouter un peu d'espace entre la bg colorée et la carte blanche intérieure
+       (ciblé pour ne pas affecter Accueil ou les autres sections globales) */
+    .sol-child-content .block-with-left-title,
+    .sol-cat-intro .block-with-left-title,
+    .sol-cat-outro .block-with-left-title {
+      padding: 6px;
+    }
     /* Liseré fin coloré autour du bloc titre+contenu dans un panel courbe-card-content
        (ex: Conseils RGO → Rituel/Alim/Journée, Plan d'action env Chambre/Lit, V. Diagnostic env) */
     .courbe-card-content .block-with-left-title {
