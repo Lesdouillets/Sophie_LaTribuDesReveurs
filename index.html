@@ -8847,6 +8847,11 @@ function renderCurrentSection() {
   // Restaurer les tick-box choices déjà renseignés
   if (typeof restoreTickboxChoices === 'function') restoreTickboxChoices(area);
   if (typeof restoreDecouverteNotes === 'function') restoreDecouverteNotes(area);
+  // Restaurer le champ "Horaire souhaité" (III. Découverte → Fiche découverte) depuis state.client.scheduleWakeUp
+  {
+    const v = (state && state.client && state.client.scheduleWakeUp) || '';
+    if (v) area.querySelectorAll('input[data-horaire-souhaite]').forEach(inp => { inp.value = v; });
+  }
   // Remplir le diagnostic avec le clone des checkboxes si la section contient le container
   const diagContainer = document.getElementById('diag-pb-container');
   if (diagContainer) {
@@ -9059,7 +9064,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','horaire_reveil_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid','vicious_circle','columns_2','solutions_checkboxes'].includes(b.type);
+    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid','vicious_circle','columns_2','solutions_checkboxes'].includes(b.type);
     const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
@@ -9724,24 +9729,6 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         <span style="color:#78716c;font-size:18px;font-weight:800">→</span>
         <div style="font-size:16px;font-weight:900;color:#7c2d12;background:#fef3c7;padding:6px 14px;border-radius:8px;border:1.5px solid #fcd34d">
           Volume / 24h : <span id="appert-volume-result" style="color:#dc2626">${initResult}</span>
-        </div>
-      </div>
-    </div>`;
-  }
-  // Bloc question III. Découverte — Heure de réveil + horaire souhaité
-  // L'horaire saisi alimente state.client.scheduleWakeUp (cascade vers Solution → Organisation de la journée → Emploi du temps)
-  if (b.type === 'horaire_reveil_question') {
-    const stored = (state && state.client && state.client.scheduleWakeUp) || '';
-    return `<div class="block block-question">
-      <div class="q-text">
-        <div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start">
-          <span>❓</span><span>•</span><span>À quelle heure se réveille-t-il le matin ?</span>
-          <span></span><span>•</span><span>Est-ce que c'est un horaire qui vous convient ?</span>
-        </div>
-        <div style="margin-top:14px;padding:12px 16px;background:#fff7ed;border:2px dashed #fb923c;border-radius:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-          <span style="font-weight:700;color:#9a3412;font-size:14px">⏰ Horaire souhaité :</span>
-          <input type="time" value="${stored}" oninput="onHoraireSouhaiteChange(this)" style="padding:6px 10px;border:1.5px solid #fb923c;border-radius:8px;font-size:14px;font-weight:700;color:#9a3412;background:white">
-          <span style="font-size:12px;color:#9a3412;font-style:italic;flex-basis:100%">↪ Cet horaire alimente automatiquement la case « Heure de réveil » dans Solution → Organisation de la journée → Emploi du temps.</span>
         </div>
       </div>
     </div>`;
