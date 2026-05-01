@@ -2953,7 +2953,7 @@ const SCRIPT_DATA = {
               // ─── 0-2 mois ─────────────────────────────────────────────────
               // Affiché uniquement si aucune catégorie sieste n'a été cochée dans l'onglet Sieste
               // (sinon le 2-4 mois prendrait le relais et on aurait des doublons à 2 mois)
-              { type: "normal", _noBorder: true, showIfAgeMaxMonths: 2, showIfSieste: [""], text: "<div style=\"display:inline-block;padding:7px 16px;background:#166534;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(22,101,52,0.25)\">0-2 mois (siestes illimitées)</div>" },
+              { type: "normal", _noBorder: true, showIfAgeMaxMonths: 2, showIfSieste: [""], text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">0-2 mois (siestes illimitées)</div>" },
               { type: "normal", _leftTitle: "Intro", showIfAgeMaxMonths: 2, showIfSieste: [""], text: "- Maintenant qu'on a **parcouru ensemble** un **emploi du temps type** pour un enfant de cette tranche d'âge\n- On va **s'attaquer aux siestes**!\n- Moi,  je vous **propose** de **voir:**\n  - **le déroulé d'une sieste**\n  - et les **différentes façons d'intervenir** en cas de **siestes courtes**" },
               { type: "normal", _leftTitle: "Rituel de sieste", showIfAgeMaxMonths: 2, showIfSieste: [""], text: "- Dure entre 2 et 5 min\n<ol style=\"margin:8px 0 0 22px;padding:0;line-height:1.75\"><li>Changer l'enfant</li><li>Le mettre dans des habits confortables (possibilité de le laisser en pyjama pour son 1er TE)</li><li><span style=\"color:#dc2626\">Possibilité de l'emmailloter</span></li><li>⚠️Ne pas oublier la gigoteuse!</li><li><span style=\"color:#dc2626\">Laisser les rideaux ouverts (pour aider à la mise en place du cycle circadien)</span></li><li>Câlins et bisous</li><li>Chanson du dodo</li><li>Posez l'enfant dans le lit, EVEILLE, avec doudou</li><li>Dire \"Bonne sieste mon chéri\"</li></ol>" },
               { type: "normal", _leftTitle: "Comment faire?", showIfAgeMaxMonths: 2, showIfSieste: [""], text: "- À compléter" },
@@ -3012,7 +3012,7 @@ const SCRIPT_DATA = {
               {
                 type: "normal", _noBorder: true,
                 showIfAgeMaxMonths: 2,
-                text: "<div style=\"display:inline-block;padding:7px 16px;background:#166534;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(22,101,52,0.25)\">0-2 mois (4 siestes)</div>"
+                text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">0-2 mois (4 siestes)</div>"
               },
               {
                 type: "normal", _leftTitle: "À quoi ça sert ?",
@@ -3036,7 +3036,7 @@ const SCRIPT_DATA = {
               {
                 type: "normal", _noBorder: true,
                 showIfAgeMinMonths: 3, showIfAgeMaxMonths: 15,
-                text: "<div style=\"display:inline-block;padding:7px 16px;background:#166534;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(22,101,52,0.25)\">2-15 mois</div>"
+                text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">2-15 mois</div>"
               },
               {
                 type: "normal", _leftTitle: "À quoi ça sert ?",
@@ -3060,7 +3060,7 @@ const SCRIPT_DATA = {
               {
                 type: "normal", _noBorder: true,
                 showIfAgeMinMonths: 16,
-                text: "<div style=\"display:inline-block;padding:7px 16px;background:#166534;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(22,101,52,0.25)\">Plus de 15 mois</div>"
+                text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">Plus de 15 mois</div>"
               },
               {
                 type: "normal", _leftTitle: "À quoi ça sert ?",
