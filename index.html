@@ -10545,7 +10545,11 @@ function renderSolutionsCheckboxes(opts) {
         ${chEmoji}<span class="sol-row-label">${ch.label || ch.id}</span>
       </label>${arrowHtml}</div>${subRows}</div>`;
     }).join('');
-    const bulkBtns = `<span class="sol-bulk-btns"><button type="button" class="sol-bulk-btn sol-bulk-check" onclick="event.stopPropagation(); checkAllSolutionsInCat('${cat.id}')" title="Tout cocher">Tout ✓</button><button type="button" class="sol-bulk-btn sol-bulk-uncheck" onclick="event.stopPropagation(); uncheckAllSolutionsInCat('${cat.id}')" title="Tout décocher">Tout ✗</button></span>`;
+    // Pas de boutons bulk pour confort_physique (cases mutex) et strategie (1 seule case avec PB/tickbox)
+    const NO_BULK_CATS = ['confort_physique', 'strategie'];
+    const bulkBtns = NO_BULK_CATS.includes(cat.id)
+      ? ''
+      : `<span class="sol-bulk-btns"><button type="button" class="sol-bulk-btn sol-bulk-check" onclick="event.stopPropagation(); checkAllSolutionsInCat('${cat.id}')" title="Tout cocher">Tout ✓</button><button type="button" class="sol-bulk-btn sol-bulk-uncheck" onclick="event.stopPropagation(); uncheckAllSolutionsInCat('${cat.id}')" title="Tout décocher">Tout ✗</button></span>`;
     const groupCollapsed = !!(state.solGroupsCollapsed && state.solGroupsCollapsed.has(cat.id));
     const groupClass = groupCollapsed ? ' collapsed' : '';
     return `<div class="sol-group block-with-left-title${groupClass}" data-cat="${cat.id}">
