@@ -6813,12 +6813,15 @@ function onHoraireSouhaiteChange(inputEl) {
 }
 window.onHoraireSouhaiteChange = onHoraireSouhaiteChange;
 
-// Accordéon des sous-cartes de rendormissement (Comment faire? > Sieste) — chaque carte se replie/déplie indépendamment
+// Accordéon des sous-cartes de rendormissement (Comment faire? > Sieste) — mono-actif : une seule carte ouverte à la fois
 function setRendorCard(headerEl) {
   if (!headerEl) return;
   const card = headerEl.closest('.rendor-card');
   if (!card) return;
-  card.classList.toggle('is-active');
+  const wrap = card.parentElement;
+  const wasActive = card.classList.contains('is-active');
+  if (wrap) wrap.querySelectorAll('.rendor-card').forEach(c => c.classList.remove('is-active'));
+  if (!wasActive) card.classList.add('is-active');
 }
 window.setRendorCard = setRendorCard;
 
