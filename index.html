@@ -2712,6 +2712,34 @@
       color: #5b21b6; font-weight: 800; font-size: 14px; text-align: center; line-height: 1.3; order: 1;
       white-space: normal;
     }
+    /* Variante compacte du purple-btn (sub-options sous tableau emploi du temps) */
+    .edit-block-wrap:has(> .block-option.purple-btn.compact-btn:not(.open-action)) {
+      height: 60px;
+    }
+    .block-option.purple-btn.compact-btn:not(.open-action) {
+      border-width: 2px;
+      border-radius: 10px;
+    }
+    .block-option.purple-btn.compact-btn > .option-header {
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      padding: 8px 14px !important;
+      gap: 10px !important;
+      min-height: 0 !important;
+    }
+    .block-option.purple-btn.compact-btn > .option-header > span {
+      flex-direction: row !important;
+      gap: 8px !important;
+    }
+    .block-option.purple-btn.compact-btn > .option-header .option-emoji {
+      font-size: 22px !important;
+    }
+    .block-option.purple-btn.compact-btn > .option-header .option-label-text {
+      font-size: 13px !important;
+      text-align: left !important;
+      line-height: 1.25 !important;
+    }
     .block-option.purple-btn:hover {
       background: #ebdffd;
       transform: translateY(-1px);
@@ -9231,6 +9259,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const pleursClass = b.style === 'pleurs' ? ' pleurs' : '';
     const purpleClass = b.style === 'purple' ? ' purple' : '';
     const purpleBtnClass = b.style === 'purple-btn' ? ' purple-btn' : '';
+    const compactBtnClass = b._compact ? ' compact-btn' : '';
     const actionClass = (b.style === 'action' || b.style === 'action-green' || b.style === 'action-yellow') ? ' action' : '';
     const actionGreenClass = b.style === 'action-green' ? ' action-green' : '';
     const actionYellowClass = b.style === 'action-yellow' ? ' action-yellow' : '';
@@ -9240,7 +9269,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const cardClass = b.style === 'card' ? ' card' : '';
     const emojiHtml = b.emoji ? `<span class="option-emoji">${b.emoji}</span>` : '';
     const mutexAttr = b.mutexGroup ? ` data-mutex-group="${String(b.mutexGroup).replace(/"/g, '&quot;')}"` : '';
-    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${purpleBtnClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionPurpleInsideClass}${pillStyleClass}${compactClosedClass}${cardClass}"${mutexAttr}>
+    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${purpleBtnClass}${compactBtnClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionPurpleInsideClass}${pillStyleClass}${compactClosedClass}${cardClass}"${mutexAttr}>
       <div class="option-header" onclick="toggleOption(this)">
         <span style="display:flex;align-items:center;gap:6px">
           ${emojiHtml}

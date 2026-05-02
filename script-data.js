@@ -2731,7 +2731,7 @@ const SCRIPT_DATA = {
                 showIfSieste: "2-4m",
                 scheduleKey: "2-4m",
                 _leftTitle: "Emploi du temps",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 ageLabel: "2-4 mois (4 siestes)",
                 hideWarn: true,
                 wakeUpDefault: "08:00",
@@ -2756,17 +2756,17 @@ const SCRIPT_DATA = {
               },
               { type: "normal", showIfSieste: "2-4m",
                 _leftTitle: "Quand commence le temps d'éveil ?",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Un <strong>temps d'éveil commence</strong> à partir du moment où l'enfant <strong>s'est réveillé</strong> (donc un <strong>rallongement</strong> de sieste qui n'a <strong>pas fonctionné</strong> <strong>FAIT PARTIE du temps d'éveil</strong>)</div><div><strong>SAUF</strong> pour le 1er temps d'éveil : il commence à partir de la <strong>sortie du lit</strong>, pour <strong>donner un tempo</strong> à la journée</div></li></ul>"
               },
               { type: "normal", showIfSieste: "2-4m",
                 _leftTitle: "Réveil matinal",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT l'heure du réveil le matin</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
               },
               { type: "normal", showIfSieste: "2-4m",
                 _leftTitle: "Alimentation",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li><strong>Je vous encourage</strong> à <strong>donner</strong> un <strong>temps d'alimentation</strong> <strong>au réveil</strong> de chaque sieste<br>⇒ c'est le <strong>moment idéal</strong>, car votre enfant a alors de <strong>suffisamment d'énergie</strong> pour <strong>boire efficacement</strong>.</li><li>Je vous invite aussi à <strong>donner 1 [bib_tetee:s] SUPPLÉMENTAIRE</strong> lors du <strong>rituel du soir</strong><br>⇒ C'est-à-dire qu'elle aura <strong>2 [bib_tetee:p]</strong> sur le <strong>dernier temps d'éveil</strong></li></ul>"
               },
               // ─── 4-6 mois (3 siestes) ─────────────────────────────────────
@@ -2783,7 +2783,7 @@ const SCRIPT_DATA = {
                 showIfSieste: "4-6m",
                 scheduleKey: "4-6m",
                 _leftTitle: "Emploi du temps",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 ageLabel: "4-6 mois (3 siestes)",
                 warnSubtitle: "(1h30-1h45 mini d'éveil)",
                 wakeUpDefault: "07:00",
@@ -2808,48 +2808,48 @@ const SCRIPT_DATA = {
               },
               { type: "normal", showIfSieste: "4-6m",
                 _leftTitle: "Quand commence le temps d'éveil ?",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Un <strong>temps d'éveil commence</strong> à partir du moment où l'enfant <strong>s'est réveillé</strong> (donc un <strong>rallongement</strong> de sieste qui n'a <strong>pas fonctionné</strong> <strong>FAIT PARTIE du temps d'éveil</strong>)</div><div><strong>SAUF</strong> pour le 1er temps d'éveil : il commence à partir de la <strong>sortie du lit</strong>, pour <strong>donner un tempo</strong> à la journée</div></li></ul>"
               },
               { type: "normal", showIfSieste: "4-6m",
                 _leftTitle: "Réveil matinal",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT l'heure du réveil le matin</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
               },
               { type: "normal", showIfSieste: "4-6m",
                 _leftTitle: "Alimentation",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li><strong>Je vous encourage</strong> à <strong>donner</strong> un <strong>temps d'alimentation</strong> <strong>au réveil</strong> de chaque sieste<br>⇒ c'est le <strong>moment idéal</strong>, car votre enfant a alors de <strong>suffisamment d'énergie</strong> pour <strong>boire efficacement</strong>.</li><li>Je vous invite aussi à <strong>donner 1 [bib_tetee:s] SUPPLÉMENTAIRE</strong> lors du <strong>rituel du soir</strong><br>⇒ C'est-à-dire qu'il aura <strong>2 [bib_tetee:p]</strong> sur le <strong>dernier temps d'éveil</strong></li></ul>"
               },
               { type: "normal", showIfSieste: "4-6m",
                 _leftTitle: "Rythme",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li>Je vous propose que le <strong>coucher du soir ET réveil le matin</strong> soient à <strong>heures FIXES</strong>, pour <strong>donner</strong> un <strong>rythme</strong> à la <strong>journée</strong></li><li>Je voudrais aussi <strong>attirer votre attention</strong> sur le fait qu'une <strong>journée fasse bien 12 heures</strong>, afin d'avoir <strong>assez de pression de sommeil</strong> au moment du <strong>coucher du soir</strong></li><li>Dans la même optique, garder un <strong>dernier temps d'éveil</strong> de <strong>1h30-1h45 MINI</strong> pour avoir <strong>assez pression de sommeil le soir</strong></li></ul>"
               },
               {
                 type: "option", showIfSieste: "4-6m",
-                label: "OPTION : Si problème de rythme irrégulier", emoji: "🔄", style: "purple-btn",
+                label: "OPTION : Si problème de rythme irrégulier", emoji: "🔄", style: "purple-btn", _compact: true,
                 blocks: [
                   { type: "normal", text: "- Je vous **invite aussi** à maintenir des **horaires fixes** pour le **coucher des siestes** et le **lever des siestes** (même si dormi que 5 min OU pas du tout !)\n- Ça permettra à **son corps** de **rester dans le noir**, et d'**identifier + facilement** les **moments où il :**\n  - **FAUDRAIT dormir**\n  - **et les moments d'éveil**" }
                 ]
               },
               {
                 type: "option", showIfSieste: "4-6m",
-                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn",
+                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
                 blocks: [
                   { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
                 ]
               },
               {
                 type: "option", showIfSieste: "4-6m",
-                label: "OPTION : Si saute 1 sieste", emoji: "⏭️", style: "purple-btn",
+                label: "OPTION : Si saute 1 sieste", emoji: "⏭️", style: "purple-btn", _compact: true,
                 blocks: [
                   { type: "normal", text: "- C'est OK de [le_la] coucher **30 min + tôt le soir**, [sil_sielle] a **\"sauté une sieste\"**, pour **éviter** d'être en **sur-fatigue**" }
                 ]
               },
               {
                 type: "option", showIfSieste: "4-6m",
-                label: "OPTION : Décalage horaire", emoji: "⌚", style: "purple-btn",
+                label: "OPTION : Décalage horaire", emoji: "⌚", style: "purple-btn", _compact: true,
                 blocks: [
                   {
                     type: "normal", text: "",
@@ -2900,7 +2900,7 @@ const SCRIPT_DATA = {
                 showIfSieste: "6-8m",
                 scheduleKey: "6-8m",
                 _leftTitle: "Emploi du temps",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 ageLabel: "6-8 mois (3 siestes)",
                 warnSubtitle: "(1h30-2h mini d'éveil)",
                 wakeUpDefault: "07:00",
@@ -2925,41 +2925,41 @@ const SCRIPT_DATA = {
               },
               { type: "normal", showIfSieste: "6-8m",
                 _leftTitle: "Quand commence le temps d'éveil ?",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Un <strong>temps d'éveil commence</strong> à partir du moment où l'enfant <strong>s'est réveillé</strong> (donc un <strong>rallongement</strong> de sieste qui n'a <strong>pas fonctionné</strong> <strong>FAIT PARTIE du temps d'éveil</strong>)</div><div><strong>SAUF</strong> pour le 1er temps d'éveil : il commence à partir de la <strong>sortie du lit</strong>, pour <strong>donner un tempo</strong> à la journée</div></li></ul>"
               },
               { type: "normal", showIfSieste: "6-8m",
                 _leftTitle: "Réveil matinal",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT l'heure du réveil le matin</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
               },
               { type: "normal", showIfSieste: "6-8m",
                 _leftTitle: "Alimentation",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li><strong>Je vous encourage</strong> à <strong>donner</strong> un <strong>temps d'alimentation</strong> <strong>au réveil</strong> de chaque sieste<br>⇒ c'est le <strong>moment idéal</strong>, car votre enfant a alors de <strong>suffisamment d'énergie</strong> pour <strong>boire efficacement</strong>.</li><li>Je vous invite aussi à <strong>donner 1 [bib_tetee:s] SUPPLÉMENTAIRE</strong> lors du <strong>rituel du soir</strong><br>⇒ C'est-à-dire qu'il aura <strong>2 [bib_tetee:p]</strong> sur le <strong>dernier temps d'éveil</strong></li></ul>"
               },
               { type: "normal", showIfSieste: "6-8m",
                 _leftTitle: "Rythme",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li>Je vous propose que le <strong>coucher du soir ET réveil le matin</strong> soient à <strong>heures FIXES</strong>, pour <strong>donner</strong> un <strong>rythme</strong> à la <strong>journée</strong></li><li>Je voudrais aussi <strong>attirer votre attention</strong> sur le fait qu'une <strong>journée fasse bien 12 heures</strong>, afin d'avoir <strong>assez de pression de sommeil</strong> au moment du <strong>coucher du soir</strong></li><li>Dans la même optique, garder un <strong>dernier temps d'éveil</strong> de <strong>1h30-2h MINI</strong> pour avoir <strong>assez pression de sommeil le soir</strong></li></ul>"
               },
               {
                 type: "option", showIfSieste: "6-8m",
-                label: "OPTION : Si problème de rythme irrégulier", emoji: "🔄", style: "purple-btn",
+                label: "OPTION : Si problème de rythme irrégulier", emoji: "🔄", style: "purple-btn", _compact: true,
                 blocks: [
                   { type: "normal", text: "- Je vous **invite aussi** à maintenir des **horaires fixes** pour le **coucher des siestes** et le **lever des siestes** (même si dormi que 5 min OU pas du tout !)\n- Ça permettra à **son corps** de **rester dans le noir**, et d'**identifier + facilement** les **moments où il :**\n  - **FAUDRAIT dormir**\n  - **et les moments d'éveil**" }
                 ]
               },
               {
                 type: "option", showIfSieste: "6-8m",
-                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn",
+                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
                 blocks: [
                   { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
                 ]
               },
               {
                 type: "option", showIfSieste: "6-8m",
-                label: "OPTION : Si saute 1 sieste", emoji: "⏭️", style: "purple-btn",
+                label: "OPTION : Si saute 1 sieste", emoji: "⏭️", style: "purple-btn", _compact: true,
                 blocks: [
                   { type: "normal", text: "- C'est OK de [le_la] coucher **30 min + tôt le soir**, [sil_sielle] a **\"sauté une sieste\"**, pour **éviter** d'être en **sur-fatigue**" }
                 ]
@@ -2978,7 +2978,7 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "6-8m",
-                label: "OPTION : Décalage horaire", emoji: "⌚", style: "purple-btn",
+                label: "OPTION : Décalage horaire", emoji: "⌚", style: "purple-btn", _compact: true,
                 blocks: [
                   {
                     type: "normal", text: "",
@@ -3035,7 +3035,7 @@ const SCRIPT_DATA = {
                 showIfSieste: "8-10m",
                 scheduleKey: "8-10m",
                 _leftTitle: "Emploi du temps",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 ageLabel: "8-10 mois (3 siestes)",
                 warnSubtitle: "(1h30-2h mini d'éveil)",
                 wakeUpDefault: "07:00",
@@ -3067,7 +3067,7 @@ const SCRIPT_DATA = {
                 showIfSieste: "8-15m",
                 scheduleKey: "8-15m",
                 _leftTitle: "Emploi du temps",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 ageLabel: "8-15 mois (2 siestes)",
                 warnSubtitle: "(2h-2h30 mini d'éveil)",
                 warnOffsets: [-150, -120],
@@ -3098,7 +3098,7 @@ const SCRIPT_DATA = {
                 showIfSieste: "15-20m",
                 scheduleKey: "15-20m",
                 _leftTitle: "Emploi du temps",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 ageLabel: "15-20 mois (2 siestes)",
                 warnSubtitle: "(2h-2h30 mini d'éveil)",
                 warnOffsets: [-150, -120],
@@ -3129,7 +3129,7 @@ const SCRIPT_DATA = {
                 showIfSieste: "15m-3a",
                 scheduleKey: "15m-3a",
                 _leftTitle: "Emploi du temps",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 ageLabel: "15 mois - 3 ans (1 sieste)",
                 warnSubtitle: "(4h mini d'éveil)",
                 warnText: "Pas après 12h30 (fixe)",
@@ -3158,7 +3158,7 @@ const SCRIPT_DATA = {
                 showIfSieste: "4a-plus",
                 scheduleKey: "4a-plus",
                 _leftTitle: "Emploi du temps",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 ageLabel: "4 ans + (1 sieste)",
                 warnSubtitle: "(5h mini d'éveil)",
                 warnText: "Pas après 12h30 (fixe)",
@@ -3187,7 +3187,7 @@ const SCRIPT_DATA = {
                 showIfSieste: "4a-plus-tc",
                 scheduleKey: "4a-plus-tc",
                 _leftTitle: "Emploi du temps",
-                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 ageLabel: "4 ans + (Temps calme)",
                 warnText: "Pas après 12h30 (fixe)",
                 wakeUpDefault: "07:00",
