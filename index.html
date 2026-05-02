@@ -11536,6 +11536,21 @@ function substituteVars(text) {
     const noneMatched = !alimList.some(v => alim.includes(v) || allaitMode.includes(v));
     return noneMatched ? content : '';
   });
+  // Directive inline : [bib_tetee:s] / [bib_tetee:p] → "biberon" / "tétée" / "biberon ou tétée"
+  // (ou pluriel) selon mode d'alimentation. Sein seul → tétée(s) ; biberon seul → biberon(s) ; sinon → "biberon ou tétée(s)"
+  text = String(text).replace(/\[bib_tetee:([sp])\]/g, (m, form) => {
+    const c = (state && state.client) || {};
+    const alim = Array.isArray(c.alimentation) ? c.alimentation : [];
+    const allaitMode = Array.isArray(c.allaitementMode) ? c.allaitementMode : [];
+    const combined = new Set([...alim, ...allaitMode]);
+    const hasSein = combined.has('Allaitement au sein');
+    const hasBiberon = combined.has('Allaitement au biberon') || combined.has('Biberon lait infantile');
+    const hasMixte = combined.has('Allaitement mixte');
+    const isPlural = form === 'p';
+    if (hasSein && !hasBiberon && !hasMixte) return isPlural ? 'tétées' : 'tétée';
+    if (hasBiberon && !hasSein && !hasMixte) return isPlural ? 'biberons' : 'biberon';
+    return isPlural ? 'biberons ou tétées' : 'biberon ou tétée';
+  });
   // Conditionnel inline : [if_age_min:N]contenu[/if_age_min] → visible si âge >= N mois
   // (utilise âge corrigé si dispo, sinon âge réel — comme showIfAgeMinMonths)
   text = String(text).replace(/\[if_age_min:(\d+)\]([\s\S]*?)\[\/if_age_min\]/g, (m, n, content) => {

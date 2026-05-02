@@ -2767,7 +2767,7 @@ const SCRIPT_DATA = {
               { type: "normal", showIfSieste: "2-4m",
                 _leftTitle: "Alimentation",
                 _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
-                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li><strong>Je vous encourage</strong> à <strong>donner</strong> un <strong>temps d'alimentation</strong> <strong>au réveil</strong> de chaque sieste<br>⇒ c'est le <strong>moment idéal</strong>, car votre enfant a alors de <strong>suffisamment d'énergie</strong> pour <strong>boire efficacement</strong>.</li><li>Je vous invite aussi à <strong>donner 1 bib/tétée SUPPLÉMENTAIRE</strong> lors du <strong>rituel du soir</strong><br>⇒ C'est-à-dire qu'elle aura <strong>2 bib/tétées</strong> sur le <strong>dernier temps d'éveil</strong></li></ul>"
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li><strong>Je vous encourage</strong> à <strong>donner</strong> un <strong>temps d'alimentation</strong> <strong>au réveil</strong> de chaque sieste<br>⇒ c'est le <strong>moment idéal</strong>, car votre enfant a alors de <strong>suffisamment d'énergie</strong> pour <strong>boire efficacement</strong>.</li><li>Je vous invite aussi à <strong>donner 1 [bib_tetee:s] SUPPLÉMENTAIRE</strong> lors du <strong>rituel du soir</strong><br>⇒ C'est-à-dire qu'elle aura <strong>2 [bib_tetee:p]</strong> sur le <strong>dernier temps d'éveil</strong></li></ul>"
               },
               // ─── 4-6 mois (3 siestes) ─────────────────────────────────────
               { type: "normal", _noBorder: true, showIfSieste: "4-6m", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">4-6 mois (3 siestes)</div>" },
@@ -2823,7 +2823,7 @@ const SCRIPT_DATA = {
               { type: "normal", showIfSieste: "4-6m",
                 _leftTitle: "Alimentation",
                 _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
-                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li><strong>Je vous encourage</strong> à <strong>donner</strong> un <strong>temps d'alimentation</strong> <strong>au réveil</strong> de chaque sieste<br>⇒ c'est le <strong>moment idéal</strong>, car votre enfant a alors de <strong>suffisamment d'énergie</strong> pour <strong>boire efficacement</strong>.</li><li>Je vous invite aussi à <strong>donner 1 bib/tétée SUPPLÉMENTAIRE</strong> lors du <strong>rituel du soir</strong><br>⇒ C'est-à-dire qu'il aura <strong>2 bib/tétées</strong> sur le <strong>dernier temps d'éveil</strong></li></ul>"
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li><strong>Je vous encourage</strong> à <strong>donner</strong> un <strong>temps d'alimentation</strong> <strong>au réveil</strong> de chaque sieste<br>⇒ c'est le <strong>moment idéal</strong>, car votre enfant a alors de <strong>suffisamment d'énergie</strong> pour <strong>boire efficacement</strong>.</li><li>Je vous invite aussi à <strong>donner 1 [bib_tetee:s] SUPPLÉMENTAIRE</strong> lors du <strong>rituel du soir</strong><br>⇒ C'est-à-dire qu'il aura <strong>2 [bib_tetee:p]</strong> sur le <strong>dernier temps d'éveil</strong></li></ul>"
               },
               { type: "normal", showIfSieste: "4-6m",
                 _leftTitle: "Rythme",
