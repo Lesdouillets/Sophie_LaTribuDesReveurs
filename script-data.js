@@ -2682,7 +2682,7 @@ const SCRIPT_DATA = {
               { type: "normal", _noBorder: true, showIfSieste: "2-4m", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">2-4 mois (4 siestes)</div>" },
               {
                 type: "option", showIfSieste: "2-4m",
-                label: "OPTION : Changement du nombre de siestes", emoji: "💡", style: "purple-btn",
+                label: "OPTION : Changement du nombre de siestes", emoji: "💡", style: "purple-btn", _compact: true,
                 blocks: [
                   { type: "normal", text: "- Déjà, on va **aller sur 4 siestes**\n\n  ⇒ C'est ce qui **va correspondre LE MIEUX** :\n  - à son **âge**\n  - à **ses besoins**\n  - et aux **signaux qu'il nous envoie**" }
                 ]
@@ -2773,7 +2773,7 @@ const SCRIPT_DATA = {
               { type: "normal", _noBorder: true, showIfSieste: "4-6m", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">4-6 mois (3 siestes)</div>" },
               {
                 type: "option", showIfSieste: "4-6m",
-                label: "OPTION : Changement du nombre de siestes", emoji: "💡", style: "purple-btn",
+                label: "OPTION : Changement du nombre de siestes", emoji: "💡", style: "purple-btn", _compact: true,
                 blocks: [
                   { type: "normal", text: "- Déjà, on va **aller sur 3 siestes**\n\n  ⇒ C'est ce qui **va correspondre LE MIEUX** :\n  - à son **âge**\n  - à **ses besoins**\n  - et aux **signaux qu'il nous envoie**" }
                 ]
@@ -2890,7 +2890,7 @@ const SCRIPT_DATA = {
               { type: "normal", _noBorder: true, showIfSieste: "6-8m", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">6-8 mois (3 siestes)</div>" },
               {
                 type: "option", showIfSieste: "6-8m",
-                label: "OPTION : Changement du nombre de siestes", emoji: "💡", style: "purple-btn",
+                label: "OPTION : Changement du nombre de siestes", emoji: "💡", style: "purple-btn", _compact: true,
                 blocks: [
                   { type: "normal", text: "- Déjà, on va **aller sur 3 siestes**\n\n  ⇒ C'est ce qui **va correspondre LE MIEUX** :\n  - à son **âge**\n  - à **ses besoins**\n  - et aux **signaux qu'il nous envoie**" }
                 ]
