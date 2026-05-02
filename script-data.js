@@ -3450,6 +3450,7 @@ const SCRIPT_DATA = {
                 ageLabel: "15 mois - 3 ans (1 sieste)",
                 warnSubtitle: "(4h mini d'éveil)",
                 warnText: "Pas après 12h30 (fixe)",
+                warnAction: "début",
                 wakeUpDefault: "07:00",
                 rightAside: "<div style=\"font-weight:800;font-size:14px;margin-bottom:8px;color:#7c2d12\">💡 <u>Plus de référence au temps d'éveil</u></div><div>À cet âge-là, on <strong>NE</strong> se <strong>réfère plus au temps d'éveil MAIS</strong> :<ul style=\"margin:6px 0 0 22px;padding:0;list-style:disc;line-height:1.55\"><li>à l'<strong>heure de début</strong></li><li>et de <strong>fin</strong> de la <strong>sieste unique</strong></li></ul></div>",
                 rows: [

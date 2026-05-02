@@ -6803,8 +6803,10 @@ function renderEmploiDuTempsInner(b, wakeUpStr, blockKey) {
     // Bulle BD du warning "Pas après HH:MM" attachée à la dernière sieste (déborde à droite)
     const isLastSieste = (idx === lastSiesteIdx);
     const warnSub = b.warnSubtitle ? `<span class="et-warn-sub">${escape(b.warnSubtitle)}</span>` : '';
+    const _warnAction = b.warnAction || 'réveil';
+    const _warnActionCap = _warnAction.charAt(0).toUpperCase() + _warnAction.slice(1);
     const warnBubble = (isLastSieste && !b.hideWarn)
-      ? `<div class="et-last-sieste-warn"><u>Réveil de la sieste :</u> Le réveil de la sieste ne doit pas se faire après ${escape(_warnMainText.replace(/^Pas après /, ''))} ${warnSub}</div>`
+      ? `<div class="et-last-sieste-warn"><u>${_warnActionCap} de la sieste :</u> Le ${_warnAction} de la sieste ne doit pas se faire après ${escape(_warnMainText.replace(/^Pas après /, ''))} ${warnSub}</div>`
       : '';
     const trClass = `kind-${r.kind}${isLastSieste ? ' et-last-sieste' : ''}`;
     return `<tr class="${trClass}"><td>${labelHtml}</td><td>${timeCell}</td><td>${rangeCell}</td><td>${hypCell}${warnBubble}</td></tr>`;
@@ -9678,6 +9680,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     if (b.warnSubtitle != null) _warnExtras.warnSubtitle = b.warnSubtitle;
     if (Array.isArray(b.warnOffsets)) _warnExtras.warnOffsets = b.warnOffsets;
     if (b.hideWarn) _warnExtras.hideWarn = true;
+    if (b.warnAction != null) _warnExtras.warnAction = b.warnAction;
     const warnExtrasAttr = JSON.stringify(_warnExtras).replace(/'/g, '&#39;');
     const rightAsideHtml = b.rightAside ? `<div class="emploi-temps-aside">${b.rightAside}</div>` : '';
     return `<div class="emploi-temps-block" data-emploi-block-id="${blockId}" data-block-key="${escAttr(blockKey)}" data-rows='${JSON.stringify(rows).replace(/'/g, '&#39;')}' data-notes='${JSON.stringify(b.notes || []).replace(/'/g, '&#39;')}' data-warn-extras='${warnExtrasAttr}'>
