@@ -11552,6 +11552,20 @@ function substituteVars(text) {
     if (hasBiberon && !hasSein && !hasMixte) return isPlural ? 'biberons' : 'biberon';
     return isPlural ? 'biberons ou tétées' : 'biberon ou tétée';
   });
+  // Directive inline : [bib_sein:s] → "biberon" / "sein" / "biberon ou sein" selon mode d'alimentation
+  // Même logique que [bib_tetee] mais avec "sein" au lieu de "tétée"
+  text = String(text).replace(/\[bib_sein:s\]/g, () => {
+    const c = (state && state.client) || {};
+    const alim = Array.isArray(c.alimentation) ? c.alimentation : [];
+    const allaitMode = Array.isArray(c.allaitementMode) ? c.allaitementMode : [];
+    const combined = new Set([...alim, ...allaitMode]);
+    const hasSein = combined.has('Allaitement au sein');
+    const hasBiberon = combined.has('Allaitement au biberon') || combined.has('Biberon lait infantile');
+    const hasMixte = combined.has('Allaitement mixte');
+    if (hasSein && !hasBiberon && !hasMixte) return 'sein';
+    if (hasBiberon && !hasSein && !hasMixte) return 'biberon';
+    return 'biberon ou sein';
+  });
   // Conditionnel inline : [if_age_min:N]contenu[/if_age_min] → visible si âge >= N mois
   // (utilise âge corrigé si dispo, sinon âge réel — comme showIfAgeMinMonths)
   text = String(text).replace(/\[if_age_min:(\d+)\]([\s\S]*?)\[\/if_age_min\]/g, (m, n, content) => {
