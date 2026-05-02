@@ -3012,12 +3012,7 @@ const SCRIPT_DATA = {
                     blocks: [
                       { type: "normal", text: "<div style=\"font-style:italic;color:#5b21b6;margin-bottom:10px\">Entre 8 et 10 mois</div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:10px;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Signes</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>N'arrive <strong>plus à s'endormir</strong> pour sa <strong>3ème sieste</strong></li><li>La <strong>longueur des 2 siestes</strong> ne permet <strong>plus d'avoir une 3ème sieste</strong> (heure fixe de coucher du soir)</li><li><strong>Coucher du soir</strong> + <strong>difficile</strong></li></ul></div></div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Que faire ?</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li><strong>Augmenter le temps d'éveil du midi</strong> (2h30-3h)</li><li><strong>Anticiper</strong> de 30 min le coucher du soir</li><li>⇒ Possibilité de nuit + longue</li></ul></div></div>" }
                     ]
-                  }
-                ]
-              },
-              {
-                type: "normal", showIfSieste: "6-8m", text: "",
-                trailingInfoButtons: [
+                  },
                   {
                     label: "Si angoisse de séparation",
                     title: "Si angoisse de séparation",
