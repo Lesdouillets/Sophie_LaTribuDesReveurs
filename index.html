@@ -4082,10 +4082,11 @@
       top: 0 !important;
       transform: none !important;
     }
-    /* Pour 4a-plus-tc : la rightAside est + haute (description tps calme + warning Lunii)
-       → pousser la bulle rouge sous le TD pour éviter le chevauchement. */
+    /* Pour 4a-plus-tc : la rightAside est encore + haute (description tps calme +
+       warning Lunii + bloc "À cet âge-là, on NE se réfère plus au TE") → pousser
+       fortement la bulle rouge sous le TD pour qu'elle passe sous tout l'encadré jaune. */
     [data-block-key="4a-plus-tc"] .et-warn-bubbles-wrap {
-      top: calc(100% + 12px) !important;
+      top: calc(100% + 100px) !important;
       transform: none !important;
     }
     .et-last-sieste-warn {
