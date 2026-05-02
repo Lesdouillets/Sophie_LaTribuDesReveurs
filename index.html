@@ -1250,6 +1250,10 @@
       align-items: center;
       justify-content: center;
     }
+    /* confort_physique : bloc-titres restent en pastel très pâle (#fef2f2) — la valeur saturée
+       de catColorMap.light (#e8b8b0) n'est utilisée que pour le liseré du compact list */
+    [data-section-cat="confort_physique"] .block-with-left-title,
+    [data-section-cat="confort_physique"] .block-left-title { background: #fef2f2 !important; }
     .block-with-left-title > .edit-block-wrap { margin-bottom: 0; height: 100%; }
     .block-with-left-title > .edit-block-wrap > .block,
     .block-with-left-title > .block {
