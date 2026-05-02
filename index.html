@@ -3932,6 +3932,13 @@
       font-size: 16px; padding: 6px 10px; border: 1.5px solid #d97706;
       border-radius: 6px; font-variant-numeric: tabular-nums; font-weight: 600;
     }
+    @keyframes emploi-temps-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.5); }
+      50%      { box-shadow: 0 0 0 8px rgba(217, 119, 6, 0); }
+    }
+    .emploi-temps-input.is-default {
+      animation: emploi-temps-pulse 1.8s ease-in-out infinite;
+    }
     /* Le bloc emploi du temps utilise le wrap auto _leftTitle (.block-with-left-title).
        Je reproduis le style standard de .block-normal (utilisé par les blocs APLV/Nutrition/etc.)
        pour avoir les mêmes coins arrondis, la même bordure et le même ombrage que les autres blocs. */
@@ -6633,7 +6640,7 @@ function _etMinToHHMM(min) {
   const m = ((min % 1440) + 1440) % 1440;
   const h = Math.floor(m / 60);
   const mn = m % 60;
-  return String(h).padStart(2, '0') + ':' + String(mn).padStart(2, '0');
+  return String(h) + 'h' + String(mn).padStart(2, '0');
 }
 function _etFormatDuration(min) {
   if (min < 60) return min + 'min';
@@ -6801,6 +6808,7 @@ function onScheduleWakeUpChange(inputEl) {
   const wakeUp = inputEl.value || '07:00';
   if (!state.client) state.client = {};
   state.client.scheduleWakeUp = wakeUp;
+  inputEl.classList.remove('is-default');
   if (typeof autoSaveFiche === 'function') autoSaveFiche();
   // Re-render scopé au bloc parent (rapide, pas de renderCurrentSection)
   const block = inputEl.closest('.emploi-temps-block');
@@ -9621,7 +9629,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     return `<div class="emploi-temps-block" data-emploi-block-id="${blockId}" data-block-key="${escAttr(blockKey)}" data-rows='${JSON.stringify(rows).replace(/'/g, '&#39;')}' data-notes='${JSON.stringify(b.notes || []).replace(/'/g, '&#39;')}' data-warn-extras='${warnExtrasAttr}'>
       <div class="emploi-temps-input-wrap">
         <label for="${blockId}-wake">⏰ Heure de réveil :</label>
-        <input id="${blockId}-wake" class="emploi-temps-input" type="time" value="${wakeUp}" oninput="onScheduleWakeUpChange(this)">
+        <input id="${blockId}-wake" class="emploi-temps-input${wakeUpStored ? '' : ' is-default'}" type="time" value="${wakeUp}" oninput="onScheduleWakeUpChange(this)">
       </div>
       <div class="emploi-temps-content">${innerHtml}</div>
     </div>`;
