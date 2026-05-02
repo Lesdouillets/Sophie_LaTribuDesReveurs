@@ -6762,7 +6762,7 @@ function renderEmploiDuTempsInner(b, wakeUpStr, blockKey) {
     const isLastSieste = (idx === lastSiesteIdx);
     const warnSub = b.warnSubtitle ? `<span class="et-warn-sub">${escape(b.warnSubtitle)}</span>` : '';
     const warnBubble = (isLastSieste && !b.hideWarn)
-      ? `<div class="et-last-sieste-warn"><span><span class="et-warn-icon">⚠️</span>${escape(_warnMainText)}</span>${warnSub}</div>`
+      ? `<div class="et-last-sieste-warn"><div><u>Réveil de la sieste</u> : Pas avant ...</div><div><span class="et-warn-icon">⚠️</span>${escape(_warnMainText)}</div>${warnSub}</div>`
       : '';
     const trClass = `kind-${r.kind}${isLastSieste ? ' et-last-sieste' : ''}`;
     return `<tr class="${trClass}"><td>${labelHtml}</td><td>${timeCell}</td><td>${rangeCell}</td><td>${hypCell}${warnBubble}</td></tr>`;
