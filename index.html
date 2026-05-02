@@ -4074,11 +4074,12 @@
       flex-direction: column;
       gap: 14px;
     }
-    /* Pour 15m-3a et 4a-plus (1 seule sieste) : la rightAside (jaune) est aussi haute que
-       la sieste → aligner le haut du wrapper sur le haut de la dernière sieste pour
-       être au plus près de celle-ci, juste sous l'encadré jaune. */
+    /* Pour 15m-3a, 4a-plus et 4a-plus-tc (1 seule sieste/tps calme) : la rightAside (jaune)
+       est aussi haute que la sieste → aligner le haut du wrapper sur le haut de la dernière
+       sieste pour être au plus près de celle-ci, juste sous l'encadré jaune. */
     [data-block-key="15m-3a"] .et-warn-bubbles-wrap,
-    [data-block-key="4a-plus"] .et-warn-bubbles-wrap {
+    [data-block-key="4a-plus"] .et-warn-bubbles-wrap,
+    [data-block-key="4a-plus-tc"] .et-warn-bubbles-wrap {
       top: 0 !important;
       transform: none !important;
     }
