@@ -2952,9 +2952,9 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "6-8m",
-                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
+                label: "OPTION : Si saute 1 sieste", emoji: "⏭️", style: "purple-btn", _compact: true,
                 blocks: [
-                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
+                  { type: "normal", text: "- C'est OK de [le_la] coucher **30 min + tôt le soir**, [sil_sielle] a **\"sauté une sieste\"**, pour **éviter** d'être en **sur-fatigue**" }
                 ]
               },
               {
@@ -2998,19 +2998,19 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "6-8m",
-                label: "OPTION : Si saute 1 sieste", emoji: "⏭️", style: "purple-btn", _compact: true,
+                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
                 blocks: [
-                  { type: "normal", text: "- C'est OK de [le_la] coucher **30 min + tôt le soir**, [sil_sielle] a **\"sauté une sieste\"**, pour **éviter** d'être en **sur-fatigue**" }
+                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
                 ]
               },
               {
                 type: "normal", showIfSieste: "6-8m", text: "",
                 trailingInfoButtons: [
                   {
-                    label: "🎓 Passage de 3 à 2 siestes",
-                    title: "🎓 Passage de 3 à 2 siestes",
+                    label: "Passage de 3 à 2 siestes",
+                    title: "Passage de 3 à 2 siestes",
                     blocks: [
-                      { type: "normal", text: "<div style=\"font-style:italic;color:#5b21b6;margin-bottom:10px\">Entre 8 et 10 mois</div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:10px;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Signes</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>N'arrive <strong>plus à s'endormir</strong> pour sa <strong>3ème sieste</strong></li><li>La <strong>longueur des 2 siestes</strong> ne permet <strong>plus d'avoir une 3ème sieste</strong> (heure fixe de coucher du soir)</li><li><strong>Coucher du soir</strong> + <strong>difficile</strong></li></ul></div></div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Que faire ?</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li><strong>Augmenter le temps d'éveil du midi</strong> (2h30-3h)</li><li><strong>Anticiper</strong> de 30 min le coucher du soir</li><li>⇒ Possibilité de nuit + longue</li></ul></div></div>" }
+                      { type: "normal", text: "<ul style=\"margin:0 0 10px 22px;padding:0;list-style:disc\"><li style=\"color:#5b21b6\">Entre 8 et 10 mois</li></ul><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:10px;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Signes</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>N'arrive <strong>plus à s'endormir</strong> pour sa <strong>3ème sieste</strong></li><li>La <strong>longueur des 2 siestes</strong> ne permet <strong>plus d'avoir une 3ème sieste</strong> (heure fixe de coucher du soir)</li><li><strong>Coucher du soir</strong> + <strong>difficile</strong></li></ul></div></div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Que faire ?</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li><strong>Augmenter le temps d'éveil du midi</strong> (2h30-3h)</li><li><strong>Anticiper</strong> de 30 min le coucher du soir</li><li>⇒ Possibilité de nuit + longue</li></ul></div></div>" }
                     ]
                   },
                   {
@@ -3089,9 +3089,9 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "8-10m",
-                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
+                label: "OPTION : Si saute 1 sieste", emoji: "⏭️", style: "purple-btn", _compact: true,
                 blocks: [
-                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
+                  { type: "normal", text: "- C'est OK de [le_la] coucher **30 min + tôt le soir**, [sil_sielle] a **\"sauté une sieste\"**, pour **éviter** d'être en **sur-fatigue**" }
                 ]
               },
               {
@@ -3135,19 +3135,19 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "8-10m",
-                label: "OPTION : Si saute 1 sieste", emoji: "⏭️", style: "purple-btn", _compact: true,
+                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
                 blocks: [
-                  { type: "normal", text: "- C'est OK de [le_la] coucher **30 min + tôt le soir**, [sil_sielle] a **\"sauté une sieste\"**, pour **éviter** d'être en **sur-fatigue**" }
+                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
                 ]
               },
               {
                 type: "normal", showIfSieste: "8-10m", text: "",
                 trailingInfoButtons: [
                   {
-                    label: "🎓 Passage de 3 à 2 siestes",
-                    title: "🎓 Passage de 3 à 2 siestes",
+                    label: "Passage de 3 à 2 siestes",
+                    title: "Passage de 3 à 2 siestes",
                     blocks: [
-                      { type: "normal", text: "<div style=\"font-style:italic;color:#5b21b6;margin-bottom:10px\">Entre 8 et 10 mois</div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:10px;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Signes</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>N'arrive <strong>plus à s'endormir</strong> pour sa <strong>3ème sieste</strong></li><li>La <strong>longueur des 2 siestes</strong> ne permet <strong>plus d'avoir une 3ème sieste</strong> (heure fixe de coucher du soir)</li><li><strong>Coucher du soir</strong> + <strong>difficile</strong></li></ul></div></div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Que faire ?</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li><strong>Augmenter le temps d'éveil du midi</strong> (2h30-3h)</li><li><strong>Anticiper</strong> de 30 min le coucher du soir</li><li>⇒ Possibilité de nuit + longue</li></ul></div></div>" }
+                      { type: "normal", text: "<ul style=\"margin:0 0 10px 22px;padding:0;list-style:disc\"><li style=\"color:#5b21b6\">Entre 8 et 10 mois</li></ul><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:10px;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Signes</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>N'arrive <strong>plus à s'endormir</strong> pour sa <strong>3ème sieste</strong></li><li>La <strong>longueur des 2 siestes</strong> ne permet <strong>plus d'avoir une 3ème sieste</strong> (heure fixe de coucher du soir)</li><li><strong>Coucher du soir</strong> + <strong>difficile</strong></li></ul></div></div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Que faire ?</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li><strong>Augmenter le temps d'éveil du midi</strong> (2h30-3h)</li><li><strong>Anticiper</strong> de 30 min le coucher du soir</li><li>⇒ Possibilité de nuit + longue</li></ul></div></div>" }
                     ]
                   },
                   {
@@ -3280,17 +3280,12 @@ const SCRIPT_DATA = {
                 type: "normal", showIfSieste: "8-15m", text: "",
                 trailingInfoButtons: [
                   {
-                    label: "🎓 Passage de 2 à 1 sieste",
-                    title: "🎓 Passage de 2 à 1 sieste",
+                    label: "Passage de 2 à 1 sieste",
+                    title: "Passage de 2 à 1 sieste",
                     blocks: [
-                      { type: "normal", text: "<div style=\"font-style:italic;color:#5b21b6;margin-bottom:10px\">Entre 15 et 20 mois</div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:10px;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Signes</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li><strong>Endormissement long</strong> sur 1 ou 2 siestes</li><li><strong>1 des 2 siestes</strong> est régulièrement <strong>sautée</strong></li><li><strong>1 des 2 siestes</strong> est <strong>difficile</strong> à faire (long, émotions…)</li><li><strong>Tps d'endormissement</strong> au <strong>soir</strong> est <strong>long</strong> (avec ou sans émotions)</li><li><strong>Insomnies</strong></li><li><strong>Réveils matinaux</strong></li></ul></div></div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Que faire ?</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>Quelle sieste disparaît ?<ul style=\"margin:4px 0 0 22px;padding:0;list-style:disc\"><li>Si la <strong>sieste 1</strong> disparaît : sieste entre <strong>11h30 et 12h30</strong></li><li>Si la <strong>sieste 2</strong> disparaît : allonger le <strong>TE du matin</strong> de 15 à 30 min pour une sieste entre <strong>11h30 et 12h30</strong></li></ul></li><li>Dans son lit, <strong>2h</strong> sinon rallonger la sieste (<strong>1h30 au début</strong>)</li><li>Si signe de fatigue : <strong>coucher 30 min à 1h plus tôt le soir</strong> (heure du lever reste fixe)</li><li>⇒ Possibilité de nuit + longue</li></ul></div></div>" }
+                      { type: "normal", text: "<ul style=\"margin:0 0 10px 22px;padding:0;list-style:disc\"><li style=\"color:#5b21b6\">Entre 15 et 20 mois</li></ul><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:10px;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Signes</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li><strong>Endormissement long</strong> sur 1 ou 2 siestes</li><li><strong>1 des 2 siestes</strong> est régulièrement <strong>sautée</strong></li><li><strong>1 des 2 siestes</strong> est <strong>difficile</strong> à faire (long, émotions…)</li><li><strong>Tps d'endormissement</strong> au <strong>soir</strong> est <strong>long</strong> (avec ou sans émotions)</li><li><strong>Insomnies</strong></li><li><strong>Réveils matinaux</strong></li></ul></div></div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Que faire ?</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>Quelle sieste disparaît ?<ul style=\"margin:4px 0 0 22px;padding:0;list-style:disc\"><li>Si la <strong>sieste 1</strong> disparaît : sieste entre <strong>11h30 et 12h30</strong></li><li>Si la <strong>sieste 2</strong> disparaît : allonger le <strong>TE du matin</strong> de 15 à 30 min pour une sieste entre <strong>11h30 et 12h30</strong></li></ul></li><li>Dans son lit, <strong>2h</strong> sinon rallonger la sieste (<strong>1h30 au début</strong>)</li><li>Si signe de fatigue : <strong>coucher 30 min à 1h plus tôt le soir</strong> (heure du lever reste fixe)</li><li>⇒ Possibilité de nuit + longue</li></ul></div></div>" }
                     ]
-                  }
-                ]
-              },
-              {
-                type: "normal", showIfSieste: "8-15m", text: "",
-                trailingInfoButtons: [
+                  },
                   {
                     label: "Si angoisse de séparation",
                     title: "Si angoisse de séparation",
@@ -3366,25 +3361,6 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "15-20m",
-                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
-                blocks: [
-                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
-                ]
-              },
-              {
-                type: "normal", showIfSieste: "15-20m", text: "",
-                trailingInfoButtons: [
-                  {
-                    label: "🎓 Passage de 2 à 1 sieste",
-                    title: "🎓 Passage de 2 à 1 sieste",
-                    blocks: [
-                      { type: "normal", text: "<div style=\"font-style:italic;color:#5b21b6;margin-bottom:10px\">Entre 15 et 20 mois</div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:10px;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Signes</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li><strong>Endormissement long</strong> sur 1 ou 2 siestes</li><li><strong>1 des 2 siestes</strong> est régulièrement <strong>sautée</strong></li><li><strong>1 des 2 siestes</strong> est <strong>difficile</strong> à faire (long, émotions…)</li><li><strong>Tps d'endormissement</strong> au <strong>soir</strong> est <strong>long</strong> (avec ou sans émotions)</li><li><strong>Insomnies</strong></li><li><strong>Réveils matinaux</strong></li></ul></div></div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Que faire ?</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>Quelle sieste disparaît ?<ul style=\"margin:4px 0 0 22px;padding:0;list-style:disc\"><li>Si la <strong>sieste 1</strong> disparaît : sieste entre <strong>11h30 et 12h30</strong></li><li>Si la <strong>sieste 2</strong> disparaît : allonger le <strong>TE du matin</strong> de 15 à 30 min pour une sieste entre <strong>11h30 et 12h30</strong></li></ul></li><li>Dans son lit, <strong>2h</strong> sinon rallonger la sieste (<strong>1h30 au début</strong>)</li><li>Si signe de fatigue : <strong>coucher 30 min à 1h plus tôt le soir</strong> (heure du lever reste fixe)</li><li>⇒ Possibilité de nuit + longue</li></ul></div></div>" }
-                    ]
-                  }
-                ]
-              },
-              {
-                type: "option", showIfSieste: "15-20m",
                 label: "OPTION : Décalage horaire", emoji: "⌚", style: "purple-btn", _compact: true,
                 blocks: [
                   {
@@ -3423,8 +3399,22 @@ const SCRIPT_DATA = {
                 ]
               },
               {
+                type: "option", showIfSieste: "15-20m",
+                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
+                blocks: [
+                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
+                ]
+              },
+              {
                 type: "normal", showIfSieste: "15-20m", text: "",
                 trailingInfoButtons: [
+                  {
+                    label: "Passage de 2 à 1 sieste",
+                    title: "Passage de 2 à 1 sieste",
+                    blocks: [
+                      { type: "normal", text: "<ul style=\"margin:0 0 10px 22px;padding:0;list-style:disc\"><li style=\"color:#5b21b6\">Entre 15 et 20 mois</li></ul><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:10px;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Signes</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li><strong>Endormissement long</strong> sur 1 ou 2 siestes</li><li><strong>1 des 2 siestes</strong> est régulièrement <strong>sautée</strong></li><li><strong>1 des 2 siestes</strong> est <strong>difficile</strong> à faire (long, émotions…)</li><li><strong>Tps d'endormissement</strong> au <strong>soir</strong> est <strong>long</strong> (avec ou sans émotions)</li><li><strong>Insomnies</strong></li><li><strong>Réveils matinaux</strong></li></ul></div></div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Que faire ?</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>Quelle sieste disparaît ?<ul style=\"margin:4px 0 0 22px;padding:0;list-style:disc\"><li>Si la <strong>sieste 1</strong> disparaît : sieste entre <strong>11h30 et 12h30</strong></li><li>Si la <strong>sieste 2</strong> disparaît : allonger le <strong>TE du matin</strong> de 15 à 30 min pour une sieste entre <strong>11h30 et 12h30</strong></li></ul></li><li>Dans son lit, <strong>2h</strong> sinon rallonger la sieste (<strong>1h30 au début</strong>)</li><li>Si signe de fatigue : <strong>coucher 30 min à 1h plus tôt le soir</strong> (heure du lever reste fixe)</li><li>⇒ Possibilité de nuit + longue</li></ul></div></div>" }
+                    ]
+                  },
                   {
                     label: "Si angoisse de séparation",
                     title: "Si angoisse de séparation",
