@@ -4082,11 +4082,15 @@
       top: 0 !important;
       transform: none !important;
     }
-    /* Pour 4a-plus-tc : la rightAside est encore + haute (description tps calme +
-       warning Lunii + bloc "À cet âge-là, on NE se réfère plus au TE") → pousser
-       fortement la bulle rouge sous le TD pour qu'elle passe sous tout l'encadré jaune. */
+    /* Pour 4a-plus-tc : la rightAside contient bcp de contenu (Un temps calme + warning
+       Lunii + "À cet âge-là on NE se réfère plus au TE"). On l'élargit pour qu'elle
+       wrappe moins et donc soit moins haute, et on positionne la bulle rouge juste
+       en-dessous (offset réduit). */
+    [data-block-key="4a-plus-tc"] .emploi-temps-aside {
+      width: 420px;
+    }
     [data-block-key="4a-plus-tc"] .et-warn-bubbles-wrap {
-      top: calc(100% + 100px) !important;
+      top: calc(100% + 20px) !important;
       transform: none !important;
     }
     .et-last-sieste-warn {
