@@ -3686,6 +3686,7 @@ const SCRIPT_DATA = {
                 ageLabel: "4 ans + (Temps calme)",
                 warnText: "Pas après 12h30 (fixe)",
                 warnAction: "début",
+                warnDeNoun: "du temps calme",
                 wakeUpDefault: "07:00",
                 rightAside: "<div style=\"font-weight:800;font-size:14px;margin-bottom:8px;color:#7c2d12\">💡 <u>Un temps calme</u></div><div>C'est un <strong>moment dans sa chambre</strong>, dans l'<strong>obscurité</strong> ou avec une <strong>petite veilleuse</strong> de <strong>minimum 45 min</strong></div><div style=\"margin-top:10px;background:#fff;border:1.5px solid #f5d778;border-radius:8px;padding:8px 12px;font-size:13.5px;line-height:1.5\">⚠️ Je <strong>déconseille l'utilisation</strong> des <strong>Lunii</strong> ou tout autre <strong>« boîtes à histoires »</strong> qui peuvent être <strong>trop stimulantes</strong></div>",
                 rows: [

@@ -4074,13 +4074,18 @@
       flex-direction: column;
       gap: 14px;
     }
-    /* Pour 15m-3a, 4a-plus et 4a-plus-tc (1 seule sieste/tps calme) : la rightAside (jaune)
-       est aussi haute que la sieste → aligner le haut du wrapper sur le haut de la dernière
-       sieste pour être au plus près de celle-ci, juste sous l'encadré jaune. */
+    /* Pour 15m-3a et 4a-plus (1 seule sieste) : la rightAside (jaune) reste courte → on
+       aligne le haut du wrapper sur le haut de la dernière sieste pour être au plus près
+       de celle-ci, juste sous l'encadré jaune. */
     [data-block-key="15m-3a"] .et-warn-bubbles-wrap,
-    [data-block-key="4a-plus"] .et-warn-bubbles-wrap,
-    [data-block-key="4a-plus-tc"] .et-warn-bubbles-wrap {
+    [data-block-key="4a-plus"] .et-warn-bubbles-wrap {
       top: 0 !important;
+      transform: none !important;
+    }
+    /* Pour 4a-plus-tc : la rightAside est + haute (description tps calme + warning Lunii)
+       → pousser la bulle rouge sous le TD pour éviter le chevauchement. */
+    [data-block-key="4a-plus-tc"] .et-warn-bubbles-wrap {
+      top: calc(100% + 12px) !important;
       transform: none !important;
     }
     .et-last-sieste-warn {
@@ -6814,10 +6819,11 @@ function renderEmploiDuTempsInner(b, wakeUpStr, blockKey) {
     }
     // Bulle BD du warning "Pas après HH:MM" attachée à la dernière sieste (déborde à droite)
     const isLastSieste = (idx === lastSiesteIdx);
+    const _deNoun = b.warnDeNoun || 'de la sieste';
     const _buildBubble = (action, mainText, subtitle) => {
       const actionCap = action.charAt(0).toUpperCase() + action.slice(1);
       const subHtml = subtitle ? `<span class="et-warn-sub">${escape(subtitle)}</span>` : '';
-      return `<div class="et-last-sieste-warn"><u>${actionCap} de la sieste :</u> Le ${action} de la sieste ne doit pas se faire après ${escape(String(mainText).replace(/^Pas après /, ''))} ${subHtml}</div>`;
+      return `<div class="et-last-sieste-warn"><u>${actionCap} ${_deNoun} :</u> Le ${action} ${_deNoun} ne doit pas se faire après ${escape(String(mainText).replace(/^Pas après /, ''))} ${subHtml}</div>`;
     };
     let warnBubble = '';
     if (isLastSieste && !b.hideWarn) {
@@ -9711,6 +9717,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     if (b.warnSubtitle2 != null) _warnExtras.warnSubtitle2 = b.warnSubtitle2;
     if (Array.isArray(b.warnOffsets2)) _warnExtras.warnOffsets2 = b.warnOffsets2;
     if (b.warnAction2 != null) _warnExtras.warnAction2 = b.warnAction2;
+    if (b.warnDeNoun != null) _warnExtras.warnDeNoun = b.warnDeNoun;
     const warnExtrasAttr = JSON.stringify(_warnExtras).replace(/'/g, '&#39;');
     const rightAsideHtml = b.rightAside ? `<div class="emploi-temps-aside">${b.rightAside}</div>` : '';
     return `<div class="emploi-temps-block" data-emploi-block-id="${blockId}" data-block-key="${escAttr(blockKey)}" data-rows='${JSON.stringify(rows).replace(/'/g, '&#39;')}' data-notes='${JSON.stringify(b.notes || []).replace(/'/g, '&#39;')}' data-warn-extras='${warnExtrasAttr}'>
