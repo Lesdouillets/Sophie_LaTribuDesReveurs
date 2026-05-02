@@ -3477,13 +3477,6 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "15m-3a",
-                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
-                blocks: [
-                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
-                ]
-              },
-              {
-                type: "option", showIfSieste: "15m-3a",
                 label: "OPTION : Décalage horaire", emoji: "⌚", style: "purple-btn", _compact: true,
                 blocks: [
                   {
@@ -3519,6 +3512,13 @@ const SCRIPT_DATA = {
                       }
                     ]
                   }
+                ]
+              },
+              {
+                type: "option", showIfSieste: "15m-3a",
+                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
+                blocks: [
+                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
                 ]
               },
               {
