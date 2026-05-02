@@ -3663,7 +3663,7 @@ const SCRIPT_DATA = {
                     label: "Dérogation au rectorat",
                     title: "Dérogation au rectorat",
                     blocks: [
-                      { type: "normal", text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li>[Sil_Sielle] est :<ul style=\"margin:6px 0 0 22px;padding:0;list-style:disc;line-height:1.7\"><li>En <strong>Petite Section</strong>, il est possible de demander au <strong>Rectorat</strong> de ne le mettre à <strong>l'école QUE le matin</strong> pour pouvoir faire la <strong>sieste à la maison</strong> (article R. 131-1-1 du Code de l'éducation : <a href=\"https://www.education.gouv.fr/bo/19/Hebdo31/MENE1918999D.htm\" target=\"_blank\">https://www.education.gouv.fr/bo/19/Hebdo31/MENE1918999D.htm</a>)</li><li>En <strong>Moyenne Section</strong>, il est possible de demander au rectorat de ne le mettre <strong>QUE le matin</strong>, grâce à un <strong>PAI</strong> <em>(= Plan d'Accueil Individualisé)</em> avec <strong>appui du médecin</strong><br>⚠️ mais <strong>+ difficile à obtenir</strong> qu'en Petite Section</li></ul></li></ul>" }
+                      { type: "normal", text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li>[Sil_Sielle] est :<ul style=\"margin:6px 0 0 22px;padding:0;list-style:disc;line-height:1.7\"><li>En <strong>Petite Section</strong>, il est possible de demander au <strong>Rectorat</strong> de ne le mettre à <strong>l'école QUE le matin</strong> pour pouvoir faire la <strong>sieste à la maison</strong> (article R. 131-1-1 du Code de l'éducation : <a href=\"https://www.education.gouv.fr/bo/19/Hebdo31/MENE1918999D.htm\" target=\"_blank\">education.gouv.fr</a>)</li><li>En <strong>Moyenne Section</strong>, il est possible de demander au rectorat de ne le mettre <strong>QUE le matin</strong>, grâce à un <strong>PAI</strong> <em>(= Plan d'Accueil Individualisé)</em> avec <strong>appui du médecin</strong><br>⚠️ mais <strong>+ difficile à obtenir</strong> qu'en Petite Section</li></ul></li></ul>" }
                     ]
                   }
                 ]
@@ -3764,9 +3764,6 @@ const SCRIPT_DATA = {
                 ]
               },
               { type: "normal", showIfSieste: "4a-plus-tc",
-                text: "<div style=\"background:#fef9e0;border:1.5px solid #f5d778;border-radius:10px;padding:12px 16px;margin:14px 0 0;font-size:14px;line-height:1.6;color:#7c2d12;display:flex;align-items:flex-start;gap:8px\"><div style=\"flex-shrink:0\">💡</div><div style=\"flex:1\"><div style=\"margin-bottom:8px\">Si il est :</div><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>En <strong>Petite Section</strong>, il est possible de demander au <strong>Rectorat</strong> de ne le mettre à <strong>l'école QUE le matin</strong> pour pouvoir faire la <strong>sieste à la maison</strong> (article R. 131-1-1 du Code de l'éducation : <a href=\"https://www.education.gouv.fr/bo/19/Hebdo31/MENE1918999D.htm\" target=\"_blank\" style=\"color:#7c2d12\">https://www.education.gouv.fr/bo/19/Hebdo31/MENE1918999D.htm</a>)</li><li>En <strong>Moyenne Section</strong>, il est possible de demander au rectorat de ne le mettre <strong>QUE le matin</strong>, <strong>grâce à</strong> :<ul style=\"margin:4px 0 0 22px;padding:0;list-style:disc\"><li>un <strong>PAI</strong> <em>(= Plan d'Accueil Individualisé)</em></li><li>avec <strong>appui du médecin</strong><br>⚠️ mais <strong>+ difficile à obtenir</strong> qu'en Petite Section</li></ul></li></ul></div></div>"
-              },
-              { type: "normal", showIfSieste: "4a-plus-tc",
                 text: "<div style=\"background:#fef9e0;border:1.5px solid #f5d778;border-radius:10px;padding:12px 16px;margin:14px 0 0;font-size:14px;line-height:1.6;color:#7c2d12;display:flex;align-items:flex-start;gap:8px\"><div style=\"flex-shrink:0\">💡</div><div style=\"flex:1\"><div style=\"margin-bottom:6px\">À cet âge-là, on <strong>NE</strong> se <strong>réfère plus au temps d'éveil MAIS</strong> :</div><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>à l'<strong>heure de début</strong></li><li>et de <strong>fin</strong> du <strong>temps calme</strong></li></ul></div></div>"
               },
               {
@@ -3778,6 +3775,13 @@ const SCRIPT_DATA = {
                     blocks: [
                       { type: "normal", text: "- N'hésitez pas **non plus**, durant les **temps d'éveil** à :\n  - Jouer à **des « coucou-caché »**\n  - Proposer des **jeux de permanence de l'objet**\n  - **Parler DEPUIS une autre pièce** POUR MONTRER que vous **êtes toujours là**\n    ⇒ Ça peut [le_la] aider à **vivre + sereinement** … toutes les **phases de séparations**" },
                       { type: "normal", text: "- Ça peut aussi **aider** d':\n  - **❌ ÉVITER de partir SANS prévenir**\n    ⇒ Sinon il peut rester **en alerte permanente** *« car Papa/Maman peut partir à tout moment sans me le dire »*\n  - ✅ Et **à l'inverse**, de faire des **retrouvailles ⇒ un vrai moment de joie**\n    ⇒ pour qu'il **associe la séparation** à qqch de :\n    - **temporaire**\n    - et **rassurant**" }
+                    ]
+                  },
+                  {
+                    label: "Dérogation au rectorat",
+                    title: "Dérogation au rectorat",
+                    blocks: [
+                      { type: "normal", text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li>[Sil_Sielle] est :<ul style=\"margin:6px 0 0 22px;padding:0;list-style:disc;line-height:1.7\"><li>En <strong>Petite Section</strong>, il est possible de demander au <strong>Rectorat</strong> de ne le mettre à <strong>l'école QUE le matin</strong> pour pouvoir faire la <strong>sieste à la maison</strong> (article R. 131-1-1 du Code de l'éducation : <a href=\"https://www.education.gouv.fr/bo/19/Hebdo31/MENE1918999D.htm\" target=\"_blank\">education.gouv.fr</a>)</li><li>En <strong>Moyenne Section</strong>, il est possible de demander au rectorat de ne le mettre <strong>QUE le matin</strong>, grâce à un <strong>PAI</strong> <em>(= Plan d'Accueil Individualisé)</em> avec <strong>appui du médecin</strong><br>⚠️ mais <strong>+ difficile à obtenir</strong> qu'en Petite Section</li></ul></li></ul>" }
                     ]
                   }
                 ]
