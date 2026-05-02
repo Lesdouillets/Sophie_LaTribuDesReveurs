@@ -10292,8 +10292,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       return `<button type="button" class="${cls}" contenteditable="false" onclick="openInfoPanel('${btnId}')" style="${btnStyle}"><span class="info-btn-emoji" style="margin-right:8px">${btnEmoji}</span><span>${label}</span></button>`;
     }).join('');
     trailingBtnHtml = trailingBtnsList.length > 1
-      ? `<div class="info-btns-stack" contenteditable="false" style="width:320px;float:right;margin:0 0 10px 14px">${btnsInner}</div>`
-      : `<div contenteditable="false" style="width:200px;float:right;margin:0 0 10px 14px">${btnsInner}</div>`;
+      ? `<div class="info-btns-stack" contenteditable="false" style="width:380px;float:right;margin:0 0 10px 14px">${btnsInner}</div>`
+      : `<div contenteditable="false" style="width:380px;float:right;margin:0 0 10px 14px">${btnsInner}</div>`;
   }
   // Boutons action embarqués à l'intérieur du bloc texte (via embeddedActions)
   let embeddedHtml = '';
