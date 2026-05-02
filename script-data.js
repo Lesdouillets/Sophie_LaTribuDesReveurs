@@ -2697,7 +2697,7 @@ const SCRIPT_DATA = {
                       {
                         label: "Petit décalage (< 1h)", emoji: "🐢", style: "action-green", _pillStyle: true, mutexGroup: "decalage-2-4m",
                         blocks: [
-                          { type: "normal", text: "- Pour un PETIT **décalage horaire**, on va avancer/reculer les horaires **de 15 minutes** **tous les jours**.\n- Concrètement, ça veut dire :\n  - Le **matin**, vous **le réveillez avec un décalage** de 15 minutes, **sans le sortir du lit avant**.\n  - **Pendant la journée**, tout ce qui suit — **siestes, repas, etc.** — **sera aussi décalé** de 15 minutes.\n  - **Le soir, vous décalez AUSSI l'heure du coucher de 15 minutes**.\n  - Le lendemain matin, vous **continuez ce décalage** de 15 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" }
+                          { type: "normal", text: "- Pour un PETIT **décalage horaire**, on va avancer/reculer les horaires **de 15 minutes** **tous les jours**.\n- Concrètement, ça veut dire :\n  - Le **matin**, vous **[le_la] réveillez avec un décalage** de 15 minutes, **sans [le_la] sortir du lit avant**.\n  - **Pendant la journée**, tout ce qui suit — **siestes, repas, etc.** — **sera aussi décalé** de 15 minutes.\n  - **Le soir, vous décalez AUSSI l'heure du coucher de 15 minutes**.\n  - Le lendemain matin, vous **continuez ce décalage** de 15 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" }
                         ]
                       },
                       {
@@ -2709,13 +2709,13 @@ const SCRIPT_DATA = {
                               {
                                 label: "Progressif", emoji: "🐢", style: "action-green", _pillStyle: true, mutexGroup: "decalage-grand-2-4m",
                                 blocks: [
-                                  { type: "normal", text: "- Pour un **décalage horaire**, on va avancer/reculer les horaires **de 30 minutes** **tous les 3 jours**.\n- Concrètement, ça veut dire :\n  - Le **matin**, vous **le réveillez avec un décalage** de 30 minutes, **sans le sortir du lit avant**.\n  - **Pendant la journée**, tout ce qui suit — **siestes, repas, etc.** — **sera aussi décalé** de 30 minutes.\n  - **Le soir, vous décalez AUSSI l'heure du coucher de 30 minutes**.\n  - Au **bout de 3 jours**, vous **continuez ce décalage** de 30 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" }
+                                  { type: "normal", text: "- Pour un **décalage horaire**, on va avancer/reculer les horaires **de 30 minutes** **tous les 3 jours**.\n- Concrètement, ça veut dire :\n  - Le **matin**, vous **[le_la] réveillez avec un décalage** de 30 minutes, **sans [le_la] sortir du lit avant**.\n  - **Pendant la journée**, tout ce qui suit — **siestes, repas, etc.** — **sera aussi décalé** de 30 minutes.\n  - **Le soir, vous décalez AUSSI l'heure du coucher de 30 minutes**.\n  - Au **bout de 3 jours**, vous **continuez ce décalage** de 30 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" }
                                 ]
                               },
                               {
                                 label: "En 1 fois", emoji: "⚡", style: "action", _pillStyle: true, mutexGroup: "decalage-grand-2-4m",
                                 blocks: [
-                                  { type: "normal", text: "- Procéder à un décalage horaire **en 1 fois**, en commençant par **le réveiller le matin à l'heure prévue (sans le sortir du lit s'il se réveille avant)**\n- Puis **utiliser les temps d'éveil** pour rétablir un rythme basé sur cette heure de lever\n- 🎓 Les 1ers jours, il sera en manque de sommeil\n  - ⇒ c'est **NORMAL**\n  - Petit à petit, il se **décalera naturellement** et **retrouvera des quotas de sommeil adaptés** à son âge" }
+                                  { type: "normal", text: "- Procéder à un décalage horaire **en 1 fois**, en commençant par **[le_la] réveiller le matin à l'heure prévue (sans [le_la] sortir du lit [sil_sielle] se réveille avant)**\n- Puis **utiliser les temps d'éveil** pour rétablir un rythme basé sur cette heure de lever\n- 🎓 Les 1ers jours, [il_elle] sera en manque de sommeil\n  - ⇒ c'est **NORMAL**\n  - Petit à petit, [il_elle] se **décalera naturellement** et **retrouvera des quotas de sommeil adaptés** à son âge" }
                                 ]
                               }
                             ]
@@ -2757,7 +2757,7 @@ const SCRIPT_DATA = {
               { type: "normal", showIfSieste: "2-4m",
                 _leftTitle: "Quand commence le temps d'éveil ?",
                 _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
-                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Un <strong>TE commence</strong> à partir du moment où l'enfant <strong>s'est réveillé</strong> (donc un <strong>rallongement</strong> de sieste qui n'a <strong>pas fonctionné</strong> <strong>FAIT PARTIE du TE</strong>)</div><div><strong>SAUF</strong> pour le 1er TE : elle commence à partir de la <strong>sortie du lit</strong>, pour <strong>donner un tempo</strong> à la journée</div></li></ul>"
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Un <strong>temps d'éveil commence</strong> à partir du moment où l'enfant <strong>s'est réveillé</strong> (donc un <strong>rallongement</strong> de sieste qui n'a <strong>pas fonctionné</strong> <strong>FAIT PARTIE du temps d'éveil</strong>)</div><div><strong>SAUF</strong> pour le 1er temps d'éveil : elle commence à partir de la <strong>sortie du lit</strong>, pour <strong>donner un tempo</strong> à la journée</div></li></ul>"
               },
               { type: "normal", showIfSieste: "2-4m",
                 _leftTitle: "Réveil matinal",
@@ -2793,27 +2793,23 @@ const SCRIPT_DATA = {
                   { kind: "te", label: "Temps d'Éveil 1 : Réveil, change, manger, jouer", durationMin: 90, durationRange: "1h15-1h30" },
                   { kind: "sieste", label: "SIESTE 1 (dans le lit)", durationMin: 120, durationRange: "1h30 à 2h15/3h" },
                   { kind: "te", label: "Temps d'Éveil 2 : Réveil, change, manger, jouer", durationMin: 120, durationRange: "1h30-2h" },
-                  { kind: "milestone", label: "Si repas diversification (midi)", staticTime: "11h-12h" },
+                  { kind: "milestone", label: "🍽️ Si repas diversification (midi)", staticTime: "11h-12h" },
                   { kind: "sieste", label: "SIESTE 2 (dans le lit)", durationMin: 120, durationRange: "1h30 à 2h15/3h" },
                   { kind: "te", label: "Temps d'Éveil 3 : Réveil, change, manger, jouer", durationMin: 120, durationRange: "1h30-2h" },
                   { kind: "sieste", label: "SIESTE 3 (dans le lit ou poussette/portage)", durationMin: 45, durationRange: "30-45 min" },
                   { kind: "te", label: "Temps d'Éveil 4 : Réveil, change, manger, rituel, dernier temps de nutrition", durationMin: 105, durationRange: "1h30-1h45" },
-                  { kind: "milestone", label: "Si repas diversification (soir)", offsetFromCoucherMin: -60 },
+                  { kind: "milestone", label: "🍽️ Si repas diversification (soir)", offsetFromCoucherMin: -60 },
                   { kind: "milestone", label: "Rituel de la nuit", offsetFromCoucherMin: -30 },
                   { kind: "coucher", label: "Coucher pour la nuit" }
                 ],
                 notes: [
-                  "Heures de coucher du soir et lever du matin = fixes",
-                  "Possible d'inverser la durée des siestes",
-                  "Journée de 12h à vérifier",
-                  "TE = Temps d'Éveil",
-                  "Dernier TE avant le coucher : 1h30-1h45 mini d'éveil"
+                  "Possible d'inverser la durée des siestes"
                 ]
               },
               { type: "normal", showIfSieste: "4-6m",
                 _leftTitle: "Quand commence le temps d'éveil ?",
                 _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
-                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Un <strong>TE commence</strong> à partir du moment où l'enfant <strong>s'est réveillé</strong> (donc un <strong>rallongement</strong> de sieste qui n'a <strong>pas fonctionné</strong> <strong>FAIT PARTIE du TE</strong>)</div><div><strong>SAUF</strong> pour le 1er TE : il commence à partir de la <strong>sortie du lit</strong>, pour <strong>donner un tempo</strong> à la journée</div></li></ul>"
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Un <strong>temps d'éveil commence</strong> à partir du moment où l'enfant <strong>s'est réveillé</strong> (donc un <strong>rallongement</strong> de sieste qui n'a <strong>pas fonctionné</strong> <strong>FAIT PARTIE du temps d'éveil</strong>)</div><div><strong>SAUF</strong> pour le 1er temps d'éveil : il commence à partir de la <strong>sortie du lit</strong>, pour <strong>donner un tempo</strong> à la journée</div></li></ul>"
               },
               { type: "normal", showIfSieste: "4-6m",
                 _leftTitle: "Réveil matinal",
@@ -2828,7 +2824,7 @@ const SCRIPT_DATA = {
               { type: "normal", showIfSieste: "4-6m",
                 _leftTitle: "Rythme",
                 _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
-                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li>Je vous propose que le <strong>coucher du soir ET réveil le matin</strong> soient à <strong>heures FIXES</strong>, pour <strong>donner</strong> un <strong>rythme</strong> à la <strong>journée</strong></li><li>Je voudrais aussi <strong>attirer votre attention</strong> sur le fait qu'une <strong>journée fasse bien 12 heures</strong>, afin d'avoir <strong>assez de pression de sommeil</strong> au moment du <strong>coucher du soir</strong></li><li>Dans la même optique, garder un <strong>dernier TE</strong> de <strong>1h30-1h45 MINI</strong> pour avoir <strong>assez pression de sommeil le soir</strong></li></ul>"
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li>Je vous propose que le <strong>coucher du soir ET réveil le matin</strong> soient à <strong>heures FIXES</strong>, pour <strong>donner</strong> un <strong>rythme</strong> à la <strong>journée</strong></li><li>Je voudrais aussi <strong>attirer votre attention</strong> sur le fait qu'une <strong>journée fasse bien 12 heures</strong>, afin d'avoir <strong>assez de pression de sommeil</strong> au moment du <strong>coucher du soir</strong></li><li>Dans la même optique, garder un <strong>dernier temps d'éveil</strong> de <strong>1h30-1h45 MINI</strong> pour avoir <strong>assez pression de sommeil le soir</strong></li></ul>"
               },
               {
                 type: "option", showIfSieste: "4-6m",
@@ -2848,7 +2844,7 @@ const SCRIPT_DATA = {
                 type: "option", showIfSieste: "4-6m",
                 label: "OPTION : Si saute 1 sieste", emoji: "⏭️", style: "purple-btn",
                 blocks: [
-                  { type: "normal", text: "- C'est OK de le coucher **30 min + tôt le soir**, s'il a **\"sauté une sieste\"**, pour **éviter** d'être en **sur-fatigue**" }
+                  { type: "normal", text: "- C'est OK de le coucher **30 min + tôt le soir**, [sil_sielle] a **\"sauté une sieste\"**, pour **éviter** d'être en **sur-fatigue**" }
                 ]
               },
               {
@@ -2861,7 +2857,7 @@ const SCRIPT_DATA = {
                       {
                         label: "Petit décalage (< 1h)", emoji: "🐢", style: "action-green", _pillStyle: true, mutexGroup: "decalage-4-6m",
                         blocks: [
-                          { type: "normal", text: "- Pour un PETIT **décalage horaire**, on va avancer/reculer les horaires **de 15 minutes** **tous les jours**.\n- Concrètement, ça veut dire :\n  - Le **matin**, vous **le réveillez avec un décalage** de 15 minutes, **sans le sortir du lit avant**.\n  - **Pendant la journée**, tout ce qui suit — **siestes, repas, etc.** — **sera aussi décalé** de 15 minutes.\n  - **Le soir, vous décalez AUSSI l'heure du coucher de 15 minutes**.\n  - Le lendemain matin, vous **continuez ce décalage** de 15 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" }
+                          { type: "normal", text: "- Pour un PETIT **décalage horaire**, on va avancer/reculer les horaires **de 15 minutes** **tous les jours**.\n- Concrètement, ça veut dire :\n  - Le **matin**, vous **[le_la] réveillez avec un décalage** de 15 minutes, **sans [le_la] sortir du lit avant**.\n  - **Pendant la journée**, tout ce qui suit — **siestes, repas, etc.** — **sera aussi décalé** de 15 minutes.\n  - **Le soir, vous décalez AUSSI l'heure du coucher de 15 minutes**.\n  - Le lendemain matin, vous **continuez ce décalage** de 15 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" }
                         ]
                       },
                       {
@@ -2873,13 +2869,13 @@ const SCRIPT_DATA = {
                               {
                                 label: "Progressif", emoji: "🐢", style: "action-green", _pillStyle: true, mutexGroup: "decalage-grand-4-6m",
                                 blocks: [
-                                  { type: "normal", text: "- Pour un **décalage horaire**, on va avancer/reculer les horaires **de 30 minutes** **tous les 3 jours**.\n- Concrètement, ça veut dire :\n  - Le **matin**, vous **le réveillez avec un décalage** de 30 minutes, **sans le sortir du lit avant**.\n  - **Pendant la journée**, tout ce qui suit — **siestes, repas, etc.** — **sera aussi décalé** de 30 minutes.\n  - **Le soir, vous décalez AUSSI l'heure du coucher de 30 minutes**.\n  - Au **bout de 3 jours**, vous **continuez ce décalage** de 30 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" }
+                                  { type: "normal", text: "- Pour un **décalage horaire**, on va avancer/reculer les horaires **de 30 minutes** **tous les 3 jours**.\n- Concrètement, ça veut dire :\n  - Le **matin**, vous **[le_la] réveillez avec un décalage** de 30 minutes, **sans [le_la] sortir du lit avant**.\n  - **Pendant la journée**, tout ce qui suit — **siestes, repas, etc.** — **sera aussi décalé** de 30 minutes.\n  - **Le soir, vous décalez AUSSI l'heure du coucher de 30 minutes**.\n  - Au **bout de 3 jours**, vous **continuez ce décalage** de 30 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" }
                                 ]
                               },
                               {
                                 label: "En 1 fois", emoji: "⚡", style: "action", _pillStyle: true, mutexGroup: "decalage-grand-4-6m",
                                 blocks: [
-                                  { type: "normal", text: "- Procéder à un décalage horaire **en 1 fois**, en commençant par **le réveiller le matin à l'heure prévue (sans le sortir du lit s'il se réveille avant)**\n- Puis **utiliser les temps d'éveil** pour rétablir un rythme basé sur cette heure de lever\n- 🎓 Les 1ers jours, il sera en manque de sommeil\n  - ⇒ c'est **NORMAL**\n  - Petit à petit, il se **décalera naturellement** et **retrouvera des quotas de sommeil adaptés** à son âge" }
+                                  { type: "normal", text: "- Procéder à un décalage horaire **en 1 fois**, en commençant par **[le_la] réveiller le matin à l'heure prévue (sans [le_la] sortir du lit [sil_sielle] se réveille avant)**\n- Puis **utiliser les temps d'éveil** pour rétablir un rythme basé sur cette heure de lever\n- 🎓 Les 1ers jours, [il_elle] sera en manque de sommeil\n  - ⇒ c'est **NORMAL**\n  - Petit à petit, [il_elle] se **décalera naturellement** et **retrouvera des quotas de sommeil adaptés** à son âge" }
                                 ]
                               }
                             ]
@@ -2906,12 +2902,12 @@ const SCRIPT_DATA = {
                   { kind: "te", label: "Temps d'Éveil 1 : Réveil, change, manger, jouer", durationMin: 90, durationRange: "1h30-1h45" },
                   { kind: "sieste", label: "SIESTE 1 (dans le lit)", durationMin: 120, durationRange: "1h30 à 2h15/3h" },
                   { kind: "te", label: "Temps d'Éveil 2 : Réveil, change, manger, jouer", durationMin: 120, durationRange: "1h45-2h15" },
-                  { kind: "milestone", label: "Si repas diversification (midi)", staticTime: "11h-12h" },
+                  { kind: "milestone", label: "🍽️ Si repas diversification (midi)", staticTime: "11h-12h" },
                   { kind: "sieste", label: "SIESTE 2 (dans le lit)", durationMin: 120, durationRange: "1h30 à 2h15/3h" },
                   { kind: "te", label: "Temps d'Éveil 3 : Réveil, change, manger, jouer", durationMin: 120, durationRange: "1h30-2h" },
                   { kind: "sieste", label: "SIESTE 3 (dans le lit ou poussette/portage)", durationMin: 30, durationRange: "30-45 min" },
                   { kind: "te", label: "Temps d'Éveil 4 : Réveil, change, manger, rituel, dernier temps de nutrition", durationMin: 120, durationRange: "1h30-2h" },
-                  { kind: "milestone", label: "Si repas diversification (soir)", offsetFromCoucherMin: -75 },
+                  { kind: "milestone", label: "🍽️ Si repas diversification (soir)", offsetFromCoucherMin: -75 },
                   { kind: "milestone", label: "Rituel de la nuit", offsetFromCoucherMin: -30 },
                   { kind: "coucher", label: "Coucher pour la nuit" }
                 ],
@@ -2938,12 +2934,12 @@ const SCRIPT_DATA = {
                   { kind: "te", label: "Temps d'Éveil 1 : Réveil, change, manger, jouer", durationMin: 105, durationRange: "1h45" },
                   { kind: "sieste", label: "SIESTE 1 (dans le lit)", durationMin: 90, durationRange: "1h30 à 2h15/3h" },
                   { kind: "te", label: "Temps d'Éveil 2 : Réveil, change, manger, jouer", durationMin: 150, durationRange: "2h-2h30" },
-                  { kind: "milestone", label: "Si repas diversification (midi)", staticTime: "11h-12h" },
+                  { kind: "milestone", label: "🍽️ Si repas diversification (midi)", staticTime: "11h-12h" },
                   { kind: "sieste", label: "SIESTE 2 (dans le lit)", durationMin: 90, durationRange: "1h30 à 2h15/3h" },
                   { kind: "te", label: "Temps d'Éveil 3 : Réveil, change, manger, jouer", durationMin: 120, durationRange: "1h45-2h" },
                   { kind: "sieste", label: "SIESTE 3 (dans le lit ou poussette/portage)", durationMin: 45, durationRange: "30-45 min" },
                   { kind: "te", label: "Temps d'Éveil 4 : Réveil, change, manger, rituel, dernier temps de nutrition", durationMin: 120, durationRange: "1h30-2h" },
-                  { kind: "milestone", label: "Si repas diversification (soir)", offsetFromCoucherMin: -60 },
+                  { kind: "milestone", label: "🍽️ Si repas diversification (soir)", offsetFromCoucherMin: -60 },
                   { kind: "milestone", label: "Rituel de la nuit", offsetFromCoucherMin: -30 },
                   { kind: "coucher", label: "Coucher pour la nuit" }
                 ],
