@@ -3764,9 +3764,6 @@ const SCRIPT_DATA = {
                   }
                 ]
               },
-              { type: "normal", showIfSieste: "4a-plus-tc",
-                text: "<div style=\"background:#fef9e0;border:1.5px solid #f5d778;border-radius:10px;padding:12px 16px;margin:14px 0 0;font-size:14px;line-height:1.6;color:#7c2d12;display:flex;align-items:flex-start;gap:8px\"><div style=\"flex-shrink:0\">💡</div><div style=\"flex:1\"><div style=\"margin-bottom:6px\">À cet âge-là, on <strong>NE</strong> se <strong>réfère plus au temps d'éveil MAIS</strong> :</div><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>à l'<strong>heure de début</strong></li><li>et de <strong>fin</strong> du <strong>temps calme</strong></li></ul></div></div>"
-              },
               {
                 type: "normal", showIfSieste: "4a-plus-tc", text: "",
                 trailingInfoButtons: [
