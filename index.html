@@ -10379,7 +10379,7 @@ function renderSolutionsCheckboxes(opts) {
   if (!sols.length) return '<div class="block block-normal"><em>(Aucune solution configurée.)</em></div>';
   syncSolutionsFromPbs();
   const catColorMap = {
-    confort_physique: { main: '#dc2626', dark: '#b91c1c', light: '#e8b8b0' },
+    confort_physique: { main: '#dc2626', dark: '#b91c1c', light: '#fef2f2' },
     nutrition:        { main: '#d4845a', dark: '#a05a1c', light: '#e8c19a' },
     rythme:           { main: '#7da589', dark: '#4a6b54', light: '#bdd1c4' },
     strategie:        { main: '#5d7a99', dark: '#2a4060', light: '#b8c4d6' },
@@ -10619,11 +10619,11 @@ function renderSolutionsCheckboxes(opts) {
           : checkedChildren.map(ch => ch.cardLabel || ch.label || ch.id));
     const activeCls = isActive ? ' active' : '';
     const vividBorder = catVividBorderMap[cat.id] || c.dark;
-    // Toutes les cartes ont le fond foncé (c.dark) en permanence + texte blanc.
+    // Toutes les cartes ont le fond c.main (= couleur du bandeau) en permanence + texte blanc.
     // La carte ouverte se distingue par un effet "glow" (anneau coloré + ombre diffuse).
     const activeStyle = isActive
-      ? `background:${c.dark};color:white;border:3px solid ${vividBorder};box-shadow:0 0 0 4px ${c.main}cc,0 6px 22px ${c.main}aa`
-      : `background:${c.dark};color:white;border:3px solid ${vividBorder};box-shadow:0 2px 8px ${vividBorder}33`;
+      ? `background:${c.main};color:white;border:3px solid ${vividBorder};box-shadow:0 0 0 4px ${c.dark}cc,0 6px 22px ${c.dark}aa`
+      : `background:${c.main};color:white;border:3px solid ${vividBorder};box-shadow:0 2px 8px ${vividBorder}33`;
     const parentCardId = 'cat_' + cat.id;
     if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
     const parentTicked = state.cardPersonalTicks.has(parentCardId);
