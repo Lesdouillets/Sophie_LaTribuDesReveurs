@@ -4074,6 +4074,14 @@
       flex-direction: column;
       gap: 14px;
     }
+    /* Pour 15m-3a et 4a-plus (1 seule sieste) : la rightAside (jaune) est aussi haute que
+       la sieste → pousser les bulles rouges en-dessous du TD au lieu de centrées,
+       pour ne pas qu'elles chevauchent l'encadré jaune. */
+    [data-block-key="15m-3a"] .et-warn-bubbles-wrap,
+    [data-block-key="4a-plus"] .et-warn-bubbles-wrap {
+      top: calc(100% + 12px) !important;
+      transform: none !important;
+    }
     .et-last-sieste-warn {
       padding: 8px 14px;
       background: #fee2e2; border: 2px solid #dc2626; border-radius: 14px;
