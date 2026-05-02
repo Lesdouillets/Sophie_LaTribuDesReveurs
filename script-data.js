@@ -2842,13 +2842,6 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "4-6m",
-                label: "OPTION : Si saute 1 sieste", emoji: "⏭️", style: "purple-btn", _compact: true,
-                blocks: [
-                  { type: "normal", text: "- C'est OK de [le_la] coucher **30 min + tôt le soir**, [sil_sielle] a **\"sauté une sieste\"**, pour **éviter** d'être en **sur-fatigue**" }
-                ]
-              },
-              {
-                type: "option", showIfSieste: "4-6m",
                 label: "OPTION : Décalage horaire", emoji: "⌚", style: "purple-btn", _compact: true,
                 blocks: [
                   {
@@ -2884,6 +2877,13 @@ const SCRIPT_DATA = {
                       }
                     ]
                   }
+                ]
+              },
+              {
+                type: "option", showIfSieste: "4-6m",
+                label: "OPTION : Si saute 1 sieste", emoji: "⏭️", style: "purple-btn", _compact: true,
+                blocks: [
+                  { type: "normal", text: "- C'est OK de [le_la] coucher **30 min + tôt le soir**, [sil_sielle] a **\"sauté une sieste\"**, pour **éviter** d'être en **sur-fatigue**" }
                 ]
               },
               // ─── 6-8 mois (3 siestes) — basé sur sheet5 "Emploi 7 mois" ──
@@ -2959,25 +2959,6 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "6-8m",
-                label: "OPTION : Si saute 1 sieste", emoji: "⏭️", style: "purple-btn", _compact: true,
-                blocks: [
-                  { type: "normal", text: "- C'est OK de [le_la] coucher **30 min + tôt le soir**, [sil_sielle] a **\"sauté une sieste\"**, pour **éviter** d'être en **sur-fatigue**" }
-                ]
-              },
-              {
-                type: "normal", showIfSieste: "6-8m", text: "",
-                trailingInfoButtons: [
-                  {
-                    label: "🎓 Passage de 3 à 2 siestes",
-                    title: "🎓 Passage de 3 à 2 siestes",
-                    blocks: [
-                      { type: "normal", text: "<div style=\"font-style:italic;color:#5b21b6;margin-bottom:10px\">Entre 8 et 10 mois</div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:10px;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Signes</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>N'arrive <strong>plus à s'endormir</strong> pour sa <strong>3ème sieste</strong></li><li>La <strong>longueur des 2 siestes</strong> ne permet <strong>plus d'avoir une 3ème sieste</strong> (heure fixe de coucher du soir)</li><li><strong>Coucher du soir</strong> + <strong>difficile</strong></li></ul></div></div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Que faire ?</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li><strong>Augmenter le temps d'éveil du midi</strong> (2h30-3h)</li><li><strong>Anticiper</strong> de 30 min le coucher du soir</li><li>⇒ Possibilité de nuit + longue</li></ul></div></div>" }
-                    ]
-                  }
-                ]
-              },
-              {
-                type: "option", showIfSieste: "6-8m",
                 label: "OPTION : Décalage horaire", emoji: "⌚", style: "purple-btn", _compact: true,
                 blocks: [
                   {
@@ -3011,6 +2992,25 @@ const SCRIPT_DATA = {
                           }
                         ]
                       }
+                    ]
+                  }
+                ]
+              },
+              {
+                type: "option", showIfSieste: "6-8m",
+                label: "OPTION : Si saute 1 sieste", emoji: "⏭️", style: "purple-btn", _compact: true,
+                blocks: [
+                  { type: "normal", text: "- C'est OK de [le_la] coucher **30 min + tôt le soir**, [sil_sielle] a **\"sauté une sieste\"**, pour **éviter** d'être en **sur-fatigue**" }
+                ]
+              },
+              {
+                type: "normal", showIfSieste: "6-8m", text: "",
+                trailingInfoButtons: [
+                  {
+                    label: "🎓 Passage de 3 à 2 siestes",
+                    title: "🎓 Passage de 3 à 2 siestes",
+                    blocks: [
+                      { type: "normal", text: "<div style=\"font-style:italic;color:#5b21b6;margin-bottom:10px\">Entre 8 et 10 mois</div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:10px;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Signes</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>N'arrive <strong>plus à s'endormir</strong> pour sa <strong>3ème sieste</strong></li><li>La <strong>longueur des 2 siestes</strong> ne permet <strong>plus d'avoir une 3ème sieste</strong> (heure fixe de coucher du soir)</li><li><strong>Coucher du soir</strong> + <strong>difficile</strong></li></ul></div></div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Que faire ?</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li><strong>Augmenter le temps d'éveil du midi</strong> (2h30-3h)</li><li><strong>Anticiper</strong> de 30 min le coucher du soir</li><li>⇒ Possibilité de nuit + longue</li></ul></div></div>" }
                     ]
                   }
                 ]
