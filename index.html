@@ -2482,9 +2482,10 @@
       gap: 10px;
       margin-top: 8px;
     }
-    /* Dans un bloc question : pills alignées à gauche (pas centrées) */
+    /* Dans un bloc question OU un bloc avec titre à gauche (ex. Rituel de lever) : pills alignées à gauche */
     .block-question .embedded-actions,
-    .block-question-inline .embedded-actions {
+    .block-question-inline .embedded-actions,
+    .block-with-left-title .embedded-actions {
       justify-content: flex-start;
     }
     /* Option purple dans un bloc question (ex: 💰 Tarifs) : fond transparent, liseré rouge fin, label rouge */
@@ -11679,6 +11680,9 @@ function substituteVars(text) {
     .replace(/\[Le_La\]/g, isFille ? 'La' : 'Le')
     .replace(/\[LE_LA\]/g, isFille ? 'LA' : 'LE')
     .replace(/\[eveille_eveillee\]/g, isFille ? 'éveillée' : 'éveillé')
+    .replace(/\[EVEILLE_EVEILLEE\]/g, isFille ? 'EVEILLEE' : 'EVEILLE')
+    .replace(/\[fier_fiere\]/g, isFille ? 'fière' : 'fier')
+    .replace(/\[endormi_endormie\]/g, isFille ? 'endormie' : 'endormi')
     .replace(/\[fatigue_fatiguee\]/g, isFille ? 'fatiguée' : 'fatigué')
     .replace(/\[pose_posee\]/g, isFille ? 'posée' : 'posé')
     .replace(/\[endormi_endormie\]/g, isFille ? 'endormie' : 'endormi')
