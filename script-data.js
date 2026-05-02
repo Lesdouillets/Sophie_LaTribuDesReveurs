@@ -3470,6 +3470,11 @@ const SCRIPT_DATA = {
                 notes: []
               },
               { type: "normal", showIfSieste: "15m-3a",
+                _leftTitle: "Réveil matinal",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT l'heure du réveil le matin</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
+              },
+              { type: "normal", showIfSieste: "15m-3a",
                 _leftTitle: "Alimentation",
                 _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li><strong>Je vous encourage</strong> à <strong>donner</strong> un <strong>temps d'alimentation</strong> <strong>au réveil</strong> de chaque sieste<br>⇒ c'est le <strong>moment idéal</strong>, car votre enfant a alors de <strong>suffisamment d'énergie</strong> pour <strong>boire efficacement</strong>.</li><li>Je vous invite aussi à <strong>donner 1 [bib_tetee:s] SUPPLÉMENTAIRE</strong> lors du <strong>rituel du soir</strong><br>⇒ C'est-à-dire qu'il aura <strong>2 [bib_tetee:p]</strong> sur le <strong>dernier temps d'éveil</strong></li></ul>"
@@ -3580,6 +3585,11 @@ const SCRIPT_DATA = {
                 notes: []
               },
               { type: "normal", showIfSieste: "4a-plus",
+                _leftTitle: "Réveil matinal",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT l'heure du réveil le matin</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
+              },
+              { type: "normal", showIfSieste: "4a-plus",
                 _leftTitle: "Rythme",
                 _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
                 text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li>Je vous propose que le <strong>coucher du soir ET réveil le matin</strong> soient à <strong>heures FIXES</strong>, pour <strong>donner</strong> un <strong>rythme</strong> à la <strong>journée</strong></li><li>Je voudrais aussi <strong>attirer votre attention</strong> sur le fait qu'une <strong>journée fasse bien 12 heures</strong>, afin d'avoir <strong>assez de pression de sommeil</strong> au moment du <strong>coucher du soir</strong></li><li>Dans la même optique, garder un <strong>dernier temps d'éveil</strong> de <strong>4h MINI</strong> pour avoir <strong>assez pression de sommeil le soir</strong></li><li>Le <strong>coucher de la sieste ne devrait pas se faire APRÈS 12h30</strong> :<ul style=\"margin:4px 0 0 22px;padding:0;list-style:disc\"><li>La <strong>diminution naturelle de la T° corporelle</strong> autour de <strong>midi</strong> ainsi que la <strong>diminution de la vigilance</strong> va <strong>faciliter l'endormissement</strong></li><li>De plus, une sieste <strong>en milieu de journée</strong>, va <strong>rythmer</strong> la journée en <strong>2 temps équilibrés</strong></li></ul></li></ul>"
@@ -3639,6 +3649,19 @@ const SCRIPT_DATA = {
               },
               { type: "normal", showIfSieste: "4a-plus",
                 text: "<div style=\"background:#fef9e0;border:1.5px solid #f5d778;border-radius:10px;padding:12px 16px;margin:14px 0 0;font-size:14px;line-height:1.6;color:#7c2d12;display:flex;align-items:flex-start;gap:8px\"><div style=\"flex-shrink:0\">💡</div><div style=\"flex:1\"><div style=\"margin-bottom:8px\">Si il est :</div><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>En <strong>Petite Section</strong>, il est possible de demander au <strong>Rectorat</strong> de ne le mettre à <strong>l'école QUE le matin</strong> pour pouvoir faire la <strong>sieste à la maison</strong> (article R. 131-1-1 du Code de l'éducation : <a href=\"https://www.education.gouv.fr/bo/19/Hebdo31/MENE1918999D.htm\" target=\"_blank\" style=\"color:#7c2d12\">https://www.education.gouv.fr/bo/19/Hebdo31/MENE1918999D.htm</a>)</li><li>En <strong>Moyenne Section</strong>, il est possible de demander au rectorat de ne le mettre <strong>QUE le matin</strong>, <strong>grâce à</strong> :<ul style=\"margin:4px 0 0 22px;padding:0;list-style:disc\"><li>un <strong>PAI</strong> <em>(= Plan d'Accueil Individualisé)</em></li><li>avec <strong>appui du médecin</strong><br>⚠️ mais <strong>+ difficile à obtenir</strong> qu'en Petite Section</li></ul></li></ul></div></div>"
+              },
+              {
+                type: "normal", showIfSieste: "4a-plus", text: "",
+                trailingInfoButtons: [
+                  {
+                    label: "Si angoisse de séparation",
+                    title: "Si angoisse de séparation",
+                    blocks: [
+                      { type: "normal", text: "- N'hésitez pas **non plus**, durant les **temps d'éveil** à :\n  - Jouer à **des « coucou-caché »**\n  - Proposer des **jeux de permanence de l'objet**\n  - **Parler DEPUIS une autre pièce** POUR MONTRER que vous **êtes toujours là**\n    ⇒ Ça peut [le_la] aider à **vivre + sereinement** … toutes les **phases de séparations**" },
+                      { type: "normal", text: "- Ça peut aussi **aider** d':\n  - **❌ ÉVITER de partir SANS prévenir**\n    ⇒ Sinon il peut rester **en alerte permanente** *« car Papa/Maman peut partir à tout moment sans me le dire »*\n  - ✅ Et **à l'inverse**, de faire des **retrouvailles ⇒ un vrai moment de joie**\n    ⇒ pour qu'il **associe la séparation** à qqch de :\n    - **temporaire**\n    - et **rassurant**" }
+                    ]
+                  }
+                ]
               },
               // ─── 4 ans + (Temps calme) — basé sur sheet11 ───────────────────
               { type: "normal", _noBorder: true, showIfSieste: "4a-plus-tc", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">4 ans + (Temps calme)</div>" },
