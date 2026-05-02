@@ -2692,7 +2692,7 @@ const SCRIPT_DATA = {
                 label: "OPTION : Décalage horaire", emoji: "⌚", style: "purple-btn",
                 blocks: [
                   {
-                    type: "normal", text: "Quel type de décalage horaire ?",
+                    type: "normal", text: "",
                     embeddedActions: [
                       {
                         label: "Petit décalage (< 1h)", emoji: "🐢", style: "action-green", _pillStyle: true, mutexGroup: "decalage-2-4m",
@@ -2704,7 +2704,7 @@ const SCRIPT_DATA = {
                         label: "Grand décalage (> 1h)", emoji: "🐇", style: "action", _pillStyle: true, mutexGroup: "decalage-2-4m",
                         blocks: [
                           {
-                            type: "normal", text: "Quelle approche pour ce grand décalage ?",
+                            type: "normal", text: "",
                             embeddedActions: [
                               {
                                 label: "Progressif", emoji: "🐢", style: "action-green", _pillStyle: true, mutexGroup: "decalage-grand-2-4m",
@@ -2733,7 +2733,7 @@ const SCRIPT_DATA = {
                 _leftTitle: "Emploi du temps",
                 _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
                 ageLabel: "2-4 mois (4 siestes)",
-                warnSubtitle: "(1h30 mini d'éveil)",
+                hideWarn: true,
                 wakeUpDefault: "08:00",
                 rightAside: "<div style=\"font-weight:800;font-size:14px;margin-bottom:8px;color:#7c2d12\">⚠️ <u>Passer le temps d'éveil</u></div><ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.55\"><li><div>Le cerveau de votre enfant passe en <strong>surstimulation</strong> = il n'arrive <strong>plus à traiter les informations</strong></div><div style=\"font-style:italic;margin-top:8px;color:#a16207\">(comme si vous étiez en boîte de nuit à 5h du matin, avec la foule, le bruit, les fumées…)</div></li></ul>",
                 rows: [

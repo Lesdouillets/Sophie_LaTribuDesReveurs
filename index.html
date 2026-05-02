@@ -6761,7 +6761,7 @@ function renderEmploiDuTempsInner(b, wakeUpStr, blockKey) {
     // Bulle BD du warning "Pas après HH:MM" attachée à la dernière sieste (déborde à droite)
     const isLastSieste = (idx === lastSiesteIdx);
     const warnSub = b.warnSubtitle ? `<span class="et-warn-sub">${escape(b.warnSubtitle)}</span>` : '';
-    const warnBubble = isLastSieste
+    const warnBubble = (isLastSieste && !b.hideWarn)
       ? `<div class="et-last-sieste-warn"><span><span class="et-warn-icon">⚠️</span>${escape(_warnMainText)}</span>${warnSub}</div>`
       : '';
     const trClass = `kind-${r.kind}${isLastSieste ? ' et-last-sieste' : ''}`;
@@ -9634,6 +9634,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     if (b.warnText != null) _warnExtras.warnText = b.warnText;
     if (b.warnSubtitle != null) _warnExtras.warnSubtitle = b.warnSubtitle;
     if (Array.isArray(b.warnOffsets)) _warnExtras.warnOffsets = b.warnOffsets;
+    if (b.hideWarn) _warnExtras.hideWarn = true;
     const warnExtrasAttr = JSON.stringify(_warnExtras).replace(/'/g, '&#39;');
     const rightAsideHtml = b.rightAside ? `<div class="emploi-temps-aside">${b.rightAside}</div>` : '';
     return `<div class="emploi-temps-block" data-emploi-block-id="${blockId}" data-block-key="${escAttr(blockKey)}" data-rows='${JSON.stringify(rows).replace(/'/g, '&#39;')}' data-notes='${JSON.stringify(b.notes || []).replace(/'/g, '&#39;')}' data-warn-extras='${warnExtrasAttr}'>
