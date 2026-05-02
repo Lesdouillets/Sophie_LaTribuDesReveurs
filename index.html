@@ -10619,9 +10619,11 @@ function renderSolutionsCheckboxes(opts) {
           : checkedChildren.map(ch => ch.cardLabel || ch.label || ch.id));
     const activeCls = isActive ? ' active' : '';
     const vividBorder = catVividBorderMap[cat.id] || c.dark;
+    // Toutes les cartes ont le fond foncé (c.dark) en permanence + texte blanc.
+    // La carte ouverte se distingue par un effet "glow" (anneau coloré + ombre diffuse).
     const activeStyle = isActive
-      ? `background:${c.main};color:white;border:3px solid ${vividBorder};box-shadow:0 6px 18px ${c.main}66`
-      : `border:3px solid ${vividBorder};background:${pastel};box-shadow:0 2px 8px ${vividBorder}33`;
+      ? `background:${c.dark};color:white;border:3px solid ${vividBorder};box-shadow:0 0 0 4px ${c.main}cc,0 6px 22px ${c.main}aa`
+      : `background:${c.dark};color:white;border:3px solid ${vividBorder};box-shadow:0 2px 8px ${vividBorder}33`;
     const parentCardId = 'cat_' + cat.id;
     if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
     const parentTicked = state.cardPersonalTicks.has(parentCardId);
