@@ -3361,6 +3361,13 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "15-20m",
+                label: "OPTION : Si saute 1 sieste", emoji: "⏭️", style: "purple-btn", _compact: true,
+                blocks: [
+                  { type: "normal", text: "- C'est OK de [le_la] coucher **30 min + tôt le soir**, [sil_sielle] a **\"sauté une sieste\"**, pour **éviter** d'être en **sur-fatigue**" }
+                ]
+              },
+              {
+                type: "option", showIfSieste: "15-20m",
                 label: "OPTION : Décalage horaire", emoji: "⌚", style: "purple-btn", _compact: true,
                 blocks: [
                   {
