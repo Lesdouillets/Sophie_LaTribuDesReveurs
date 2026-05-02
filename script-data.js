@@ -2835,9 +2835,9 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "4-6m",
-                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
+                label: "OPTION : Si saute 1 sieste", emoji: "⏭️", style: "purple-btn", _compact: true,
                 blocks: [
-                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
+                  { type: "normal", text: "- C'est OK de [le_la] coucher **30 min + tôt le soir**, [sil_sielle] a **\"sauté une sieste\"**, pour **éviter** d'être en **sur-fatigue**" }
                 ]
               },
               {
@@ -2881,9 +2881,9 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "4-6m",
-                label: "OPTION : Si saute 1 sieste", emoji: "⏭️", style: "purple-btn", _compact: true,
+                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
                 blocks: [
-                  { type: "normal", text: "- C'est OK de [le_la] coucher **30 min + tôt le soir**, [sil_sielle] a **\"sauté une sieste\"**, pour **éviter** d'être en **sur-fatigue**" }
+                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
                 ]
               },
               // ─── 6-8 mois (3 siestes) — basé sur sheet5 "Emploi 7 mois" ──
@@ -3232,25 +3232,6 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "8-15m",
-                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
-                blocks: [
-                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
-                ]
-              },
-              {
-                type: "normal", showIfSieste: "8-15m", text: "",
-                trailingInfoButtons: [
-                  {
-                    label: "🎓 Passage de 2 à 1 sieste",
-                    title: "🎓 Passage de 2 à 1 sieste",
-                    blocks: [
-                      { type: "normal", text: "<div style=\"font-style:italic;color:#5b21b6;margin-bottom:10px\">Entre 15 et 20 mois</div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:10px;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Signes</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li><strong>Endormissement long</strong> sur 1 ou 2 siestes</li><li><strong>1 des 2 siestes</strong> est régulièrement <strong>sautée</strong></li><li><strong>1 des 2 siestes</strong> est <strong>difficile</strong> à faire (long, émotions…)</li><li><strong>Tps d'endormissement</strong> au <strong>soir</strong> est <strong>long</strong> (avec ou sans émotions)</li><li><strong>Insomnies</strong></li><li><strong>Réveils matinaux</strong></li></ul></div></div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Que faire ?</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>Quelle sieste disparaît ?<ul style=\"margin:4px 0 0 22px;padding:0;list-style:disc\"><li>Si la <strong>sieste 1</strong> disparaît : sieste entre <strong>11h30 et 12h30</strong></li><li>Si la <strong>sieste 2</strong> disparaît : allonger le <strong>TE du matin</strong> de 15 à 30 min pour une sieste entre <strong>11h30 et 12h30</strong></li></ul></li><li>Dans son lit, <strong>2h</strong> sinon rallonger la sieste (<strong>1h30 au début</strong>)</li><li>Si signe de fatigue : <strong>coucher 30 min à 1h plus tôt le soir</strong> (heure du lever reste fixe)</li><li>⇒ Possibilité de nuit + longue</li></ul></div></div>" }
-                    ]
-                  }
-                ]
-              },
-              {
-                type: "option", showIfSieste: "8-15m",
                 label: "OPTION : Décalage horaire", emoji: "⌚", style: "purple-btn", _compact: true,
                 blocks: [
                   {
@@ -3284,6 +3265,25 @@ const SCRIPT_DATA = {
                           }
                         ]
                       }
+                    ]
+                  }
+                ]
+              },
+              {
+                type: "option", showIfSieste: "8-15m",
+                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
+                blocks: [
+                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
+                ]
+              },
+              {
+                type: "normal", showIfSieste: "8-15m", text: "",
+                trailingInfoButtons: [
+                  {
+                    label: "🎓 Passage de 2 à 1 sieste",
+                    title: "🎓 Passage de 2 à 1 sieste",
+                    blocks: [
+                      { type: "normal", text: "<div style=\"font-style:italic;color:#5b21b6;margin-bottom:10px\">Entre 15 et 20 mois</div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:10px;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Signes</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li><strong>Endormissement long</strong> sur 1 ou 2 siestes</li><li><strong>1 des 2 siestes</strong> est régulièrement <strong>sautée</strong></li><li><strong>1 des 2 siestes</strong> est <strong>difficile</strong> à faire (long, émotions…)</li><li><strong>Tps d'endormissement</strong> au <strong>soir</strong> est <strong>long</strong> (avec ou sans émotions)</li><li><strong>Insomnies</strong></li><li><strong>Réveils matinaux</strong></li></ul></div></div><div style=\"display:grid;grid-template-columns:140px 1fr;gap:0;background:#f5e8c6;border:1.5px solid #e6c87c;border-radius:8px\"><div style=\"font-size:13px;font-weight:800;color:#7c5a1c;background:#f5e8c6;padding:14px 10px;text-align:center;display:flex;align-items:center;justify-content:center;letter-spacing:0.2px;border-radius:8px 0 0 8px\">Que faire ?</div><div style=\"background:white;padding:12px 16px;border-left:3px solid #e6c87c;border-radius:12px 8px 8px 12px;font-size:14px;line-height:1.6\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>Quelle sieste disparaît ?<ul style=\"margin:4px 0 0 22px;padding:0;list-style:disc\"><li>Si la <strong>sieste 1</strong> disparaît : sieste entre <strong>11h30 et 12h30</strong></li><li>Si la <strong>sieste 2</strong> disparaît : allonger le <strong>TE du matin</strong> de 15 à 30 min pour une sieste entre <strong>11h30 et 12h30</strong></li></ul></li><li>Dans son lit, <strong>2h</strong> sinon rallonger la sieste (<strong>1h30 au début</strong>)</li><li>Si signe de fatigue : <strong>coucher 30 min à 1h plus tôt le soir</strong> (heure du lever reste fixe)</li><li>⇒ Possibilité de nuit + longue</li></ul></div></div>" }
                     ]
                   }
                 ]
@@ -3454,6 +3454,7 @@ const SCRIPT_DATA = {
                 warnSubtitle: "(4h mini d'éveil)",
                 warnText: "Pas après 12h30 (fixe)",
                 wakeUpDefault: "07:00",
+                rightAside: "<div style=\"font-weight:800;font-size:14px;margin-bottom:8px;color:#7c2d12\">💡 <u>Plus de référence au temps d'éveil</u></div><div>À cet âge-là, on <strong>NE</strong> se <strong>réfère plus au temps d'éveil MAIS</strong> :<ul style=\"margin:6px 0 0 22px;padding:0;list-style:disc;line-height:1.55\"><li>à l'<strong>heure de début</strong></li><li>et de <strong>fin</strong> de la <strong>sieste unique</strong></li></ul></div>",
                 rows: [
                   { kind: "wake", label: "Réveil" },
                   { kind: "te", label: "Temps d'Éveil 1 : Réveil, change, manger, jouer", durationMin: 270, durationRange: "4h-5h" },
@@ -3542,9 +3543,6 @@ const SCRIPT_DATA = {
                     ]
                   }
                 ]
-              },
-              { type: "normal", showIfSieste: "15m-3a",
-                text: "<div style=\"background:#fef9e0;border:1.5px solid #f5d778;border-radius:10px;padding:10px 14px;margin:14px 0 0;font-size:13.5px;line-height:1.55;color:#7c2d12;display:flex;align-items:flex-start;gap:8px\"><div style=\"flex-shrink:0\">💡</div><div style=\"flex:1\">À cet âge-là, on <strong>NE</strong> se <strong>réfère plus au temps d'éveil MAIS</strong> :<ul style=\"margin:6px 0 0 22px;padding:0;list-style:disc\"><li>à l'<strong>heure de début</strong></li><li>et de <strong>fin</strong> de la <strong>sieste unique</strong></li></ul></div></div>"
               },
               // ─── 4 ans (1 sieste) — basé sur sheet10 ────────────────────────
               { type: "normal", _noBorder: true, showIfSieste: "4a-plus", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">4 ans + (1 sieste)</div>" },
