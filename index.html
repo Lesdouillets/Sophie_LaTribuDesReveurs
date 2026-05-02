@@ -4064,6 +4064,12 @@
     .emploi-temps-tbl tbody, .emploi-temps-tbl tr,
     .emploi-temps-tbl tr.et-last-sieste td:last-child { overflow: visible !important; }
     .emploi-temps-tbl tr.et-last-sieste td:last-child { position: relative; }
+    /* Pour 15m-3a : la rightAside (jaune) est haute → pousser le warnBubble (rouge)
+       en-dessous du TD au lieu de centré, pour ne pas que les 2 encadrés se touchent */
+    [data-block-key="15m-3a"] .et-last-sieste-warn {
+      top: calc(100% + 12px) !important;
+      transform: none !important;
+    }
     .et-last-sieste-warn {
       position: absolute; left: calc(100% + 18px); top: 50%; transform: translateY(-50%);
       padding: 8px 14px;
