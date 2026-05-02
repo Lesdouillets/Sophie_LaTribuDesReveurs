@@ -2681,6 +2681,13 @@ const SCRIPT_DATA = {
               // ─── 2-4 mois (4 siestes) ─────────────────────────────────────
               { type: "normal", _noBorder: true, showIfSieste: "2-4m", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">2-4 mois (4 siestes)</div>" },
               {
+                type: "option", showIfSieste: "2-4m",
+                label: "OPTION : Changement du nombre de siestes", emoji: "💡", style: "purple-btn",
+                blocks: [
+                  { type: "normal", text: "- Déjà, on va **aller sur 4 siestes**\n\n  ⇒ C'est ce qui **va correspondre LE MIEUX** :\n  - à son **âge**\n  - à **ses besoins**\n  - et aux **signaux qu'il nous envoie**" }
+                ]
+              },
+              {
                 type: "emploi_du_temps",
                 showIfSieste: "2-4m",
                 scheduleKey: "2-4m",
@@ -2689,6 +2696,7 @@ const SCRIPT_DATA = {
                 ageLabel: "2-4 mois (4 siestes)",
                 warnSubtitle: "(1h30 mini d'éveil)",
                 wakeUpDefault: "08:00",
+                rightAside: "<div style=\"font-weight:800;font-size:14px;margin-bottom:8px;color:#7c2d12\">⚠️ Passer le temps d'éveil</div><div>Le cerveau de votre enfant passe en <strong>surstimulation</strong> = il n'arrive <strong>plus à traiter les informations</strong></div><div style=\"font-style:italic;margin-top:10px;color:#a16207\">(comme si vous étiez en boîte de nuit à 5h du matin, avec la foule, le bruit, les fumées…)</div>",
                 rows: [
                   { kind: "wake", label: "Réveil" },
                   { kind: "te", label: "Temps d'Éveil 1 : Réveil, change, manger, jouer", durationMin: 45, durationRange: "45min à 1h" },
