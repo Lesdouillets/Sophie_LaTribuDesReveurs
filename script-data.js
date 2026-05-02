@@ -2772,6 +2772,13 @@ const SCRIPT_DATA = {
               // ─── 4-6 mois (3 siestes) ─────────────────────────────────────
               { type: "normal", _noBorder: true, showIfSieste: "4-6m", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">4-6 mois (3 siestes)</div>" },
               {
+                type: "option", showIfSieste: "4-6m",
+                label: "OPTION : Changement du nombre de siestes", emoji: "💡", style: "purple-btn",
+                blocks: [
+                  { type: "normal", text: "- Déjà, on va **aller sur 3 siestes**\n\n  ⇒ C'est ce qui **va correspondre LE MIEUX** :\n  - à son **âge**\n  - à **ses besoins**\n  - et aux **signaux qu'il nous envoie**" }
+                ]
+              },
+              {
                 type: "emploi_du_temps",
                 showIfSieste: "4-6m",
                 scheduleKey: "4-6m",
@@ -2780,6 +2787,7 @@ const SCRIPT_DATA = {
                 ageLabel: "4-6 mois (3 siestes)",
                 warnSubtitle: "(1h30-1h45 mini d'éveil)",
                 wakeUpDefault: "07:00",
+                rightAside: "<div style=\"font-weight:800;font-size:14px;margin-bottom:8px;color:#7c2d12\">⚠️ <u>Passer le temps d'éveil</u></div><ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.55\"><li><div>Le cerveau de votre enfant passe en <strong>surstimulation</strong> = il n'arrive <strong>plus à traiter les informations</strong></div><div style=\"font-style:italic;margin-top:8px;color:#a16207\">(comme si vous étiez en boîte de nuit à 5h du matin, avec la foule, le bruit, les fumées…)</div></li></ul>",
                 rows: [
                   { kind: "wake", label: "Réveil" },
                   { kind: "te", label: "Temps d'Éveil 1 : Réveil, change, manger, jouer", durationMin: 90, durationRange: "1h15-1h30" },
@@ -2800,6 +2808,86 @@ const SCRIPT_DATA = {
                   "Journée de 12h à vérifier",
                   "TE = Temps d'Éveil",
                   "Dernier TE avant le coucher : 1h30-1h45 mini d'éveil"
+                ]
+              },
+              { type: "normal", showIfSieste: "4-6m",
+                _leftTitle: "Quand commence le temps d'éveil ?",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Un <strong>TE commence</strong> à partir du moment où l'enfant <strong>s'est réveillé</strong> (donc un <strong>rallongement</strong> de sieste qui n'a <strong>pas fonctionné</strong> <strong>FAIT PARTIE du TE</strong>)</div><div><strong>SAUF</strong> pour le 1er TE : il commence à partir de la <strong>sortie du lit</strong>, pour <strong>donner un tempo</strong> à la journée</div></li></ul>"
+              },
+              { type: "normal", showIfSieste: "4-6m",
+                _leftTitle: "Réveil matinal",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT l'heure du réveil le matin</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
+              },
+              { type: "normal", showIfSieste: "4-6m",
+                _leftTitle: "Alimentation",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li><strong>Je vous encourage</strong> à <strong>donner</strong> un <strong>temps d'alimentation</strong> <strong>au réveil</strong> de chaque sieste<br>⇒ c'est le <strong>moment idéal</strong>, car votre enfant a alors de <strong>suffisamment d'énergie</strong> pour <strong>boire efficacement</strong>.</li><li>Je vous invite aussi à <strong>donner 1 bib/tétée SUPPLÉMENTAIRE</strong> lors du <strong>rituel du soir</strong><br>⇒ C'est-à-dire qu'il aura <strong>2 bib/tétées</strong> sur le <strong>dernier temps d'éveil</strong></li></ul>"
+              },
+              { type: "normal", showIfSieste: "4-6m",
+                _leftTitle: "Rythme",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:14px",
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li>Je vous propose que le <strong>coucher du soir ET réveil le matin</strong> soient à <strong>heures FIXES</strong>, pour <strong>donner</strong> un <strong>rythme</strong> à la <strong>journée</strong></li><li>Je voudrais aussi <strong>attirer votre attention</strong> sur le fait qu'une <strong>journée fasse bien 12 heures</strong>, afin d'avoir <strong>assez de pression de sommeil</strong> au moment du <strong>coucher du soir</strong></li><li>Dans la même optique, garder un <strong>dernier TE</strong> de <strong>1h30-1h45 MINI</strong> pour avoir <strong>assez pression de sommeil le soir</strong></li></ul>"
+              },
+              {
+                type: "option", showIfSieste: "4-6m",
+                label: "OPTION : Si problème de rythme irrégulier", emoji: "🔄", style: "purple-btn",
+                blocks: [
+                  { type: "normal", text: "- Je vous **invite aussi** à maintenir des **horaires fixes** pour le **coucher des siestes** et le **lever des siestes** (même si dormi que 5 min OU pas du tout !)\n- Ça permettra à **son corps** de **rester dans le noir**, et d'**identifier + facilement** les **moments où il :**\n  - **FAUDRAIT dormir**\n  - **et les moments d'éveil**" }
+                ]
+              },
+              {
+                type: "option", showIfSieste: "4-6m",
+                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn",
+                blocks: [
+                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à le **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
+                ]
+              },
+              {
+                type: "option", showIfSieste: "4-6m",
+                label: "OPTION : Si saute 1 sieste", emoji: "⏭️", style: "purple-btn",
+                blocks: [
+                  { type: "normal", text: "- C'est OK de le coucher **30 min + tôt le soir**, s'il a **\"sauté une sieste\"**, pour **éviter** d'être en **sur-fatigue**" }
+                ]
+              },
+              {
+                type: "option", showIfSieste: "4-6m",
+                label: "OPTION : Décalage horaire", emoji: "⌚", style: "purple-btn",
+                blocks: [
+                  {
+                    type: "normal", text: "",
+                    embeddedActions: [
+                      {
+                        label: "Petit décalage (< 1h)", emoji: "🐢", style: "action-green", _pillStyle: true, mutexGroup: "decalage-4-6m",
+                        blocks: [
+                          { type: "normal", text: "- Pour un PETIT **décalage horaire**, on va avancer/reculer les horaires **de 15 minutes** **tous les jours**.\n- Concrètement, ça veut dire :\n  - Le **matin**, vous **le réveillez avec un décalage** de 15 minutes, **sans le sortir du lit avant**.\n  - **Pendant la journée**, tout ce qui suit — **siestes, repas, etc.** — **sera aussi décalé** de 15 minutes.\n  - **Le soir, vous décalez AUSSI l'heure du coucher de 15 minutes**.\n  - Le lendemain matin, vous **continuez ce décalage** de 15 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" }
+                        ]
+                      },
+                      {
+                        label: "Grand décalage (> 1h)", emoji: "🐇", style: "action", _pillStyle: true, mutexGroup: "decalage-4-6m",
+                        blocks: [
+                          {
+                            type: "normal", text: "",
+                            embeddedActions: [
+                              {
+                                label: "Progressif", emoji: "🐢", style: "action-green", _pillStyle: true, mutexGroup: "decalage-grand-4-6m",
+                                blocks: [
+                                  { type: "normal", text: "- Pour un **décalage horaire**, on va avancer/reculer les horaires **de 30 minutes** **tous les 3 jours**.\n- Concrètement, ça veut dire :\n  - Le **matin**, vous **le réveillez avec un décalage** de 30 minutes, **sans le sortir du lit avant**.\n  - **Pendant la journée**, tout ce qui suit — **siestes, repas, etc.** — **sera aussi décalé** de 30 minutes.\n  - **Le soir, vous décalez AUSSI l'heure du coucher de 30 minutes**.\n  - Au **bout de 3 jours**, vous **continuez ce décalage** de 30 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" }
+                                ]
+                              },
+                              {
+                                label: "En 1 fois", emoji: "⚡", style: "action", _pillStyle: true, mutexGroup: "decalage-grand-4-6m",
+                                blocks: [
+                                  { type: "normal", text: "- Procéder à un décalage horaire **en 1 fois**, en commençant par **le réveiller le matin à l'heure prévue (sans le sortir du lit s'il se réveille avant)**\n- Puis **utiliser les temps d'éveil** pour rétablir un rythme basé sur cette heure de lever\n- 🎓 Les 1ers jours, il sera en manque de sommeil\n  - ⇒ c'est **NORMAL**\n  - Petit à petit, il se **décalera naturellement** et **retrouvera des quotas de sommeil adaptés** à son âge" }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
                 ]
               },
               // ─── 6-8 mois (3 siestes) — basé sur sheet5 "Emploi 7 mois" ──
