@@ -6735,7 +6735,8 @@ function renderEmploiDuTempsInner(b, wakeUpStr, blockKey) {
   }
   const rowsHtml = computed.map((c, idx) => {
     const r = c.row;
-    const labelHtml = `${escape(r.label)}${r.labelHint ? ` <span class="et-hint">${escape(r.labelHint)}</span>` : ''}`;
+    const labelEmoji = r.kind === 'wake' ? '⏰ ' : (r.kind === 'coucher' ? '🌙 ' : '');
+    const labelHtml = `${labelEmoji}${escape(r.label)}${r.labelHint ? ` <span class="et-hint">${escape(r.labelHint)}</span>` : ''}`;
     let rangeCell = '', hypCell = '', timeCell = '';
     if (r.kind === 'te' || r.kind === 'sieste') {
       rangeCell = r.durationRange ? `<span class="et-range">${escape(r.durationRange)}</span>` : '';
