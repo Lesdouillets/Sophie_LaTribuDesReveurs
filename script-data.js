@@ -2689,7 +2689,7 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "2-4m",
-                label: "OPTION : Décalage horaire", emoji: "⌚", style: "purple-btn",
+                label: "OPTION : Décalage horaire", emoji: "⌚", style: "purple-btn", _compact: true,
                 blocks: [
                   {
                     type: "normal", text: "",
@@ -3022,7 +3022,7 @@ const SCRIPT_DATA = {
                     label: "Si angoisse de séparation",
                     title: "Si angoisse de séparation",
                     blocks: [
-                      { type: "normal", text: "- N'hésitez pas **non plus**, durant les **temps d'éveil** à :\n  - Jouer à **des « coucou-caché »**\n  - Proposer des **jeux de permanence de l'objet**\n  - **Parler DEPUIS une autre pièce** POUR MONTRER que vous **êtes toujours là**\n\n  ⇒ Ça peut [le_la] aider à **vivre + sereinement** … toutes les **phases de séparations**" },
+                      { type: "normal", text: "- N'hésitez pas **non plus**, durant les **temps d'éveil** à :\n  - Jouer à **des « coucou-caché »**\n  - Proposer des **jeux de permanence de l'objet**\n  - **Parler DEPUIS une autre pièce** POUR MONTRER que vous **êtes toujours là**\n    ⇒ Ça peut [le_la] aider à **vivre + sereinement** … toutes les **phases de séparations**" },
                       { type: "normal", text: "- Ça peut aussi **aider** d':\n  - **❌ ÉVITER de partir SANS prévenir**\n    ⇒ Sinon il peut rester **en alerte permanente** *« car Papa/Maman peut partir à tout moment sans me le dire »*\n  - ✅ Et **à l'inverse**, de faire des **retrouvailles ⇒ un vrai moment de joie**\n    ⇒ pour qu'il **associe la séparation** à qqch de :\n    - **temporaire**\n    - et **rassurant**" }
                     ]
                   }
