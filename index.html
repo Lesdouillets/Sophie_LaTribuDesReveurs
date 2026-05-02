@@ -4064,14 +4064,17 @@
     .emploi-temps-tbl tbody, .emploi-temps-tbl tr,
     .emploi-temps-tbl tr.et-last-sieste td:last-child { overflow: visible !important; }
     .emploi-temps-tbl tr.et-last-sieste td:last-child { position: relative; }
-    /* Pour 15m-3a : la rightAside (jaune) est haute → pousser le warnBubble (rouge)
-       en-dessous du TD au lieu de centré, pour ne pas que les 2 encadrés se touchent */
-    [data-block-key="15m-3a"] .et-last-sieste-warn {
-      top: calc(100% + 12px) !important;
-      transform: none !important;
+    /* Wrapper qui contient 1 ou 2 bulles d'avertissement (rouges) à droite de la dernière sieste */
+    .et-warn-bubbles-wrap {
+      position: absolute;
+      left: calc(100% + 18px);
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
     }
     .et-last-sieste-warn {
-      position: absolute; left: calc(100% + 18px); top: 50%; transform: translateY(-50%);
       padding: 8px 14px;
       background: #fee2e2; border: 2px solid #dc2626; border-radius: 14px;
       color: #991b1b; font-weight: 700; font-size: 13px; font-style: normal;
@@ -6802,12 +6805,26 @@ function renderEmploiDuTempsInner(b, wakeUpStr, blockKey) {
     }
     // Bulle BD du warning "Pas après HH:MM" attachée à la dernière sieste (déborde à droite)
     const isLastSieste = (idx === lastSiesteIdx);
-    const warnSub = b.warnSubtitle ? `<span class="et-warn-sub">${escape(b.warnSubtitle)}</span>` : '';
-    const _warnAction = b.warnAction || 'réveil';
-    const _warnActionCap = _warnAction.charAt(0).toUpperCase() + _warnAction.slice(1);
-    const warnBubble = (isLastSieste && !b.hideWarn)
-      ? `<div class="et-last-sieste-warn"><u>${_warnActionCap} de la sieste :</u> Le ${_warnAction} de la sieste ne doit pas se faire après ${escape(_warnMainText.replace(/^Pas après /, ''))} ${warnSub}</div>`
-      : '';
+    const _buildBubble = (action, mainText, subtitle) => {
+      const actionCap = action.charAt(0).toUpperCase() + action.slice(1);
+      const subHtml = subtitle ? `<span class="et-warn-sub">${escape(subtitle)}</span>` : '';
+      return `<div class="et-last-sieste-warn"><u>${actionCap} de la sieste :</u> Le ${action} de la sieste ne doit pas se faire après ${escape(String(mainText).replace(/^Pas après /, ''))} ${subHtml}</div>`;
+    };
+    let warnBubble = '';
+    if (isLastSieste && !b.hideWarn) {
+      const bubbles = [];
+      bubbles.push(_buildBubble(b.warnAction || 'réveil', _warnMainText, b.warnSubtitle));
+      if (b.warnText2 || b.warnOffsets2) {
+        const _warnOffsets2 = Array.isArray(b.warnOffsets2) ? b.warnOffsets2 : [-120, -90];
+        const noPasApresStart2 = _etMinToHHMM(coucherMin + _warnOffsets2[0]);
+        const noPasApresEnd2 = _etMinToHHMM(coucherMin + _warnOffsets2[1]);
+        const _warnMainText2 = b.warnText2
+          ? String(b.warnText2)
+          : (_warnOffsets2[0] === _warnOffsets2[1] ? `Pas après ${noPasApresStart2}` : `Pas après ${noPasApresStart2}-${noPasApresEnd2}`);
+        bubbles.push(_buildBubble(b.warnAction2 || 'réveil', _warnMainText2, b.warnSubtitle2));
+      }
+      warnBubble = `<div class="et-warn-bubbles-wrap">${bubbles.join('')}</div>`;
+    }
     const trClass = `kind-${r.kind}${isLastSieste ? ' et-last-sieste' : ''}`;
     return `<tr class="${trClass}"><td>${labelHtml}</td><td>${timeCell}</td><td>${rangeCell}</td><td>${hypCell}${warnBubble}</td></tr>`;
   }).join('');
@@ -9681,6 +9698,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     if (Array.isArray(b.warnOffsets)) _warnExtras.warnOffsets = b.warnOffsets;
     if (b.hideWarn) _warnExtras.hideWarn = true;
     if (b.warnAction != null) _warnExtras.warnAction = b.warnAction;
+    if (b.warnText2 != null) _warnExtras.warnText2 = b.warnText2;
+    if (b.warnSubtitle2 != null) _warnExtras.warnSubtitle2 = b.warnSubtitle2;
+    if (Array.isArray(b.warnOffsets2)) _warnExtras.warnOffsets2 = b.warnOffsets2;
+    if (b.warnAction2 != null) _warnExtras.warnAction2 = b.warnAction2;
     const warnExtrasAttr = JSON.stringify(_warnExtras).replace(/'/g, '&#39;');
     const rightAsideHtml = b.rightAside ? `<div class="emploi-temps-aside">${b.rightAside}</div>` : '';
     return `<div class="emploi-temps-block" data-emploi-block-id="${blockId}" data-block-key="${escAttr(blockKey)}" data-rows='${JSON.stringify(rows).replace(/'/g, '&#39;')}' data-notes='${JSON.stringify(b.notes || []).replace(/'/g, '&#39;')}' data-warn-extras='${warnExtrasAttr}'>

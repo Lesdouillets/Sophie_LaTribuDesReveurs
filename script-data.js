@@ -3451,6 +3451,9 @@ const SCRIPT_DATA = {
                 warnSubtitle: "(4h mini d'éveil)",
                 warnText: "Pas après 12h30 (fixe)",
                 warnAction: "début",
+                warnAction2: "réveil",
+                warnOffsets2: [-240, -240],
+                warnSubtitle2: "(4h MINI d'éveil)",
                 wakeUpDefault: "07:00",
                 rightAside: "<div style=\"font-weight:800;font-size:14px;margin-bottom:8px;color:#7c2d12\">💡 <u>Plus de référence au temps d'éveil</u></div><div>À cet âge-là, on <strong>NE</strong> se <strong>réfère plus au temps d'éveil MAIS</strong> :<ul style=\"margin:6px 0 0 22px;padding:0;list-style:disc;line-height:1.55\"><li>à l'<strong>heure de début</strong></li><li>et de <strong>fin</strong> de la <strong>sieste unique</strong></li></ul></div>",
                 rows: [
@@ -3545,6 +3548,13 @@ const SCRIPT_DATA = {
               // ─── 4 ans (1 sieste) — basé sur sheet10 ────────────────────────
               { type: "normal", _noBorder: true, showIfSieste: "4a-plus", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">4 ans + (1 sieste)</div>" },
               {
+                type: "option", showIfSieste: "4a-plus",
+                label: "OPTION : Changement tps calme ⇒ vers 1 sieste 🔙", emoji: "💡", style: "purple-btn", _compact: true,
+                blocks: [
+                  { type: "normal", text: "- On va **RETOURNER sur 1 sieste**\n\n  ⇒ C'est ce qui **va correspondre LE MIEUX** :\n  - à **ses besoins**\n  - et aux **signaux qu'il nous envoie**" }
+                ]
+              },
+              {
                 type: "emploi_du_temps",
                 showIfSieste: "4a-plus",
                 scheduleKey: "4a-plus",
@@ -3553,7 +3563,9 @@ const SCRIPT_DATA = {
                 ageLabel: "4 ans + (1 sieste)",
                 warnSubtitle: "(5h mini d'éveil)",
                 warnText: "Pas après 12h30 (fixe)",
+                warnAction: "début",
                 wakeUpDefault: "07:00",
+                rightAside: "<div style=\"font-weight:800;font-size:14px;margin-bottom:8px;color:#7c2d12\">💡 <u>Plus de référence au temps d'éveil</u></div><div>À cet âge-là, on <strong>NE</strong> se <strong>réfère plus au temps d'éveil MAIS</strong> :<ul style=\"margin:6px 0 0 22px;padding:0;list-style:disc;line-height:1.55\"><li>à l'<strong>heure de début</strong></li><li>et de <strong>fin</strong> de la <strong>sieste unique</strong></li></ul></div>",
                 rows: [
                   { kind: "wake", label: "Réveil" },
                   { kind: "te", label: "Temps d'Éveil 1 : Réveil, change, manger, jouer", durationMin: 270, durationRange: "4h-5h" },
@@ -3565,11 +3577,68 @@ const SCRIPT_DATA = {
                   { kind: "milestone", label: "Rituel de la nuit", offsetFromCoucherMin: -30 },
                   { kind: "coucher", label: "Coucher pour la nuit" }
                 ],
-                notes: [
-                  "Heures de lever et coucher fixes",
-                  "Permet de couper la journée en 2",
-                  "NE plus se référer au TE mais à des heures fixes de coucher (siestes/nuit)"
+                notes: []
+              },
+              { type: "normal", showIfSieste: "4a-plus",
+                _leftTitle: "Rythme",
+                _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.7\"><li>Je vous propose que le <strong>coucher du soir ET réveil le matin</strong> soient à <strong>heures FIXES</strong>, pour <strong>donner</strong> un <strong>rythme</strong> à la <strong>journée</strong></li><li>Je voudrais aussi <strong>attirer votre attention</strong> sur le fait qu'une <strong>journée fasse bien 12 heures</strong>, afin d'avoir <strong>assez de pression de sommeil</strong> au moment du <strong>coucher du soir</strong></li><li>Dans la même optique, garder un <strong>dernier temps d'éveil</strong> de <strong>4h MINI</strong> pour avoir <strong>assez pression de sommeil le soir</strong></li><li>Le <strong>coucher de la sieste ne devrait pas se faire APRÈS 12h30</strong> :<ul style=\"margin:4px 0 0 22px;padding:0;list-style:disc\"><li>La <strong>diminution naturelle de la T° corporelle</strong> autour de <strong>midi</strong> ainsi que la <strong>diminution de la vigilance</strong> va <strong>faciliter l'endormissement</strong></li><li>De plus, une sieste <strong>en milieu de journée</strong>, va <strong>rythmer</strong> la journée en <strong>2 temps équilibrés</strong></li></ul></li></ul>"
+              },
+              {
+                type: "option", showIfSieste: "4a-plus",
+                label: "OPTION : Si saute sa sieste", emoji: "⏭️", style: "purple-btn", _compact: true,
+                blocks: [
+                  { type: "normal", text: "- C'est OK de [le_la] coucher **30 min + tôt le soir**, [sil_sielle] a **\"sauté sa sieste\"**, pour **éviter** d'être en **sur-fatigue**" }
                 ]
+              },
+              {
+                type: "option", showIfSieste: "4a-plus",
+                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
+                blocks: [
+                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
+                ]
+              },
+              {
+                type: "option", showIfSieste: "4a-plus",
+                label: "OPTION : Décalage horaire", emoji: "⌚", style: "purple-btn", _compact: true,
+                blocks: [
+                  {
+                    type: "normal", text: "",
+                    embeddedActions: [
+                      {
+                        label: "Petit décalage (< 1h)", emoji: "🐢", style: "action-green", _pillStyle: true, mutexGroup: "decalage-4a-plus",
+                        blocks: [
+                          { type: "normal", text: "- Pour un PETIT **décalage horaire**, on va avancer/reculer les horaires **de 15 minutes** **tous les jours**.\n- Concrètement, ça veut dire :\n  - Le **matin**, vous **[le_la] réveillez avec un décalage** de 15 minutes, **sans [le_la] sortir du lit avant**.\n  - **Pendant la journée**, tout ce qui suit — **siestes, repas, etc.** — **sera aussi décalé** de 15 minutes.\n  - **Le soir, vous décalez AUSSI l'heure du coucher de 15 minutes**.\n  - Le lendemain matin, vous **continuez ce décalage** de 15 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" }
+                        ]
+                      },
+                      {
+                        label: "Grand décalage (> 1h)", emoji: "🐇", style: "action", _pillStyle: true, mutexGroup: "decalage-4a-plus",
+                        blocks: [
+                          {
+                            type: "normal", text: "",
+                            embeddedActions: [
+                              {
+                                label: "Progressif", emoji: "🐢", style: "action-green", _pillStyle: true, mutexGroup: "decalage-grand-4a-plus",
+                                blocks: [
+                                  { type: "normal", text: "- Pour un **décalage horaire**, on va avancer/reculer les horaires **de 30 minutes** **tous les 3 jours**.\n- Concrètement, ça veut dire :\n  - Le **matin**, vous **[le_la] réveillez avec un décalage** de 30 minutes, **sans [le_la] sortir du lit avant**.\n  - **Pendant la journée**, tout ce qui suit — **siestes, repas, etc.** — **sera aussi décalé** de 30 minutes.\n  - **Le soir, vous décalez AUSSI l'heure du coucher de 30 minutes**.\n  - Au **bout de 3 jours**, vous **continuez ce décalage** de 30 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" }
+                                ]
+                              },
+                              {
+                                label: "En 1 fois", emoji: "⚡", style: "action", _pillStyle: true, mutexGroup: "decalage-grand-4a-plus",
+                                blocks: [
+                                  { type: "normal", text: "- Procéder à un décalage horaire **en 1 fois**, en commençant par **[le_la] réveiller le matin à l'heure prévue (sans [le_la] sortir du lit [sil_sielle] se réveille avant)**\n- Puis **utiliser les temps d'éveil** pour rétablir un rythme basé sur cette heure de lever\n- 🎓 Les 1ers jours, [il_elle] sera en manque de sommeil\n  - ⇒ c'est **NORMAL**\n  - Petit à petit, [il_elle] se **décalera naturellement** et **retrouvera des quotas de sommeil adaptés** à son âge" }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              { type: "normal", showIfSieste: "4a-plus",
+                text: "<div style=\"background:#fef9e0;border:1.5px solid #f5d778;border-radius:10px;padding:12px 16px;margin:14px 0 0;font-size:14px;line-height:1.6;color:#7c2d12;display:flex;align-items:flex-start;gap:8px\"><div style=\"flex-shrink:0\">💡</div><div style=\"flex:1\"><div style=\"margin-bottom:8px\">Si il est :</div><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>En <strong>Petite Section</strong>, il est possible de demander au <strong>Rectorat</strong> de ne le mettre à <strong>l'école QUE le matin</strong> pour pouvoir faire la <strong>sieste à la maison</strong> (article R. 131-1-1 du Code de l'éducation : <a href=\"https://www.education.gouv.fr/bo/19/Hebdo31/MENE1918999D.htm\" target=\"_blank\" style=\"color:#7c2d12\">https://www.education.gouv.fr/bo/19/Hebdo31/MENE1918999D.htm</a>)</li><li>En <strong>Moyenne Section</strong>, il est possible de demander au rectorat de ne le mettre <strong>QUE le matin</strong>, <strong>grâce à</strong> :<ul style=\"margin:4px 0 0 22px;padding:0;list-style:disc\"><li>un <strong>PAI</strong> <em>(= Plan d'Accueil Individualisé)</em></li><li>avec <strong>appui du médecin</strong><br>⚠️ mais <strong>+ difficile à obtenir</strong> qu'en Petite Section</li></ul></li></ul></div></div>"
               },
               // ─── 4 ans + (Temps calme) — basé sur sheet11 ───────────────────
               { type: "normal", _noBorder: true, showIfSieste: "4a-plus-tc", text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">4 ans + (Temps calme)</div>" },
