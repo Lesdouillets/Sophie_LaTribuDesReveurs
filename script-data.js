@@ -2688,6 +2688,45 @@ const SCRIPT_DATA = {
                 ]
               },
               {
+                type: "option", showIfSieste: "2-4m",
+                label: "OPTION : Décalage horaire", emoji: "⌚", style: "purple-btn",
+                blocks: [
+                  {
+                    type: "normal", text: "Quel type de décalage horaire ?",
+                    embeddedActions: [
+                      {
+                        label: "Petit décalage (< 1h)", emoji: "🐢", style: "action-green", _pillStyle: true, mutexGroup: "decalage-2-4m",
+                        blocks: [
+                          { type: "normal", text: "- Pour un PETIT **décalage horaire**, on va avancer/reculer les horaires **de 15 minutes** **tous les jours**.\n- Concrètement, ça veut dire :\n  - Le **matin**, vous **le réveillez avec un décalage** de 15 minutes, **sans le sortir du lit avant**.\n  - **Pendant la journée**, tout ce qui suit — **siestes, repas, etc.** — **sera aussi décalé** de 15 minutes.\n  - **Le soir, vous décalez AUSSI l'heure du coucher de 15 minutes**.\n  - Le lendemain matin, vous **continuez ce décalage** de 15 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" }
+                        ]
+                      },
+                      {
+                        label: "Grand décalage (> 1h)", emoji: "🐇", style: "action", _pillStyle: true, mutexGroup: "decalage-2-4m",
+                        blocks: [
+                          {
+                            type: "normal", text: "Quelle approche pour ce grand décalage ?",
+                            embeddedActions: [
+                              {
+                                label: "Progressif", emoji: "🐢", style: "action-green", _pillStyle: true, mutexGroup: "decalage-grand-2-4m",
+                                blocks: [
+                                  { type: "normal", text: "- Pour un **décalage horaire**, on va avancer/reculer les horaires **de 30 minutes** **tous les 3 jours**.\n- Concrètement, ça veut dire :\n  - Le **matin**, vous **le réveillez avec un décalage** de 30 minutes, **sans le sortir du lit avant**.\n  - **Pendant la journée**, tout ce qui suit — **siestes, repas, etc.** — **sera aussi décalé** de 30 minutes.\n  - **Le soir, vous décalez AUSSI l'heure du coucher de 30 minutes**.\n  - Au **bout de 3 jours**, vous **continuez ce décalage** de 30 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" }
+                                ]
+                              },
+                              {
+                                label: "En 1 fois", emoji: "⚡", style: "action", _pillStyle: true, mutexGroup: "decalage-grand-2-4m",
+                                blocks: [
+                                  { type: "normal", text: "- Procéder à un décalage horaire **en 1 fois**, en commençant par **le réveiller le matin à l'heure prévue (sans le sortir du lit s'il se réveille avant)**\n- Puis **utiliser les temps d'éveil** pour rétablir un rythme basé sur cette heure de lever\n- 🎓 Les 1ers jours, il sera en manque de sommeil\n  - ⇒ c'est **NORMAL**\n  - Petit à petit, il se **décalera naturellement** et **retrouvera des quotas de sommeil adaptés** à son âge" }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
                 type: "emploi_du_temps",
                 showIfSieste: "2-4m",
                 scheduleKey: "2-4m",
