@@ -2881,9 +2881,9 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "4-6m",
-                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
+                label: "OPTION : Si [fatigue_fatiguee] au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
                 blocks: [
-                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
+                  { type: "normal", text: "- Si **vous voyez** qu'il est **[fatigue_fatiguee]** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
                 ]
               },
               // ─── 6-8 mois (3 siestes) — basé sur sheet5 "Emploi 7 mois" ──
@@ -2998,9 +2998,9 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "6-8m",
-                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
+                label: "OPTION : Si [fatigue_fatiguee] au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
                 blocks: [
-                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
+                  { type: "normal", text: "- Si **vous voyez** qu'il est **[fatigue_fatiguee]** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
                 ]
               },
               {
@@ -3135,9 +3135,9 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "8-10m",
-                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
+                label: "OPTION : Si [fatigue_fatiguee] au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
                 blocks: [
-                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
+                  { type: "normal", text: "- Si **vous voyez** qu'il est **[fatigue_fatiguee]** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
                 ]
               },
               {
@@ -3271,9 +3271,9 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "8-15m",
-                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
+                label: "OPTION : Si [fatigue_fatiguee] au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
                 blocks: [
-                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
+                  { type: "normal", text: "- Si **vous voyez** qu'il est **[fatigue_fatiguee]** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
                 ]
               },
               {
@@ -3407,9 +3407,9 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "15-20m",
-                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
+                label: "OPTION : Si [fatigue_fatiguee] au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
                 blocks: [
-                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
+                  { type: "normal", text: "- Si **vous voyez** qu'il est **[fatigue_fatiguee]** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
                 ]
               },
               {
@@ -3531,9 +3531,9 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "15m-3a",
-                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
+                label: "OPTION : Si [fatigue_fatiguee] au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
                 blocks: [
-                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
+                  { type: "normal", text: "- Si **vous voyez** qu'il est **[fatigue_fatiguee]** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
                 ]
               },
               {
@@ -3604,9 +3604,9 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "4a-plus",
-                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
+                label: "OPTION : Si [fatigue_fatiguee] au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
                 blocks: [
-                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
+                  { type: "normal", text: "- Si **vous voyez** qu'il est **[fatigue_fatiguee]** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
                 ]
               },
               {
@@ -3720,9 +3720,9 @@ const SCRIPT_DATA = {
               },
               {
                 type: "option", showIfSieste: "4a-plus-tc",
-                label: "OPTION : Si fatigué au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
+                label: "OPTION : Si [fatigue_fatiguee] au moment du rituel du soir ou AVANT", emoji: "😴", style: "purple-btn", _compact: true,
                 blocks: [
-                  { type: "normal", text: "- Si **vous voyez** qu'il est **fatigué** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
+                  { type: "normal", text: "- Si **vous voyez** qu'il est **[fatigue_fatiguee]** au **moment du rituel ou AVANT**\n  ⇒ n'hésitez pas à [le_la] **coucher + tôt**\n  ⇒ Il aurait **peut-être besoin** de **dormir + de 12h par nuit**" }
                 ]
               },
               {
