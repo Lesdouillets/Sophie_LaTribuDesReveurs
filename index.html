@@ -1180,7 +1180,14 @@
     .info-btn-wrap.info-btn-align-right { text-align: right; }
     .info-btn-emoji { font-size: 16px; }
     /* Variante : bouton flottant à droite DANS un bloc texte (inline-right) */
-    .info-btn.inline-right { /* styles gérés via inline style dans le renderer */ }
+    .info-btn.inline-right,
+    .info-btn.in-stack {
+      display: block !important;
+      align-items: initial;
+      justify-content: initial;
+      gap: 0;
+      text-align: left;
+    }
     /* Plusieurs boutons info : stack vertical positionné absolument à droite dans le bloc */
     .info-btns-stack {
       display: flex;
