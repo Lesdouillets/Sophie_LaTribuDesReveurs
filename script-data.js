@@ -2583,14 +2583,23 @@ const SCRIPT_DATA = {
                       type: "normal", _leftTitle: "Conseils",
                       showIfAgeMaxMonths: 8,
                       text: "- On va plutôt **prendre comme repère** pour les **volumes par 24h**… la **règle d'Appert**\n- Pour un BB de **[poids] kg**, ça correspond à un **volume de lait** d'environ **[besoin_lait_volume]** par 24h\n  ⇒ L'idée ce n'est **PAS** de VOUS METTRE **la pression** sur les **quantités** MAIS PLUTÔT de **s'assurer** qu'on est SUR **qqch de cohérent**\n  ⇒ ET **il se peut** qu'il prenne **BEAUCOUP +** de lait !\n  ⇒ notamment quand il y a besoin de faire un **« rattrapage de courbe »… et c'est OK !**\n\n- **Un point important par rapport à la quantité :**\n  - **Laissez** toujours un **fond de lait dans le biberon**\n    ⇒ c'est **votre enfant** qui **doit vous dire** QUAND **il a fini** de se nourrir **et NON quand** le **biberon est vide !**\n    ⇒ Si le biberon est vide, **n'hésitez pas** à **rajouter 30 ml** … et ainsi de suite !\n- Un BB qui a **suffisamment mangé** aura :\n  - les **mains ouvertes**\n  - du **lait** à la **commissure des lèvres** (car son estomac sera rempli)\n  - un air un peu **groggy**\n\n- ⇒ Mais **s'il demande +**, vous pouvez lui **donner**\n  ⇒ Vous ne vous **posez pas de questions !**\n\n- ⇒ Les **indications**, c'est :\n  - **à la demande** *(🎓 à savoir que la demi-vidange gastrique du lait infantile est de 74 min ≃ 1h15)*\n  - **à satiété** *(je rappelle, il doit toujours **rester un fond de lait** dans le **biberon**)*\n    - [Sil_Sielle] **détourne la tête** c'est qu'il a **fini de boire** OU qu'il **veut faire un rot**\n    - Mais il **peut redemander 1/4h** après\n      ⇒ et **c'est OK**\n      ⇒ Et on **lui re-propose**\n  - Mais bien sûr, ça reste des repères,\n    ⇒ On regardera :\n    - les **signes de faim**\n    - **et de satiété** de [prénom_enfant]\n- 👏 en s'**appuyant** AUSSI sur :\n  - **votre expérience**\n  - et **votre intuition** de **Maman !**\n\n- Si je peux vous **donner des conseils**, je vous **encourage à** :\n  - Donner 1 biberon au **début** de **CHAQUE temps d'éveil**\n    ⇒ C'est le **moment parfait**, car il aura **toute l'énergie** pour **boire efficacement**\n  - Puis « **1 dernier pour la route** », au moment du **rituel du soir**\n    ⇒ c'est à dire **2 biberons** sur le **dernier temps d'éveil**\n    ⇒ Ça rappelle les **tétées groupées** des **BB allaités** (⚠️ Veillez néanmoins à ce qu'il ne **s'endorme pas sur son biberon**)\n  - Essayez de BIEN **dissocier l'endormissement** de **l'alimentation**, pour ne **PAS** qu'il s'**endorme en buvant son biberon**\n    ⇒ Vous pouvez **[le_la] stimuler** avec des **petits guilis** sur la **joue** ou les **pieds**\n- Vous pouvez aussi vous **faire aider** avec une **conseillère en lactation**, même si vous ne **donnez pas le sein** !",
-                      trailingInfoButton: {
-                        label: "Calcul règle d'Appert",
-                        title: "Calcul règle d'Appert",
-                        blocks: [
-                          { type: "normal", text: "- **Enfant de moins de 6 kg** :\n  - Poids en kg × 100 + **200 mL** (± 100 mL)\n- **Enfant de plus de 6 kg** :\n  - Poids en kg × 100 + **250 mL** (± 100 mL)" },
-                          { type: "nutri_repartition_table" }
-                        ]
-                      }
+                      trailingInfoButtons: [
+                        {
+                          label: "Calcul règle d'Appert",
+                          title: "Calcul règle d'Appert",
+                          blocks: [
+                            { type: "normal", text: "- **Enfant de moins de 6 kg** :\n  - Poids en kg × 100 + **200 mL** (± 100 mL)\n- **Enfant de plus de 6 kg** :\n  - Poids en kg × 100 + **250 mL** (± 100 mL)" },
+                            { type: "nutri_repartition_table" }
+                          ]
+                        },
+                        {
+                          label: "Taille estomac",
+                          title: "📊 Taille estomac",
+                          blocks: [
+                            { type: "normal", _noBorder: true, text: "<table style=\"border-collapse:collapse;font-size:13.5px;background:#fff;width:100%\"><tr><td style=\"border:1px solid #d1d5db;padding:8px 14px;font-weight:700;background:#f3f4f6;color:#1f2937\">1 mois</td><td style=\"border:1px solid #d1d5db;padding:8px 14px;color:#374151\">80-150 mL</td><td style=\"border:1px solid #d1d5db;padding:8px 14px;color:#374151\">œuf / demi-verre d'eau</td></tr><tr><td style=\"border:1px solid #d1d5db;padding:8px 14px;font-weight:700;background:#f3f4f6;color:#1f2937\">6 mois</td><td style=\"border:1px solid #d1d5db;padding:8px 14px;color:#374151\">150 mL</td><td style=\"border:1px solid #d1d5db;padding:8px 14px;color:#374151\">kiwi</td></tr><tr><td style=\"border:1px solid #d1d5db;padding:8px 14px;font-weight:700;background:#f3f4f6;color:#1f2937\">1 an</td><td style=\"border:1px solid #d1d5db;padding:8px 14px;color:#374151\">250 mL</td><td style=\"border:1px solid #d1d5db;padding:8px 14px;color:#374151\">pomme / verre d'eau</td></tr></table>" }
+                          ]
+                        }
+                      ]
                     },
                     {
                       type: "normal", _leftTitle: "Conseils",
