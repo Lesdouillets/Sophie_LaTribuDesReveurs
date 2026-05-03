@@ -317,7 +317,7 @@ const SCRIPT_DATA = {
           blocks: [
             {
               type: "lieu_sommeil_intro_grid",
-              text: "- J'ai aussi une **petite question** par rapport au **LIEU de sommeil**\n- Aujourd'hui, votre enfant **dort dans VOTRE chambre**",
+              text: "- J'ai aussi une **petite question** par rapport au **LIEU de sommeil**\n- Aujourd'hui, [prénom_enfant] **dort dans VOTRE chambre**",
               buttons: [
                 {
                   label: "Cododo",
@@ -358,10 +358,11 @@ const SCRIPT_DATA = {
             }},
             { type: "question",
               showIfTickbox: { cid: "obj_lieu_sommeil", value: "changer_lit" },
-              text: "Quel **type de transition** souhaitez-vous ?",
+              text: "",
               choice: {
                 id: "obj_chgmt_lit_type",
                 required: true,
+                requireWhenParentSelected: { cid: "obj_lieu_sommeil", value: "changer_lit" },
                 options: [
                   { icon: "🛏", label: "Cododo ⇒ Lit à barreaux", value: "cododo_barreau", variant: "negative" },
                   { icon: "🛌", label: "Lit à barreaux ⇒ Lit ouvert", value: "barreau_ouvert", variant: "negative" }
