@@ -3259,13 +3259,14 @@
     .diag-cat-card[data-section-cat="sante"] .ccc-subtitle { color: #0f766e !important; }
     .diag-cat-card[data-section-cat="changement"] .ccc-title,
     .diag-cat-card[data-section-cat="changement"] .ccc-subtitle { color: #3d4570 !important; }
-    /* Journée : bloc-titre marron avec texte jaune (cas spécial — couleurs inversées vs. autres catégories)
-       Coins arrondis sur les 4 côtés pour que la transition brun/jaune ne soit pas droite à droite */
+    /* Journée : bloc-titre marron avec texte jaune (cas spécial — couleurs inversées vs. autres catégories) */
     [data-section-cat="journee"] .block-left-title {
       background: #92400e !important;
       color: #fef3c7 !important;
-      border-radius: 8px !important;
-      margin: 4px 0 4px 4px;
+    }
+    /* Le conteneur extérieur passe au marron pour combler la zone à gauche du contenu (au lieu d'afficher du jaune) */
+    [data-section-cat="journee"] .block-with-left-title {
+      background: #92400e !important;
     }
     /* Toutes les cartes diag-cat-card ont un fond foncé (c.dark) — titre toujours en blanc */
     .diag-cat-card[data-section-cat] .ccc-title,
@@ -3693,18 +3694,18 @@
     body:has(.info-panel.open) .sol-floating-btns {
       right: 620px;
     }
+    /* Quand l'info-panel BLEU est ouvert (bulle BD), il fait 1200px → décaler la bulle plus loin à gauche pour ne pas masquer le texte */
+    body:has(.info-panel.info-panel-blue.open) .sol-floating-btns {
+      right: 1220px;
+    }
     .sol-floating-btn {
       position: relative;
-      width: 130px; height: 130px;
+      width: 200px; height: 200px;
       border: none; background: transparent !important;
       cursor: pointer; padding: 0;
-      opacity: 0.85;
+      opacity: 0.9;
       transition: transform 0.15s, opacity 0.15s;
     }
-    .sol-floating-btn:hover { opacity: 1; }
-    /* Réduire la taille de la police interne pour qu'elle reste lisible dans la bulle plus petite */
-    .sol-floating-btn-content span:first-child { font-size: 22px !important; }
-    .sol-floating-btn-content span:last-child { font-size: 10.5px !important; line-height: 1.15 !important; }
     .sol-floating-btn:hover { transform: scale(1.06); opacity: 1; }
     .sol-floating-btn:active { transform: scale(0.97); }
     .sol-floating-btn-svg {
