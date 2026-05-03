@@ -9072,14 +9072,7 @@ function navigateTo(idx) {
   if (idx !== state.currentIdx) {
     const choices = state.tickboxChoices || {};
     if (choices['obj_lieu_sommeil'] === 'changer_lit' && !choices['obj_chgmt_lit_type']) {
-      // Trouve la sous-question dans le DOM pour scroller dessus + animation shake
-      const subQ = document.querySelector('.block-tickbox-choice[data-choice-id="obj_chgmt_lit_type"]');
-      if (subQ) {
-        subQ.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        subQ.classList.add('tbc-shake');
-        setTimeout(() => subQ.classList.remove('tbc-shake'), 800);
-      }
-      alert('⚠️ Vous avez choisi "Changer le lit" — veuillez sélectionner le type de transition (Cododo ⇒ Lit à barreaux OU Lit à barreaux ⇒ Lit ouvert) avant de continuer.');
+      showLitTransitionDialog(() => navigateTo(idx));
       return;
     }
   }
@@ -11958,6 +11951,60 @@ function calcSommeilTotal() {
 //   - Si le bouton a un data-mutex-group "X" → ferme tout autre ouvert du même groupe,
 //     masque les frères fermés du même groupe, puis s'ouvre.
 //   - Si pas de data-mutex-group → indépendant, n'affecte rien d'autre.
+// Modal pour proposer les 2 choix de transition de lit (Cododo / Lit ouvert) avec coche automatique de la pb
+function showLitTransitionDialog(onAfterChoice) {
+  // Retirer un éventuel modal déjà ouvert
+  document.querySelectorAll('.lit-transition-dialog').forEach(el => el.remove());
+  const overlay = document.createElement('div');
+  overlay.className = 'lit-transition-dialog';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px';
+  overlay.innerHTML = `
+    <div style="background:white;border-radius:16px;padding:24px 28px;max-width:560px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,0.35)">
+      <div style="font-size:18px;font-weight:800;color:#7f1d1d;margin-bottom:14px">⚠️ Type de transition manquant</div>
+      <div style="margin-bottom:18px;line-height:1.5;color:#1f2937;font-size:14px">
+        Vous avez choisi <strong>"Changer le lit"</strong> — veuillez sélectionner le type de transition. Votre choix cochera automatiquement la problématique correspondante.
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px">
+        <button type="button" class="ltd-btn" data-value="cododo_barreau" style="padding:14px 18px;border:2px solid #dc2626;background:#fef2f2;color:#7f1d1d;border-radius:10px;font-weight:700;cursor:pointer;text-align:left;font-size:14.5px">
+          🛏 Cododo &nbsp;&rArr;&nbsp; Lit à barreaux
+        </button>
+        <button type="button" class="ltd-btn" data-value="barreau_ouvert" style="padding:14px 18px;border:2px solid #dc2626;background:#fef2f2;color:#7f1d1d;border-radius:10px;font-weight:700;cursor:pointer;text-align:left;font-size:14.5px">
+          🛌 Lit à barreaux &nbsp;&rArr;&nbsp; Lit ouvert
+        </button>
+      </div>
+      <div style="text-align:right">
+        <button type="button" class="ltd-cancel" style="padding:8px 14px;border:1px solid #cbd5e0;background:#f9fafb;color:#4b5563;border-radius:8px;cursor:pointer;font-size:13px">Annuler</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  overlay.querySelectorAll('.ltd-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const value = btn.dataset.value;
+      // Cliquer sur l'option correspondante dans le DOM pour déclencher tous les effets de bord (mapping pb, sync solutions, re-render)
+      const targetOpt = document.querySelector(`.block-tickbox-choice[data-choice-id="obj_chgmt_lit_type"] .tbc-opt[data-value="${value}"]`);
+      if (targetOpt && typeof selectTickboxChoice === 'function') {
+        selectTickboxChoice(targetOpt);
+      } else {
+        // Fallback : poser directement le state + la pb
+        if (!state.tickboxChoices) state.tickboxChoices = {};
+        state.tickboxChoices['obj_chgmt_lit_type'] = value;
+        const mapping = { cododo_barreau: 'souhait_chgmt_lit_cododo_barreau', barreau_ouvert: 'souhait_chgmt_lit_barreau_ouvert' };
+        if (!state.selectedPbs) state.selectedPbs = new Set();
+        Object.values(mapping).forEach(pb => state.selectedPbs.delete(pb));
+        if (mapping[value]) state.selectedPbs.add(mapping[value]);
+        if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
+        if (typeof renderCurrentSection === 'function') renderCurrentSection();
+      }
+      overlay.remove();
+      if (typeof onAfterChoice === 'function') onAfterChoice();
+    });
+  });
+  overlay.querySelector('.ltd-cancel').addEventListener('click', () => { overlay.remove(); });
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+}
+window.showLitTransitionDialog = showLitTransitionDialog;
+
 function toggleOption(header) {
   const content = header.nextElementSibling;
   const toggle = header.querySelector('.option-toggle');
@@ -12002,17 +12049,11 @@ function toggleOption(header) {
       }
     } else {
       // Validation avant fermeture : si l'option contient obj_chgmt_lit_type et que la sous-option n'est pas sélectionnée,
-      // bloquer la fermeture (cas "Changer le lit" sans transition choisie)
+      // proposer le choix dans un modal qui coche automatiquement la pb correspondante
       const choices = state.tickboxChoices || {};
       const containsLitChoice = !!optionDiv.querySelector('.block-tickbox-choice[data-choice-id="obj_chgmt_lit_type"]');
       if (containsLitChoice && choices['obj_lieu_sommeil'] === 'changer_lit' && !choices['obj_chgmt_lit_type']) {
-        const subQ = optionDiv.querySelector('.block-tickbox-choice[data-choice-id="obj_chgmt_lit_type"]');
-        if (subQ) {
-          subQ.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          subQ.classList.add('tbc-shake');
-          setTimeout(() => subQ.classList.remove('tbc-shake'), 800);
-        }
-        alert('⚠️ Vous avez choisi "Changer le lit" — veuillez sélectionner le type de transition (Cododo ⇒ Lit à barreaux OU Lit à barreaux ⇒ Lit ouvert) avant de fermer.');
+        showLitTransitionDialog(() => toggleOption(header));
         return;
       }
       content.classList.remove('open');
