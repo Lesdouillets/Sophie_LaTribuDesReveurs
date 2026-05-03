@@ -2542,21 +2542,21 @@ const SCRIPT_DATA = {
                           label: "Tétine / petit doigt à sucer / mâchonnage de poing / pouce = coupe-faim",
                           title: "Tétine / petit doigt à sucer / mâchonnage de poing / pouce = coupe-faim",
                           blocks: [
-                            { type: "normal", text: "- Peut **répondre à un réflexe de succion**\n\n  **MAIS** peut aussi **faire office d'illusion** puisqu'elle **« dupe » le cerveau** :\n  - [prénom_enfant] **« tète et déglutit »** avec la tétine\n    ⇒ donc le cerveau pense que **qqch rentre dans son estomac** … MAIS **rien ne rentre**…\n  - et au bout d'un moment :\n    - **l'illusion se perd**\n    - et la **faim se fait ressentir**\n- Même si **vous remettez la tétine** :\n  - il n'en **veut pas**\n  - et **il pleure**\n\n  ⇒ Parce qu'il **veut AUTRE CHOSE**\n\n= La **tétine** joue donc le **rôle d'un « cache-faim »**" }
+                            { type: "normal", text: "- Peut **répondre à un réflexe de succion**\n- **MAIS** peut aussi **faire office d'illusion** puisqu'elle **« dupe » le cerveau** :\n  - [prénom_enfant] **« tète et déglutit »** avec la tétine\n    ⇒ donc le cerveau pense que **qqch rentre dans son estomac** … MAIS **rien ne rentre**…\n  - et au bout d'un moment :\n    - **l'illusion se perd**\n    - et la **faim se fait ressentir**\n- Même si **vous remettez la tétine** :\n  - il n'en **veut pas**\n  - et **il pleure**\n    ⇒ Parce qu'il **veut AUTRE CHOSE**\n    = La **tétine** joue donc le **rôle d'un « cache-faim »**" }
                           ]
                         },
                         {
                           label: "Pas de selle dans la journée = manque d'apport",
                           title: "Pas de selle dans la journée = manque d'apport",
                           blocks: [
-                            { type: "normal", text: "- Une **absence de selles** signifie **« manque d'apport alimentaire »**\n\n  ⇒ Comme le **corps ne reçoit pas assez**, il **puise TOUT** ce qu'il peut **pour pouvoir « tenir »**\n- 🎓 Constipation = petites billes noires" }
+                            { type: "normal", text: "- Une **absence de selles** signifie **« manque d'apport alimentaire »**\n  ⇒ Comme le **corps ne reçoit pas assez**, il **puise TOUT** ce qu'il peut **pour pouvoir « tenir »**\n\n- 🎓 Constipation = petites billes noires" }
                           ]
                         },
                         {
-                          label: "Gros biberon ⇒ bib moins gros",
-                          title: "Gros biberon ⇒ bib moins gros",
+                          label: "Passage de gros biberons vers des biberons moins gros",
+                          title: "Passage de gros biberons vers des biberons moins gros",
                           blocks: [
-                            { type: "normal", text: "- Si on propose des **biberons moins espacés**,\n  - il comprendra qu'il n'a **pas besoin de prendre autant**\n    - et de **lui-même**, il va prendre des **biberons moins gros**" }
+                            { type: "normal", text: "- Si on propose des **biberons moins espacés**,\n  - il comprendra qu'il n'a **pas besoin de prendre autant**\n    - et de **[lui_elle]-même**, il va prendre des **biberons moins gros**" }
                           ]
                         },
                         {
