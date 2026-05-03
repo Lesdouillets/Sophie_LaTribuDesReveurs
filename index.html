@@ -1268,6 +1268,17 @@
       margin-bottom: 0;
       border-radius: 12px 8px 8px 12px;
     }
+    /* grouped_block avec _leftTitle : harmoniser avec les autres bloc titre+texte
+       (pas de double encadré, pas de banderole haut/bas) */
+    .block-with-left-title > .edit-block-wrap > .grouped-block,
+    .block-with-left-title > .grouped-block {
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--cat-main, #cbd5e0);
+      border-radius: 12px 8px 8px 12px;
+      margin: 0;
+      box-shadow: var(--shadow);
+      background: var(--card-bg, #ffffff);
+    }
     .q-text ul, .q-text ol { padding-left: 24px; margin: 6px 0; }
     .q-text li { margin-bottom: 4px; }
     #edit-block-textarea ul, #edit-block-textarea ol { padding-left: 24px; margin: 6px 0; }
@@ -9947,7 +9958,18 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const activeCls = isActive ? ' active' : '';
       const tickIcon = ticked ? '✅' : '☐';
       const subs = getActiveSublabels(it);
-      const subsHtml = subs.length ? `<span class="ccc-subs">${subs.map(s => `<span class="ccc-sub-chip">${s}</span>`).join('')}</span>` : '';
+      let subsHtml = subs.length ? `<span class="ccc-subs">${subs.map(s => `<span class="ccc-sub-chip">${s}</span>`).join('')}</span>` : '';
+      // Cas spécial Espacement : afficher l'enfant coché (Espacement normal ou Inversion jour/nuit)
+      if (cardId === 'nutri_lait_biberon_espacement') {
+        const ESP_CHILDREN = [
+          { id: 'nutri_lait_biberon_espacement_normal', label: 'Espacement (si + de 2 siestes)' },
+          { id: 'nutri_lait_biberon_inversion_jn', label: 'Inversion jour/nuit' }
+        ];
+        const activeChild = ESP_CHILDREN.find(c => state.cardPersonalTicks.has(c.id));
+        if (activeChild) {
+          subsHtml = `<span class="ccc-subs"><span class="ccc-sub-chip">${activeChild.label}</span></span>`;
+        }
+      }
       return `<div class="courbe-card${activeCls}${dimmedCls}" data-card-id="${cardId}" onclick="openCourbeCard(this)">
         <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${tickIcon}</span>
         <span class="ccc-emoji">${it.emoji || '📄'}</span>
