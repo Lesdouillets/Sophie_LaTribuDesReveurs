@@ -1594,18 +1594,13 @@
     /* Style "news-red" overridé : on conserve le bleu marine partout */
     .col-2.col-3-news-red { background: #2d3f5c; border-color: #1a2a42; }
     @media (max-width: 900px) { .columns-2-grid.columns-3 { grid-template-columns: 1fr; } }
-    /* Colonne droite : CSS GRID — plus prévisible que flex pour centrer les pills */
-    .columns-2-grid .col-2-right {
-      display: grid !important;
+    /* Colonne droite : grille 2 colonnes appliquée au body (pas au col-2 lui-même qui est en flex column) */
+    .columns-2-grid .col-2-right > .col-2-body-right {
+      display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
       align-content: start;
       justify-items: center;
-    }
-    .columns-2-grid .col-2-right > .col-2-title {
-      grid-column: 1 / -1;
-      justify-self: stretch;
-      width: auto;
     }
     /* Wrappers dans le grid col-2-right : display block, centré dans leur cellule */
     .columns-2-grid .col-2-right > .col-2-body-right > .edit-block-wrap {
