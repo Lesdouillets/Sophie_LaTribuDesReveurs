@@ -2902,7 +2902,6 @@ const SCRIPT_DATA = {
             },
             {
               type: "normal", _leftTitle: "Heure repas du soir",
-              _centerContent: true,
               showIfAlim: "Diversification",
               text: "- Pour le **soir**, vous pouvez proposer le **repas… 1h-1h30 avant le coucher**",
               trailingInfoButton: {
