@@ -2711,12 +2711,12 @@ const SCRIPT_DATA = {
                                       { type: "normal", text: "- **Lait** qui coule à la **commissure des lèvres**\n- **Mains ouvertes** en fin de repas\n- Un air **groggy**" }
                                     ]
                                   }
-                                },
-                                {
-                                  type: "normal", _leftTitle: "Dissocier le sommeil et l'alimentation",
-                                  text: "- Je vous encourage tout de même à :\n  - D'essayer de bien **dissocier l'alimentation et le sommeil**, pour ne **PAS qu'il s'endorme** sur son biberon\n  - De **proposer un biberon** idéalement **à chaque début de temps d'éveil**\n    ⇒ c'est souvent là que bébé est **le plus disponible pour boire efficacement**\n  - De **favoriser des prises + importantes le matin et en journée, si vous le pouvez**\n  - En DÉBUT de nuit, **laisser [prénom_enfant] prendre à volonté**,\n  - Puis, progressivement, diminuer **les prises en fin de nuit pour :**\n    - **avoir une grosse prise** au **réveil du matin**\n    - pour **donner** un **tempo** à la **journée**\n\n- L'idée n'est pas de tout changer d'un coup,\n  ⇒ mais plutôt de **tester sur quelques jours** *(par exemple une semaine)*\n  ⇒ et d'observer comment [prénom_enfant] réagit"
                                 }
                               ]
+                            },
+                            {
+                              type: "normal", _leftTitle: "Dissocier sommeil et alimentation",
+                              text: "- Je vous encourage tout de même à :\n  - D'essayer de bien **dissocier l'alimentation et le sommeil**, pour ne **PAS qu'[il_elle] s'endorme** sur son biberon\n  - De **proposer un biberon** idéalement **à chaque début de temps d'éveil**\n    ⇒ c'est souvent là que bébé est **le plus disponible pour boire efficacement**\n  - De **favoriser des prises + importantes le matin et en journée, si vous le pouvez**\n  - En DÉBUT de nuit, **laisser [prénom_enfant] prendre à volonté**,\n  - Puis, progressivement, diminuer **les prises en fin de nuit pour :**\n    - **avoir une grosse prise** au **réveil du matin**\n    - pour **donner** un **tempo** à la **journée**\n\n- L'idée n'est pas de tout changer d'un coup,\n  ⇒ mais plutôt de **tester sur quelques jours** *(par exemple une semaine)*\n  ⇒ et d'observer comment [prénom_enfant] réagit"
                             },
                             {
                               type: "normal", _leftTitle: "Conseillère lactation IBCLC",

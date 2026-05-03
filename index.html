@@ -10171,7 +10171,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         </table>
       </div>`;
       window.__infoButtons = window.__infoButtons || {};
-      window.__infoButtons[correspBtnId] = { title: 'Tableau détaillé Poids × Nb prises × Quantité', content: correspContent };
+      window.__infoButtons[correspBtnId] = { title: 'Tableau: Nb de prises / Poids', content: correspContent };
       correspBtnHtml = `<button type="button" class="info-btn" contenteditable="false" onclick="openInfoPanel('${correspBtnId}')" style="margin-top:10px;width:100%;padding:10px 14px;font-size:13.5px;text-align:left;min-width:0;box-sizing:border-box"><span class="info-btn-emoji" style="margin-right:8px">💡</span><span>Tableau détaillé</span></button>`;
     }
     return `<div class="block block-normal nutri-repart" style="background:#fffbeb;border:1.5px solid #fde68a;padding:14px 18px;margin-top:12px">
