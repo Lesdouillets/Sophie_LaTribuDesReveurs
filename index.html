@@ -12087,6 +12087,9 @@ function substituteVars(text) {
       /le corps[^\n]+/gi,
       // "il se peut" : tournure impersonnelle (≈ "it's possible that")
       /il se peut\b/gi,
+      // "il doit toujours rester ..." : tournure impersonnelle ("il" = sujet apparent,
+      // ex. "il doit toujours rester un fond de lait dans le biberon")
+      /il doit toujours rester\b/gi,
     ];
 
     // Remplacer chaque expression impersonnelle par un placeholder
