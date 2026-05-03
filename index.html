@@ -1439,6 +1439,9 @@
       background: #fff; border: 2px solid #e8a0a0; border-radius: 12px;
       padding: 14px 16px; box-shadow: 0 2px 8px rgba(192,57,43,0.08);
       margin-bottom: 10px;
+      display: inline-block;
+      width: fit-content;
+      max-width: 100%;
     }
     .besoins-compact-empty { text-align: center; color: #94a3b8; padding: 20px; }
     .bc-header {
@@ -9043,6 +9046,27 @@ function togglePb(value, checked) {
 // NAVIGATION
 // ═══════════════════════════════════════════════════
 function navigateTo(idx) {
+  // Bloquer si des tickboxes obligatoires VISIBLES ne sont pas répondues — on ne peut pas quitter la section
+  const area = document.getElementById('content-area');
+  if (area && idx !== state.currentIdx) {
+    const unanswered = area.querySelectorAll('.block-tickbox-choice[data-required="true"]:not([data-answered="true"])');
+    const blockingEls = Array.from(unanswered).filter(el => {
+      let p = el;
+      while (p && p !== area) {
+        const cs = window.getComputedStyle(p);
+        if (cs.display === 'none' || cs.visibility === 'hidden') return false;
+        p = p.parentElement;
+      }
+      return true;
+    });
+    if (blockingEls.length) {
+      blockingEls[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      blockingEls[0].classList.add('tbc-shake');
+      setTimeout(() => blockingEls[0].classList.remove('tbc-shake'), 800);
+      alert('⚠️ Veuillez répondre à toutes les questions obligatoires avant de continuer.');
+      return;
+    }
+  }
   // Sauvegarder le scroll de V. Diagnostic AVANT de changer de section (pour permettre le retour "à l'endroit où on était")
   const currentSection = state.sections[state.currentIdx];
   const contentArea = document.getElementById('content-area');
