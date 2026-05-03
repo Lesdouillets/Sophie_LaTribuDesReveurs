@@ -1448,7 +1448,9 @@
     }
     .bc-tranche { font-size: 16px; font-weight: 800; color: #c0392b; letter-spacing: 0.3px; }
     .bc-prenom { font-size: 13px; color: #64748b; font-weight: 600; }
-    .bc-grid { display: grid; grid-template-columns: 1fr 2.2fr; gap: 10px; }
+    .bc-grid { display: flex; gap: 14px; align-items: flex-start; flex-wrap: wrap; }
+    .bc-grid > .bc-ref { flex: 0 0 auto; }
+    .bc-grid > .bc-input { flex: 0 0 auto; min-width: 220px; }
     .bc-ref { display: flex; flex-direction: column; gap: 6px; }
     .bc-ref-row {
       display: grid; grid-template-columns: 110px 1fr;
@@ -11846,17 +11848,17 @@ function renderBesoinsSommeil(tranches) {
         <span class="bc-prenom">📝 ${prenom} — ${ageLabel}</span>
       </div>
       <div class="bc-grid">
-        <div class="bc-input">
-          <div class="bc-input-title">Sommeil réel de ${prenom}</div>
-          <div class="bc-input-row"><label>Nuit</label><input type="text" id="sommeil-nuit" placeholder="0,00" style="${inputStyle}" oninput="calcSommeilTotal()"></div>
-          <div class="bc-input-row"><label>Jour</label><input type="text" id="sommeil-jour" placeholder="0,00" style="${inputStyle}" oninput="calcSommeilTotal()"></div>
-          <div class="bc-input-total">Total : <strong id="sommeil-total">0h00</strong></div>
-        </div>
         <div class="bc-ref">
           <div class="bc-ref-row"><span class="bc-k">🌙 Nuit</span><span class="bc-v">${activeTranche.nuit}</span></div>
           <div class="bc-ref-row"><span class="bc-k">☀️ Jour</span><span class="bc-v">${activeTranche.jour}</span></div>
           <div class="bc-ref-row"><span class="bc-k">💤 Siestes</span><span class="bc-v">${activeTranche.siestes}</span></div>
           <div class="bc-ref-row bc-total"><span class="bc-k">∑ Total / 24h</span><span class="bc-v">${activeTranche.total}</span></div>
+        </div>
+        <div class="bc-input">
+          <div class="bc-input-title">Sommeil réel de ${prenom}</div>
+          <div class="bc-input-row"><label>Nuit</label><input type="text" id="sommeil-nuit" placeholder="0,00" style="${inputStyle}" oninput="calcSommeilTotal()"></div>
+          <div class="bc-input-row"><label>Jour</label><input type="text" id="sommeil-jour" placeholder="0,00" style="${inputStyle}" oninput="calcSommeilTotal()"></div>
+          <div class="bc-input-total">Total : <strong id="sommeil-total">0h00</strong></div>
         </div>
       </div>
     </div>` : `
