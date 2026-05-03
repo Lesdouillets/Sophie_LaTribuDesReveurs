@@ -2624,7 +2624,20 @@ const SCRIPT_DATA = {
                               type: "normal", _leftTitle: "Mythe des 4h",
                               text: "- Je voudrais qu'**on n'oubli le grand mythe des espacements de 4h**, qui ne sont **basés sur RIEN DU TOUT !**\n- La **PNNS** *(Programme National Nutrition et Santé)*, **CONFIRME** qu'un **bébé** doit être **nourrit à la demande**, comme **les bébés allaités !**"
                             },
-                            { type: "nutri_repartition_table", _leftTitle: "Conseils" }
+                            { type: "nutri_repartition_table", _leftTitle: "Conseils" },
+                            {
+                              type: "normal", text: "",
+                              trailingInfoButton: {
+                                label: "Taille estomac",
+                                title: "📊 Taille estomac",
+                                blocks: [
+                                  {
+                                    type: "normal", _noBorder: true,
+                                    text: "<table style=\"border-collapse:collapse;font-size:13.5px;background:#fff;width:100%\"><tr><td style=\"border:1px solid #d1d5db;padding:8px 14px;font-weight:700;background:#f3f4f6;color:#1f2937\">1 mois</td><td style=\"border:1px solid #d1d5db;padding:8px 14px;color:#374151\">80-150 mL</td><td style=\"border:1px solid #d1d5db;padding:8px 14px;color:#374151\">œuf / demi-verre d'eau</td></tr><tr><td style=\"border:1px solid #d1d5db;padding:8px 14px;font-weight:700;background:#f3f4f6;color:#1f2937\">6 mois</td><td style=\"border:1px solid #d1d5db;padding:8px 14px;color:#374151\">150 mL</td><td style=\"border:1px solid #d1d5db;padding:8px 14px;color:#374151\">kiwi</td></tr><tr><td style=\"border:1px solid #d1d5db;padding:8px 14px;font-weight:700;background:#f3f4f6;color:#1f2937\">1 an</td><td style=\"border:1px solid #d1d5db;padding:8px 14px;color:#374151\">250 mL</td><td style=\"border:1px solid #d1d5db;padding:8px 14px;color:#374151\">pomme / verre d'eau</td></tr></table>"
+                                  }
+                                ]
+                              }
+                            }
                           ]
                         },
                         {

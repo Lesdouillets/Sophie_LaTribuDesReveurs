@@ -4134,9 +4134,9 @@
       animation: sieste-glow-pulse 1.6s ease-in-out infinite;
     }
     /* Tableau de répartition nb_bib × vol_bib (block type nutri_repartition_table) */
-    .nutri-repart-tbl { border-collapse: collapse; font-size: 13px; background: #fff; }
+    .nutri-repart-tbl { border-collapse: collapse; font-size: 14px; background: #fff; width: 100%; min-width: 720px; }
     .nutri-repart-tbl th, .nutri-repart-tbl td {
-      border: 1px solid #d1d5db; padding: 6px 10px; text-align: center;
+      border: 1px solid #d1d5db; padding: 9px 16px; text-align: center;
       font-variant-numeric: tabular-nums;
     }
     .nutri-repart-tbl th { background: #f3f4f6; font-weight: 700; color: #1f2937; }
@@ -10051,14 +10051,6 @@ function renderBlockInner(b, i, sectionId, depth, path) {
           <div class="side-row"><span class="side-label">Si capacité 120 mL :</span> <span class="side-val side-120">${initN120}</span></div>
           <div class="side-row"><span class="side-label">Si capacité 150 mL :</span> <span class="side-val side-150">${initN150}</span></div>
         </div>
-      </div>
-      <div class="nutri-stomach">
-        <div class="side-title" style="margin-top:14px">Taille estomac</div>
-        <table class="nutri-stomach-tbl">
-          <tr><td>1 mois</td><td>80-150 mL</td><td>œuf / demi-verre d'eau</td></tr>
-          <tr><td>6 mois</td><td>150 mL</td><td>kiwi</td></tr>
-          <tr><td>1 an</td><td>250 mL</td><td>pomme / verre d'eau</td></tr>
-        </table>
       </div>
     </div>`;
   }
