@@ -1513,6 +1513,20 @@
     .columns-2-grid[data-active-col="3"] > .col-2:not([data-col-idx="3"]) {
       display: none;
     }
+    /* Par défaut (aucune carte active) : seul le bandeau titre est visible — le contenu s'affiche au clic */
+    .columns-2-grid > .col-2 > *:not(.col-2-title) {
+      display: none;
+    }
+    .columns-2-grid[data-active-col="1"] > .col-2[data-col-idx="1"] > *,
+    .columns-2-grid[data-active-col="2"] > .col-2[data-col-idx="2"] > *,
+    .columns-2-grid[data-active-col="3"] > .col-2[data-col-idx="3"] > * {
+      display: revert;
+    }
+    /* Petit indice visuel "Cliquez pour ouvrir" sous le bandeau quand fermé */
+    .columns-2-grid > .col-2:not([data-col-idx="1"]):not([data-col-idx="2"]):not([data-col-idx="3"]),
+    .columns-2-grid:not([data-active-col="1"]):not([data-active-col="2"]):not([data-active-col="3"]) > .col-2 .col-2-title {
+      cursor: pointer;
+    }
     .columns-2-grid .col-2-title {
       padding: 10px 14px; border-radius: 10px;
       font-weight: 900; font-size: 14px;
