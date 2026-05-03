@@ -2616,15 +2616,15 @@ const SCRIPT_DATA = {
                   blocks: [
                     {
                       type: "courbe_cards_grid",
-                      forceAllItems: true,
                       items: [
                         {
                           id: "nutri_lait_biberon_espacement_normal", emoji: "⏱️", label: "Espacement (si + que 2 siestes)",
                           blocks: [
                             {
-                              type: "normal", _leftTitle: "Conseils",
+                              type: "normal", _leftTitle: "Mythe des 4h",
                               text: "- Je voudrais qu'**on n'oubli le grand mythe des espacements de 4h**, qui ne sont **basés sur RIEN DU TOUT !**\n- La **PNNS** *(Programme National Nutrition et Santé)*, **CONFIRME** qu'un **bébé** doit être **nourrit à la demande**, comme **les bébés allaités !**"
-                            }
+                            },
+                            { type: "nutri_repartition_table", _leftTitle: "Conseils" }
                           ]
                         },
                         {

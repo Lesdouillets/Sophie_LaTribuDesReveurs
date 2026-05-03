@@ -11148,6 +11148,31 @@ function applyParentTickCascade() {
     }
     return false;
   };
+  // Niveau 2 ← Niveau 3 : sous-sous-carte (ex. Espacement) tickée iff au moins une
+  // sous-sous-sous-carte VISIBLE est tickée (ex. Espacement_normal / Inversion jour-nuit)
+  // ⚠️ Doit s'exécuter AVANT la cascade niveau 1 ← niveau 2 pour que la propagation remonte.
+  sols.forEach(cat => {
+    (cat.children || []).forEach(ch => {
+      if (!Array.isArray(ch.blocks)) return;
+      ch.blocks.forEach(b => {
+        if (!b || b.type !== 'courbe_cards_grid' || !Array.isArray(b.items)) return;
+        b.items.forEach(it => {
+          if (!Array.isArray(it.blocks)) return;
+          const nestedGrid = it.blocks.find(nb => nb && nb.type === 'courbe_cards_grid' && Array.isArray(nb.items));
+          if (!nestedGrid) return;
+          nestedGrid.items.forEach(sub => {
+            if (!Array.isArray(sub.blocks)) return;
+            const subNestedGrid = sub.blocks.find(nb => nb && nb.type === 'courbe_cards_grid' && Array.isArray(nb.items));
+            if (!subNestedGrid) return;
+            const anyGrandChildTicked = subNestedGrid.items.some(s => !isItemHidden(s) && state.courbeCardsTicked.has(s.id));
+            if (anyGrandChildTicked) state.courbeCardsTicked.add(sub.id);
+            else state.courbeCardsTicked.delete(sub.id);
+            state.courbeCardsTickedManuallyEdited.delete(sub.id);
+          });
+        });
+      });
+    });
+  });
   // Niveau 1 ← Niveau 2 : sous-carte tickée iff au moins une sous-sous-carte VISIBLE est tickée
   sols.forEach(cat => {
     (cat.children || []).forEach(ch => {
