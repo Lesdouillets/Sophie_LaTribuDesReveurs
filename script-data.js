@@ -2535,6 +2535,7 @@ const SCRIPT_DATA = {
                   id: "nutri_lait_biberon_quantite", emoji: "🔢", label: "Quantité",
                   showIfAgeMaxMonths: 36,
                   blocks: [
+                    { type: "normal", _noBorder: true, showIfAgeMaxMonths: 8, text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">0-9 mois</div>" },
                     { type: "normal", _noBorder: true, showIfAgeMinMonths: 9, showIfAgeMaxMonths: 11, text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">Entre 9 et 12 mois</div>" },
                     { type: "normal", _noBorder: true, showIfAgeMinMonths: 12, text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">Après 1 an</div>" },
                     {
@@ -2577,6 +2578,19 @@ const SCRIPT_DATA = {
                           ]
                         }
                       ]
+                    },
+                    {
+                      type: "normal", _leftTitle: "Conseils",
+                      showIfAgeMaxMonths: 8,
+                      text: "- On va plutôt **prendre comme repère** pour les **volumes par 24h**… la **règle d'Appert**\n- Pour un BB de **[poids] kg**, ça correspond à un **volume de lait** d'environ **[besoin_lait_volume]** par 24h",
+                      trailingInfoButton: {
+                        label: "Calcul règle d'Appert",
+                        title: "Calcul règle d'Appert",
+                        blocks: [
+                          { type: "normal", text: "- **Enfant de moins de 6 kg** :\n  - Poids en kg × 100 + **200 mL** (± 100 mL)\n- **Enfant de plus de 6 kg** :\n  - Poids en kg × 100 + **250 mL** (± 100 mL)" },
+                          { type: "appert_calculator" }
+                        ]
+                      }
                     },
                     {
                       type: "normal", _leftTitle: "Conseils",
