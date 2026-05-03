@@ -2588,7 +2588,6 @@ const SCRIPT_DATA = {
                         title: "Calcul règle d'Appert",
                         blocks: [
                           { type: "normal", text: "- **Enfant de moins de 6 kg** :\n  - Poids en kg × 100 + **200 mL** (± 100 mL)\n- **Enfant de plus de 6 kg** :\n  - Poids en kg × 100 + **250 mL** (± 100 mL)" },
-                          { type: "appert_calculator" },
                           { type: "nutri_repartition_table" }
                         ]
                       }
