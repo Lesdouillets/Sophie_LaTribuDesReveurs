@@ -1581,9 +1581,15 @@
     }
     /* Body de la carte de droite (V. Diagnostic) : 1 colonne — chaque pill prend toute la largeur de la page */
     .columns-2-grid[data-active-col="2"] > .col-2-right > .col-2-body-right {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 10px !important;
+      grid-template-columns: none !important;
+    }
+    .columns-2-grid[data-active-col="2"] > .col-2-right > .col-2-body-right > .edit-block-wrap {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
     }
     /* Cartes non-actives masquées quand une carte est ouverte */
     .columns-2-grid[data-active-col="1"] > .col-2:not([data-col-idx="1"]),
