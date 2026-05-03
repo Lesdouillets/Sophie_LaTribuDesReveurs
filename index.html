@@ -11889,6 +11889,8 @@ function substituteVars(text) {
       // ex : "Comme le corps ne reçoit pas assez, il puise TOUT ce qu'il peut..."
       // → protéger toute la ligne contenant "le corps" pour préserver les "il" qui la traversent
       /le corps[^\n]+/gi,
+      // "il se peut" : tournure impersonnelle (≈ "it's possible that")
+      /il se peut\b/gi,
     ];
 
     // Remplacer chaque expression impersonnelle par un placeholder
