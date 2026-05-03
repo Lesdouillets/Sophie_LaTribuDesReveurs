@@ -2624,19 +2624,14 @@ const SCRIPT_DATA = {
                               type: "normal", _leftTitle: "Mythe des 4h",
                               text: "- Je voudrais qu'**on n'oubli le grand mythe des espacements de 4h**, qui ne sont **basés sur RIEN DU TOUT !**\n- La **PNNS** *(Programme National Nutrition et Santé)*, **CONFIRME** qu'un **bébé** doit être **nourrit à la demande**, comme **les bébés allaités !**"
                             },
-                            { type: "nutri_repartition_table", _leftTitle: "Conseils" },
                             {
-                              type: "normal", text: "",
-                              trailingInfoButton: {
-                                label: "Taille estomac",
-                                title: "📊 Taille estomac",
-                                blocks: [
-                                  {
-                                    type: "normal", _noBorder: true,
-                                    text: "<table style=\"border-collapse:collapse;font-size:13.5px;background:#fff;width:100%\"><tr><td style=\"border:1px solid #d1d5db;padding:8px 14px;font-weight:700;background:#f3f4f6;color:#1f2937\">1 mois</td><td style=\"border:1px solid #d1d5db;padding:8px 14px;color:#374151\">80-150 mL</td><td style=\"border:1px solid #d1d5db;padding:8px 14px;color:#374151\">œuf / demi-verre d'eau</td></tr><tr><td style=\"border:1px solid #d1d5db;padding:8px 14px;font-weight:700;background:#f3f4f6;color:#1f2937\">6 mois</td><td style=\"border:1px solid #d1d5db;padding:8px 14px;color:#374151\">150 mL</td><td style=\"border:1px solid #d1d5db;padding:8px 14px;color:#374151\">kiwi</td></tr><tr><td style=\"border:1px solid #d1d5db;padding:8px 14px;font-weight:700;background:#f3f4f6;color:#1f2937\">1 an</td><td style=\"border:1px solid #d1d5db;padding:8px 14px;color:#374151\">250 mL</td><td style=\"border:1px solid #d1d5db;padding:8px 14px;color:#374151\">pomme / verre d'eau</td></tr></table>"
-                                  }
-                                ]
-                              }
+                              type: "normal", _leftTitle: "Conseils",
+                              text: "- 🔥 Aujourd'hui, [prénom_enfant] va être sur **[nb_siestes] siestes**, donc je vous conseille **[nb_biberons] biberons** de <strong style=\"color:#dc2626;font-size:1.15em\">XX</strong> ml par jour"
+                            },
+                            { type: "nutri_repartition_table" },
+                            {
+                              type: "normal",
+                              text: "- ⇒ Mais **s'il demande +**, vous pouvez lui **donner**\n  ⇒ Vous ne vous **posez pas de questions !**\n- ⇒ Les **indications**, c'est :\n  - **à la demande** *(🎓 à savoir que la demi-vidange gastrique du lait infantile est de 74 min ≃ 1h15)*\n  - **à satiété** *(je rappelle, il doit toujours **rester un fond de lait** dans le **biberon**)*\n    - S'il se **détourne la tête** c'est qu'il a **fini de boire** OU qu'il **veut faire un rot**\n    - Mais il **peut redemander 1/4h** après\n      ⇒ et **c'est OK**\n      ⇒ Et on **lui re-propose**\n  - Mais bien sûr, ça reste des repères,\n    ⇒ On regardera :\n    - les **signes de faim**\n    - **et de satiété** de [prénom_enfant]\n\n<div style=\"background:#fef9e0;border:1.5px solid #f5d778;border-radius:10px;padding:10px 14px;margin:8px 0 8px 22px;font-size:13.5px;line-height:1.55;color:#7c2d12\">👏 en s'<strong>appuyant</strong> AUSSI sur :<ul style=\"margin:6px 0 0 22px;padding:0;list-style:disc\"><li><strong>votre expérience</strong></li><li>et <strong>votre intuition</strong> de <strong>Maman !</strong></li></ul></div>\n\n- Si je peux vous **donner des conseils**, je vous **encourage à** :\n  - Donner 1 biberon au **début** de **CHAQUE temps d'éveil**\n    ⇒ C'est le **moment parfait**, car il aura **toute l'énergie** pour **boire efficacement**\n  - Puis « **1 dernier pour la route** », au moment du **rituel du soir**\n    ⇒ c'est à dire **2 biberons** sur le **dernier temps d'éveil**\n    ⇒ Ça rappelle les **tétées groupées** des **BB allaités** (⚠️ Veillez néanmoins à ce qu'il ne **s'endorme pas sur son biberon**)\n  - Essayez de BIEN **dissocier l'endormissement** de **l'alimentation**, pour ne **PAS** qu'il s'**endorme en buvant son biberon**\n    ⇒ Vous pouvez **le stimuler** avec des **petits guilis** sur la **joue** ou les **pieds**"
                             }
                           ]
                         },
