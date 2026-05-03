@@ -2661,7 +2661,7 @@ const SCRIPT_DATA = {
                             },
                             {
                               type: "normal", _leftTitle: "Conseillère lactation IBCLC",
-                              text: "<div style=\"display:flex;align-items:center;min-height:60px;margin:0\">Vous pouvez aussi vous <strong>faire aider</strong> avec une <strong>conseillère en lactation</strong>, même si vous ne <strong>donnez pas le sein</strong> !</div>",
+                              text: "<div style=\"display:flex;align-items:center;min-height:60px;margin:0\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>Vous pouvez aussi vous <strong>faire aider</strong> avec une <strong>conseillère en lactation</strong>, même si vous ne <strong>donnez pas le sein</strong> !</li></ul></div>",
                               trailingInfoButton: {
                                 label: "Conseillère en lactation IBCLC",
                                 title: "Conseillère en lactation IBCLC",
@@ -2704,22 +2704,13 @@ const SCRIPT_DATA = {
                                 {
                                   type: "normal",
                                   text: "- Je vous encourage tout de même à :\n  - D'essayer de bien **dissocier l'alimentation et le sommeil**, pour ne **PAS qu'il s'endorme** sur son biberon\n  - De **proposer un biberon** idéalement **à chaque début de temps d'éveil**\n    ⇒ c'est souvent là que bébé est **le plus disponible pour boire efficacement**\n  - De **favoriser des prises + importantes le matin et en journée, si vous le pouvez**\n  - En DÉBUT de nuit, **laisser [prénom_enfant] prendre à volonté**,\n  - Puis, progressivement, diminuer **les prises en fin de nuit pour :**\n    - **avoir une grosse prise** au **réveil du matin**\n    - pour **donner** un **tempo** à la **journée**",
-                                  trailingInfoButtons: [
-                                    {
-                                      label: "Rappel des quantités",
-                                      title: "Rappel des quantités",
-                                      blocks: [
-                                        { type: "normal", text: "- **Moins de 9 mois** : règle d'**Appert**\n- **9 - 12 mois** : entre **500 mL et 1 L**\n- **Plus d'1 an** : autour de **500 mL**" }
-                                      ]
-                                    },
-                                    {
-                                      label: "Signes que tout va bien",
-                                      title: "Signes que tout va bien",
-                                      blocks: [
-                                        { type: "normal", text: "- **Lait** qui coule à la **commissure des lèvres**\n- **Mains ouvertes** en fin de repas\n- Un air **groggy**" }
-                                      ]
-                                    }
-                                  ]
+                                  trailingInfoButton: {
+                                    label: "Signes que tout va bien",
+                                    title: "Signes que tout va bien",
+                                    blocks: [
+                                      { type: "normal", text: "- **Lait** qui coule à la **commissure des lèvres**\n- **Mains ouvertes** en fin de repas\n- Un air **groggy**" }
+                                    ]
+                                  }
                                 },
                                 {
                                   type: "normal",
@@ -2729,7 +2720,7 @@ const SCRIPT_DATA = {
                             },
                             {
                               type: "normal", _leftTitle: "Conseillère lactation IBCLC",
-                              text: "<div style=\"display:flex;align-items:center;min-height:60px;margin:0\">Vous pouvez aussi vous <strong>faire aider</strong> avec une <strong>conseillère en lactation</strong>, même si vous ne <strong>donnez pas le sein</strong> !</div>",
+                              text: "<div style=\"display:flex;align-items:center;min-height:60px;margin:0\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li>Vous pouvez aussi vous <strong>faire aider</strong> avec une <strong>conseillère en lactation</strong>, même si vous ne <strong>donnez pas le sein</strong> !</li></ul></div>",
                               trailingInfoButton: {
                                 label: "Conseillère en lactation IBCLC",
                                 title: "Conseillère en lactation IBCLC",
