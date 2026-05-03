@@ -10043,7 +10043,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     }
     // Nb biberons recommandé d'après la sieste de la fiche client (= nb_siestes + 1)
     // Sert à mettre un GLOW sur la cellule optimale de la ligne correspondante
-    const _nbSiestesMap = { '2-4m': 4, '4-6m': 3, '6-8m': 3, '8-10m': 3, '8-15m': 2, '15-20m': 2, '15m-3a': 1, '4a-plus': 1 };
+    const _nbSiestesMap = { '2-4m': 4, '4-6m': 3, '6-8m': 3, '8-10m': 3, '8-15m': 2, '15-20m': 2, '15m-3a': 1, '4a-plus': 1, '4a-plus-tc': 1 };
     const _siesteCat = (state && state.client && state.client.sieste) || '';
     const nbBibsRecommended = _nbSiestesMap[_siesteCat] != null ? _nbSiestesMap[_siesteCat] + 1 : null;
     const headerCols = volBibs.map(v => `<th>${v}</th>`).join('');
@@ -12037,24 +12037,24 @@ function substituteVars(text) {
     .replace(/\[poids\]/g, c.poids || 'XXX')
     .replace(/\[nb_siestes\]/g, (() => {
       const sieste = c.sieste || '';
-      const map = { '2-4m': 4, '4-6m': 3, '6-8m': 3, '8-10m': 3, '8-15m': 2, '15-20m': 2, '15m-3a': 1, '4a-plus': 1 };
+      const map = { '2-4m': 4, '4-6m': 3, '6-8m': 3, '8-10m': 3, '8-15m': 2, '15-20m': 2, '15m-3a': 1, '4a-plus': 1, '4a-plus-tc': 1 };
       return map[sieste] != null ? String(map[sieste]) : '?';
     })())
     .replace(/\[nb_biberons\]/g, (() => {
       const sieste = c.sieste || '';
-      const map = { '2-4m': 4, '4-6m': 3, '6-8m': 3, '8-10m': 3, '8-15m': 2, '15-20m': 2, '15m-3a': 1, '4a-plus': 1 };
+      const map = { '2-4m': 4, '4-6m': 3, '6-8m': 3, '8-10m': 3, '8-15m': 2, '15-20m': 2, '15m-3a': 1, '4a-plus': 1, '4a-plus-tc': 1 };
       return map[sieste] != null ? String(map[sieste] + 1) : '?';
     })())
     .replace(/\[nb_siestes_phrase\]/g, (() => {
       const sieste = c.sieste || '';
-      const map = { '2-4m': 4, '4-6m': 3, '6-8m': 3, '8-10m': 3, '8-15m': 2, '15-20m': 2, '15m-3a': 1, '4a-plus': 1 };
+      const map = { '2-4m': 4, '4-6m': 3, '6-8m': 3, '8-10m': 3, '8-15m': 2, '15-20m': 2, '15m-3a': 1, '4a-plus': 1, '4a-plus-tc': 1 };
       const n = map[sieste];
       if (n == null) return '? siestes';
       return n === 1 ? '1 sieste' : n + ' siestes';
     })())
     .replace(/\[nb_biberons_phrase\]/g, (() => {
       const sieste = c.sieste || '';
-      const map = { '2-4m': 4, '4-6m': 3, '6-8m': 3, '8-10m': 3, '8-15m': 2, '15-20m': 2, '15m-3a': 1, '4a-plus': 1 };
+      const map = { '2-4m': 4, '4-6m': 3, '6-8m': 3, '8-10m': 3, '8-15m': 2, '15-20m': 2, '15m-3a': 1, '4a-plus': 1, '4a-plus-tc': 1 };
       const n = map[sieste];
       if (n == null) return '? biberons';
       const nb = n + 1;
