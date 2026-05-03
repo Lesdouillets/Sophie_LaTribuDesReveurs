@@ -2574,6 +2574,22 @@ const SCRIPT_DATA = {
                           ]
                         }
                       ]
+                    },
+                    {
+                      type: "normal", _leftTitle: "Entre 9 et 12 mois",
+                      showIfAgeMinMonths: 9, showIfAgeMaxMonths: 11,
+                      text: "- On va plutôt **prendre comme repère** qu'entre 9 et 12 mois, un enfant **a besoin** d'environ **500 ml à 1 L par jour**.\n\n  ⇒ Mais ce n'est qu'une **estimation**\n\n  ⇒ [prénom_enfant] peut très bien **prendre +** notamment s'il **a besoin** de faire un **« rattrapage de courbe »… et c'est OK !**\n- La **diversification** vient **en complément**\n\n  ⇒ et c'est **à partir d'1 an** qu'elle **deviendra majoritaire** dans son alimentation.\n- **Un point important par rapport à la QUANTITÉ :**\n  - **Laissez** toujours un **fond de lait dans le biberon**\n    ⇒ c'est **votre enfant** qui **doit vous dire** QUAND **il a fini** de se nourrir **et NON quand** le **biberon est vide !**\n    ⇒ Si le biberon est vide, **n'hésitez pas** à **rajouter 30 ml** … et ainsi de suite !\n- Un BB qui a suffisamment mangé aura :\n  - les mains ouvertes\n  - du lait à la commissure des lèvres (car son estomac sera rempli)\n  - un air un peu groggy"
+                    },
+                    {
+                      type: "normal", _leftTitle: "Après 1 an",
+                      showIfAgeMinMonths: 12,
+                      text: "- **Après 1 an,** vous pouvez **avoir en tête** qu'un enfant **a besoin** d'environ **500 ml par jour**,… et ce **jusque l'âge de 3 ans**\n\n  mais ça reste qu'un **repère**\n- CE QUI VA VRAIMENT **couvrir ses besoins nutritionnels**, ⇒ ça va être la **diversification**\n- **Un point important par rapport à la quantité :**\n  - **Laissez** toujours un **fond de lait dans le biberon**\n    ⇒ c'est **votre enfant** qui **doit vous dire** QUAND **il a fini** de se nourrir **et NON quand** le **biberon est vide !**\n    ⇒ Si le biberon est vide, **n'hésitez pas** à **rajouter 30 ml** … et ainsi de suite !\n- Un BB qui a suffisamment mangé aura :\n  - les mains ouvertes\n  - du lait à la commissure des lèvres (car son estomac sera rempli)\n  - un air un peu groggy"
+                    },
+                    {
+                      type: "normal", _leftTitle: "Si 1 sieste",
+                      showIfAgeMinMonths: 12,
+                      showIfSieste: ["15m-3a", "4a-plus"],
+                      text: "- Vous pouvez lui donner :\n  - 1 biberon **le matin**\n  - et 1 **le soir** au moment du **rituel du coucher**, ⚠️ mais **ATTENTION À BIEN dissocier l'alimentation** et le **sommeil !**"
                     }
                   ]
                 },
