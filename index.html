@@ -1576,13 +1576,11 @@
     .columns-2-grid[data-active-col="3"] > .col-2[data-col-idx="3"] > .col-2-body {
       display: block;
     }
-    /* Body de la carte de droite (V. Diagnostic) : grille 2 colonnes pour les pills (la carte est en pleine largeur) */
+    /* Body de la carte de droite (V. Diagnostic) : 1 colonne — chaque pill prend toute la largeur de la page */
     .columns-2-grid[data-active-col="2"] > .col-2-right > .col-2-body-right {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-direction: column;
       gap: 10px;
-      align-content: start;
-      justify-items: center;
     }
     /* Cartes non-actives masquées quand une carte est ouverte */
     .columns-2-grid[data-active-col="1"] > .col-2:not([data-col-idx="1"]),
