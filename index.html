@@ -3099,7 +3099,8 @@
       color: var(--cat-dark, #7c2d12);
     }
     /* Fond blanc pour les enfants de Biberon (au lieu du fond cat-light marron clair) */
-    .courbe-card-content[data-card-id="nutri_lait_biberon"] .courbe-card-content {
+    .courbe-card-content[data-card-id="nutri_lait_biberon"] .courbe-card-content,
+    .courbe-card-content[data-card-id^="nutri_lait_biberon_"] {
       background: #ffffff !important;
     }
     /* Grille sticky compacte pour les cards enfants (nested inside card content) */
