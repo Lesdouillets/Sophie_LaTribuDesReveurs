@@ -1618,8 +1618,9 @@
     /* Style "news-red" overridé : on conserve le bleu marine partout */
     .col-2.col-3-news-red { background: #2d3f5c; border-color: #1a2a42; }
     @media (max-width: 900px) { .columns-2-grid.columns-3 { grid-template-columns: 1fr; } }
-    /* Colonne droite : grille 2 colonnes appliquée au body (pas au col-2 lui-même qui est en flex column) */
-    .columns-2-grid .col-2-right > .col-2-body-right {
+    /* Colonne droite : grille 2 colonnes appliquée au body (pas au col-2 lui-même qui est en flex column).
+       Scopée à [data-active-col="2"] pour que le body reste display:none (règle de base) tant que la carte n'est pas cliquée. */
+    .columns-2-grid[data-active-col="2"] > .col-2-right > .col-2-body-right {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
