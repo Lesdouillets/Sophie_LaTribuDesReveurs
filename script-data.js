@@ -2563,7 +2563,7 @@ const SCRIPT_DATA = {
                           label: "OPTION grève des tétées",
                           title: "OPTION grève des tétées",
                           blocks: [
-                            { type: "normal", text: "- Et la **« grève des tétées »** pourrait **être une réponse** au fait que **l'effort pour obtenir le lait** est devenu **trop important**.\n- Dans **certains cas**, les BB vont **« peser le pour et le contre »** :\n  - entre **l'effort pour téter**\n  - et la **quantité de lait reçue**\n- et parfois, **la balance penche du côté de l'effort**… alors ils **préfèrent refuser la tétée**.\n- ⇒ ils se **mettent en mode « veille »**\n\n- Ça peut être dû à :\n  - Un changement de rythme (mode de garde ?)\n  - Un pb de succion" }
+                            { type: "normal", text: "- Et la **« grève des tétées »** pourrait **être une réponse** au fait que **l'effort pour obtenir le lait** est devenu **trop important**.\n- Dans **certains cas**, les BB vont **« peser le pour et le contre »** :\n  - entre **l'effort pour téter**\n  - et la **quantité de lait reçue**\n    ⇒ et parfois, **la balance penche du côté de l'effort**… alors ils **préfèrent refuser la tétée**.\n    ⇒ ils se **mettent en mode « veille »**\n\n- Ça peut être dû à :\n  - Un **changement de rythme** (mode de garde ?)\n  - Un **problème de succion**" }
                           ]
                         },
                         {
