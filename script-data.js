@@ -2690,29 +2690,42 @@ const SCRIPT_DATA = {
                               text: "- L'idée, doucement, c'est donc de **rééquilibrer les apports sur la JOURNÉE**"
                             },
                             {
-                              type: "normal",
-                              text: "- 🔥 Donc aujourd'hui, [prénom_enfant] va être sur **[nb_siestes_phrase]**, donc je vous conseille **[nb_biberons_phrase]** de <strong style=\"color:#dc2626;font-size:1.15em\">XX</strong> ml par jour"
-                            },
-                            { type: "nutri_repartition_table", _showStomachButton: true },
-                            {
-                              type: "normal",
-                              text: "- ⇒ Mais **s'il demande +**, vous pouvez lui **donner**\n  ⇒ Vous ne vous **posez pas de questions !**\n\n- ⇒ Les **indications**, c'est :\n  - **à la demande** *(💡 à savoir que la demi-vidange gastrique du lait infantile est de 74 min ≃ 1h15)*\n  - **à satiété** *(je rappelle, il doit toujours **rester un fond de lait** dans le **biberon**)*\n    - [Sil_Sielle] **détourne la tête** c'est qu'il a **fini de boire** OU qu'il **veut faire un rot**\n    - Mais il **peut redemander 1/4h** après ⇒ et **c'est OK** ⇒ Et on **lui re-propose**"
-                            },
-                            {
-                              type: "normal",
-                              text: "- Je vous encourage tout de même à :\n  - D'essayer de bien **dissocier l'alimentation et le sommeil**, pour ne **PAS qu'il s'endorme** sur son biberon\n  - De **proposer un biberon** idéalement **à chaque début de temps d'éveil**\n    ⇒ c'est souvent là que bébé est **le plus disponible pour boire efficacement**\n  - De **favoriser des prises + importantes le matin et en journée, si vous le pouvez**\n  - En DÉBUT de nuit, **laisser [prénom_enfant] prendre à volonté**,\n  - Puis, progressivement, diminuer **les prises en fin de nuit pour :**\n    - **avoir une grosse prise** au **réveil du matin**\n    - pour **donner** un **tempo** à la **journée**"
-                            },
-                            {
-                              type: "normal", _leftTitle: "Rappel des quantités",
-                              text: "- **Moins de 9 mois** : règle d'**Appert**\n- **9 - 12 mois** : entre **500 mL et 1 L**\n- **Plus d'1 an** : autour de **500 mL**"
-                            },
-                            {
-                              type: "normal", _noBorder: true,
-                              text: "<div style=\"background:#fef9e0;border:1.5px solid #f5d778;border-radius:10px;padding:10px 14px;margin:8px 0;font-size:13.5px;line-height:1.55;color:#7c2d12\">👍 Les signes que <strong>tout va bien</strong> :<ul style=\"margin:6px 0 0 22px;padding:0;list-style:disc\"><li><strong>Lait</strong> qui coule à la <strong>commissure des lèvres</strong></li><li><strong>Mains ouvertes</strong> en fin de repas</li><li>Un air <strong>groggy</strong></li></ul></div>"
-                            },
-                            {
-                              type: "normal",
-                              text: "- L'idée n'est pas de tout changer d'un coup,\n  ⇒ mais plutôt de **tester sur quelques jours** *(par exemple une semaine)*\n  ⇒ et d'observer comment [prénom_enfant] réagit"
+                              type: "grouped_block", _leftTitle: "Conseils",
+                              blocks: [
+                                {
+                                  type: "normal",
+                                  text: "- 🔥 Donc aujourd'hui, [prénom_enfant] va être sur **[nb_siestes_phrase]**, donc je vous conseille **[nb_biberons_phrase]** de <strong style=\"color:#dc2626;font-size:1.15em\">XX</strong> ml par jour"
+                                },
+                                { type: "nutri_repartition_table", _showStomachButton: true },
+                                {
+                                  type: "normal",
+                                  text: "- ⇒ Mais **s'il demande +**, vous pouvez lui **donner**\n  ⇒ Vous ne vous **posez pas de questions !**\n\n- ⇒ Les **indications**, c'est :\n  - **à la demande** *(💡 à savoir que la demi-vidange gastrique du lait infantile est de 74 min ≃ 1h15)*\n  - **à satiété** *(je rappelle, il doit toujours **rester un fond de lait** dans le **biberon**)*\n    - [Sil_Sielle] **détourne la tête** c'est qu'il a **fini de boire** OU qu'il **veut faire un rot**\n    - Mais il **peut redemander 1/4h** après ⇒ et **c'est OK** ⇒ Et on **lui re-propose**"
+                                },
+                                {
+                                  type: "normal",
+                                  text: "- Je vous encourage tout de même à :\n  - D'essayer de bien **dissocier l'alimentation et le sommeil**, pour ne **PAS qu'il s'endorme** sur son biberon\n  - De **proposer un biberon** idéalement **à chaque début de temps d'éveil**\n    ⇒ c'est souvent là que bébé est **le plus disponible pour boire efficacement**\n  - De **favoriser des prises + importantes le matin et en journée, si vous le pouvez**\n  - En DÉBUT de nuit, **laisser [prénom_enfant] prendre à volonté**,\n  - Puis, progressivement, diminuer **les prises en fin de nuit pour :**\n    - **avoir une grosse prise** au **réveil du matin**\n    - pour **donner** un **tempo** à la **journée**",
+                                  trailingInfoButtons: [
+                                    {
+                                      label: "Rappel des quantités",
+                                      title: "📊 Rappel des quantités",
+                                      blocks: [
+                                        { type: "normal", text: "- **Moins de 9 mois** : règle d'**Appert**\n- **9 - 12 mois** : entre **500 mL et 1 L**\n- **Plus d'1 an** : autour de **500 mL**" }
+                                      ]
+                                    },
+                                    {
+                                      label: "Signes que tout va bien",
+                                      title: "👍 Signes que tout va bien",
+                                      blocks: [
+                                        { type: "normal", text: "- **Lait** qui coule à la **commissure des lèvres**\n- **Mains ouvertes** en fin de repas\n- Un air **groggy**" }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  type: "normal",
+                                  text: "- L'idée n'est pas de tout changer d'un coup,\n  ⇒ mais plutôt de **tester sur quelques jours** *(par exemple une semaine)*\n  ⇒ et d'observer comment [prénom_enfant] réagit"
+                                }
+                              ]
                             },
                             {
                               type: "normal", _leftTitle: "Conseillère lactation IBCLC",
