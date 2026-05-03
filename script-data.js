@@ -2640,7 +2640,7 @@ const SCRIPT_DATA = {
                                   type: "normal",
                                   text: "- 🔥 Aujourd'hui, [prénom_enfant] va être sur **[nb_siestes_phrase]**, donc je vous conseille **[nb_biberons_phrase]** de <strong style=\"color:#dc2626;font-size:1.15em\">XX</strong> ml par jour"
                                 },
-                                { type: "nutri_repartition_table", _showStomachButton: true, _showRappelButton: true },
+                                { type: "nutri_repartition_table", _showStomachButton: true, _showRappelButton: true, _showCorrespondanceButton: true },
                                 {
                                   type: "normal",
                                   text: "- ⇒ Mais **[sil_sielle] demande +**, vous pouvez lui **donner**\n  ⇒ Vous ne vous **posez pas de questions !**\n\n- ⇒ Les **indications**, c'est :\n  - **à la demande** *(🎓 à savoir que la demi-vidange gastrique du lait infantile est de 74 min ≃ 1h15)*\n  - **à satiété** *(je rappelle, il doit toujours **rester un fond de lait** dans le **biberon**)*\n    - [Sil_Sielle] **détourne la tête** c'est qu'il a **fini de boire** OU qu'il **veut faire un rot**\n    - Mais il **peut redemander 1/4h** après\n      ⇒ et **c'est OK**\n      ⇒ Et on **lui re-propose**\n  - Mais bien sûr, ça reste des repères,\n    ⇒ On regardera :\n    - les **signes de faim**\n    - **et de satiété** de [prénom_enfant]\n- 👏 en s'**appuyant** AUSSI sur :\n  - **votre expérience**\n  - et **votre intuition** de **Maman !**"
@@ -2696,14 +2696,14 @@ const SCRIPT_DATA = {
                                   type: "normal",
                                   text: "- 🔥 Donc aujourd'hui, [prénom_enfant] va être sur **[nb_siestes_phrase]**, donc je vous conseille **[nb_biberons_phrase]** de <strong style=\"color:#dc2626;font-size:1.15em\">XX</strong> ml par jour"
                                 },
-                                { type: "nutri_repartition_table", _showStomachButton: true, _showRappelButton: true },
+                                { type: "nutri_repartition_table", _showStomachButton: true, _showCorrespondanceButton: true },
                                 {
                                   type: "normal",
-                                  text: "- ⇒ Mais **[sil_sielle] demande +**, vous pouvez lui **donner**\n  ⇒ Vous ne vous **posez pas de questions !**\n\n- ⇒ Les **indications**, c'est :\n  - **à la demande** *(💡 à savoir que la demi-vidange gastrique du lait infantile est de 74 min ≃ 1h15)*\n  - **à satiété** *(je rappelle, il doit toujours **rester un fond de lait** dans le **biberon**)*\n    - [Sil_Sielle] **détourne la tête** c'est qu'il a **fini de boire** OU qu'il **veut faire un rot**\n    - Mais il **peut redemander 1/4h** après ⇒ et **c'est OK** ⇒ Et on **lui re-propose**"
+                                  text: "- ⇒ Mais **[sil_sielle] demande +**, vous pouvez lui **donner**\n  ⇒ Vous ne vous **posez pas de questions !**"
                                 },
                                 {
-                                  type: "normal", _leftTitle: "Dissocier le sommeil et l'alimentation",
-                                  text: "- Je vous encourage tout de même à :\n  - D'essayer de bien **dissocier l'alimentation et le sommeil**, pour ne **PAS qu'il s'endorme** sur son biberon\n  - De **proposer un biberon** idéalement **à chaque début de temps d'éveil**\n    ⇒ c'est souvent là que bébé est **le plus disponible pour boire efficacement**\n  - De **favoriser des prises + importantes le matin et en journée, si vous le pouvez**\n  - En DÉBUT de nuit, **laisser [prénom_enfant] prendre à volonté**,\n  - Puis, progressivement, diminuer **les prises en fin de nuit pour :**\n    - **avoir une grosse prise** au **réveil du matin**\n    - pour **donner** un **tempo** à la **journée**\n\n- L'idée n'est pas de tout changer d'un coup,\n  ⇒ mais plutôt de **tester sur quelques jours** *(par exemple une semaine)*\n  ⇒ et d'observer comment [prénom_enfant] réagit",
+                                  type: "normal",
+                                  text: "- ⇒ Les **indications**, c'est :\n  - **à la demande** *(💡 à savoir que la demi-vidange gastrique du lait infantile est de 74 min ≃ 1h15)*\n  - **à satiété** *(je rappelle, il doit toujours **rester un fond de lait** dans le **biberon**)*\n    - [Sil_Sielle] **détourne la tête** c'est qu'il a **fini de boire** OU qu'il **veut faire un rot**\n    - Mais il **peut redemander 1/4h** après ⇒ et **c'est OK** ⇒ Et on **lui re-propose**",
                                   trailingInfoButton: {
                                     label: "Signes que tout va bien",
                                     title: "Signes que tout va bien",
@@ -2711,6 +2711,10 @@ const SCRIPT_DATA = {
                                       { type: "normal", text: "- **Lait** qui coule à la **commissure des lèvres**\n- **Mains ouvertes** en fin de repas\n- Un air **groggy**" }
                                     ]
                                   }
+                                },
+                                {
+                                  type: "normal", _leftTitle: "Dissocier le sommeil et l'alimentation",
+                                  text: "- Je vous encourage tout de même à :\n  - D'essayer de bien **dissocier l'alimentation et le sommeil**, pour ne **PAS qu'il s'endorme** sur son biberon\n  - De **proposer un biberon** idéalement **à chaque début de temps d'éveil**\n    ⇒ c'est souvent là que bébé est **le plus disponible pour boire efficacement**\n  - De **favoriser des prises + importantes le matin et en journée, si vous le pouvez**\n  - En DÉBUT de nuit, **laisser [prénom_enfant] prendre à volonté**,\n  - Puis, progressivement, diminuer **les prises en fin de nuit pour :**\n    - **avoir une grosse prise** au **réveil du matin**\n    - pour **donner** un **tempo** à la **journée**\n\n- L'idée n'est pas de tout changer d'un coup,\n  ⇒ mais plutôt de **tester sur quelques jours** *(par exemple une semaine)*\n  ⇒ et d'observer comment [prénom_enfant] réagit"
                                 }
                               ]
                             },
@@ -2766,7 +2770,7 @@ const SCRIPT_DATA = {
                               ]
                             },
                             {
-                              type: "option", label: "Option : Frein de bouche", emoji: "👅", style: "purple",
+                              type: "option", label: "Option : Frein de bouche", emoji: "👄", style: "purple",
                               blocks: [
                                 {
                                   type: "normal",

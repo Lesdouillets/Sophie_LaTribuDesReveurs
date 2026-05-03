@@ -3098,6 +3098,10 @@
       background: var(--cat-light, #fb923c);
       color: var(--cat-dark, #7c2d12);
     }
+    /* Fond blanc pour les enfants de Biberon (au lieu du fond cat-light marron clair) */
+    .courbe-card-content[data-card-id="nutri_lait_biberon"] .courbe-card-content {
+      background: #ffffff !important;
+    }
     /* Grille sticky compacte pour les cards enfants (nested inside card content) */
     .courbe-card-content .courbe-cards-grid-wrap > .courbe-cards-grid {
       position: sticky;
@@ -10106,6 +10110,70 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       window.__infoButtons[rappelBtnId] = { title: 'Rappel des quantités', content: rappelContent };
       rappelBtnHtml = `<button type="button" class="info-btn" contenteditable="false" onclick="openInfoPanel('${rappelBtnId}')" style="margin-top:10px;width:100%;padding:10px 14px;font-size:13.5px;text-align:left;min-width:0;box-sizing:border-box"><span class="info-btn-emoji" style="margin-right:8px">💡</span><span>Rappel des quantités</span></button>`;
     }
+    // Bouton "Tableau détaillé" optionnel sous Rappel des quantités (gated par _showCorrespondanceButton)
+    let correspBtnHtml = '';
+    if (b._showCorrespondanceButton) {
+      const correspBtnId = `nutri-corresp-${sectionId||'x'}-${String(path||i).replace(/\./g,'-')}`;
+      const tdSty = 'border:1px solid #94a3b8;padding:6px 8px;text-align:center;vertical-align:top';
+      const tdLeft = 'border:1px solid #94a3b8;padding:6px 8px;text-align:left;font-weight:600;background:#f8fafc';
+      const thHdr = 'background:#5b9bd5;color:#fff;border:1px solid #94a3b8;padding:8px;text-align:center;font-weight:700';
+      const thSub = 'border:1px solid #94a3b8;padding:6px 8px;text-align:center;font-style:italic;font-weight:500;background:#eef5fc;font-size:11.5px';
+      const r = (vals) => '<tr>' + vals.map((v,i) => `<td style="${i===0||i===1?tdLeft:tdSty}">${v}</td>`).join('') + '</tr>';
+      const cell = (n, ml, suf) => `${n}<br>× ${ml}${suf?'<br>'+suf:''}`;
+      const correspContent = `<div class="block block-normal block-no-border" style="overflow-x:auto">
+        <table style="border-collapse:collapse;font-size:12.5px;line-height:1.4;width:100%;background:#fff;min-width:680px">
+          <thead>
+            <tr>
+              <th rowspan="2" style="${thHdr};text-align:left">Poids</th>
+              <th rowspan="2" style="${thHdr};text-align:left">Quantité</th>
+              <th colspan="4" style="${thHdr}">Nb de prises</th>
+              <th rowspan="2" style="${thHdr};font-style:italic;font-weight:500;font-size:11.5px">Si + 8 mois + diversifié + passage à 2 siestes</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${r(['3 - 4 kg', '500-600 ml', cell('8 ou 9 prises', '60 ml', '<em>(allaité ou reflux)</em>'), cell('6 ou 7 prises', '90 ml'), '', '', ''])}
+            ${r(['4 - 5 kg', '600-700 ml', cell('7 ou 8 prises', '90 ml', '<em>(allaité ou reflux)</em>'), cell('5 ou 6 prises', '120 ml'), '', '', ''])}
+            ${r(['5 - 6 kg', '700-850 ml', cell('8 ou 9 prises', '90 ml', '<em>(allaité ou reflux)</em>'), cell('6 ou 7 prises', '120 ml'), cell('5 ou 6 prises', '150 ml'), '', ''])}
+            ${r(['6 - 7 kg', '850-950 ml', cell('8 prises', '120 ml', '<em>(allaité ou reflux)</em>'), cell('6 ou 7 prises', '150 ml'), cell('5 ou 6 prises', '180 ml'), '', ''])}
+            ${r(['7 - 8 kg', '950-1050 ml', cell('7 prises', '150 ml', '<em>(allaité ou reflux)</em>'), cell('5 ou 6 prises', '180 ml'), cell('5 prises', '210 ml'), '', cell('4 prises', '210 ml')])}
+            ${r(['8 - 9 kg', '1050-1150 ml', cell('7 ou 8 prises', '150 ml', '<em>(allaité ou reflux)</em>'), cell('6 ou 7 prises', '180 ml'), cell('5 ou 6 prises', '210 ml'), cell('5 prises', '240 ml'), cell('4 prises', '240 ml')])}
+            ${r(['9 - 10 kg', '1150-1250 ml', cell('8 ou 9 prises', '150 ml', '<em>(allaité ou reflux)</em>'), cell('7 prises', '180 ml'), cell('6 prises', '210 ml'), cell('5 prises', '240 ml'), cell('4 prises', '270 ml')])}
+          </tbody>
+        </table>
+        <table style="border-collapse:collapse;font-size:12.5px;line-height:1.4;width:100%;background:#fff;margin-top:14px;min-width:680px">
+          <thead>
+            <tr>
+              <th rowspan="2" style="${thHdr};background:#fff;border-color:#fff"></th>
+              <th colspan="2" style="${thHdr}">8 - 18 mois</th>
+              <th colspan="2" style="${thHdr}">18 mois - 2 ans</th>
+              <th colspan="2" style="${thHdr}">2 - 3 ans (ou +)</th>
+            </tr>
+            <tr>
+              <th style="${thSub}">Diversification OK</th>
+              <th style="${thSub}">Diversification <u>Pas OK</u> ou très grand et gros bébé</th>
+              <th style="${thSub}">Diversification OK</th>
+              <th style="${thSub}">Diversification <u>Pas OK</u> ou très grand et gros bébé</th>
+              <th style="${thSub}">Diversification OK</th>
+              <th style="${thSub}">Diversification <u>Pas OK</u> ou très grand et gros bébé</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="${tdLeft}">+ 10 kg</td>
+              <td style="${tdSty}">4 prises<br>× 240 ml</td>
+              <td style="${tdSty}">4 prises<br>× 270 ml<br><em>(ou +)</em></td>
+              <td style="${tdSty}">3 prises<br>× 240 ml</td>
+              <td style="${tdSty}">4 prises<br>× 270 ml<br><em>(ou +)</em></td>
+              <td style="${tdSty}">2 prises<br>× 240 ml</td>
+              <td style="${tdSty}">2 prises<br>× 330 ml</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>`;
+      window.__infoButtons = window.__infoButtons || {};
+      window.__infoButtons[correspBtnId] = { title: 'Tableau détaillé Poids × Nb prises × Quantité', content: correspContent };
+      correspBtnHtml = `<button type="button" class="info-btn" contenteditable="false" onclick="openInfoPanel('${correspBtnId}')" style="margin-top:10px;width:100%;padding:10px 14px;font-size:13.5px;text-align:left;min-width:0;box-sizing:border-box"><span class="info-btn-emoji" style="margin-right:8px">💡</span><span>Tableau détaillé</span></button>`;
+    }
     return `<div class="block block-normal nutri-repart" style="background:#fffbeb;border:1.5px solid #fde68a;padding:14px 18px;margin-top:12px">
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px">
         <label style="display:flex;align-items:center;gap:8px;font-size:14px">
@@ -10138,6 +10206,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
           </div>
           ${stomachBtnHtml}
           ${rappelBtnHtml}
+          ${correspBtnHtml}
         </div>
       </div>
     </div>`;
