@@ -2535,6 +2535,8 @@ const SCRIPT_DATA = {
                   id: "nutri_lait_biberon_quantite", emoji: "🔢", label: "Quantité",
                   showIfAgeMaxMonths: 36,
                   blocks: [
+                    { type: "normal", _noBorder: true, showIfAgeMinMonths: 9, showIfAgeMaxMonths: 11, text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">Entre 9 et 12 mois</div>" },
+                    { type: "normal", _noBorder: true, showIfAgeMinMonths: 12, text: "<div style=\"display:inline-block;padding:7px 16px;background:#4a6b54;color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(74,107,84,0.25)\">Après 1 an</div>" },
                     {
                       type: "normal", _leftTitle: "Se détacher des quantités des boîtes de lait",
                       text: "- En terme de **quantité PAR BIBERON**, je vous conseille de :\n  - vraiment vous **défaire** de ce qu'on **peut lire** sur les **boîtes de lait** qui :\n    - sont **TOTALEMENT erronées**\n    - ET **non-justifiées**\n      ⇒ ça a été **créé par les industriels** et ça ne **S'APPUIE** sur **AUCUNE recommandation** de l'OMS et de la PNNS *(Programme National Nutrition et Santé)*",
@@ -2577,12 +2579,12 @@ const SCRIPT_DATA = {
                       ]
                     },
                     {
-                      type: "normal", _leftTitle: "Entre 9 et 12 mois",
+                      type: "normal", _leftTitle: "Conseils",
                       showIfAgeMinMonths: 9, showIfAgeMaxMonths: 11,
                       text: "- On va plutôt **prendre comme repère** qu'entre 9 et 12 mois, un enfant **a besoin** d'environ **500 ml à 1 L par jour**.\n  ⇒ Mais ce n'est qu'une **estimation**\n  ⇒ [prénom_enfant] peut très bien **prendre +** notamment s'il **a besoin** de faire un **« rattrapage de courbe »… et c'est OK !**\n\n- La **diversification** vient **en complément**\n  ⇒ et c'est **à partir d'1 an** qu'elle **deviendra majoritaire** dans son alimentation.\n\n- **Un point important par rapport à la QUANTITÉ :**\n  - **Laissez** toujours un **fond de lait dans le biberon**\n    ⇒ c'est **votre enfant** qui **doit vous dire** QUAND **il a fini** de se nourrir **et NON quand** le **biberon est vide !**\n    ⇒ Si le biberon est vide, **n'hésitez pas** à **rajouter 30 ml** … et ainsi de suite !\n- Un BB qui a suffisamment mangé aura :\n  - les mains ouvertes\n  - du lait à la commissure des lèvres (car son estomac sera rempli)\n  - un air un peu groggy"
                     },
                     {
-                      type: "normal", _leftTitle: "Après 1 an",
+                      type: "normal", _leftTitle: "Conseils",
                       showIfAgeMinMonths: 12,
                       text: "- **Après 1 an,** vous pouvez **avoir en tête** qu'un enfant **a besoin** d'environ **500 ml par jour**,… et ce **jusque l'âge de 3 ans**\n  mais ça reste qu'un **repère**\n  CE QUI VA VRAIMENT **couvrir ses besoins nutritionnels**, ⇒ ça va être la **diversification**\n\n- **Un point important par rapport à la quantité :**\n  - **Laissez** toujours un **fond de lait dans le biberon**\n    ⇒ c'est **votre enfant** qui **doit vous dire** QUAND **il a fini** de se nourrir **et NON quand** le **biberon est vide !**\n    ⇒ Si le biberon est vide, **n'hésitez pas** à **rajouter 30 ml** … et ainsi de suite !\n- Un BB qui a suffisamment mangé aura :\n  - les mains ouvertes\n  - du lait à la commissure des lèvres (car son estomac sera rempli)\n  - un air un peu groggy"
                     },
