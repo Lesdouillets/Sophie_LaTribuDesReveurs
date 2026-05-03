@@ -10195,7 +10195,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       </div>`;
       window.__infoButtons = window.__infoButtons || {};
       window.__infoButtons[correspBtnId] = { title: 'Tableau: Nb de prises / Poids', content: correspContent };
-      correspBtnHtml = `<button type="button" class="info-btn" contenteditable="false" onclick="openInfoPanel('${correspBtnId}')" style="margin-top:10px;width:100%;padding:10px 14px;font-size:13.5px;text-align:left;min-width:0;box-sizing:border-box"><span class="info-btn-emoji" style="margin-right:8px">💡</span><span>Tableau détaillé</span></button>`;
+      correspBtnHtml = `<button type="button" class="info-btn" contenteditable="false" onclick="openInfoPanel('${correspBtnId}')" style="margin-top:10px;width:100%;padding:10px 14px;font-size:13.5px;text-align:left;min-width:0;box-sizing:border-box"><span class="info-btn-emoji" style="margin-right:8px">💡</span><span>Tableau: Nb de prises / Poids</span></button>`;
     }
     return `<div class="block block-normal nutri-repart" style="background:#fffbeb;border:1.5px solid #fde68a;padding:14px 18px;margin-top:12px">
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px">
@@ -11303,6 +11303,15 @@ function applyParentTickCascade() {
   if (!state.courbeCardsTickedManuallyEdited) state.courbeCardsTickedManuallyEdited = new Set();
   if (!state.selectedSolutions) state.selectedSolutions = new Set();
   if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
+  // Mutex de sécurité : Espacement vs Inversion jour/nuit ne peuvent pas être tickés simultanément.
+  // Si les deux sont en state (ex. persistance avant ajout de la mutex), garder uniquement
+  // celui qui a été manuellement édité en dernier (priorité au _normal sinon)
+  const ESPACEMENT_SUBS = ['nutri_lait_biberon_espacement_normal', 'nutri_lait_biberon_inversion_jn'];
+  const bothEspTicked = ESPACEMENT_SUBS.every(s => state.courbeCardsTicked.has(s));
+  if (bothEspTicked) {
+    state.courbeCardsTicked.delete('nutri_lait_biberon_inversion_jn');
+    state.courbeCardsTickedManuallyEdited.add('nutri_lait_biberon_inversion_jn');
+  }
   // Helper : item caché par filtre âge/alim
   const c = (state && state.client) || {};
   const alimSet = new Set([...(Array.isArray(c.alimentation) ? c.alimentation : []), ...(Array.isArray(c.allaitementMode) ? c.allaitementMode : [])]);
