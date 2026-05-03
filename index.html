@@ -13083,6 +13083,25 @@ function selectTickboxChoice(el) {
     const currentValue = wasSelected ? null : el.dataset.value;
     const targetPb = currentValue ? mapping[currentValue] : null;
     if (targetPb) setPb(targetPb, true);
+    // Cascade-up : si on UNCHECK la sous-option (wasSelected=true, plus aucune sous-option sélectionnée),
+    // décocher aussi le parent obj_lieu_sommeil et ses 3 pbs liés (changement de lit, chambre, lit+chambre)
+    if (wasSelected) {
+      delete state.tickboxChoices['obj_lieu_sommeil'];
+      ['souhait_changement_lit', 'souhait_changement_chambre', 'souhait_changement_lit_chambre'].forEach(pb => {
+        setPb(pb, false);
+      });
+      // Effacer aussi le flag manuallyEdited pour que les solutions liées (env_chgmt_lit, etc.) se décochent au prochain sync
+      if (state.selectedSolutionsManuallyEdited) {
+        ['env_chgmt_lit', 'env_chgmt_chambre', 'env_chgmt_lit_chambre'].forEach(sol => {
+          state.selectedSolutionsManuallyEdited.delete(sol);
+        });
+      }
+      if (state.courbeCardsTickedManuallyEdited) {
+        ['env_chgmt_lit', 'env_chgmt_chambre', 'env_chgmt_lit_chambre'].forEach(it => {
+          state.courbeCardsTickedManuallyEdited.delete(it);
+        });
+      }
+    }
     // Propager pb → state.courbeCardsTicked (sub-checkbox dans Solutions identifiées)
     if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
     syncChanged = true;
