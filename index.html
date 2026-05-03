@@ -4560,7 +4560,7 @@
             <div class="form-group" style="flex:0 0 320px">
               <label>Taille cible estimée</label>
               <div id="taille-cible-calc" style="padding:12px 14px;background:#eaeff8;border:2px solid var(--border);border-radius:10px;font-size:28px;font-weight:800;color:var(--primary-dark);text-align:center;display:flex;align-items:center;justify-content:center;min-height:70px">–</div>
-              <div id="taille-cible-percentile" style="display:none;margin-top:8px;border-radius:8px;overflow:hidden;border:1px solid var(--border);font-size:13px"></div>
+              <div id="taille-cible-percentile" style="display:none;margin-top:8px;border-radius:8px;overflow:hidden;border:1px solid var(--border);font-size:12px"></div>
               <button type="button" class="info-btn" style="min-width:0;width:100%;margin-top:10px;padding:10px 14px;font-size:14px" onclick="showTailleCibleFormulas()">
                 <span class="info-btn-emoji">💡</span><span>Formules taille cible</span>
               </button>
@@ -8155,7 +8155,7 @@ function computeClientFields() {
         return `<tr style="background:${bg}">
           <td style="padding:3px 8px;font-weight:${fw};color:${highlight?'#1a3a1a':'#555'}">${r.p}e</td>
           <td style="padding:3px 8px;font-weight:${fw};color:${highlight?'#1a3a1a':'#555'}">${r.t} cm</td>
-          ${highlight ? `<td style="padding:3px 6px;font-size:12px;color:#555">${isAbove ? '⬆ au-dessus' : '⬇ en-dessous'}</td>` : '<td></td>'}
+          ${highlight ? `<td style="padding:3px 6px;font-size:11px;color:#555">${isAbove ? '⬆ au-dessus' : '⬇ en-dessous'}</td>` : '<td></td>'}
         </tr>`;
       }).join('');
       percEl.style.display = 'block';
