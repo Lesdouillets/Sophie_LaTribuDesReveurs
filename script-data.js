@@ -2616,7 +2616,7 @@ const SCRIPT_DATA = {
                   blocks: [
                     {
                       type: "courbe_cards_grid",
-                      alwaysShowAll: true,
+                      forceAllItems: true,
                       items: [
                         {
                           id: "nutri_lait_biberon_espacement_normal", emoji: "⏱️", label: "Espacement",

@@ -9846,7 +9846,12 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       }
       return false;
     };
-    const visibleItems = b.alwaysShowAll
+    const visibleItems = b.forceAllItems
+      // forceAllItems : bypasse les filtres tick/pb, n'applique que le filtre âge/alim.
+      // Utilisé pour les grilles internes où on veut TOUJOURS voir les items, indépendamment
+      // de leur état coché ou de leur PB associée (ex. mutex Espacement/Inversion jour-nuit).
+      ? items.filter(it => !isHiddenByAge(it))
+      : b.alwaysShowAll
       // Plan d'action env_chambre/env_lit_card : afficher uniquement les items
       // dont la sous-checkbox du compact list est cochée (state.courbeCardsTicked).
       // Ordre = ordre du fichier script-data (pas de tri par pb).
