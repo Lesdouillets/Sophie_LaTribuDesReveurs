@@ -3114,6 +3114,11 @@
     .courbe-card-content[data-card-id^="nutri_lait_biberon_"] {
       background: #ffffff !important;
     }
+    /* Fond blanc pour les enfants de Diversification (même logique que Biberon) */
+    .courbe-card-content[data-card-id="nutri_diversification"] .courbe-card-content,
+    .courbe-card-content[data-card-id^="nutri_div_"] {
+      background: #ffffff !important;
+    }
     /* Grille sticky compacte pour les cards enfants (nested inside card content) */
     .courbe-card-content .courbe-cards-grid-wrap > .courbe-cards-grid {
       position: sticky;

@@ -2899,9 +2899,9 @@ const SCRIPT_DATA = {
               ]
             },
             {
-              type: "normal",
+              type: "normal", _leftTitle: "Heure repas du soir",
               showIfAlim: "Diversification",
-              text: "- 💡 Pour le **soir**, vous pouvez proposer le **repas… 1h-1h30 avant le coucher**",
+              text: "- Pour le **soir**, vous pouvez proposer le **repas… 1h-1h30 avant le coucher**",
               trailingInfoButton: {
                 label: "Diététicienne pédiatrique",
                 title: "Diététicienne nutritionniste pédiatrique",
