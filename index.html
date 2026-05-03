@@ -12001,6 +12001,20 @@ function toggleOption(header) {
         setTimeout(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
       }
     } else {
+      // Validation avant fermeture : si l'option contient obj_chgmt_lit_type et que la sous-option n'est pas sélectionnée,
+      // bloquer la fermeture (cas "Changer le lit" sans transition choisie)
+      const choices = state.tickboxChoices || {};
+      const containsLitChoice = !!optionDiv.querySelector('.block-tickbox-choice[data-choice-id="obj_chgmt_lit_type"]');
+      if (containsLitChoice && choices['obj_lieu_sommeil'] === 'changer_lit' && !choices['obj_chgmt_lit_type']) {
+        const subQ = optionDiv.querySelector('.block-tickbox-choice[data-choice-id="obj_chgmt_lit_type"]');
+        if (subQ) {
+          subQ.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          subQ.classList.add('tbc-shake');
+          setTimeout(() => subQ.classList.remove('tbc-shake'), 800);
+        }
+        alert('⚠️ Vous avez choisi "Changer le lit" — veuillez sélectionner le type de transition (Cododo ⇒ Lit à barreaux OU Lit à barreaux ⇒ Lit ouvert) avant de fermer.');
+        return;
+      }
       content.classList.remove('open');
       optionDiv.classList.remove('open-action');
       if (mutexGroup) {
