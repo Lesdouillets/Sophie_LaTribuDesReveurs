@@ -3259,10 +3259,13 @@
     .diag-cat-card[data-section-cat="sante"] .ccc-subtitle { color: #0f766e !important; }
     .diag-cat-card[data-section-cat="changement"] .ccc-title,
     .diag-cat-card[data-section-cat="changement"] .ccc-subtitle { color: #3d4570 !important; }
-    /* Journée : bloc-titre marron avec texte jaune (cas spécial — couleurs inversées vs. autres catégories) */
+    /* Journée : bloc-titre marron avec texte jaune (cas spécial — couleurs inversées vs. autres catégories)
+       Coins arrondis sur les 4 côtés pour que la transition brun/jaune ne soit pas droite à droite */
     [data-section-cat="journee"] .block-left-title {
       background: #92400e !important;
       color: #fef3c7 !important;
+      border-radius: 8px !important;
+      margin: 4px 0 4px 4px;
     }
     /* Toutes les cartes diag-cat-card ont un fond foncé (c.dark) — titre toujours en blanc */
     .diag-cat-card[data-section-cat] .ccc-title,
@@ -9067,18 +9070,27 @@ function togglePb(value, checked) {
 // NAVIGATION
 // ═══════════════════════════════════════════════════
 function navigateTo(idx) {
-  // Bloquer si on quitte la section IV. Objectifs sans avoir répondu aux choix obligatoires :
+  // Bloquer UNIQUEMENT si on quitte la section IV. Objectifs (currentIdx est sur "objectifs")
+  // sans avoir répondu aux choix obligatoires :
   // — Si "Changer le lit" est sélectionné dans obj_lieu_sommeil, alors obj_chgmt_lit_type doit aussi être sélectionné.
   if (idx !== state.currentIdx) {
-    const choices = state.tickboxChoices || {};
-    if (choices['obj_lieu_sommeil'] === 'changer_lit' && !choices['obj_chgmt_lit_type']) {
-      showLitTransitionDialog(() => navigateTo(idx));
-      return;
+    const currentSection = state.sections && state.sections[state.currentIdx];
+    const isLeavingObjectifs = currentSection && currentSection.id === 'objectifs';
+    if (isLeavingObjectifs) {
+      const choices = state.tickboxChoices || {};
+      if (choices['obj_lieu_sommeil'] === 'changer_lit' && !choices['obj_chgmt_lit_type']) {
+        if (typeof showLitTransitionDialog === 'function') {
+          showLitTransitionDialog(() => navigateTo(idx));
+        }
+        return;
+      }
     }
   }
-  // Bloquer aussi si d'autres tickboxes obligatoires VISIBLES ne sont pas répondues
+  // Bloquer aussi si d'autres tickboxes obligatoires VISIBLES ne sont pas répondues — UNIQUEMENT si on quitte la section "objectifs"
   const area = document.getElementById('content-area');
-  if (area && idx !== state.currentIdx) {
+  const _curSec = state.sections && state.sections[state.currentIdx];
+  const _isLeavingObjectifs = _curSec && _curSec.id === 'objectifs';
+  if (area && idx !== state.currentIdx && _isLeavingObjectifs) {
     const unanswered = area.querySelectorAll('.block-tickbox-choice[data-required="true"]:not([data-answered="true"])');
     const blockingEls = Array.from(unanswered).filter(el => {
       let p = el;
