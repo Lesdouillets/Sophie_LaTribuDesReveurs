@@ -2588,7 +2588,8 @@ const SCRIPT_DATA = {
                         title: "Calcul règle d'Appert",
                         blocks: [
                           { type: "normal", text: "- **Enfant de moins de 6 kg** :\n  - Poids en kg × 100 + **200 mL** (± 100 mL)\n- **Enfant de plus de 6 kg** :\n  - Poids en kg × 100 + **250 mL** (± 100 mL)" },
-                          { type: "appert_calculator" }
+                          { type: "appert_calculator" },
+                          { type: "nutri_repartition_table" }
                         ]
                       }
                     },
@@ -2612,7 +2613,12 @@ const SCRIPT_DATA = {
                 },
                 {
                   id: "nutri_lait_biberon_espacement", emoji: "⏱️", label: "Espacement",
-                  blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }]
+                  blocks: [
+                    {
+                      type: "normal", _leftTitle: "Conseils",
+                      text: "- Je voudrais qu'**on n'oubli le grand mythe des espacements de 4h**, qui ne sont **basés sur RIEN DU TOUT !**\n- La **PNNS** *(Programme National Nutrition et Santé)*, **CONFIRME** qu'un **bébé** doit être **nourrit à la demande**, comme **les bébés allaités !**"
+                    }
+                  ]
                 },
                 {
                   id: "nutri_lait_biberon_inversion_jn", emoji: "🌗", label: "Inversement jour/nuit",
