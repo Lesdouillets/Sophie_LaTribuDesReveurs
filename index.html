@@ -9244,6 +9244,17 @@ function closeInfoPanel() {
 function prevSection() { state.revealedLever = null; if (state.currentIdx>0) navigateTo(state.currentIdx-1); }
 function nextSection() {
   state.revealedLever = null;
+  // Cas spécial IV. Objectifs : "Changer le lit" coché sans sous-type → modal de choix au lieu de l'alerte générique
+  const _curSec = state.sections && state.sections[state.currentIdx];
+  if (_curSec && _curSec.id === 'objectifs') {
+    const _choices = state.tickboxChoices || {};
+    if (_choices['obj_lieu_sommeil'] === 'changer_lit' && !_choices['obj_chgmt_lit_type']) {
+      if (typeof showLitTransitionDialog === 'function') {
+        showLitTransitionDialog(() => nextSection());
+      }
+      return;
+    }
+  }
   // Bloquer si des tickboxes obligatoires VISIBLES ne sont pas répondues
   const area = document.getElementById('content-area');
   if (area) {
