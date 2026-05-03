@@ -1495,56 +1495,44 @@
     }
     .columns-2-grid > .col-2 {
       min-width: 0; display: flex; flex-direction: column;
-      border: 2px solid #cbd5e0; border-radius: 14px;
+      border: 2px solid #2d3f5c; border-radius: 14px;
       padding: 12px; background: #ffffff; cursor: pointer;
-      box-sizing: border-box;
-      transition: opacity 0.2s, filter 0.2s, border-color 0.15s, box-shadow 0.15s;
-      opacity: 0.45; filter: grayscale(0.6);
+      box-sizing: border-box; position: relative;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .columns-2-grid > .col-2:hover { opacity: 0.75; filter: grayscale(0.3); }
+    .columns-2-grid > .col-2:hover { box-shadow: 0 4px 14px rgba(45,63,92,0.20); }
     .columns-2-grid[data-active-col="1"] > .col-2[data-col-idx="1"],
-    .columns-2-grid[data-active-col="2"] > .col-2[data-col-idx="2"] {
-      opacity: 1; filter: none;
-      border-color: #2980b9;
-      box-shadow: 0 4px 14px rgba(41,128,185,0.20);
-      cursor: default;
+    .columns-2-grid[data-active-col="2"] > .col-2[data-col-idx="2"],
+    .columns-2-grid[data-active-col="3"] > .col-2[data-col-idx="3"] {
+      box-shadow: 0 4px 14px rgba(45,63,92,0.30);
+      grid-column: 1 / -1;
+    }
+    /* Cartes non-actives masquées quand une carte est ouverte */
+    .columns-2-grid[data-active-col="1"] > .col-2:not([data-col-idx="1"]),
+    .columns-2-grid[data-active-col="2"] > .col-2:not([data-col-idx="2"]),
+    .columns-2-grid[data-active-col="3"] > .col-2:not([data-col-idx="3"]) {
+      display: none;
     }
     .columns-2-grid .col-2-title {
       padding: 10px 14px; border-radius: 10px;
       font-weight: 900; font-size: 14px;
       text-align: center; display: flex; align-items: center; justify-content: center;
       min-height: 48px; margin-bottom: 10px;
-      background: #d1d5db; color: #6b7280; letter-spacing: 0.3px;
-      transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+      background: #2d3f5c; color: #fff; letter-spacing: 0.3px;
     }
-    .columns-2-grid[data-active-col="1"] > .col-2[data-col-idx="1"] .col-2-title,
-    .columns-2-grid[data-active-col="2"] > .col-2[data-col-idx="2"] .col-2-title {
-      background: linear-gradient(90deg, #1a2a42, #4a5f82);
-      color: white;
-      box-shadow: 0 3px 10px rgba(26,42,66,0.28);
+    /* Tick personnel (style identique à .ccc-tick mais positionné en haut à droite de la carte) */
+    .col-2 .col2-tick {
+      position: absolute; top: 8px; right: 10px;
+      font-size: 18px; cursor: pointer; user-select: none;
+      line-height: 1; padding: 4px; z-index: 2;
     }
+    .col-2 .col2-tick:hover { transform: scale(1.15); }
     @media (max-width: 900px) { .columns-2-grid { grid-template-columns: 1fr; } }
-    /* Variante 3 colonnes (avec colonne "Bonne nouvelle") */
-    .columns-2-grid.columns-3 { grid-template-columns: 1fr 1.2fr 0.8fr; }
-    .columns-2-grid.columns-3[data-active-col="3"] > .col-2[data-col-idx="3"] {
-      opacity: 1; filter: none;
-      border-color: #c52f26;
-      box-shadow: 0 4px 14px rgba(197,47,38,0.25);
-      cursor: default;
-    }
-    .columns-2-grid.columns-3[data-active-col="3"] > .col-2[data-col-idx="3"] .col-2-title {
-      background: linear-gradient(90deg, #991b1b, #dc2626);
-      color: white;
-      box-shadow: 0 3px 10px rgba(153,27,27,0.28);
-    }
-    /* Style "news-red" pour la 3e colonne : fond rouge pastel + accents rouges */
-    .col-2.col-3-news-red {
-      background: #fef2f2;
-      border-color: #fecaca;
-    }
-    .col-2.col-3-news-red .col-2-title {
-      background: #fecaca; color: #7f1d1d;
-    }
+    /* Variante 3 colonnes (avec colonne "Bonne nouvelle") — même comportement que 2 cols */
+    .columns-2-grid.columns-3 { grid-template-columns: 1fr 1fr 1fr; }
+    /* Style "news-red" overridé : on conserve le bleu marine partout */
+    .col-2.col-3-news-red { background: #ffffff; border-color: #2d3f5c; }
+    .col-2.col-3-news-red .col-2-title { background: #2d3f5c; color: #fff; }
     .col-2.col-3-news-red .block-normal {
       background: var(--card-bg) !important; border: 1px solid var(--border) !important; box-shadow: var(--shadow) !important;
     }
@@ -7737,9 +7725,26 @@ window.setDecouverteStep = setDecouverteStep;
 function setColumns2Active(el, idx) {
   const grid = el.closest('.columns-2-grid');
   if (!grid) return;
-  grid.setAttribute('data-active-col', String(idx));
+  const current = grid.getAttribute('data-active-col');
+  // Toggle : clic sur la carte active → ferme (retour à l'affichage 3 colonnes)
+  const newVal = (current === String(idx)) ? '0' : String(idx);
+  grid.setAttribute('data-active-col', newVal);
 }
 window.setColumns2Active = setColumns2Active;
+
+function toggleCol2Tick(tickEl, tickId) {
+  if (!tickEl || !tickId) return;
+  if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
+  if (state.cardPersonalTicks.has(tickId)) {
+    state.cardPersonalTicks.delete(tickId);
+    tickEl.textContent = '☐';
+  } else {
+    state.cardPersonalTicks.add(tickId);
+    tickEl.textContent = '✅';
+  }
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.toggleCol2Tick = toggleCol2Tick;
 
 function updateAppertVolume() {
   const input = document.getElementById('appert-poids-input');
@@ -10304,14 +10309,22 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const rightTitle = b.rightTitle ? `<div class="col-2-title">${substituteVars(b.rightTitle)}</div>` : '';
     const thirdTitle = b.thirdTitle ? `<div class="col-2-title">${substituteVars(b.thirdTitle)}</div>` : '';
     const thirdStyleCls = b.thirdStyle ? ` col-3-${b.thirdStyle}` : '';
-    const activeCol = (b.defaultActive === 2) ? 2 : (b.defaultActive === 3 ? 3 : 1);
+    // Par défaut : aucune carte ouverte (0) — toutes visibles côte à côte. Compat ancien defaultActive.
+    const activeCol = (b.defaultActive === 1 || b.defaultActive === 2 || b.defaultActive === 3) ? b.defaultActive : 0;
     const gridCls = hasThird ? 'columns-2-grid columns-3' : 'columns-2-grid';
+    if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
+    const colTickId = (idx) => `col2-${sectionId||'x'}-${String(path||i).replace(/\./g,'-')}-${idx}`;
+    const tickIconHtml = (idx) => {
+      const tid = colTickId(idx);
+      const ticked = state.cardPersonalTicks.has(tid);
+      return `<span class="ccc-tick col2-tick" onclick="event.stopPropagation(); toggleCol2Tick(this, '${tid}')">${ticked ? '✅' : '☐'}</span>`;
+    };
     const thirdHtml = hasThird
-      ? `<div class="col-2 col-2-third${thirdStyleCls}" data-col-idx="3" onclick="setColumns2Active(this, 3)">${thirdTitle}${renderBlocks(thirdBlocks, sectionId, (depth||0)+1, `${path||i}.col.T`)}</div>`
+      ? `<div class="col-2 col-2-third${thirdStyleCls}" data-col-idx="3" onclick="setColumns2Active(this, 3)">${tickIconHtml(3)}${thirdTitle}${renderBlocks(thirdBlocks, sectionId, (depth||0)+1, `${path||i}.col.T`)}</div>`
       : '';
     return `<div class="${gridCls}" data-active-col="${activeCol}">
-      <div class="col-2 col-2-left" data-col-idx="1" onclick="setColumns2Active(this, 1)">${leftTitle}${renderBlocks(leftBlocks, sectionId, (depth||0)+1, `${path||i}.col.L`)}</div>
-      <div class="col-2 col-2-right" data-col-idx="2" onclick="setColumns2Active(this, 2)">${rightTitle}${renderBlocks(rightBlocks, sectionId, (depth||0)+1, `${path||i}.col.R`)}</div>
+      <div class="col-2 col-2-left" data-col-idx="1" onclick="setColumns2Active(this, 1)">${tickIconHtml(1)}${leftTitle}${renderBlocks(leftBlocks, sectionId, (depth||0)+1, `${path||i}.col.L`)}</div>
+      <div class="col-2 col-2-right" data-col-idx="2" onclick="setColumns2Active(this, 2)">${tickIconHtml(2)}${rightTitle}${renderBlocks(rightBlocks, sectionId, (depth||0)+1, `${path||i}.col.R`)}</div>
       ${thirdHtml}
     </div>`;
   }
