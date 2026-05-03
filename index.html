@@ -11885,6 +11885,10 @@ function substituteVars(text) {
       /s['\u2019]il\b/gi,
       // même s'il / bien qu'il (impersonnel)
       /même s['\u2019]il\b/gi,
+      // "le corps ... il" : "il" fait référence à "le corps" (masculin), pas à l'enfant
+      // ex : "Comme le corps ne reçoit pas assez, il puise TOUT ce qu'il peut..."
+      // → protéger toute la ligne contenant "le corps" pour préserver les "il" qui la traversent
+      /le corps[^\n]+/gi,
     ];
 
     // Remplacer chaque expression impersonnelle par un placeholder
