@@ -9635,8 +9635,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
         if (catMainMatch) styleParts.push(`--cat-main:${catMainMatch[1].trim()}`);
       }
       if (styleParts.length) wrapStyle = ` style="${styleParts.join(';')}"`;
-      const centerCls = b._centerContent ? ' block-with-left-title-center' : '';
-      return `<div class="block-with-left-title${centerCls}"${wrapStyle}><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div>${wrapOnly}</div>${addBtn}`;
+      return `<div class="block-with-left-title"${wrapStyle}><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div>${wrapOnly}</div>${addBtn}`;
     }
     return wrapOnly + addBtn;
   }
@@ -9647,8 +9646,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
       const bgMatch = b._leftTitleStyle.match(/background\s*:\s*([^;]+)/);
       if (bgMatch) wrapStyle = ` style="background:${bgMatch[1]}"`;
     }
-    const centerCls = b._centerContent ? ' block-with-left-title-center' : '';
-    return `<div class="block-with-left-title${centerCls}"${wrapStyle}><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div><div>${inner}</div></div>`;
+    return `<div class="block-with-left-title"${wrapStyle}><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div><div>${inner}</div></div>`;
   }
   return inner;
 }
