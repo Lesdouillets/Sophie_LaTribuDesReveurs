@@ -1608,7 +1608,7 @@
       width: auto;
     }
     /* Wrappers dans le grid col-2-right : display block, centré dans leur cellule */
-    .columns-2-grid .col-2-right > .edit-block-wrap {
+    .columns-2-grid .col-2-right > .col-2-body-right > .edit-block-wrap {
       display: block !important;
       vertical-align: initial !important;
       margin: 0 !important;
@@ -1616,14 +1616,14 @@
       justify-self: center;
     }
     /* La dernière option (yellow = Difficultés alim) : même largeur que les pills du dessus, centrée */
-    .columns-2-grid .col-2-right > .edit-block-wrap:last-child:not(:has(> .block-option.action.open-action)) {
+    .columns-2-grid .col-2-right > .col-2-body-right > .edit-block-wrap:last-child:not(:has(> .block-option.action.open-action)) {
       width: calc(50% - 10px) !important;
       max-width: 360px !important;
       margin: 6px auto 0 !important;
       flex: 0 0 auto !important;
     }
     /* Quand une option est OUVERTE dans col-2-right : wrapper spanne les 2 colonnes du grid */
-    .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action.open-action) {
+    .columns-2-grid .col-2-right > .col-2-body-right > .edit-block-wrap:has(> .block-option.action.open-action) {
       grid-column: 1 / -1 !important;
       justify-self: stretch !important;
       width: 100% !important;
@@ -1632,30 +1632,30 @@
       display: block !important;
     }
     /* Quand un mutex diag-sommeil est ouvert, le frère fermé reste centré en spannant les 2 cols */
-    .columns-2-grid .col-2-right:has(> .edit-block-wrap > .block-option[data-mutex-group="diag-sommeil"].open-action) > .edit-block-wrap:has(> .block-option[data-mutex-group="diag-sommeil"]:not(.open-action)) {
+    .columns-2-grid .col-2-right > .col-2-body-right:has(> .edit-block-wrap > .block-option[data-mutex-group="diag-sommeil"].open-action) > .edit-block-wrap:has(> .block-option[data-mutex-group="diag-sommeil"]:not(.open-action)) {
       grid-column: 1 / -1 !important;
       justify-self: center !important;
     }
-    .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action.open-action) > .block-option.action.open-action {
+    .columns-2-grid .col-2-right > .col-2-body-right > .edit-block-wrap:has(> .block-option.action.open-action) > .block-option.action.open-action {
       width: 100% !important;
       max-width: 100% !important;
       margin-left: 0 !important;
       margin-right: 0 !important;
     }
     /* V. Diagnostic : bouton jaune SOUS les 2 pills, spanne les 2 colonnes du grid, centré */
-    .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action-yellow):not(:has(> .block-option.open-action)) {
+    .columns-2-grid .col-2-right > .col-2-body-right > .edit-block-wrap:has(> .block-option.action-yellow):not(:has(> .block-option.open-action)) {
       grid-column: 1 / -1 !important;
       justify-self: center !important;
       margin: 16px 0 0 !important;
       width: auto !important;
     }
-    .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action-yellow:not(.open-action)) > .block-option.action-yellow {
+    .columns-2-grid .col-2-right > .col-2-body-right > .edit-block-wrap:has(> .block-option.action-yellow:not(.open-action)) > .block-option.action-yellow {
       width: 280px !important;
       min-width: 200px !important;
       max-width: 340px !important;
       margin: 0 !important;
     }
-    .columns-2-grid .col-2-right > .edit-block-wrap > .block-option.action.open-action {
+    .columns-2-grid .col-2-right > .col-2-body-right > .edit-block-wrap > .block-option.action.open-action {
       width: 100% !important;
     }
 
@@ -2308,7 +2308,7 @@
       gap: 8px !important;
     }
     /* Pills Pas de dette/Difficultés de sommeil : en grid, chaque pill occupe une cellule (largeur = 100% de cellule) */
-    .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action.pill-style[data-mutex-group="diag-sommeil"]:not(.open-action)) {
+    .columns-2-grid .col-2-right > .col-2-body-right > .edit-block-wrap:has(> .block-option.action.pill-style[data-mutex-group="diag-sommeil"]:not(.open-action)) {
       width: 100% !important;
       max-width: 100% !important;
       margin: 0 !important;
@@ -2350,14 +2350,14 @@
       height: 100%;
     }
     /* Dans col-2-right (V. Diagnostic) : 2 pills côte-à-côte, même largeur */
-    .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) {
+    .columns-2-grid .col-2-right > .col-2-body-right > .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) {
       display: inline-flex !important;
       flex: 1 1 0 !important;
       width: auto !important;
       max-width: none !important;
       margin: 0 4px !important;
     }
-    .columns-2-grid .col-2-right > .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) > .block-option.action.pill-style {
+    .columns-2-grid .col-2-right > .col-2-body-right > .edit-block-wrap:has(> .block-option.action.pill-style:not(.open-action)) > .block-option.action.pill-style {
       width: 100% !important;
     }
 
