@@ -1589,6 +1589,10 @@
       align-content: start !important;
       justify-items: stretch !important;
     }
+    /* Quand UNE pill (vert/rouge/jaune) est ouverte, masquer les 2 autres pills fermées dans le body */
+    .columns-2-grid[data-active-col="2"] > .col-2-right > .col-2-body-right:has(> .edit-block-wrap > .block-option.open-action) > .edit-block-wrap:not(:has(> .block-option.open-action)) {
+      display: none !important;
+    }
     .columns-2-grid[data-active-col="2"] > .col-2-right > .col-2-body-right > .edit-block-wrap {
       width: 100% !important;
       max-width: 100% !important;
