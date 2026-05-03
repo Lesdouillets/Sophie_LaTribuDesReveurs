@@ -10317,7 +10317,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const tickIconHtml = (idx) => {
       const tid = colTickId(idx);
       const ticked = state.cardPersonalTicks.has(tid);
-      return `<span class="ccc-tick col2-tick" onclick="event.stopPropagation(); toggleCol2Tick(this, '${tid}')">${ticked ? '✅' : '☐'}</span>`;
+      return `<span class="col2-tick" onclick="event.stopPropagation(); toggleCol2Tick(this, '${tid}')" style="position:absolute;top:8px;right:12px;font-size:20px;cursor:pointer;user-select:none;line-height:1;padding:4px;z-index:5">${ticked ? '✅' : '☐'}</span>`;
     };
     const thirdHtml = hasThird
       ? `<div class="col-2 col-2-third${thirdStyleCls}" data-col-idx="3" onclick="setColumns2Active(this, 3)">${tickIconHtml(3)}${thirdTitle}${renderBlocks(thirdBlocks, sectionId, (depth||0)+1, `${path||i}.col.T`)}</div>`
