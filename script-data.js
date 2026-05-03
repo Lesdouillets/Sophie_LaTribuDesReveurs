@@ -2629,29 +2629,31 @@ const SCRIPT_DATA = {
                               blocks: [
                                 {
                                   type: "normal",
-                                  text: "- 🔥 Aujourd'hui, [prénom_enfant] va être sur **[nb_siestes] siestes**, donc je vous conseille **[nb_biberons] biberons** de <strong style=\"color:#dc2626;font-size:1.15em\">XX</strong> ml par jour"
+                                  text: "- 🔥 Aujourd'hui, [prénom_enfant] va être sur **[nb_siestes_phrase]**, donc je vous conseille **[nb_biberons_phrase]** de <strong style=\"color:#dc2626;font-size:1.15em\">XX</strong> ml par jour"
                                 },
-                                { type: "nutri_repartition_table" },
+                                { type: "nutri_repartition_table", _showStomachButton: true },
                                 {
                                   type: "normal",
                                   text: "- ⇒ Mais **s'il demande +**, vous pouvez lui **donner**\n  ⇒ Vous ne vous **posez pas de questions !**\n\n- ⇒ Les **indications**, c'est :\n  - **à la demande** *(🎓 à savoir que la demi-vidange gastrique du lait infantile est de 74 min ≃ 1h15)*\n  - **à satiété** *(je rappelle, il doit toujours **rester un fond de lait** dans le **biberon**)*\n    - [Sil_Sielle] **détourne la tête** c'est qu'il a **fini de boire** OU qu'il **veut faire un rot**\n    - Mais il **peut redemander 1/4h** après\n      ⇒ et **c'est OK**\n      ⇒ Et on **lui re-propose**\n  - Mais bien sûr, ça reste des repères,\n    ⇒ On regardera :\n    - les **signes de faim**\n    - **et de satiété** de [prénom_enfant]\n- 👏 en s'**appuyant** AUSSI sur :\n  - **votre expérience**\n  - et **votre intuition** de **Maman !**"
-                                },
-                                {
-                                  type: "normal", _leftTitle: "Biberon au début de chaque temps d'éveil",
-                                  text: "- Si je peux vous **donner des conseils**, je vous **encourage à** :\n  - Donner 1 biberon au **début** de **CHAQUE temps d'éveil**\n    ⇒ C'est le **moment parfait**, car il aura **toute l'énergie** pour **boire efficacement**"
-                                },
-                                {
-                                  type: "normal", _leftTitle: "Dernier pour la route",
-                                  text: "- Je vous invite aussi à donner « **1 dernier pour la route** », au moment du **rituel du soir**\n  ⇒ c'est à dire **2 biberons** sur le **dernier temps d'éveil**\n  ⇒ Ça rappelle les **tétées groupées** des **BB allaités** (⚠️ Veillez néanmoins à ce qu'il ne **s'endorme pas sur son biberon**)"
-                                },
-                                {
-                                  type: "normal", _leftTitle: "Dissocier l'endormissement de l'alimentation",
-                                  text: "- <span style=\"color:#dc2626\">Essayez de BIEN **dissocier l'endormissement** de **l'alimentation**, pour ne **PAS** qu'il s'**endorme en buvant son biberon**</span>\n  ⇒ Vous pouvez **[le_la] stimuler** avec des **petits guilis** sur la **joue** ou les **pieds**"
-                                },
-                                {
-                                  type: "normal",
-                                  text: "- Vous pouvez aussi vous **faire aider** avec une **conseillère en lactation**, même si vous ne **donnez pas le sein** !",
-                                  trailingInfoButton: {
+                                }
+                              ]
+                            },
+                            {
+                              type: "normal", _leftTitle: "Biberon au début de chaque temps d'éveil",
+                              text: "- Si je peux vous **donner des conseils**, je vous **encourage à** :\n  - Donner 1 biberon au **début** de **CHAQUE temps d'éveil**\n    ⇒ C'est le **moment parfait**, car il aura **toute l'énergie** pour **boire efficacement**"
+                            },
+                            {
+                              type: "normal", _leftTitle: "Dernier pour la route",
+                              text: "- Je vous invite aussi à donner « **1 dernier pour la route** », au moment du **rituel du soir**\n  ⇒ c'est à dire **2 biberons** sur le **dernier temps d'éveil**\n  ⇒ Ça rappelle les **tétées groupées** des **BB allaités** (⚠️ Veillez néanmoins à ce qu'il ne **s'endorme pas sur son biberon**)"
+                            },
+                            {
+                              type: "normal", _leftTitle: "Dissocier l'endormissement de l'alimentation",
+                              text: "- <span style=\"color:#dc2626\">Essayez de BIEN **dissocier l'endormissement** de **l'alimentation**, pour ne **PAS** qu'il s'**endorme en buvant son biberon**</span>\n  ⇒ Vous pouvez **[le_la] stimuler** avec des **petits guilis** sur la **joue** ou les **pieds**"
+                            },
+                            {
+                              type: "normal", _leftTitle: "Conseillère lactation IBCLC",
+                              text: "- Vous pouvez aussi vous **faire aider** avec une **conseillère en lactation**, même si vous ne **donnez pas le sein** !",
+                              trailingInfoButton: {
                                     label: "Conseillère en lactation IBCLC",
                                     title: "💉 Conseillère en lactation IBCLC",
                                     blocks: [

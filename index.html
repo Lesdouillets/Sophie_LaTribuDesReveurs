@@ -10032,13 +10032,15 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     }).join('');
     const initN120 = initApper ? (initApper / 120).toFixed(1) : '–';
     const initN150 = initApper ? (initApper / 150).toFixed(1) : '–';
-    // Bouton "Taille estomac" : enregistre le contenu du modal dans __infoButtons
-    // pour pouvoir l'ouvrir via openInfoPanel (même mécanisme que les trailingInfoButtons)
-    const stomachBtnId = `nutri-stomach-${sectionId||'x'}-${String(path||i).replace(/\./g,'-')}`;
-    const stomachContent = `<div class="block block-normal block-no-border"><table style="border-collapse:collapse;font-size:13.5px;background:#fff;width:100%"><tr><td style="border:1px solid #d1d5db;padding:8px 14px;font-weight:700;background:#f3f4f6;color:#1f2937">1 mois</td><td style="border:1px solid #d1d5db;padding:8px 14px;color:#374151">80-150 mL</td><td style="border:1px solid #d1d5db;padding:8px 14px;color:#374151">œuf / demi-verre d'eau</td></tr><tr><td style="border:1px solid #d1d5db;padding:8px 14px;font-weight:700;background:#f3f4f6;color:#1f2937">6 mois</td><td style="border:1px solid #d1d5db;padding:8px 14px;color:#374151">150 mL</td><td style="border:1px solid #d1d5db;padding:8px 14px;color:#374151">kiwi</td></tr><tr><td style="border:1px solid #d1d5db;padding:8px 14px;font-weight:700;background:#f3f4f6;color:#1f2937">1 an</td><td style="border:1px solid #d1d5db;padding:8px 14px;color:#374151">250 mL</td><td style="border:1px solid #d1d5db;padding:8px 14px;color:#374151">pomme / verre d'eau</td></tr></table></div>`;
-    window.__infoButtons = window.__infoButtons || {};
-    window.__infoButtons[stomachBtnId] = { title: '📊 Taille estomac', content: stomachContent };
-    const stomachBtnHtml = `<button type="button" class="info-btn" contenteditable="false" onclick="openInfoPanel('${stomachBtnId}')" style="margin-top:10px;width:100%;padding:10px 14px;font-size:13.5px;text-align:left;min-width:0;box-sizing:border-box"><span class="info-btn-emoji" style="margin-right:8px">💡</span><span>Taille estomac</span></button>`;
+    // Bouton "Taille estomac" optionnel dans le panneau Nb tétées (gated par _showStomachButton)
+    let stomachBtnHtml = '';
+    if (b._showStomachButton) {
+      const stomachBtnId = `nutri-stomach-${sectionId||'x'}-${String(path||i).replace(/\./g,'-')}`;
+      const stomachContent = `<div class="block block-normal block-no-border"><table style="border-collapse:collapse;font-size:13.5px;background:#fff;width:100%"><tr><td style="border:1px solid #d1d5db;padding:8px 14px;font-weight:700;background:#f3f4f6;color:#1f2937">1 mois</td><td style="border:1px solid #d1d5db;padding:8px 14px;color:#374151">80-150 mL</td><td style="border:1px solid #d1d5db;padding:8px 14px;color:#374151">œuf / demi-verre d'eau</td></tr><tr><td style="border:1px solid #d1d5db;padding:8px 14px;font-weight:700;background:#f3f4f6;color:#1f2937">6 mois</td><td style="border:1px solid #d1d5db;padding:8px 14px;color:#374151">150 mL</td><td style="border:1px solid #d1d5db;padding:8px 14px;color:#374151">kiwi</td></tr><tr><td style="border:1px solid #d1d5db;padding:8px 14px;font-weight:700;background:#f3f4f6;color:#1f2937">1 an</td><td style="border:1px solid #d1d5db;padding:8px 14px;color:#374151">250 mL</td><td style="border:1px solid #d1d5db;padding:8px 14px;color:#374151">pomme / verre d'eau</td></tr></table></div>`;
+      window.__infoButtons = window.__infoButtons || {};
+      window.__infoButtons[stomachBtnId] = { title: '📊 Taille estomac', content: stomachContent };
+      stomachBtnHtml = `<button type="button" class="info-btn" contenteditable="false" onclick="openInfoPanel('${stomachBtnId}')" style="margin-top:10px;width:100%;padding:10px 14px;font-size:13.5px;text-align:left;min-width:0;box-sizing:border-box"><span class="info-btn-emoji" style="margin-right:8px">💡</span><span>Taille estomac</span></button>`;
+    }
     return `<div class="block block-normal nutri-repart" style="background:#fffbeb;border:1.5px solid #fde68a;padding:14px 18px;margin-top:12px">
       <div style="font-weight:800;color:#7c2d12;margin-bottom:8px;font-size:14px">📊 Tableau de répartition (nb biberons × volume par biberon)</div>
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px">
@@ -12011,6 +12013,21 @@ function substituteVars(text) {
       const sieste = c.sieste || '';
       const map = { '2-4m': 4, '4-6m': 3, '6-8m': 3, '8-10m': 3, '8-15m': 2, '15-20m': 2, '15m-3a': 1, '4a-plus': 1 };
       return map[sieste] != null ? String(map[sieste] + 1) : '?';
+    })())
+    .replace(/\[nb_siestes_phrase\]/g, (() => {
+      const sieste = c.sieste || '';
+      const map = { '2-4m': 4, '4-6m': 3, '6-8m': 3, '8-10m': 3, '8-15m': 2, '15-20m': 2, '15m-3a': 1, '4a-plus': 1 };
+      const n = map[sieste];
+      if (n == null) return '? siestes';
+      return n === 1 ? '1 sieste' : n + ' siestes';
+    })())
+    .replace(/\[nb_biberons_phrase\]/g, (() => {
+      const sieste = c.sieste || '';
+      const map = { '2-4m': 4, '4-6m': 3, '6-8m': 3, '8-10m': 3, '8-15m': 2, '15-20m': 2, '15m-3a': 1, '4a-plus': 1 };
+      const n = map[sieste];
+      if (n == null) return '? biberons';
+      const nb = n + 1;
+      return nb === 1 ? '1 biberon' : nb + ' biberons';
     })())
     .replace(/\[besoin_lait_volume\]/g, (() => {
       try {
