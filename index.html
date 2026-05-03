@@ -10321,26 +10321,38 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const hasThird = thirdBlocks.length > 0;
     if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
     const colTickId = (idx) => `col2-${sectionId||'x'}-${String(path||i).replace(/\./g,'-')}-${idx}`;
-    const titleWithTick = (rawTitle, idx) => {
-      if (!rawTitle) return '';
+    // Sépare l'emoji du titre (premier "mot" = emoji s'il y a un espace)
+    const parseEmojiTitle = (title) => {
+      if (!title) return { emoji: '', label: '' };
+      const t = title.trim();
+      const m = t.match(/^(\S+)\s+(.+)$/);
+      return m ? { emoji: m[1], label: m[2] } : { emoji: '', label: t };
+    };
+    // Rend l'en-tête style "Solutions card" : emoji + titre centrés + tick top-right
+    const renderHeader = (title, idx) => {
+      if (!title) return '';
+      const { emoji, label } = parseEmojiTitle(title);
       const tid = colTickId(idx);
       const ticked = state.cardPersonalTicks.has(tid);
-      const tickHtml = `<span class="col2-tick" onclick="event.stopPropagation(); toggleCol2Tick(this, '${tid}')" style="margin-left:auto;font-size:22px;cursor:pointer;user-select:none;line-height:1;padding:0 4px;color:#fff">${ticked ? '✅' : '☐'}</span>`;
-      return `<div class="col-2-title" style="position:relative;justify-content:flex-start;gap:8px"><span style="flex:1;text-align:center">${substituteVars(rawTitle)}</span>${tickHtml}</div>`;
+      return `<div class="col-2-title">
+        <span class="col2-tick" onclick="event.stopPropagation(); toggleCol2Tick(this, '${tid}')">${ticked ? '✅' : '☐'}</span>
+        ${emoji ? `<span class="col2-emoji">${emoji}</span>` : ''}
+        <span class="col2-label">${substituteVars(label)}</span>
+      </div>`;
     };
-    const leftTitle = titleWithTick(b.leftTitle, 1);
-    const rightTitle = titleWithTick(b.rightTitle, 2);
-    const thirdTitle = titleWithTick(b.thirdTitle, 3);
+    const leftTitle = renderHeader(b.leftTitle, 1);
+    const rightTitle = renderHeader(b.rightTitle, 2);
+    const thirdTitle = renderHeader(b.thirdTitle, 3);
     const thirdStyleCls = b.thirdStyle ? ` col-3-${b.thirdStyle}` : '';
     // Par défaut : aucune carte ouverte (0) — toutes visibles côte à côte. Compat ancien defaultActive.
     const activeCol = (b.defaultActive === 1 || b.defaultActive === 2 || b.defaultActive === 3) ? b.defaultActive : 0;
     const gridCls = hasThird ? 'columns-2-grid columns-3' : 'columns-2-grid';
     const thirdHtml = hasThird
-      ? `<div class="col-2 col-2-third${thirdStyleCls}" data-col-idx="3" onclick="setColumns2Active(this, 3)">${thirdTitle}${renderBlocks(thirdBlocks, sectionId, (depth||0)+1, `${path||i}.col.T`)}</div>`
+      ? `<div class="col-2 col-2-third${thirdStyleCls}" data-col-idx="3" onclick="setColumns2Active(this, 3)">${thirdTitle}<div class="col-2-body">${renderBlocks(thirdBlocks, sectionId, (depth||0)+1, `${path||i}.col.T`)}</div></div>`
       : '';
     return `<div class="${gridCls}" data-active-col="${activeCol}">
-      <div class="col-2 col-2-left" data-col-idx="1" onclick="setColumns2Active(this, 1)">${leftTitle}${renderBlocks(leftBlocks, sectionId, (depth||0)+1, `${path||i}.col.L`)}</div>
-      <div class="col-2 col-2-right" data-col-idx="2" onclick="setColumns2Active(this, 2)">${rightTitle}${renderBlocks(rightBlocks, sectionId, (depth||0)+1, `${path||i}.col.R`)}</div>
+      <div class="col-2 col-2-left" data-col-idx="1" onclick="setColumns2Active(this, 1)">${leftTitle}<div class="col-2-body">${renderBlocks(leftBlocks, sectionId, (depth||0)+1, `${path||i}.col.L`)}</div></div>
+      <div class="col-2 col-2-right" data-col-idx="2" onclick="setColumns2Active(this, 2)">${rightTitle}<div class="col-2-body col-2-body-right">${renderBlocks(rightBlocks, sectionId, (depth||0)+1, `${path||i}.col.R`)}</div></div>
       ${thirdHtml}
     </div>`;
   }
