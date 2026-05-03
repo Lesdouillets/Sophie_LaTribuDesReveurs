@@ -4211,6 +4211,10 @@
     .grouped-block.options-2col-grid > .edit-block-wrap:last-child:nth-child(odd) > .block-option {
       width: calc(50% - 8px);
     }
+    /* Quand la dernière carte orpheline est OUVERTE, elle prend toute la largeur (comme les autres ouvertes) */
+    .grouped-block.options-2col-grid > .edit-block-wrap:last-child:nth-child(odd):has(> .block-option.open-action) > .block-option {
+      width: 100%;
+    }
     /* Quand une option est ouverte (open-action), elle s'étale sur les 2 colonnes pour avoir la place */
     .grouped-block.options-2col-grid > .edit-block-wrap:has(> .block-option.open-action) {
       grid-column: 1 / -1;
@@ -10801,6 +10805,23 @@ function renderSolutionsCheckboxes(opts) {
   const compactOnly = opts && opts.compactOnly;
   const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
   if (!sols.length) return '<div class="block block-normal"><em>(Aucune solution configurée.)</em></div>';
+  // Mutex de sécurité avant tout : Espacement vs Inversion jour/nuit ne peuvent JAMAIS être tickés simultanément
+  // (couvre les états persistés avant l'ajout de la mutex et toute désynchro résiduelle)
+  if (state.courbeCardsTicked) {
+    const espNorm = state.courbeCardsTicked.has('nutri_lait_biberon_espacement_normal');
+    const espInv = state.courbeCardsTicked.has('nutri_lait_biberon_inversion_jn');
+    if (espNorm && espInv) {
+      state.courbeCardsTicked.delete('nutri_lait_biberon_inversion_jn');
+      if (state.courbeCardsTickedManuallyEdited) state.courbeCardsTickedManuallyEdited.add('nutri_lait_biberon_inversion_jn');
+    }
+  }
+  if (state.cardPersonalTicks) {
+    const espNorm = state.cardPersonalTicks.has('nutri_lait_biberon_espacement_normal');
+    const espInv = state.cardPersonalTicks.has('nutri_lait_biberon_inversion_jn');
+    if (espNorm && espInv) {
+      state.cardPersonalTicks.delete('nutri_lait_biberon_inversion_jn');
+    }
+  }
   syncSolutionsFromPbs();
   const catColorMap = {
     confort_physique: { main: '#dc2626', dark: '#b91c1c', light: '#e8b8b0' },

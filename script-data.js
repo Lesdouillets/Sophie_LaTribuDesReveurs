@@ -2786,7 +2786,7 @@ const SCRIPT_DATA = {
                               ]
                             },
                             {
-                              type: "option", label: "Option : Pb de succion", emoji: "🍼", style: "purple",
+                              type: "option", label: "Option : Problème de succion", emoji: "🍼", style: "purple",
                               blocks: [
                                 {
                                   type: "normal",
