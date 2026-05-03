@@ -2675,7 +2675,57 @@ const SCRIPT_DATA = {
                         {
                           id: "nutri_lait_biberon_inversion_jn", emoji: "🌗", label: "Inversion jour/nuit",
                           pb: "nutri_inversion_jour_nuit",
-                          blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }]
+                          blocks: [
+                            {
+                              type: "normal", _leftTitle: "Constat",
+                              text: "- Vous m'avez parlé d'un petit **déséquilibre dans ses apports sur 24h**\n- [prénom_enfant] semble avoir **un peu inversé son rythme alimentaire** :\n  - il **mange peu en journée**\n  - et **se rattrape davantage la nuit**, quand il est avec vous\n- C'est **qqch qu'on rencontre assez souvent** chez les **BB qui sont gardés**"
+                            },
+                            {
+                              type: "normal", _leftTitle: "Cercle vicieux",
+                              text: "- Le soucis c'est que **la nuit, les prises alimentaires** sont souvent **moins efficaces** ⇒ parce que **BB est + fatigué**\n- Du coup :\n  - il **ne prend pas toujours**… **TOUTE la quantité** qu'il **aurait voulu**\n  - et ça peut **entretenir** un **cercle vicieux** :\n    - *Il mange peu le jour → se réveille la nuit → SAUF qu'il mange moins efficacement → et donc ça multiplie les réveils alimentaires la nuit*\n- La **bonne nouvelle,** c'est qu'on **peut CASSER** ce **cercle vicieux !**"
+                            },
+                            {
+                              type: "normal", _leftTitle: "Objectif",
+                              text: "- L'idée, doucement, c'est donc de **rééquilibrer les apports sur la JOURNÉE**"
+                            },
+                            {
+                              type: "normal",
+                              text: "- 🔥 Donc aujourd'hui, [prénom_enfant] va être sur **[nb_siestes_phrase]**, donc je vous conseille **[nb_biberons_phrase]** de <strong style=\"color:#dc2626;font-size:1.15em\">XX</strong> ml par jour"
+                            },
+                            { type: "nutri_repartition_table", _showStomachButton: true },
+                            {
+                              type: "normal",
+                              text: "- ⇒ Mais **s'il demande +**, vous pouvez lui **donner**\n  ⇒ Vous ne vous **posez pas de questions !**\n\n- ⇒ Les **indications**, c'est :\n  - **à la demande** *(💡 à savoir que la demi-vidange gastrique du lait infantile est de 74 min ≃ 1h15)*\n  - **à satiété** *(je rappelle, il doit toujours **rester un fond de lait** dans le **biberon**)*\n    - [Sil_Sielle] **détourne la tête** c'est qu'il a **fini de boire** OU qu'il **veut faire un rot**\n    - Mais il **peut redemander 1/4h** après ⇒ et **c'est OK** ⇒ Et on **lui re-propose**"
+                            },
+                            {
+                              type: "normal",
+                              text: "- Je vous encourage tout de même à :\n  - D'essayer de bien **dissocier l'alimentation et le sommeil**, pour ne **PAS qu'il s'endorme** sur son biberon\n  - De **proposer un biberon** idéalement **à chaque début de temps d'éveil**\n    ⇒ c'est souvent là que bébé est **le plus disponible pour boire efficacement**\n  - De **favoriser des prises + importantes le matin et en journée, si vous le pouvez**\n  - En DÉBUT de nuit, **laisser [prénom_enfant] prendre à volonté**,\n  - Puis, progressivement, diminuer **les prises en fin de nuit pour :**\n    - **avoir une grosse prise** au **réveil du matin**\n    - pour **donner** un **tempo** à la **journée**"
+                            },
+                            {
+                              type: "normal", _leftTitle: "Rappel des quantités",
+                              text: "- **Moins de 9 mois** : règle d'**Appert**\n- **9 - 12 mois** : entre **500 mL et 1 L**\n- **Plus d'1 an** : autour de **500 mL**"
+                            },
+                            {
+                              type: "normal", _noBorder: true,
+                              text: "<div style=\"background:#fef9e0;border:1.5px solid #f5d778;border-radius:10px;padding:10px 14px;margin:8px 0;font-size:13.5px;line-height:1.55;color:#7c2d12\">👍 Les signes que <strong>tout va bien</strong> :<ul style=\"margin:6px 0 0 22px;padding:0;list-style:disc\"><li><strong>Lait</strong> qui coule à la <strong>commissure des lèvres</strong></li><li><strong>Mains ouvertes</strong> en fin de repas</li><li>Un air <strong>groggy</strong></li></ul></div>"
+                            },
+                            {
+                              type: "normal",
+                              text: "- L'idée n'est pas de tout changer d'un coup,\n  ⇒ mais plutôt de **tester sur quelques jours** *(par exemple une semaine)*\n  ⇒ et d'observer comment [prénom_enfant] réagit"
+                            },
+                            {
+                              type: "normal", _leftTitle: "Conseillère lactation IBCLC",
+                              text: "- Vous pouvez aussi vous **faire aider** avec une **conseillère en lactation**, même si vous ne **donnez pas le sein** !",
+                              trailingInfoButton: {
+                                label: "Conseillère en lactation IBCLC",
+                                title: "💉 Conseillère en lactation IBCLC",
+                                blocks: [
+                                  { type: "normal", text: "- 💉 **Conseillère en lactation IBCLC : Fanny Rieussec** *(chez Fée Dodo)* qui pourra vous **aider sur ces sujets là**" },
+                                  { type: "normal", _noBorder: true, text: "<table style=\"border-collapse:collapse;width:100%;font-size:13px;line-height:1.4;margin-top:10px\"><thead><tr><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:left\">Spécialité</th><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:left\">Nom</th><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:center\">Tarif</th><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:left\">Réseau</th><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:left\">Remarque</th></tr></thead><tbody><tr><td rowspan=\"2\" style=\"border:1px solid #94a3b8;padding:8px;background:#f8fafc;font-weight:700;vertical-align:top\">Consultante en lactation IBCLC</td><td style=\"border:1px solid #94a3b8;padding:8px\">Fanny Rieussec <em>(Objectif Tétées)</em></td><td style=\"border:1px solid #94a3b8;padding:8px;text-align:center\">95€</td><td style=\"border:1px solid #94a3b8;padding:8px\">Réseau Fée Dodo</td><td style=\"border:1px solid #94a3b8;padding:8px\"></td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px\">Cécile Sérillon <em>(SOS allaitement 33)</em></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td></tr><tr><td rowspan=\"2\" style=\"border:1px solid #94a3b8;padding:8px;background:#f8fafc;font-weight:700;vertical-align:top\">Diététicienne nutritionniste pédiatrique</td><td style=\"border:1px solid #94a3b8;padding:8px\">Tiffany Deroyer</td><td style=\"border:1px solid #94a3b8;padding:8px;text-align:center\">75€</td><td style=\"border:1px solid #94a3b8;padding:8px\">Réseau Fée Dodo</td><td style=\"border:1px solid #94a3b8;padding:8px\">Souvent pris en charge par la Mutuelle</td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px\">Julia Mellanger <em>(L'avocate Nutritionniste)</em></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\">⚠️ En Suisse</td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px;background:#f8fafc;font-weight:700\">Frein restrictif</td><td style=\"border:1px solid #94a3b8;padding:8px\">Virginie Ferrandez <em>(Parents en confiance)</em></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px;background:#f8fafc;font-weight:700\">Frein Restrictif</td><td style=\"border:1px solid #94a3b8;padding:8px\">Annuaire Chirobliss <em>(chiropracteurs)</em></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td></tr></tbody></table>" }
+                                ]
+                              }
+                            }
+                          ]
                         }
                       ]
                     }
