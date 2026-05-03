@@ -2661,7 +2661,7 @@ const SCRIPT_DATA = {
                             },
                             {
                               type: "normal", _leftTitle: "Conseillère lactation IBCLC",
-                              text: "- Vous pouvez aussi vous **faire aider** avec une **conseillère en lactation**, même si vous ne **donnez pas le sein** !",
+                              text: "<div style=\"display:flex;align-items:center;min-height:60px;margin:0\">Vous pouvez aussi vous <strong>faire aider</strong> avec une <strong>conseillère en lactation</strong>, même si vous ne <strong>donnez pas le sein</strong> !</div>",
                               trailingInfoButton: {
                                 label: "Conseillère en lactation IBCLC",
                                 title: "💉 Conseillère en lactation IBCLC",
@@ -2729,7 +2729,7 @@ const SCRIPT_DATA = {
                             },
                             {
                               type: "normal", _leftTitle: "Conseillère lactation IBCLC",
-                              text: "- Vous pouvez aussi vous **faire aider** avec une **conseillère en lactation**, même si vous ne **donnez pas le sein** !",
+                              text: "<div style=\"display:flex;align-items:center;min-height:60px;margin:0\">Vous pouvez aussi vous <strong>faire aider</strong> avec une <strong>conseillère en lactation</strong>, même si vous ne <strong>donnez pas le sein</strong> !</div>",
                               trailingInfoButton: {
                                 label: "Conseillère en lactation IBCLC",
                                 title: "💉 Conseillère en lactation IBCLC",

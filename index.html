@@ -9978,7 +9978,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   if (b.type === 'grouped_block') {
     const innerBlocks = Array.isArray(b.blocks) ? b.blocks : [];
     const innerHtml = renderBlocks(innerBlocks, sectionId, (depth||0)+1, `${path||i}.gb`);
-    return `<div class="grouped-block">${innerHtml}</div>`;
+    const extraCls = b._class ? ` ${b._class}` : '';
+    return `<div class="grouped-block${extraCls}">${innerHtml}</div>`;
   }
 
   // Bloc "Conclusion Nutrition" — barre latérale orange épaisse avec "Conclusion" horizontal + fond orange pâle
