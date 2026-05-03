@@ -10097,10 +10097,12 @@ function renderBlockInner(b, i, sectionId, depth, path) {
             <tbody>${rows}</tbody>
           </table>
         </div>
-        <div id="nutri-repart-side" class="nutri-repart-side">
-          <div class="side-title">Nb tétées</div>
-          <div class="side-row"><span class="side-label">Si capacité 120 mL :</span> <span class="side-val side-120">${initN120}</span></div>
-          <div class="side-row"><span class="side-label">Si capacité 150 mL :</span> <span class="side-val side-150">${initN150}</span></div>
+        <div class="nutri-repart-right-col" style="display:flex;flex-direction:column;gap:10px;flex-shrink:0">
+          <div id="nutri-repart-side" class="nutri-repart-side">
+            <div class="side-title">Nb tétées</div>
+            <div class="side-row"><span class="side-label">Si capacité 120 mL :</span> <span class="side-val side-120">${initN120}</span></div>
+            <div class="side-row"><span class="side-label">Si capacité 150 mL :</span> <span class="side-val side-150">${initN150}</span></div>
+          </div>
           ${stomachBtnHtml}
         </div>
       </div>
