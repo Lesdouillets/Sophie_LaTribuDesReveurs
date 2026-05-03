@@ -10760,7 +10760,23 @@ function renderSolutionsCheckboxes(opts) {
                     nestedSubRows = `<div style="padding-left:24px;display:flex;flex-direction:column;gap:3px;margin-top:3px">` +
                       nestedVisible.map(sub => {
                         const subTicked = state.courbeCardsTicked.has(sub.id);
-                        return `<label style="display:flex;align-items:center;gap:6px;font-size:13.5px;cursor:pointer"><input type="checkbox" ${subTicked?'checked':''} onchange="toggleCourbeCardTickFromSol('${sub.id}')"> ${sub.emoji || ''} ${sub.label || sub.id}</label>`;
+                        // Sous-sous-sous : si sub a son propre courbe_cards_grid (ex. Espacement → Espacement/Inversion)
+                        let subSubRows = '';
+                        if (Array.isArray(sub.blocks)) {
+                          const subNestedGrid = sub.blocks.find(bb => bb && bb.type === 'courbe_cards_grid' && Array.isArray(bb.items));
+                          if (subNestedGrid) {
+                            const subNestedVisible = subNestedGrid.items.filter(s => !isHiddenByAge(s));
+                            if (subNestedVisible.length) {
+                              subSubRows = `<div style="padding-left:24px;display:flex;flex-direction:column;gap:3px;margin-top:3px">` +
+                                subNestedVisible.map(s => {
+                                  const sTicked = state.courbeCardsTicked.has(s.id);
+                                  return `<label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer"><input type="checkbox" ${sTicked?'checked':''} onchange="toggleCourbeCardTickFromSol('${s.id}')"> ${s.emoji || ''} ${s.label || s.id}</label>`;
+                                }).join('') +
+                                `</div>`;
+                            }
+                          }
+                        }
+                        return `<div><label style="display:flex;align-items:center;gap:6px;font-size:13.5px;cursor:pointer"><input type="checkbox" ${subTicked?'checked':''} onchange="toggleCourbeCardTickFromSol('${sub.id}')"> ${sub.emoji || ''} ${sub.label || sub.id}</label>${subSubRows}</div>`;
                       }).join('') +
                       `</div>`;
                   }

@@ -2619,7 +2619,7 @@ const SCRIPT_DATA = {
                       forceAllItems: true,
                       items: [
                         {
-                          id: "nutri_lait_biberon_espacement_normal", emoji: "⏱️", label: "Espacement",
+                          id: "nutri_lait_biberon_espacement_normal", emoji: "⏱️", label: "Espacement (si + que 2 siestes)",
                           blocks: [
                             {
                               type: "normal", _leftTitle: "Conseils",
