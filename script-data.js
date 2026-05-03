@@ -2615,15 +2615,26 @@ const SCRIPT_DATA = {
                   id: "nutri_lait_biberon_espacement", emoji: "⏱️", label: "Espacement",
                   blocks: [
                     {
-                      type: "normal", _leftTitle: "Conseils",
-                      text: "- Je voudrais qu'**on n'oubli le grand mythe des espacements de 4h**, qui ne sont **basés sur RIEN DU TOUT !**\n- La **PNNS** *(Programme National Nutrition et Santé)*, **CONFIRME** qu'un **bébé** doit être **nourrit à la demande**, comme **les bébés allaités !**"
+                      type: "courbe_cards_grid",
+                      alwaysShowAll: true,
+                      items: [
+                        {
+                          id: "nutri_lait_biberon_espacement_normal", emoji: "⏱️", label: "Espacement",
+                          blocks: [
+                            {
+                              type: "normal", _leftTitle: "Conseils",
+                              text: "- Je voudrais qu'**on n'oubli le grand mythe des espacements de 4h**, qui ne sont **basés sur RIEN DU TOUT !**\n- La **PNNS** *(Programme National Nutrition et Santé)*, **CONFIRME** qu'un **bébé** doit être **nourrit à la demande**, comme **les bébés allaités !**"
+                            }
+                          ]
+                        },
+                        {
+                          id: "nutri_lait_biberon_inversion_jn", emoji: "🌗", label: "Inversion jour/nuit",
+                          pb: "nutri_inversion_jour_nuit",
+                          blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }]
+                        }
+                      ]
                     }
                   ]
-                },
-                {
-                  id: "nutri_lait_biberon_inversion_jn", emoji: "🌗", label: "Inversement jour/nuit",
-                  pb: "nutri_inversion_jour_nuit",
-                  blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }]
                 },
                 {
                   id: "nutri_lait_biberon_tetine", emoji: "🫧", label: "Tétine de biberon",

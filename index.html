@@ -13166,6 +13166,17 @@ function toggleCourbeCardTickFromSol(itId) {
       state.selectedSolutionsManuallyEdited.add(other);
     });
   }
+  // Mutex : Espacement vs Inversion jour/nuit (sous-cartes du parent nutri_lait_biberon_espacement)
+  // → cocher l'une décoche automatiquement l'autre
+  const ESPACEMENT_SUBS = ['nutri_lait_biberon_espacement_normal', 'nutri_lait_biberon_inversion_jn'];
+  if (!wasTicked && ESPACEMENT_SUBS.includes(itId)) {
+    ESPACEMENT_SUBS.forEach(sub => {
+      if (sub !== itId) {
+        state.courbeCardsTicked.delete(sub);
+        state.courbeCardsTickedManuallyEdited.add(sub);
+      }
+    });
+  }
   // Chercher la chaîne de parents : (cat) → ch (solution) → it (sub-item, niveau 1) → sub (sub-sub-item, niveau 2)
   // itId peut être à 2 niveaux : direct enfant d'un ch.blocks grid (niveau 1)
   // OU enfant d'un it.blocks grid (niveau 2, ex. env_chgmt_lit_cododo_barreau dans env_chgmt_lit)
