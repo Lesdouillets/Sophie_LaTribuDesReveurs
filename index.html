@@ -13516,6 +13516,8 @@ function toggleCourbeCardTickFromSol(itId) {
   // Cascade : empêche parent d'être tické sans enfant tické (override toute édition manuelle parent)
   if (typeof applyParentTickCascade === 'function') applyParentTickCascade();
   if (typeof renderCurrentSection === 'function') renderCurrentSection();
+  if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
+  if (typeof updateFicheSolutions === 'function') updateFicheSolutions();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.toggleCourbeCardTickFromSol = toggleCourbeCardTickFromSol;
