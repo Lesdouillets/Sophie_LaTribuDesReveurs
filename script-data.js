@@ -2533,7 +2533,49 @@ const SCRIPT_DATA = {
                 },
                 {
                   id: "nutri_lait_biberon_quantite", emoji: "🔢", label: "Quantité",
-                  blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }]
+                  blocks: [
+                    {
+                      type: "normal", _leftTitle: "Conseils",
+                      text: "- En terme de **quantité PAR BIBERON**, je vous conseille de :\n  - vraiment vous **défaire** de ce qu'on **peut lire** sur les **boîtes de lait** qui :\n    - sont **TOTALEMENT erronées**\n    - ET **non-justifiées**\n\n    ⇒ ça a été **créé par les industriels** et ça ne **S'APPUIE** sur **AUCUNE recommandation** de l'OMS et de la PNNS *(Programme National Nutrition et Santé)*",
+                      trailingInfoButtons: [
+                        {
+                          label: "Tétine / petit doigt à sucer / mâchonnage de poing / pouce = coupe-faim",
+                          title: "Tétine / petit doigt à sucer / mâchonnage de poing / pouce = coupe-faim",
+                          blocks: [
+                            { type: "normal", text: "- Peut **répondre à un réflexe de succion**\n\n  **MAIS** peut aussi **faire office d'illusion** puisqu'elle **« dupe » le cerveau** :\n  - [prénom_enfant] **« tète et déglutit »** avec la tétine\n    ⇒ donc le cerveau pense que **qqch rentre dans son estomac** … MAIS **rien ne rentre**…\n  - et au bout d'un moment :\n    - **l'illusion se perd**\n    - et la **faim se fait ressentir**\n- Même si **vous remettez la tétine** :\n  - il n'en **veut pas**\n  - et **il pleure**\n\n  ⇒ Parce qu'il **veut AUTRE CHOSE**\n\n= La **tétine** joue donc le **rôle d'un « cache-faim »**" }
+                          ]
+                        },
+                        {
+                          label: "Pas de selle dans la journée = manque d'apport",
+                          title: "Pas de selle dans la journée = manque d'apport",
+                          blocks: [
+                            { type: "normal", text: "- Une **absence de selles** signifie **« manque d'apport alimentaire »**\n\n  ⇒ Comme le **corps ne reçoit pas assez**, il **puise TOUT** ce qu'il peut **pour pouvoir « tenir »**\n- 🎓 Constipation = petites billes noires" }
+                          ]
+                        },
+                        {
+                          label: "Gros biberon ⇒ bib moins gros",
+                          title: "Gros biberon ⇒ bib moins gros",
+                          blocks: [
+                            { type: "normal", text: "- Si on propose des **biberons moins espacés**,\n  - il comprendra qu'il n'a **pas besoin de prendre autant**\n    - et de **lui-même**, il va prendre des **biberons moins gros**" }
+                          ]
+                        },
+                        {
+                          label: "OPTION grève des tétées",
+                          title: "OPTION grève des tétées",
+                          blocks: [
+                            { type: "normal", text: "- Et la **« grève des tétées »** pourrait **être une réponse** au fait que **l'effort pour obtenir le lait** est devenu **trop important**.\n- Dans **certains cas**, les BB vont **« peser le pour et le contre »** :\n  - entre **l'effort pour téter**\n  - et la **quantité de lait reçue**\n- et parfois, **la balance penche du côté de l'effort**… alors ils **préfèrent refuser la tétée**.\n- ⇒ ils se **mettent en mode « veille »**\n\n- Ça peut être dû à :\n  - Un changement de rythme (mode de garde ?)\n  - Un pb de succion" }
+                          ]
+                        },
+                        {
+                          label: "Si refus du biberon",
+                          title: "Si refus du biberon",
+                          blocks: [
+                            { type: "normal", text: "- Vous pouvez proposer un **autre contenant** (avec une taille ?)" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 },
                 {
                   id: "nutri_lait_biberon_espacement", emoji: "⏱️", label: "Espacement",
