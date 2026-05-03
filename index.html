@@ -4147,6 +4147,16 @@
       background: #bbf7d0; color: #14532d; font-weight: 800;
       box-shadow: inset 0 0 0 2px #16a34a;
     }
+    /* Glow sur la cellule optimale de la ligne correspondant au nb biberons recommandé.
+       Animation pulsée orange — attire l'œil sur la combinaison recommandée. */
+    @keyframes nutri-repart-glow-pulse {
+      0%, 100% { box-shadow: inset 0 0 0 2px #16a34a, 0 0 6px rgba(245, 158, 11, 0.55), 0 0 0 0 rgba(245, 158, 11, 0); }
+      50%      { box-shadow: inset 0 0 0 2px #16a34a, 0 0 22px rgba(245, 158, 11, 0.95), 0 0 36px rgba(245, 158, 11, 0.55); }
+    }
+    .nutri-repart-tbl td.cell.recommended-glow {
+      animation: nutri-repart-glow-pulse 1.6s ease-in-out infinite;
+      position: relative; z-index: 1;
+    }
     .nutri-repart-side {
       background: #fff; border: 1.5px solid #fde68a; border-radius: 8px;
       padding: 10px 14px; min-width: 220px; flex-shrink: 0;
@@ -7707,14 +7717,19 @@ function updateNutriRepartTable() {
   const apperVol = Math.round(p * 100 + add);
   volEl.textContent = apperVol + ' mL (± 100 mL)';
   // Pour chaque ligne, surligner la cellule dont la valeur est la + petite ≥ apperVol
+  // + glow sur la cellule optimale de la ligne marquée "is-recommended" (= nb biberons recommandé)
   tbl.querySelectorAll('tr.data-row').forEach(row => {
     const cells = [...row.querySelectorAll('td.cell')];
+    cells.forEach(c => c.classList.remove('recommended-glow'));
     let bestCell = null, bestVal = Infinity;
     cells.forEach(c => {
       const v = parseInt(c.dataset.value, 10);
       if (v >= apperVol && v < bestVal) { bestVal = v; bestCell = c; }
     });
-    if (bestCell) bestCell.classList.add('highlight');
+    if (bestCell) {
+      bestCell.classList.add('highlight');
+      if (row.classList.contains('is-recommended')) bestCell.classList.add('recommended-glow');
+    }
   });
   if (sideEl) {
     const c120 = sideEl.querySelector('.side-120');
@@ -10019,16 +10034,25 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       initApper = Math.round(p * 100 + (p < 6 ? 200 : 250));
       initVolText = initApper + ' mL (± 100 mL)';
     }
+    // Nb biberons recommandé d'après la sieste de la fiche client (= nb_siestes + 1)
+    // Sert à mettre un GLOW sur la cellule optimale de la ligne correspondante
+    const _nbSiestesMap = { '2-4m': 4, '4-6m': 3, '6-8m': 3, '8-10m': 3, '8-15m': 2, '15-20m': 2, '15m-3a': 1, '4a-plus': 1 };
+    const _siesteCat = (state && state.client && state.client.sieste) || '';
+    const nbBibsRecommended = _nbSiestesMap[_siesteCat] != null ? _nbSiestesMap[_siesteCat] + 1 : null;
     const headerCols = volBibs.map(v => `<th>${v}</th>`).join('');
     const rows = nbBibs.map(nb => {
       const rowVals = volBibs.map(v => nb * v);
       const minOk = initApper ? Math.min(...rowVals.filter(x => x >= initApper).concat([Infinity])) : null;
+      const isRecommendedRow = nbBibsRecommended === nb;
       const tds = volBibs.map((v, i) => {
         const val = rowVals[i];
         const isHL = initApper && val === minOk && val !== Infinity;
-        return `<td class="cell${isHL ? ' highlight' : ''}" data-value="${val}">${val}</td>`;
+        const isGlow = isHL && isRecommendedRow;
+        const cls = `cell${isHL ? ' highlight' : ''}${isGlow ? ' recommended-glow' : ''}`;
+        return `<td class="${cls}" data-value="${val}">${val}</td>`;
       }).join('');
-      return `<tr class="data-row" data-nb="${nb}"><td class="rowhead">${nb}</td>${tds}</tr>`;
+      const rowCls = `data-row${isRecommendedRow ? ' is-recommended' : ''}`;
+      return `<tr class="${rowCls}" data-nb="${nb}"><td class="rowhead">${nb}</td>${tds}</tr>`;
     }).join('');
     const initN120 = initApper ? (initApper / 120).toFixed(1) : '–';
     const initN150 = initApper ? (initApper / 150).toFixed(1) : '–';
