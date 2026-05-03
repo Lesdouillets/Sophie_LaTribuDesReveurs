@@ -3683,12 +3683,16 @@
     }
     .sol-floating-btn {
       position: relative;
-      width: 200px; height: 200px;
+      width: 130px; height: 130px;
       border: none; background: transparent !important;
       cursor: pointer; padding: 0;
-      opacity: 0.9;
+      opacity: 0.85;
       transition: transform 0.15s, opacity 0.15s;
     }
+    .sol-floating-btn:hover { opacity: 1; }
+    /* Réduire la taille de la police interne pour qu'elle reste lisible dans la bulle plus petite */
+    .sol-floating-btn-content span:first-child { font-size: 22px !important; }
+    .sol-floating-btn-content span:last-child { font-size: 10.5px !important; line-height: 1.15 !important; }
     .sol-floating-btn:hover { transform: scale(1.06); opacity: 1; }
     .sol-floating-btn:active { transform: scale(0.97); }
     .sol-floating-btn-svg {
@@ -9054,7 +9058,23 @@ function togglePb(value, checked) {
 // NAVIGATION
 // ═══════════════════════════════════════════════════
 function navigateTo(idx) {
-  // Bloquer si des tickboxes obligatoires VISIBLES ne sont pas répondues — on ne peut pas quitter la section
+  // Bloquer si on quitte la section IV. Objectifs sans avoir répondu aux choix obligatoires :
+  // — Si "Changer le lit" est sélectionné dans obj_lieu_sommeil, alors obj_chgmt_lit_type doit aussi être sélectionné.
+  if (idx !== state.currentIdx) {
+    const choices = state.tickboxChoices || {};
+    if (choices['obj_lieu_sommeil'] === 'changer_lit' && !choices['obj_chgmt_lit_type']) {
+      // Trouve la sous-question dans le DOM pour scroller dessus + animation shake
+      const subQ = document.querySelector('.block-tickbox-choice[data-choice-id="obj_chgmt_lit_type"]');
+      if (subQ) {
+        subQ.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        subQ.classList.add('tbc-shake');
+        setTimeout(() => subQ.classList.remove('tbc-shake'), 800);
+      }
+      alert('⚠️ Vous avez choisi "Changer le lit" — veuillez sélectionner le type de transition (Cododo ⇒ Lit à barreaux OU Lit à barreaux ⇒ Lit ouvert) avant de continuer.');
+      return;
+    }
+  }
+  // Bloquer aussi si d'autres tickboxes obligatoires VISIBLES ne sont pas répondues
   const area = document.getElementById('content-area');
   if (area && idx !== state.currentIdx) {
     const unanswered = area.querySelectorAll('.block-tickbox-choice[data-required="true"]:not([data-answered="true"])');
