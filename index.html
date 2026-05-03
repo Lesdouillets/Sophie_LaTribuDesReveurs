@@ -1581,17 +1581,26 @@
     .columns-2-grid[data-active-col="3"] > .col-2[data-col-idx="3"] > .col-2-body {
       display: block;
     }
-    /* Body de la carte de droite (V. Diagnostic) : 1 colonne — chaque pill prend toute la largeur de la page */
+    /* Body de la carte de droite (V. Diagnostic) : grille 2 colonnes — vert+rouge sur la 1ère ligne, jaune (orphelin) centré en row 2 */
     .columns-2-grid[data-active-col="2"] > .col-2-right > .col-2-body-right {
-      display: flex !important;
-      flex-direction: column !important;
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
       gap: 10px !important;
-      grid-template-columns: none !important;
+      align-content: start !important;
+      justify-items: stretch !important;
     }
     .columns-2-grid[data-active-col="2"] > .col-2-right > .col-2-body-right > .edit-block-wrap {
       width: 100% !important;
       max-width: 100% !important;
       margin: 0 !important;
+    }
+    /* Jaune (3e enfant orphelin) : spanne les 2 colonnes, centré horizontalement */
+    .columns-2-grid[data-active-col="2"] > .col-2-right > .col-2-body-right > .edit-block-wrap:nth-child(3) {
+      grid-column: 1 / -1 !important;
+      justify-self: center !important;
+      width: calc(50% - 5px) !important;
+      max-width: 50% !important;
+      margin-top: 4px !important;
     }
     /* Cartes non-actives masquées quand une carte est ouverte */
     .columns-2-grid[data-active-col="1"] > .col-2:not([data-col-idx="1"]),
