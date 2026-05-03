@@ -10305,26 +10305,28 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const rightBlocks = Array.isArray(b.right) ? b.right : [];
     const thirdBlocks = Array.isArray(b.third) ? b.third : [];
     const hasThird = thirdBlocks.length > 0;
-    const leftTitle = b.leftTitle ? `<div class="col-2-title">${substituteVars(b.leftTitle)}</div>` : '';
-    const rightTitle = b.rightTitle ? `<div class="col-2-title">${substituteVars(b.rightTitle)}</div>` : '';
-    const thirdTitle = b.thirdTitle ? `<div class="col-2-title">${substituteVars(b.thirdTitle)}</div>` : '';
+    if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
+    const colTickId = (idx) => `col2-${sectionId||'x'}-${String(path||i).replace(/\./g,'-')}-${idx}`;
+    const titleWithTick = (rawTitle, idx) => {
+      if (!rawTitle) return '';
+      const tid = colTickId(idx);
+      const ticked = state.cardPersonalTicks.has(tid);
+      const tickHtml = `<span class="col2-tick" onclick="event.stopPropagation(); toggleCol2Tick(this, '${tid}')" style="margin-left:auto;font-size:22px;cursor:pointer;user-select:none;line-height:1;padding:0 4px;color:#fff">${ticked ? '✅' : '☐'}</span>`;
+      return `<div class="col-2-title" style="position:relative;justify-content:flex-start;gap:8px"><span style="flex:1;text-align:center">${substituteVars(rawTitle)}</span>${tickHtml}</div>`;
+    };
+    const leftTitle = titleWithTick(b.leftTitle, 1);
+    const rightTitle = titleWithTick(b.rightTitle, 2);
+    const thirdTitle = titleWithTick(b.thirdTitle, 3);
     const thirdStyleCls = b.thirdStyle ? ` col-3-${b.thirdStyle}` : '';
     // Par défaut : aucune carte ouverte (0) — toutes visibles côte à côte. Compat ancien defaultActive.
     const activeCol = (b.defaultActive === 1 || b.defaultActive === 2 || b.defaultActive === 3) ? b.defaultActive : 0;
     const gridCls = hasThird ? 'columns-2-grid columns-3' : 'columns-2-grid';
-    if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
-    const colTickId = (idx) => `col2-${sectionId||'x'}-${String(path||i).replace(/\./g,'-')}-${idx}`;
-    const tickIconHtml = (idx) => {
-      const tid = colTickId(idx);
-      const ticked = state.cardPersonalTicks.has(tid);
-      return `<span class="col2-tick" onclick="event.stopPropagation(); toggleCol2Tick(this, '${tid}')" style="position:absolute;top:8px;right:12px;font-size:20px;cursor:pointer;user-select:none;line-height:1;padding:4px;z-index:5">${ticked ? '✅' : '☐'}</span>`;
-    };
     const thirdHtml = hasThird
-      ? `<div class="col-2 col-2-third${thirdStyleCls}" data-col-idx="3" onclick="setColumns2Active(this, 3)">${tickIconHtml(3)}${thirdTitle}${renderBlocks(thirdBlocks, sectionId, (depth||0)+1, `${path||i}.col.T`)}</div>`
+      ? `<div class="col-2 col-2-third${thirdStyleCls}" data-col-idx="3" onclick="setColumns2Active(this, 3)">${thirdTitle}${renderBlocks(thirdBlocks, sectionId, (depth||0)+1, `${path||i}.col.T`)}</div>`
       : '';
     return `<div class="${gridCls}" data-active-col="${activeCol}">
-      <div class="col-2 col-2-left" data-col-idx="1" onclick="setColumns2Active(this, 1)">${tickIconHtml(1)}${leftTitle}${renderBlocks(leftBlocks, sectionId, (depth||0)+1, `${path||i}.col.L`)}</div>
-      <div class="col-2 col-2-right" data-col-idx="2" onclick="setColumns2Active(this, 2)">${tickIconHtml(2)}${rightTitle}${renderBlocks(rightBlocks, sectionId, (depth||0)+1, `${path||i}.col.R`)}</div>
+      <div class="col-2 col-2-left" data-col-idx="1" onclick="setColumns2Active(this, 1)">${leftTitle}${renderBlocks(leftBlocks, sectionId, (depth||0)+1, `${path||i}.col.L`)}</div>
+      <div class="col-2 col-2-right" data-col-idx="2" onclick="setColumns2Active(this, 2)">${rightTitle}${renderBlocks(rightBlocks, sectionId, (depth||0)+1, `${path||i}.col.R`)}</div>
       ${thirdHtml}
     </div>`;
   }
