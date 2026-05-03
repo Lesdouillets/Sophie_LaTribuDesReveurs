@@ -2400,6 +2400,42 @@
       justify-content: center;
     }
 
+    /* ── V. Diagnostic — "Difficultés identifiées" : 3 pills compactes 280px centrées,
+       pleine largeur quand une pill est ouverte (override des règles ci-dessus) ── */
+    .columns-2-grid[data-active-col="2"] > .col-2-right > .col-2-body-right:not(:has(> .edit-block-wrap > .block-option.open-action)) {
+      display: grid !important;
+      grid-template-columns: repeat(2, 280px) !important;
+      justify-content: center !important;
+      gap: 12px !important;
+      align-content: start !important;
+      justify-items: center !important;
+    }
+    .columns-2-grid[data-active-col="2"] > .col-2-right > .col-2-body-right:not(:has(> .edit-block-wrap > .block-option.open-action)) > .edit-block-wrap {
+      width: 280px !important;
+      max-width: 280px !important;
+      min-width: 0 !important;
+      flex: 0 0 auto !important;
+      margin: 0 !important;
+      justify-self: center !important;
+    }
+    .columns-2-grid[data-active-col="2"] > .col-2-right > .col-2-body-right:not(:has(> .edit-block-wrap > .block-option.open-action)) > .edit-block-wrap:nth-child(3) {
+      grid-column: 1 / -1 !important;
+      justify-self: center !important;
+      width: 280px !important;
+      max-width: 280px !important;
+      margin: 4px 0 0 !important;
+    }
+    /* Pill OUVERTE : body en bloc, le wrapper ouvert prend 100% de la carte (= pleine largeur de la page) */
+    .columns-2-grid[data-active-col="2"] > .col-2-right > .col-2-body-right:has(> .edit-block-wrap > .block-option.open-action) {
+      display: block !important;
+    }
+    .columns-2-grid[data-active-col="2"] > .col-2-right > .col-2-body-right > .edit-block-wrap:has(> .block-option.open-action) {
+      width: 100% !important;
+      max-width: 100% !important;
+      flex: none !important;
+      margin: 0 !important;
+    }
+
     /* 2+ boutons ACTION frères (top-level ou imbriqués) : côte-à-côte
        Ne s'applique QUE si le wrapper a un wrapper-action frère (avant ou après), pour ne pas affecter un bouton action isolé. */
     .edit-block-wrap:has(> .block-option.action:not(.open-action)):has(~ .edit-block-wrap > .block-option.action:not(.open-action)),
