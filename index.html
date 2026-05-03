@@ -12159,6 +12159,7 @@ function substituteVars(text) {
     .replace(/\[il_elle\]/g, isFille ? 'elle' : 'il')
     .replace(/\[Il_Elle\]/g, isFille ? 'Elle' : 'Il')
     .replace(/\[lui_elle\]/g, isFille ? 'elle' : 'lui')
+    .replace(/\[LUI_ELLE\]/g, isFille ? 'ELLE' : 'LUI')
     .replace(/\[dependant_dependante\]/g, isFille ? 'dépendante' : 'dépendant')
     .replace(/\[TOUT_SEUL\]/g, isFille ? 'TOUTE SEULE' : 'TOUT SEUL')
     .replace(/\[tout_seul\]/g, isFille ? 'toute seule' : 'tout seul')
