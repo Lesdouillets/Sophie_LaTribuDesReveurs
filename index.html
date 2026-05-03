@@ -13476,12 +13476,22 @@ function toggleCourbeCardTick(tickEl) {
   // state.cardPersonalTicks : purement perso (où en est la consultante)
   // → n'influence rien d'autre (ni sous-checkboxes, ni parent, ni sync V. Diagnostic)
   if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
-  if (state.cardPersonalTicks.has(cardId)) {
+  const wasTicked = state.cardPersonalTicks.has(cardId);
+  if (wasTicked) {
     state.cardPersonalTicks.delete(cardId);
     tickEl.textContent = '☐';
   } else {
     state.cardPersonalTicks.add(cardId);
     tickEl.textContent = '✅';
+  }
+  // Mutex : Espacement vs Inversion jour/nuit (sous-cartes du parent nutri_lait_biberon_espacement)
+  // → cocher l'une décoche automatiquement l'autre (dans la module solution)
+  const ESPACEMENT_SUBS = ['nutri_lait_biberon_espacement_normal', 'nutri_lait_biberon_inversion_jn'];
+  if (!wasTicked && ESPACEMENT_SUBS.includes(cardId)) {
+    ESPACEMENT_SUBS.forEach(sub => {
+      if (sub !== cardId) state.cardPersonalTicks.delete(sub);
+    });
+    if (typeof renderCurrentSection === 'function') renderCurrentSection();
   }
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
