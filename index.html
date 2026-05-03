@@ -2464,6 +2464,8 @@
       margin-bottom: 10px;
     }
     .block-tickbox-choice[data-answered="true"] .tbc-required { display: none; }
+    @keyframes tbc-shake { 0%,100% { transform: translateX(0); } 20%,60% { transform: translateX(-6px); } 40%,80% { transform: translateX(6px); } }
+    .block-tickbox-choice.tbc-shake { animation: tbc-shake 0.4s ease-in-out 2; box-shadow: 0 0 0 3px #fecaca; border-radius: 8px; }
     .block-tickbox-choice .tbc-options {
       display: flex; gap: 10px; flex-wrap: wrap;
     }
