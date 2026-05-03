@@ -12014,7 +12014,17 @@ function showLitTransitionDialog(onAfterChoice) {
         if (typeof renderCurrentSection === 'function') renderCurrentSection();
       }
       overlay.remove();
-      if (typeof onAfterChoice === 'function') onAfterChoice();
+      // Fermer l'option violette "Lieu de sommeil" après le re-render (mais elle reste visible en tant que bouton fermé)
+      // Le setTimeout 60ms attend que selectTickboxChoice termine son re-render + sa restauration des options ouvertes (setTimeout 0)
+      setTimeout(() => {
+        document.querySelectorAll('.block-option.purple-btn.open-action').forEach(opt => {
+          if (opt.querySelector('.block-tickbox-choice[data-choice-id="obj_chgmt_lit_type"]')) {
+            const header = opt.querySelector(':scope > .option-header');
+            if (header && typeof toggleOption === 'function') toggleOption(header);
+          }
+        });
+        if (typeof onAfterChoice === 'function') onAfterChoice();
+      }, 60);
     });
   });
   overlay.querySelector('.ltd-cancel').addEventListener('click', () => { overlay.remove(); });
