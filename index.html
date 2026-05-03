@@ -4199,6 +4199,8 @@
     .grouped-block.options-2col-grid > .edit-block-wrap:has(> .block-option.open-action) {
       grid-column: 1 / -1;
     }
+    /* Masquer "Dérouler" / "Réduire" sur les options dans la grille 2 colonnes (sobriété visuelle) */
+    .grouped-block.options-2col-grid .option-toggle { display: none; }
     /* Dans le modal info-panel (largeur 600px), passer le layout en colonne
        (panneau "Nb tétées" SOUS le tableau biberon) pour que le tableau ait toute la
        largeur disponible et soit visible sans scroll horizontal. */
