@@ -2533,6 +2533,7 @@ const SCRIPT_DATA = {
                 },
                 {
                   id: "nutri_lait_biberon_quantite", emoji: "🔢", label: "Quantité",
+                  showIfAgeMaxMonths: 36,
                   blocks: [
                     {
                       type: "normal", _leftTitle: "Se détacher des quantités des boîtes de lait",
