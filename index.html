@@ -1558,6 +1558,9 @@
       margin-top: 14px;
       padding: 14px 16px;
       text-align: left;
+      width: 100%;
+      box-sizing: border-box;
+      align-self: stretch;
     }
     /* Carte ACTIVE : pleine largeur + body visible */
     .columns-2-grid[data-active-col="1"] > .col-2[data-col-idx="1"],
@@ -10388,11 +10391,11 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const activeCol = (b.defaultActive === 1 || b.defaultActive === 2 || b.defaultActive === 3) ? b.defaultActive : 0;
     const gridCls = hasThird ? 'columns-2-grid columns-3' : 'columns-2-grid';
     const thirdHtml = hasThird
-      ? `<div class="col-2 col-2-third${thirdStyleCls}" data-col-idx="3" onclick="setColumns2Active(this, 3)">${thirdTitle}<div class="col-2-body">${renderBlocks(thirdBlocks, sectionId, (depth||0)+1, `${path||i}.col.T`)}</div></div>`
+      ? `<div class="col-2 col-2-third${thirdStyleCls}" data-col-idx="3" onclick="setColumns2Active(this, 3)">${thirdTitle}<div class="col-2-body" onclick="event.stopPropagation()">${renderBlocks(thirdBlocks, sectionId, (depth||0)+1, `${path||i}.col.T`)}</div></div>`
       : '';
     return `<div class="${gridCls}" data-active-col="${activeCol}">
-      <div class="col-2 col-2-left" data-col-idx="1" onclick="setColumns2Active(this, 1)">${leftTitle}<div class="col-2-body">${renderBlocks(leftBlocks, sectionId, (depth||0)+1, `${path||i}.col.L`)}</div></div>
-      <div class="col-2 col-2-right" data-col-idx="2" onclick="setColumns2Active(this, 2)">${rightTitle}<div class="col-2-body col-2-body-right">${renderBlocks(rightBlocks, sectionId, (depth||0)+1, `${path||i}.col.R`)}</div></div>
+      <div class="col-2 col-2-left" data-col-idx="1" onclick="setColumns2Active(this, 1)">${leftTitle}<div class="col-2-body" onclick="event.stopPropagation()">${renderBlocks(leftBlocks, sectionId, (depth||0)+1, `${path||i}.col.L`)}</div></div>
+      <div class="col-2 col-2-right" data-col-idx="2" onclick="setColumns2Active(this, 2)">${rightTitle}<div class="col-2-body col-2-body-right" onclick="event.stopPropagation()">${renderBlocks(rightBlocks, sectionId, (depth||0)+1, `${path||i}.col.R`)}</div></div>
       ${thirdHtml}
     </div>`;
   }
