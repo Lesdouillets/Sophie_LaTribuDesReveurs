@@ -5784,19 +5784,19 @@ const SCRIPT_DATA = {
                   {
                     id: "accomp_rappels_chaise_coucher_j1", emoji: "🪑", label: "Accompagnement chaise : Sortir après le coucher au Jour 1 <em>(Dépendance à la présence +)</em>",
                     blocks: [
-                      { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                      { type: "normal", _leftTitle: "Excitant de communiquer", text: "- Il n'y a **RIEN de PLUS excitant** que de **communiquer** avec Papa et Maman.\n- Et **tous les moyens sont bons** pour **maintenir ce lien** !" }
                     ]
                   },
                   {
                     id: "accomp_rappels_allers_retours", emoji: "🚶", label: "Allers-retours <em>(Dépendance à la présence ++)</em>",
                     blocks: [
-                      { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                      { type: "normal", _leftTitle: "Excitant de communiquer", text: "- Il n'y a **RIEN de PLUS excitant** que de **communiquer** avec Papa et Maman.\n- Et **tous les moyens sont bons** pour **maintenir ce lien** !" }
                     ]
                   },
                   {
                     id: "accomp_rappels_porte_fermee", emoji: "🚪", label: "Intervenir porte fermée <em>(Dépendance à la présence +++)</em>",
                     blocks: [
-                      { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                      { type: "normal", _leftTitle: "Excitant de communiquer", text: "- Il n'y a **RIEN de PLUS excitant** que de **communiquer** avec Papa et Maman.\n- Et **tous les moyens sont bons** pour **maintenir ce lien** !" }
                     ]
                   }
                 ]
