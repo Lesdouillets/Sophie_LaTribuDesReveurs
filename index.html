@@ -14904,13 +14904,15 @@ function initPbCategoryToggles() {
       title.insertBefore(arrow, title.firstChild);
     }
     // Fermer par défaut lors de la première initialisation, ouvrir si cases cochées
+    // Exception : top-level catégories dans V. Diagnostic ("Leviers identifiés") → toujours ouvertes par défaut
     if (!title.dataset.toggleInit) {
       // Considère aussi la case du TITRE quand elle est cochable (value attribute, pas auto-only)
       // pour que les items restent dépliés après un re-render quand le titre est coché
       const titleCb = title.querySelector('input[type="checkbox"]');
       const titleCochableChecked = titleCb && titleCb.hasAttribute('value') && !titleCb.dataset.autoOnly && titleCb.checked;
       const hasChecked = titleCochableChecked || [...items.querySelectorAll('input[type="checkbox"]')].some(cb => cb.checked);
-      if (hasChecked) {
+      const isTopLevelInDiag = title.querySelector('input[data-cat]') && !!cat.closest('#diag-pb-container');
+      if (hasChecked || isTopLevelInDiag) {
         items.classList.remove('collapsed');
         const arrow = title.querySelector('.pb-cat-arrow');
         if (arrow) { arrow.textContent = '▾'; arrow.classList.add('open'); }
