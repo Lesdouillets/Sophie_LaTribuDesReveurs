@@ -5397,7 +5397,49 @@ const SCRIPT_DATA = {
                   {
                     id: "accomp_lit_ferme_chaise_j7", emoji: "🪑", label: "Accompagnement chaise : Sortir au Jour 7",
                     blocks: [
-                      { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                      {
+                        type: "normal", _leftTitle: "Jours 1, 2 et 3",
+                        text: "- **Rester près du lit**, dans le noir total, sur chaise préalablement préparée\n- Rester **jusqu'à l'endormissement**",
+                        trailingInfoButtons: [
+                          {
+                            emoji: "👩‍🦰",
+                            label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            blocks: [
+                              { type: "normal", text: "- 💡 N'hésitez pas à **changer la personne qui intervient**" }
+                            ]
+                          },
+                          {
+                            emoji: "⚠️",
+                            label: "Recevoir la colère",
+                            title: "Recevoir la colère",
+                            blocks: [
+                              { type: "normal", text: "- ⚠️ Il ne faut **PAS stopper la colère** mais être **présent** et **recevoir cette colère**\n- ⚠️ <span style=\"color:#dc2626\">**Votre rôle** n'est **PAS qu'il s'endorme** MAIS qu'il **trouve lui-même SA stratégie de sommeil**</span>" }
+                            ]
+                          },
+                          {
+                            emoji: "🛑",
+                            label: "PAUSE (1ère nuit seulement)",
+                            title: "🛑 PAUSE (1ère nuit seulement)",
+                            blocks: [
+                              { type: "normal", text: "- Si l'enfant était en colère au coucher, ça laisse le temps de prendre :\n  - Le **1er train** : **30–45 min** après la tentative de coucher\n  - Le **2e train** : **1h – 1h15** après le coucher\n\n> *Moyenne endormissements : **39 min***\n> *10% vont jusqu'à la pause et s'endorment ~20 min après la pause*" },
+                              { type: "normal", text: "**Si après 1h15 d'émotions NON-STOP :**\n- **Sortez-le** du lit et faire une pause **(~20 min)**\n- Allumer les lumières, quitter la chambre\n- Montrer la maison (voire dehors si jardin/terrasse) pour le calmer/rassurer\n- **Remettez-le** ensuite dans son lit **ÉVEILLÉ et recommencer**\n- Option : bib/tétée\n- ⚠️ <span style=\"color:#dc2626\">**Ne PAS l'endormir dans les bras**</span>" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        type: "normal", _leftTitle: "Nuits 4, 5 et 6",
+                        text: "- **Rester** au **milieu de la chambre**, sur une chaise préparée, dans le noir total (**SANS le toucher**)\n- Rester **jusqu'à l'endormissement**"
+                      },
+                      {
+                        type: "normal", _leftTitle: "Nuit 7",
+                        text: "- **Quitter** la chambre en lui disant : *« Bonne nuit, à demain, je t'aime »*\n- **Revenir** sur la chaise au **milieu de la chambre si besoin**\n- **Quitter la chambre une fois votre enfant calme MAIS éveillé**\n- Recommencer au besoin **1, 2, 4, 10, 20 fois** (Laisser entre quelques secondes à **4 min max** avant de revenir)\n  ⇒ Votre enfant a besoin de savoir que vous reviendrez (sécurité)\n\n⚠️ <span style=\"color:#dc2626\">**Il ne doit plus s'endormir en votre présence**</span>"
+                      },
+                      {
+                        type: "normal", _leftTitle: "Nuit 8+",
+                        text: "- Même chose que la nuit 7\n- **Mais accompagner depuis l'entrebâillement de la porte**"
+                      }
                     ]
                   },
                   {
