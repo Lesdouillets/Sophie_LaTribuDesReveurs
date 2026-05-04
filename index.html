@@ -12141,6 +12141,29 @@ function toggleSolution(id, checked) {
   if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
   if (!state.courbeCardsTickedManuallyEdited) state.courbeCardsTickedManuallyEdited = new Set();
   if (!state.tickboxChoices) state.tickboxChoices = {};
+  // Mutex Accompagnement : si on coche un parent (ex. accomp_progressivite),
+  // décocher tous les autres parents Accompagnement + tous les sub-children
+  const ACCOMP_PARENTS = ['accomp_lit_ferme', 'accomp_lit_ouvert', 'accomp_rappels_presence', 'accomp_progressivite'];
+  const ACCOMP_ALL_SUBS = [
+    'accomp_lit_ferme_inf2m', 'accomp_lit_ferme_chaise_j7',
+    'accomp_lit_ferme_chaise_apaisement_j1', 'accomp_lit_ferme_chaise_coucher_j1',
+    'accomp_lit_ouvert_connait_sort', 'accomp_lit_ouvert_connait_pas_sort',
+    'accomp_lit_ouvert_pas_connait_sort',
+    'accomp_rappels_chaise_coucher_j1', 'accomp_rappels_allers_retours',
+    'accomp_rappels_porte_fermee'
+  ];
+  if (checked && ACCOMP_PARENTS.includes(id)) {
+    ACCOMP_PARENTS.forEach(parent => {
+      if (parent !== id) {
+        state.selectedSolutions.delete(parent);
+        state.selectedSolutionsManuallyEdited.add(parent);
+      }
+    });
+    ACCOMP_ALL_SUBS.forEach(sub => {
+      state.courbeCardsTicked.delete(sub);
+      state.courbeCardsTickedManuallyEdited.add(sub);
+    });
+  }
   // Solutions avec courbe_cards_grid alwaysShowAll : parent auto-pilote par les enfants.
   // Bloquer le toggle manuel : forcer l'etat depuis les sous-checkboxes (state.courbeCardsTicked)
   // (ex. env_chambre, env_lit_card, env_chgmt_lit, journee_eveil)
@@ -14297,6 +14320,29 @@ function toggleCourbeCardTickFromSol(itId) {
         state.courbeCardsTicked.delete(sub);
         state.courbeCardsTickedManuallyEdited.add(sub);
       }
+    });
+  }
+  // Mutex Accompagnement : toutes les sous-cases (sub-children) ET les 4 parents sont mutuellement exclusifs.
+  // Cocher un sub-child décoche tous les autres sub-children + force le décochage manuel des autres parents.
+  const ACCOMP_PARENTS = ['accomp_lit_ferme', 'accomp_lit_ouvert', 'accomp_rappels_presence', 'accomp_progressivite'];
+  const ACCOMP_ALL_SUBS = [
+    'accomp_lit_ferme_inf2m', 'accomp_lit_ferme_chaise_j7',
+    'accomp_lit_ferme_chaise_apaisement_j1', 'accomp_lit_ferme_chaise_coucher_j1',
+    'accomp_lit_ouvert_connait_sort', 'accomp_lit_ouvert_connait_pas_sort',
+    'accomp_lit_ouvert_pas_connait_sort',
+    'accomp_rappels_chaise_coucher_j1', 'accomp_rappels_allers_retours',
+    'accomp_rappels_porte_fermee'
+  ];
+  if (!wasTicked && ACCOMP_ALL_SUBS.includes(itId)) {
+    ACCOMP_ALL_SUBS.forEach(sub => {
+      if (sub !== itId) {
+        state.courbeCardsTicked.delete(sub);
+        state.courbeCardsTickedManuallyEdited.add(sub);
+      }
+    });
+    ACCOMP_PARENTS.forEach(parent => {
+      state.selectedSolutions.delete(parent);
+      state.selectedSolutionsManuallyEdited.add(parent);
     });
   }
   // Chercher la chaîne de parents : (cat) → ch (solution) → it (sub-item, niveau 1) → sub (sub-sub-item, niveau 2)
