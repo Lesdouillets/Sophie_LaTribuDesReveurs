@@ -5369,7 +5369,7 @@ const SCRIPT_DATA = {
             text: "- Maintenant, on va parler de **COMMENT accompagner les émotions**",
             trailingInfoButtons: [
               {
-                emoji: "💛",
+                emoji: "💡",
                 label: "Qu'est-ce que l'accompagnement des émotions ?",
                 title: "Qu'est-ce que l'accompagnement des émotions ?",
                 blocks: [
