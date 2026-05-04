@@ -11617,12 +11617,16 @@ function renderSolutionsCheckboxes(opts) {
       </label>${arrowHtml}</div>${subRows}</div>`;
     }).join('');
     const bulkBtns = '';
-    // Auto-collapse rules :
+    // Auto-collapse rules (appliquées seulement si l'utilisateur n'a PAS encore toggle cette catégorie) :
     //  - confort_physique / nutrition / relationnel : collapsed si la cat checkbox correspondante n'est PAS cochée dans V. Diagnostic
     //  - strategie / env : collapsed si AUCUN enfant solution n'est coché dans VIII. Plan d'action
     //  - autres catégories : respectent le toggle utilisateur (défaut ouvert)
+    // Dès que l'utilisateur clique sur la flèche, son choix est prioritaire (state.solGroupsUserToggled).
     let groupCollapsed;
-    if (cat.id === 'confort_physique' || cat.id === 'nutrition' || cat.id === 'relationnel') {
+    const userToggled = !!(state.solGroupsUserToggled && state.solGroupsUserToggled.has(cat.id));
+    if (userToggled) {
+      groupCollapsed = !!(state.solGroupsCollapsed && state.solGroupsCollapsed.has(cat.id));
+    } else if (cat.id === 'confort_physique' || cat.id === 'nutrition' || cat.id === 'relationnel') {
       const catCb = document.querySelector(`.pb-cat-checkbox[data-cat="${cat.id}"]`);
       groupCollapsed = !catCb || !catCb.checked;
     } else if (cat.id === 'strategie' || cat.id === 'env') {
@@ -12187,6 +12191,9 @@ window.toggleSolution = toggleSolution;
 // Replier / déplier une catégorie parente dans Solutions identifiées (compact list)
 function toggleSolGroup(catId) {
   if (!state.solGroupsCollapsed) state.solGroupsCollapsed = new Set();
+  if (!state.solGroupsUserToggled) state.solGroupsUserToggled = new Set();
+  // Marquer que l'utilisateur a explicitement togglé cette catégorie → l'auto-rule sera bypassée
+  state.solGroupsUserToggled.add(catId);
   if (state.solGroupsCollapsed.has(catId)) state.solGroupsCollapsed.delete(catId);
   else state.solGroupsCollapsed.add(catId);
   if (typeof renderCurrentSection === 'function') renderCurrentSection();
