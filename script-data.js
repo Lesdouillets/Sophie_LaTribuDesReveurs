@@ -5399,7 +5399,7 @@ const SCRIPT_DATA = {
                     blocks: [
                       {
                         type: "normal", _leftTitle: "Jours 1, 2 et 3",
-                        text: "- **Rester près du lit**, dans le noir total, sur chaise préalablement préparée\n- Rester **jusqu'à l'endormissement**\n\n- ⚠️ Il ne faut **PAS stopper la colère** mais être **présent** et **recevoir cette colère**\n- ⚠️ <span style=\"color:#dc2626\">**Votre rôle** n'est **PAS qu'il s'endorme** MAIS qu'il **trouve lui-même SA stratégie de sommeil**</span>",
+                        text: "- <span style=\"color:#dc2626\">**Rester près du lit**</span>, dans le noir total, sur chaise préalablement préparée\n- Rester <span style=\"color:#dc2626\">**jusqu'à l'endormissement**</span>\n\n<div style=\"background:#dbeafe;border-radius:10px;padding:14px 18px;margin:10px 0\"><ul style=\"margin:0;padding-left:24px;line-height:1.65\"><li>⚠️ <span style=\"color:#dc2626\">Il ne faut <strong>PAS stopper la colère</strong> mais être <strong>présent</strong> et <strong>recevoir cette colère</strong></span></li><li>⚠️ <span style=\"color:#dc2626\"><strong>Votre rôle</strong> n'est <strong>PAS qu'il s'endorme</strong> MAIS qu'il <strong>trouve lui-même SA stratégie de sommeil</strong></span></li></ul></div>",
                         trailingInfoButtons: [
                           {
                             emoji: "💡",
@@ -5417,15 +5417,15 @@ const SCRIPT_DATA = {
                       },
                       {
                         type: "normal", _leftTitle: "Nuits 4, 5 et 6",
-                        text: "- **Rester** au **milieu de la chambre**, sur une chaise préparée, dans le noir total (**SANS le toucher**)\n- Rester **jusqu'à l'endormissement**"
+                        text: "- <span style=\"color:#dc2626\">**Rester**</span> au <span style=\"color:#dc2626\">**milieu de la chambre**</span>, sur une chaise préparée, dans le noir total (**SANS le toucher**)\n- Rester <span style=\"color:#dc2626\">**jusqu'à l'endormissement**</span>"
                       },
                       {
                         type: "normal", _leftTitle: "Nuit 7",
-                        text: "- **Quitter** la chambre en lui disant : *« Bonne nuit, à demain, je t'aime »*\n- **Revenir** sur la chaise au **milieu de la chambre si besoin**\n- **Quitter la chambre une fois votre enfant calme MAIS éveillé**\n- Recommencer au besoin **1, 2, 4, 10, 20 fois** (Laisser entre quelques secondes à **4 min max** avant de revenir)\n  ⇒ Votre enfant a besoin de savoir que vous reviendrez (sécurité)\n\n⚠️ <span style=\"color:#dc2626\">**Il ne doit plus s'endormir en votre présence**</span>"
+                        text: "- <span style=\"color:#dc2626\">**Quitter**</span> la chambre en lui disant : *« Bonne nuit, à demain, je t'aime »*\n- <span style=\"color:#dc2626\">**Revenir**</span> sur la chaise au <span style=\"color:#dc2626\">**milieu de la chambre**</span> si besoin\n- <span style=\"color:#dc2626\">**Quitter la chambre**</span> une fois [prénom_enfant] <span style=\"color:#dc2626\">**calme MAIS éveillé(e)**</span>\n- Recommencer au besoin **1, 2, 4, 10, 20 fois** (Laisser entre quelques secondes à **4 min max** avant de revenir)\n  ⇒ Votre enfant a besoin de savoir que vous reviendrez (sécurité)\n\n⚠️ <span style=\"color:#dc2626\">**Il ne doit plus s'endormir en votre présence**</span>"
                       },
                       {
                         type: "normal", _leftTitle: "Nuit 8+",
-                        text: "- Même chose que la nuit 7\n- **Mais accompagner depuis l'entrebâillement de la porte**"
+                        text: "- Même chose que la nuit 7\n- Mais accompagner <span style=\"color:#dc2626\">**depuis l'entrebâillement**</span> de la porte"
                       }
                     ]
                   },
