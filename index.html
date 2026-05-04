@@ -12944,6 +12944,8 @@ function substituteVars(text) {
     .replace(/\[allaite_allaitee\]/g, isFille ? 'allaitée' : 'allaité')
     .replace(/\[LE_LA\]/g, isFille ? 'LA' : 'LE')
     .replace(/\[le_la\]/g, isFille ? 'la' : 'le')
+    .replace(/\[POSE_POSEE\]/g, isFille ? 'POSEE' : 'POSE')
+    .replace(/\[EVEILLE_EVEILLEE\]/g, isFille ? 'EVEILLEE' : 'EVEILLE')
     .replace(/\[ces_vos_objectifs\]/g, (c.objectifs && c.objectifs.trim()) ? 'ces objectifs' : 'vos objectifs')
     .replace(/\[aligne_alignee\]/g, (() => {
       // Accord selon le(s) parent(s) présent(s) à la consultation
