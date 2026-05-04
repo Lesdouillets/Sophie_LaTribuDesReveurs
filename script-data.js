@@ -5425,7 +5425,41 @@ const SCRIPT_DATA = {
                       },
                       {
                         type: "normal", _leftTitle: "Conseils supplémentaires",
-                        text: "- **Quelques petites info en + :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit : la colère peut donner chaud\n  - N'hésitez pas à **huiler les mécanismes** de la **porte** si besoin !\n  {{if-lait-maternel}}- N'hésitez pas à demander à **[prenom_papa]** d'intervenir pour éviter que les odeurs de lait ne viennent perturber [prénom_enfant]\n  {{/if-lait-maternel}}- N'**intervenez pas** pour un **changement de couches** SAUF si **débordement** ou **selles** ⇒ Dans ce cas, intervenez avec une **lumière tamisée**\n  - **Votre travail** c'est d'avoir **confiance en votre enfant** et le lui dire !"
+                        text: "- **Quelques petites info en + :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit : la colère peut donner chaud\n  - N'hésitez pas à **huiler les mécanismes** de la **porte** si besoin !\n  {{if-lait-maternel}}- N'hésitez pas à demander à **[prenom_papa]** d'intervenir pour éviter que les odeurs de lait ne viennent perturber [prénom_enfant]\n  {{/if-lait-maternel}}- N'**intervenez pas** pour un **changement de couches** SAUF si **débordement** ou **selles** ⇒ Dans ce cas, intervenez avec une **lumière tamisée**\n  - **Votre travail** c'est d'avoir **confiance en votre enfant** et le lui dire !",
+                        trailingInfoButtons: [
+                          {
+                            emoji: "💖",
+                            label: "Envie d'un câlin ?",
+                            title: "💖 Envie d'un câlin ?",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **vous écouter** et à **écouter votre enfant** si vous en **ressentez le besoin**\n- Essayez néanmoins de **limiter les câlins**\n- Essayer de garder **ses pieds/fesses qui touchent le matelas**\n\n- ⚠️ À ne **PAS le bercer** mais **RESTER STATIQUE**\n- ⚠️ Il faudrait **éviter** qu'il ne **s'endorme dans vos bras**" }
+                            ]
+                          },
+                          {
+                            emoji: "😭",
+                            label: "Difficile d'entendre pleurer",
+                            title: "💖💖💖 😭😭😭 Difficile d'entendre pleurer",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **le reprendre** dans vos bras MAIS dans une **POSITION DIFFÉRENTE** de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n- **Re-posez-le** dès **l'apaisement**\n\n- ⚠️ À ne **PAS le bercer** mais **RESTER STATIQUE**\n- ⚠️ Il faudrait **éviter** qu'il ne **s'endorme dans vos bras**" }
+                            ]
+                          },
+                          {
+                            emoji: "🥱",
+                            label: "Fatigué ?",
+                            title: "🥱🙋‍♀️ Fatigué ?",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à vous **relayer**. C'est **TOUT à fait possible**\n- Dites simplement à votre enfant, que *« maintenant **Maman s'en va** mais c'est **Papa qui va venir**. Et que vous **l'aimez toujours** »*" }
+                            ]
+                          },
+                          {
+                            emoji: "💬",
+                            label: "Multiples rappels",
+                            title: "💬💬💬 Multiples rappels",
+                            blocks: [
+                              { type: "normal", text: "- Je vous invite à :\n  - Mettre en place un **tableau de rituel**\n  - **Répondre 1 SEULE fois**\n  - **Anticiper** les rappels :\n    - Nez qui coule : **boîte de mouchoirs** à disposition de l'enfant\n    - Couette mal mise : **surpyjama** ou **couette zippée**\n    - Doudou perdu : mettre un **2ème doudou**, rendre le doudou visible la nuit (**ruban phosphorescent**…)\n    - Bouton qui gratte : pendant le temps de soins pendant le rituel, proposer de la **pommade anti-démangeaisons**\n    - Dernier câlin : pendant le rituel, bien verbaliser ce dernier câlin\n    - Soif : **Gourde** à proximité\n  - Donner **3 cartes pour 3 rappels** ⇒ au-delà : le parent **ne revient pas** (diminuer le nombre de cartes au fil du temps)\n\n  - Mettre en place un **tableau de récompenses :**\n    - **Chaque nuit SANS rappel** : l'enfant a le matin :\n      - Chocolat / bonbon\n      - Élément d'un kit playmobil\n\n  - Vous pouvez aussi faire des **jeux de rôle en journée** *(ex : avec une poupée que l'on couche dans son lit de poupée) :*\n    - Quel rituel lui faire ?\n    - Que dire si elle se réveille ?\n\n  - Il y a aussi les **livres de Caroline Ferriol** pour les + grands (6,90 €) :\n    - *Arthur met du temps à s'endormir*\n    - *Jade veut dormir avec Papa et Maman*\n    - *Louise ne veut pas aller se coucher*" }
+                            ]
+                          }
+                        ]
                       }
                     ]
                   },
