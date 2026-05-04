@@ -4032,6 +4032,41 @@
     .sol-group-arrow { font-size: 11px; transition: transform 0.2s; display: inline-block; }
     .sol-group.collapsed .sol-group-arrow { transform: rotate(-90deg); }
     .sol-group.collapsed .sol-group-rows { display: none; }
+    /* État COLLAPSED pour sol-group : bandeau full-width avec titre à gauche
+       (même comportement que les top-level Problématiques en mode collapsed) */
+    .solutions-identifiees-body .sol-group.collapsed,
+    .solmod-body .sol-group.collapsed,
+    #fiche-solutions-container .sol-group.collapsed {
+      display: block !important;
+      grid-template-columns: none !important;
+    }
+    .solutions-identifiees-body .sol-group.collapsed > .sol-group-content,
+    .solmod-body .sol-group.collapsed > .sol-group-content,
+    #fiche-solutions-container .sol-group.collapsed > .sol-group-content {
+      display: none !important;
+    }
+    .solutions-identifiees-body .sol-group.collapsed > .sol-group-title,
+    .solmod-body .sol-group.collapsed > .sol-group-title,
+    #fiche-solutions-container .sol-group.collapsed > .sol-group-title {
+      flex-direction: row !important;
+      justify-content: flex-start !important;
+      text-align: left !important;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    /* Override de l'inline style "display:flex;flex-direction:column" sur l'inner span (emoji + label) */
+    .solutions-identifiees-body .sol-group.collapsed > .sol-group-title > span[style*="flex-direction:column"],
+    .solmod-body .sol-group.collapsed > .sol-group-title > span[style*="flex-direction:column"],
+    #fiche-solutions-container .sol-group.collapsed > .sol-group-title > span[style*="flex-direction:column"] {
+      flex-direction: row !important;
+      gap: 8px !important;
+    }
+    /* Emoji plus petit en mode collapsed */
+    .solutions-identifiees-body .sol-group.collapsed > .sol-group-title > span > span:first-child,
+    .solmod-body .sol-group.collapsed > .sol-group-title > span > span:first-child,
+    #fiche-solutions-container .sol-group.collapsed > .sol-group-title > span > span:first-child {
+      font-size: 16px !important;
+    }
     .sol-row-header { display: flex; align-items: center; gap: 4px; }
     .sol-row-arrow { font-size: 11px; transition: transform 0.2s; display: inline-block; cursor: pointer; padding: 4px 8px; opacity: 0.7; }
     .sol-row-arrow:hover { opacity: 1; background: #f1f5f9; border-radius: 4px; }
