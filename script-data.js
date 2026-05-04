@@ -2910,21 +2910,21 @@ const SCRIPT_DATA = {
                           blocks: [
                             {
                               type: "normal", _leftTitle: "Constat",
-                              text: "- **Pour commencer**, je voudrais qu'on **prenne** un **petit moment** pour **re-parler** de votre **lactation**… si vous êtes d'accord\n\n- Tout à l'heure, on a évoqué :\n  - ☐ Une **courbe de poids** `.XXX.`\n  - ☐ Les **tétées** sont plutôt **longues**\n  - ☐ Il est **très agité** durant les tétées\n  - ☐ Il fait le **pic-vert sur le sein**\n  - ☐ Beaucoup de **pleurs en fin de journée** et **la nuit**\n  - ☐ BB est + **à l'aise d'un côté** que de l'autre\n  - ☐ Une **grève des tétées**",
+                              text: "- **Pour commencer**, je voudrais qu'on **prenne** un **petit moment** pour **re-parler** de votre **lactation**… si vous êtes d'accord\n\n- Tout à l'heure, on a évoqué :\n<div style=\"background:#f5f0ff;border:3px dashed #7c3aed;border-radius:10px;padding:12px 16px;margin:6px 0\"><ul style=\"list-style:none;padding-left:0;margin:0\"><li style=\"margin:4px 0\">☑ Une <strong>courbe de poids</strong> <strong style=\"color:#dc2626\">.XXX.</strong></li><li style=\"margin:4px 0\">☐ Les <strong>tétées</strong> sont plutôt <strong>longues</strong></li><li style=\"margin:4px 0\">☐ Il est <strong>très agité</strong> durant les tétées</li><li style=\"margin:4px 0\">☐ Il fait le <strong>pic-vert sur le sein</strong></li><li style=\"margin:4px 0\">☐ Beaucoup de <strong>pleurs en fin de journée</strong> et <strong>la nuit</strong></li><li style=\"margin:4px 0\">☐ BB est + <strong>à l'aise d'un côté</strong> que de l'autre</li><li style=\"margin:4px 0\">☐ Une <strong>grève des tétées</strong></li></ul></div>",
                               trailingInfoButtons: [
                                 {
                                   emoji: "🍭",
                                   label: "Tétine = coupe-faim",
                                   title: "Tétine / petit doigt à sucer / mâchonnage = coupe-faim",
                                   blocks: [
-                                    { type: "normal", text: "- 🍭 **Tétine / petit doigt à sucer / mâchonnage de poing / pouce = coupe-faim**\n  - Peut **répondre à un réflexe de succion**, MAIS peut aussi **faire office d'illusion** puisque ça **« dupe » le cerveau :**\n    - Votre E. **« tète et déglutit »** ⇒ donc le cerveau pense que **qqch rentre dans son estomac**… MAIS rien ne rentre…\n    - et au bout d'un moment :\n      - **l'illusion se perd**\n      - et la **faim se fait ressentir**\n  - Même si **vous remettez la tétine** :\n    - il **n'en veut pas**\n    - et il **pleure**\n    ⇒ Parce qu'il **veut AUTRE CHOSE, il veut manger**\n\n= La **tétine** joue donc le rôle d'un **« cache-faim »**" }
+                                    { type: "normal", text: "- Peut **répondre à un réflexe de succion**, MAIS peut aussi **faire office d'illusion** puisque ça **« dupe » le cerveau :**\n  - Votre **enfant** **« tète et déglutit »** ⇒ donc le cerveau pense que **quelque chose rentre dans son estomac**… MAIS rien ne rentre…\n  - et au bout d'un moment :\n    - **l'illusion se perd**\n    - et la **faim se fait ressentir**\n- Même si **vous remettez la tétine** :\n  - il **n'en veut pas**\n  - et il **pleure**\n  ⇒ Parce qu'il **veut AUTRE CHOSE, il veut manger**\n  = La **tétine** joue donc le rôle d'un **« cache-faim »**" }
                                   ]
                                 },
                                 {
-                                  label: "Tétine = signal stimuler lactation",
-                                  title: "Tétine = signe pour stimuler lactation",
+                                  label: "Tétine / Petit doigt / pouce / mâchonnage de poing = signes pour stimuler lactation",
+                                  title: "Tétine / Petit doigt / pouce / mâchonnage de poing = signes pour stimuler lactation",
                                   blocks: [
-                                    { type: "normal", text: "- **Tétine / petit doigt à sucer / mâchonnage de poing / pouce = SIGNE POUR STIMULER LACTATION**\n  - Peut être un signe que BB a besoin de :\n    - téter,\n    - de stimuler vos seins" }
+                                    { type: "normal", text: "- Peut être un signe que BB a besoin de :\n  - téter,\n  - de stimuler vos seins" }
                                   ]
                                 }
                               ]
