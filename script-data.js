@@ -5362,13 +5362,109 @@ const SCRIPT_DATA = {
         ]
       },
       {
-        id: "accompagnement", title: "Accompagnement", emoji: "🤝", alwaysOpen: true,
+        id: "accompagnement", title: "Accompagnement", emoji: "🤝", alwaysOpen: true, inlineIntro: true,
         introBlocks: [
           { type: "normal", _leftTitle: "Comment accompagner les émotions ?", _leftTitleStyle: "background:#f0d9b5;color:#9c7240;--cat-main:#d4a574", text: "- Maintenant, on va parler de **COMMENT accompagner les émotions**" },
           { type: "normal", _leftTitle: "Cohérence", _leftTitleStyle: "background:#f0d9b5;color:#9c7240;--cat-main:#d4a574", showIfAgeMinMonths: 3.5, text: "- Il y a **un point** que **j'aimerais partager** avec vous : c'est la **COHÉRENCE**\n  ⇒ Je vous invite à **rester COHÉRENT tout du long** de son **temps de sommeil**\n\n- Aujourd'hui, **son cerveau** est **assez mature** pour **comprendre l'environnement** qui l'entoure\n  - **S'il s'endort** en **VOTRE PRÉSENCE**, ET qu'il **se réveille** ET que **vous avez disparu**\n    ⇒ Son cerveau va **créer une « alerte danger »** : *Qu'est-ce qui se passe ????? Il y a un danger ???*\n  - ⇒ Il va alors **vous rappeler** pour :\n    - se **rassurer**\n    - et **retrouver** les **mêmes conditions d'endormissement** pour **continuer** son temps de sommeil\n\n- ⇒ C'est **pour ça**, que SI il **s'endort en votre présence :**\n  - je vous encourage à **rester TOUT du LONG** du **temps de sommeil**\n  - pour **maintenir cette cohérence**\n  - et **assurer le passage de cycles**" },
           { type: "normal", _leftTitle: "4 outils", _leftTitleStyle: "background:#f0d9b5;color:#9c7240;--cat-main:#d4a574", text: "- Je vous propose **4 outils pour accompagner** [prénom_enfant] dans ses émotions 🛠️\n- Ces 4 outils sont **à alterner** toutes les **2 minutes environ**\n\n**La VOIX :**\n- Encouragement, voix douce, beaucoup d'amour…\n- Ex : *« je **comprends** ta **colère**, tu as **le droit** d'être fâché. J'ai **confiance en toi** tu vas réussir à t'endormir. Je suis **fière** de toi. **Maman est là** »* ou des *« chuuut »*\n\n**Le TOUCHER**\n- Main sur le ventre, caresser de la main, tapoter, frictionner…\n\n**Les RESPIRATIONS PROFONDES**\n- Ça va être surtout :\n  - **pour vous**,\n  - pour vous **recentrer dans le moment présent**,\n  - sans partir dans les émotions d'entendre son enfant exprimer de la colère ou de la tristesse\n- Ces respirations vont faire :\n  - ↘ votre niveau de **stress**\n  - ↘ votre **rythme cardiaque**\n  ⇒ Cela va provoquer un **effet de mimétisme** chez votre enfant\n  ⇒ Créer une **ambiance sonore** dans la pièce\n\n**Le SILENCE**\n- Juste votre présence et votre soutien" }
         ],
-        children: []
+        children: [
+          { id: "accomp_lit_ferme", label: "Lit fermé", cardLabel: "Lit fermé", cardEmoji: "🛏️",
+            blocks: [
+              {
+                type: "courbe_cards_grid",
+                alwaysShowAll: true,
+                items: [
+                  {
+                    id: "accomp_lit_ferme_inf2m", emoji: "👶", label: "Accompagnement à -2 mois",
+                    blocks: [
+                      { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                    ]
+                  },
+                  {
+                    id: "accomp_lit_ferme_chaise_j7", emoji: "🪑", label: "Accompagnement chaise : Sortir au Jour 7",
+                    blocks: [
+                      { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                    ]
+                  },
+                  {
+                    id: "accomp_lit_ferme_chaise_apaisement_j1", emoji: "🪑", label: "Accompagnement chaise : Sortir dès l'apaisement au Jour 1",
+                    blocks: [
+                      { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                    ]
+                  },
+                  {
+                    id: "accomp_lit_ferme_chaise_coucher_j1", emoji: "🪑", label: "Accompagnement chaise : Sortir après le coucher au Jour 1",
+                    blocks: [
+                      { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          { id: "accomp_lit_ouvert", label: "Lit ouvert", cardLabel: "Lit ouvert", cardEmoji: "🛌",
+            blocks: [
+              {
+                type: "courbe_cards_grid",
+                alwaysShowAll: true,
+                items: [
+                  {
+                    id: "accomp_lit_ouvert_connait_sort", emoji: "🛌🚪", label: "Connaît son lit / peut sortir de sa chambre",
+                    blocks: [
+                      { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                    ]
+                  },
+                  {
+                    id: "accomp_lit_ouvert_connait_pas_sort", emoji: "🛌", label: "Connaît son lit / Ne peut PAS sortir de sa chambre",
+                    blocks: [
+                      { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                    ]
+                  },
+                  {
+                    id: "accomp_lit_ouvert_pas_connait_sort", emoji: "🚪", label: "Ne connaît PAS son lit / peut sortir de sa chambre",
+                    blocks: [
+                      { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          { id: "accomp_rappels_presence", label: "Nombreux rappels / dépendance à la présence", cardLabel: "Nombreux rappels / dépendance à la présence", cardEmoji: "🔔",
+            blocks: [
+              {
+                type: "courbe_cards_grid",
+                alwaysShowAll: true,
+                items: [
+                  {
+                    id: "accomp_rappels_chaise_coucher_j1", emoji: "🪑", label: "Accompagnement chaise : Sortir après le coucher au Jour 1 (Dépendance à la présence +)",
+                    blocks: [
+                      { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                    ]
+                  },
+                  {
+                    id: "accomp_rappels_allers_retours", emoji: "🚶", label: "Allers-retours (Dépendance à la présence ++)",
+                    blocks: [
+                      { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                    ]
+                  },
+                  {
+                    id: "accomp_rappels_porte_fermee", emoji: "🚪", label: "Intervenir porte fermée (Dépendance à la présence +++)",
+                    blocks: [
+                      { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          { id: "accomp_progressivite", label: "Progressivité", cardLabel: "Progressivité", cardEmoji: "📈",
+            blocks: [
+              { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+            ]
+          },
+        ]
       },
     ]
   },
