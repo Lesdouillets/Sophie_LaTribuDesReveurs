@@ -703,6 +703,12 @@
       padding: 12px 20px;
       margin: 0 -20px 12px;
     }
+    /* Masquer l'h3 d'origine au-dessus du wrapper (doublon visuel avec le header navy interne).
+       Scopé strictement aux sections qui contiennent .problematiques-grid pour ne pas affecter d'autres h3. */
+    .setup-section:has(> .problematiques-grid) > h3,
+    .modal-box:has(> #modal-pb-list) > h3 {
+      display: none;
+    }
 
     /* Bandeau PARENT (catégorie parente) — style le plus marqué */
     .block-parent-banner {
