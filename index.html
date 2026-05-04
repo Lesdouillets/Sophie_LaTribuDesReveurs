@@ -857,6 +857,28 @@
       line-height: 1.25;
       order: 0;
     }
+    /* État COLLAPSED : la pb-category top-level se transforme en bandeau full-width
+       (titre coloré + emoji + label + checkbox + arrow sur 1 ligne, coins arrondis conservés) */
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]):has(> .pb-items.collapsed) {
+      display: block !important;
+      grid-template-columns: none !important;
+    }
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]):has(> .pb-items.collapsed) > .pb-category-title {
+      flex-direction: row !important;
+      gap: 8px !important;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]):has(> .pb-items.collapsed) > .pb-category-title > .pb-cat-emoji {
+      font-size: 16px !important;
+      order: 0 !important;
+    }
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]):has(> .pb-items.collapsed) > .pb-category-title > .pb-cat-label {
+      order: 0 !important;
+    }
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]):has(> .pb-items.collapsed) > .pb-category-title > input[type="checkbox"] {
+      order: 0 !important;
+    }
 
     /* Bandeau PARENT (catégorie parente) — style le plus marqué */
     .block-parent-banner {
