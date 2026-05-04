@@ -709,6 +709,35 @@
     .modal-box:has(> #modal-pb-list) > h3 {
       display: none;
     }
+    /* ── Étape 2 : body en multi-column (style Solutions identifiées) ──
+       Override grid → block + columns:2. S'applique aux 3 contextes. */
+    .setup-section > .problematiques-grid,
+    #modal-pb-list > .problematiques-grid,
+    #diag-pb-container > .problematiques-grid {
+      display: block;
+      columns: 2;
+      column-gap: 24px;
+    }
+    /* Les 2 wrappers internes (div directs enfants de la grid) deviennent transparents
+       pour que les .pb-category soient placées dans le flow multi-column. */
+    .setup-section > .problematiques-grid > div,
+    #modal-pb-list > .problematiques-grid > div,
+    #diag-pb-container > .problematiques-grid > div {
+      display: contents;
+    }
+    /* Évite qu'une catégorie soit coupée entre 2 colonnes */
+    .setup-section > .problematiques-grid .pb-category,
+    #modal-pb-list > .problematiques-grid .pb-category,
+    #diag-pb-container > .problematiques-grid .pb-category {
+      break-inside: avoid;
+      page-break-inside: avoid;
+      -webkit-column-break-inside: avoid;
+    }
+    /* Header navy (::before) doit traverser les 2 colonnes : column-span:all (multi-column) au lieu de grid-column */
+    .setup-section > .problematiques-grid::before,
+    #modal-pb-list > .problematiques-grid::before {
+      column-span: all;
+    }
 
     /* Bandeau PARENT (catégorie parente) — style le plus marqué */
     .block-parent-banner {
