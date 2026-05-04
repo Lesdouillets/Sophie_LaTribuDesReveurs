@@ -838,9 +838,10 @@
       margin: 0 !important;
     }
     /* Masquer le span "(1 option possible)" sur Confort physique (et tout span décoratif analogue),
-       sans masquer le wrapper .pb-cat-btns qui porte les boutons "Tout ✓/✗"
-       et sans masquer les nouveaux .pb-cat-emoji / .pb-cat-label */
-    .problematiques-grid .pb-category > .pb-category-title:has([data-cat="confort_physique"]) > span:not(.pb-cat-btns):not(.pb-cat-emoji):not(.pb-cat-label) {
+       sans masquer le wrapper .pb-cat-btns qui porte les boutons "Tout ✓/✗",
+       sans masquer les nouveaux .pb-cat-emoji / .pb-cat-label,
+       et sans masquer .pb-cat-arrow (la flèche de collapse/expand) */
+    .problematiques-grid .pb-category > .pb-category-title:has([data-cat="confort_physique"]) > span:not(.pb-cat-btns):not(.pb-cat-emoji):not(.pb-cat-label):not(.pb-cat-arrow) {
       display: none !important;
     }
     /* Style pour les nouveaux spans emoji + label (top-level uniquement) */
@@ -867,8 +868,12 @@
     .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) > .pb-items.collapsed {
       display: none !important;
     }
-    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]):has(> .pb-items.collapsed) > .pb-category-title {
+    .setup-section > .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]):has(> .pb-items.collapsed) > .pb-category-title,
+    #modal-pb-list > .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]):has(> .pb-items.collapsed) > .pb-category-title,
+    #diag-pb-container > .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]):has(> .pb-items.collapsed) > .pb-category-title {
+      display: flex !important;
       flex-direction: row !important;
+      align-items: center !important;
       gap: 8px !important;
       width: 100%;
       box-sizing: border-box;
