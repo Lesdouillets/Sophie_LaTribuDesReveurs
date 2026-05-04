@@ -5507,7 +5507,7 @@ const SCRIPT_DATA = {
                           {
                             emoji: "😭",
                             label: "Difficile d'entendre pleurer",
-                            title: "💖💖💖 Difficile d'entendre pleurer",
+                            title: "💖💖💖 😭😭😭 Difficile d'entendre pleurer",
                             blocks: [
                               { type: "normal", text: "- N'hésitez pas à **[le_la] reprendre** dans vos bras MAIS dans une **POSITION DIFFÉRENTE** de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n- **Re-posez-[le_la]** dès **l'apaisement**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }
                             ]
