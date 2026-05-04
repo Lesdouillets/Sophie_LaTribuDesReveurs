@@ -5363,6 +5363,10 @@ const SCRIPT_DATA = {
       },
       {
         id: "accompagnement", title: "Accompagnement", emoji: "🤝", alwaysOpen: true,
+        introBlocks: [
+          { type: "normal", _leftTitle: "Comment accompagner les émotions ?", _leftTitleStyle: "background:#f0d9b5;color:#9c7240;--cat-main:#d4a574", text: "- Maintenant, on va parler de **COMMENT accompagner les émotions**" },
+          { type: "normal", _leftTitle: "Cohérence", _leftTitleStyle: "background:#f0d9b5;color:#9c7240;--cat-main:#d4a574", showIfAgeMinMonths: 3.5, text: "- Il y a **un point** que **j'aimerais partager** avec vous : c'est la **COHÉRENCE**\n  ⇒ Je vous invite à **rester COHÉRENT tout du long** de son **temps de sommeil**\n\n- Aujourd'hui, **son cerveau** est **assez mature** pour **comprendre l'environnement** qui l'entoure\n  - **S'il s'endort** en **VOTRE PRÉSENCE**, ET qu'il **se réveille** ET que **vous avez disparu**\n    ⇒ Son cerveau va **créer une « alerte danger »** : *Qu'est-ce qui se passe ????? Il y a un danger ???*\n  - ⇒ Il va alors **vous rappeler** pour :\n    - se **rassurer**\n    - et **retrouver** les **mêmes conditions d'endormissement** pour **continuer** son temps de sommeil\n\n- ⇒ C'est **pour ça**, que SI il **s'endort en votre présence :**\n  - je vous encourage à **rester TOUT du LONG** du **temps de sommeil**\n  - pour **maintenir cette cohérence**\n  - et **assurer le passage de cycles**" }
+        ],
         children: []
       },
     ]
