@@ -5601,6 +5601,7 @@ const SCRIPT_DATA = {
                 items: [
                   {
                     id: "accomp_lit_ouvert_connait_sort", emoji: "🛌🚪", label: "Connaît son lit / peut sortir de sa chambre",
+                    pb: "relationnel_lit_parental",
                     blocks: [
                       {
                         type: "normal", _leftTitle: "Conseils",
@@ -5716,7 +5717,58 @@ const SCRIPT_DATA = {
                   {
                     id: "accomp_lit_ouvert_pas_connait_sort", emoji: "🚪", label: "Ne connaît PAS son lit / peut sortir de sa chambre",
                     blocks: [
-                      { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                      {
+                        type: "normal", _leftTitle: "Conseils",
+                        text: "- Je vous conseille d'**anticiper** et **trouver une solution** pour ne **PAS** qu'il puisse **sortir** de la chambre : *installez une (double) barrière à la porte de la chambre / barrière enroulante à 20 cm du sol / fermez la porte à clé / chaînette …*\n\n<div style=\"font-size:15px;font-weight:800;color:#831043;margin:18px 0 6px\">Début d'accompagnement</div>\n<div style=\"display:flex;gap:12px;flex-wrap:wrap;margin:6px 0 14px;align-items:stretch\"><details class=\"accomp-action-toggle accomp-green\"><summary style=\"cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 18px;background:#f0fdf4;border:2px solid #bbf7d0;border-radius:10px;font-size:14.5px;font-weight:700;color:#166534;font-family:inherit\"><span style=\"font-size:18px;line-height:1\">✅</span><span>S'il RESTE dans son lit</span></summary><div style=\"margin-top:12px;background:#fff;border:2px solid #16a34a;border-radius:10px;padding:14px 18px;line-height:1.65;min-width:280px;max-width:600px\"><ol style=\"margin:0;padding-left:24px\"><li><strong>Asseyez-vous</strong> sur une <strong>chaise à côté du lit</strong>, jusqu'à l'<strong>apaisement</strong> ⇒ puis <strong>sortez</strong></li><li>Après 1 à 2 jours, <strong>déplacez la chaise</strong> au <strong>milieu de la chambre</strong>, jusqu'à l'<strong>apaisement</strong> ⇒ puis <strong>sortez</strong></li><li>Après 1 à 2 jours, <strong>accompagnez depuis l'arrière de la barrière</strong> et <strong>fermez la porte</strong> à <strong>chaque apaisement</strong></li></ol></div></details><details class=\"accomp-action-toggle accomp-red\"><summary style=\"cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 18px;background:#fef2f2;border:2px solid #fecaca;border-radius:10px;font-size:14.5px;font-weight:700;color:#991b1b;font-family:inherit\"><span style=\"font-size:18px;line-height:1\">❌</span><span>S'il SORT de son lit</span></summary><div style=\"margin-top:12px;background:#fff;border:2px solid #dc2626;border-radius:10px;padding:14px 18px;line-height:1.65;min-width:280px;max-width:600px\"><ol style=\"margin:0;padding-left:24px\"><li><strong>Sortez de la chambre</strong></li><li><strong>Accompagnez</strong> les émotions <strong>depuis l'entrebâillement</strong> de la porte</li><li>Indiquez-lui que <strong>vous reviendrez</strong> sur la chaise QUAND il sera <strong>prêt à s'endormir</strong> ET <strong>dans son lit</strong></li><li>Restez jusqu'à l'<strong>apaisement</strong></li><li>Puis <strong>sortez</strong></li></ol></div></details></div>\n\n<div style=\"font-size:15px;font-weight:800;color:#831043;margin:18px 0 6px\">Fin d'accompagnement</div>\n<div style=\"display:flex;gap:12px;flex-wrap:wrap;margin:6px 0 14px;align-items:stretch\"><details class=\"accomp-action-toggle accomp-red\"><summary style=\"cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 18px;background:#fef2f2;border:2px solid #fecaca;border-radius:10px;font-size:14.5px;font-weight:700;color:#991b1b;font-family:inherit\"><span style=\"font-size:18px;line-height:1\">❌</span><span>S'il SORT de son lit</span></summary><div style=\"margin-top:12px;background:#fff;border:2px solid #dc2626;border-radius:10px;padding:14px 18px;line-height:1.65;min-width:280px;max-width:600px\"><ul style=\"margin:0;padding-left:24px\"><li><u>S'il est en colère :</u> <strong>accompagnez derrière la porte</strong> et dites-lui que <strong>quand il sera calme</strong> ⇒ <strong>vous pourrez revenir</strong> et il pourra avoir un <strong>bisou/câlin</strong></li><li><u>S'il joue dans sa chambre :</u> <strong>Sortez</strong> (vous n'avez plus rien à faire là, comme un enfant qui joue dans son lit !)</li></ul></div></details></div>\n\n- 💡 La **période d'émotions** ne dure **pas plus** de **3 jours** (parfois -) et **va en s'apaisant** (1 à 2 semaines)",
+                        trailingInfoButtons: [
+                          {
+                            emoji: "💡",
+                            label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        type: "normal", _leftTitle: "Conseils supplémentaires",
+                        text: "- **Quelques petites info en + :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}- N'**intervenez pas** pour un **changement de couches** SAUF si **débordement** ou **selles** ⇒ Dans ce cas, intervenez avec une **lumière tamisée**\n\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire !",
+                        trailingInfoButtons: [
+                          {
+                            emoji: "💖",
+                            label: "Envie d'un câlin ?",
+                            title: "💖 Envie d'un câlin ?",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **vous écouter** et à **écouter votre enfant** si vous en **ressentez le besoin**\n- Essayez néanmoins de **limiter les câlins**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }
+                            ]
+                          },
+                          {
+                            emoji: "😭",
+                            label: "Difficile d'entendre pleurer",
+                            title: "💖💖💖 😭😭😭 Difficile d'entendre pleurer",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **[le_la] reprendre** dans vos bras MAIS dans une **POSITION DIFFÉRENTE** de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n- **Re-posez-[le_la]** dès **l'apaisement**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }
+                            ]
+                          },
+                          {
+                            emoji: "🥱",
+                            label: "Fatigué ?",
+                            title: "🥱🙋‍♀️ Fatigué ?",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à vous **relayer**. C'est **TOUT à fait possible**\n- Dites simplement à [prénom_enfant], que *« maintenant **Maman s'en va** mais c'est **Papa qui va venir**. Et que vous **l'aimez toujours** »*" }
+                            ]
+                          },
+                          {
+                            emoji: "💬",
+                            label: "Multiples rappels",
+                            title: "💬💬💬 Multiples rappels",
+                            blocks: [
+                              { type: "normal", text: "- Mes conseils :\n  - **Mettez en place** un **tableau de rituel**<div style=\"margin:8px 0\"><img src=\"assets/livre-rituel-forkids.png\" alt=\"Tableau de rituel avec lumières\" style=\"max-width:380px;width:100%;border-radius:8px;border:1px solid #cbd5e0\"></div>\n\n  - **Répondez 1 SEULE fois à ses appels**\n\n  - **Anticipez** les rappels :\n    - Nez qui coule ⇒ **boîte de mouchoirs** à disposition de l'enfant\n    - Couette mal mise ⇒ **surpyjama** ou **couette zippée**\n    - Doudou perdu ⇒ mettez un **2ème doudou**, rendez le doudou visible la nuit (**ruban phosphorescent**…)\n    - Bouton qui gratte ⇒ pendant le temps de soins pendant le rituel, proposez de la **pommade anti-démangeaisons**\n    - Dernier câlin ⇒ pendant le rituel, verbalisez bien ce dernier câlin\n    - Soif ⇒ **Gourde** à proximité\n  - **Donnez 3 cartes pour 3 rappels** ⇒ au-delà : **vous ne revenez pas dans la chambre** (diminuez le nombre de cartes au fil du temps)\n\n  - **Mettez en place** un **tableau de récompenses :**\n    - **Chaque nuit SANS rappel** : [prénom_enfant] a le matin :\n      - Chocolat / bonbon\n      - Élément d'un kit playmobil\n\n  - Vous pouvez aussi faire des **jeux de rôle en journée** *(ex : avec une poupée que l'on couche dans son lit de poupée) :*\n    - Quel rituel lui faire ?\n    - Que dire si elle se réveille ?\n\n  - Il y a aussi les **livres de Caroline Ferriol** pour les + grands (6,90 €) :\n    - *Arthur met du temps à s'endormir*\n    - *Jade veut dormir avec Papa et Maman*\n    - *Louise ne veut pas aller se coucher*" }
+                            ]
+                          }
+                        ]
+                      }
                     ]
                   }
                 ]
