@@ -6576,7 +6576,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=364"></script>
+<script src="script-data.js?v=365"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -12999,6 +12999,16 @@ function substituteVars(text) {
       const breastfed = alimSet.has('Allaitement au sein') || alimSet.has('Allaitement maternel') || alimSet.has('Allaitement mixte');
       return breastfed ? 'tétée' : 'biberon';
     })())
+    .replace(/\[prenom_papa\]/g, (() => {
+      const cc = (state && state.client) || {};
+      const p1 = (cc.prenomParent1 || '').trim();
+      const p2 = (cc.prenomParent2 || '').trim();
+      const s1 = (cc.sexeParent1 || '').toLowerCase();
+      const s2 = (cc.sexeParent2 || '').toLowerCase();
+      if (p1 && s1 === 'papa') return p1;
+      if (p2 && s2 === 'papa') return p2;
+      return 'Papa';
+    })())
     .replace(/\[fier_fiere\]/g, isFille ? 'fière' : 'fier')
     .replace(/\[endormi_endormie\]/g, isFille ? 'endormie' : 'endormi')
     .replace(/\[fatigue_fatiguee\]/g, isFille ? 'fatiguée' : 'fatigué')
@@ -13021,6 +13031,16 @@ function substituteVars(text) {
       const alimSet = new Set([...(Array.isArray(cc.alimentation) ? cc.alimentation : []), ...(Array.isArray(cc.allaitementMode) ? cc.allaitementMode : [])]);
       const breastfed = alimSet.has('Allaitement au sein') || alimSet.has('Allaitement maternel') || alimSet.has('Allaitement mixte');
       return breastfed ? 'tétée' : 'biberon';
+    })())
+    .replace(/\[prenom_papa\]/g, (() => {
+      const cc = (state && state.client) || {};
+      const p1 = (cc.prenomParent1 || '').trim();
+      const p2 = (cc.prenomParent2 || '').trim();
+      const s1 = (cc.sexeParent1 || '').toLowerCase();
+      const s2 = (cc.sexeParent2 || '').toLowerCase();
+      if (p1 && s1 === 'papa') return p1;
+      if (p2 && s2 === 'papa') return p2;
+      return 'Papa';
     })())
     .replace(/\[lui_elle\]/g, isFille ? 'elle' : 'lui')
     .replace(/\[ces_vos_objectifs\]/g, (c.objectifs && c.objectifs.trim()) ? 'ces objectifs' : 'vos objectifs')
@@ -13178,6 +13198,14 @@ function substituteVars(text) {
   const isFeedodo = enseigne === 'feedodo';
   t = t.replace(/\{\{if-feedodo\}\}([\s\S]*?)\{\{\/if-feedodo\}\}/g, (_, inner) => isFeedodo ? inner : '');
   t = t.replace(/\{\{if-tribu\}\}([\s\S]*?)\{\{\/if-tribu\}\}/g, (_, inner) => isFeedodo ? '' : inner);
+  // Token conditionnel : {{if-lait-maternel}}...{{/if-lait-maternel}} → inclus si bébé reçoit du lait maternel
+  // (au sein OU au biberon de lait maternel OU mixte)
+  t = t.replace(/\{\{if-lait-maternel\}\}([\s\S]*?)\{\{\/if-lait-maternel\}\}/g, (_, inner) => {
+    const cc = (state && state.client) || {};
+    const alimSet = new Set([...(Array.isArray(cc.alimentation) ? cc.alimentation : []), ...(Array.isArray(cc.allaitementMode) ? cc.allaitementMode : [])]);
+    const hasMaternel = alimSet.has('Allaitement au sein') || alimSet.has('Allaitement maternel') || alimSet.has('Allaitement mixte') || alimSet.has('Allaitement au biberon');
+    return hasMaternel ? inner : '';
+  });
   // Token {{cercle_vicieux:s1|s2|s3|s4}} → SVG HTML
   t = t.replace(/\{\{cercle_vicieux:([^}]+)\}\}/g, (_, params) => {
     const parts = params.split('|');

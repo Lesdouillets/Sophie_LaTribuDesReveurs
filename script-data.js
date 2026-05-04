@@ -5422,6 +5422,10 @@ const SCRIPT_DATA = {
                       {
                         type: "normal", _leftTitle: "Nuit 8+",
                         text: "- Même chose que la nuit 7\n- Mais accompagnez-[le_la] <span style=\"color:#dc2626\">**depuis l'entrebâillement de la porte**</span>"
+                      },
+                      {
+                        type: "normal", _leftTitle: "Conseils supplémentaires",
+                        text: "- **Quelques petites info en + :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit : la colère peut donner chaud\n  - N'hésitez pas à **huiler les mécanismes** de la **porte** si besoin !\n  {{if-lait-maternel}}- N'hésitez pas à demander à **[prenom_papa]** d'intervenir pour éviter que les odeurs de lait ne viennent perturber [prénom_enfant]\n  {{/if-lait-maternel}}- N'**intervenez pas** pour un **changement de couches** SAUF si **débordement** ou **selles** ⇒ Dans ce cas, intervenez avec une **lumière tamisée**\n  - **Votre travail** c'est d'avoir **confiance en votre enfant** et le lui dire !"
                       }
                     ]
                   },
