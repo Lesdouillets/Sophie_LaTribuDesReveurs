@@ -3022,6 +3022,26 @@
       flex-direction: column; align-items: center; justify-content: center;
       padding: 10px 16px; gap: 4px; min-height: 120px;
     }
+    /* Variante compacte (.option-mini) : carte purple-btn plus petite — bordure pointillée + clic = expand */
+    .block-option.purple-btn.option-mini {
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(124,58,237,0.15);
+    }
+    .block-option.purple-btn.option-mini > .option-header {
+      padding: 6px 12px;
+      min-height: 50px;
+      font-size: 13px;
+    }
+    .edit-block-wrap:has(> .block-option.purple-btn.option-mini:not(.open-action)) {
+      height: auto !important;
+    }
+    .edit-block-wrap:has(> .block-option.purple-btn.option-mini:not(.open-action)) > .block-option.purple-btn.option-mini {
+      height: auto !important;
+    }
+    .edit-block-wrap:has(> .block-option.purple-btn.option-mini:not(.open-action)) > .block-option.purple-btn.option-mini > .option-header {
+      flex: 0 0 auto;
+      min-height: 50px !important;
+    }
     /* Harmoniser la hauteur des 3 cartes (Lieu de sommeil, Position ventrale, Souhait Tétine) */
     .edit-block-wrap:has(> .block-option.purple-btn:not(.open-action)),
     .edit-block-wrap:has(.obj-tetine-card) {
@@ -10047,9 +10067,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const pillStyleClass = b._pillStyle ? ' pill-style' : '';
     const compactClosedClass = b._compactClosed ? ' compact-closed' : '';
     const cardClass = b.style === 'card' ? ' card' : '';
+    const miniClass = b._mini ? ' option-mini' : '';
     const emojiHtml = b.emoji ? `<span class="option-emoji">${b.emoji}</span>` : '';
     const mutexAttr = b.mutexGroup ? ` data-mutex-group="${String(b.mutexGroup).replace(/"/g, '&quot;')}"` : '';
-    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${purpleBtnClass}${compactBtnClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionPurpleInsideClass}${pillStyleClass}${compactClosedClass}${cardClass}"${mutexAttr}>
+    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${purpleBtnClass}${compactBtnClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionPurpleInsideClass}${pillStyleClass}${compactClosedClass}${cardClass}${miniClass}"${mutexAttr}>
       <div class="option-header" onclick="toggleOption(this)">
         <span style="display:flex;align-items:center;gap:6px">
           ${emojiHtml}
