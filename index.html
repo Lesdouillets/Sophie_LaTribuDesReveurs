@@ -11886,10 +11886,24 @@ function renderSolutionsCheckboxes(opts) {
         const isActive = activeChildId === ch.id;
         if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
         const childTicked = state.cardPersonalTicks.has(ch.id);
+        // Affichage dynamique : si EXACTEMENT 1 sous-carte est tickée, afficher son emoji+label à la place du parent
+        let dynEmoji = ch.cardEmoji || '📄';
+        let dynLabel = ch.cardLabel || ch.label || ch.id;
+        if (Array.isArray(ch.blocks)) {
+          const grid = ch.blocks.find(b => b && b.type === 'courbe_cards_grid' && Array.isArray(b.items));
+          if (grid && state.courbeCardsTicked) {
+            const tickedItems = grid.items.filter(it => state.courbeCardsTicked.has(it.id));
+            if (tickedItems.length === 1) {
+              const it = tickedItems[0];
+              dynEmoji = it.emoji || dynEmoji;
+              dynLabel = it.label || it.id;
+            }
+          }
+        }
         return `<div class="sol-child-card${isActive?' active':''}" data-card-id="${ch.id}" style="border-color:${c.dark};${isActive?'background:'+c.main+';color:#fff':'background:#fff;color:'+c.dark}" onclick="toggleSolChildCard('${cat.id}','${ch.id}')">
           <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${childTicked ? '✅' : '☐'}</span>
-          <span class="solc-emoji">${ch.cardEmoji || '📄'}</span>
-          <span class="solc-label">${ch.cardLabel || ch.label || ch.id}</span>
+          <span class="solc-emoji">${dynEmoji}</span>
+          <span class="solc-label">${dynLabel}</span>
         </div>`;
       }).join('') + `</div>` : '';
       let childContentHtml = '';
