@@ -4065,6 +4065,13 @@
       padding-top: 24px;
       border-top: 2px dashed #cbd5e0;
     }
+    /* 1er bloc-titre d'Accompagnement (Comment accompagner les émotions ?) : texte centré verticalement */
+    .sol-cat-intro[data-section-cat="accompagnement"] > .block-with-left-title:first-child > .block,
+    .sol-cat-intro[data-section-cat="accompagnement"] > .block-with-left-title:first-child > .edit-block-wrap > .block {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
     /* Toggle/curseur désactivés pour les sections alwaysOpen (Accompagnement, env) */
     .sol-group.sol-group-always-open > .sol-group-title { cursor: default; user-select: none; }
     /* État COLLAPSED pour sol-group : bandeau full-width avec titre à gauche
