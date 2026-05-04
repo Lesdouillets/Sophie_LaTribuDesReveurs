@@ -5376,7 +5376,7 @@ const SCRIPT_DATA = {
                 alwaysShowAll: true,
                 items: [
                   {
-                    id: "accomp_lit_ferme_inf2m", emoji: "👶", label: "Accompagnement à -2 mois",
+                    id: "accomp_lit_ferme_inf2m", emoji: "👶", label: "Accompagnement 0-2 mois",
                     blocks: [
                       { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
                     ]
@@ -5438,19 +5438,19 @@ const SCRIPT_DATA = {
                 alwaysShowAll: true,
                 items: [
                   {
-                    id: "accomp_rappels_chaise_coucher_j1", emoji: "🪑", label: "Accompagnement chaise : Sortir après le coucher au Jour 1 (Dépendance à la présence +)",
+                    id: "accomp_rappels_chaise_coucher_j1", emoji: "🪑", label: "Accompagnement chaise : Sortir après le coucher au Jour 1 <em>(Dépendance à la présence +)</em>",
                     blocks: [
                       { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
                     ]
                   },
                   {
-                    id: "accomp_rappels_allers_retours", emoji: "🚶", label: "Allers-retours (Dépendance à la présence ++)",
+                    id: "accomp_rappels_allers_retours", emoji: "🚶", label: "Allers-retours <em>(Dépendance à la présence ++)</em>",
                     blocks: [
                       { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
                     ]
                   },
                   {
-                    id: "accomp_rappels_porte_fermee", emoji: "🚪", label: "Intervenir porte fermée (Dépendance à la présence +++)",
+                    id: "accomp_rappels_porte_fermee", emoji: "🚪", label: "Intervenir porte fermée <em>(Dépendance à la présence +++)</em>",
                     blocks: [
                       { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
                     ]
