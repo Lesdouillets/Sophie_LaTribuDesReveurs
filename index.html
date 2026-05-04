@@ -9243,6 +9243,125 @@ function closeSetupInfoPanel() {
 window.showTailleCibleFormulas = showTailleCibleFormulas;
 window.closeSetupInfoPanel = closeSetupInfoPanel;
 
+// ── III. Découverte → "Lecture des courbes" : question + inputs taille parents + cible ──
+// Bidirectionnel avec la fiche client : taper ici met à jour state.client + #taille-pere/#taille-mere
+function renderDecouverteTailleParents() {
+  const container = document.getElementById('dec-taille-parents');
+  if (!container) return;
+  const taillePere = (state.client && state.client.taillePere != null) ? String(state.client.taillePere) : '';
+  const tailleMere = (state.client && state.client.tailleMere != null) ? String(state.client.tailleMere) : '';
+  const hasPere = taillePere !== '' && !isNaN(parseFloat(taillePere));
+  const hasMere = tailleMere !== '' && !isNaN(parseFloat(tailleMere));
+  // Question (conditionnelle)
+  let questionHtml = '';
+  if (!hasPere && !hasMere) {
+    questionHtml = '<div style="display:grid;grid-template-columns:auto auto 1fr;gap:6px 8px;align-items:start"><span>❓</span><span>•</span><span>Est-ce que vous pourriez <strong>me donner votre taille à TOUS les 2</strong> ?</span></div>';
+  } else if (hasPere && !hasMere) {
+    questionHtml = '<div style="display:grid;grid-template-columns:auto auto 1fr;gap:6px 8px;align-items:start"><span>❓</span><span>•</span><span>J\'ai la taille du <strong>Papa</strong>, est-ce que vous pourriez me donner la taille de la <strong>Maman</strong> ?</span></div>';
+  } else if (!hasPere && hasMere) {
+    questionHtml = '<div style="display:grid;grid-template-columns:auto auto 1fr;gap:6px 8px;align-items:start"><span>❓</span><span>•</span><span>J\'ai la taille de la <strong>Maman</strong>, est-ce que vous pourriez me donner la taille du <strong>Papa</strong> ?</span></div>';
+  }
+  // Inputs (si au moins une taille manque)
+  let inputsHtml = '';
+  if (!hasPere || !hasMere) {
+    inputsHtml = '<div style="display:flex;gap:18px;margin-top:10px;flex-wrap:wrap">'
+      + '<div style="display:flex;flex-direction:column;gap:4px;align-items:center">'
+        + '<span style="font-size:18px">👨</span>'
+        + '<input type="number" id="dec-taille-pere" placeholder="Taille père" value="' + taillePere + '" oninput="onDecouverteTailleInput(\'pere\', this.value)" style="width:130px;border:1.5px solid #3b82f6;background:#eff6ff;border-radius:8px;padding:6px 10px;font-weight:700;color:#1e40af;text-align:center">'
+      + '</div>'
+      + '<div style="display:flex;flex-direction:column;gap:4px;align-items:center">'
+        + '<span style="font-size:18px">👩</span>'
+        + '<input type="number" id="dec-taille-mere" placeholder="Taille mère" value="' + tailleMere + '" oninput="onDecouverteTailleInput(\'mere\', this.value)" style="width:130px;border:1.5px solid #ec4899;background:#fdf2f8;border-radius:8px;padding:6px 10px;font-weight:700;color:#be185d;text-align:center">'
+      + '</div>'
+    + '</div>';
+  }
+  // Section cible (toujours)
+  // Enregistrer le contenu du bouton "Formules" pour le panneau latéral
+  window.__infoButtons = window.__infoButtons || {};
+  window.__infoButtons['dec-taille-formules'] = {
+    title: 'Formules taille cible',
+    content: '<p style="margin:0 0 12px;color:#422006">La taille cible estimée se calcule à partir de la taille des 2 parents :</p>'
+      + '<div style="margin-top:10px"><div style="font-size:14px;font-weight:700;color:#1e3a8a;margin-bottom:4px">👦 Garçon</div><div style="font-size:15px;font-weight:800;background:#dbeafe;padding:8px 12px;border-radius:8px;color:#1e3a8a">(taille père + taille mère + 13) / 2</div></div>'
+      + '<div style="margin-top:10px"><div style="font-size:14px;font-weight:700;color:#be185d;margin-bottom:4px">👧 Fille</div><div style="font-size:15px;font-weight:800;background:#fce7f3;padding:8px 12px;border-radius:8px;color:#be185d">(taille père + taille mère − 13) / 2</div></div>'
+      + '<p style="margin-top:16px;color:#78716c;font-size:12.5px"><em>Tailles en cm. Marge d\'erreur d\'environ ±5 à 10 cm.</em></p>'
+  };
+  const cibleHtml = '<div style="margin-top:14px;padding-top:10px;border-top:1px dashed #e8a0a0">'
+    + '<label style="font-size:13px;font-weight:700;color:#9a3412;display:block;margin-bottom:6px">Taille cible estimée</label>'
+    + '<div id="dec-taille-cible-calc" style="padding:8px 14px;background:#eaeff8;border:2px solid var(--border);border-radius:8px;font-size:22px;font-weight:800;color:var(--primary-dark);text-align:center;min-height:40px;display:flex;align-items:center;justify-content:center">–</div>'
+    + '<div id="dec-taille-cible-percentile" style="display:none;margin-top:6px;border-radius:6px;overflow:hidden;border:1px solid var(--border);font-size:12px"></div>'
+    + '<button type="button" class="info-btn" onclick="openInfoPanel(\'dec-taille-formules\')" style="min-width:0;width:100%;margin-top:8px;padding:6px 12px;font-size:13px"><span class="info-btn-emoji">💡</span><span>Formules taille cible</span></button>'
+  + '</div>';
+  container.innerHTML = questionHtml + inputsHtml + cibleHtml;
+  // Calculer immédiatement la cible
+  updateDecouverteCible();
+}
+
+// Réagit à la saisie dans les inputs Découverte : sync vers state + fiche client + recompute
+function onDecouverteTailleInput(which, value) {
+  if (!state.client) state.client = {};
+  if (which === 'pere') state.client.taillePere = value;
+  else state.client.tailleMere = value;
+  // Sync vers l'input correspondant de la fiche client (si présent dans le DOM)
+  const ficheInput = document.getElementById(which === 'pere' ? 'taille-pere' : 'taille-mere');
+  if (ficheInput) ficheInput.value = value;
+  // Recompute fiche client (met à jour la cible + percentile dans la fiche)
+  if (typeof computeClientFields === 'function') computeClientFields();
+  // Recompute cible Découverte
+  updateDecouverteCible();
+}
+
+// Recalcule juste l'affichage cible + percentile dans Découverte (sans rerendre les inputs)
+function updateDecouverteCible() {
+  const tcEl = document.getElementById('dec-taille-cible-calc');
+  const percEl = document.getElementById('dec-taille-cible-percentile');
+  if (!tcEl) return;
+  const taillePere = parseFloat(state.client && state.client.taillePere);
+  const tailleMere = parseFloat(state.client && state.client.tailleMere);
+  const sexe = state.client && state.client.sexe;
+  const percFille = [{p:3,t:152},{p:5,t:154},{p:10,t:156},{p:25,t:160},{p:50,t:164},{p:75,t:168},{p:90,t:172},{p:95,t:174},{p:97,t:176}];
+  const percGarcon = [{p:3,t:166},{p:5,t:167},{p:10,t:169},{p:25,t:173},{p:50,t:177},{p:75,t:181},{p:90,t:185},{p:95,t:187},{p:97,t:188}];
+  if (!isNaN(taillePere) && !isNaN(tailleMere) && sexe) {
+    const corr = sexe === 'Fille' ? -13 : 13;
+    const tc = Math.round((taillePere + tailleMere + corr) / 2);
+    tcEl.textContent = tc + ' cm';
+    const table = sexe === 'Fille' ? percFille : percGarcon;
+    let below = null, above = null;
+    for (let i = 0; i < table.length; i++) {
+      if (table[i].t <= tc) below = table[i];
+      if (table[i].t >= tc && !above) above = table[i];
+    }
+    if (percEl) {
+      const rows = table.map(r => {
+        const isBelow = below && r.p === below.p && r.t !== (above && above.t);
+        const isAbove = above && r.p === above.p;
+        const highlight = isBelow || isAbove;
+        const bg = highlight ? (isAbove ? '#dcfce7' : '#dbeafe') : 'white';
+        const fw = highlight ? '800' : '400';
+        return '<tr style="background:' + bg + '">'
+          + '<td style="padding:3px 8px;font-weight:' + fw + ';color:' + (highlight?'#1a3a1a':'#555') + '">' + r.p + 'e</td>'
+          + '<td style="padding:3px 8px;font-weight:' + fw + ';color:' + (highlight?'#1a3a1a':'#555') + '">' + r.t + ' cm</td>'
+          + (highlight ? '<td style="padding:3px 6px;font-size:11px;color:#555">' + (isAbove ? '⬆ au-dessus' : '⬇ en-dessous') + '</td>' : '<td></td>')
+        + '</tr>';
+      }).join('');
+      percEl.style.display = 'block';
+      percEl.innerHTML = '<table style="width:100%;border-collapse:collapse">'
+        + '<thead><tr style="background:var(--primary-dark);color:white">'
+          + '<th style="padding:4px 8px;text-align:left;font-size:12px">%ile</th>'
+          + '<th style="padding:4px 8px;text-align:left;font-size:12px">Taille</th>'
+          + '<th style="padding:4px 8px;text-align:left;font-size:12px"></th>'
+        + '</tr></thead>'
+        + '<tbody>' + rows + '</tbody>'
+      + '</table>';
+    }
+  } else {
+    tcEl.textContent = '–';
+    if (percEl) percEl.style.display = 'none';
+  }
+}
+window.renderDecouverteTailleParents = renderDecouverteTailleParents;
+window.onDecouverteTailleInput = onDecouverteTailleInput;
+window.updateDecouverteCible = updateDecouverteCible;
+
 // Ouvre le panneau latéral "Infos" et y charge le contenu du bouton cliqué
 // Comportement toggle : re-cliquer sur le même bouton actif ferme le panneau
 function openInfoPanel(btnId) {
@@ -9391,6 +9510,10 @@ function renderCurrentSection() {
   {
     const v = (state && state.client && state.client.scheduleWakeUp) || '';
     if (v) area.querySelectorAll('input[data-horaire-souhaite]').forEach(inp => { inp.value = v; });
+  }
+  // III. Découverte → Lecture des courbes : remplir le placeholder dynamique des tailles parents
+  if (section.id === 'decouverte' && typeof renderDecouverteTailleParents === 'function') {
+    renderDecouverteTailleParents();
   }
   // Remplir le diagnostic avec le clone des checkboxes si la section contient le container
   const diagContainer = document.getElementById('diag-pb-container');
