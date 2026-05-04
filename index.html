@@ -677,6 +677,32 @@
     .block-leviers-identifies > #diag-pb-container {
       padding: 16px 20px;
     }
+    /* ── Étape 1 : esthétique "Solutions identifiées" pour Problématiques (fiche client + modal) ──
+       V. Diagnostic est déjà wrappé dans .block-leviers-identifies, donc exclu via le sélecteur :not(). */
+    .setup-section > .problematiques-grid,
+    #modal-pb-list > .problematiques-grid {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0 20px 12px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    /* Header navy en ::before, occupe toute la largeur de la grid via grid-column: 1 / -1 */
+    .setup-section > .problematiques-grid::before,
+    #modal-pb-list > .problematiques-grid::before {
+      content: "⚙️ Problématiques identifiées";
+      display: block;
+      grid-column: 1 / -1;
+      background: linear-gradient(90deg, #3b4e72, #6c82a8);
+      color: white;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      padding: 12px 20px;
+      margin: 0 -20px 12px;
+    }
 
     /* Bandeau PARENT (catégorie parente) — style le plus marqué */
     .block-parent-banner {
