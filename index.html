@@ -863,11 +863,17 @@
       display: block !important;
       grid-template-columns: none !important;
     }
+    /* Cacher l'encadré items quand collapsed (override Step 3 display:flex) */
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) > .pb-items.collapsed {
+      display: none !important;
+    }
     .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]):has(> .pb-items.collapsed) > .pb-category-title {
       flex-direction: row !important;
       gap: 8px !important;
       width: 100%;
       box-sizing: border-box;
+      justify-content: flex-start !important;
+      text-align: left !important;
     }
     .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]):has(> .pb-items.collapsed) > .pb-category-title > .pb-cat-emoji {
       font-size: 16px !important;
