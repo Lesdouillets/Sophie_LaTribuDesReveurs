@@ -11617,7 +11617,20 @@ function renderSolutionsCheckboxes(opts) {
       </label>${arrowHtml}</div>${subRows}</div>`;
     }).join('');
     const bulkBtns = '';
-    const groupCollapsed = !!(state.solGroupsCollapsed && state.solGroupsCollapsed.has(cat.id));
+    // Auto-collapse rules :
+    //  - confort_physique / nutrition / relationnel : collapsed si la cat checkbox correspondante n'est PAS cochée dans V. Diagnostic
+    //  - strategie / env : collapsed si AUCUN enfant solution n'est coché dans VIII. Plan d'action
+    //  - autres catégories : respectent le toggle utilisateur (défaut ouvert)
+    let groupCollapsed;
+    if (cat.id === 'confort_physique' || cat.id === 'nutrition' || cat.id === 'relationnel') {
+      const catCb = document.querySelector(`.pb-cat-checkbox[data-cat="${cat.id}"]`);
+      groupCollapsed = !catCb || !catCb.checked;
+    } else if (cat.id === 'strategie' || cat.id === 'env') {
+      const anyChildChecked = (cat.children || []).some(ch => state.selectedSolutions && state.selectedSolutions.has(ch.id));
+      groupCollapsed = !anyChildChecked;
+    } else {
+      groupCollapsed = !!(state.solGroupsCollapsed && state.solGroupsCollapsed.has(cat.id));
+    }
     const groupClass = groupCollapsed ? ' collapsed' : '';
     return `<div class="sol-group block-with-left-title${groupClass}" data-cat="${cat.id}">
       <div class="sol-group-title" style="background:${c.main};color:#fff" onclick="toggleSolGroup('${cat.id}')"><span class="sol-group-arrow">▾</span><span style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:22px;line-height:1">${cat.emoji || ''}</span><span>${cat.title}</span></span></div>
