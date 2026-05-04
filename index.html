@@ -9290,11 +9290,11 @@ function renderDecouverteTailleParents() {
       + '<div style="margin-top:10px"><div style="font-size:14px;font-weight:700;color:#be185d;margin-bottom:4px">👧 Fille</div><div style="font-size:15px;font-weight:800;background:#fce7f3;padding:8px 12px;border-radius:8px;color:#be185d">(taille père + taille mère − 13) / 2</div></div>'
       + '<p style="margin-top:16px;color:#78716c;font-size:12.5px"><em>Tailles en cm. Marge d\'erreur d\'environ ±5 à 10 cm.</em></p>'
   };
-  const cibleHtml = '<div style="margin-top:14px;padding-top:10px;border-top:1px dashed #e8a0a0">'
-    + '<label style="font-size:13px;font-weight:700;color:#9a3412;display:block;margin-bottom:6px">Taille cible estimée</label>'
-    + '<div id="dec-taille-cible-calc" style="padding:8px 14px;background:#eaeff8;border:2px solid var(--border);border-radius:8px;font-size:22px;font-weight:800;color:var(--primary-dark);text-align:center;min-height:40px;display:flex;align-items:center;justify-content:center">–</div>'
-    + '<div id="dec-taille-cible-percentile" style="display:none;margin-top:6px;border-radius:6px;overflow:hidden;border:1px solid var(--border);font-size:12px"></div>'
-    + '<button type="button" class="info-btn" onclick="openInfoPanel(\'dec-taille-formules\')" style="min-width:0;width:100%;margin-top:8px;padding:6px 12px;font-size:13px"><span class="info-btn-emoji">💡</span><span>Formules taille cible</span></button>'
+  const cibleHtml = '<div style="margin-top:14px;padding-top:10px;border-top:1px dashed #e8a0a0;display:grid;grid-template-columns:320px 1fr;column-gap:14px;row-gap:6px;align-items:start">'
+    + '<label style="grid-column:1;grid-row:1;font-size:13px;font-weight:700;color:#9a3412;margin:0">Taille cible estimée</label>'
+    + '<div id="dec-taille-cible-calc" style="grid-column:1;grid-row:2;padding:8px 14px;background:#eaeff8;border:2px solid var(--border);border-radius:8px;font-size:22px;font-weight:800;color:var(--primary-dark);text-align:center;min-height:40px;display:flex;align-items:center;justify-content:center">–</div>'
+    + '<div id="dec-taille-cible-percentile" style="grid-column:1;grid-row:3;display:none;border-radius:6px;overflow:hidden;border:1px solid var(--border);font-size:12px"></div>'
+    + '<button type="button" class="info-btn" onclick="openInfoPanel(\'dec-taille-formules\')" style="grid-column:2;grid-row:3;align-self:start;justify-self:end;min-width:0;max-width:300px;padding:8px 14px;font-size:13px"><span class="info-btn-emoji">💡</span><span>Formules taille cible</span></button>'
   + '</div>';
   container.innerHTML = questionHtml + inputsHtml + cibleHtml;
   // Calculer immédiatement la cible
