@@ -10680,7 +10680,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       : '';
     return `<div class="${gridCls}" data-active-col="${activeCol}">
       <div class="col-2 col-2-left" data-col-idx="1" onclick="setColumns2Active(this, 1)">${leftTitle}<div class="col-2-body" onclick="event.stopPropagation()">${renderBlocks(leftBlocks, sectionId, (depth||0)+1, `${path||i}.col.L`)}</div></div>
-      <div class="col-2 col-2-right" data-col-idx="2" onclick="setColumns2Active(this, 2)">${rightTitle}<div class="col-2-body col-2-body-right" onclick="event.stopPropagation()">${renderBlocks(rightBlocks, sectionId, (depth||0)+1, `${path||i}.col.R`)}</div></div>
+      <div class="col-2 col-2-right" data-col-idx="2" onclick="setColumns2Active(this, 2)">${rightTitle}<div class="col-2-body${hasFourth ? '' : ' col-2-body-right'}" onclick="event.stopPropagation()">${renderBlocks(rightBlocks, sectionId, (depth||0)+1, `${path||i}.col.R`)}</div></div>
       ${thirdHtml}
       ${fourthHtml}
     </div>`;
