@@ -11684,10 +11684,10 @@ function renderSolutionsCheckboxes(opts) {
     // Dès que l'utilisateur clique sur la flèche, son choix est prioritaire (state.solGroupsUserToggled).
     let groupCollapsed;
     const userToggled = !!(state.solGroupsUserToggled && state.solGroupsUserToggled.has(cat.id));
-    if (cat.alwaysOpen) {
-      groupCollapsed = false;
-    } else if (userToggled) {
+    if (userToggled) {
       groupCollapsed = !!(state.solGroupsCollapsed && state.solGroupsCollapsed.has(cat.id));
+    } else if (cat.alwaysOpen) {
+      groupCollapsed = false;
     } else if (cat.id === 'confort_physique' || cat.id === 'nutrition' || cat.id === 'relationnel') {
       const catCb = document.querySelector(`.pb-cat-checkbox[data-cat="${cat.id}"]`);
       groupCollapsed = !catCb || !catCb.checked;
@@ -11698,16 +11698,13 @@ function renderSolutionsCheckboxes(opts) {
       groupCollapsed = !!(state.solGroupsCollapsed && state.solGroupsCollapsed.has(cat.id));
     }
     const groupClass = groupCollapsed ? ' collapsed' : '';
-    const alwaysOpenClass = cat.alwaysOpen ? ' sol-group-always-open' : '';
-    const titleClick = cat.alwaysOpen ? '' : ` onclick="toggleSolGroup('${cat.id}')"`;
-    const arrow = cat.alwaysOpen ? '' : '<span class="sol-group-arrow">▾</span>';
     // Pour les sections marquées inlineIntro: rendre les introBlocks directement dans le contenu du groupe
     // (sinon les introBlocks passent par Part 3, qui ne se déclenche qu'avec activeCat + selected children)
     const inlineIntroHtml = (cat.inlineIntro && Array.isArray(cat.introBlocks) && cat.introBlocks.length)
       ? `<div class="sol-cat-intro" data-section-cat="${cat.id}" style="--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">${renderBlocks(cat.introBlocks, 'sol_' + cat.id)}</div>`
       : '';
-    return `<div class="sol-group block-with-left-title${groupClass}${alwaysOpenClass}" data-cat="${cat.id}">
-      <div class="sol-group-title" style="background:${c.main};color:#fff${cat.alwaysOpen ? ';cursor:default' : ''}"${titleClick}>${arrow}<span style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:22px;line-height:1">${cat.emoji || ''}</span><span>${cat.title}</span></span></div>
+    return `<div class="sol-group block-with-left-title${groupClass}" data-cat="${cat.id}">
+      <div class="sol-group-title" style="background:${c.main};color:#fff" onclick="toggleSolGroup('${cat.id}')"><span class="sol-group-arrow">▾</span><span style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:22px;line-height:1">${cat.emoji || ''}</span><span>${cat.title}</span></span></div>
       <div class="sol-group-content" style="border:2px solid ${c.light}">${bulkBtns}<div class="sol-group-rows">${rows}</div>${inlineIntroHtml}</div>
     </div>`;
   }).filter(Boolean).join('');
