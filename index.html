@@ -1572,13 +1572,15 @@
     /* Carte ACTIVE : pleine largeur de la page, body visible */
     .columns-2-grid[data-active-col="1"] > .col-2[data-col-idx="1"],
     .columns-2-grid[data-active-col="2"] > .col-2[data-col-idx="2"],
-    .columns-2-grid[data-active-col="3"] > .col-2[data-col-idx="3"] {
+    .columns-2-grid[data-active-col="3"] > .col-2[data-col-idx="3"],
+    .columns-2-grid[data-active-col="4"] > .col-2[data-col-idx="4"] {
       grid-column: 1 / -1;
       box-shadow: 0 4px 14px rgba(45,63,92,0.30);
     }
     .columns-2-grid[data-active-col="1"] > .col-2[data-col-idx="1"] > .col-2-body,
     .columns-2-grid[data-active-col="2"] > .col-2[data-col-idx="2"] > .col-2-body,
-    .columns-2-grid[data-active-col="3"] > .col-2[data-col-idx="3"] > .col-2-body {
+    .columns-2-grid[data-active-col="3"] > .col-2[data-col-idx="3"] > .col-2-body,
+    .columns-2-grid[data-active-col="4"] > .col-2[data-col-idx="4"] > .col-2-body {
       display: block;
     }
     /* Body de la carte de droite (V. Diagnostic) : grille 2 colonnes — vert+rouge sur la 1ère ligne, jaune (orphelin) centré en row 2 */
@@ -1609,15 +1611,18 @@
     /* Cartes non-actives masquées quand une carte est ouverte */
     .columns-2-grid[data-active-col="1"] > .col-2:not([data-col-idx="1"]),
     .columns-2-grid[data-active-col="2"] > .col-2:not([data-col-idx="2"]),
-    .columns-2-grid[data-active-col="3"] > .col-2:not([data-col-idx="3"]) {
+    .columns-2-grid[data-active-col="3"] > .col-2:not([data-col-idx="3"]),
+    .columns-2-grid[data-active-col="4"] > .col-2:not([data-col-idx="4"]) {
       display: none;
     }
     @media (max-width: 900px) { .columns-2-grid { grid-template-columns: 1fr; } }
     /* Variante 3 colonnes (avec colonne "Bonne nouvelle") — même comportement que 2 cols */
     .columns-2-grid.columns-3 { grid-template-columns: 1fr 1fr 1fr; }
+    /* Variante 4 colonnes (ex. III. Découverte : Fiche / Courbes / Tableau / Photos) */
+    .columns-2-grid.columns-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
     /* Style "news-red" overridé : on conserve le bleu marine partout */
     .col-2.col-3-news-red { background: #2d3f5c; border-color: #1a2a42; }
-    @media (max-width: 900px) { .columns-2-grid.columns-3 { grid-template-columns: 1fr; } }
+    @media (max-width: 900px) { .columns-2-grid.columns-3, .columns-2-grid.columns-4 { grid-template-columns: 1fr; } }
     /* Colonne droite : grille 2 colonnes appliquée au body (pas au col-2 lui-même qui est en flex column).
        Scopée à [data-active-col="2"] pour que le body reste display:none (règle de base) tant que la carte n'est pas cliquée. */
     .columns-2-grid[data-active-col="2"] > .col-2-right > .col-2-body-right {
@@ -9346,7 +9351,7 @@ function updateDecouverteCible() {
       percEl.style.display = 'block';
       percEl.innerHTML = '<table style="width:100%;border-collapse:collapse">'
         + '<thead><tr style="background:var(--primary-dark);color:white">'
-          + '<th style="padding:4px 8px;text-align:left;font-size:12px">%ile</th>'
+          + '<th style="padding:4px 8px;text-align:left;font-size:12px">Percentile</th>'
           + '<th style="padding:4px 8px;text-align:left;font-size:12px">Taille</th>'
           + '<th style="padding:4px 8px;text-align:left;font-size:12px"></th>'
         + '</tr></thead>'
@@ -10634,7 +10639,9 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const leftBlocks = Array.isArray(b.left) ? b.left : [];
     const rightBlocks = Array.isArray(b.right) ? b.right : [];
     const thirdBlocks = Array.isArray(b.third) ? b.third : [];
+    const fourthBlocks = Array.isArray(b.fourth) ? b.fourth : [];
     const hasThird = thirdBlocks.length > 0;
+    const hasFourth = fourthBlocks.length > 0;
     if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
     const colTickId = (idx) => `col2-${sectionId||'x'}-${String(path||i).replace(/\./g,'-')}-${idx}`;
     // Sépare l'emoji du titre (premier "mot" = emoji s'il y a un espace)
@@ -10659,17 +10666,23 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const leftTitle = renderHeader(b.leftTitle, 1);
     const rightTitle = renderHeader(b.rightTitle, 2);
     const thirdTitle = renderHeader(b.thirdTitle, 3);
+    const fourthTitle = renderHeader(b.fourthTitle, 4);
     const thirdStyleCls = b.thirdStyle ? ` col-3-${b.thirdStyle}` : '';
+    const fourthStyleCls = b.fourthStyle ? ` col-4-${b.fourthStyle}` : '';
     // Par défaut : aucune carte ouverte (0) — toutes visibles côte à côte. Compat ancien defaultActive.
-    const activeCol = (b.defaultActive === 1 || b.defaultActive === 2 || b.defaultActive === 3) ? b.defaultActive : 0;
-    const gridCls = hasThird ? 'columns-2-grid columns-3' : 'columns-2-grid';
+    const activeCol = (b.defaultActive === 1 || b.defaultActive === 2 || b.defaultActive === 3 || b.defaultActive === 4) ? b.defaultActive : 0;
+    const gridCls = hasFourth ? 'columns-2-grid columns-4' : (hasThird ? 'columns-2-grid columns-3' : 'columns-2-grid');
     const thirdHtml = hasThird
       ? `<div class="col-2 col-2-third${thirdStyleCls}" data-col-idx="3" onclick="setColumns2Active(this, 3)">${thirdTitle}<div class="col-2-body" onclick="event.stopPropagation()">${renderBlocks(thirdBlocks, sectionId, (depth||0)+1, `${path||i}.col.T`)}</div></div>`
+      : '';
+    const fourthHtml = hasFourth
+      ? `<div class="col-2 col-2-fourth${fourthStyleCls}" data-col-idx="4" onclick="setColumns2Active(this, 4)">${fourthTitle}<div class="col-2-body" onclick="event.stopPropagation()">${renderBlocks(fourthBlocks, sectionId, (depth||0)+1, `${path||i}.col.F`)}</div></div>`
       : '';
     return `<div class="${gridCls}" data-active-col="${activeCol}">
       <div class="col-2 col-2-left" data-col-idx="1" onclick="setColumns2Active(this, 1)">${leftTitle}<div class="col-2-body" onclick="event.stopPropagation()">${renderBlocks(leftBlocks, sectionId, (depth||0)+1, `${path||i}.col.L`)}</div></div>
       <div class="col-2 col-2-right" data-col-idx="2" onclick="setColumns2Active(this, 2)">${rightTitle}<div class="col-2-body col-2-body-right" onclick="event.stopPropagation()">${renderBlocks(rightBlocks, sectionId, (depth||0)+1, `${path||i}.col.R`)}</div></div>
       ${thirdHtml}
+      ${fourthHtml}
     </div>`;
   }
   if (b.type === 'separator') return `<div class="block block-separator">${text}</div>`;
