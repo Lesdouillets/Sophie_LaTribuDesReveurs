@@ -12937,6 +12937,8 @@ function substituteVars(text) {
     .replace(/\[ne_nee\]/g, isFille ? 'née' : 'né')
     .replace(/\[stabilise_stabilisee\]/g, isFille ? 'stabilisée' : 'stabilisé')
     .replace(/\[allaite_allaitee\]/g, isFille ? 'allaitée' : 'allaité')
+    .replace(/\[LE_LA\]/g, isFille ? 'LA' : 'LE')
+    .replace(/\[le_la\]/g, isFille ? 'la' : 'le')
     .replace(/\[ces_vos_objectifs\]/g, (c.objectifs && c.objectifs.trim()) ? 'ces objectifs' : 'vos objectifs')
     .replace(/\[aligne_alignee\]/g, (() => {
       // Accord selon le(s) parent(s) présent(s) à la consultation
@@ -13020,6 +13022,7 @@ function substituteVars(text) {
       /il s['\u2019]adapte\b/gi,
       /il est(?:[\s*]+)\+(?:[\s*]+)stimul\u00e9/gi,
       /il serait\b/gi,
+      /qu['’]il(?=\s+L[EA]\s+supplémente)/gi,
       /il suffit\b/gi,
       /il convient\b/gi,
       /il existe\b/gi,

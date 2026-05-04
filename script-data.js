@@ -3078,7 +3078,7 @@ const SCRIPT_DATA = {
                           blocks: [
                             {
                               type: "normal", _leftTitle: "Conseil",
-                              text: "- Je vous recommanderai de **discuter avec votre pédiatre** concernant la **supplémentation en fer** pour **[prénom_enfant]**\n\n- Les **réserves en fer :**\n  - **qu'il avait acquis pendant la grossesse**… **s'amenuisent**\n  - et les **demandes en fer**, dès **6 mois**, sont **très très importantes**\n- **Contrairement au lait infantile** qui est **enrichi en fer**\n  ⇒ le **lait maternel** ne **permet PAS** de **répondre** à la **très grande demande** de [prénom_enfant]\n  ⇒ c'est pourquoi, il serait **peut être intéressant** d'en <span style=\"color:#dc2626\">**parler à votre médecin**</span>\n  ⇒ pour qu'il **LE supplémente en fer**",
+                              text: "- Je vous recommanderai de **discuter avec votre pédiatre** concernant la **supplémentation en fer** pour **[prénom_enfant]**\n\n- Les **réserves en fer :**\n  - **qu'il avait acquis pendant la grossesse**… **s'amenuisent**\n  - et les **demandes en fer**, dès **6 mois**, sont **très très importantes**\n- **Contrairement au lait infantile** qui est **enrichi en fer**\n  ⇒ le **lait maternel** ne **permet PAS** de **répondre** à la **très grande demande** de [prénom_enfant]\n  ⇒ c'est pourquoi, il serait **peut être intéressant** d'en <span style=\"color:#dc2626\">**parler à votre médecin**</span>\n  ⇒ pour qu'il **[LE_LA] supplémente en fer**",
                               trailingInfoButtons: [
                                 {
                                   emoji: "💡",
