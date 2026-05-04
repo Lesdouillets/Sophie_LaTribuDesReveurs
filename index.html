@@ -11296,9 +11296,11 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       // Si 1 seul bouton : classe .inline-right (positionné absolument)
       // Si > 1 : classe .in-stack (positionnement géré par le container parent)
       const cls = trailingBtnsList.length > 1 ? 'info-btn in-stack' : 'info-btn inline-right';
-      const btnStyle = trailingBtnsList.length > 1
+      const baseBtnStyle = trailingBtnsList.length > 1
         ? 'position:relative;display:block;width:100%;min-width:0;text-align:left;margin-bottom:8px;padding:10px 14px;font-size:14px;box-sizing:border-box'
         : 'position:relative;display:block;width:100%;min-width:0;text-align:left;padding:10px 14px;font-size:14px;box-sizing:border-box';
+      // Style additionnel custom (couleur, bordure...) via tb._style
+      const btnStyle = baseBtnStyle + (tb._style ? ';' + tb._style : '');
       const btnEmoji = tb.emoji || '💡';
       return `<button type="button" class="${cls}" contenteditable="false" onclick="openInfoPanel('${btnId}')" style="${btnStyle}"><span class="info-btn-emoji" style="margin-right:8px">${btnEmoji}</span><span>${label}</span></button>`;
     }).join('');
