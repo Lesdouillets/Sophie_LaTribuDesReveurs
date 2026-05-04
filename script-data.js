@@ -2901,7 +2901,126 @@ const SCRIPT_DATA = {
                   id: "nutri_lait_allaitement", emoji: "🤱", label: "Allaitement",
                   alim: ["Allaitement maternel", "Allaitement mixte", "Allaitement au sein"],
                   blocks: [
-                    { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                    {
+                      type: "courbe_cards_grid",
+                      alwaysShowAll: true,
+                      items: [
+                        {
+                          id: "nutri_lait_allaitement_pb_lactation", emoji: "🤱", label: "Problème de lactation",
+                          blocks: [
+                            {
+                              type: "normal", _leftTitle: "Constat",
+                              text: "- **Pour commencer**, je voudrais qu'on **prenne** un **petit moment** pour **re-parler** de votre **lactation**… si vous êtes d'accord\n\n- Tout à l'heure, on a évoqué :\n  - ☐ Une **courbe de poids** `.XXX.`\n  - ☐ Les **tétées** sont plutôt **longues**\n  - ☐ Il est **très agité** durant les tétées\n  - ☐ Il fait le **pic-vert sur le sein**\n  - ☐ Beaucoup de **pleurs en fin de journée** et **la nuit**\n  - ☐ BB est + **à l'aise d'un côté** que de l'autre\n  - ☐ Une **grève des tétées**",
+                              trailingInfoButtons: [
+                                {
+                                  emoji: "🍭",
+                                  label: "Tétine = coupe-faim",
+                                  title: "Tétine / petit doigt à sucer / mâchonnage = coupe-faim",
+                                  blocks: [
+                                    { type: "normal", text: "- 🍭 **Tétine / petit doigt à sucer / mâchonnage de poing / pouce = coupe-faim**\n  - Peut **répondre à un réflexe de succion**, MAIS peut aussi **faire office d'illusion** puisque ça **« dupe » le cerveau :**\n    - Votre E. **« tète et déglutit »** ⇒ donc le cerveau pense que **qqch rentre dans son estomac**… MAIS rien ne rentre…\n    - et au bout d'un moment :\n      - **l'illusion se perd**\n      - et la **faim se fait ressentir**\n  - Même si **vous remettez la tétine** :\n    - il **n'en veut pas**\n    - et il **pleure**\n    ⇒ Parce qu'il **veut AUTRE CHOSE, il veut manger**\n\n= La **tétine** joue donc le rôle d'un **« cache-faim »**" }
+                                  ]
+                                },
+                                {
+                                  label: "Tétine = signal stimuler lactation",
+                                  title: "Tétine = signe pour stimuler lactation",
+                                  blocks: [
+                                    { type: "normal", text: "- **Tétine / petit doigt à sucer / mâchonnage de poing / pouce = SIGNE POUR STIMULER LACTATION**\n  - Peut être un signe que BB a besoin de :\n    - téter,\n    - de stimuler vos seins" }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              type: "normal", _leftTitle: "Manque d'apport",
+                              text: "- Pour moi, ça m'évoque un **BB** qui :\n  - est en **manque d'apports alimentaires**\n  - et qui **a faim**\n\n- *Peut-être dû à :*\n  - ☐ *un **soucis de succion***\n  - ☐ *ou de **frein restrictifs***\n  - ☐ *Peut-être dû au **changement de rythme** (ex : avec le **mode de garde**)*\n\n- Et **comme il est allaité**, je **SOUPÇONNE** qu'il y a une **PETITE baisse** au niveau de votre **lactation**"
+                            },
+                            {
+                              type: "normal", _leftTitle: "Déculpabiliser",
+                              text: "- Ce que je **voudrais VRAIMENT vous dire**, c'est que :\n  - **ça ne vient PAS de vous**\n  - **NI de votre allaitement**\n\n- Parfois, les BB n'ont **PAS ENCORE une succion très efficace**…\n  ⇒ du coup, ils **ne stimulent pas le sein AUTANT que nécessaire**\n\n- Et comme le **corps fonctionne à la demande**,\n  ⇒ il **s'adapte** simplement A CE QUE **le bébé lui envoie comme signal**"
+                            },
+                            {
+                              type: "normal", _leftTitle: "Cercle vicieux",
+                              text: "- ⚠️⚠️⚠️ Et on **rentre alors** dans un **cercle vicieux :**\n  - *Il **a faim***\n  - *Donc il **vous appelle***\n  - *Sauf que ces **réveils génèrent** de la **fatigue***\n  - *Donc les **tétées** sont **moins efficaces***\n  - *Donc ça **augmente la sensation de faim***\n  - *Le **nb de réveils** continue **d'augmenter…***\n\n- La **bonne nouvelle**, c'est qu'on **peut CASSER** ce **cercle vicieux !**",
+                              trailingInfoButtons: [
+                                {
+                                  emoji: "💡",
+                                  label: "Booster sa lactation",
+                                  title: "Comment booster sa lactation ?",
+                                  blocks: [
+                                    { type: "normal", text: "💡 **Comment booster sa lactation ?**\n\n- **Allaiter fréquemment**\n- Toujours proposer les **2 seins**\n- **Tirer votre lait** :\n  - **Après les tétées**\n  - Durant la **journée** ⇒ Pour **stimuler** vos seins\n  - Faire du *« Power pumping »* (*« marathon des tirages »*) :\n    - **Tirer** votre lait pdt **10 min**, puis **reposez-vous** pdt **10 min** (×3) = Les effets de ce protocole se font sentir 48 à 72h + tard\n- **Boire** suffisamment *(🎓 le lait est composé à 87 % d'eau !)*\n- **Manger équilibré**" },
+                                    { type: "normal", text: "💡 **Certains aliments** sont traditionnellement **considérés comme « booster » de lactation :**\n  - Avoine\n  - Graines de sésame\n  - Amandes et noix (⚠️ allergies)\n  - Fenugrec\n  - Fenouil…" }
+                                  ]
+                                },
+                                {
+                                  label: "Nombre de prises et quantité",
+                                  title: "Nombre de prises et quantité",
+                                  blocks: [
+                                    { type: "normal", text: "**Nombre de prises et quantité**\n\n*📷 Image à intégrer (référence locale)*" }
+                                  ]
+                                }
+                              ]
+                            },
+                            { type: "normal", _leftTitle: "Conseils", text: "Pour ça, je vous conseille :\n\n1. D'essayer de bien **dissocier l'alimentation et le sommeil**, pour ne **PAS qu'il s'endorme** sur **votre sein**\n2. De toujours donner les **2 seins**\n   - pour **stimuler votre lactation**\n   - **s'assurer** que BB **va bien chercher le gras de fin de tétée** qui **tient mieux au corps**\n   - et **offrir à BB** ⇒ tout ce dont il a besoin\n3. De **proposer le sein régulièrement en journée** :\n   - idéalement **à chaque début de temps d'éveil**\n     ⇒ c'est souvent là que BB est **le plus disponible pour téter efficacement**\n   - Quitte à **compléter avec un biberon** de lait maternel ou infantile pour que [prénom_enfant] ait **suffisamment d'apports**\n   - Je vous encourage à faire les **tétées groupées du soir**, qui sont totalement **naturelles**\n   - Évitez les **tétées trop « somnolentes »**\n     ⇒ **Stimulez** un peu BB sur ses **joues ou ses pieds**\n     ⇒ pour ne **PAS qu'il s'endorme en buvant**\n   - **Tirer votre lait** quand bébé dort, surtout en journée\n     - pour **stimuler la lactation**\n     - et vous **constituer un petit stock**" },
+                            {
+                              type: "normal", _leftTitle: "Consultante en lactation IBCLC",
+                              text: "- En parallèle, je pense que ça **peut être utile…** d'aller voir une **conseillère en lactation IBCLC** qui pourra :\n  - vous **accompagner** dans la **REMISE EN PLACE** de **votre lactation**\n  - et **voir** s'il y a de **petites choses à AJUSTER comme :**\n    - un **pb de succion** *(claquement langue, pb de prise du sein en forme de gouttière…)*\n    - ou un **frein restrictif** *(langue, lèvre, joue)*",
+                              trailingInfoButtons: [
+                                {
+                                  emoji: "💉",
+                                  label: "Freins de bouche — Annuaire Chirobliss",
+                                  title: "Freins de bouche — Annuaire Chirobliss",
+                                  blocks: [
+                                    { type: "normal", text: "- 💉 **Freins de bouche : Annuaire Chirobliss** *(chiropracteur)*" },
+                                    { type: "normal", _noBorder: true, text: "<table style=\"border-collapse:collapse;width:100%;font-size:13px;line-height:1.4;margin-top:10px\"><thead><tr><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:left\">Spécialité</th><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:left\">Nom</th><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:center\">Tarif</th><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:left\">Réseau</th><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:left\">Remarque</th></tr></thead><tbody><tr><td rowspan=\"2\" style=\"border:1px solid #94a3b8;padding:8px;background:#f8fafc;font-weight:700;vertical-align:top\">Consultante en lactation IBCLC</td><td style=\"border:1px solid #94a3b8;padding:8px\">Fanny Rieussec <em>(Objectif Tétées)</em></td><td style=\"border:1px solid #94a3b8;padding:8px;text-align:center\">95€</td><td style=\"border:1px solid #94a3b8;padding:8px\">Réseau Fée Dodo</td><td style=\"border:1px solid #94a3b8;padding:8px\"></td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px\">Cécile Sérillon <em>(SOS allaitement 33)</em></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td></tr><tr><td rowspan=\"2\" style=\"border:1px solid #94a3b8;padding:8px;background:#f8fafc;font-weight:700;vertical-align:top\">Diététicienne nutritionniste pédiatrique</td><td style=\"border:1px solid #94a3b8;padding:8px\">Tiffany Deroyer</td><td style=\"border:1px solid #94a3b8;padding:8px;text-align:center\">75€</td><td style=\"border:1px solid #94a3b8;padding:8px\">Réseau Fée Dodo</td><td style=\"border:1px solid #94a3b8;padding:8px\">Souvent pris en charge par la Mutuelle</td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px\">Julia Mellanger <em>(L'avocate Nutritionniste)</em></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\">⚠️ En Suisse</td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px;background:#f8fafc;font-weight:700\">Frein restrictif</td><td style=\"border:1px solid #94a3b8;padding:8px\">Virginie Ferrandez <em>(Parents en confiance)</em></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px;background:#f8fafc;font-weight:700\">Frein Restrictif</td><td style=\"border:1px solid #94a3b8;padding:8px\">Annuaire Chirobliss <em>(chiropracteurs)</em></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td></tr></tbody></table>" }
+                                  ]
+                                },
+                                {
+                                  emoji: "💉",
+                                  label: "Conseillère IBCLC : Fanny Rieussec",
+                                  title: "Conseillère en lactation IBCLC",
+                                  blocks: [
+                                    { type: "normal", text: "- 💉 **Conseillère en lactation IBCLC : Fanny Rieussec** *(chez Fée Dodo)* qui pourra vous **aider sur les problèmes de succion**" }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          id: "nutri_lait_allaitement_inversion_jn", emoji: "🌗", label: "Inversion jour/nuit (⚠️ sans pb de lactation)",
+                          pb: "nutri_inversion_jour_nuit",
+                          blocks: [
+                            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                          ]
+                        },
+                        {
+                          id: "nutri_lait_allaitement_quantite", emoji: "🔢", label: "Quantité et espacement",
+                          blocks: [
+                            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                          ]
+                        },
+                        {
+                          id: "nutri_lait_allaitement_fer", emoji: "💊", label: "Supplémentation en fer",
+                          showIfAgeMinMonths: 6,
+                          alim: ["Allaitement au sein", "Allaitement au biberon"],
+                          blocks: [
+                            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                          ]
+                        },
+                        {
+                          id: "nutri_lait_allaitement_distrait", emoji: "👀", label: "Si bébé distrait",
+                          blocks: [
+                            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                          ]
+                        },
+                        {
+                          id: "nutri_lait_allaitement_sevrage", emoji: "🔄", label: "Sevrage",
+                          alim: ["Sevrage en cours"],
+                          blocks: [
+                            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                          ]
+                        }
+                      ]
+                    }
                   ]
                 }
               ]

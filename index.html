@@ -14243,6 +14243,17 @@ function toggleCourbeCardTickFromSol(itId) {
       }
     });
   }
+  // Mutex : Problème de lactation vs Inversion jour/nuit (sous-cartes d'Allaitement)
+  // → cocher l'une décoche automatiquement l'autre
+  const ALLAIT_MUTEX = ['nutri_lait_allaitement_pb_lactation', 'nutri_lait_allaitement_inversion_jn'];
+  if (!wasTicked && ALLAIT_MUTEX.includes(itId)) {
+    ALLAIT_MUTEX.forEach(sub => {
+      if (sub !== itId) {
+        state.courbeCardsTicked.delete(sub);
+        state.courbeCardsTickedManuallyEdited.add(sub);
+      }
+    });
+  }
   // Chercher la chaîne de parents : (cat) → ch (solution) → it (sub-item, niveau 1) → sub (sub-sub-item, niveau 2)
   // itId peut être à 2 niveaux : direct enfant d'un ch.blocks grid (niveau 1)
   // OU enfant d'un it.blocks grid (niveau 2, ex. env_chgmt_lit_cododo_barreau dans env_chgmt_lit)
