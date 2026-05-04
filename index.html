@@ -4057,12 +4057,13 @@
     .sol-group-arrow { font-size: 11px; transition: transform 0.2s; display: inline-block; }
     .sol-group.collapsed .sol-group-arrow { transform: rotate(-90deg); }
     .sol-group.collapsed .sol-group-rows { display: none; }
-    /* Section "Accompagnement" : toujours ouverte, séparation visuelle au-dessus */
-    .sol-group.sol-group-always-open {
+    /* Section "Accompagnement" : séparation visuelle au-dessus (spécifique à cette section) */
+    .sol-group[data-cat="accompagnement"] {
       margin-top: 32px;
       padding-top: 24px;
       border-top: 2px dashed #cbd5e0;
     }
+    /* Toggle/curseur désactivés pour les sections alwaysOpen (Accompagnement, env) */
     .sol-group.sol-group-always-open > .sol-group-title { cursor: default; user-select: none; }
     /* État COLLAPSED pour sol-group : bandeau full-width avec titre à gauche
        (même comportement que les top-level Problématiques en mode collapsed) */
