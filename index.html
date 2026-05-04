@@ -10013,7 +10013,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
       ${inner}
     </div>`;
     // Titre latéral à gauche si _leftTitle défini
-    if (b._leftTitle && depth <= 2) {
+    if (b._leftTitle && depth <= 6) {
       const ltStyle = b._leftTitleStyle ? ` style="${b._leftTitleStyle}"` : '';
       let wrapStyle = '';
       const styleParts = [];
@@ -10028,7 +10028,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
     }
     return wrapOnly + addBtn;
   }
-  if (b._leftTitle && depth <= 2) {
+  if (b._leftTitle && depth <= 6) {
     const ltStyle = b._leftTitleStyle ? ` style="${b._leftTitleStyle}"` : '';
     let wrapStyle = '';
     if (b._leftTitleStyle) {
