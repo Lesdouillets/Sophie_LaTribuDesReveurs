@@ -12213,9 +12213,26 @@ window.toggleSolution = toggleSolution;
 function toggleSolGroup(catId) {
   if (!state.solGroupsCollapsed) state.solGroupsCollapsed = new Set();
   if (!state.solGroupsUserToggled) state.solGroupsUserToggled = new Set();
+  // Calculer l'état visuel actuel (en tenant compte de l'auto-rule si l'utilisateur n'a pas encore toggle)
+  const userAlreadyToggled = state.solGroupsUserToggled.has(catId);
+  let currentlyCollapsed;
+  if (userAlreadyToggled) {
+    currentlyCollapsed = state.solGroupsCollapsed.has(catId);
+  } else if (catId === 'confort_physique' || catId === 'nutrition' || catId === 'relationnel') {
+    const catCb = document.querySelector(`.pb-cat-checkbox[data-cat="${catId}"]`);
+    currentlyCollapsed = !catCb || !catCb.checked;
+  } else if (catId === 'strategie' || catId === 'env') {
+    const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
+    const cat = sols.find(c => c.id === catId);
+    const anyChildChecked = cat && (cat.children || []).some(ch => state.selectedSolutions && state.selectedSolutions.has(ch.id));
+    currentlyCollapsed = !anyChildChecked;
+  } else {
+    currentlyCollapsed = state.solGroupsCollapsed.has(catId);
+  }
   // Marquer que l'utilisateur a explicitement togglé cette catégorie → l'auto-rule sera bypassée
   state.solGroupsUserToggled.add(catId);
-  if (state.solGroupsCollapsed.has(catId)) state.solGroupsCollapsed.delete(catId);
+  // Inverser l'état visuel courant
+  if (currentlyCollapsed) state.solGroupsCollapsed.delete(catId);
   else state.solGroupsCollapsed.add(catId);
   if (typeof renderCurrentSection === 'function') renderCurrentSection();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
