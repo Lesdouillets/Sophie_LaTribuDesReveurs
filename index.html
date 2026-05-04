@@ -12993,6 +12993,12 @@ function substituteVars(text) {
     .replace(/\[eveille_eveillee\]/g, isFille ? 'éveillée' : 'éveillé')
     .replace(/\[EVEILLE_EVEILLEE\]/g, isFille ? 'EVEILLEE' : 'EVEILLE')
     .replace(/\[ÉVEILLÉ_ÉVEILLÉE\]/g, isFille ? 'ÉVEILLÉE' : 'ÉVEILLÉ')
+    .replace(/\[bib_tetee\]/g, (() => {
+      const cc = (state && state.client) || {};
+      const alimSet = new Set([...(Array.isArray(cc.alimentation) ? cc.alimentation : []), ...(Array.isArray(cc.allaitementMode) ? cc.allaitementMode : [])]);
+      const breastfed = alimSet.has('Allaitement au sein') || alimSet.has('Allaitement maternel') || alimSet.has('Allaitement mixte');
+      return breastfed ? 'tétée' : 'biberon';
+    })())
     .replace(/\[fier_fiere\]/g, isFille ? 'fière' : 'fier')
     .replace(/\[endormi_endormie\]/g, isFille ? 'endormie' : 'endormi')
     .replace(/\[fatigue_fatiguee\]/g, isFille ? 'fatiguée' : 'fatigué')
@@ -13009,6 +13015,13 @@ function substituteVars(text) {
     .replace(/\[le_la\]/g, isFille ? 'la' : 'le')
     .replace(/\[POSE_POSEE\]/g, isFille ? 'POSEE' : 'POSE')
     .replace(/\[EVEILLE_EVEILLEE\]/g, isFille ? 'EVEILLEE' : 'EVEILLE')
+    .replace(/\[ÉVEILLÉ_ÉVEILLÉE\]/g, isFille ? 'ÉVEILLÉE' : 'ÉVEILLÉ')
+    .replace(/\[bib_tetee\]/g, (() => {
+      const cc = (state && state.client) || {};
+      const alimSet = new Set([...(Array.isArray(cc.alimentation) ? cc.alimentation : []), ...(Array.isArray(cc.allaitementMode) ? cc.allaitementMode : [])]);
+      const breastfed = alimSet.has('Allaitement au sein') || alimSet.has('Allaitement maternel') || alimSet.has('Allaitement mixte');
+      return breastfed ? 'tétée' : 'biberon';
+    })())
     .replace(/\[lui_elle\]/g, isFille ? 'elle' : 'lui')
     .replace(/\[ces_vos_objectifs\]/g, (c.objectifs && c.objectifs.trim()) ? 'ces objectifs' : 'vos objectifs')
     .replace(/\[aligne_alignee\]/g, (() => {
