@@ -4065,6 +4065,53 @@
       padding-top: 24px;
       border-top: 2px dashed #cbd5e0;
     }
+    /* Boutons "S'il RESTE" / "S'il SORT" — chaque bouton occupe 50% de la largeur (1 colonne chacun).
+       Fermé : pill button (vert/rouge pâle). Ouvert : bandeau saturé en haut + contenu blanc dessous (style X. Validation). */
+    .accomp-action-toggle {
+      flex: 1 1 280px;
+      border-radius: 10px;
+      transition: all 0.15s;
+      min-width: 0;
+    }
+    .accomp-action-toggle[open] {
+      background: #ffffff !important;
+    }
+    .accomp-action-toggle[open] > summary {
+      width: 100% !important;
+      padding: 10px 14px !important;
+      display: flex !important;
+      flex-direction: row !important;
+      justify-content: flex-start !important;
+      align-items: center !important;
+      gap: 10px !important;
+      border-radius: 10px 10px 0 0 !important;
+      font-size: 13.5px !important;
+      font-weight: 800 !important;
+      color: #fff !important;
+      cursor: pointer !important;
+      border: none !important;
+    }
+    .accomp-action-toggle.accomp-green[open] {
+      border: 1.5px solid #2aa856 !important;
+    }
+    .accomp-action-toggle.accomp-green[open] > summary {
+      background: #2aa856 !important;
+    }
+    .accomp-action-toggle.accomp-red[open] {
+      border: 1.5px solid #c52f26 !important;
+    }
+    .accomp-action-toggle.accomp-red[open] > summary {
+      background: #c52f26 !important;
+    }
+    .accomp-action-toggle[open] > div {
+      padding: 14px 18px !important;
+      margin: 0 !important;
+      border: none !important;
+      border-radius: 0 0 10px 10px !important;
+      background: #ffffff !important;
+      max-width: none !important;
+      min-width: 0 !important;
+    }
     /* 1er bloc-titre d'Accompagnement (Comment accompagner les émotions ?) :
        texte centré verticalement à gauche, bouton trailing à droite centré verticalement */
     .sol-cat-intro[data-section-cat="accompagnement"] > .block-with-left-title:first-child > .block,
@@ -9744,6 +9791,16 @@ function nextSection() {
   }
   if (state.currentIdx < state.sections.length-1) {
     state.completedSet.add(state.currentIdx);
+    // Cas spécial : depuis VIII. Plan d'action → aller directement à IX. Reformulation
+    // (skip toutes les sections conditionnelles et planAction intermédiaires)
+    const _curSec2 = state.sections[state.currentIdx];
+    if (_curSec2 && _curSec2.id === 'plan_action') {
+      const _refIdx = state.sections.findIndex(s => s.id === 'reformulation');
+      if (_refIdx >= 0) {
+        navigateTo(_refIdx);
+        return;
+      }
+    }
     navigateTo(state.currentIdx+1);
   }
 }
