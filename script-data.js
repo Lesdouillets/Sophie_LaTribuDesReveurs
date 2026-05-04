@@ -3115,7 +3115,7 @@ const SCRIPT_DATA = {
                           blocks: [
                             {
                               type: "normal", _leftTitle: "Conseil",
-                              text: "- Si vous **souhaitez sevrer** votre bébé, vous avez la possibilité de :\n  - **Mixer votre lait** avec du **lait infantile**\n  - et de **diminuer la proportion de votre lait** au fur et à mesure\n    - ⚠️ **attention à la restitution** du biberon : Si vous **préparez un biberon de 210ml**, c'est :\n      - d'abord 210 ml d'eau\n      - PUIS la poudre\n      - ⇒ Le **bib sera** donc **supérieur à 210ml**\n    - ⚠️ à bien mettre les **2 laits** quand ils sont à la **même température**\n- Vous pouvez aussi **prendre RDV** avec une **conseillère en lactation** qui pourra vous **aider dans cette transition**",
+                              text: "- Si vous **souhaitez sevrer** votre bébé, vous avez la possibilité de :\n  - **Mixer votre lait** avec du **lait infantile**\n  - et de **diminuer la proportion de votre lait** au fur et à mesure\n    - ⚠️ à bien mettre les **2 laits** quand ils sont à la **même température**\n- ⚠️ **attention à la restitution** du biberon : Si vous **préparez un biberon de 210ml**, c'est :\n  - d'abord 210 ml d'eau\n  - PUIS la poudre\n  - ⇒ Le **bib sera** donc **supérieur à 210ml**\n\n- Vous pouvez aussi **prendre RDV** avec une **conseillère en lactation** qui pourra vous **aider dans cette transition**",
                               trailingInfoButtons: [
                                 {
                                   emoji: "💉",
