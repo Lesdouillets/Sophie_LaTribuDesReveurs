@@ -3038,7 +3038,7 @@ const SCRIPT_DATA = {
                           blocks: [
                             {
                               type: "normal", _leftTitle: "À la demande",
-                              text: "- Au niveau des quantités, sur un **bébé [allaite_allaitee]**, on reste sur une **logique :**\n  - **de répondre à la demande** *(🎓 à savoir que la demi-vidange gastrique du lait maternel est de 36min !)*\n  - **avec un nombre de tétées NUTRITIVES illimitées** (où on entend une déglutition lente)\n- Je voudrais qu'**on n'oublie AUSSI le grand mythe des espacements de 4h**, qui ne sont **basés sur… AUCUNE DONNÉE SCIENTIFIQUE !**",
+                              text: "- Au niveau des quantités, sur un **bébé [allaite_allaitee]**, on reste sur une **logique :**\n  - **de répondre à la demande** *(🎓 à savoir que la demi-vidange gastrique du lait maternel est de 36min !)*\n  - **avec un nombre de tétées NUTRITIVES illimitées** (où on entend une déglutition lente)\n- Je voudrais qu'**on n'oublie AUSSI le grand mythe des espacements de 4h**, qui n'est **basé sur… AUCUNE DONNÉE SCIENTIFIQUE !**",
                               trailingInfoButtons: [
                                 {
                                   emoji: "🍭",
@@ -3067,16 +3067,7 @@ const SCRIPT_DATA = {
                             },
                             {
                               type: "normal", _leftTitle: "Signes de faim et de satiété",
-                              text: "- À l'inverse, **on regardera :**\n  - les **signes de faim**\n  - **et de satiété** de [prénom_enfant]\n- Un bébé qui a suffisamment mangé aura :\n  - les **mains ouvertes**\n  - du **lait à la commissure des lèvres** (car son estomac sera rempli)\n  - un **air un peu groggi**",
-                              trailingInfoButtons: [
-                                {
-                                  label: "Votre expérience et votre intuition de Maman",
-                                  title: "Votre expérience et votre intuition de Maman",
-                                  blocks: [
-                                    { type: "normal", text: "- En s'**appuyant** AUSSI sur :\n  - **votre expérience**\n  - et **votre intuition** de **Maman !**" }
-                                  ]
-                                }
-                              ]
+                              text: "- À l'inverse, **on regardera :**\n  - les **signes de faim**\n  - **et de satiété** de [prénom_enfant]\n  - en s'**appuyant** AUSSI sur :\n    - **votre expérience**\n    - et **votre intuition** de **Maman !**\n- Un bébé qui a suffisamment mangé aura :\n  - les **mains ouvertes**\n  - du **lait à la commissure des lèvres** (car son estomac sera rempli)\n  - un **air un peu groggi**"
                             }
                           ]
                         },
