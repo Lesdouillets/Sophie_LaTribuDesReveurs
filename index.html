@@ -738,6 +738,58 @@
     #modal-pb-list > .problematiques-grid::before {
       column-span: all;
     }
+    /* ── Étape 3 : top-level .pb-category en format "bloc-titre" 140px (style sol-group) ── */
+    /* Définit les variables --pb-cat-main / --pb-cat-light par data-cat (cascade aux enfants) */
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat="confort_physique"]) { --pb-cat-main: #dc2626; --pb-cat-light: #e8b8b0; }
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat="nutrition"])         { --pb-cat-main: #d4845a; --pb-cat-light: #e8c19a; }
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat="rythme"])            { --pb-cat-main: #7da589; --pb-cat-light: #bdd1c4; }
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat="strategie"])         { --pb-cat-main: #5d7a99; --pb-cat-light: #b8c4d6; }
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat="env"])               { --pb-cat-main: #9d83b0; --pb-cat-light: #c9b6d6; }
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat="relationnel"])       { --pb-cat-main: #c98aa8; --pb-cat-light: #f0c0d8; }
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat="souhait"])           { --pb-cat-main: #8089a8; --pb-cat-light: #bbc1d8; }
+    /* Layout grid 140px + 1fr sur la top-level .pb-category (uniquement celles ayant data-cat) */
+    .setup-section > .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]),
+    #modal-pb-list > .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]),
+    #diag-pb-container > .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) {
+      display: grid !important;
+      grid-template-columns: 140px 1fr;
+      gap: 0;
+      margin-bottom: 18px;
+      background: transparent !important;
+    }
+    /* Titre top-level (col 1) — style sol-group-title : fond coloré, texte blanc, centré */
+    .setup-section > .problematiques-grid .pb-category > .pb-category-title:has([data-cat]),
+    #modal-pb-list > .problematiques-grid .pb-category > .pb-category-title:has([data-cat]),
+    #diag-pb-container > .problematiques-grid .pb-category > .pb-category-title:has([data-cat]) {
+      background: var(--pb-cat-main, #cbd5e0) !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 8px !important;
+      padding: 14px 10px !important;
+      margin-bottom: 0 !important;
+      font-weight: 800 !important;
+      font-size: 14px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.3px !important;
+      line-height: 1.3 !important;
+      text-align: center !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 6px !important;
+    }
+    /* Items top-level (col 2) — style sol-group-content : fond blanc, bordure colorée */
+    .setup-section > .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) > .pb-items,
+    #modal-pb-list > .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) > .pb-items,
+    #diag-pb-container > .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) > .pb-items {
+      background: #fff;
+      border: 2px solid var(--pb-cat-light, #cbd5e0);
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
 
     /* Bandeau PARENT (catégorie parente) — style le plus marqué */
     .block-parent-banner {
