@@ -11486,6 +11486,7 @@ function renderSolutionsCheckboxes(opts) {
     journee:          { main: '#e6cc6b', dark: '#92400e', light: '#fef3c7' },
     relationnel:      { main: '#c98aa8', dark: '#5e3a52', light: '#f0c0d8' },
     sante:            { main: '#7ba8a3', dark: '#3d6b67', light: '#bdd6d2' },
+    accompagnement:   { main: '#d4a574', dark: '#9c7240', light: '#f0d9b5' },
   };
   // Helper : ch (solution enfant) caché par filtre d'âge, alim (ch.showIfAlim), ou sieste (ch.hideIfSieste)
   const isChHiddenByAge = (ch) => {
@@ -11654,7 +11655,9 @@ function renderSolutionsCheckboxes(opts) {
     // Dès que l'utilisateur clique sur la flèche, son choix est prioritaire (state.solGroupsUserToggled).
     let groupCollapsed;
     const userToggled = !!(state.solGroupsUserToggled && state.solGroupsUserToggled.has(cat.id));
-    if (userToggled) {
+    if (cat.alwaysOpen) {
+      groupCollapsed = false;
+    } else if (userToggled) {
       groupCollapsed = !!(state.solGroupsCollapsed && state.solGroupsCollapsed.has(cat.id));
     } else if (cat.id === 'confort_physique' || cat.id === 'nutrition' || cat.id === 'relationnel') {
       const catCb = document.querySelector(`.pb-cat-checkbox[data-cat="${cat.id}"]`);
@@ -11666,8 +11669,11 @@ function renderSolutionsCheckboxes(opts) {
       groupCollapsed = !!(state.solGroupsCollapsed && state.solGroupsCollapsed.has(cat.id));
     }
     const groupClass = groupCollapsed ? ' collapsed' : '';
-    return `<div class="sol-group block-with-left-title${groupClass}" data-cat="${cat.id}">
-      <div class="sol-group-title" style="background:${c.main};color:#fff" onclick="toggleSolGroup('${cat.id}')"><span class="sol-group-arrow">▾</span><span style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:22px;line-height:1">${cat.emoji || ''}</span><span>${cat.title}</span></span></div>
+    const alwaysOpenClass = cat.alwaysOpen ? ' sol-group-always-open' : '';
+    const titleClick = cat.alwaysOpen ? '' : ` onclick="toggleSolGroup('${cat.id}')"`;
+    const arrow = cat.alwaysOpen ? '' : '<span class="sol-group-arrow">▾</span>';
+    return `<div class="sol-group block-with-left-title${groupClass}${alwaysOpenClass}" data-cat="${cat.id}">
+      <div class="sol-group-title" style="background:${c.main};color:#fff${cat.alwaysOpen ? ';cursor:default' : ''}"${titleClick}>${arrow}<span style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:22px;line-height:1">${cat.emoji || ''}</span><span>${cat.title}</span></span></div>
       <div class="sol-group-content" style="border:2px solid ${c.light}">${bulkBtns}<div class="sol-group-rows">${rows}</div></div>
     </div>`;
   }).filter(Boolean).join('');

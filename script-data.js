@@ -5361,6 +5361,10 @@ const SCRIPT_DATA = {
           },
         ]
       },
+      {
+        id: "accompagnement", title: "Accompagnement", emoji: "🤝", alwaysOpen: true,
+        children: []
+      },
     ]
   },
 
