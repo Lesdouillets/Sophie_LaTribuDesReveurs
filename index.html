@@ -790,6 +790,25 @@
       flex-direction: column;
       gap: 6px;
     }
+    /* ── Étape 4 : ajustements sub-catégories + items dans le nouveau layout compact ── */
+    /* Reset le margin-left:40px de l'ancien layout (trop large pour le nouveau col 1fr-140px) */
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) .pb-category,
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) .pb-item,
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) .pb-item.pb-title-style,
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) .pb-item.pb-title-style-l1,
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) .pb-item.pb-consequence-style {
+      margin-left: 0 !important;
+    }
+    /* Titres de sub-catégories (level-1/2/3 à l'intérieur des .pb-items) :
+       fond pastel discret pour ne pas clasher avec le titre coloré du parent */
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) > .pb-items .pb-category-title {
+      background: rgba(0, 0, 0, 0.03) !important;
+      border-radius: 6px !important;
+      padding: 6px 10px !important;
+      margin-bottom: 0 !important;
+      border-bottom: none !important;
+      color: inherit !important;
+    }
 
     /* Bandeau PARENT (catégorie parente) — style le plus marqué */
     .block-parent-banner {
