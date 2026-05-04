@@ -2924,7 +2924,7 @@ const SCRIPT_DATA = {
                                   label: "Tétine / Petit doigt / pouce / mâchonnage de poing = signes pour stimuler lactation",
                                   title: "Tétine / Petit doigt / pouce / mâchonnage de poing = signes pour stimuler lactation",
                                   blocks: [
-                                    { type: "normal", text: "- Peut être un signe que bébé a besoin de :\n  - téter,\n  - de stimuler vos seins" }
+                                    { type: "normal", text: "- Peut être un signe que bébé a besoin de :\n  - téter\n  - de stimuler vos seins" }
                                   ]
                                 }
                               ]
@@ -3050,9 +3050,9 @@ const SCRIPT_DATA = {
                                 },
                                 {
                                   label: "Tétine = signe pour stimuler la lactation",
-                                  title: "Tétine / petit doigt à sucer / mâchonnage / pouce = SIGNE POUR STIMULER LACTATION",
+                                  title: "Tétine / petit doigt à sucer / mâchonnage / pouce = SIGNES POUR STIMULER LACTATION",
                                   blocks: [
-                                    { type: "normal", text: "- Peut être un signe que bébé a besoin de :\n  - téter,\n  - de stimuler vos seins" }
+                                    { type: "normal", text: "- Peut être un signe que bébé a besoin de :\n  - téter\n  - de stimuler vos seins" }
                                   ]
                                 },
                                 {
@@ -3093,15 +3093,41 @@ const SCRIPT_DATA = {
                           ]
                         },
                         {
+                          id: "nutri_lait_allaitement_ref", emoji: "💦", label: "Si REF (Réflexe d'Éjection Fort)",
+                          blocks: [
+                            {
+                              type: "normal", _leftTitle: "Conseil",
+                              text: "- Vous pouvez :\n  - **exprimer** le **lait de début de tétée** avec les **doigts**\n    ⇒ pour faire **sortir le lait** qui **ne demande qu'à être expulsé**\n    ⇒ bébé peut **+ facilement :**\n      - **gérer la quantité** de lait\n      - ET **récupérer le bon gras de fin de tétées**\n  - **Pauses fréquentes** au milieu de la tétée"
+                            }
+                          ]
+                        },
+                        {
                           id: "nutri_lait_allaitement_distrait", emoji: "👀", label: "Si bébé distrait",
                           blocks: [
-                            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                            {
+                              type: "normal", _leftTitle: "Conseil",
+                              text: "- Si bébé est **distrait**\n  ⇒ Vous pouvez donner le sein dans des **endroits calmes ET peu stimulants** visuellement"
+                            }
                           ]
                         },
                         {
                           id: "nutri_lait_allaitement_sevrage", emoji: "🔄", label: "Sevrage",
                           blocks: [
-                            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                            {
+                              type: "normal", _leftTitle: "Conseil",
+                              text: "- Si vous **souhaitez sevrer** votre bébé, vous avez la possibilité de :\n  - **Mixer votre lait** avec du **lait infantile**\n  - et de **diminuer la proportion de votre lait** au fur et à mesure\n    - ⚠️ **attention à la restitution** du biberon : Si vous **préparez un biberon de 210ml**, c'est :\n      - d'abord 210 ml d'eau\n      - PUIS la poudre\n      - ⇒ Le **bib sera** donc **supérieur à 210ml**\n    - ⚠️ à bien mettre les **2 laits** quand ils sont à la **même température**\n- Vous pouvez aussi **prendre RDV** avec une **conseillère en lactation** qui pourra vous **aider dans cette transition**",
+                              trailingInfoButtons: [
+                                {
+                                  emoji: "💉",
+                                  label: "Conseillère IBCLC : Fanny Rieussec",
+                                  title: "Conseillère en lactation IBCLC",
+                                  blocks: [
+                                    { type: "normal", text: "- 💉 **Conseillère en lactation IBCLC : Fanny Rieussec** *(chez Fée Dodo)* qui pourra vous **aider sur le sevrage**" },
+                                    { type: "normal", _noBorder: true, text: "<table style=\"border-collapse:collapse;width:100%;font-size:13px;line-height:1.4;margin-top:10px\"><thead><tr><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:left\">Spécialité</th><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:left\">Nom</th><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:center\">Tarif</th><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:left\">Réseau</th><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:left\">Remarque</th></tr></thead><tbody><tr><td rowspan=\"2\" style=\"border:1px solid #94a3b8;padding:8px;background:#f8fafc;font-weight:700;vertical-align:top\">Consultante en lactation IBCLC</td><td style=\"border:1px solid #94a3b8;padding:8px\">Fanny Rieussec <em>(Objectif Tétées)</em></td><td style=\"border:1px solid #94a3b8;padding:8px;text-align:center\">95€</td><td style=\"border:1px solid #94a3b8;padding:8px\">Réseau Fée Dodo</td><td style=\"border:1px solid #94a3b8;padding:8px\"></td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px\">Cécile Sérillon <em>(SOS allaitement 33)</em></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td></tr><tr><td rowspan=\"2\" style=\"border:1px solid #94a3b8;padding:8px;background:#f8fafc;font-weight:700;vertical-align:top\">Diététicienne nutritionniste pédiatrique</td><td style=\"border:1px solid #94a3b8;padding:8px\">Tiffany Deroyer</td><td style=\"border:1px solid #94a3b8;padding:8px;text-align:center\">75€</td><td style=\"border:1px solid #94a3b8;padding:8px\">Réseau Fée Dodo</td><td style=\"border:1px solid #94a3b8;padding:8px\">Souvent pris en charge par la Mutuelle</td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px\">Julia Mellanger <em>(L'avocate Nutritionniste)</em></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\">⚠️ En Suisse</td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px;background:#f8fafc;font-weight:700\">Frein restrictif</td><td style=\"border:1px solid #94a3b8;padding:8px\">Virginie Ferrandez <em>(Parents en confiance)</em></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px;background:#f8fafc;font-weight:700\">Frein Restrictif</td><td style=\"border:1px solid #94a3b8;padding:8px\">Annuaire Chirobliss <em>(chiropracteurs)</em></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td><td style=\"border:1px solid #94a3b8;padding:8px\"></td></tr></tbody></table>" }
+                                  ]
+                                }
+                              ]
+                            }
                           ]
                         }
                       ]
