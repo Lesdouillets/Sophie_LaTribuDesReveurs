@@ -9385,6 +9385,8 @@ function togglePb(value, checked) {
 // NAVIGATION
 // ═══════════════════════════════════════════════════
 function navigateTo(idx) {
+  // Fermer l'info-panel ouvert (ex. encadré jaune trailingInfoButton) quand on change de section
+  if (idx !== state.currentIdx && typeof closeInfoPanel === 'function') closeInfoPanel();
   // Bloquer UNIQUEMENT si on quitte la section IV. Objectifs (currentIdx est sur "objectifs")
   // sans avoir répondu aux choix obligatoires :
   // — Si "Changer le lit" est sélectionné dans obj_lieu_sommeil, alors obj_chgmt_lit_type doit aussi être sélectionné.
@@ -13978,6 +13980,8 @@ window.gotoSearchResult = gotoSearchResult;
 
 function openCourbeCard(cardEl) {
   if (!cardEl) return;
+  // Fermer l'info-panel ouvert (ex. encadré jaune trailingInfoButton) quand on change de carte
+  if (typeof closeInfoPanel === 'function') closeInfoPanel();
   const cardId = cardEl.dataset.cardId;
   if (!cardId) return;
   if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
