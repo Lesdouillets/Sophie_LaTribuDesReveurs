@@ -3129,8 +3129,55 @@ const SCRIPT_DATA = {
                               ]
                             }
                           ]
+                        },
+                        {
+                          id: "nutri_lait_allaitement_nuit", emoji: "🌛", label: "Nutrition la nuit",
+                          blocks: [
+                            {
+                              type: "courbe_cards_grid",
+                              alwaysShowAll: true,
+                              items: [
+                                {
+                                  id: "nutri_lait_allaitement_nuit_inf6m", emoji: "👶", label: "Moins de 6 mois (rattrapage de courbe + dépendance)",
+                                  showIfAgeMaxMonths: 5,
+                                  blocks: [
+                                    { type: "normal", _leftTitle: "Normal de se nourrir la nuit", _leftTitleStyle: "background:#e8c19a;color:#a05a1c;--cat-main:#d4845a", text: "- **Avant** l'âge de **6 mois**, il est **possible d'avoir ENCORE** des **temps de nutrition la nuit**\n  ⇒ **L'estomac** d'un enfant n'est **pas assez gros** pour **\"tenir\" toute une nuit**\n\n- Il est AUSSI possible que pendant **un temps, les tétées de nuit** avaient **disparu**\n  - et puis, avec **un pic de croissance**,\n  - les **prises alimentaires nocturnes re-prennent** pendant quelques temps\n  - ⇒ c'est **NORMAL**" },
+                                    { type: "option", label: "Rattrapage de courbe", style: "purple-btn", _mini: true, blocks: [
+                                      { type: "normal", text: "- C'est **encore + vrai** quand on fait un **« rattrapage de courbe » :**\n  - Les **biberons de nuit** vont être **maintenus** pour **augmenter les apports sur 24h**\n  - mais **petit à petit**, les **apports** vont se CONCENTRER **en journée**\n  - et les **réveils alimentaires** vont peu à peu **disparaitre**" }
+                                    ] },
+                                    { type: "option", label: "Dépendance au sein", style: "purple-btn", _mini: true, blocks: [
+                                      { type: "normal", text: "- Ce qu'il faut **garder en tête**, c'est que **derrière ces réveils**, il peut y avoir à la fois :\n  1. un **besoin de manger**\n  2. **et/ou** un **besoin de retrouver ses conditions d'endormissement** puisque sa **stratégie d'endormissement** est **dépendante** de votre **sein**\n     ⇒ Et très souvent, les **2 se mélangent !**\n\n- Donc :\n  1. **D'une part,** on va d'abord **s'assurer que tous ses besoins sont comblés**\n  2. **Si c'est le cas,** on va pouvoir **l'accompagner** dans la **recherche de nouvelles stratégies d'endormissement AUTONOMES**\n     ⇒ **je vous expliquerai** un peu plus tard **comment faire** pour **l'accompagner s'il a des émotions !**" }
+                                    ] },
+                                    { type: "normal", _leftTitle: "Dissocier le sommeil et l'alimentation", _leftTitleStyle: "background:#e8c19a;color:#a05a1c;--cat-main:#d4845a", text: "- **En attendant,** je vous **conseillerai de TOUJOURS :**\n  - **Dissocier l'alimentation et le sommeil**\n    - c'est à dire, ESSAYEZ qu'il ne **s'endorme PAS sur votre sein**\n    - en le **stimulant un petit peu** pendant la **prise alimentaire** *(ex : petite caresse sur la joue/le pied)*\n    - et assurez vous qu'il soit **POSE au maximum EVEILLE** dans son lit\n  - Durant la **nuit**, veillez à ce que :\n    - les **lumières** soient **basses**\n    - et que **votre voix reste calme.**\n      ⇒ Il est important à cet âge que votre enfant comprenne que :\n      - **la nuit est faite pour dormir**\n      - et **non pour jouer**" }
+                                  ]
+                                },
+                                {
+                                  id: "nutri_lait_allaitement_nuit_sup6m", emoji: "🤱", label: "Plus de 6 mois : Rattrapage de courbe",
+                                  showIfAgeMinMonths: 6,
+                                  blocks: [
+                                    { type: "normal", _leftTitle: "Rattrapage de courbes", _leftTitleStyle: "background:#e8c19a;color:#a05a1c;--cat-main:#d4845a", text: "- Quand on fait un **\"rattrapage de courbe\" :**\n  - c'est **normal**, qu'au **début**, il y ait **ENCORE** des **temps de nutrition la nuit**\n  - mais **petit à petit**, les **apports** vont se CONCENTRER **en journée**\n  - et les **réveils alimentaires** vont peu à peu **disparaitre**" },
+                                    { type: "option", label: "Dépendance au sein", style: "purple-btn", _mini: true, blocks: [
+                                      { type: "normal", text: "- Et une fois, que **sa courbe** sera **en hausse**,\n- On va **pouvoir l'accompagner** vers la **découverte de nouvelle stratégie d'endormissement**\n- qui n'**inclus PAS votre sein**\n  ⇒ **je vous expliquerai** un peu plus tard **comment faire** pour **l'accompagner s'il a des émotions !**" }
+                                    ] },
+                                    { type: "normal", _leftTitle: "Dissocier le sommeil et l'alimentation", _leftTitleStyle: "background:#e8c19a;color:#a05a1c;--cat-main:#d4845a", text: "- **En attendant,** je vous **conseillerai de TOUJOURS** :\n  - **Dissocier l'alimentation et le sommeil**\n    - c'est à dire, ESSAYEZ qu'il ne **s'endorme PAS sur votre sein**\n    - en le **stimulant un petit peu** pendant la **prise alimentaire** *(ex : petite caresse sur la joue/le pied)*\n    - et assurez vous qu'il soit **POSE au maximum EVEILLE** dans son lit\n  - Durant la **nuit**, veillez à ce que :\n    - les **lumières** soient **basses**\n    - et que **votre voix reste calme.**\n      ⇒ Il est important à cet âge que votre enfant comprenne que :\n      - **la nuit est faite pour dormir**\n      - et **non pour jouer**" }
+                                  ]
+                                },
+                                {
+                                  id: "nutri_lait_allaitement_nuit_depend", emoji: "🔗", label: "Dépendance au sein",
+                                  blocks: [
+                                    { type: "normal", _leftTitle: "Dépendance au sein", _leftTitleStyle: "background:#e8c19a;color:#a05a1c;--cat-main:#d4845a", text: "- Avec une **dépendance au sein** la nuit, on va d'abord **s'assurer que tous ses besoins sont comblés** en JOURNEE\n\n- **Si c'est le cas,** ET QUE votre enfant **a besoin du sein pour s'endormir**\n  alors vous **pouvez l'accompagner** dans la **recherche de nouvelles stratégies d'endormissement AUTONOMES**\n  ⇒ **je vous expliquerai** un peu plus tard **comment faire** pour **l'accompagner s'il a des émotions !**" },
+                                    { type: "normal", _leftTitle: "Dissocier le sommeil et l'alimentation", _leftTitleStyle: "background:#e8c19a;color:#a05a1c;--cat-main:#d4845a", text: "- **En attendant,** je vous **conseillerai de TOUJOURS :**\n  - **Dissocier l'alimentation et le sommeil**\n    - c'est à dire, ESSAYEZ qu'il ne **s'endorme PAS sur votre sein**\n    - en le **stimulant un petit peu** pendant la **prise alimentaire** *(ex : petite caresse sur la joue/le pied)*\n    - et assurez vous qu'il soit **POSE au maximum EVEILLE** dans son lit\n  - Durant la **nuit**, veillez à ce que :\n    - les **lumières** soient **basses**\n    - et que **votre voix reste calme.**\n      ⇒ Il est important à cet âge que votre enfant comprenne que :\n      - **la nuit est faite pour dormir**\n      - et **non pour jouer**" }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
+                    },
+                    {
+                      type: "normal", _leftTitle: "Lait maternel = meilleur lait à offrir",
+                      text: "- En tout cas, le **lait maternel**, c'est vraiment le **meilleur cadeau** que vous puissiez **offrir à [prénom_enfant] !**"
                     }
                   ]
                 }
