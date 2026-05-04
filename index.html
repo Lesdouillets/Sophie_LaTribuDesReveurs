@@ -809,6 +809,23 @@
       border-bottom: none !important;
       color: inherit !important;
     }
+    /* Boutons "Tout ✓ / Tout ✗" : déplacés visuellement en haut à droite de l'encadré (col 2)
+       via position:absolute (le HTML reste intact, donc selectCat() continue de fonctionner) */
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) {
+      position: relative;
+    }
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) > .pb-category-title > .pb-cat-btns {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      z-index: 2;
+      display: inline-flex;
+      gap: 6px;
+    }
+    /* Padding-top sur l'encadré pour laisser la place aux boutons absolus (32px ≈ hauteur bouton + marge) */
+    .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) > .pb-items {
+      padding-top: 32px !important;
+    }
 
     /* Bandeau PARENT (catégorie parente) — style le plus marqué */
     .block-parent-banner {
