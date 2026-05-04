@@ -4065,12 +4065,24 @@
       padding-top: 24px;
       border-top: 2px dashed #cbd5e0;
     }
-    /* 1er bloc-titre d'Accompagnement (Comment accompagner les émotions ?) : texte centré verticalement */
+    /* 1er bloc-titre d'Accompagnement (Comment accompagner les émotions ?) :
+       texte centré verticalement à gauche, bouton trailing à droite centré verticalement */
     .sol-cat-intro[data-section-cat="accompagnement"] > .block-with-left-title:first-child > .block,
     .sol-cat-intro[data-section-cat="accompagnement"] > .block-with-left-title:first-child > .edit-block-wrap > .block {
       display: flex;
       flex-direction: column;
       justify-content: center;
+      position: relative;
+      padding-right: 410px;
+    }
+    .sol-cat-intro[data-section-cat="accompagnement"] > .block-with-left-title:first-child > .block > div[contenteditable="false"][style*="float"],
+    .sol-cat-intro[data-section-cat="accompagnement"] > .block-with-left-title:first-child > .edit-block-wrap > .block > div[contenteditable="false"][style*="float"] {
+      position: absolute !important;
+      right: 14px !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      float: none !important;
+      margin: 0 !important;
     }
     /* Toggle/curseur désactivés pour les sections alwaysOpen (Accompagnement, env) */
     .sol-group.sol-group-always-open > .sol-group-title { cursor: default; user-select: none; }
@@ -12997,6 +13009,7 @@ function substituteVars(text) {
     .replace(/\[le_la\]/g, isFille ? 'la' : 'le')
     .replace(/\[POSE_POSEE\]/g, isFille ? 'POSEE' : 'POSE')
     .replace(/\[EVEILLE_EVEILLEE\]/g, isFille ? 'EVEILLEE' : 'EVEILLE')
+    .replace(/\[lui_elle\]/g, isFille ? 'elle' : 'lui')
     .replace(/\[ces_vos_objectifs\]/g, (c.objectifs && c.objectifs.trim()) ? 'ces objectifs' : 'vos objectifs')
     .replace(/\[aligne_alignee\]/g, (() => {
       // Accord selon le(s) parent(s) présent(s) à la consultation
