@@ -3076,7 +3076,20 @@ const SCRIPT_DATA = {
                           showIfAgeMinMonths: 6,
                           alim: ["Allaitement au sein", "Allaitement au biberon"],
                           blocks: [
-                            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                            {
+                              type: "normal", _leftTitle: "Conseil",
+                              text: "- Je vous recommanderai de **discuter avec votre pédiatre** concernant la **supplémentation en fer** pour **votre bébé**\n- Les **réserves en fer :**\n  - **qu'il avait acquis pendant la grossesse**… **s'amenuisent**\n  - et les **demandes en fer**, dès **6 mois**, sont **très très importante**\n- **Contrairement au lait infantile** qui est **enrichi en fer**\n  ⇒ le **lait maternel** ne **permet PAS** de **répondre** à la **très grande demande** de bébé\n  ⇒ c'est pourquoi, il serait **peut être intéressant** d'en <span style=\"color:#dc2626\">**parler à votre médecin**</span>\n  ⇒ pour qu'il **LE supplémente en fer**",
+                              trailingInfoButtons: [
+                                {
+                                  emoji: "💡",
+                                  label: "Child Life : Iron Liquid",
+                                  title: "Child Life : Iron Liquid",
+                                  blocks: [
+                                    { type: "normal", text: "💡 Il existe des marques comme ***Child Life : Iron Liquid***, vendus sur **Internet** qui pourraient répondre à ce besoin\n\n<img src=\"https://cloudinary.images-iherb.com/image/upload/f_auto,q_auto:eco/images/cdl/cdl12100/v/40.jpg\" alt=\"Child Life Iron Liquid\" style=\"max-width:100%;height:auto;border-radius:8px;margin-top:10px\">" }
+                                  ]
+                                }
+                              ]
+                            }
                           ]
                         },
                         {
