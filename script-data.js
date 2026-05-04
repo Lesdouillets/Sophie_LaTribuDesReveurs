@@ -3036,7 +3036,48 @@ const SCRIPT_DATA = {
                         {
                           id: "nutri_lait_allaitement_quantite", emoji: "🔢", label: "Quantité et espacement",
                           blocks: [
-                            { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                            {
+                              type: "normal", _leftTitle: "À la demande",
+                              text: "- Au niveau des quantités, sur un **bébé [allaite_allaitee]**, on reste sur une **logique :**\n  - **de répondre à la demande** *(🎓 à savoir que la demi-vidange gastrique du lait maternel est de 36min !)*\n  - **avec un nombre de tétées NUTRITIVES illimitées** (où on entend une déglutition lente)\n- Je voudrais qu'**on n'oublie AUSSI le grand mythe des espacements de 4h**, qui ne sont **basés sur… AUCUNE DONNÉE SCIENTIFIQUE !**",
+                              trailingInfoButtons: [
+                                {
+                                  emoji: "🍭",
+                                  label: "Tétine = coupe-faim",
+                                  title: "Tétine / petit doigt à sucer / mâchonnage / pouce = COUPE FAIM",
+                                  blocks: [
+                                    { type: "normal", text: "- Peut **répondre à un réflexe de succion**, MAIS peut aussi **faire office d'illusion** puisque ça **« dupe » le cerveau :**\n  - Votre **enfant** **« tète et déglutit »** ⇒ donc le cerveau pense que **quelque chose rentre dans son estomac**… MAIS rien ne rentre…\n  - et au bout d'un moment :\n    - **l'illusion se perd**\n    - et la **faim se fait ressentir**\n- Même si **vous remettez la tétine** :\n  - il **n'en veut pas**\n  - et il **pleure**\n  ⇒ Parce qu'il **veut AUTRE CHOSE, il veut manger**\n  = La **tétine** joue donc le rôle d'un **« cache-faim »**" }
+                                  ]
+                                },
+                                {
+                                  label: "Tétine = signe pour stimuler la lactation",
+                                  title: "Tétine / petit doigt à sucer / mâchonnage / pouce = SIGNE POUR STIMULER LACTATION",
+                                  blocks: [
+                                    { type: "normal", text: "- Peut être un signe que bébé a besoin de :\n  - téter,\n  - de stimuler vos seins" }
+                                  ]
+                                },
+                                {
+                                  emoji: "💡",
+                                  label: "Position d'allaitement idéale",
+                                  title: "Position d'allaitement idéale",
+                                  blocks: [
+                                    { type: "normal", text: "💡 **Position d'allaitement idéale**\n\n*Position Biological Nurturing* = Maman semi-allongée, bébé en **ventre contre ventre**\n\n<img src=\"https://www.oummi-materne.com/wp-content/uploads/2016/03/position-bn.jpg\" alt=\"Position Biological Nurturing\" style=\"max-width:100%;height:auto;border-radius:8px;margin-top:10px\">" }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              type: "normal", _leftTitle: "Signes de faim et de satiété",
+                              text: "- À l'inverse, **on regardera :**\n  - les **signes de faim**\n  - **et de satiété** de [prénom_enfant]\n- Un bébé qui a suffisamment mangé aura :\n  - les **mains ouvertes**\n  - du **lait à la commissure des lèvres** (car son estomac sera rempli)\n  - un **air un peu groggi**",
+                              trailingInfoButtons: [
+                                {
+                                  label: "Votre expérience et votre intuition de Maman",
+                                  title: "Votre expérience et votre intuition de Maman",
+                                  blocks: [
+                                    { type: "normal", text: "- En s'**appuyant** AUSSI sur :\n  - **votre expérience**\n  - et **votre intuition** de **Maman !**" }
+                                  ]
+                                }
+                              ]
+                            }
                           ]
                         },
                         {
