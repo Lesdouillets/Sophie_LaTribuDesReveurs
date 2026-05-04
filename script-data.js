@@ -5602,7 +5602,58 @@ const SCRIPT_DATA = {
                   {
                     id: "accomp_lit_ouvert_connait_sort", emoji: "🛌🚪", label: "Connaît son lit / peut sortir de sa chambre",
                     blocks: [
-                      { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+                      {
+                        type: "normal", _leftTitle: "Conseils",
+                        text: "<div style=\"background:#f3e8ff;border:2px dashed #7c3aed;border-radius:10px;padding:12px 16px;margin:10px 0\"><div style=\"font-weight:700;color:#7c3aed;margin-bottom:6px\">Option : Va DORMIR dans le lit des PARENTS</div><ul style=\"margin:0;padding-left:24px\"><li>Je vous invite aussi à <strong>NE PLUS [le_la] laisser dormir</strong> dans <strong>VOTRE lit</strong></li></ul></div>\n\n- Je vous conseille d'**anticiper** et **trouver une solution** pour ne **PAS** qu'il puisse **sortir** de la chambre ⇒ <span style=\"color:#dc2626\">**Dangereux + créer des conflits inutiles**</span>\n  - *ex : installez une (double) barrière à la porte de la chambre / barrière enroulante à 20 cm du sol / fermez la porte à clé / chaînette …*\n\n- <span style=\"display:inline-block;background:#dcfce7;border:2px solid #16a34a;border-radius:8px;font-weight:700;color:#14532d;padding:4px 10px\">✅ S'il RESTE dans son lit</span>\n  - Accompagnez les pleurs :\n    - Dites une **phrase brève à l'entrebâillement** de la porte et **refermez la porte SANS attendre** de réponse\n      - Pleurs intenses : **ré-ouvrez la porte**, **restez à l'entrebâillement** et **alternez** entre **phrases apaisantes** et **respirations** jusqu'à l'**apaisement**\n      - Quand apaisement : *« bonne nuit »* et **fermez la porte**\n\n- <span style=\"display:inline-block;background:#fee2e2;border:2px solid #dc2626;border-radius:8px;font-weight:700;color:#7f1d1d;padding:4px 10px\">❌ S'il SORT de son lit</span>\n  - Accompagnez les pleurs :\n    - **Les 1ères fois :**\n      - **Ramenez** [prénom_enfant] dans son lit **SANS parole / émotion / bisou**\n      - Dites-lui *« Lorsque tu es dans ton lit, je peux être dans l'entrebâillement de la porte avec toi. Lorsque tu sors, je ferme la porte »* = **Donne à [prénom_enfant] le contrôle** de l'**ouverture** de la porte\n      - **Ressortez en fermant la porte** et **restez derrière** la porte en la maintenant fermée **si** [prénom_enfant] **veut tester à nouveau**\n    - **Les fois suivantes :**\n      - **Accompagnez** la colère **derrière la porte fermée**\n      - Indiquez à [prénom_enfant] que **vous reviendrez** une fois **retourné dans son lit**\n      - Si apaisement : venez [le_la] voir rapidement, dites-lui *« bonne nuit »* et **refermez** la porte\n\n💡 La **période d'émotions** ne dure **pas plus** de **3 jours** (parfois -) et **va en s'apaisant** (1 à 2 semaines)",
+                        trailingInfoButtons: [
+                          {
+                            emoji: "💡",
+                            label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        type: "normal", _leftTitle: "Conseils supplémentaires",
+                        text: "- **Quelques petites info en + :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}- N'**intervenez pas** pour un **changement de couches** SAUF si **débordement** ou **selles** ⇒ Dans ce cas, intervenez avec une **lumière tamisée**\n\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire !",
+                        trailingInfoButtons: [
+                          {
+                            emoji: "💖",
+                            label: "Envie d'un câlin ?",
+                            title: "💖 Envie d'un câlin ?",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **vous écouter** et à **écouter votre enfant** si vous en **ressentez le besoin**\n- Essayez néanmoins de **limiter les câlins**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }
+                            ]
+                          },
+                          {
+                            emoji: "😭",
+                            label: "Difficile d'entendre pleurer",
+                            title: "💖💖💖 😭😭😭 Difficile d'entendre pleurer",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **[le_la] reprendre** dans vos bras MAIS dans une **POSITION DIFFÉRENTE** de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n- **Re-posez-[le_la]** dès **l'apaisement**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }
+                            ]
+                          },
+                          {
+                            emoji: "🥱",
+                            label: "Fatigué ?",
+                            title: "🥱🙋‍♀️ Fatigué ?",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à vous **relayer**. C'est **TOUT à fait possible**\n- Dites simplement à [prénom_enfant], que *« maintenant **Maman s'en va** mais c'est **Papa qui va venir**. Et que vous **l'aimez toujours** »*" }
+                            ]
+                          },
+                          {
+                            emoji: "💬",
+                            label: "Multiples rappels",
+                            title: "💬💬💬 Multiples rappels",
+                            blocks: [
+                              { type: "normal", text: "- Mes conseils :\n  - **Mettez en place** un **tableau de rituel**<div style=\"margin:8px 0\"><img src=\"assets/livre-rituel-forkids.png\" alt=\"Tableau de rituel avec lumières\" style=\"max-width:380px;width:100%;border-radius:8px;border:1px solid #cbd5e0\"></div>\n\n  - **Répondez 1 SEULE fois à ses appels**\n\n  - **Anticipez** les rappels :\n    - Nez qui coule ⇒ **boîte de mouchoirs** à disposition de l'enfant\n    - Couette mal mise ⇒ **surpyjama** ou **couette zippée**\n    - Doudou perdu ⇒ mettez un **2ème doudou**, rendez le doudou visible la nuit (**ruban phosphorescent**…)\n    - Bouton qui gratte ⇒ pendant le temps de soins pendant le rituel, proposez de la **pommade anti-démangeaisons**\n    - Dernier câlin ⇒ pendant le rituel, verbalisez bien ce dernier câlin\n    - Soif ⇒ **Gourde** à proximité\n  - **Donnez 3 cartes pour 3 rappels** ⇒ au-delà : **vous ne revenez pas dans la chambre** (diminuez le nombre de cartes au fil du temps)\n\n  - **Mettez en place** un **tableau de récompenses :**\n    - **Chaque nuit SANS rappel** : [prénom_enfant] a le matin :\n      - Chocolat / bonbon\n      - Élément d'un kit playmobil\n\n  - Vous pouvez aussi faire des **jeux de rôle en journée** *(ex : avec une poupée que l'on couche dans son lit de poupée) :*\n    - Quel rituel lui faire ?\n    - Que dire si elle se réveille ?\n\n  - Il y a aussi les **livres de Caroline Ferriol** pour les + grands (6,90 €) :\n    - *Arthur met du temps à s'endormir*\n    - *Jade veut dormir avec Papa et Maman*\n    - *Louise ne veut pas aller se coucher*" }
+                            ]
+                          }
+                        ]
+                      }
                     ]
                   },
                   {
