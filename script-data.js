@@ -5373,7 +5373,7 @@ const SCRIPT_DATA = {
                 label: "Qu'est-ce que l'accompagnement des émotions ?",
                 title: "Qu'est-ce que l'accompagnement des émotions ?",
                 blocks: [
-                  { type: "normal", text: "- Être présent pour son enfant, simplement et avec bienveillance, comme on le serait avec un ami en peine : en restant calme, à l'écoute, sans chercher à faire taire ses larmes. Vous pouvez lui parler doucement, nommer ce qu'il ressent, lui rappeler qu'il est en sécurité, que vous êtes là pour lui et fier de ses efforts. Même s'il ne comprend pas encore tous les mots, il percevra le ton de votre voix, la douceur de votre regard et la stabilité de votre présence, qui lui permettront de se sentir en sécurité pour traverser ses émotions." }
+                  { type: "normal", text: "- Être **présent pour son enfant**, simplement et **avec bienveillance**, comme on le serait avec **un ami en peine** :\n  - en **restant calme**\n  - à **l'écoute**\n  - **sans chercher** à **faire taire ses larmes**\n- Vous pouvez :\n  - lui **parler doucement**\n  - **nommer** ce qu'il ressent\n  - **lui rappeler qu'il est en sécurité**\n  - que **vous êtes là pour lui** et **fier de ses efforts**\n- Même s'il **ne comprend pas encore tous les mots**, il **percevra** :\n  - le **ton de votre voix**\n  - la **douceur de votre regard**\n  - et la **stabilité de votre présence**\n  ⇒ qui lui **permettront de se sentir en sécurité** pour **traverser ses émotions**" }
                 ]
               }
             ]
