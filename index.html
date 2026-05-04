@@ -4068,7 +4068,7 @@
     /* Boutons "S'il RESTE" / "S'il SORT" — chaque bouton occupe 50% de la largeur (1 colonne chacun).
        Fermé : pill button (vert/rouge pâle). Ouvert : bandeau saturé en haut + contenu blanc dessous (style X. Validation). */
     .accomp-action-toggle {
-      flex: 1 1 280px;
+      flex: 1 1 0;
       border-radius: 10px;
       transition: all 0.15s;
       min-width: 0;
@@ -9765,7 +9765,20 @@ function closeInfoPanel() {
   if (panel) panel.classList.remove('open');
   window.__activeInfoBtnId = null;
 }
-function prevSection() { state.revealedLever = null; if (state.currentIdx>0) navigateTo(state.currentIdx-1); }
+function prevSection() {
+  state.revealedLever = null;
+  // Cas spécial : depuis IX. Reformulation → revenir directement à VIII. Plan d'action
+  // (skip toutes les sections conditionnelles et planAction intermédiaires)
+  const _curSec3 = state.sections && state.sections[state.currentIdx];
+  if (_curSec3 && _curSec3.id === 'reformulation') {
+    const _planIdx = state.sections.findIndex(s => s.id === 'plan_action');
+    if (_planIdx >= 0) {
+      navigateTo(_planIdx);
+      return;
+    }
+  }
+  if (state.currentIdx>0) navigateTo(state.currentIdx-1);
+}
 function nextSection() {
   state.revealedLever = null;
   // Cas spécial IV. Objectifs : "Changer le lit" coché sans sous-type → modal de choix au lieu de l'alerte générique
