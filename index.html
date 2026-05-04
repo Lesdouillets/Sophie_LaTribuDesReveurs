@@ -826,6 +826,37 @@
     .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) > .pb-items {
       padding-top: 32px !important;
     }
+    /* Case à cocher SOUS le titre (vertical stacking centré) :
+       column-reverse => l'ordre source (input, texte, span) devient (span, texte, input) à l'écran. */
+    .problematiques-grid .pb-category > .pb-category-title:has([data-cat]) {
+      flex-direction: column !important;
+      gap: 4px !important;
+    }
+    /* L'input checkbox doit rester APRÈS le texte (donc en bas) — order:1 vs default:0 */
+    .problematiques-grid .pb-category > .pb-category-title:has([data-cat]) > input[type="checkbox"] {
+      order: 1;
+      margin: 0 !important;
+    }
+    /* Masquer le span "(1 option possible)" sur Confort physique (et tout span décoratif analogue),
+       sans masquer le wrapper .pb-cat-btns qui porte les boutons "Tout ✓/✗"
+       et sans masquer les nouveaux .pb-cat-emoji / .pb-cat-label */
+    .problematiques-grid .pb-category > .pb-category-title:has([data-cat="confort_physique"]) > span:not(.pb-cat-btns):not(.pb-cat-emoji):not(.pb-cat-label) {
+      display: none !important;
+    }
+    /* Style pour les nouveaux spans emoji + label (top-level uniquement) */
+    .problematiques-grid .pb-category > .pb-category-title:has([data-cat]) > .pb-cat-emoji {
+      font-size: 22px;
+      line-height: 1;
+      order: -1;
+    }
+    .problematiques-grid .pb-category > .pb-category-title:has([data-cat]) > .pb-cat-label {
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      line-height: 1.25;
+      order: 0;
+    }
 
     /* Bandeau PARENT (catégorie parente) — style le plus marqué */
     .block-parent-banner {
@@ -15294,6 +15325,25 @@ function addCatSelectButtons(container) {
   container.querySelectorAll('.pb-category').forEach(cat => {
     const title = cat.querySelector('.pb-category-title');
     if (!title || title.querySelector('.pb-cat-btns')) return;
+    // Wrapper emoji + label dans des spans séparés (uniquement pour top-level avec data-cat,
+    // pour permettre le stacking vertical via CSS — purement visuel, ne touche aucune logique).
+    const dataCatInput = title.querySelector('input[data-cat]');
+    if (dataCatInput && !title.querySelector('.pb-cat-emoji')) {
+      let textNode = dataCatInput.nextSibling;
+      while (textNode && textNode.nodeType !== Node.TEXT_NODE) textNode = textNode.nextSibling;
+      if (textNode) {
+        const m = textNode.textContent.trim().match(/^(\S+)\s+(.+)$/);
+        if (m) {
+          const emojiSpan = document.createElement('span');
+          emojiSpan.className = 'pb-cat-emoji';
+          emojiSpan.textContent = m[1];
+          const labelSpan = document.createElement('span');
+          labelSpan.className = 'pb-cat-label';
+          labelSpan.textContent = m[2];
+          textNode.replaceWith(emojiSpan, labelSpan);
+        }
+      }
+    }
     const wrap = document.createElement('span');
     wrap.className = 'pb-cat-btns';
     wrap.innerHTML = `
