@@ -5417,7 +5417,7 @@ const SCRIPT_DATA = {
                       },
                       {
                         type: "normal", _leftTitle: "Nuits 4, 5 et 6",
-                        text: "- <span style=\"color:#dc2626\">**Rester**</span> au <span style=\"color:#dc2626\">**milieu de la chambre**</span>, sur une chaise préparée, dans le noir total (**SANS le toucher**)\n- Rester <span style=\"color:#dc2626\">**jusqu'à l'endormissement**</span>"
+                        text: "- <span style=\"color:#dc2626\">**Rester**</span> au <span style=\"color:#dc2626\">**milieu de la chambre**</span>, sur une chaise préparée, dans le noir total (**SANS [le_la] toucher**)\n- Rester <span style=\"color:#dc2626\">**jusqu'à l'endormissement**</span>"
                       },
                       {
                         type: "normal", _leftTitle: "Nuit 7",
