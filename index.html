@@ -10297,6 +10297,10 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
         if (catMainMatch) styleParts.push(`--cat-main:${catMainMatch[1].trim()}`);
       }
       if (styleParts.length) wrapStyle = ` style="${styleParts.join(';')}"`;
+      // Mode collapsible : section pliable via <details>/<summary>
+      if (b._collapsible) {
+        return `<details class="block-with-left-title block-collapsible"${wrapStyle}><summary class="block-left-title block-collapsible-summary"${ltStyle}>${substituteVars(b._leftTitle)}</summary>${wrapOnly}</details>${addBtn}`;
+      }
       return `<div class="block-with-left-title"${wrapStyle}><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div>${wrapOnly}</div>${addBtn}`;
     }
     return wrapOnly + addBtn;
