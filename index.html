@@ -9938,9 +9938,26 @@ function openInfoPanel(btnId) {
 function closeInfoPanel() {
   const panel = document.getElementById('info-panel');
   if (panel) panel.classList.remove('open');
-  // Réafficher le bouton trigger qui était masqué
+  // Réafficher le bouton trigger qui était masqué + scroller pour le rendre visible
+  // (sinon la page peut atterrir sur un bloc différent à cause du reflow layout)
   if (window.__activeInfoBtnId) {
-    document.querySelectorAll(`[data-info-btn-id="${window.__activeInfoBtnId}"]`).forEach(b => b.classList.remove('info-btn-active-hidden'));
+    const btn = document.querySelector(`[data-info-btn-id="${window.__activeInfoBtnId}"]`);
+    if (btn) {
+      btn.classList.remove('info-btn-active-hidden');
+      // Scroll smooth pour ramener le trigger en vue après reflow
+      setTimeout(() => {
+        const scrollContainer = btn.closest('.sol-active-content') || document.getElementById('content-area') || document.scrollingElement;
+        if (scrollContainer && scrollContainer.getBoundingClientRect) {
+          const containerRect = scrollContainer.getBoundingClientRect();
+          const btnRect = btn.getBoundingClientRect();
+          const currentScroll = scrollContainer.scrollTop || 0;
+          const targetScroll = currentScroll + (btnRect.top - containerRect.top) - (containerRect.height / 2 - btnRect.height / 2);
+          scrollContainer.scrollTo({ top: Math.max(0, targetScroll), behavior: 'smooth' });
+        } else {
+          btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 50);
+    }
   }
   window.__activeInfoBtnId = null;
   document.removeEventListener('click', _infoPanelOutsideClickHandler, true);
