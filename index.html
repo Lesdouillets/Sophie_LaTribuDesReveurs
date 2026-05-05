@@ -2812,6 +2812,26 @@
       border-color: #eab308;
       color: #713f12;
     }
+    /* Pulse animation pour guider l'utilisateur (Solution B : tickbox/sous-cases manquantes) */
+    @keyframes sol-pulse-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
+      50%      { box-shadow: 0 0 0 5px rgba(236, 72, 153, 0.45); }
+    }
+    .sol-pulse {
+      animation: sol-pulse-glow 1.4s ease-in-out infinite;
+      border-radius: 10px;
+    }
+    .sol-pulse-msg {
+      display: inline-block;
+      margin: 0 0 6px;
+      padding: 4px 10px;
+      font-weight: 800;
+      font-size: 13px;
+      color: #be185d;
+      background: #fce7f3;
+      border-radius: 6px;
+      animation: sol-pulse-glow 1.4s ease-in-out infinite;
+    }
     /* Compact version (Solutions identifiées) — sans encadré, boutons magenta clair.
        Placé APRÈS toutes les variantes pour gagner la cascade CSS. */
     .sol-compact-tickbox.block-tickbox-choice {
@@ -11815,21 +11835,41 @@ function renderSolutionsCheckboxes(opts) {
           // Si le ch contient un tickbox_choice dans ses blocs, le rendre AU-DESSUS des sous-cases
           // (ex. accomp_progressivite : tickbox DOS/VENTRE en haut)
           let tickboxHtml = '';
+          let tickboxPulse = false;
+          let subRowsPulse = false;
+          let subRowsMsg = '';
           if (Array.isArray(ch.blocks)) {
             const tbBlock = ch.blocks.find(b => b && b.type === 'tickbox_choice' && b.id);
             if (tbBlock) {
               const tbCid = tbBlock.id;
               const currentVal = (state.tickboxChoices && state.tickboxChoices[tbCid]) || '';
+              // Solution B : détecter état incomplet pour pulse + message
+              const hasAnySubTicked = dedupedItems.some(it =>
+                it._twinIds.some(tid => state.courbeCardsTicked && state.courbeCardsTicked.has(tid))
+              );
+              const hasPosition = !!currentVal;
+              let tickboxMsg = '';
+              if (hasAnySubTicked && !hasPosition) {
+                tickboxPulse = true;
+                tickboxMsg = '⚠️ Choisis ici !';
+              } else if (hasPosition && !hasAnySubTicked) {
+                subRowsPulse = true;
+                subRowsMsg = '⚠️ Coche une case !';
+              }
               const opts = (tbBlock.options || []).map((o, oi) => {
                 const variant = o.variant || (oi === 0 ? 'positive' : 'negative');
                 const value = o.value || ('opt' + oi);
                 const sel = currentVal === value ? ' tbc-selected' : '';
                 return `<div class="tbc-opt${sel}" data-variant="${variant}" data-value="${value}" onclick="selectTickboxChoice(this)"><span class="tbc-icon">${o.icon || ''}</span><span>${o.label || ''}</span></div>`;
               }).join('');
-              tickboxHtml = `<div class="block block-tickbox-choice sol-compact-tickbox" data-choice-id="${tbCid}" data-required="false" data-answered="${currentVal ? 'true' : 'false'}" style="padding-left:30px;margin:4px 0 6px"><div class="tbc-options">${opts}</div></div>`;
+              const pulseCls = tickboxPulse ? ' sol-pulse' : '';
+              const msgHtml = tickboxMsg ? `<div class="sol-pulse-msg" style="margin-bottom:6px">${tickboxMsg}</div>` : '';
+              tickboxHtml = `<div style="padding-left:30px">${msgHtml}<div class="block block-tickbox-choice sol-compact-tickbox${pulseCls}" data-choice-id="${tbCid}" data-required="false" data-answered="${currentVal ? 'true' : 'false'}" style="margin:0"><div class="tbc-options">${opts}</div></div></div>`;
             }
           }
-          subRows = tickboxHtml + `<div class="sol-row-sub" style="padding-left:30px;display:flex;flex-direction:column;gap:4px;margin-top:4px">` +
+          const subRowsPulseCls = subRowsPulse ? ' sol-pulse' : '';
+          const subRowsMsgHtml = subRowsMsg ? `<div style="padding-left:30px"><span class="sol-pulse-msg">${subRowsMsg}</span></div>` : '';
+          subRows = tickboxHtml + subRowsMsgHtml + `<div class="sol-row-sub${subRowsPulseCls}" style="padding-left:30px;display:flex;flex-direction:column;gap:4px;margin-top:4px">` +
             dedupedItems.map(it => {
               const itTicked = it._twinIds.some(tid => state.courbeCardsTicked.has(tid));
               const displayLabel = it._useCompactLabel ? it.compactLabel : (it.label || it.id);
