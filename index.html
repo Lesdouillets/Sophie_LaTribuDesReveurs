@@ -11655,6 +11655,11 @@ function renderSolutionsCheckboxes(opts) {
       const sieste = (state && state.client && state.client.sieste) || '';
       if (sieste && ch.hideIfSieste.includes(sieste)) return true;
     }
+    if (ch.hideIfTickbox) {
+      const checks = Array.isArray(ch.hideIfTickbox) ? ch.hideIfTickbox : [ch.hideIfTickbox];
+      const choices = state.tickboxChoices || {};
+      if (checks.some(c => choices[c.cid] === c.value)) return true;
+    }
     return false;
   };
   // Partie 1 : liste compacte "Leviers identifiés" style — groupée par catégorie
