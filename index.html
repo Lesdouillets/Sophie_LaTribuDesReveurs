@@ -1291,6 +1291,8 @@
     .info-panel.open { width: 600px; }
     /* Quand ouvert depuis une bulle flottante (Si Maman en dépression…) : largeur doublée */
     .info-panel.info-panel-blue.open { width: 1200px; }
+    /* Largeur doublée explicite (flag _wide:true sur le trailing button) — sans changer le thème jaune */
+    .info-panel.info-panel-wide.open { width: 1200px; }
 
     /* ═══ SETUP INFO PANEL (même comportement, pour la fiche client) ═══ */
     .setup-info-panel {
@@ -6703,7 +6705,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=382"></script>
+<script src="script-data.js?v=384"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9828,6 +9830,12 @@ function openInfoPanel(btnId) {
   } else {
     panel.classList.remove('info-panel-blue');
   }
+  // Largeur doublée si flag _wide:true sur le trailing button (ex. Autres dans Accompagnement)
+  if (data.wide) {
+    panel.classList.add('info-panel-wide');
+  } else {
+    panel.classList.remove('info-panel-wide');
+  }
   window.__activeInfoBtnId = btnId;
   // Initialise les widgets dynamiques (labels qui dépendent de state.client)
   if (typeof updatePotentielGenetique === 'function' && bodyEl.querySelector('#pg-pere-input')) {
@@ -11507,7 +11515,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const label = substituteVars(tb.label || 'Plus d\'infos');
       const title = substituteVars(tb.title || tb.label || 'Informations');
       const contentHtml = renderBlocks(Array.isArray(tb.blocks) ? tb.blocks : [], sectionId, (depth||0)+1, path||String(i));
-      window.__infoButtons[btnId] = { title, content: contentHtml };
+      window.__infoButtons[btnId] = { title, content: contentHtml, wide: !!tb._wide };
       // Si 1 seul bouton : classe .inline-right (positionné absolument)
       // Si > 1 : classe .in-stack (positionnement géré par le container parent)
       const cls = trailingBtnsList.length > 1 ? 'info-btn in-stack' : 'info-btn inline-right';

@@ -6449,6 +6449,7 @@ const SCRIPT_DATA = {
                 emoji: "🌄",
                 label: "Réveils matinaux",
                 title: "🌄 Réveils matinaux",
+                _wide: true,
                 blocks: [
                   { type: "normal", text: "- TOUT ce qui va se passer **AVANT l'heure de réveil** souhaitée sera **considéré comme** un **réveil nocturne**\n- **Il faudra alors procéder avec :**\n  - le **même accompagnement**\n  - et la **même posture**\n\n- Je vous conseille de **coucher** [prénom_enfant] **30 min + tôt**\n\n- *🎓 Lorsqu'[il_elle] se **réveillera un peu AVANT l'heure habituelle** :*\n  - *la **mélatonine***\n  - *et la **pression du sommeil***\n  - seront **+ fortes** que **30 minutes + tard**\n  ⇒ et ça **l'aidera** à se **rendormir + facilement**" },
                   { type: "normal", _leftTitle: "💡 Si bruits temporaires", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "*(ex : travaux dans la rue)*\n- **OK** pour mettre **TEMPORAIREMENT des bruits blancs** sur **TOUT le temps** de la nuit/sieste" },
@@ -6456,19 +6457,51 @@ const SCRIPT_DATA = {
                 ]
               },
               {
-                emoji: "🕐",
+                emoji: "⌚",
                 label: "Décalage horaire",
-                title: "🕐 Décalage horaire",
+                title: "⌚ Décalage horaire",
+                _wide: true,
                 blocks: [
-                  { type: "normal", _leftTitle: "Petit décalage horaire (< 1h)", _leftTitleStyle: "background:#dcfce7;color:#14532d;--cat-main:#16a34a", text: "- Pour un **PETIT** décalage horaire, on va **avancer/reculer** les horaires **de 15 minutes tous les jours**.\n- Concrètement :\n  - Le **matin**, vous **le réveillez avec un décalage** de 15 minutes, **sans le sortir du lit avant**\n  - **Pendant la journée**, tout ce qui suit *(siestes, repas, etc.)* **sera aussi décalé** de 15 minutes\n  - **Le soir**, vous décalez **AUSSI l'heure du coucher** de 15 minutes\n  - Le **lendemain matin**, vous **continuez ce décalage** de 15 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" },
-                  { type: "normal", _leftTitle: "Grand décalage horaire (> 1h) — Progressif", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- Pour un **GRAND** décalage horaire, on va **avancer/reculer** les horaires **de 30 minutes tous les 3 jours**.\n- Concrètement :\n  - Le **matin**, vous **le réveillez avec un décalage** de 30 minutes, **sans le sortir du lit avant**\n  - **Pendant la journée**, tout ce qui suit *(siestes, repas, etc.)* **sera aussi décalé** de 30 minutes\n  - **Le soir**, vous décalez **AUSSI l'heure du coucher** de 30 minutes\n  - Au **bout de 3 jours**, vous **continuez ce décalage** de 30 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" },
-                  { type: "normal", _leftTitle: "Grand décalage horaire (> 1h) — En 1 fois", _leftTitleStyle: "background:#fee2e2;color:#7f1d1d;--cat-main:#dc2626", text: "- Procéder à un décalage horaire **en 1 fois** :\n  - Commencer par **le réveiller le matin à l'heure prévue** *(sans le sortir du lit [sil_sielle] se réveille avant)*\n  - Puis **utiliser les temps d'éveil** pour rétablir un **rythme basé sur cette heure de lever**\n- 🎓 Les **1ers jours**, [il_elle] sera en **manque de sommeil**\n  ⇒ c'est **NORMAL**\n- Petit à petit, [il_elle] se **décalera naturellement** et **retrouvera des quotas de sommeil adaptés** à son âge" }
+                  {
+                    type: "normal", text: "",
+                    embeddedActions: [
+                      {
+                        label: "Petit décalage (< 1h)", emoji: "🐢", style: "action-green", _pillStyle: true, mutexGroup: "decalage-autres",
+                        blocks: [
+                          { type: "normal", text: "- Pour un PETIT **décalage horaire**, on va avancer/reculer les horaires **de 15 minutes** **tous les jours**.\n- Concrètement, ça veut dire :\n  - Le **matin**, vous **[le_la] réveillez avec un décalage** de 15 minutes, **sans [le_la] sortir du lit avant**.\n  - **Pendant la journée**, tout ce qui suit — **siestes, repas, etc.** — **sera aussi décalé** de 15 minutes.\n  - **Le soir, vous décalez AUSSI l'heure du coucher de 15 minutes**.\n  - Le lendemain matin, vous **continuez ce décalage** de 15 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" }
+                        ]
+                      },
+                      {
+                        label: "Grand décalage (> 1h)", emoji: "🐇", style: "action", _pillStyle: true, mutexGroup: "decalage-autres",
+                        blocks: [
+                          {
+                            type: "normal", text: "",
+                            embeddedActions: [
+                              {
+                                label: "Progressif", emoji: "🐢", style: "action-green", _pillStyle: true, mutexGroup: "decalage-grand-autres",
+                                blocks: [
+                                  { type: "normal", text: "- Pour un **décalage horaire**, on va avancer/reculer les horaires **de 30 minutes** **tous les 3 jours**.\n- Concrètement, ça veut dire :\n  - Le **matin**, vous **[le_la] réveillez avec un décalage** de 30 minutes, **sans [le_la] sortir du lit avant**.\n  - **Pendant la journée**, tout ce qui suit — **siestes, repas, etc.** — **sera aussi décalé** de 30 minutes.\n  - **Le soir, vous décalez AUSSI l'heure du coucher de 30 minutes**.\n  - Au **bout de 3 jours**, vous **continuez ce décalage** de 30 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" }
+                                ]
+                              },
+                              {
+                                label: "En 1 fois", emoji: "⚡", style: "action", _pillStyle: true, mutexGroup: "decalage-grand-autres",
+                                blocks: [
+                                  { type: "normal", text: "- Procéder à un décalage horaire **en 1 fois**, en commençant par **[le_la] réveiller le matin à l'heure prévue (sans [le_la] sortir du lit [sil_sielle] se réveille avant)**\n- Puis **utiliser les temps d'éveil** pour rétablir un rythme basé sur cette heure de lever\n- 🎓 Les 1ers jours, [il_elle] sera en manque de sommeil\n  - ⇒ c'est **NORMAL**\n  - Petit à petit, [il_elle] se **décalera naturellement** et **retrouvera des quotas de sommeil adaptés** à son âge" }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
                 ]
               },
               {
                 emoji: "💬",
                 label: "Multiples rappels",
                 title: "💬💬💬 Multiples rappels",
+                _wide: true,
                 blocks: [
                   { type: "normal", text: "- Mes conseils :\n  - **Mettez en place** un **tableau de rituel**<div style=\"margin:8px 0\"><img src=\"assets/livre-rituel-forkids.png\" alt=\"Tableau de rituel avec lumières\" style=\"max-width:380px;width:100%;border-radius:8px;border:1px solid #cbd5e0\"></div>\n\n  - **Répondez 1 SEULE fois à ses appels**\n\n  - **Anticipez** les rappels :\n    - Nez qui coule ⇒ **boîte de mouchoirs** à disposition de l'enfant\n    - Couette mal mise ⇒ **surpyjama** ou **couette zippée**\n    - Doudou perdu ⇒ mettez un **2ème doudou**, rendez le doudou visible la nuit (**ruban phosphorescent**…)\n    - Bouton qui gratte ⇒ pendant le temps de soins pendant le rituel, proposez de la **pommade anti-démangeaisons**\n    - Dernier câlin ⇒ pendant le rituel, verbalisez bien ce dernier câlin\n    - Soif ⇒ **Gourde** à proximité\n  - **Donnez 3 cartes pour 3 rappels** ⇒ au-delà : **vous ne revenez pas dans la chambre** (diminuez le nombre de cartes au fil du temps)\n\n  - **Mettez en place** un **tableau de récompenses :**\n    - **Chaque nuit SANS rappel** : [prénom_enfant] a le matin :\n      - Chocolat / bonbon\n      - Élément d'un kit playmobil\n\n  - Vous pouvez aussi faire des **jeux de rôle en journée** *(ex : avec une poupée que l'on couche dans son lit de poupée) :*\n    - Quel rituel lui faire ?\n    - Que dire si elle se réveille ?\n\n  - Il y a aussi les **livres de Caroline Ferriol** pour les + grands (6,90 €) :\n    - *Arthur met du temps à s'endormir*\n    - *Jade veut dormir avec Papa et Maman*\n    - *Louise ne veut pas aller se coucher*" }
                 ]
