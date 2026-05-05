@@ -2812,6 +2812,31 @@
       border-color: #eab308;
       color: #713f12;
     }
+    /* Mode "pills + contenu déplié" pour courbe_cards_grid.expandAllAsPills
+       (utilisé par accomp_progressivite : DOS/VENTRE + Bercement/Portage en pastille,
+       puis texte des étapes directement visible sans clic) */
+    .courbe-cards-grid-wrap--pills {
+      text-align: left;
+      margin-top: 12px;
+    }
+    .ccg-pill-section {
+      margin: 0 0 24px;
+    }
+    .ccg-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: #fce7f3;
+      border: 2px solid #ec4899;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #831843;
+      margin: 0 0 10px;
+    }
+    .ccg-pill-emoji { font-size: 16px; line-height: 1; }
+    .ccg-pill-content { margin-left: 4px; }
     /* Pulse animation pour guider l'utilisateur (Solution B : tickbox/sous-cases manquantes) */
     @keyframes sol-pulse-glow {
       0%, 100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
@@ -6678,7 +6703,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=378"></script>
+<script src="script-data.js?v=379"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -10734,6 +10759,20 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         }).sort((a, b) => itemMinOrderIdx(a) - itemMinOrderIdx(b));
     if (visibleItems.length === 0) return '';
     const gridPath = `${sectionId||'x'}__${path||'main'}`;
+    // Mode "pills + contenu déplié" : remplace les cartes cliquables par des pastilles
+    // (label en haut) + tout le contenu déplié sous chaque pastille, empilées verticalement
+    if (b.expandAllAsPills) {
+      const themeCls2 = b.theme ? ` theme-${b.theme}` : '';
+      const pillsHtml = visibleItems.map((it, idx) => {
+        const innerBlocks = Array.isArray(it.blocks) ? it.blocks : [];
+        const inner = renderBlocks(innerBlocks, sectionId, (depth||0)+1, `${path||i}.cc.${it.id || idx}`);
+        return `<div class="ccg-pill-section" data-card-id="${it.id || ''}">
+          <div class="ccg-pill"><span class="ccg-pill-emoji">${it.emoji || '📄'}</span><span class="ccg-pill-label">${substituteVars(it.label || '')}</span></div>
+          <div class="ccg-pill-content">${inner}</div>
+        </div>`;
+      }).join('');
+      return `<div class="courbe-cards-grid-wrap${themeCls2} courbe-cards-grid-wrap--pills" data-grid-path="${gridPath}">${pillsHtml}</div>`;
+    }
     // Si 1 seul item visible : auto-active, skip la grille de cards, texte deja deplie
     const singleItemMode = visibleItems.length === 1;
     const activeId = singleItemMode

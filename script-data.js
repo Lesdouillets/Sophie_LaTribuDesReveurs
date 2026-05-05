@@ -5963,6 +5963,7 @@ const SCRIPT_DATA = {
               {
                 type: "courbe_cards_grid",
                 alwaysShowAll: true,
+                expandAllAsPills: true,
                 items: [
                   { id: "accomp_prog_dos_bercement_bras", emoji: "🤱", label: "DOS - Bercement (dans les bras)", compactLabel: "Bercement (dans les bras)", showIfTickbox: { cid: "accomp_position_choice", value: "dos" },
                     blocks: [
