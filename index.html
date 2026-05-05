@@ -1462,6 +1462,33 @@
     .courbe-card-content .block-with-left-title {
       border: 1px solid var(--cat-main, #cbd5e0);
     }
+    /* Section pliable via <details> (flag _collapsible: true sur le bloc) */
+    details.block-collapsible {
+      cursor: default;
+    }
+    details.block-collapsible > summary.block-collapsible-summary {
+      cursor: pointer;
+      list-style: none;
+      position: relative;
+      padding-right: 28px;
+    }
+    details.block-collapsible > summary.block-collapsible-summary::-webkit-details-marker { display: none; }
+    details.block-collapsible > summary.block-collapsible-summary::after {
+      content: "▾";
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      transition: transform 0.2s ease;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+    details.block-collapsible[open] > summary.block-collapsible-summary::after {
+      transform: translateY(-50%) rotate(0);
+    }
+    details.block-collapsible[open] > summary.block-collapsible-summary {
+      border-bottom-left-radius: 0;
+    }
     .block-left-title {
       font-size: 13px;
       font-weight: 800;
@@ -6710,7 +6737,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=387"></script>
+<script src="script-data.js?v=389"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -10280,6 +10307,10 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
     if (b._leftTitleStyle) {
       const bgMatch = b._leftTitleStyle.match(/background\s*:\s*([^;]+)/);
       if (bgMatch) wrapStyle = ` style="background:${bgMatch[1]}"`;
+    }
+    // Mode collapsible : section pliable via <details>/<summary>
+    if (b._collapsible) {
+      return `<details class="block-with-left-title block-collapsible"${wrapStyle}><summary class="block-left-title block-collapsible-summary"${ltStyle}>${substituteVars(b._leftTitle)}</summary><div>${inner}</div></details>`;
     }
     return `<div class="block-with-left-title"${wrapStyle}><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div><div>${inner}</div></div>`;
   }
