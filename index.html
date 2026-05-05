@@ -9966,16 +9966,23 @@ function _setupInfoPanelOutsideClickHandler(e) {
   closeSetupInfoPanel();
 }
 
-// Auto-scroll : quand on ouvre une section pliable (block-collapsible),
-// scroller pour amener son titre en haut du conteneur visible
-// (utile dans le info-panel jaune ouvert à droite : Ecueils, etc.)
+// Auto-scroll + accordion : quand on ouvre une section pliable
+// (block-collapsible), fermer toutes les autres ouvertes dans le même
+// conteneur, puis scroller pour amener son titre en haut du visible.
+// Utile dans le info-panel jaune (Ecueils, Changement, Outils de grand).
 document.addEventListener('toggle', (e) => {
   const details = e.target;
   if (!details || !details.classList || !details.classList.contains('block-collapsible')) return;
   if (!details.open) return;
+  // Conteneur pour grouper les sections (accordion)
+  const groupContainer = details.closest('#info-body') || details.closest('#setup-info-body') || details.closest('.sol-active-content') || document.body;
+  // Fermer les autres sections ouvertes dans le même groupe
+  groupContainer.querySelectorAll('details.block-collapsible[open]').forEach(other => {
+    if (other !== details) other.open = false;
+  });
+  // Puis scroller pour aligner le titre cliqué en haut
   const summary = details.querySelector(':scope > summary.block-collapsible-summary');
   if (!summary) return;
-  // Trouver le conteneur scrollable : info-body, sol-active-content, ou content-area
   const scrollContainer = details.closest('#info-body') || details.closest('#setup-info-body') || details.closest('.sol-active-content') || document.getElementById('content-area') || document.scrollingElement;
   if (!scrollContainer) return;
   setTimeout(() => {
