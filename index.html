@@ -9341,7 +9341,14 @@ function buildSidebarPlanSolutions() {
   catOrder.forEach(catId => {
     const cat = sols.find(c => c.id === catId);
     if (!cat) return;
-    const children = cat.children || [];
+    const children = (cat.children || []).filter(ch => {
+      if (ch.hideIfTickbox) {
+        const checks = Array.isArray(ch.hideIfTickbox) ? ch.hideIfTickbox : [ch.hideIfTickbox];
+        const choices = state.tickboxChoices || {};
+        if (checks.some(c => choices[c.cid] === c.value)) return false;
+      }
+      return true;
+    });
     if (children.length === 0) return;
     const isExpanded = state.planSidebarExpanded.has(catId);
     const anyActive = children.some(ch => state.selectedSolutions && state.selectedSolutions.has(ch.id));
