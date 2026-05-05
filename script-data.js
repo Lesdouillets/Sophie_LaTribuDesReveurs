@@ -5428,6 +5428,14 @@ const SCRIPT_DATA = {
                         text: "- **Quelques petites info en + :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit : la colère peut donner chaud\n  - N'hésitez pas à **huiler les mécanismes** de la **porte** si besoin !\n  {{if-lait-maternel}}- N'hésitez pas à demander à **[prenom_papa]** d'intervenir pour éviter que les odeurs de lait ne viennent perturber [prénom_enfant]\n  {{/if-lait-maternel}}- N'**intervenez pas** pour un **changement de couches** SAUF si **débordement** ou **selles** ⇒ Dans ce cas, intervenez avec une **lumière tamisée**\n\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire !",
                         trailingInfoButtons: [
                           {
+                            emoji: "💡",
+                            label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }
+                            ]
+                          },
+                          {
                             emoji: "💖",
                             label: "Envie d'un câlin ?",
                             title: "💖 Envie d'un câlin ?",
@@ -5497,6 +5505,14 @@ const SCRIPT_DATA = {
                         text: "- **Quelques petites info en + :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}- N'**intervenez pas** pour un **changement de couches** SAUF si **débordement** ou **selles** ⇒ Dans ce cas, intervenez avec une **lumière tamisée**\n\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire !",
                         trailingInfoButtons: [
                           {
+                            emoji: "💡",
+                            label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }
+                            ]
+                          },
+                          {
                             emoji: "💖",
                             label: "Envie d'un câlin ?",
                             title: "💖 Envie d'un câlin ?",
@@ -5553,6 +5569,14 @@ const SCRIPT_DATA = {
                         type: "normal", _leftTitle: "Conseils supplémentaires",
                         text: "- **Quelques petites info en + :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}- N'**intervenez pas** pour un **changement de couches** SAUF si **débordement** ou **selles** ⇒ Dans ce cas, intervenez avec une **lumière tamisée**\n\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire",
                         trailingInfoButtons: [
+                          {
+                            emoji: "💡",
+                            label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }
+                            ]
+                          },
                           {
                             emoji: "💖",
                             label: "Envie d'un câlin ?",
@@ -5622,6 +5646,14 @@ const SCRIPT_DATA = {
                         text: "- **Quelques petites info en + :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}- N'**intervenez pas** pour un **changement de couches** SAUF si **débordement** ou **selles** ⇒ Dans ce cas, intervenez avec une **lumière tamisée**\n\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire !",
                         trailingInfoButtons: [
                           {
+                            emoji: "💡",
+                            label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }
+                            ]
+                          },
+                          {
                             emoji: "💖",
                             label: "Envie d'un câlin ?",
                             title: "💖 Envie d'un câlin ?",
@@ -5679,6 +5711,14 @@ const SCRIPT_DATA = {
                         text: "- **Quelques petites info en + :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}- N'**intervenez pas** pour un **changement de couches** SAUF si **débordement** ou **selles** ⇒ Dans ce cas, intervenez avec une **lumière tamisée**\n\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire !",
                         trailingInfoButtons: [
                           {
+                            emoji: "💡",
+                            label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }
+                            ]
+                          },
+                          {
                             emoji: "💖",
                             label: "Envie d'un câlin ?",
                             title: "💖 Envie d'un câlin ?",
@@ -5735,6 +5775,14 @@ const SCRIPT_DATA = {
                         type: "normal", _leftTitle: "Conseils supplémentaires",
                         text: "- **Quelques petites info en + :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}- N'**intervenez pas** pour un **changement de couches** SAUF si **débordement** ou **selles** ⇒ Dans ce cas, intervenez avec une **lumière tamisée**\n\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire !",
                         trailingInfoButtons: [
+                          {
+                            emoji: "💡",
+                            label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }
+                            ]
+                          },
                           {
                             emoji: "💖",
                             label: "Envie d'un câlin ?",
@@ -5804,6 +5852,14 @@ const SCRIPT_DATA = {
                         text: "- **Quelques petites info en + :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}- N'**intervenez pas** pour un **changement de couches** SAUF si **débordement** ou **selles** ⇒ Dans ce cas, intervenez avec une **lumière tamisée**\n\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire",
                         trailingInfoButtons: [
                           {
+                            emoji: "💡",
+                            label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }
+                            ]
+                          },
+                          {
                             emoji: "💖",
                             label: "Envie d'un câlin ?",
                             title: "💖 Envie d'un câlin ?",
@@ -5862,6 +5918,14 @@ const SCRIPT_DATA = {
                         text: "- **Quelques petites info :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}- N'**intervenez pas** pour un **changement de couches** SAUF si **débordement** ou **selles** ⇒ Dans ce cas, intervenez avec une **lumière tamisée**\n\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire !",
                         trailingInfoButtons: [
                           {
+                            emoji: "💡",
+                            label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }
+                            ]
+                          },
+                          {
                             emoji: "💖",
                             label: "Envie d'un câlin ?",
                             title: "💖 Envie d'un câlin ?",
@@ -5919,6 +5983,14 @@ const SCRIPT_DATA = {
                         type: "normal", _leftTitle: "Conseils supplémentaires",
                         text: "- **Quelques petites info :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}- N'**intervenez pas** pour un **changement de couches** SAUF si **débordement** ou **selles** ⇒ Dans ce cas, intervenez avec une **lumière tamisée**\n\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire !",
                         trailingInfoButtons: [
+                          {
+                            emoji: "💡",
+                            label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }
+                            ]
+                          },
                           {
                             emoji: "💖",
                             label: "Envie d'un câlin ?",
@@ -5990,6 +6062,14 @@ const SCRIPT_DATA = {
                         text: "- **Quelques petites info :**\n[if_age_max:2]  - Possibilité d'**emmaillotage**\n[/if_age_max]  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire",
                         trailingInfoButtons: [
                           {
+                            emoji: "💡",
+                            label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }
+                            ]
+                          },
+                          {
                             emoji: "💖",
                             label: "Envie d'un câlin ?",
                             title: "💖 Envie d'un câlin ?",
@@ -6040,6 +6120,7 @@ const SCRIPT_DATA = {
                         type: "normal", _leftTitle: "Conseils supplémentaires",
                         text: "- **Quelques petites info :**\n[if_age_max:2]  - Possibilité d'**emmaillotage**\n[/if_age_max]  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire",
                         trailingInfoButtons: [
+                          { emoji: "💡", label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", blocks: [{ type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }] },
                           { emoji: "💖", label: "Envie d'un câlin ?", title: "💖 Envie d'un câlin ?", blocks: [{ type: "normal", text: "- N'hésitez pas à **vous écouter** et à **écouter votre enfant** si vous en **ressentez le besoin**\n- Essayez néanmoins de **limiter les câlins**\n- Essayez de garder **ses pieds qui touchent le matelas**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "😭", label: "Difficile d'entendre pleurer", title: "💖💖💖 😭😭😭 Difficile d'entendre pleurer", blocks: [{ type: "normal", text: "- N'hésitez pas à **[le_la] reprendre** dans vos bras MAIS dans une **POSITION DIFFÉRENTE** de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n- **Re-posez-[le_la]** dès **l'apaisement**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "🥱", label: "Fatigué ?", title: "🥱🙋‍♀️ Fatigué ?", blocks: [{ type: "normal", text: "- N'hésitez pas à vous **relayer**. C'est **TOUT à fait possible**\n- Dites simplement à [prénom_enfant], que *« maintenant **Maman s'en va** mais c'est **Papa qui va venir**. Et que vous **l'aimez toujours** »*" }] },
@@ -6065,6 +6146,7 @@ const SCRIPT_DATA = {
                         type: "normal", _leftTitle: "Conseils supplémentaires",
                         text: "- **Quelques petites info :**\n[if_age_max:2]  - Possibilité d'**emmaillotage**\n[/if_age_max]  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire",
                         trailingInfoButtons: [
+                          { emoji: "💡", label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", blocks: [{ type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }] },
                           { emoji: "💖", label: "Envie d'un câlin ?", title: "💖 Envie d'un câlin ?", blocks: [{ type: "normal", text: "- N'hésitez pas à **vous écouter** et à **écouter votre enfant** si vous en **ressentez le besoin**\n- Essayez néanmoins de **limiter les câlins**\n- Essayez de garder **ses pieds qui touchent le matelas**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "😭", label: "Difficile d'entendre pleurer", title: "💖💖💖 😭😭😭 Difficile d'entendre pleurer", blocks: [{ type: "normal", text: "- N'hésitez pas à **[le_la] reprendre** dans vos bras MAIS dans une **POSITION DIFFÉRENTE** de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n- **Re-posez-[le_la]** dès **l'apaisement**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "🥱", label: "Fatigué ?", title: "🥱🙋‍♀️ Fatigué ?", blocks: [{ type: "normal", text: "- N'hésitez pas à vous **relayer**. C'est **TOUT à fait possible**\n- Dites simplement à [prénom_enfant], que *« maintenant **Maman s'en va** mais c'est **Papa qui va venir**. Et que vous **l'aimez toujours** »*" }] },
@@ -6087,6 +6169,7 @@ const SCRIPT_DATA = {
                         type: "normal", _leftTitle: "Conseils supplémentaires",
                         text: "- **Quelques petites info :**\n[if_age_max:2]  - Possibilité d'**emmaillotage**\n[/if_age_max]  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire",
                         trailingInfoButtons: [
+                          { emoji: "💡", label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", blocks: [{ type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }] },
                           { emoji: "💖", label: "Envie d'un câlin ?", title: "💖 Envie d'un câlin ?", blocks: [{ type: "normal", text: "- N'hésitez pas à **vous écouter** et à **écouter votre enfant** si vous en **ressentez le besoin**\n- Essayez néanmoins de **limiter les câlins**\n- Essayez de garder **ses pieds qui touchent le matelas**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "😭", label: "Difficile d'entendre pleurer", title: "💖💖💖 😭😭😭 Difficile d'entendre pleurer", blocks: [{ type: "normal", text: "- N'hésitez pas à **[le_la] reprendre** dans vos bras MAIS dans une **POSITION DIFFÉRENTE** de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n- **Re-posez-[le_la]** dès **l'apaisement**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "🥱", label: "Fatigué ?", title: "🥱🙋‍♀️ Fatigué ?", blocks: [{ type: "normal", text: "- N'hésitez pas à vous **relayer**. C'est **TOUT à fait possible**\n- Dites simplement à [prénom_enfant], que *« maintenant **Maman s'en va** mais c'est **Papa qui va venir**. Et que vous **l'aimez toujours** »*" }] },
@@ -6112,6 +6195,7 @@ const SCRIPT_DATA = {
                         type: "normal", _leftTitle: "Conseils supplémentaires",
                         text: "- **Quelques petites info :**\n[if_age_max:2]  - Possibilité d'**emmaillotage**\n[/if_age_max]  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire",
                         trailingInfoButtons: [
+                          { emoji: "💡", label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", blocks: [{ type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }] },
                           { emoji: "💖", label: "Envie d'un câlin ?", title: "💖 Envie d'un câlin ?", blocks: [{ type: "normal", text: "- N'hésitez pas à **vous écouter** et à **écouter votre enfant** si vous en **ressentez le besoin**\n- Essayez néanmoins de **limiter les câlins**\n- Essayez de garder **ses pieds qui touchent le matelas**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "😭", label: "Difficile d'entendre pleurer", title: "💖💖💖 😭😭😭 Difficile d'entendre pleurer", blocks: [{ type: "normal", text: "- N'hésitez pas à **[le_la] reprendre** dans vos bras MAIS dans une **POSITION DIFFÉRENTE** de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n- **Re-posez-[le_la]** dès **l'apaisement**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "🥱", label: "Fatigué ?", title: "🥱🙋‍♀️ Fatigué ?", blocks: [{ type: "normal", text: "- N'hésitez pas à vous **relayer**. C'est **TOUT à fait possible**\n- Dites simplement à [prénom_enfant], que *« maintenant **Maman s'en va** mais c'est **Papa qui va venir**. Et que vous **l'aimez toujours** »*" }] },
@@ -6139,6 +6223,7 @@ const SCRIPT_DATA = {
                         type: "normal", _leftTitle: "Conseils supplémentaires",
                         text: "- **Quelques petites info :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire",
                         trailingInfoButtons: [
+                          { emoji: "💡", label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", blocks: [{ type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }] },
                           { emoji: "💖", label: "Envie d'un câlin ?", title: "💖 Envie d'un câlin ?", blocks: [{ type: "normal", text: "- N'hésitez pas à **vous écouter** et à **écouter votre enfant** si vous en **ressentez le besoin**\n- Essayez néanmoins de **limiter les câlins**\n- Essayez de garder **ses pieds qui touchent le matelas**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "😭", label: "Difficile d'entendre pleurer", title: "💖💖💖 😭😭😭 Difficile d'entendre pleurer", blocks: [{ type: "normal", text: "- N'hésitez pas à **[le_la] reprendre** dans vos bras MAIS dans une **POSITION DIFFÉRENTE** de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n- **Re-posez-[le_la]** dès **l'apaisement**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "🥱", label: "Fatigué ?", title: "🥱🙋‍♀️ Fatigué ?", blocks: [{ type: "normal", text: "- N'hésitez pas à vous **relayer**. C'est **TOUT à fait possible**\n- Dites simplement à [prénom_enfant], que *« maintenant **Maman s'en va** mais c'est **Papa qui va venir**. Et que vous **l'aimez toujours** »*" }] },
@@ -6162,6 +6247,7 @@ const SCRIPT_DATA = {
                         type: "normal", _leftTitle: "Conseils supplémentaires",
                         text: "- **Quelques petites info :**\n[if_age_max:2]  - Possibilité d'**emmaillotage**\n[/if_age_max]  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire",
                         trailingInfoButtons: [
+                          { emoji: "💡", label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", blocks: [{ type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }] },
                           { emoji: "💖", label: "Envie d'un câlin ?", title: "💖 Envie d'un câlin ?", blocks: [{ type: "normal", text: "- N'hésitez pas à **vous écouter** et à **écouter votre enfant** si vous en **ressentez le besoin**\n- Essayez néanmoins de **limiter les câlins**\n- Essayez de garder **ses pieds qui touchent le matelas**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "😭", label: "Difficile d'entendre pleurer", title: "💖💖💖 😭😭😭 Difficile d'entendre pleurer", blocks: [{ type: "normal", text: "- N'hésitez pas à **[le_la] reprendre** dans vos bras MAIS dans une **POSITION DIFFÉRENTE** de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n- **Re-posez-[le_la]** dès **l'apaisement**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "🥱", label: "Fatigué ?", title: "🥱🙋‍♀️ Fatigué ?", blocks: [{ type: "normal", text: "- N'hésitez pas à vous **relayer**. C'est **TOUT à fait possible**\n- Dites simplement à [prénom_enfant], que *« maintenant **Maman s'en va** mais c'est **Papa qui va venir**. Et que vous **l'aimez toujours** »*" }] },
@@ -6205,6 +6291,14 @@ const SCRIPT_DATA = {
                         type: "normal", _leftTitle: "Conseils supplémentaires",
                         text: "- **Quelques petites info :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire",
                         trailingInfoButtons: [
+                          {
+                            emoji: "💡",
+                            label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }
+                            ]
+                          },
                           {
                             emoji: "💖",
                             label: "Envie d'un câlin ?",
@@ -6257,6 +6351,7 @@ const SCRIPT_DATA = {
                         type: "normal", _leftTitle: "Conseils supplémentaires",
                         text: "- **Quelques petites info :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire",
                         trailingInfoButtons: [
+                          { emoji: "💡", label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", blocks: [{ type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }] },
                           { emoji: "💖", label: "Envie d'un câlin ?", title: "💖 Envie d'un câlin ?", blocks: [{ type: "normal", text: "- N'hésitez pas à **vous écouter** et à **écouter votre enfant** si vous en **ressentez le besoin**\n- Essayez néanmoins de **limiter les câlins**\n- Essayez de garder **ses pieds qui touchent le matelas**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "😭", label: "Difficile d'entendre pleurer", title: "💖💖💖 😭😭😭 Difficile d'entendre pleurer", blocks: [{ type: "normal", text: "- N'hésitez pas à **[le_la] reprendre** dans vos bras MAIS dans une **POSITION DIFFÉRENTE** de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n- **Re-posez-[le_la]** dès **l'apaisement**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "🥱", label: "Fatigué ?", title: "🥱🙋‍♀️ Fatigué ?", blocks: [{ type: "normal", text: "- N'hésitez pas à vous **relayer**. C'est **TOUT à fait possible**\n- Dites simplement à [prénom_enfant], que *« maintenant **Maman s'en va** mais c'est **Papa qui va venir**. Et que vous **l'aimez toujours** »*" }] },
@@ -6284,6 +6379,7 @@ const SCRIPT_DATA = {
                         type: "normal", _leftTitle: "Conseils supplémentaires",
                         text: "- **Quelques petites info :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire",
                         trailingInfoButtons: [
+                          { emoji: "💡", label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", blocks: [{ type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }] },
                           { emoji: "💖", label: "Envie d'un câlin ?", title: "💖 Envie d'un câlin ?", blocks: [{ type: "normal", text: "- N'hésitez pas à **vous écouter** et à **écouter votre enfant** si vous en **ressentez le besoin**\n- Essayez néanmoins de **limiter les câlins**\n- Essayez de garder **ses pieds qui touchent le matelas**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "😭", label: "Difficile d'entendre pleurer", title: "💖💖💖 😭😭😭 Difficile d'entendre pleurer", blocks: [{ type: "normal", text: "- N'hésitez pas à **[le_la] reprendre** dans vos bras MAIS dans une **POSITION DIFFÉRENTE** de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n- **Re-posez-[le_la]** dès **l'apaisement**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "🥱", label: "Fatigué ?", title: "🥱🙋‍♀️ Fatigué ?", blocks: [{ type: "normal", text: "- N'hésitez pas à vous **relayer**. C'est **TOUT à fait possible**\n- Dites simplement à [prénom_enfant], que *« maintenant **Maman s'en va** mais c'est **Papa qui va venir**. Et que vous **l'aimez toujours** »*" }] },
@@ -6307,6 +6403,7 @@ const SCRIPT_DATA = {
                         type: "normal", _leftTitle: "Conseils supplémentaires",
                         text: "- **Quelques petites info :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire",
                         trailingInfoButtons: [
+                          { emoji: "💡", label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", blocks: [{ type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }] },
                           { emoji: "💖", label: "Envie d'un câlin ?", title: "💖 Envie d'un câlin ?", blocks: [{ type: "normal", text: "- N'hésitez pas à **vous écouter** et à **écouter votre enfant** si vous en **ressentez le besoin**\n- Essayez néanmoins de **limiter les câlins**\n- Essayez de garder **ses pieds qui touchent le matelas**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "😭", label: "Difficile d'entendre pleurer", title: "💖💖💖 😭😭😭 Difficile d'entendre pleurer", blocks: [{ type: "normal", text: "- N'hésitez pas à **[le_la] reprendre** dans vos bras MAIS dans une **POSITION DIFFÉRENTE** de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n- **Re-posez-[le_la]** dès **l'apaisement**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "🥱", label: "Fatigué ?", title: "🥱🙋‍♀️ Fatigué ?", blocks: [{ type: "normal", text: "- N'hésitez pas à vous **relayer**. C'est **TOUT à fait possible**\n- Dites simplement à [prénom_enfant], que *« maintenant **Maman s'en va** mais c'est **Papa qui va venir**. Et que vous **l'aimez toujours** »*" }] },
@@ -6333,6 +6430,7 @@ const SCRIPT_DATA = {
                         type: "normal", _leftTitle: "Conseils supplémentaires",
                         text: "- **Quelques petites info :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire",
                         trailingInfoButtons: [
+                          { emoji: "💡", label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", blocks: [{ type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }] },
                           { emoji: "💖", label: "Envie d'un câlin ?", title: "💖 Envie d'un câlin ?", blocks: [{ type: "normal", text: "- N'hésitez pas à **vous écouter** et à **écouter votre enfant** si vous en **ressentez le besoin**\n- Essayez néanmoins de **limiter les câlins**\n- Essayez de garder **ses pieds qui touchent le matelas**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "😭", label: "Difficile d'entendre pleurer", title: "💖💖💖 😭😭😭 Difficile d'entendre pleurer", blocks: [{ type: "normal", text: "- N'hésitez pas à **[le_la] reprendre** dans vos bras MAIS dans une **POSITION DIFFÉRENTE** de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n- **Re-posez-[le_la]** dès **l'apaisement**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "🥱", label: "Fatigué ?", title: "🥱🙋‍♀️ Fatigué ?", blocks: [{ type: "normal", text: "- N'hésitez pas à vous **relayer**. C'est **TOUT à fait possible**\n- Dites simplement à [prénom_enfant], que *« maintenant **Maman s'en va** mais c'est **Papa qui va venir**. Et que vous **l'aimez toujours** »*" }] },
@@ -6359,6 +6457,7 @@ const SCRIPT_DATA = {
                         type: "normal", _leftTitle: "Conseils supplémentaires",
                         text: "- **Quelques petites info :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire",
                         trailingInfoButtons: [
+                          { emoji: "💡", label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", blocks: [{ type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }] },
                           { emoji: "💖", label: "Envie d'un câlin ?", title: "💖 Envie d'un câlin ?", blocks: [{ type: "normal", text: "- N'hésitez pas à **vous écouter** et à **écouter votre enfant** si vous en **ressentez le besoin**\n- Essayez néanmoins de **limiter les câlins**\n- Essayez de garder **ses pieds qui touchent le matelas**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "😭", label: "Difficile d'entendre pleurer", title: "💖💖💖 😭😭😭 Difficile d'entendre pleurer", blocks: [{ type: "normal", text: "- N'hésitez pas à **[le_la] reprendre** dans vos bras MAIS dans une **POSITION DIFFÉRENTE** de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n- **Re-posez-[le_la]** dès **l'apaisement**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "🥱", label: "Fatigué ?", title: "🥱🙋‍♀️ Fatigué ?", blocks: [{ type: "normal", text: "- N'hésitez pas à vous **relayer**. C'est **TOUT à fait possible**\n- Dites simplement à [prénom_enfant], que *« maintenant **Maman s'en va** mais c'est **Papa qui va venir**. Et que vous **l'aimez toujours** »*" }] },
@@ -6383,6 +6482,7 @@ const SCRIPT_DATA = {
                         type: "normal", _leftTitle: "Conseils supplémentaires",
                         text: "- **Quelques petites info :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire",
                         trailingInfoButtons: [
+                          { emoji: "💡", label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰", blocks: [{ type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }] },
                           { emoji: "💖", label: "Envie d'un câlin ?", title: "💖 Envie d'un câlin ?", blocks: [{ type: "normal", text: "- N'hésitez pas à **vous écouter** et à **écouter votre enfant** si vous en **ressentez le besoin**\n- Essayez néanmoins de **limiter les câlins**\n- Essayez de garder **ses pieds qui touchent le matelas**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "😭", label: "Difficile d'entendre pleurer", title: "💖💖💖 😭😭😭 Difficile d'entendre pleurer", blocks: [{ type: "normal", text: "- N'hésitez pas à **[le_la] reprendre** dans vos bras MAIS dans une **POSITION DIFFÉRENTE** de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n- **Re-posez-[le_la]** dès **l'apaisement**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }] },
                           { emoji: "🥱", label: "Fatigué ?", title: "🥱🙋‍♀️ Fatigué ?", blocks: [{ type: "normal", text: "- N'hésitez pas à vous **relayer**. C'est **TOUT à fait possible**\n- Dites simplement à [prénom_enfant], que *« maintenant **Maman s'en va** mais c'est **Papa qui va venir**. Et que vous **l'aimez toujours** »*" }] },
