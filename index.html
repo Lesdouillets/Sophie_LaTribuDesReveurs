@@ -6710,7 +6710,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=385"></script>
+<script src="script-data.js?v=386"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -14814,8 +14814,13 @@ function toggleCourbeCardTickFromSol(itId) {
     'accomp_prog_ventre_dos_ventre'
   ];
   if (!wasTicked && ACCOMP_ALL_SUBS.includes(itId)) {
+    // Twin DOS↔VENTRE de même compactLabel (ex. accomp_prog_dos_sein_bib ↔ accomp_prog_ventre_sein_bib)
+    // sont les 2 facettes du même item Progressivité — il faut les conserver ensemble
+    const twinId = itId.includes('_dos_')
+      ? itId.replace('_dos_', '_ventre_')
+      : (itId.includes('_ventre_') ? itId.replace('_ventre_', '_dos_') : null);
     ACCOMP_ALL_SUBS.forEach(sub => {
-      if (sub !== itId) {
+      if (sub !== itId && sub !== twinId) {
         state.courbeCardsTicked.delete(sub);
         state.courbeCardsTickedManuallyEdited.add(sub);
       }
