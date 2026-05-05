@@ -5719,7 +5719,7 @@ const SCRIPT_DATA = {
                     blocks: [
                       {
                         type: "normal", _leftTitle: "Conseils",
-                        text: "- Je vous conseille d'**anticiper** et **trouver une solution** pour ne **PAS** qu'il puisse **sortir** de la chambre : *installez une (double) barrière à la porte de la chambre / barrière enroulante à 20 cm du sol / fermez la porte à clé / chaînette …*\n\n<div style=\"display:flex;gap:12px;flex-wrap:wrap;margin:14px 0;align-items:stretch\"><details class=\"accomp-action-toggle accomp-blue\"><summary style=\"cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 18px;background:#dbeafe;border:2px solid #93c5fd;border-radius:10px;font-size:14.5px;font-weight:700;color:#1e40af;font-family:inherit\"><span style=\"font-size:18px;line-height:1\">▶️</span><span>Début d'accompagnement</span></summary><div style=\"margin-top:12px;background:#fff;border:2px solid #1e40af;border-radius:10px;padding:14px 18px;line-height:1.65\"><div style=\"display:flex;gap:12px;flex-wrap:wrap;align-items:stretch\"><details class=\"accomp-action-toggle accomp-green\"><summary style=\"cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 18px;background:#f0fdf4;border:2px solid #bbf7d0;border-radius:10px;font-size:14.5px;font-weight:700;color:#166534;font-family:inherit\"><span style=\"font-size:18px;line-height:1\">✅</span><span>[Sil_Sielle] RESTE dans son lit</span></summary><div style=\"margin-top:12px;background:#fff;border:2px solid #16a34a;border-radius:10px;padding:14px 18px;line-height:1.65;min-width:280px;max-width:600px\"><ol style=\"margin:0;padding-left:24px\"><li><strong>Asseyez-vous</strong> sur une <strong>chaise à côté du lit</strong>, jusqu'à l'<strong>apaisement</strong> ⇒ puis <strong>sortez</strong></li><li>Après 1 à 2 jours, <strong>déplacez la chaise</strong> au <strong>milieu de la chambre</strong>, jusqu'à l'<strong>apaisement</strong> ⇒ puis <strong>sortez</strong></li><li>Après 1 à 2 jours, <strong>accompagnez depuis l'arrière de la barrière</strong> et <strong>fermez la porte</strong> à <strong>chaque apaisement</strong></li></ol></div></details><details class=\"accomp-action-toggle accomp-red\"><summary style=\"cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 18px;background:#fef2f2;border:2px solid #fecaca;border-radius:10px;font-size:14.5px;font-weight:700;color:#991b1b;font-family:inherit\"><span style=\"font-size:18px;line-height:1\">❌</span><span>[Sil_Sielle] SORT de son lit</span></summary><div style=\"margin-top:12px;background:#fff;border:2px solid #dc2626;border-radius:10px;padding:14px 18px;line-height:1.65;min-width:280px;max-width:600px\"><ol style=\"margin:0;padding-left:24px\"><li><strong>Sortez de la chambre</strong></li><li><strong>Accompagnez</strong> les émotions <strong>depuis l'entrebâillement</strong> de la porte</li><li>Indiquez-lui que <strong>vous reviendrez</strong> sur la chaise QUAND il sera <strong>prêt à s'endormir</strong> ET <strong>dans son lit</strong></li><li>Restez jusqu'à l'<strong>apaisement</strong></li><li>Puis <strong>sortez</strong></li></ol></div></details></div></div></details><details class=\"accomp-action-toggle accomp-amber\"><summary style=\"cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 18px;background:#fef3c7;border:2px solid #fde68a;border-radius:10px;font-size:14.5px;font-weight:700;color:#92400e;font-family:inherit\"><span style=\"font-size:18px;line-height:1\">🏁</span><span>Fin d'accompagnement</span></summary><div style=\"margin-top:12px;background:#fff;border:2px solid #92400e;border-radius:10px;padding:14px 18px;line-height:1.65\"><div style=\"display:flex;gap:12px;flex-wrap:wrap;align-items:stretch\"><details class=\"accomp-action-toggle accomp-red\"><summary style=\"cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 18px;background:#fef2f2;border:2px solid #fecaca;border-radius:10px;font-size:14.5px;font-weight:700;color:#991b1b;font-family:inherit\"><span style=\"font-size:18px;line-height:1\">❌</span><span>[Sil_Sielle] SORT de son lit</span></summary><div style=\"margin-top:12px;background:#fff;border:2px solid #dc2626;border-radius:10px;padding:14px 18px;line-height:1.65;min-width:280px;max-width:600px\"><ul style=\"margin:0;padding-left:24px\"><li><u>[Sil_Sielle] est en colère :</u> <strong>Accompagnez-[le_la] derrière la porte</strong> et dites-lui que <strong>quand il sera calme</strong> ⇒ <strong>vous pourrez revenir</strong> et il pourra avoir un <strong>bisou/câlin</strong></li><li><u>[Sil_Sielle] joue dans sa chambre :</u> <strong>Sortez</strong> (vous n'avez plus rien à faire là, comme un enfant qui joue dans son lit !)</li></ul></div></details></div></div></details></div>\n\n- 💡 La **période d'émotions** ne dure **pas plus** de **3 jours** (parfois -) et **va en s'apaisant** (1 à 2 semaines)",
+                        text: "- Je vous conseille d'**anticiper** et **trouver une solution** pour ne **PAS** qu'il puisse **sortir** de la chambre : *installez une (double) barrière à la porte de la chambre / barrière enroulante à 20 cm du sol / fermez la porte à clé / chaînette …*\n\n<div style=\"display:flex;gap:12px;flex-wrap:wrap;margin:14px 0;align-items:stretch\"><details class=\"accomp-action-toggle accomp-blue\"><summary style=\"cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 18px;background:#ebabc6;border:2px solid #be185d;border-radius:10px;font-size:14.5px;font-weight:700;color:#831043;font-family:inherit\"><span style=\"font-size:18px;line-height:1\">▶️</span><span>Début d'accompagnement</span></summary><div style=\"margin-top:12px;background:#fff;border:2px solid #be185d;border-radius:10px;padding:14px 18px;line-height:1.65\"><div style=\"display:flex;gap:12px;flex-wrap:wrap;align-items:stretch\"><details class=\"accomp-action-toggle accomp-green\"><summary style=\"cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 18px;background:#f0fdf4;border:2px solid #bbf7d0;border-radius:10px;font-size:14.5px;font-weight:700;color:#166534;font-family:inherit\"><span style=\"font-size:18px;line-height:1\">✅</span><span>[Sil_Sielle] RESTE dans son lit</span></summary><div style=\"margin-top:12px;background:#fff;border:2px solid #16a34a;border-radius:10px;padding:14px 18px;line-height:1.65;min-width:280px;max-width:600px\"><ol style=\"margin:0;padding-left:24px\"><li><strong>Asseyez-vous</strong> sur une <strong>chaise à côté du lit</strong>, jusqu'à l'<strong>apaisement</strong> ⇒ puis <strong>sortez</strong></li><li>Après 1 à 2 jours, <strong>déplacez la chaise</strong> au <strong>milieu de la chambre</strong>, jusqu'à l'<strong>apaisement</strong> ⇒ puis <strong>sortez</strong></li><li>Après 1 à 2 jours, <strong>accompagnez depuis l'arrière de la barrière</strong> et <strong>fermez la porte</strong> à <strong>chaque apaisement</strong></li></ol></div></details><details class=\"accomp-action-toggle accomp-red\"><summary style=\"cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 18px;background:#fef2f2;border:2px solid #fecaca;border-radius:10px;font-size:14.5px;font-weight:700;color:#991b1b;font-family:inherit\"><span style=\"font-size:18px;line-height:1\">❌</span><span>[Sil_Sielle] SORT de son lit</span></summary><div style=\"margin-top:12px;background:#fff;border:2px solid #dc2626;border-radius:10px;padding:14px 18px;line-height:1.65;min-width:280px;max-width:600px\"><ol style=\"margin:0;padding-left:24px\"><li><strong>Sortez de la chambre</strong></li><li><strong>Accompagnez</strong> les émotions <strong>depuis l'entrebâillement</strong> de la porte</li><li>Indiquez-lui que <strong>vous reviendrez</strong> sur la chaise QUAND il sera <strong>prêt à s'endormir</strong> ET <strong>dans son lit</strong></li><li>Restez jusqu'à l'<strong>apaisement</strong></li><li>Puis <strong>sortez</strong></li></ol></div></details></div></div></details><details class=\"accomp-action-toggle accomp-amber\"><summary style=\"cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 18px;background:#ebabc6;border:2px solid #be185d;border-radius:10px;font-size:14.5px;font-weight:700;color:#831043;font-family:inherit\"><span style=\"font-size:18px;line-height:1\">🏁</span><span>Fin d'accompagnement</span></summary><div style=\"margin-top:12px;background:#fff;border:2px solid #be185d;border-radius:10px;padding:14px 18px;line-height:1.65\"><div style=\"display:flex;gap:12px;flex-wrap:wrap;align-items:stretch\"><details class=\"accomp-action-toggle accomp-red\"><summary style=\"cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 18px;background:#fef2f2;border:2px solid #fecaca;border-radius:10px;font-size:14.5px;font-weight:700;color:#991b1b;font-family:inherit\"><span style=\"font-size:18px;line-height:1\">❌</span><span>[Sil_Sielle] SORT de son lit</span></summary><div style=\"margin-top:12px;background:#fff;border:2px solid #dc2626;border-radius:10px;padding:14px 18px;line-height:1.65;min-width:280px;max-width:600px\"><ul style=\"margin:0;padding-left:24px\"><li><u>[Sil_Sielle] est en colère :</u> <strong>Accompagnez-[le_la] derrière la porte</strong> et dites-lui que <strong>quand il sera calme</strong> ⇒ <strong>vous pourrez revenir</strong> et il pourra avoir un <strong>bisou/câlin</strong></li><li><u>[Sil_Sielle] joue dans sa chambre :</u> <strong>Sortez</strong> (vous n'avez plus rien à faire là, comme un enfant qui joue dans son lit !)</li></ul></div></details></div></div></details></div>\n\n- 💡 La **période d'émotions** ne dure **pas plus** de **3 jours** (parfois -) et **va en s'apaisant** (1 à 2 semaines)",
                         trailingInfoButtons: [
                           {
                             emoji: "💡",
@@ -5959,9 +5959,169 @@ const SCRIPT_DATA = {
               }
             ]
           },
-          { id: "accomp_progressivite", label: "Progressivité", cardLabel: "Progressivité", cardEmoji: "📈",
+          { id: "accomp_progressivite_dos", label: "Progressivité - Sur le DOS", cardLabel: "Progressivité - Sur le DOS", cardEmoji: "🛏️",
             blocks: [
-              { type: "normal", _leftTitle: "Conseils", text: "- À compléter" }
+              {
+                type: "courbe_cards_grid",
+                alwaysShowAll: true,
+                items: [
+                  { id: "accomp_prog_dos_bercement_bras", emoji: "🤱", label: "Bercement (dans les bras)",
+                    blocks: [
+                      { type: "normal", _leftTitle: "Étape 1 : Suppression des bercements", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez** les **bercements** dans les **bras**</span>, et **endormez-[le_la]** dans **vos bras** en **restant statique**\n- Une fois endormi, **déposez-[le_la]** dans son lit" },
+                      { type: "normal", _leftTitle: "Étape 2 : L'accompagner dans son lit", text: "- Mettez-[le_la] **dans son lit [ÉVEILLÉ_ÉVEILLÉE]**\n- Gardez une **main immobile** sur [lui_elle]\n- En cas d'émotions : **Bercez-[le_la]** de la main temporairement\n- *(possibilité de rajouter une étape : mettre votre bras autour de sa tête sans le toucher pour garder la contenance)*\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
+                      { type: "normal", _leftTitle: "Étape 2bis : Suppression de la tétine (si stratégie dépendante)", _leftTitleStyle: "background:#f3e8ff;color:#5b21b6;--cat-main:#7c3aed", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez la tétine**</span>\n- Gardez une **main immobile** sur [lui_elle]\n- En cas d'émotions : **Bercez-[le_la]** de la main\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
+                      { type: "normal", _leftTitle: "Étape 3 : L'accompagner seulement pendant les émotions avec le toucher", text: "- En cas d'émotions : Posez une **main immobile** sur [lui_elle]\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
+                      { type: "normal", _leftTitle: "Étape 4 : L'accompagner seulement depuis le milieu de la chambre", text: "- **Positionnez une chaise** au **milieu de la chambre**\n- **Accompagnez-[le_la]** depuis la **chaise** *(diminuer le toucher car physiquement vous êtes + loin)*\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
+                      { type: "normal", _leftTitle: "Étape 5 : Sortez une fois posé dans son lit", text: "- **Sortez** de la chambre **une fois déposé** dans son lit **[ÉVEILLÉ_ÉVEILLÉE]**\n- En cas d'émotions : Re-rentrez, allez sur la **chaise au milieu de la chambre**\n- **Sortez** une fois qu'il est **calme MAIS [ÉVEILLÉ_ÉVEILLÉE]**\n- **Recommencez** si besoin **20 fois… ou plus !**\n\n- 🧑‍🤝‍🧑 Sortez **quand il est calme**" },
+                      { type: "normal", _leftTitle: "Étape 6 : Accompagner depuis l'entrebâillement", text: "- **Accompagnez** les émotions depuis **l'entrebâillement** de la porte\n- **Fermez la porte** quand il est **calme**\n- **Recommencez** si besoin **20 fois… ou plus !**",
+                        trailingInfoButtons: [
+                          {
+                            emoji: "💡",
+                            label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        type: "normal", _leftTitle: "Conseils supplémentaires",
+                        text: "- **Quelques petites info :**\n  - *(Si inférieur à 2 mois)* : possibilité d'**emmaillotage**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire",
+                        trailingInfoButtons: [
+                          {
+                            emoji: "💖",
+                            label: "Envie d'un câlin ?",
+                            title: "💖 Envie d'un câlin ?",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **vous écouter** et à **écouter votre enfant** si vous en **ressentez le besoin**\n- Essayez néanmoins de **limiter les câlins**\n- Essayez de garder **ses pieds qui touchent le matelas**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }
+                            ]
+                          },
+                          {
+                            emoji: "😭",
+                            label: "Difficile d'entendre pleurer",
+                            title: "💖💖💖 😭😭😭 Difficile d'entendre pleurer",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **[le_la] reprendre** dans vos bras MAIS dans une **POSITION DIFFÉRENTE** de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n- **Re-posez-[le_la]** dès **l'apaisement**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }
+                            ]
+                          },
+                          {
+                            emoji: "🥱",
+                            label: "Fatigué ?",
+                            title: "🥱🙋‍♀️ Fatigué ?",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à vous **relayer**. C'est **TOUT à fait possible**\n- Dites simplement à [prénom_enfant], que *« maintenant **Maman s'en va** mais c'est **Papa qui va venir**. Et que vous **l'aimez toujours** »*" }
+                            ]
+                          },
+                          {
+                            emoji: "💬",
+                            label: "Multiples rappels",
+                            title: "💬💬💬 Multiples rappels",
+                            blocks: [
+                              { type: "normal", text: "- Mes conseils :\n  - **Mettez en place** un **tableau de rituel**<div style=\"margin:8px 0\"><img src=\"assets/livre-rituel-forkids.png\" alt=\"Tableau de rituel avec lumières\" style=\"max-width:380px;width:100%;border-radius:8px;border:1px solid #cbd5e0\"></div>\n\n  - **Répondez 1 SEULE fois à ses appels**\n\n  - **Anticipez** les rappels :\n    - Nez qui coule ⇒ **boîte de mouchoirs** à disposition de l'enfant\n    - Couette mal mise ⇒ **surpyjama** ou **couette zippée**\n    - Doudou perdu ⇒ mettez un **2ème doudou**, rendez le doudou visible la nuit (**ruban phosphorescent**…)\n    - Bouton qui gratte ⇒ pendant le temps de soins pendant le rituel, proposez de la **pommade anti-démangeaisons**\n    - Dernier câlin ⇒ pendant le rituel, verbalisez bien ce dernier câlin\n    - Soif ⇒ **Gourde** à proximité\n  - **Donnez 3 cartes pour 3 rappels** ⇒ au-delà : **vous ne revenez pas dans la chambre** (diminuez le nombre de cartes au fil du temps)\n\n  - **Mettez en place** un **tableau de récompenses :**\n    - **Chaque nuit SANS rappel** : [prénom_enfant] a le matin :\n      - Chocolat / bonbon\n      - Élément d'un kit playmobil\n\n  - Vous pouvez aussi faire des **jeux de rôle en journée** *(ex : avec une poupée que l'on couche dans son lit de poupée) :*\n    - Quel rituel lui faire ?\n    - Que dire si elle se réveille ?\n\n  - Il y a aussi les **livres de Caroline Ferriol** pour les + grands (6,90 €) :\n    - *Arthur met du temps à s'endormir*\n    - *Jade veut dormir avec Papa et Maman*\n    - *Louise ne veut pas aller se coucher*" }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  { id: "accomp_prog_dos_bercement_lit", emoji: "🛏️", label: "Bercement (lit)",
+                    blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }] },
+                  { id: "accomp_prog_dos_portage", emoji: "🚼", label: "Portage (Porte-BB / Poussette)",
+                    blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }] },
+                  { id: "accomp_prog_dos_contact", emoji: "☝️", label: "Contact (petit doigt)",
+                    blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }] },
+                  { id: "accomp_prog_dos_sein_bib", emoji: "🍼🤱", label: "Sein / bib",
+                    blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }] },
+                  { id: "accomp_prog_dos_ventre_parent", emoji: "🤗", label: "Dort sur le VENTRE du parent",
+                    blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }] },
+                  { id: "accomp_prog_dos_dos_ventre", emoji: "🔄", label: "Dos ou Ventre",
+                    blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }] }
+                ]
+              }
+            ]
+          },
+          { id: "accomp_progressivite_ventre", label: "Progressivité - Sur le VENTRE", cardLabel: "Progressivité - Sur le VENTRE", cardEmoji: "🤰",
+            blocks: [
+              {
+                type: "courbe_cards_grid",
+                alwaysShowAll: true,
+                items: [
+                  { id: "accomp_prog_ventre_bercement_bras", emoji: "🤱", label: "Bercement (dans les bras)",
+                    blocks: [
+                      { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN" },
+                      { type: "normal", _leftTitle: "Étape 1 : Suppression des bercements", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez** les **bercements** dans les **bras**</span>, et **endormez-[le_la]** dans **vos bras** en **restant statique**\n- Une fois endormi, **déposez-[le_la]** dans son lit" },
+                      { type: "normal", _leftTitle: "Étape 2 : L'accompagner dans son lit", text: "- Mettez-[le_la] **dans son lit [ÉVEILLÉ_ÉVEILLÉE]**\n- Gardez une **main immobile** sur [lui_elle]\n- En cas d'émotions : **Bercez-[le_la]** de la main temporairement\n- *(possibilité de rajouter une étape : mettre votre bras autour de sa tête sans le toucher pour garder la contenance)*\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
+                      { type: "normal", _leftTitle: "Étape 2bis : Suppression de la tétine (si stratégie dépendante)", _leftTitleStyle: "background:#f3e8ff;color:#5b21b6;--cat-main:#7c3aed", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez la tétine**</span>\n- Gardez une **main immobile** sur [lui_elle]\n- En cas d'émotions : **Bercez-[le_la]** de la main\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
+                      { type: "normal", _leftTitle: "Étape 3 : L'accompagner seulement pendant les émotions avec le toucher", text: "- En cas d'émotions : Posez une **main immobile** sur [lui_elle]\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
+                      { type: "normal", _leftTitle: "Étape 4 : L'accompagner seulement depuis le milieu de la chambre", text: "- **Positionnez une chaise** au **milieu de la chambre**\n- **Accompagnez-[le_la]** depuis la **chaise** *(diminuer le toucher car physiquement vous êtes + loin)*\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
+                      { type: "normal", _leftTitle: "Étape 5 : Sortez une fois posé dans son lit", text: "- **Sortez** de la chambre **une fois déposé** dans son lit **[ÉVEILLÉ_ÉVEILLÉE]**\n- En cas d'émotions : Re-rentrez, allez sur la **chaise au milieu de la chambre**\n- **Sortez** une fois qu'il est **calme MAIS [ÉVEILLÉ_ÉVEILLÉE]**\n- **Recommencez** si besoin **20 fois… ou plus !**\n\n- 🧑‍🤝‍🧑 Sortez **quand il est calme**" },
+                      { type: "normal", _leftTitle: "Étape 6 : Accompagner depuis l'entrebâillement", text: "- **Accompagnez** les émotions depuis **l'entrebâillement** de la porte\n- **Fermez la porte** quand il est **calme**\n- **Recommencez** si besoin **20 fois… ou plus !**",
+                        trailingInfoButtons: [
+                          {
+                            emoji: "💡",
+                            label: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            title: "Si difficulté avec 1 personne 👩‍🦰⇒👨‍🦰",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **changer la personne qui intervient**" }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        type: "normal", _leftTitle: "Conseils supplémentaires",
+                        text: "- **Quelques petites info :**\n  - <span style=\"color:#dc2626\">**Agissez de la même manière jusqu'à l'heure de réveil**</span>\n  - Faire strictement la **même chose, 100% du temps** = rassurant\n  - **Couvrir + légèrement** votre enfant durant la 1ère nuit, colère = chaud\n  {{if-lait-maternel}}- **Option** : Maman allaitante ⇒ demander à **[prenom_papa]** d'intervenir\n  {{/if-lait-maternel}}\n  - **Votre travail** c'est d'avoir **confiance en [prénom_enfant]** et le lui dire",
+                        trailingInfoButtons: [
+                          {
+                            emoji: "💖",
+                            label: "Envie d'un câlin ?",
+                            title: "💖 Envie d'un câlin ?",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **vous écouter** et à **écouter votre enfant** si vous en **ressentez le besoin**\n- Essayez néanmoins de **limiter les câlins**\n- Essayez de garder **ses pieds qui touchent le matelas**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }
+                            ]
+                          },
+                          {
+                            emoji: "😭",
+                            label: "Difficile d'entendre pleurer",
+                            title: "💖💖💖 😭😭😭 Difficile d'entendre pleurer",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à **[le_la] reprendre** dans vos bras MAIS dans une **POSITION DIFFÉRENTE** de l'habitude (pour ne pas reproduire les mêmes stratégies d'endormissement)\n- **Re-posez-[le_la]** dès **l'apaisement**\n\n- ⚠️ Attention à ne **PAS [le_la] bercer** mais **RESTEZ STATIQUE**\n- ⚠️ **Évitez** qu'il ne **s'endorme dans vos bras**" }
+                            ]
+                          },
+                          {
+                            emoji: "🥱",
+                            label: "Fatigué ?",
+                            title: "🥱🙋‍♀️ Fatigué ?",
+                            blocks: [
+                              { type: "normal", text: "- N'hésitez pas à vous **relayer**. C'est **TOUT à fait possible**\n- Dites simplement à [prénom_enfant], que *« maintenant **Maman s'en va** mais c'est **Papa qui va venir**. Et que vous **l'aimez toujours** »*" }
+                            ]
+                          },
+                          {
+                            emoji: "💬",
+                            label: "Multiples rappels",
+                            title: "💬💬💬 Multiples rappels",
+                            blocks: [
+                              { type: "normal", text: "- Mes conseils :\n  - **Mettez en place** un **tableau de rituel**<div style=\"margin:8px 0\"><img src=\"assets/livre-rituel-forkids.png\" alt=\"Tableau de rituel avec lumières\" style=\"max-width:380px;width:100%;border-radius:8px;border:1px solid #cbd5e0\"></div>\n\n  - **Répondez 1 SEULE fois à ses appels**\n\n  - **Anticipez** les rappels :\n    - Nez qui coule ⇒ **boîte de mouchoirs** à disposition de l'enfant\n    - Couette mal mise ⇒ **surpyjama** ou **couette zippée**\n    - Doudou perdu ⇒ mettez un **2ème doudou**, rendez le doudou visible la nuit (**ruban phosphorescent**…)\n    - Bouton qui gratte ⇒ pendant le temps de soins pendant le rituel, proposez de la **pommade anti-démangeaisons**\n    - Dernier câlin ⇒ pendant le rituel, verbalisez bien ce dernier câlin\n    - Soif ⇒ **Gourde** à proximité\n  - **Donnez 3 cartes pour 3 rappels** ⇒ au-delà : **vous ne revenez pas dans la chambre** (diminuez le nombre de cartes au fil du temps)\n\n  - **Mettez en place** un **tableau de récompenses :**\n    - **Chaque nuit SANS rappel** : [prénom_enfant] a le matin :\n      - Chocolat / bonbon\n      - Élément d'un kit playmobil\n\n  - Vous pouvez aussi faire des **jeux de rôle en journée** *(ex : avec une poupée que l'on couche dans son lit de poupée) :*\n    - Quel rituel lui faire ?\n    - Que dire si elle se réveille ?\n\n  - Il y a aussi les **livres de Caroline Ferriol** pour les + grands (6,90 €) :\n    - *Arthur met du temps à s'endormir*\n    - *Jade veut dormir avec Papa et Maman*\n    - *Louise ne veut pas aller se coucher*" }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  { id: "accomp_prog_ventre_bercement_lit", emoji: "🛏️", label: "Bercement (lit)",
+                    blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }] },
+                  { id: "accomp_prog_ventre_portage", emoji: "🚼", label: "Portage (Porte-BB / Poussette)",
+                    blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }] },
+                  { id: "accomp_prog_ventre_contact", emoji: "☝️", label: "Contact (petit doigt)",
+                    blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }] },
+                  { id: "accomp_prog_ventre_sein_bib", emoji: "🍼🤱", label: "Sein / bib",
+                    blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }] },
+                  { id: "accomp_prog_ventre_ventre_parent", emoji: "🤗", label: "Dort sur le VENTRE du parent",
+                    blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }] },
+                  { id: "accomp_prog_ventre_dos_ventre", emoji: "🔄", label: "Dos ou Ventre",
+                    blocks: [{ type: "normal", _leftTitle: "Conseils", text: "- À compléter" }] }
+                ]
+              }
             ]
           },
         ]
