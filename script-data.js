@@ -5604,7 +5604,7 @@ const SCRIPT_DATA = {
                 expandAllAsPills: true,
                 items: [
                   {
-                    id: "accomp_lit_ouvert_connait_sort", emoji: "🛌🚪", label: "Connaît son lit / peut sortir de sa chambre",
+                    id: "accomp_lit_ouvert_connait_sort", emoji: "🛌🚪", label: "Connaît son lit / Peut sortir de sa chambre",
                     pb: "relationnel_lit_parental",
                     blocks: [
                       {
@@ -6514,13 +6514,13 @@ const SCRIPT_DATA = {
                 blocks: [
                   { type: "normal", _collapsible: true, showIfAgeMaxMonths: 12, _leftTitle: "🔄 Bascule dos / ventre", _leftTitleStyle: "background:#ebabc6;color:#831043;--cat-main:#be185d", text: "*= Comportement normal lié à l'acquisition d'une nouvelle compétence*\n⇒ Normal que le retournement dans les 2 sens ne s'acquière pas en 1 fois", embeddedActions: [
                     {
-                      label: "Si ponctuelle", emoji: "✋", style: "action-green", _pillStyle: true, mutexGroup: "bascule-dos-ventre",
+                      label: "Si ponctuelle", emoji: "✋", style: "action-rose-poudre", _pillStyle: true, mutexGroup: "bascule-dos-ventre",
                       blocks: [
                         { type: "normal", text: "- **OK pour [le_la] retourner** 3-4 fois" }
                       ]
                     },
                     {
-                      label: "Si récurrent", emoji: "🔁", style: "action", _pillStyle: true, mutexGroup: "bascule-dos-ventre",
+                      label: "Si récurrent", emoji: "🔁", style: "action-rose-poudre", _pillStyle: true, mutexGroup: "bascule-dos-ventre",
                       blocks: [
                         { type: "normal", text: "- **Accompagnez-[le_la]** dans ses émotions pour qu'[il_elle] **découvre de nouvelles façons de s'endormir**\n  ⇒ **Apportez** de la confiance que [prénom_enfant] peut **réussir à s'endormir** *(encouragements)*\n- Sur les temps d'éveil : faire du **Tummy Time**\n  - **Pressez le pied** de [prénom_enfant] pour [lui_elle] faire découvrir qu'[il_elle] peut **plier le genou** et **se faire basculer** *(côté jambe tendue)*. Attention à la position du bras qui peut être coincé\n  - Avec une **arche colorée** ou qui fait du bruit, [il_elle] attrape les objets en levant sa tête\n- Faire les **exercices avec une turbulette**" }
                       ]

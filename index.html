@@ -2424,6 +2424,15 @@
       box-shadow: 0 4px 15px rgba(94,166,127,0.30);
     }
 
+    /* OPTION ACTION — variante ROSE POUDRÉ (style doux non flashy) */
+    .block-option.action.action-rose-poudre:not(.open-action) {
+      background: #d8a7b1;
+      box-shadow: 0 4px 15px rgba(216,167,177,0.35);
+    }
+    .block-option.action.action-rose-poudre.open-action > .option-header {
+      background: #d8a7b1;
+    }
+
     /* OPTION ACTION — variante JAUNE RECTANGLE (bouton fermé uniquement)
        Garde le layout en colonne centré (hérité de .action) pour que titre et "Dérouler" soient centrés. */
     .block-option.action.action-yellow:not(.open-action) {
@@ -6756,7 +6765,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=396"></script>
+<script src="script-data.js?v=397"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -10360,9 +10369,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const purpleClass = b.style === 'purple' ? ' purple' : '';
     const purpleBtnClass = b.style === 'purple-btn' ? ' purple-btn' : '';
     const compactBtnClass = b._compact ? ' compact-btn' : '';
-    const actionClass = (b.style === 'action' || b.style === 'action-green' || b.style === 'action-yellow') ? ' action' : '';
+    const actionClass = (b.style === 'action' || b.style === 'action-green' || b.style === 'action-yellow' || b.style === 'action-rose-poudre') ? ' action' : '';
     const actionGreenClass = b.style === 'action-green' ? ' action-green' : '';
     const actionYellowClass = b.style === 'action-yellow' ? ' action-yellow' : '';
+    const actionRosePoudreClass = b.style === 'action-rose-poudre' ? ' action-rose-poudre' : '';
     const actionPurpleInsideClass = b._purpleContent ? ' action-purple-inside' : '';
     const pillStyleClass = b._pillStyle ? ' pill-style' : '';
     const compactClosedClass = b._compactClosed ? ' compact-closed' : '';
@@ -10370,7 +10380,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const miniClass = b._mini ? ' option-mini' : '';
     const emojiHtml = b.emoji ? `<span class="option-emoji">${b.emoji}</span>` : '';
     const mutexAttr = b.mutexGroup ? ` data-mutex-group="${String(b.mutexGroup).replace(/"/g, '&quot;')}"` : '';
-    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${purpleBtnClass}${compactBtnClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionPurpleInsideClass}${pillStyleClass}${compactClosedClass}${cardClass}${miniClass}"${mutexAttr}>
+    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${purpleBtnClass}${compactBtnClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionRosePoudreClass}${actionPurpleInsideClass}${pillStyleClass}${compactClosedClass}${cardClass}${miniClass}"${mutexAttr}>
       <div class="option-header" onclick="toggleOption(this)">
         <span style="display:flex;align-items:center;gap:6px">
           ${emojiHtml}
