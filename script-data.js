@@ -6443,7 +6443,7 @@ const SCRIPT_DATA = {
             type: "normal",
             _leftTitle: "Autres",
             _leftTitleStyle: "background:#ebabc6;color:#831043;--cat-main:#be185d",
-            text: "- Sujets divers à explorer si besoin :",
+            text: "",
             trailingInfoButtons: [
               {
                 emoji: "🌄",

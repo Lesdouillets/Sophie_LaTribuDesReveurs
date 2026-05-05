@@ -6708,7 +6708,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=384"></script>
+<script src="script-data.js?v=385"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9680,6 +9680,9 @@ function showTailleCibleFormulas() {
   `;
   panel.dataset.source = 'taille-cible';
   panel.classList.add('open');
+  setTimeout(() => {
+    document.addEventListener('click', _setupInfoPanelOutsideClickHandler, true);
+  }, 0);
 }
 function closeSetupInfoPanel() {
   const panel = document.getElementById('setup-info-panel');
@@ -9687,6 +9690,7 @@ function closeSetupInfoPanel() {
     panel.classList.remove('open');
     delete panel.dataset.source;
   }
+  document.removeEventListener('click', _setupInfoPanelOutsideClickHandler, true);
 }
 window.showTailleCibleFormulas = showTailleCibleFormulas;
 window.closeSetupInfoPanel = closeSetupInfoPanel;
@@ -9844,12 +9848,38 @@ function openInfoPanel(btnId) {
   if (typeof updatePotentielGenetique === 'function' && bodyEl.querySelector('#pg-pere-input')) {
     updatePotentielGenetique();
   }
+  // Click-outside : ferme le panel quand on clique en dehors (hors triggers info-btn)
+  // setTimeout évite que l'event qui a ouvert le panel ne le referme aussitôt
+  setTimeout(() => {
+    document.addEventListener('click', _infoPanelOutsideClickHandler, true);
+  }, 0);
 }
 
 function closeInfoPanel() {
   const panel = document.getElementById('info-panel');
   if (panel) panel.classList.remove('open');
   window.__activeInfoBtnId = null;
+  document.removeEventListener('click', _infoPanelOutsideClickHandler, true);
+}
+
+// Click-outside handler : ferme le panel jaune si on clique en dehors
+// (et hors des triggers info-btn qui géreront eux-mêmes le toggle/switch)
+function _infoPanelOutsideClickHandler(e) {
+  const panel = document.getElementById('info-panel');
+  if (!panel || !panel.classList.contains('open')) return;
+  if (panel.contains(e.target)) return;
+  // Si clic sur un trigger info-btn → laisser openInfoPanel gérer (toggle ou switch)
+  if (e.target.closest && (e.target.closest('.info-btn') || e.target.closest('.sol-floating-btn'))) return;
+  closeInfoPanel();
+}
+
+// Idem pour setup-info-panel (info panel de la fiche client / setup)
+function _setupInfoPanelOutsideClickHandler(e) {
+  const panel = document.getElementById('setup-info-panel');
+  if (!panel || !panel.classList.contains('open')) return;
+  if (panel.contains(e.target)) return;
+  if (e.target.closest && e.target.closest('[onclick*="showTailleCibleFormulas"]')) return;
+  closeSetupInfoPanel();
 }
 function prevSection() {
   state.revealedLever = null;
@@ -12128,7 +12158,13 @@ function renderSolutionsCheckboxes(opts) {
       const activeChildId = singleChildMode
         ? checkedChildren[0].id
         : ((state.solActiveChildByCat && state.solActiveChildByCat[cat.id]) || null);
-      const cardsHtml = checkedChildren.length ? `<div class="sol-child-cards">` + checkedChildren.map(ch => {
+      // Si l'enfant actif (singleChildMode) a un courbe_cards_grid avec expandAllAsPills,
+      // on cache la sol-child-card parent — la pastille magenta à l'intérieur fait office d'identification
+      const activeChildObj = activeChildId ? checkedChildren.find(c => c.id === activeChildId) : null;
+      const activeChildHasPills = activeChildObj && Array.isArray(activeChildObj.blocks) &&
+        activeChildObj.blocks.some(b => b && b.type === 'courbe_cards_grid' && b.expandAllAsPills);
+      const skipChildCards = singleChildMode && activeChildHasPills;
+      const cardsHtml = (checkedChildren.length && !skipChildCards) ? `<div class="sol-child-cards">` + checkedChildren.map(ch => {
         const isActive = activeChildId === ch.id;
         if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
         const childTicked = state.cardPersonalTicks.has(ch.id);
