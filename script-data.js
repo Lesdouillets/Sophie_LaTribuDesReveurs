@@ -5390,7 +5390,7 @@ const SCRIPT_DATA = {
           { type: "normal", _leftTitle: "4 outils", _leftTitleStyle: "background:#ebabc6;color:#831043;--cat-main:#be185d", text: "- Je vous propose **4 outils pour accompagner** [prénom_enfant] dans ses émotions\n- Ces 4 outils sont **à alterner** toutes les **2 minutes environ**\n\n<span style=\"color:#be185d;text-decoration:underline\">**La VOIX :**</span>\n- Encouragement, voix douce, beaucoup d'amour…\n- Ex : *« je **comprends** ta **colère**, tu as **le droit** d'être fâché. J'ai **confiance en toi** tu vas réussir à t'endormir. Je suis **fière** de toi. **Maman est là** »* ou des *« chuuut »*\n\n<span style=\"color:#be185d;text-decoration:underline\">**Le TOUCHER**</span>\n- Main sur le ventre, caresser de la main, tapoter, frictionner…\n\n<span style=\"color:#be185d;text-decoration:underline\">**Les RESPIRATIONS PROFONDES**</span>\n- Ça va être surtout :\n  - **pour vous**,\n  - pour vous **recentrer dans le moment présent**,\n  - sans partir dans les émotions d'entendre son enfant exprimer de la colère ou de la tristesse\n- Ces respirations vont faire :\n  - ↘ votre niveau de **stress**\n  - ↘ votre **rythme cardiaque**\n  ⇒ Cela va provoquer un **effet de mimétisme** chez votre enfant\n  ⇒ Créer une **ambiance sonore** dans la pièce\n\n<span style=\"color:#be185d;text-decoration:underline\">**Le SILENCE**</span>\n- Juste votre présence et votre soutien" }
         ],
         children: [
-          { id: "accomp_lit_ferme", label: "Lit fermé", cardLabel: "Lit fermé", cardEmoji: "🛏️",
+          { id: "accomp_lit_ferme", label: "Lit fermé", cardLabel: "<u>Lit fermé</u>", cardEmoji: "🛏️",
             blocks: [
               {
                 type: "courbe_cards_grid",
@@ -5595,7 +5595,7 @@ const SCRIPT_DATA = {
               }
             ]
           },
-          { id: "accomp_lit_ouvert", label: "Lit ouvert", cardLabel: "Lit ouvert", cardEmoji: "🛌",
+          { id: "accomp_lit_ouvert", label: "Lit ouvert", cardLabel: "<u>Lit ouvert</u>", cardEmoji: "🛌",
             blocks: [
               {
                 type: "courbe_cards_grid",
@@ -5771,7 +5771,7 @@ const SCRIPT_DATA = {
               }
             ]
           },
-          { id: "accomp_rappels_presence", label: "Nombreux rappels / dépendance à la présence", cardLabel: "Nombreux rappels / dépendance à la présence", cardEmoji: "💬",
+          { id: "accomp_rappels_presence", label: "Nombreux rappels / dépendance à la présence", cardLabel: "<u>Nombreux rappels / dépendance à la présence</u>", cardEmoji: "💬",
             blocks: [
               {
                 type: "courbe_cards_grid",
@@ -5949,7 +5949,7 @@ const SCRIPT_DATA = {
               }
             ]
           },
-          { id: "accomp_progressivite_dos", label: "Progressivité - Sur le DOS", cardLabel: "Progressivité - Sur le DOS", cardEmoji: "🛏️", hideIfTickbox: { cid: "obj_position_sommeil", value: "ventrale" },
+          { id: "accomp_progressivite_dos", label: "Progressivité - Sur le DOS", cardLabel: "<u>Progressivité - Sur le DOS</u>", cardEmoji: "🛏️", hideIfTickbox: { cid: "obj_position_sommeil", value: "ventrale" },
             blocks: [
               {
                 type: "courbe_cards_grid",
@@ -6155,7 +6155,7 @@ const SCRIPT_DATA = {
               }
             ]
           },
-          { id: "accomp_progressivite_ventre", label: "Progressivité - Sur le VENTRE", cardLabel: "Progressivité - Sur le VENTRE", cardEmoji: "🤰", hideIfTickbox: { cid: "obj_position_sommeil", value: "dorsale" },
+          { id: "accomp_progressivite_ventre", label: "Progressivité - Sur le VENTRE", cardLabel: "<u>Progressivité - Sur le VENTRE</u>", cardEmoji: "🤰", hideIfTickbox: { cid: "obj_position_sommeil", value: "dorsale" },
             blocks: [
               {
                 type: "courbe_cards_grid",
