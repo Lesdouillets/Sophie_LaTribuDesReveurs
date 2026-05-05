@@ -12083,9 +12083,12 @@ function renderSolutionsCheckboxes(opts) {
           const childContentExtraClass = singleChildMode ? ' sol-child-content--single' : '';
           // Bouton "Fermer" en bas (uniquement si plusieurs cartes — en singleChildMode la carte se rouvre auto)
           const closeBtnBottom = singleChildMode ? '' : `<button type="button" class="courbe-card-close courbe-card-close-bottom" onclick="toggleSolChildCard('${cat.id}','${activeChild.id}')">✕ Fermer</button>`;
+          // Filtrer les tickbox_choice déjà affichés dans la liste compacte (ex. accomp_progressivite)
+          // pour ne pas les dupliquer dans la vue rectangulaire détaillée
+          const blocksForRender = (activeChild.blocks || []).filter(b => !(b && b.type === 'tickbox_choice'));
           childContentHtml = `<div class="sol-child-content${childContentExtraClass}" data-section-cat="${cat.id}" style="position:relative;border-color:${c.main};--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">` +
             floatingBtnsHtml +
-            renderBlocks(activeChild.blocks, 'sol_' + cat.id + '_' + activeChild.id) +
+            renderBlocks(blocksForRender, 'sol_' + cat.id + '_' + activeChild.id) +
             closeBtnBottom +
             `</div>`;
         }
