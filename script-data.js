@@ -5395,6 +5395,7 @@ const SCRIPT_DATA = {
               {
                 type: "courbe_cards_grid",
                 alwaysShowAll: true,
+                expandAllAsPills: true,
                 items: [
                   {
                     id: "accomp_lit_ferme_inf2m", emoji: "👶", label: "Accompagnement 0-2 mois",
@@ -5600,6 +5601,7 @@ const SCRIPT_DATA = {
               {
                 type: "courbe_cards_grid",
                 alwaysShowAll: true,
+                expandAllAsPills: true,
                 items: [
                   {
                     id: "accomp_lit_ouvert_connait_sort", emoji: "🛌🚪", label: "Connaît son lit / peut sortir de sa chambre",
@@ -5776,6 +5778,7 @@ const SCRIPT_DATA = {
               {
                 type: "courbe_cards_grid",
                 alwaysShowAll: true,
+                expandAllAsPills: true,
                 items: [
                   {
                     id: "accomp_rappels_chaise_coucher_j1", emoji: "🪑", label: "Accompagnement chaise : Sortir après le coucher au Jour 1 <em>(Dépendance à la présence +)</em>",
@@ -6434,6 +6437,44 @@ const SCRIPT_DATA = {
               }
             ]
           },
+        ],
+        outroBlocks: [
+          {
+            type: "normal",
+            _leftTitle: "Autres",
+            _leftTitleStyle: "background:#ebabc6;color:#831043;--cat-main:#be185d",
+            text: "- Sujets divers à explorer si besoin :",
+            trailingInfoButtons: [
+              {
+                emoji: "🌄",
+                label: "Réveils matinaux",
+                title: "🌄 Réveils matinaux",
+                blocks: [
+                  { type: "normal", text: "- TOUT ce qui va se passer **AVANT l'heure de réveil** souhaitée sera **considéré comme** un **réveil nocturne**\n- **Il faudra alors procéder avec :**\n  - le **même accompagnement**\n  - et la **même posture**\n\n- Je vous conseille de **coucher** [prénom_enfant] **30 min + tôt**\n\n- *🎓 Lorsqu'[il_elle] se **réveillera un peu AVANT l'heure habituelle** :*\n  - *la **mélatonine***\n  - *et la **pression du sommeil***\n  - seront **+ fortes** que **30 minutes + tard**\n  ⇒ et ça **l'aidera** à se **rendormir + facilement**" },
+                  { type: "normal", _leftTitle: "💡 Si bruits temporaires", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "*(ex : travaux dans la rue)*\n- **OK** pour mettre **TEMPORAIREMENT des bruits blancs** sur **TOUT le temps** de la nuit/sieste" },
+                  { type: "normal", _leftTitle: "OPTION : Si pas de changement", _leftTitleStyle: "background:#f3e8ff;color:#5b21b6;--cat-main:#7c3aed", text: "- On **couche** [prénom_enfant] **12 h après son réveil matinal** *(ex : lever 5 h du matin → coucher 17 h)*\n- On le fait **pendant 1 semaine** pour que **son corps s'habitue** à **dormir 12 h de nuit**\n- Puis on **décale de 15 min le lever** *(ex : pas de sortie du lit avant 5 h 15)* et on **décale TOUTE la journée** de 15 min aussi\n- **3 jours après**, on décale encore de **15 min**" }
+                ]
+              },
+              {
+                emoji: "🕐",
+                label: "Décalage horaire",
+                title: "🕐 Décalage horaire",
+                blocks: [
+                  { type: "normal", _leftTitle: "Petit décalage horaire (< 1h)", _leftTitleStyle: "background:#dcfce7;color:#14532d;--cat-main:#16a34a", text: "- Pour un **PETIT** décalage horaire, on va **avancer/reculer** les horaires **de 15 minutes tous les jours**.\n- Concrètement :\n  - Le **matin**, vous **le réveillez avec un décalage** de 15 minutes, **sans le sortir du lit avant**\n  - **Pendant la journée**, tout ce qui suit *(siestes, repas, etc.)* **sera aussi décalé** de 15 minutes\n  - **Le soir**, vous décalez **AUSSI l'heure du coucher** de 15 minutes\n  - Le **lendemain matin**, vous **continuez ce décalage** de 15 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" },
+                  { type: "normal", _leftTitle: "Grand décalage horaire (> 1h) — Progressif", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- Pour un **GRAND** décalage horaire, on va **avancer/reculer** les horaires **de 30 minutes tous les 3 jours**.\n- Concrètement :\n  - Le **matin**, vous **le réveillez avec un décalage** de 30 minutes, **sans le sortir du lit avant**\n  - **Pendant la journée**, tout ce qui suit *(siestes, repas, etc.)* **sera aussi décalé** de 30 minutes\n  - **Le soir**, vous décalez **AUSSI l'heure du coucher** de 30 minutes\n  - Au **bout de 3 jours**, vous **continuez ce décalage** de 30 minutes, et **ainsi de suite** jusqu'à **arriver à l'heure souhaitée**" },
+                  { type: "normal", _leftTitle: "Grand décalage horaire (> 1h) — En 1 fois", _leftTitleStyle: "background:#fee2e2;color:#7f1d1d;--cat-main:#dc2626", text: "- Procéder à un décalage horaire **en 1 fois** :\n  - Commencer par **le réveiller le matin à l'heure prévue** *(sans le sortir du lit [sil_sielle] se réveille avant)*\n  - Puis **utiliser les temps d'éveil** pour rétablir un **rythme basé sur cette heure de lever**\n- 🎓 Les **1ers jours**, [il_elle] sera en **manque de sommeil**\n  ⇒ c'est **NORMAL**\n- Petit à petit, [il_elle] se **décalera naturellement** et **retrouvera des quotas de sommeil adaptés** à son âge" }
+                ]
+              },
+              {
+                emoji: "💬",
+                label: "Multiples rappels",
+                title: "💬💬💬 Multiples rappels",
+                blocks: [
+                  { type: "normal", text: "- Mes conseils :\n  - **Mettez en place** un **tableau de rituel**<div style=\"margin:8px 0\"><img src=\"assets/livre-rituel-forkids.png\" alt=\"Tableau de rituel avec lumières\" style=\"max-width:380px;width:100%;border-radius:8px;border:1px solid #cbd5e0\"></div>\n\n  - **Répondez 1 SEULE fois à ses appels**\n\n  - **Anticipez** les rappels :\n    - Nez qui coule ⇒ **boîte de mouchoirs** à disposition de l'enfant\n    - Couette mal mise ⇒ **surpyjama** ou **couette zippée**\n    - Doudou perdu ⇒ mettez un **2ème doudou**, rendez le doudou visible la nuit (**ruban phosphorescent**…)\n    - Bouton qui gratte ⇒ pendant le temps de soins pendant le rituel, proposez de la **pommade anti-démangeaisons**\n    - Dernier câlin ⇒ pendant le rituel, verbalisez bien ce dernier câlin\n    - Soif ⇒ **Gourde** à proximité\n  - **Donnez 3 cartes pour 3 rappels** ⇒ au-delà : **vous ne revenez pas dans la chambre** (diminuez le nombre de cartes au fil du temps)\n\n  - **Mettez en place** un **tableau de récompenses :**\n    - **Chaque nuit SANS rappel** : [prénom_enfant] a le matin :\n      - Chocolat / bonbon\n      - Élément d'un kit playmobil\n\n  - Vous pouvez aussi faire des **jeux de rôle en journée** *(ex : avec une poupée que l'on couche dans son lit de poupée) :*\n    - Quel rituel lui faire ?\n    - Que dire si elle se réveille ?\n\n  - Il y a aussi les **livres de Caroline Ferriol** pour les + grands (6,90 €) :\n    - *Arthur met du temps à s'endormir*\n    - *Jade veut dormir avec Papa et Maman*\n    - *Louise ne veut pas aller se coucher*" }
+                ]
+              }
+            ]
+          }
         ]
       },
     ]
