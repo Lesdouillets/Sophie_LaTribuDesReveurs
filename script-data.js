@@ -351,18 +351,7 @@ const SCRIPT_DATA = {
                   title: "Si souhait de néanmoins partager le même lit",
                   width: "360px",
                   blocks: [
-                    { type: "normal", text: "**Environnement de sommeil**\n\n- Mettre bébé sur le **dos** dans **sa gigoteuse**\n- **Retirer les coussins, couette et couverture** (tout ce qui est lourd et pourrait étouffer bébé)\n- Placer le **bébé du côté de Maman** (elle a des hormones de vigilance que n'a pas le co-parent)\n- Cheveux de la maman attachés\n- Faire attention à la **fermeté du matelas** (pas trop mou : de canapé-lit ou matelas à eau)\n- Température autour de 18°\n- Veiller à ce que bébé **ne puisse pas tomber** = mettre barrière de lit\n- Attention à ne pas **se retrouver coincé** (sur le côté et/ou tête de lit) = lit contre le mur et cadre de lit collé au matelas\n- Investir dans une chaussette connectée Owlet (alarme de respiration)\n- Pas d'autres enfants dans le lit",
-                      trailingInfoButtons: [
-                        {
-                          emoji: "🔔",
-                          label: "Alarme de respiration",
-                          title: "Alarme de respiration",
-                          blocks: [
-                            { type: "normal", text: "- **Nanny Care**\n  - Matelas épaisseur de 13cm MAX et densité 35kg/m3\n  - Jusque 7 mois (jusque BB bouge pour éviter les fausses alertes)\n  - Surveille la **respiration** (détecte **toute absence ou irrégularité** de respiration **MAIS PAS si respirations qui s'amenuisent** et qui n'o**xygène plus le cerveau**)\n  - Prix : ≃200€\n  - https://www.nanny-care.com/3-e-shop-moniteurs-respiratoires-bebe\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN\n\n- **Chausette Owlet DreamSock**\n  - Surveille la **fréquence cardiaque** et le **taux d'oxygène**\n  - Risque de **brûlure si usage prolongé** ⇒ Changer de pied régulièrement\n  - Prix : ≃300€\n  - https://owletcare.fr/products/owlet-dream-sock\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN" }
-                          ]
-                        }
-                      ]
-                    },
+                    { type: "normal", text: "**Environnement de sommeil**\n\n- Mettre bébé sur le **dos** dans **sa gigoteuse**\n- **Retirer les coussins, couette et couverture** (tout ce qui est lourd et pourrait étouffer bébé)\n- Placer le **bébé du côté de Maman** (elle a des hormones de vigilance que n'a pas le co-parent)\n- Cheveux de la maman attachés\n- Faire attention à la **fermeté du matelas** (pas trop mou : de canapé-lit ou matelas à eau)\n- Température autour de 18°\n- Veiller à ce que bébé **ne puisse pas tomber** = mettre barrière de lit\n- Attention à ne pas **se retrouver coincé** (sur le côté et/ou tête de lit) = lit contre le mur et cadre de lit collé au matelas\n- Investir dans une chaussette connectée Owlet (alarme de respiration)\n- Pas d'autres enfants dans le lit" },
                     { type: "normal", text: "**Pour les parents**\n\n- **Ne pas boire de l'alcool** ou consommer des substances illicites ⇒ Moins de vigilance ⇒ ↗ MIN\n- Ne pas être fumeur ⇒ Attention au tabagisme passif\n- Ne pas souffrir d'obésité morbide\n- **A éviter si vous êtes très fatigué** ⇒ Moins de vigilance ⇒ ↗ MIN" },
                     { type: "normal", text: "💡 Le cododo **augmente la vigilance** du parent qui **se réveille +** que si l'enfant était dans sa propre chambre" }
                   ]
