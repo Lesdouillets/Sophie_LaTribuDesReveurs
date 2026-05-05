@@ -6632,7 +6632,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=377"></script>
+<script src="script-data.js?v=378"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -11786,7 +11786,24 @@ function renderSolutionsCheckboxes(opts) {
         })();
         if (dedupedItems.length > 0) {
           if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
-          subRows = `<div class="sol-row-sub" style="padding-left:30px;display:flex;flex-direction:column;gap:4px;margin-top:4px">` +
+          // Si le ch contient un tickbox_choice dans ses blocs, le rendre AU-DESSUS des sous-cases
+          // (ex. accomp_progressivite : tickbox DOS/VENTRE en haut)
+          let tickboxHtml = '';
+          if (Array.isArray(ch.blocks)) {
+            const tbBlock = ch.blocks.find(b => b && b.type === 'tickbox_choice' && b.id);
+            if (tbBlock) {
+              const tbCid = tbBlock.id;
+              const currentVal = (state.tickboxChoices && state.tickboxChoices[tbCid]) || '';
+              const opts = (tbBlock.options || []).map((o, oi) => {
+                const variant = o.variant || (oi === 0 ? 'positive' : 'negative');
+                const value = o.value || ('opt' + oi);
+                const sel = currentVal === value ? ' tbc-selected' : '';
+                return `<div class="tbc-opt${sel}" data-variant="${variant}" data-value="${value}" onclick="selectTickboxChoice(this)"><span class="tbc-icon">${o.icon || ''}</span><span>${o.label || ''}</span></div>`;
+              }).join('');
+              tickboxHtml = `<div class="block block-tickbox-choice sol-compact-tickbox" data-choice-id="${tbCid}" data-required="false" data-answered="${currentVal ? 'true' : 'false'}" style="padding-left:30px;margin:4px 0 6px"><div class="tbc-options">${opts}</div></div>`;
+            }
+          }
+          subRows = tickboxHtml + `<div class="sol-row-sub" style="padding-left:30px;display:flex;flex-direction:column;gap:4px;margin-top:4px">` +
             dedupedItems.map(it => {
               const itTicked = it._twinIds.some(tid => state.courbeCardsTicked.has(tid));
               const displayLabel = it._useCompactLabel ? it.compactLabel : (it.label || it.id);

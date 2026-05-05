@@ -5953,7 +5953,7 @@ const SCRIPT_DATA = {
             blocks: [
               {
                 type: "tickbox_choice",
-                cid: "accomp_position_choice",
+                id: "accomp_position_choice",
                 required: false,
                 options: [
                   { icon: "🛏️", label: "Sur le DOS", value: "dos", variant: "positive" },
