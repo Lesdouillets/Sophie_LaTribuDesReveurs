@@ -9965,6 +9965,27 @@ function _setupInfoPanelOutsideClickHandler(e) {
   if (e.target.closest && e.target.closest('[onclick*="showTailleCibleFormulas"]')) return;
   closeSetupInfoPanel();
 }
+
+// Auto-scroll : quand on ouvre une section pliable (block-collapsible),
+// scroller pour amener son titre en haut du conteneur visible
+// (utile dans le info-panel jaune ouvert à droite : Ecueils, etc.)
+document.addEventListener('toggle', (e) => {
+  const details = e.target;
+  if (!details || !details.classList || !details.classList.contains('block-collapsible')) return;
+  if (!details.open) return;
+  const summary = details.querySelector(':scope > summary.block-collapsible-summary');
+  if (!summary) return;
+  // Trouver le conteneur scrollable : info-body, sol-active-content, ou content-area
+  const scrollContainer = details.closest('#info-body') || details.closest('#setup-info-body') || details.closest('.sol-active-content') || document.getElementById('content-area') || document.scrollingElement;
+  if (!scrollContainer) return;
+  setTimeout(() => {
+    const containerRect = scrollContainer.getBoundingClientRect ? scrollContainer.getBoundingClientRect() : { top: 0 };
+    const summaryRect = summary.getBoundingClientRect();
+    const currentScroll = scrollContainer.scrollTop || 0;
+    const targetScroll = currentScroll + (summaryRect.top - containerRect.top) - 12;
+    scrollContainer.scrollTo({ top: Math.max(0, targetScroll), behavior: 'smooth' });
+  }, 60);
+}, true);
 function prevSection() {
   state.revealedLever = null;
   // Cas spécial : depuis IX. Reformulation → revenir directement à VIII. Plan d'action
