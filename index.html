@@ -2797,40 +2797,6 @@
       border-color: #dc2626;
       color: #7f1d1d;
     }
-    /* Compact version (Solutions identifiées) — sans encadré, boutons magenta clair */
-    .sol-compact-tickbox.block-tickbox-choice {
-      background: transparent;
-      border: none;
-      padding: 4px 0;
-      margin: 4px 0 6px;
-    }
-    .sol-compact-tickbox.block-tickbox-choice[data-answered="true"] {
-      background: transparent;
-      border: none;
-    }
-    .sol-compact-tickbox .tbc-opt,
-    .sol-compact-tickbox .tbc-opt[data-variant="positive"],
-    .sol-compact-tickbox .tbc-opt[data-variant="negative"],
-    .sol-compact-tickbox .tbc-opt[data-variant="warning"] {
-      background: #fce7f3;
-      border-color: #f9a8d4;
-      color: #831843;
-    }
-    .sol-compact-tickbox .tbc-opt:hover,
-    .sol-compact-tickbox .tbc-opt[data-variant="positive"]:hover,
-    .sol-compact-tickbox .tbc-opt[data-variant="negative"]:hover,
-    .sol-compact-tickbox .tbc-opt[data-variant="warning"]:hover {
-      background: #fbcfe8;
-      border-color: #ec4899;
-    }
-    .sol-compact-tickbox .tbc-opt.tbc-selected,
-    .sol-compact-tickbox .tbc-opt.tbc-selected[data-variant="positive"],
-    .sol-compact-tickbox .tbc-opt.tbc-selected[data-variant="negative"],
-    .sol-compact-tickbox .tbc-opt.tbc-selected[data-variant="warning"] {
-      background: #fbcfe8;
-      border-color: #ec4899;
-      color: #500724;
-    }
     /* Variante WARNING (jaune) */
     .block-tickbox-choice .tbc-opt[data-variant="warning"] {
       background: #fef9c3;
@@ -2845,6 +2811,32 @@
       background: #fef3c7;
       border-color: #eab308;
       color: #713f12;
+    }
+    /* Compact version (Solutions identifiées) — sans encadré, boutons magenta clair.
+       Placé APRÈS toutes les variantes pour gagner la cascade CSS. */
+    .sol-compact-tickbox.block-tickbox-choice {
+      background: transparent !important;
+      border: none !important;
+      padding: 4px 0 !important;
+      margin: 4px 0 6px !important;
+    }
+    .sol-compact-tickbox.block-tickbox-choice[data-answered="true"] {
+      background: transparent !important;
+      border: none !important;
+    }
+    .sol-compact-tickbox .tbc-opt {
+      background: #fce7f3 !important;
+      border-color: #f9a8d4 !important;
+      color: #831843 !important;
+    }
+    .sol-compact-tickbox .tbc-opt:hover {
+      background: #fbcfe8 !important;
+      border-color: #ec4899 !important;
+    }
+    .sol-compact-tickbox .tbc-opt.tbc-selected {
+      background: #fbcfe8 !important;
+      border-color: #ec4899 !important;
+      color: #500724 !important;
     }
     /* Variante INLINE : utilisée à l'intérieur d'un bloc question — retire le cadre,
        le fond et les marges pour s'intégrer proprement au cadre du bloc parent. */
