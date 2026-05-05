@@ -6632,7 +6632,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=376"></script>
+<script src="script-data.js?v=377"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -11761,11 +11761,38 @@ function renderSolutionsCheckboxes(opts) {
           const pbs = Array.isArray(it.pb) ? it.pb : [it.pb];
           return pbs.some(p => state.selectedPbs && state.selectedPbs.has(p));
         });
-        if (visibleItems.length > 0) {
+        // Dédup compactLabel : si plusieurs items partagent le même compactLabel,
+        // n'afficher qu'une seule entrée (ex. DOS-Bercement bras + VENTRE-Bercement bras
+        // → 1 seule case "Bercement (dans les bras)" qui contrôle les 2 IDs)
+        const dedupedItems = (() => {
+          const seen = new Map();
+          const result = [];
+          visibleItems.forEach(it => {
+            const key = it.compactLabel || it.id;
+            if (!it.compactLabel) {
+              result.push({ ...it, _twinIds: [it.id] });
+              return;
+            }
+            if (seen.has(key)) {
+              const existing = seen.get(key);
+              existing._twinIds.push(it.id);
+            } else {
+              const entry = { ...it, _twinIds: [it.id], _useCompactLabel: true };
+              seen.set(key, entry);
+              result.push(entry);
+            }
+          });
+          return result;
+        })();
+        if (dedupedItems.length > 0) {
           if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
           subRows = `<div class="sol-row-sub" style="padding-left:30px;display:flex;flex-direction:column;gap:4px;margin-top:4px">` +
-            visibleItems.map(it => {
-              const itTicked = state.courbeCardsTicked.has(it.id);
+            dedupedItems.map(it => {
+              const itTicked = it._twinIds.some(tid => state.courbeCardsTicked.has(tid));
+              const displayLabel = it._useCompactLabel ? it.compactLabel : (it.label || it.id);
+              const onclickArg = it._twinIds.length > 1
+                ? `toggleCourbeCardTickFromSolGroup(${JSON.stringify(it._twinIds).replace(/"/g, '&quot;')})`
+                : `toggleCourbeCardTickFromSol('${it.id}')`;
               // Sous-sous-checkboxes : si l'item lui-même a un courbe_cards_grid dans ses blocks
               // (ex. env_chgmt_lit → Cododo→Barreaux / Barreaux→Ouvert / Sol→Barreaux)
               let nestedSubRows = '';
@@ -11799,7 +11826,7 @@ function renderSolutionsCheckboxes(opts) {
                   }
                 }
               }
-              return `<div><label style="display:flex;align-items:center;gap:6px;font-size:14px;cursor:pointer"><input type="checkbox" ${itTicked?'checked':''} onchange="toggleCourbeCardTickFromSol('${it.id}')"> ${it.emoji || ''} ${it.label || it.id}</label>${nestedSubRows}</div>`;
+              return `<div><label style="display:flex;align-items:center;gap:6px;font-size:14px;cursor:pointer"><input type="checkbox" ${itTicked?'checked':''} onchange="${onclickArg}"> ${it.emoji || ''} ${displayLabel}</label>${nestedSubRows}</div>`;
             }).join('') +
             `</div>`;
         }
@@ -12316,7 +12343,7 @@ function toggleSolution(id, checked) {
   if (!state.tickboxChoices) state.tickboxChoices = {};
   // Mutex Accompagnement : si on coche un parent (ex. accomp_progressivite),
   // décocher tous les autres parents Accompagnement + tous les sub-children
-  const ACCOMP_PARENTS = ['accomp_lit_ferme', 'accomp_lit_ouvert', 'accomp_rappels_presence', 'accomp_progressivite_dos', 'accomp_progressivite_ventre'];
+  const ACCOMP_PARENTS = ['accomp_lit_ferme', 'accomp_lit_ouvert', 'accomp_rappels_presence', 'accomp_progressivite'];
   const ACCOMP_ALL_SUBS = [
     'accomp_lit_ferme_inf2m', 'accomp_lit_ferme_chaise_j7',
     'accomp_lit_ferme_chaise_apaisement_j1', 'accomp_lit_ferme_chaise_coucher_j1',
@@ -14442,6 +14469,31 @@ window.uncheckAllSolutionsInCat = uncheckAllSolutionsInCat;
 // Toggle d'une case env (Chambre/Lit) depuis la liste compacte des Solutions identifiées
 // Reflète/contrôle state.courbeCardsTicked (état des sous-checkboxes du compact list,
 // indépendant de state.cardPersonalTicks utilisé par les ticks ☐/✅ des cartes)
+function toggleCourbeCardTickFromSolGroup(idsJson) {
+  // Reçoit une chaîne JSON d'IDs (depuis l'attribut onchange)
+  let ids = [];
+  try {
+    ids = typeof idsJson === 'string' ? JSON.parse(idsJson.replace(/&quot;/g, '"')) : idsJson;
+  } catch(e) { return; }
+  if (!Array.isArray(ids) || !ids.length) return;
+  if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
+  // Si au moins 1 ID est tické → tout décocher ; sinon → tout cocher
+  const anyTicked = ids.some(id => state.courbeCardsTicked.has(id));
+  ids.forEach(id => {
+    if (anyTicked) {
+      // décoche tous (sans cascade pour éviter les effets de bord croisés)
+      state.courbeCardsTicked.delete(id);
+      if (state.courbeCardsTickedManuallyEdited) state.courbeCardsTickedManuallyEdited.add(id);
+    } else {
+      toggleCourbeCardTickFromSol(id);
+    }
+  });
+  if (anyTicked) {
+    if (typeof renderCurrentSection === 'function') renderCurrentSection();
+    if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+  }
+}
+
 function toggleCourbeCardTickFromSol(itId) {
   if (!itId) return;
   if (!state.courbeCardsTicked) state.courbeCardsTicked = new Set();
@@ -14550,7 +14602,7 @@ function toggleCourbeCardTickFromSol(itId) {
   }
   // Mutex Accompagnement : toutes les sous-cases (sub-children) ET les 4 parents sont mutuellement exclusifs.
   // Cocher un sub-child décoche tous les autres sub-children + force le décochage manuel des autres parents.
-  const ACCOMP_PARENTS = ['accomp_lit_ferme', 'accomp_lit_ouvert', 'accomp_rappels_presence', 'accomp_progressivite_dos', 'accomp_progressivite_ventre'];
+  const ACCOMP_PARENTS = ['accomp_lit_ferme', 'accomp_lit_ouvert', 'accomp_rappels_presence', 'accomp_progressivite'];
   const ACCOMP_ALL_SUBS = [
     'accomp_lit_ferme_inf2m', 'accomp_lit_ferme_chaise_j7',
     'accomp_lit_ferme_chaise_apaisement_j1', 'accomp_lit_ferme_chaise_coucher_j1',

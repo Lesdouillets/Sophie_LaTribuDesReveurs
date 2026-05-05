@@ -5949,13 +5949,22 @@ const SCRIPT_DATA = {
               }
             ]
           },
-          { id: "accomp_progressivite_dos", label: "Progressivité - Sur le DOS", cardLabel: "Progressivité - Sur le DOS", cardEmoji: "🛏️", hideIfTickbox: { cid: "obj_position_sommeil", value: "ventrale" }, solChecklistUnderline: true,
+          { id: "accomp_progressivite", label: "Progressivité", cardLabel: "Progressivité", cardEmoji: "🤝", solChecklistUnderline: true,
             blocks: [
+              {
+                type: "tickbox_choice",
+                cid: "accomp_position_choice",
+                required: false,
+                options: [
+                  { icon: "🛏️", label: "Sur le DOS", value: "dos", variant: "positive" },
+                  { icon: "🤰", label: "Sur le VENTRE", value: "ventre", variant: "warning" }
+                ]
+              },
               {
                 type: "courbe_cards_grid",
                 alwaysShowAll: true,
                 items: [
-                  { id: "accomp_prog_dos_bercement_bras", emoji: "🤱", label: "DOS - Bercement (dans les bras)",
+                  { id: "accomp_prog_dos_bercement_bras", emoji: "🤱", label: "DOS - Bercement (dans les bras)", compactLabel: "Bercement (dans les bras)", showIfTickbox: { cid: "accomp_position_choice", value: "dos" },
                     blocks: [
                       { type: "normal", _leftTitle: "<div><u>Étape 1 :</u></div><div>Suppression des bercements</div>", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez** les **bercements** dans les **bras**</span>, et **endormez-[le_la]** dans **vos bras** en **restant statique**\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
                       { type: "normal", _leftTitle: "<div><u>Étape 2 :</u></div><div>L'accompagner dans son lit</div>", text: "- Mettez-[le_la] **dans son lit [ÉVEILLÉ_ÉVEILLÉE]**\n- Gardez une **main immobile** sur [lui_elle]\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n- *(possibilité de rajouter une étape : mettre votre bras autour de sa tête sans [le_la] toucher pour garder la contenance)*\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
@@ -6013,7 +6022,7 @@ const SCRIPT_DATA = {
                       }
                     ]
                   },
-                  { id: "accomp_prog_dos_bercement_lit", emoji: "🛏️", label: "DOS - Bercement (lit)",
+                  { id: "accomp_prog_dos_bercement_lit", emoji: "🛏️", label: "DOS - Bercement (lit)", compactLabel: "Bercement (lit)", showIfTickbox: { cid: "accomp_position_choice", value: "dos" },
                     blocks: [
                       { type: "normal", showIfPb: "strategie_tetine", _leftTitle: "🍭 Option : Suppression de la tétine", _leftTitleStyle: "background:#f3e8ff;color:#5b21b6;--cat-main:#7c3aed", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez la tétine**</span> *(ATTENTION : si c'est la cause des réveils)*\n- Mettez-[le_la] dans son lit\n- Bercements du lit ou de [prénom_enfant]\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
                       { type: "normal", _leftTitle: "<div><u>Étape 1 :</u></div><div>Arrêt complet des bercements</div>", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez les bercements**</span>\n- <u>En cas d'émotions :</u> Posez une **main immobile** sur [lui_elle] temporairement\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
@@ -6033,7 +6042,7 @@ const SCRIPT_DATA = {
                       }
                     ]
                   },
-                  { id: "accomp_prog_dos_portage", emoji: "🚼", label: "DOS - Portage (Porte-BB / Poussette)",
+                  { id: "accomp_prog_dos_portage", emoji: "🚼", label: "DOS - Portage (Porte-BB / Poussette)", compactLabel: "Portage (Porte-BB / Poussette)", showIfTickbox: { cid: "accomp_position_choice", value: "dos" },
                     blocks: [
                       { type: "normal", _leftTitle: "<div><u>Étape 1 :</u></div><div>Suppression des bercements</div>", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez les bercements**</span> dans le **Porte-BB / Poussette**, **endormez-[le_la]** en **restant statique**\n- <u>En cas d'émotions :</u> **Bercez-[le_la] temporairement**\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
                       { type: "normal", _leftTitle: "<div><u>Étape 2 :</u></div><div>L'accompagner dans son lit</div>", text: "- Mettez-[le_la] **dans son lit [ÉVEILLÉ_ÉVEILLÉE]**\n- Gardez une **main immobile** sur [lui_elle]\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n- *(possibilité de rajouter une étape : mettre votre bras autour de sa tête sans [le_la] toucher pour garder la contenance)*\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
@@ -6055,7 +6064,7 @@ const SCRIPT_DATA = {
                       }
                     ]
                   },
-                  { id: "accomp_prog_dos_contact", emoji: "☝️", label: "DOS - Contact (petit doigt)",
+                  { id: "accomp_prog_dos_contact", emoji: "☝️", label: "DOS - Contact (petit doigt)", compactLabel: "Contact (petit doigt)", showIfTickbox: { cid: "accomp_position_choice", value: "dos" },
                     blocks: [
                       { type: "normal", showIfPb: "strategie_tetine", _leftTitle: "🍭 Option : Suppression de la tétine", _leftTitleStyle: "background:#f3e8ff;color:#5b21b6;--cat-main:#7c3aed", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez la tétine**</span> *(ATTENTION : si c'est la cause des réveils)*\n- Mettez-[le_la] dans son lit\n- Continuez de garder le **contact physique** : main / petit doigt\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
                       { type: "normal", _leftTitle: "<div><u>Étape 1 :</u></div><div>Arrêt du contact physique en continu / L'accompagner seulement depuis le milieu de la chambre</div>", text: "- **Positionnez une chaise** au **milieu de la chambre**\n- ❌ <span style=\"color:#dc2626\">**Supprimez le contact physique en continu**</span>\n- <u>En cas d'émotions :</u> Posez une **main immobile** sur [lui_elle] temporairement puis continuez d'**accompagner depuis la chaise** *(diminuez le toucher car physiquement vous êtes + loin)*\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
@@ -6074,7 +6083,7 @@ const SCRIPT_DATA = {
                       }
                     ]
                   },
-                  { id: "accomp_prog_dos_sein_bib", emoji: "🍼🤱", label: "DOS - Sein / bib",
+                  { id: "accomp_prog_dos_sein_bib", emoji: "🍼🤱", label: "DOS - Sein / bib", compactLabel: "Sein / bib", showIfTickbox: { cid: "accomp_position_choice", value: "dos" },
                     blocks: [
                       { type: "normal", _leftTitle: "<div><u>Étape 1 :</u></div><div>Dissocier le sein/bib du Sommeil</div>", text: "- ❌ <span style=\"color:#dc2626\">**Ne pas laisser bébé s'endormir au sein/bib**</span>, **stimulez-[le_la]** durant le temps d'alimentation\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
                       { type: "normal", _leftTitle: "<div><u>Étape 2 :</u></div><div>Suppression des bercements</div>", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez** les **bercements** dans les **bras**</span>, et **endormez-[le_la]** dans **vos bras** en **restant statique**\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
@@ -6096,7 +6105,7 @@ const SCRIPT_DATA = {
                       }
                     ]
                   },
-                  { id: "accomp_prog_dos_ventre_parent", emoji: "🤗", label: "DOS - Dort sur le VENTRE du parent",
+                  { id: "accomp_prog_dos_ventre_parent", emoji: "🤗", label: "DOS - Dort sur le VENTRE du parent", compactLabel: "Dort sur le VENTRE du parent", showIfTickbox: { cid: "accomp_position_choice", value: "dos" },
                     blocks: [
                       { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN",
                         trailingInfoButtons: [
@@ -6131,7 +6140,7 @@ const SCRIPT_DATA = {
                       }
                     ]
                   },
-                  { id: "accomp_prog_dos_dos_ventre", emoji: "🔄", label: "DOS - Dos ou Ventre",
+                  { id: "accomp_prog_dos_dos_ventre", emoji: "🔄", label: "DOS - Dos ou Ventre", compactLabel: "Dos ou Ventre", showIfTickbox: { cid: "accomp_position_choice", value: "dos" },
                     blocks: [
                       { type: "normal", showIfPb: "strategie_tetine", _leftTitle: "🍭 Option : Suppression de la tétine", _leftTitleStyle: "background:#f3e8ff;color:#5b21b6;--cat-main:#7c3aed", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez la tétine**</span> *(ATTENTION : si c'est la cause des réveils)*\n- Mettez-[le_la] **dans son lit [ÉVEILLÉ_ÉVEILLÉE]**\n- Gardez une **main immobile** sur [lui_elle]\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
                       { type: "normal", _leftTitle: "<div>OU <u>Étape 1 :</u></div><div>L'accompagner dans son lit</div>", text: "- Mettez-[le_la] **dans son lit [ÉVEILLÉ_ÉVEILLÉE]**\n- Gardez une **main immobile** sur [lui_elle]\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
@@ -6151,17 +6160,8 @@ const SCRIPT_DATA = {
                       }
                     ]
                   }
-                ]
-              }
-            ]
-          },
-          { id: "accomp_progressivite_ventre", label: "Progressivité - Sur le VENTRE", cardLabel: "Progressivité - Sur le VENTRE", cardEmoji: "🤰", hideIfTickbox: { cid: "obj_position_sommeil", value: "dorsale" }, solChecklistUnderline: true,
-            blocks: [
-              {
-                type: "courbe_cards_grid",
-                alwaysShowAll: true,
-                items: [
-                  { id: "accomp_prog_ventre_bercement_bras", emoji: "🤱", label: "VENTRE - Bercement (dans les bras)",
+                  ,
+                  { id: "accomp_prog_ventre_bercement_bras", emoji: "🤱", label: "VENTRE - Bercement (dans les bras)", compactLabel: "Bercement (dans les bras)", showIfTickbox: { cid: "accomp_position_choice", value: "ventre" },
                     blocks: [
                       { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN",
                         trailingInfoButtons: [
@@ -6231,7 +6231,7 @@ const SCRIPT_DATA = {
                       }
                     ]
                   },
-                  { id: "accomp_prog_ventre_bercement_lit", emoji: "🛏️", label: "VENTRE - Bercement (lit)",
+                  { id: "accomp_prog_ventre_bercement_lit", emoji: "🛏️", label: "VENTRE - Bercement (lit)", compactLabel: "Bercement (lit)", showIfTickbox: { cid: "accomp_position_choice", value: "ventre" },
                     blocks: [
                       { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN",
                         trailingInfoButtons: [
@@ -6263,7 +6263,7 @@ const SCRIPT_DATA = {
                       }
                     ]
                   },
-                  { id: "accomp_prog_ventre_portage", emoji: "🚼", label: "VENTRE - Portage (Porte-BB / Poussette)",
+                  { id: "accomp_prog_ventre_portage", emoji: "🚼", label: "VENTRE - Portage (Porte-BB / Poussette)", compactLabel: "Portage (Porte-BB / Poussette)", showIfTickbox: { cid: "accomp_position_choice", value: "ventre" },
                     blocks: [
                       { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN",
                         trailingInfoButtons: [
@@ -6298,7 +6298,7 @@ const SCRIPT_DATA = {
                       }
                     ]
                   },
-                  { id: "accomp_prog_ventre_contact", emoji: "☝️", label: "VENTRE - Contact (petit doigt)",
+                  { id: "accomp_prog_ventre_contact", emoji: "☝️", label: "VENTRE - Contact (petit doigt)", compactLabel: "Contact (petit doigt)", showIfTickbox: { cid: "accomp_position_choice", value: "ventre" },
                     blocks: [
                       { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN",
                         trailingInfoButtons: [
@@ -6329,7 +6329,7 @@ const SCRIPT_DATA = {
                       }
                     ]
                   },
-                  { id: "accomp_prog_ventre_sein_bib", emoji: "🍼🤱", label: "VENTRE - Sein / bib",
+                  { id: "accomp_prog_ventre_sein_bib", emoji: "🍼🤱", label: "VENTRE - Sein / bib", compactLabel: "Sein / bib", showIfTickbox: { cid: "accomp_position_choice", value: "ventre" },
                     blocks: [
                       { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN",
                         trailingInfoButtons: [
@@ -6363,7 +6363,7 @@ const SCRIPT_DATA = {
                       }
                     ]
                   },
-                  { id: "accomp_prog_ventre_ventre_parent", emoji: "🤗", label: "VENTRE - Dort sur le VENTRE du parent",
+                  { id: "accomp_prog_ventre_ventre_parent", emoji: "🤗", label: "VENTRE - Dort sur le VENTRE du parent", compactLabel: "Dort sur le VENTRE du parent", showIfTickbox: { cid: "accomp_position_choice", value: "ventre" },
                     blocks: [
                       { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN",
                         trailingInfoButtons: [
@@ -6397,7 +6397,7 @@ const SCRIPT_DATA = {
                       }
                     ]
                   },
-                  { id: "accomp_prog_ventre_dos_ventre", emoji: "🔄", label: "VENTRE - Dos ou Ventre",
+                  { id: "accomp_prog_ventre_dos_ventre", emoji: "🔄", label: "VENTRE - Dos ou Ventre", compactLabel: "Dos ou Ventre", showIfTickbox: { cid: "accomp_position_choice", value: "ventre" },
                     blocks: [
                       { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN",
                         trailingInfoButtons: [
