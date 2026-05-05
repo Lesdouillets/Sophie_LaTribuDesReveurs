@@ -366,6 +366,14 @@ const SCRIPT_DATA = {
                     { type: "normal", text: "**Pour les parents**\n\n- **Ne pas boire de l'alcool** ou consommer des substances illicites ⇒ Moins de vigilance ⇒ ↗ MIN\n- Ne pas être fumeur ⇒ Attention au tabagisme passif\n- Ne pas souffrir d'obésité morbide\n- **A éviter si vous êtes très fatigué** ⇒ Moins de vigilance ⇒ ↗ MIN" },
                     { type: "normal", text: "💡 Le cododo **augmente la vigilance** du parent qui **se réveille +** que si l'enfant était dans sa propre chambre" }
                   ]
+                },
+                {
+                  label: "Alarme de respiration",
+                  title: "Alarme de respiration",
+                  width: "360px",
+                  blocks: [
+                    { type: "normal", text: "- **Nanny Care**\n  - Matelas épaisseur de 13cm MAX et densité 35kg/m3\n  - Jusque 7 mois (jusque BB bouge pour éviter les fausses alertes)\n  - Surveille la **respiration** (détecte **toute absence ou irrégularité** de respiration **MAIS PAS si respirations qui s'amenuisent** et qui n'o**xygène plus le cerveau**)\n  - Prix : ≃200€\n  - https://www.nanny-care.com/3-e-shop-moniteurs-respiratoires-bebe\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN\n\n- **Chausette Owlet DreamSock**\n  - Surveille la **fréquence cardiaque** et le **taux d'oxygène**\n  - Risque de **brûlure si usage prolongé** ⇒ Changer de pied régulièrement\n  - Prix : ≃300€\n  - https://owletcare.fr/products/owlet-dream-sock\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN" }
+                  ]
                 }
               ]
             },
@@ -6101,7 +6109,18 @@ const SCRIPT_DATA = {
                   },
                   { id: "accomp_prog_dos_ventre_parent", emoji: "🤗", label: "DOS - Dort sur le VENTRE du parent",
                     blocks: [
-                      { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN" },
+                      { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN",
+                        trailingInfoButtons: [
+                          {
+                            emoji: "🔔",
+                            label: "Alarme de respiration",
+                            title: "Alarme de respiration",
+                            blocks: [
+                              { type: "normal", text: "- **Nanny Care**\n  - Matelas épaisseur de 13cm MAX et densité 35kg/m3\n  - Jusque 7 mois (jusque BB bouge pour éviter les fausses alertes)\n  - Surveille la **respiration** (détecte **toute absence ou irrégularité** de respiration **MAIS PAS si respirations qui s'amenuisent** et qui n'o**xygène plus le cerveau**)\n  - Prix : ≃200€\n  - https://www.nanny-care.com/3-e-shop-moniteurs-respiratoires-bebe\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN\n\n- **Chausette Owlet DreamSock**\n  - Surveille la **fréquence cardiaque** et le **taux d'oxygène**\n  - Risque de **brûlure si usage prolongé** ⇒ Changer de pied régulièrement\n  - Prix : ≃300€\n  - https://owletcare.fr/products/owlet-dream-sock\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN" }
+                            ]
+                          }
+                        ]
+                      },
                       { type: "normal", showIfPb: "strategie_tetine", _leftTitle: "🍭 Option : Suppression de la tétine (si stratégie dépendante)", _leftTitleStyle: "background:#f3e8ff;color:#5b21b6;--cat-main:#7c3aed", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez la tétine**</span>\n- Continuez à l'endormir sur le **ventre du parent**\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
                       { type: "normal", _leftTitle: "Option : Dissocier le sein/bib du Sommeil", _leftTitleStyle: "background:#f3e8ff;color:#5b21b6;--cat-main:#7c3aed", text: "- ❌ <span style=\"color:#dc2626\">**Ne pas laisser bébé s'endormir au sein/bib**</span>, **stimulez-[le_la]** durant le temps d'alimentation\n- Mettez un **topponcino** entre le **ventre du parent** et le bébé\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
                       { type: "normal", _leftTitle: "<div><u>Étape 1 :</u></div><div>L'accompagner dans vos bras</div>", text: "- **Endormez-[le_la]** dans **vos bras** en **restant statique**\n- <u>En cas d'émotions :</u> **Bercez-[le_la]**\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
@@ -6155,7 +6174,18 @@ const SCRIPT_DATA = {
                 items: [
                   { id: "accomp_prog_ventre_bercement_bras", emoji: "🤱", label: "VENTRE - Bercement (dans les bras)",
                     blocks: [
-                      { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN" },
+                      { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN",
+                        trailingInfoButtons: [
+                          {
+                            emoji: "🔔",
+                            label: "Alarme de respiration",
+                            title: "Alarme de respiration",
+                            blocks: [
+                              { type: "normal", text: "- **Nanny Care**\n  - Matelas épaisseur de 13cm MAX et densité 35kg/m3\n  - Jusque 7 mois (jusque BB bouge pour éviter les fausses alertes)\n  - Surveille la **respiration** (détecte **toute absence ou irrégularité** de respiration **MAIS PAS si respirations qui s'amenuisent** et qui n'o**xygène plus le cerveau**)\n  - Prix : ≃200€\n  - https://www.nanny-care.com/3-e-shop-moniteurs-respiratoires-bebe\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN\n\n- **Chausette Owlet DreamSock**\n  - Surveille la **fréquence cardiaque** et le **taux d'oxygène**\n  - Risque de **brûlure si usage prolongé** ⇒ Changer de pied régulièrement\n  - Prix : ≃300€\n  - https://owletcare.fr/products/owlet-dream-sock\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN" }
+                            ]
+                          }
+                        ]
+                      },
                       { type: "normal", _leftTitle: "<div><u>Étape 1 :</u></div><div>Suppression des bercements</div>", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez** les **bercements** dans les **bras**</span>, et **endormez-[le_la]** dans **vos bras** en **restant statique**\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
                       { type: "normal", _leftTitle: "<div><u>Étape 2 :</u></div><div>L'accompagner dans son lit</div>", text: "- Mettez-[le_la] **dans son lit [ÉVEILLÉ_ÉVEILLÉE]**\n- Gardez une **main immobile** sur [lui_elle]\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n- *(possibilité de rajouter une étape : mettre votre bras autour de sa tête sans [le_la] toucher pour garder la contenance)*\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
                       { type: "normal", showIfPb: "strategie_tetine", _leftTitle: "<div>🍭 <u>Étape 2bis :</u></div><div>Suppression de la tétine (si stratégie dépendante)</div>", _leftTitleStyle: "background:#f3e8ff;color:#5b21b6;--cat-main:#7c3aed", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez la tétine**</span>\n- Gardez une **main immobile** sur [lui_elle]\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
@@ -6214,7 +6244,18 @@ const SCRIPT_DATA = {
                   },
                   { id: "accomp_prog_ventre_bercement_lit", emoji: "🛏️", label: "VENTRE - Bercement (lit)",
                     blocks: [
-                      { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN" },
+                      { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN",
+                        trailingInfoButtons: [
+                          {
+                            emoji: "🔔",
+                            label: "Alarme de respiration",
+                            title: "Alarme de respiration",
+                            blocks: [
+                              { type: "normal", text: "- **Nanny Care**\n  - Matelas épaisseur de 13cm MAX et densité 35kg/m3\n  - Jusque 7 mois (jusque BB bouge pour éviter les fausses alertes)\n  - Surveille la **respiration** (détecte **toute absence ou irrégularité** de respiration **MAIS PAS si respirations qui s'amenuisent** et qui n'o**xygène plus le cerveau**)\n  - Prix : ≃200€\n  - https://www.nanny-care.com/3-e-shop-moniteurs-respiratoires-bebe\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN\n\n- **Chausette Owlet DreamSock**\n  - Surveille la **fréquence cardiaque** et le **taux d'oxygène**\n  - Risque de **brûlure si usage prolongé** ⇒ Changer de pied régulièrement\n  - Prix : ≃300€\n  - https://owletcare.fr/products/owlet-dream-sock\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN" }
+                            ]
+                          }
+                        ]
+                      },
                       { type: "normal", showIfPb: "strategie_tetine", _leftTitle: "🍭 Option : Suppression de la tétine", _leftTitleStyle: "background:#f3e8ff;color:#5b21b6;--cat-main:#7c3aed", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez la tétine**</span> *(ATTENTION : si c'est la cause des réveils)*\n- Mettez-[le_la] dans son lit\n- Bercements du lit ou de [prénom_enfant]\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
                       { type: "normal", _leftTitle: "<div><u>Étape 1 :</u></div><div>Arrêt complet des bercements</div>", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez les bercements**</span>\n- <u>En cas d'émotions :</u> Posez une **main immobile** sur [lui_elle] temporairement\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
                       { type: "normal", _leftTitle: "<div><u>Étape 2 :</u></div><div>L'accompagner seulement depuis le milieu de la chambre</div>", text: "- **Positionnez une chaise** au **milieu de la chambre**\n- **Accompagnez-[le_la]** depuis la **chaise** *(diminuez le toucher car physiquement vous êtes + loin)*\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
@@ -6235,7 +6276,18 @@ const SCRIPT_DATA = {
                   },
                   { id: "accomp_prog_ventre_portage", emoji: "🚼", label: "VENTRE - Portage (Porte-BB / Poussette)",
                     blocks: [
-                      { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN" },
+                      { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN",
+                        trailingInfoButtons: [
+                          {
+                            emoji: "🔔",
+                            label: "Alarme de respiration",
+                            title: "Alarme de respiration",
+                            blocks: [
+                              { type: "normal", text: "- **Nanny Care**\n  - Matelas épaisseur de 13cm MAX et densité 35kg/m3\n  - Jusque 7 mois (jusque BB bouge pour éviter les fausses alertes)\n  - Surveille la **respiration** (détecte **toute absence ou irrégularité** de respiration **MAIS PAS si respirations qui s'amenuisent** et qui n'o**xygène plus le cerveau**)\n  - Prix : ≃200€\n  - https://www.nanny-care.com/3-e-shop-moniteurs-respiratoires-bebe\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN\n\n- **Chausette Owlet DreamSock**\n  - Surveille la **fréquence cardiaque** et le **taux d'oxygène**\n  - Risque de **brûlure si usage prolongé** ⇒ Changer de pied régulièrement\n  - Prix : ≃300€\n  - https://owletcare.fr/products/owlet-dream-sock\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN" }
+                            ]
+                          }
+                        ]
+                      },
                       { type: "normal", _leftTitle: "<div><u>Étape 1 :</u></div><div>Suppression des bercements</div>", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez les bercements**</span> dans le **Porte-BB / Poussette**, **endormez-[le_la]** en **restant statique** *(possibilité d'introduire un **<span style=\"border-bottom:1px dashed currentColor;cursor:help\" title=\"Petit matelas souple qui se transporte facilement\">Topponcino</span>**)*\n- <u>En cas d'émotions :</u> **Bercez-[le_la] temporairement**\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
                       { type: "normal", _leftTitle: "<div><u>Étape 1bis :</u></div><div>Option si VERTICAL</div>", _leftTitleStyle: "background:#f3e8ff;color:#5b21b6;--cat-main:#7c3aed", text: "- **Allongez-vous** en **position horizontale**\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
                       { type: "normal", _leftTitle: "<div><u>Étape 2 :</u></div><div>L'accompagner dans son lit</div>", text: "- Mettez-[le_la] **dans son lit [ÉVEILLÉ_ÉVEILLÉE]**\n- Gardez une **main immobile** sur [lui_elle]\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n- *(possibilité de rajouter une étape : mettre votre bras autour de sa tête sans [le_la] toucher pour garder la contenance)*\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
@@ -6259,7 +6311,18 @@ const SCRIPT_DATA = {
                   },
                   { id: "accomp_prog_ventre_contact", emoji: "☝️", label: "VENTRE - Contact (petit doigt)",
                     blocks: [
-                      { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN" },
+                      { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN",
+                        trailingInfoButtons: [
+                          {
+                            emoji: "🔔",
+                            label: "Alarme de respiration",
+                            title: "Alarme de respiration",
+                            blocks: [
+                              { type: "normal", text: "- **Nanny Care**\n  - Matelas épaisseur de 13cm MAX et densité 35kg/m3\n  - Jusque 7 mois (jusque BB bouge pour éviter les fausses alertes)\n  - Surveille la **respiration** (détecte **toute absence ou irrégularité** de respiration **MAIS PAS si respirations qui s'amenuisent** et qui n'o**xygène plus le cerveau**)\n  - Prix : ≃200€\n  - https://www.nanny-care.com/3-e-shop-moniteurs-respiratoires-bebe\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN\n\n- **Chausette Owlet DreamSock**\n  - Surveille la **fréquence cardiaque** et le **taux d'oxygène**\n  - Risque de **brûlure si usage prolongé** ⇒ Changer de pied régulièrement\n  - Prix : ≃300€\n  - https://owletcare.fr/products/owlet-dream-sock\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN" }
+                            ]
+                          }
+                        ]
+                      },
                       { type: "normal", showIfPb: "strategie_tetine", _leftTitle: "🍭 Option : Suppression de la tétine", _leftTitleStyle: "background:#f3e8ff;color:#5b21b6;--cat-main:#7c3aed", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez la tétine**</span> *(ATTENTION : si c'est la cause des réveils)*\n- Mettez-[le_la] dans son lit\n- Continuez de garder le **contact physique** : main / petit doigt\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
                       { type: "normal", _leftTitle: "<div><u>Étape 1 :</u></div><div>Arrêt du contact physique en continu / L'accompagner seulement depuis le milieu de la chambre</div>", text: "- **Positionnez une chaise** au **milieu de la chambre**\n- ❌ <span style=\"color:#dc2626\">**Supprimez le contact physique en continu**</span>\n- <u>En cas d'émotions :</u> Posez une **main immobile** sur [lui_elle] temporairement puis continuez d'**accompagner depuis la chaise** *(diminuez le toucher car physiquement vous êtes + loin)*\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
                       { type: "normal", _leftTitle: "<div><u>Étape 2 :</u></div><div>Sortez une fois posé dans son lit</div>", text: "- **Sortez** de la chambre **une fois [depose_deposee]** dans son lit **[ÉVEILLÉ_ÉVEILLÉE]**\n- <u>En cas d'émotions :</u> Re-rentrez, allez sur la **chaise au milieu de la chambre**\n- ❌ <span style=\"color:#dc2626\">**Supprimez le contact physique** même durant les émotions</span>\n- **Sortez** une fois qu'il est **calme MAIS [ÉVEILLÉ_ÉVEILLÉE]**\n- **Recommencez** si besoin **20 fois… ou plus !**\n\n- 🧑‍🤝‍🧑 Sortez **quand il est calme**" },
@@ -6279,7 +6342,18 @@ const SCRIPT_DATA = {
                   },
                   { id: "accomp_prog_ventre_sein_bib", emoji: "🍼🤱", label: "VENTRE - Sein / bib",
                     blocks: [
-                      { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN" },
+                      { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN",
+                        trailingInfoButtons: [
+                          {
+                            emoji: "🔔",
+                            label: "Alarme de respiration",
+                            title: "Alarme de respiration",
+                            blocks: [
+                              { type: "normal", text: "- **Nanny Care**\n  - Matelas épaisseur de 13cm MAX et densité 35kg/m3\n  - Jusque 7 mois (jusque BB bouge pour éviter les fausses alertes)\n  - Surveille la **respiration** (détecte **toute absence ou irrégularité** de respiration **MAIS PAS si respirations qui s'amenuisent** et qui n'o**xygène plus le cerveau**)\n  - Prix : ≃200€\n  - https://www.nanny-care.com/3-e-shop-moniteurs-respiratoires-bebe\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN\n\n- **Chausette Owlet DreamSock**\n  - Surveille la **fréquence cardiaque** et le **taux d'oxygène**\n  - Risque de **brûlure si usage prolongé** ⇒ Changer de pied régulièrement\n  - Prix : ≃300€\n  - https://owletcare.fr/products/owlet-dream-sock\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN" }
+                            ]
+                          }
+                        ]
+                      },
                       { type: "normal", _leftTitle: "<div><u>Étape 1 :</u></div><div>Dissocier le sein/bib du Sommeil</div>", text: "- ❌ <span style=\"color:#dc2626\">**Ne pas laisser bébé s'endormir au sein/bib**</span>, **stimulez-[le_la]** durant le temps d'alimentation\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
                       { type: "normal", _leftTitle: "<div><u>Étape 2 :</u></div><div>Suppression des bercements</div>", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez** les **bercements** dans les **bras**</span>, et **endormez-[le_la]** dans **vos bras** en **restant statique**\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
                       { type: "normal", _leftTitle: "<div><u>Étape 3 :</u></div><div>L'accompagner dans son lit</div>", text: "- Mettez-[le_la] **dans son lit [ÉVEILLÉ_ÉVEILLÉE]**\n- Gardez une **main immobile** sur [lui_elle]\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n- *(possibilité de rajouter une étape : mettre votre bras autour de sa tête sans [le_la] toucher pour garder la contenance)*\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
@@ -6302,7 +6376,18 @@ const SCRIPT_DATA = {
                   },
                   { id: "accomp_prog_ventre_ventre_parent", emoji: "🤗", label: "VENTRE - Dort sur le VENTRE du parent",
                     blocks: [
-                      { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN" },
+                      { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN",
+                        trailingInfoButtons: [
+                          {
+                            emoji: "🔔",
+                            label: "Alarme de respiration",
+                            title: "Alarme de respiration",
+                            blocks: [
+                              { type: "normal", text: "- **Nanny Care**\n  - Matelas épaisseur de 13cm MAX et densité 35kg/m3\n  - Jusque 7 mois (jusque BB bouge pour éviter les fausses alertes)\n  - Surveille la **respiration** (détecte **toute absence ou irrégularité** de respiration **MAIS PAS si respirations qui s'amenuisent** et qui n'o**xygène plus le cerveau**)\n  - Prix : ≃200€\n  - https://www.nanny-care.com/3-e-shop-moniteurs-respiratoires-bebe\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN\n\n- **Chausette Owlet DreamSock**\n  - Surveille la **fréquence cardiaque** et le **taux d'oxygène**\n  - Risque de **brûlure si usage prolongé** ⇒ Changer de pied régulièrement\n  - Prix : ≃300€\n  - https://owletcare.fr/products/owlet-dream-sock\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN" }
+                            ]
+                          }
+                        ]
+                      },
                       { type: "normal", showIfPb: "strategie_tetine", _leftTitle: "🍭 Option : Suppression de la tétine (si stratégie dépendante)", _leftTitleStyle: "background:#f3e8ff;color:#5b21b6;--cat-main:#7c3aed", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez la tétine**</span>\n- Continuez à l'endormir sur le **ventre du parent**\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
                       { type: "normal", _leftTitle: "Option : Dissocier le sein/bib du Sommeil", _leftTitleStyle: "background:#f3e8ff;color:#5b21b6;--cat-main:#7c3aed", text: "- ❌ <span style=\"color:#dc2626\">**Ne pas laisser bébé s'endormir au sein/bib**</span>, **stimulez-[le_la]** durant le temps d'alimentation\n- Mettez un **topponcino** entre le **ventre du parent** et le bébé\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
                       { type: "normal", _leftTitle: "<div><u>Étape 1 :</u></div><div>L'accompagner dans son lit</div>", text: "- Mettez-[le_la] **dans son lit [ÉVEILLÉ_ÉVEILLÉE]** (avec le **<span style=\"border-bottom:1px dashed currentColor;cursor:help\" title=\"Petit matelas souple qui se transporte facilement\">Topponcino</span>**)\n- **Bercez-[le_la]** de la main en continu\n- *(possibilité de rajouter une étape : mettre votre bras autour de sa tête sans [le_la] toucher pour garder la contenance)*\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
@@ -6325,7 +6410,18 @@ const SCRIPT_DATA = {
                   },
                   { id: "accomp_prog_ventre_dos_ventre", emoji: "🔄", label: "VENTRE - Dos ou Ventre",
                     blocks: [
-                      { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN" },
+                      { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN",
+                        trailingInfoButtons: [
+                          {
+                            emoji: "🔔",
+                            label: "Alarme de respiration",
+                            title: "Alarme de respiration",
+                            blocks: [
+                              { type: "normal", text: "- **Nanny Care**\n  - Matelas épaisseur de 13cm MAX et densité 35kg/m3\n  - Jusque 7 mois (jusque BB bouge pour éviter les fausses alertes)\n  - Surveille la **respiration** (détecte **toute absence ou irrégularité** de respiration **MAIS PAS si respirations qui s'amenuisent** et qui n'o**xygène plus le cerveau**)\n  - Prix : ≃200€\n  - https://www.nanny-care.com/3-e-shop-moniteurs-respiratoires-bebe\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN\n\n- **Chausette Owlet DreamSock**\n  - Surveille la **fréquence cardiaque** et le **taux d'oxygène**\n  - Risque de **brûlure si usage prolongé** ⇒ Changer de pied régulièrement\n  - Prix : ≃300€\n  - https://owletcare.fr/products/owlet-dream-sock\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN" }
+                            ]
+                          }
+                        ]
+                      },
                       { type: "normal", showIfPb: "strategie_tetine", _leftTitle: "🍭 Option : Suppression de la tétine", _leftTitleStyle: "background:#f3e8ff;color:#5b21b6;--cat-main:#7c3aed", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez la tétine**</span> *(ATTENTION : si c'est la cause des réveils)*\n- Mettez-[le_la] **dans son lit [ÉVEILLÉ_ÉVEILLÉE]**\n- Gardez une **main immobile** sur [lui_elle]\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
                       { type: "normal", _leftTitle: "<div>OU <u>Étape 1 :</u></div><div>L'accompagner dans son lit</div>", text: "- Mettez-[le_la] **dans son lit [ÉVEILLÉ_ÉVEILLÉE]**\n- Gardez une **main immobile** sur [lui_elle]\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
                       { type: "normal", _leftTitle: "<div><u>Étape 2 :</u></div><div>L'accompagner depuis le milieu de la chambre</div>", text: "- **Positionnez une chaise** au **milieu de la chambre**\n- ❌ <span style=\"color:#dc2626\">**Supprimez le contact physique en continu**</span>\n- <u>En cas d'émotions :</u> Posez une **main immobile** sur [lui_elle] temporairement puis continuez d'**accompagner depuis la chaise** *(diminuez le toucher car physiquement vous êtes + loin)*\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
