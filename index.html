@@ -2815,7 +2815,7 @@
       color: #713f12;
     }
     /* Mode "pills + contenu déplié" pour courbe_cards_grid.expandAllAsPills
-       (utilisé par accomp_progressivite : DOS/VENTRE + Bercement/Portage en pastille,
+       (utilisé par les 4 parents Accompagnement : pastille magenta solide à gauche,
        puis texte des étapes directement visible sans clic) */
     .courbe-cards-grid-wrap--pills {
       text-align: left;
@@ -2823,22 +2823,25 @@
     }
     .ccg-pill-section {
       margin: 0 0 24px;
+      text-align: left;
     }
     .ccg-pill {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 6px 16px;
-      background: #fce7f3;
-      border: 2px solid #ec4899;
+      gap: 10px;
+      padding: 10px 22px;
+      background: #be185d;
+      border: none;
       border-radius: 999px;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 800;
-      color: #831843;
-      margin: 0 0 10px;
+      color: #ffffff;
+      margin: 0 0 12px;
+      box-shadow: 0 2px 8px rgba(190, 24, 93, 0.25);
     }
-    .ccg-pill-emoji { font-size: 16px; line-height: 1; }
-    .ccg-pill-content { margin-left: 4px; }
+    .ccg-pill-emoji { font-size: 17px; line-height: 1; }
+    .ccg-pill-label { color: #ffffff; }
+    .ccg-pill-content { margin-left: 0; }
     /* Pulse animation pour guider l'utilisateur (Solution B : tickbox/sous-cases manquantes) */
     @keyframes sol-pulse-glow {
       0%, 100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
