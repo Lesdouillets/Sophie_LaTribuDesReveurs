@@ -2433,6 +2433,23 @@
       background: #d8a7b1;
     }
 
+    /* OPTION ACTION — variante ROSE POUDRÉ CLAIR (encore plus doux) */
+    .block-option.action.action-rose-poudre-clair:not(.open-action) {
+      background: #ead6da;
+      box-shadow: 0 4px 15px rgba(234,214,218,0.40);
+    }
+    .block-option.action.action-rose-poudre-clair:not(.open-action) > .option-header .option-label-text,
+    .block-option.action.action-rose-poudre-clair:not(.open-action) > .option-header .option-toggle {
+      color: #6d3a47;
+    }
+    .block-option.action.action-rose-poudre-clair.open-action > .option-header {
+      background: #ead6da;
+    }
+    .block-option.action.action-rose-poudre-clair.open-action > .option-header .option-label-text,
+    .block-option.action.action-rose-poudre-clair.open-action > .option-header .option-toggle {
+      color: #6d3a47;
+    }
+
     /* OPTION ACTION — variante JAUNE RECTANGLE (bouton fermé uniquement)
        Garde le layout en colonne centré (hérité de .action) pour que titre et "Dérouler" soient centrés. */
     .block-option.action.action-yellow:not(.open-action) {
@@ -6765,7 +6782,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=397"></script>
+<script src="script-data.js?v=398"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -10369,10 +10386,11 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const purpleClass = b.style === 'purple' ? ' purple' : '';
     const purpleBtnClass = b.style === 'purple-btn' ? ' purple-btn' : '';
     const compactBtnClass = b._compact ? ' compact-btn' : '';
-    const actionClass = (b.style === 'action' || b.style === 'action-green' || b.style === 'action-yellow' || b.style === 'action-rose-poudre') ? ' action' : '';
+    const actionClass = (b.style === 'action' || b.style === 'action-green' || b.style === 'action-yellow' || b.style === 'action-rose-poudre' || b.style === 'action-rose-poudre-clair') ? ' action' : '';
     const actionGreenClass = b.style === 'action-green' ? ' action-green' : '';
     const actionYellowClass = b.style === 'action-yellow' ? ' action-yellow' : '';
     const actionRosePoudreClass = b.style === 'action-rose-poudre' ? ' action-rose-poudre' : '';
+    const actionRosePoudreClairClass = b.style === 'action-rose-poudre-clair' ? ' action-rose-poudre-clair' : '';
     const actionPurpleInsideClass = b._purpleContent ? ' action-purple-inside' : '';
     const pillStyleClass = b._pillStyle ? ' pill-style' : '';
     const compactClosedClass = b._compactClosed ? ' compact-closed' : '';
@@ -10380,7 +10398,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const miniClass = b._mini ? ' option-mini' : '';
     const emojiHtml = b.emoji ? `<span class="option-emoji">${b.emoji}</span>` : '';
     const mutexAttr = b.mutexGroup ? ` data-mutex-group="${String(b.mutexGroup).replace(/"/g, '&quot;')}"` : '';
-    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${purpleBtnClass}${compactBtnClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionRosePoudreClass}${actionPurpleInsideClass}${pillStyleClass}${compactClosedClass}${cardClass}${miniClass}"${mutexAttr}>
+    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${purpleBtnClass}${compactBtnClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionRosePoudreClass}${actionRosePoudreClairClass}${actionPurpleInsideClass}${pillStyleClass}${compactClosedClass}${cardClass}${miniClass}"${mutexAttr}>
       <div class="option-header" onclick="toggleOption(this)">
         <span style="display:flex;align-items:center;gap:6px">
           ${emojiHtml}
