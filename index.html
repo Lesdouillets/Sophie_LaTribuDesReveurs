@@ -9554,7 +9554,7 @@ function navigateTo(idx) {
       || choices['obj_tetine_static']
       || state.selectedPbs.has('souhait_tetine');
     if (!hasSubChoice) {
-      setTimeout(() => alert('⚠️ La problématique « Dépendance tétine » est cochée mais aucune sous-option n\'a été choisie.\n\nMerci de choisir : Garder / Supprimer / Hybride dans IV. Objectifs ou V. Diagnostic.'), 100);
+      setTimeout(() => openTetineNoChoiceModal(), 100);
     }
   }
 }
@@ -11523,6 +11523,46 @@ function openTetineConflictModal() {
     document.body.appendChild(modal);
   }
   modal.style.display = 'flex';
+}
+
+function openTetineNoChoiceModal() {
+  let modal = document.getElementById('tetine-no-choice-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'tetine-no-choice-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center';
+    modal.innerHTML = `
+      <div style="background:#fff;border-radius:14px;padding:24px 28px;max-width:480px;box-shadow:0 8px 28px rgba(0,0,0,0.3)">
+        <div style="font-weight:800;font-size:16px;color:#b45309;margin-bottom:8px">⚠️ Choix manquant : Dépendance tétine</div>
+        <div style="font-size:14px;line-height:1.55;margin-bottom:18px;color:#333">
+          La problématique « Dépendance tétine » est cochée mais aucune sous-option n'a été choisie.<br>
+          Merci de choisir :
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button type="button" onclick="resolveTetineNoChoice('garder')" style="padding:10px 14px;background:#dcfce7;border:2px solid #16a34a;border-radius:10px;font-weight:700;color:#14532d;cursor:pointer;font-family:inherit">✅ Garder la tétine</button>
+          <button type="button" onclick="resolveTetineNoChoice('supprimer')" style="padding:10px 14px;background:#fee2e2;border:2px solid #dc2626;border-radius:10px;font-weight:700;color:#7f1d1d;cursor:pointer;font-family:inherit">❌ Supprimer la tétine</button>
+          <button type="button" onclick="resolveTetineNoChoice('hybride')" style="padding:10px 14px;background:#fef3c7;border:2px solid #eab308;border-radius:10px;font-weight:700;color:#713f12;cursor:pointer;font-family:inherit">🔀 Hybride</button>
+        </div>
+      </div>`;
+    document.body.appendChild(modal);
+  }
+  modal.style.display = 'flex';
+}
+
+function resolveTetineNoChoice(choice) {
+  if (!state.tickboxChoices) state.tickboxChoices = {};
+  state.tickboxChoices.obj_tetine_static = choice;
+  state.tickboxChoices.strategie_tetine_choice = choice;
+  if (!state.selectedPbs) state.selectedPbs = new Set();
+  if (choice === 'supprimer') state.selectedPbs.add('souhait_tetine');
+  else state.selectedPbs.delete('souhait_tetine');
+  const modal = document.getElementById('tetine-no-choice-modal');
+  if (modal) modal.style.display = 'none';
+  if (typeof buildSections === 'function') buildSections();
+  if (typeof buildSidebar === 'function') buildSidebar();
+  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+  if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 
 function resolveTetineConflict(choice) {
