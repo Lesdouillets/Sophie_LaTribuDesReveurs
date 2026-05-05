@@ -6632,7 +6632,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=375"></script>
+<script src="script-data.js?v=376"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -10657,6 +10657,16 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         const allaitMode = Array.isArray(c.allaitementMode) ? c.allaitementMode : [];
         if (!vals.some(v => alim.includes(v) || allaitMode.includes(v))) return true;
       }
+      if (it.showIfTickbox) {
+        const checks = Array.isArray(it.showIfTickbox) ? it.showIfTickbox : [it.showIfTickbox];
+        const choices = state.tickboxChoices || {};
+        if (!checks.some(c => choices[c.cid] === c.value)) return true;
+      }
+      if (it.hideIfTickbox) {
+        const checks = Array.isArray(it.hideIfTickbox) ? it.hideIfTickbox : [it.hideIfTickbox];
+        const choices = state.tickboxChoices || {};
+        if (checks.some(c => choices[c.cid] === c.value)) return true;
+      }
       return false;
     };
     const visibleItems = b.forceAllItems
@@ -11802,9 +11812,11 @@ function renderSolutionsCheckboxes(opts) {
         : '';
       const rowClass = rowCollapsed ? ' sol-row-collapsed' : '';
       const chEmoji = ch.cardEmoji ? `<span class="sol-row-emoji">${ch.cardEmoji}</span>` : '';
+      const rowLabelText = ch.label || ch.id;
+      const rowLabelHtml = ch.solChecklistUnderline ? `<u>${rowLabelText}</u>` : rowLabelText;
       return `<div data-sol-id="${ch.id}" class="sol-row-wrap${rowClass}"><div class="sol-row-header"><label class="sol-row" style="flex:1">
         <input type="checkbox" ${checked?'checked':''} onchange="toggleSolution('${ch.id}', this.checked)">
-        ${chEmoji}<span class="sol-row-label">${ch.label || ch.id}</span>
+        ${chEmoji}<span class="sol-row-label">${rowLabelHtml}</span>
       </label>${arrowHtml}</div>${subRows}</div>`;
     }).join('');
     const bulkBtns = '';
