@@ -5949,7 +5949,7 @@ const SCRIPT_DATA = {
               }
             ]
           },
-          { id: "accomp_progressivite_dos", label: "Progressivité - Sur le DOS", cardLabel: "Progressivité - Sur le DOS", cardEmoji: "🛏️",
+          { id: "accomp_progressivite_dos", label: "Progressivité - Sur le DOS", cardLabel: "Progressivité - Sur le DOS", cardEmoji: "🛏️", hideIfTickbox: { cid: "obj_position_sommeil", value: "ventrale" },
             blocks: [
               {
                 type: "courbe_cards_grid",
@@ -6155,7 +6155,7 @@ const SCRIPT_DATA = {
               }
             ]
           },
-          { id: "accomp_progressivite_ventre", label: "Progressivité - Sur le VENTRE", cardLabel: "Progressivité - Sur le VENTRE", cardEmoji: "🤰",
+          { id: "accomp_progressivite_ventre", label: "Progressivité - Sur le VENTRE", cardLabel: "Progressivité - Sur le VENTRE", cardEmoji: "🤰", hideIfTickbox: { cid: "obj_position_sommeil", value: "dorsale" },
             blocks: [
               {
                 type: "courbe_cards_grid",
