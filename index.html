@@ -1393,6 +1393,8 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.10);
     }
     .info-btn:active { transform: translateY(1px); }
+    /* Bouton trigger masqué quand son panel info est ouvert (click-outside ou ✕ pour le faire réapparaître) */
+    .info-btn.info-btn-active-hidden { display: none !important; }
     .info-btn-wrap { display: block; margin: 8px 0; }
     .info-btn-wrap.info-btn-align-right { text-align: right; }
     .info-btn-emoji { font-size: 16px; }
@@ -9843,7 +9845,13 @@ function openInfoPanel(btnId) {
   } else {
     panel.classList.remove('info-panel-wide');
   }
+  // Réafficher l'ancien bouton actif (si on switche d'un trigger à un autre)
+  if (window.__activeInfoBtnId && window.__activeInfoBtnId !== btnId) {
+    document.querySelectorAll(`[data-info-btn-id="${window.__activeInfoBtnId}"]`).forEach(b => b.classList.remove('info-btn-active-hidden'));
+  }
   window.__activeInfoBtnId = btnId;
+  // Masquer le bouton trigger actif (sera réaffiché à la fermeture)
+  document.querySelectorAll(`[data-info-btn-id="${btnId}"]`).forEach(b => b.classList.add('info-btn-active-hidden'));
   // Initialise les widgets dynamiques (labels qui dépendent de state.client)
   if (typeof updatePotentielGenetique === 'function' && bodyEl.querySelector('#pg-pere-input')) {
     updatePotentielGenetique();
@@ -9858,6 +9866,10 @@ function openInfoPanel(btnId) {
 function closeInfoPanel() {
   const panel = document.getElementById('info-panel');
   if (panel) panel.classList.remove('open');
+  // Réafficher le bouton trigger qui était masqué
+  if (window.__activeInfoBtnId) {
+    document.querySelectorAll(`[data-info-btn-id="${window.__activeInfoBtnId}"]`).forEach(b => b.classList.remove('info-btn-active-hidden'));
+  }
   window.__activeInfoBtnId = null;
   document.removeEventListener('click', _infoPanelOutsideClickHandler, true);
 }
@@ -11558,7 +11570,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       // Style additionnel custom (couleur, bordure...) via tb._style
       const btnStyle = baseBtnStyle + (tb._style ? ';' + tb._style : '');
       const btnEmoji = tb.emoji || '💡';
-      return `<button type="button" class="${cls}" contenteditable="false" onclick="openInfoPanel('${btnId}')" style="${btnStyle}"><span class="info-btn-emoji" style="margin-right:8px">${btnEmoji}</span><span>${label}</span></button>`;
+      return `<button type="button" class="${cls}" contenteditable="false" data-info-btn-id="${btnId}" onclick="openInfoPanel('${btnId}')" style="${btnStyle}"><span class="info-btn-emoji" style="margin-right:8px">${btnEmoji}</span><span>${label}</span></button>`;
     }).join('');
     trailingBtnHtml = trailingBtnsList.length > 1
       ? `<div class="info-btns-stack" contenteditable="false" style="width:380px;float:right;margin:0 0 10px 14px">${btnsInner}</div>`
