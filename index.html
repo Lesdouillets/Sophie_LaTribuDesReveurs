@@ -12371,13 +12371,18 @@ function applyParentTickCascade() {
     });
   });
   // Niveau 0 ← Niveau 1 : solution tickée iff au moins un item VISIBLE du grid alwaysShowAll est tické
+  // EXCEPTION : si la solution a un tickbox_choice prérequis (ex. accomp_progressivite avec
+  // accomp_position_choice), il faut AUSSI que la valeur soit définie pour cocher le parent
   sols.forEach(cat => {
     (cat.children || []).forEach(ch => {
       if (!Array.isArray(ch.blocks)) return;
       const grid = ch.blocks.find(b => b && b.type === 'courbe_cards_grid' && b.alwaysShowAll);
       if (!grid || !Array.isArray(grid.items)) return;
       const anyChildTicked = grid.items.some(it => !isItemHidden(it) && state.courbeCardsTicked.has(it.id));
-      if (anyChildTicked) state.selectedSolutions.add(ch.id);
+      // Vérifier si un tickbox_choice prérequis existe et est rempli
+      const tbBlock = ch.blocks.find(b => b && b.type === 'tickbox_choice' && b.id);
+      const tbFilled = !tbBlock || !!(state.tickboxChoices && state.tickboxChoices[tbBlock.id]);
+      if (anyChildTicked && tbFilled) state.selectedSolutions.add(ch.id);
       else state.selectedSolutions.delete(ch.id);
       state.selectedSolutionsManuallyEdited.delete(ch.id);
     });
@@ -14001,6 +14006,11 @@ function selectTickboxChoice(el) {
   if (cid === 'obj_position_sommeil') {
     const currentValue = wasSelected ? null : el.dataset.value;
     setPb('souhait_position_dorsale', currentValue === 'dorsale');
+    syncChanged = true;
+  }
+  // accomp_position_choice → re-render pour mettre à jour le filtrage des sous-cartes DOS/VENTRE
+  // dans accomp_progressivite + le pulse (Solution B)
+  if (cid === 'accomp_position_choice') {
     syncChanged = true;
   }
   // env_lit_ouvert_apres_1an / env_lit_ouvert_avant_1an : tickbox dans la carte V. Diagnostic
