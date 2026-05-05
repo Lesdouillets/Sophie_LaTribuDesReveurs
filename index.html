@@ -1462,21 +1462,35 @@
     .courbe-card-content .block-with-left-title {
       border: 1px solid var(--cat-main, #cbd5e0);
     }
-    /* Section pliable via <details> (flag _collapsible: true sur le bloc) */
+    /* Section pliable via <details> (flag _collapsible: true sur le bloc).
+       Override de la grid layout standard : titre full-width sur 1 ligne, contenu en dessous. */
     details.block-collapsible {
+      display: block !important;
+      grid-template-columns: none !important;
       cursor: default;
+      background: transparent !important;
+      margin-bottom: 8px;
     }
     details.block-collapsible > summary.block-collapsible-summary {
       cursor: pointer;
       list-style: none;
       position: relative;
-      padding-right: 28px;
+      display: block !important;
+      width: 100%;
+      padding: 10px 36px 10px 16px;
+      text-align: left;
+      border-radius: 8px;
+      box-sizing: border-box;
+      flex-direction: row !important;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     details.block-collapsible > summary.block-collapsible-summary::-webkit-details-marker { display: none; }
     details.block-collapsible > summary.block-collapsible-summary::after {
       content: "▾";
       position: absolute;
-      right: 10px;
+      right: 12px;
       top: 50%;
       transform: translateY(-50%) rotate(-90deg);
       transition: transform 0.2s ease;
@@ -1488,6 +1502,11 @@
     }
     details.block-collapsible[open] > summary.block-collapsible-summary {
       border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    details.block-collapsible > .edit-block-wrap,
+    details.block-collapsible > div:not(.block-collapsible-summary) {
+      padding: 8px 16px;
     }
     .block-left-title {
       font-size: 13px;
