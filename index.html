@@ -2916,6 +2916,67 @@
     .ccg-pill-emoji { font-size: 17px; line-height: 1; }
     .ccg-pill-label { color: #ffffff; }
     .ccg-pill-content { margin-left: 0; }
+    /* Grille 2 colonnes pour panneaux info-panel-wide avec collapsibles (ex. Ecueils).
+       Activée par flag _layoutGrid: true sur le trailing button (classe .info-grid-layout). */
+    .info-grid-layout {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      align-content: start;
+    }
+    .info-grid-layout > details.block-collapsible {
+      grid-column: span 1;
+      margin-bottom: 0;
+    }
+    .info-grid-layout > details.block-collapsible[open] {
+      grid-column: 1 / -1;
+    }
+    .info-grid-layout > .edit-block-wrap {
+      grid-column: 1 / -1;
+      margin: 0;
+    }
+    /* Catégorie header */
+    .cat-header {
+      grid-column: 1 / -1;
+      padding: 6px 10px;
+      margin: 12px 0 4px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #5a3540;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      border-bottom: 2px solid #c98aa8;
+    }
+    /* TOC emoji bar en haut */
+    .ecueils-toc {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 10px 12px;
+      background: #fef3e9;
+      border: 1px solid #f5d6c4;
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+    .ecueils-toc-item {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      font-size: 20px;
+      cursor: pointer;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid #e5c4a8;
+      transition: transform 0.12s, background 0.12s, border-color 0.12s;
+    }
+    .ecueils-toc-item:hover {
+      transform: translateY(-2px);
+      background: #fff8ef;
+      border-color: #d4865a;
+    }
     /* Pulse animation pour guider l'utilisateur (Solution B : tickbox/sous-cases manquantes) */
     @keyframes sol-pulse-glow {
       0%, 100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
