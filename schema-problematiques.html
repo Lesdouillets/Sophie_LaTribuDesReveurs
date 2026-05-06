@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schema - Arbre des Problematiques</title>
+<style>
+  :root {
+    --auto-bg: #e8e8e8;
+    --manual-bg: #ffffff;
+    --consequence-bg: #f8d0d8;
+    --depth0: #e8f0fe;
+    --depth1: #c5d9f7;
+    --depth2: #9dbcf0;
+    --depth3: #7ba3e8;
+    --exclusive-red: #d32f2f;
+    --auto-green: #2e7d32;
+    --requires-orange: #e65100;
+    --border-color: #bbb;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: #f4f6f9;
+    color: #222;
+    padding: 24px;
+    line-height: 1.5;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+    color: #1a237e;
+  }
+  .subtitle {
+    text-align: center;
+    color: #555;
+    margin-bottom: 28px;
+    font-size: 0.95rem;
+  }
+
+  /* ---- LEGEND ---- */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    justify-content: center;
+    margin-bottom: 32px;
+    padding: 16px 20px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .legend-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .legend-section h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #666;
+    margin-bottom: 2px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+  }
+  .legend-swatch {
+    width: 28px;
+    height: 18px;
+    border-radius: 4px;
+    border: 1px solid #bbb;
+    flex-shrink: 0;
+  }
+  .legend-arrow {
+    width: 40px;
+    height: 3px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .legend-arrow::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -4px;
+    border: 5px solid transparent;
+  }
+  .legend-arrow.solid-red { background: var(--exclusive-red); }
+  .legend-arrow.solid-red::after { border-left-color: var(--exclusive-red); }
+  .legend-arrow.solid-green { background: var(--auto-green); }
+  .legend-arrow.solid-green::after { border-left-color: var(--auto-green); }
+  .legend-arrow.dotted-orange {
+    background: repeating-linear-gradient(90deg, var(--requires-orange) 0 6px, transparent 6px 10px);
+    height: 3px;
+  }
+  .legend-arrow.dotted-orange::after { border-left-color: var(--requires-orange); }
+
+  /* ---- CATEGORY ---- */
+  .category {
+    margin-bottom: 28px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid #c0c8d8;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .cat-header {
+    padding: 12px 20px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .cat-header .badge {
+    font-size: 0.75rem;
+    background: rgba(255,255,255,0.25);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+  .cat-body {
+    padding: 14px 18px;
+    background: #fff;
+  }
+
+  /* category colors */
+  .cat-confort .cat-header    { background: #6a1b9a; }
+  .cat-nutrition .cat-header  { background: #e65100; }
+  .cat-organisation .cat-header { background: #0277bd; }
+  .cat-strategie .cat-header  { background: #4527a0; }
+  .cat-environnement .cat-header { background: #2e7d32; }
+  .cat-enjeux .cat-header     { background: #c62828; }
+  .cat-souhaits .cat-header   { background: #00695c; }
+
+  /* ---- TREE NODES ---- */
+  .tree { padding-left: 0; }
+  .tree ul { padding-left: 26px; border-left: 2px solid #d0d4dc; margin: 4px 0 4px 14px; }
+
+  .node {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 5px 0;
+    position: relative;
+  }
+  .node-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    border: 1px solid var(--border-color);
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  /* backgrounds */
+  .node-box.auto {
+    background: var(--auto-bg);
+    border-style: dashed;
+  }
+  .node-box.manual {
+    background: var(--manual-bg);
+  }
+  .node-box.consequence {
+    background: var(--consequence-bg);
+    border-color: #d4889a;
+  }
+
+  /* depth tints (applied as left border accent) */
+  .depth-0 .node-box { border-left: 4px solid var(--depth0); }
+  .depth-1 .node-box { border-left: 4px solid var(--depth1); }
+  .depth-2 .node-box { border-left: 4px solid var(--depth2); }
+  .depth-3 .node-box { border-left: 4px solid var(--depth3); }
+
+  /* tags */
+  .tag {
+    font-size: 0.65rem;
+    padding: 1px 6px;
+    border-radius: 8px;
+    font-weight: 600;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .tag-auto      { background: #c8e6c9; color: #1b5e20; }
+  .tag-exclusive { background: #ffcdd2; color: #b71c1c; }
+  .tag-menu      { background: #bbdefb; color: #0d47a1; }
+  .tag-simple    { background: #e0e0e0; color: #424242; }
+  .tag-1option   { background: #ffe0b2; color: #e65100; }
+  .tag-requires  { background: #ffe0b2; color: #bf360c; }
+  .tag-cochable  { background: #c8e6c9; color: #2e7d32; }
+  .tag-sub       { background: #d1c4e9; color: #4527a0; }
+  .tag-excludes  { background: #ffcdd2; color: #c62828; }
+  .tag-sync      { background: #b3e5fc; color: #01579b; }
+
+  /* ---- RULES / RELATION BOXES ---- */
+  .rule-block {
+    margin: 8px 0 8px 30px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .rule-exclusive {
+    background: #ffebee;
+    border: 1px solid #ef9a9a;
+    color: var(--exclusive-red);
+  }
+  .rule-auto {
+    background: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    color: var(--auto-green);
+  }
+  .rule-requires {
+    background: #fff3e0;
+    border: 1px dashed #ffb74d;
+    color: var(--requires-orange);
+  }
+  .rule-exclusive::before { content: '\21C6'; font-size: 1rem; }
+  .rule-auto::before      { content: '\2191'; font-size: 1rem; }
+  .rule-requires::before  { content: '\21E2'; font-size: 1rem; }
+
+  /* ---- EXCLUSIVE GROUP ---- */
+  .exclusive-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+    margin: 4px 0 4px 30px;
+    padding: 6px 10px;
+    background: #ffebee;
+    border: 1px solid #ef9a9a;
+    border-radius: 8px;
+  }
+  .exclusive-group .eg-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--exclusive-red);
+    margin-right: 4px;
+  }
+  .exclusive-group .eg-item {
+    font-size: 0.82rem;
+    padding: 2px 8px;
+    background: #fff;
+    border: 1px solid #ef9a9a;
+    border-radius: 4px;
+  }
+  .exclusive-group .eg-sep {
+    color: var(--exclusive-red);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  /* ---- NOTES ---- */
+  .note {
+    font-size: 0.78rem;
+    color: #666;
+    font-style: italic;
+    margin-left: 6px;
+  }
+
+  /* ---- GRID FOR FLAT LISTS ---- */
+  .flat-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 6px 0 6px 30px;
+  }
+  .flat-list .node-box {
+    font-size: 0.82rem;
+    padding: 4px 10px;
+  }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 800px) {
+    body { padding: 10px; }
+    .legend { flex-direction: column; gap: 10px; }
+    .tree ul { padding-left: 16px; }
+  }
+
+  /* print friendly */
+  @media print {
+    body { background: #fff; }
+    .category { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Arbre des Problematiques</h1>
+<p class="subtitle">Schema complet des regles du systeme de cases a cocher &mdash; categories, hierarchie, exclusions et dependances</p>
+
+<!-- ============ LEGEND ============ -->
+<div class="legend">
+  <div class="legend-section">
+    <h3>Fond des cases</h3>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--auto-bg);border-style:dashed;"></div> Gris pointille = auto-only (non cochable)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--manual-bg);"></div> Blanc = cochable manuellement</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--consequence-bg);"></div> Rose = consequence</div>
+  </div>
+  <div class="legend-section">
+    <h3>Bordure gauche (profondeur)</h3>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--depth0);"></div> Niveau 0 &ndash; categorie</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--depth1);"></div> Niveau 1</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--depth2);"></div> Niveau 2</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--depth3);"></div> Niveau 3</div>
+  </div>
+  <div class="legend-section">
+    <h3>Relations (fleches)</h3>
+    <div class="legend-item"><div class="legend-arrow solid-red"></div> Exclusion mutuelle</div>
+    <div class="legend-item"><div class="legend-arrow solid-green"></div> Auto-parent (coche le parent)</div>
+    <div class="legend-item"><div class="legend-arrow dotted-orange"></div> Requiert un frere (dependance)</div>
+  </div>
+  <div class="legend-section">
+    <h3>Tags</h3>
+    <div class="legend-item"><span class="tag tag-auto">auto</span> Se coche automatiquement</div>
+    <div class="legend-item"><span class="tag tag-exclusive">exclusif</span> Groupe exclusif</div>
+    <div class="legend-item"><span class="tag tag-menu">menu</span> Menu deroulant</div>
+    <div class="legend-item"><span class="tag tag-requires">requiert</span> Necessite un frere coche</div>
+    <div class="legend-item"><span class="tag tag-cochable">cochable</span> Cochable seul</div>
+    <div class="legend-item"><span class="tag tag-1option">1 option</span> Une seule option possible</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 1. CONFORT PHYSIQUE -->
+<!-- ============================================================ -->
+<div class="category cat-confort">
+  <div class="cat-header">&#x1FA7A; Confort physique <span class="badge">1 option possible</span></div>
+  <div class="cat-body">
+    <div class="exclusive-group">
+      <span class="eg-label">EXCLUSIF (1 seul choix) :</span>
+      <span class="eg-item">RGO + Allergie</span>
+      <span class="eg-sep">/</span>
+      <span class="eg-item">Allergie seule</span>
+      <span class="eg-sep">/</span>
+      <span class="eg-item">RGO seul</span>
+    </div>
+    <div class="rule-block rule-auto" style="margin-top:8px;">Sync medicale : RGO et APLV se synchronisent depuis l'onglet Sante</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 2. NUTRITION -->
+<!-- ============================================================ -->
+<div class="category cat-nutrition">
+  <div class="cat-header">&#x1F37D;&#xFE0F; Nutrition</div>
+  <div class="cat-body">
+    <div class="tree">
+      <!-- Courbes pas OK -->
+      <div class="node depth-0">
+        <div class="node-box auto">Courbes pas OK <span class="tag tag-auto">auto</span></div>
+      </div>
+      <ul>
+        <!-- Courbe de poids -->
+        <li>
+          <div class="node depth-1">
+            <div class="node-box auto">Courbe de poids declinante <span class="tag tag-auto">auto</span></div>
+            <span class="note">valeur numerique associee</span>
+          </div>
+          <ul>
+            <!-- Espacement -->
+            <li>
+              <div class="node depth-2">
+                <div class="node-box auto">Espacement <span class="tag tag-auto">auto</span></div>
+              </div>
+              <div class="exclusive-group">
+                <span class="eg-label">EXCLUSIF :</span>
+                <span class="eg-item">Trop long</span>
+                <span class="eg-sep">/</span>
+                <span class="eg-item">Trop court</span>
+              </div>
+            </li>
+
+            <!-- Volume/duree bib -->
+            <li>
+              <div class="node depth-2">
+                <div class="node-box auto">Volume / duree des bib <span class="tag tag-auto">auto</span></div>
+              </div>
+              <div class="exclusive-group">
+                <span class="eg-label">EXCLUSIF petit/gros :</span>
+                <span class="eg-item">Petit bib</span>
+                <span class="eg-sep">/</span>
+                <span class="eg-item">Gros bib</span>
+                <span class="eg-sep">/</span>
+                <span class="eg-item">Boit bib longtemps</span>
+              </div>
+            </li>
+
+            <!-- Tetee -->
+            <li>
+              <div class="node depth-2">
+                <div class="node-box manual">Tetee : baisse de lactation <span class="tag tag-cochable">cochable</span></div>
+              </div>
+              <div class="flat-list">
+                <div class="node-box manual" style="border-left:4px solid var(--depth3);">Longue tetee</div>
+                <div class="node-box manual" style="border-left:4px solid var(--depth3);">Greve tetees</div>
+                <div class="node-box manual" style="border-left:4px solid var(--depth3);">Cause : Mode de garde</div>
+              </div>
+            </li>
+
+            <!-- Inversion -->
+            <li>
+              <div class="node depth-2">
+                <div class="node-box auto">Inversion <span class="tag tag-auto">auto</span></div>
+              </div>
+              <div class="exclusive-group">
+                <span class="eg-label">EXCLUSIF :</span>
+                <span class="eg-item">Jour / Nuit</span>
+                <span class="eg-sep">/</span>
+                <span class="eg-item">Lait / Solide</span>
+              </div>
+            </li>
+
+            <!-- Tetine -->
+            <li>
+              <div class="node depth-2">
+                <div class="node-box manual">Tetine = cache-faim <span class="tag tag-simple">simple</span></div>
+              </div>
+            </li>
+
+            <!-- Autre -->
+            <li>
+              <div class="node depth-2">
+                <div class="node-box auto">Autre <span class="tag tag-auto">auto</span></div>
+              </div>
+              <div class="flat-list">
+                <div class="node-box auto" style="border-left:4px solid var(--depth3);">Pas assez feculents</div>
+                <div class="node-box auto" style="border-left:4px solid var(--depth3);">Lait/solides important</div>
+                <div class="node-box auto" style="border-left:4px solid var(--depth3);">Jus vegetal</div>
+                <div class="node-box auto" style="border-left:4px solid var(--depth3);">Lait animal</div>
+              </div>
+            </li>
+
+            <!-- Consequences -->
+            <li>
+              <div class="node depth-2">
+                <div class="node-box consequence">Consequence : Inconfort <span class="tag tag-requires">requiert frere</span></div>
+              </div>
+              <div class="rule-block rule-requires">Necessite qu'au moins un frere (meme niveau) soit coche</div>
+            </li>
+            <li>
+              <div class="node depth-2">
+                <div class="node-box consequence">Consequence : Mange la nuit <span class="tag tag-requires">requiert frere</span></div>
+              </div>
+              <div class="rule-block rule-requires">Necessite qu'au moins un frere (meme niveau) soit coche</div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- Auto-parent chain note -->
+      <div class="rule-block rule-auto" style="margin:10px 0 0 0;">
+        Chaine auto-parent : cocher un enfant coche automatiquement Courbe de poids declinante &rarr; Courbes pas OK &rarr; Nutrition
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 3. ORGANISATION DE LA JOURNEE -->
+<!-- ============================================================ -->
+<div class="category cat-organisation">
+  <div class="cat-header">&#x23F0; Organisation de la journee</div>
+  <div class="cat-body">
+    <div class="tree">
+
+      <!-- Temps d'eveil -->
+      <div class="node depth-0">
+        <div class="node-box auto">Temps d'eveil <span class="tag tag-auto">auto</span></div>
+      </div>
+      <ul>
+        <li>
+          <div class="node depth-1">
+            <div class="node-box manual">Trop long <span class="tag tag-cochable">cochable</span> <span class="tag tag-menu">menu</span> <span class="tag tag-exclusive">exclusif avec Trop court</span></div>
+          </div>
+          <ul>
+            <li><div class="node depth-2"><div class="node-box consequence">Consequence : Siestes courtes</div></div></li>
+            <li><div class="node depth-2"><div class="node-box consequence">Consequence : Reveils matinaux</div></div></li>
+          </ul>
+        </li>
+        <li>
+          <div class="node depth-1">
+            <div class="node-box manual">Trop court <span class="tag tag-cochable">cochable</span> <span class="tag tag-menu">menu</span> <span class="tag tag-exclusive">exclusif avec Trop long</span></div>
+          </div>
+          <ul>
+            <li><div class="node depth-2"><div class="node-box consequence">Consequence : Siestes courtes</div></div></li>
+          </ul>
+        </li>
+      </ul>
+      <div class="exclusive-group" style="margin-left:30px;">
+        <span class="eg-label">EXCLUSIF :</span>
+        <span class="eg-item">Trop long</span>
+        <span class="eg-sep">&harr;</span>
+        <span class="eg-item">Trop court</span>
+      </div>
+
+      <!-- Siestes courtes TE OK -->
+      <div class="node depth-0" style="margin-top:10px;">
+        <div class="node-box manual">Siestes courtes TE OK <span class="tag tag-simple">simple</span> <span class="tag tag-excludes">exclut Temps d'eveil</span></div>
+      </div>
+      <div class="rule-block rule-exclusive" style="margin-left:30px;">S'exclut mutuellement avec Temps d'eveil (et ses enfants)</div>
+
+      <!-- Horaires aleatoires -->
+      <div class="node depth-0" style="margin-top:8px;">
+        <div class="node-box manual">Horaires aleatoires <span class="tag tag-simple">simple</span></div>
+      </div>
+
+      <!-- Reveils matinaux -->
+      <div class="node depth-0" style="margin-top:8px;">
+        <div class="node-box auto">Reveils matinaux <span class="tag tag-sub">sous-parent</span> <span class="tag tag-auto">auto</span></div>
+      </div>
+      <div class="flat-list">
+        <div class="node-box manual" style="border-left:4px solid var(--depth1);">Decalage horaire</div>
+        <div class="node-box manual" style="border-left:4px solid var(--depth1);">Fatigue accumulee</div>
+        <div class="node-box manual" style="border-left:4px solid var(--depth1);">Enjeu relationnel</div>
+        <div class="node-box manual" style="border-left:4px solid var(--depth1);">Mange et ne peut pas se rendormir</div>
+        <div class="node-box manual" style="border-left:4px solid var(--depth1);">Faim</div>
+        <div class="node-box manual" style="border-left:4px solid var(--depth1);">Dependance</div>
+        <div class="node-box manual" style="border-left:4px solid var(--depth1);">Bruit exterieur</div>
+      </div>
+
+      <!-- Pas d'activite physique -->
+      <div class="node depth-0" style="margin-top:8px;">
+        <div class="node-box manual">Pas d'activite physique <span class="tag tag-simple">simple</span></div>
+      </div>
+
+      <div class="rule-block rule-auto" style="margin:10px 0 0 0;">
+        Chaine auto-parent : cocher un enfant de Temps d'eveil ou Reveils matinaux coche automatiquement le parent
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 4. STRATEGIE DE SOMMEIL -->
+<!-- ============================================================ -->
+<div class="category cat-strategie">
+  <div class="cat-header">&#x1F634; Strategie de sommeil <span class="badge">cochable seul</span></div>
+  <div class="cat-body">
+    <div class="tree">
+      <div class="node depth-0">
+        <div class="node-box manual">Strategie de sommeil <span class="tag tag-cochable">cochable seul</span></div>
+      </div>
+      <div class="flat-list">
+        <div class="node-box manual" style="border-left:4px solid var(--depth1);">Rendormissement difficile</div>
+        <div class="node-box manual" style="border-left:4px solid var(--depth1);">Enjeu relationnel</div>
+        <div class="node-box manual" style="border-left:4px solid var(--depth1);">Dependance tetine</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 5. ENVIRONNEMENT DE SOMMEIL -->
+<!-- ============================================================ -->
+<div class="category cat-environnement">
+  <div class="cat-header">&#x1F3E0; Environnement de sommeil</div>
+  <div class="cat-body">
+    <div class="flat-list" style="margin-left:0;">
+      <div class="node-box manual" style="border-left:4px solid var(--depth1);">Obscurite</div>
+      <div class="node-box manual" style="border-left:4px solid var(--depth1);">Temperature</div>
+      <div class="node-box manual" style="border-left:4px solid var(--depth1);">Lit ouvert</div>
+      <div class="node-box manual" style="border-left:4px solid var(--depth1);">Rituel</div>
+      <div class="node-box manual" style="border-left:4px solid var(--depth1);">Cadre</div>
+      <div class="node-box manual" style="border-left:4px solid var(--depth1);">Stimulations visuelles</div>
+      <div class="node-box manual" style="border-left:4px solid var(--depth1);">Ecrans</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 6. ENJEUX RELATIONNELS -->
+<!-- ============================================================ -->
+<div class="category cat-enjeux">
+  <div class="cat-header">&#x1F4AC; Enjeux relationnels</div>
+  <div class="cat-body">
+    <div class="flat-list" style="margin-left:0;">
+      <div class="node-box manual" style="border-left:4px solid var(--depth1);">Multiples rappels</div>
+      <div class="node-box manual" style="border-left:4px solid var(--depth1);">Vient dans lit parental</div>
+      <div class="node-box manual" style="border-left:4px solid var(--depth1);">Conflit autres sujets</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 7. SOUHAITS -->
+<!-- ============================================================ -->
+<div class="category cat-souhaits">
+  <div class="cat-header">&#x1F3AF; Souhaits</div>
+  <div class="cat-body">
+    <div class="tree">
+      <div class="flat-list" style="margin-left:0;margin-bottom:10px;">
+        <div class="node-box manual" style="border-left:4px solid var(--depth1);">Suppression tetine</div>
+        <div class="node-box manual" style="border-left:4px solid var(--depth1);">Position dorsale</div>
+      </div>
+
+      <div class="node depth-0">
+        <div class="node-box manual">Changement chambre/lit <span class="tag tag-1option">1 option</span></div>
+      </div>
+      <div class="exclusive-group">
+        <span class="eg-label">1 SEUL CHOIX :</span>
+        <span class="eg-item">Changement lit</span>
+        <span class="eg-sep">/</span>
+        <span class="eg-item">Changement chambre</span>
+        <span class="eg-sep">/</span>
+        <span class="eg-item">Changement lit + chambre</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- RULES SUMMARY -->
+<!-- ============================================================ -->
+<div style="background:#fff;border-radius:12px;border:2px solid #c0c8d8;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-top:10px;">
+  <h2 style="font-size:1.1rem;color:#1a237e;margin-bottom:12px;">Resume des regles globales</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;">
+
+    <div style="padding:10px 14px;background:#ffebee;border-radius:8px;border:1px solid #ef9a9a;">
+      <strong style="color:var(--exclusive-red);">Exclusions mutuelles</strong>
+      <ul style="margin-top:4px;padding-left:18px;font-size:0.85rem;">
+        <li>Confort : RGO+Allergie / Allergie / RGO (1 seul)</li>
+        <li>Espacement : Trop long / Trop court</li>
+        <li>Volume bib : Petit bib / Gros bib / Boit bib longtemps</li>
+        <li>Inversion : Jour/Nuit / Lait/Solide</li>
+        <li>Temps d'eveil : Trop long / Trop court</li>
+        <li>Siestes courtes TE OK exclut tout Temps d'eveil</li>
+        <li>Changement : lit / chambre / lit+chambre (1 seul)</li>
+      </ul>
+    </div>
+
+    <div style="padding:10px 14px;background:#e8f5e9;border-radius:8px;border:1px solid #a5d6a7;">
+      <strong style="color:var(--auto-green);">Chaines auto-parent</strong>
+      <ul style="margin-top:4px;padding-left:18px;font-size:0.85rem;">
+        <li>Enfant de Courbe &rarr; Courbe de poids &rarr; Courbes pas OK</li>
+        <li>Trop long / Trop court &rarr; Temps d'eveil</li>
+        <li>Enfant Reveils matinaux &rarr; Reveils matinaux</li>
+        <li>Enfant Strategie &rarr; Strategie de sommeil</li>
+      </ul>
+    </div>
+
+    <div style="padding:10px 14px;background:#fff3e0;border-radius:8px;border:1px dashed #ffb74d;">
+      <strong style="color:var(--requires-orange);">Dependances (requiert un frere)</strong>
+      <ul style="margin-top:4px;padding-left:18px;font-size:0.85rem;">
+        <li>Consequence Inconfort &rarr; necessite un frere coche</li>
+        <li>Consequence Mange la nuit &rarr; necessite un frere coche</li>
+      </ul>
+    </div>
+
+    <div style="padding:10px 14px;background:#e3f2fd;border-radius:8px;border:1px solid #90caf9;">
+      <strong style="color:#0d47a1;">Visibilite &amp; synchronisation</strong>
+      <ul style="margin-top:4px;padding-left:18px;font-size:0.85rem;">
+        <li>RGO / APLV : synchronises depuis l'onglet Sante</li>
+        <li>Conditions de visibilite pilotees par l'onglet Sante</li>
+        <li>Les items <span class="tag tag-auto" style="font-size:0.65rem;">auto</span> ne sont pas cochables manuellement</li>
+        <li>Les items <span class="tag tag-menu" style="font-size:0.65rem;">menu</span> ouvrent un menu deroulant avec consequences</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

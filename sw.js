@@ -1,4 +1,4 @@
-const CACHE = 'tdr-v20';
+const CACHE = 'tdr-v21';
 const ASSETS = ['./index.html', './script-data.js'];
 
 self.addEventListener('install', e => {
@@ -20,13 +20,20 @@ self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
   if (url.origin !== self.location.origin) return;
 
+  // Stratégie network-first avec no-store pour forcer un re-fetch à chaque fois
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request).then(resp => {
-      if (resp.ok) {
+    fetch(e.request, { cache: 'no-store' }).then(resp => {
+      if (resp && resp.ok) {
         const clone = resp.clone();
         caches.open(CACHE).then(c => c.put(e.request, clone));
       }
       return resp;
+    }).catch(() => caches.match(e.request).then(cached => {
+      if (cached) return cached;
+      if (e.request.mode === 'navigate') {
+        return caches.match('./index.html');
+      }
+      return new Response('', { status: 503, statusText: 'Offline' });
     }))
   );
 });
