@@ -693,7 +693,7 @@ const SCRIPT_DATA = {
     emoji: "✅",
     blocks: [
       { type: "normal", text: "C'est TRÈS important que vous vous sentiez acteur ET libre dans vos choix" },
-      { type: "question", text: "Est-ce que tout ce que je vous ai proposé vous correspond à vos valeurs?" },
+      { type: "question", text: "Est-ce que TOUT ce que je vous ai proposé correspond à vos valeurs?" },
       { type: "important", text: "🔥 Pour rappel, vos objectifs étaient :\n[obj_text]" },
       { type: "question", text: "Est-ce que j'ai répondu à ces objectifs?" },
       {
