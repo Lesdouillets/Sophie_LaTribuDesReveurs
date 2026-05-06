@@ -8211,7 +8211,8 @@ let _autoSaveFicheTimer = null;
 function autoSaveFiche() {
   if (_autoSaveFicheTimer) clearTimeout(_autoSaveFicheTimer);
   _autoSaveFicheTimer = setTimeout(async () => {
-    const prenomEnfant = document.getElementById('prenom-enfant')?.value.trim();
+    const _cap2 = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+    const prenomEnfant = _cap2(document.getElementById('prenom-enfant')?.value.trim());
     if (!prenomEnfant) return; // pas de prénom = pas de sauvegarde
     // Maj state.client avec les valeurs DOM courantes (champs modifiables fiche)
     const c = state.client || {};
@@ -8240,8 +8241,8 @@ function autoSaveFiche() {
     c.notesMedicales = document.getElementById('notes-medicales')?.value.trim() || '';
     c.email = document.getElementById('email-famille')?.value.trim() || '';
     c.telephone = document.getElementById('telephone-famille')?.value.trim() || '';
-    c.prenomParent1 = document.getElementById('prenom-parent1')?.value.trim() || '';
-    c.prenomParent2 = document.getElementById('prenom-parent2')?.value.trim() || '';
+    c.prenomParent1 = _cap2(document.getElementById('prenom-parent1')?.value.trim()) || '';
+    c.prenomParent2 = _cap2(document.getElementById('prenom-parent2')?.value.trim()) || '';
     c.sexeParent1 = document.getElementById('sexe-parent1')?.value || 'maman';
     c.sexeParent2 = document.getElementById('sexe-parent2')?.value || 'papa';
     c.rituel = document.getElementById('rituel-enfant')?.value.trim() || '';
@@ -8260,7 +8261,8 @@ function autoSaveFiche() {
 }
 
 async function saveFicheOnly() {
-  const prenomEnfant = document.getElementById('prenom-enfant')?.value.trim();
+  const _cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+  const prenomEnfant = _cap(document.getElementById('prenom-enfant')?.value.trim());
   if (!prenomEnfant) { alert('Merci de renseigner le prénom de l\'enfant.'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
   const consultDate2 = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
   const dateNaiss = document.getElementById('date-naissance')?.value;
@@ -8314,8 +8316,8 @@ async function saveFicheOnly() {
     email: document.getElementById('email-famille')?.value.trim() || '',
     telephone: document.getElementById('telephone-famille')?.value.trim() || '',
     enseigne: currentEnseigne,
-    prenomParent1: document.getElementById('prenom-parent1')?.value.trim() || '',
-    prenomParent2: document.getElementById('prenom-parent2')?.value.trim() || '',
+    prenomParent1: _cap(document.getElementById('prenom-parent1')?.value.trim()) || '',
+    prenomParent2: _cap(document.getElementById('prenom-parent2')?.value.trim()) || '',
     sexeParent1: document.getElementById('sexe-parent1')?.value || 'maman',
     sexeParent2: document.getElementById('sexe-parent2')?.value || 'papa',
     rituel: document.getElementById('rituel-enfant')?.value.trim() || '',
@@ -9326,7 +9328,8 @@ function startTimer() {
 
 function updateHeader() {
   const c = state.client;
-  document.getElementById('header-enfant').textContent = c.prenomEnfant;
+  const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+  document.getElementById('header-enfant').textContent = cap(c.prenomEnfant);
 
   // Âge réel
   let ageLine = '';
@@ -9364,7 +9367,7 @@ function updateHeader() {
   } else {
     acEl.style.display = 'none';
   }
-  document.getElementById('header-parents').textContent = [c.prenomParent1, c.prenomParent2].filter(Boolean).join(' & ');
+  document.getElementById('header-parents').textContent = [c.prenomParent1, c.prenomParent2].filter(Boolean).map(cap).join(' & ');
   document.getElementById('header-nom').textContent = c.nomFamille||'';
   // Texte enseigne dans header (pas de badge)
   const headerBrandText = document.getElementById('header-brand-text');
