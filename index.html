@@ -1602,6 +1602,7 @@
       box-shadow: var(--shadow);
       padding: 16px 20px;
       overflow: hidden;
+      margin-bottom: 80px;
     }
     .pb-recap-intro {
       font-weight: 400; font-size: 15px; color: var(--text);
@@ -1886,6 +1887,24 @@
     .columns-2-grid.columns-3 { grid-template-columns: 1fr 1fr 1fr; }
     /* Variante 4 colonnes (ex. III. Découverte : Fiche / Courbes / Tableau / Photos) */
     .columns-2-grid.columns-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+    /* Layout 4 onglets horizontaux (III. Découverte) */
+    .col4-tab-container { margin: 12px 0 20px; }
+    .col4-tabs-row { display: flex; gap: 8px; margin-bottom: 12px; }
+    .col4-tab {
+      flex: 1; padding: 16px 8px; background: #2d3f5c; color: white;
+      border: 2px solid #1a2a42; border-radius: 12px;
+      font-weight: 900; font-size: 12px; text-transform: uppercase;
+      letter-spacing: 0.3px; cursor: pointer; text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .col4-tab:hover { box-shadow: 0 4px 12px rgba(45,63,92,0.3); }
+    .col4-tab-active { border-color: #2980b9 !important; box-shadow: 0 4px 14px rgba(41,128,185,0.35) !important; }
+    .col4-tab-emoji { font-size: 26px; line-height: 1; }
+    .col4-tab-label { line-height: 1.3; }
+    .col4-panels { width: 100%; }
+    .col4-panel { background: white; border-radius: 10px; padding: 14px 16px; border: 1.5px solid #e5e7eb; }
+    .col4-panel-hidden { display: none; }
     /* Style "news-red" overridé : on conserve le bleu marine partout */
     .col-2.col-3-news-red { background: #2d3f5c; border-color: #1a2a42; }
     @media (max-width: 900px) { .columns-2-grid.columns-3, .columns-2-grid.columns-4 { grid-template-columns: 1fr; } }
@@ -6936,7 +6955,7 @@ function cleanStaleOverrides() {
     ...(SCRIPT_DATA.planAction || []),
     SCRIPT_DATA.conclusion
   ].filter(Boolean);
-  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid','vicious_circle'];
+  const dynamicTypes = ['pb_section','pb_recap','pb_intro','pb_question','obj_section','obj_recap','obj_intro','obj_question','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tarifs_accueil','tickbox_choice','appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid','vicious_circle'];
   let changed = false;
   for (const sectionId of Object.keys(state.scriptOverrides)) {
     const src = allSections.find(s => s.id === sectionId);
@@ -7058,7 +7077,7 @@ function saveScriptOverrides() {
 function getOverrideBlocks(section) {
   const ov = state.scriptOverrides[section.id];
   if (!ov) return section.blocks || [];
-  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'option_banner', 'parent_banner', 'tarifs_tableau', 'appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid','vicious_circle'];
+  const dynamicTypes = ['pb_section', 'pb_recap', 'pb_intro', 'pb_question', 'obj_section', 'obj_recap', 'obj_intro', 'obj_question', 'obj_rappel', 'besoins_sommeil', 'leviers_dynamiques', 'leviers_count', 'conditional_sections_inline', 'info_button', 'grouped_checklist', 'option_banner', 'parent_banner', 'tarifs_tableau', 'tarifs_accueil', 'appert_calculator','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid','vicious_circle'];
   const liveBlocks = section.blocks || [];
 
   // Pour problematique/objectifs, ov.blocks est déjà nettoyé par ensureOverride
@@ -8440,6 +8459,14 @@ function setColumns2Active(el, idx) {
   grid.setAttribute('data-active-col', newVal);
 }
 window.setColumns2Active = setColumns2Active;
+function setCol4Tab(tabEl) {
+  const container = tabEl.closest('.col4-tab-container');
+  if (!container) return;
+  const idx = parseInt(tabEl.getAttribute('data-tab-idx'));
+  container.querySelectorAll('.col4-tab').forEach((t, i) => t.classList.toggle('col4-tab-active', i === idx));
+  container.querySelectorAll('.col4-panel').forEach((p, i) => p.classList.toggle('col4-panel-hidden', i !== idx));
+}
+window.setCol4Tab = setCol4Tab;
 
 function toggleCol2Tick(tickEl, tickId) {
   if (!tickEl || !tickId) return;
@@ -11363,6 +11390,23 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
   if (b.type === 'besoins_sommeil') return renderBesoinsSommeil(b.tranches);
   if (b.type === 'columns_2') {
+    // Rendu en onglets horizontaux si rowTabs: true
+    if (b.rowTabs) {
+      const cols = [
+        { title: b.leftTitle, blocks: Array.isArray(b.left) ? b.left : [] },
+        { title: b.rightTitle, blocks: Array.isArray(b.right) ? b.right : [] },
+        { title: b.thirdTitle, blocks: Array.isArray(b.third) ? b.third : [] },
+        { title: b.fourthTitle, blocks: Array.isArray(b.fourth) ? b.fourth : [] },
+      ].filter(c => c.title);
+      const tabsHtml = cols.map((col, idx) => {
+        const { emoji, label } = (() => { const t = (col.title||'').trim(); const m = t.match(/^(\S+)\s+(.+)$/); return m ? { emoji: m[1], label: m[2] } : { emoji: '', label: t }; })();
+        return `<div class="col4-tab${idx===0?' col4-tab-active':''}" data-tab-idx="${idx}" onclick="setCol4Tab(this)">${emoji ? `<span class='col4-tab-emoji'>${emoji}</span>` : ''}<span class='col4-tab-label'>${label}</span></div>`;
+      }).join('');
+      const panelsHtml = cols.map((col, idx) => {
+        return `<div class="col4-panel${idx===0?'':' col4-panel-hidden'}" data-panel-idx="${idx}">${renderBlocks(col.blocks, sectionId, (depth||0)+1, `${path||i}.tab${idx}`)}</div>`;
+      }).join('');
+      return `<div class="col4-tab-container"><div class="col4-tabs-row">${tabsHtml}</div><div class="col4-panels">${panelsHtml}</div></div>`;
+    }
     const leftBlocks = Array.isArray(b.left) ? b.left : [];
     const rightBlocks = Array.isArray(b.right) ? b.right : [];
     const thirdBlocks = Array.isArray(b.third) ? b.third : [];
@@ -11411,6 +11455,11 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       ${thirdHtml}
       ${fourthHtml}
     </div>`;
+  }
+  if (b.type === 'tarifs_accueil') {
+    const hd = 'padding:5px 8px;border:1px solid #ddd;font-weight:400;background:#2d3f5c;color:white;width:180px';
+    const td = 'padding:5px 8px;border:1px solid #ddd;background:white';
+    return `<details style="border:1.5px solid #fcd34d;border-radius:10px;background:#fffbeb;padding:10px 14px;margin:8px 0"><summary style="cursor:pointer;font-weight:800;color:#7c2d12;font-style:italic;user-select:none;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px"><span>💰 Tarifs</span><span style="font-size:13px">▾</span></summary><div style="padding-top:10px;overflow-x:auto;font-size:12px"><table style="border-collapse:collapse;margin-bottom:10px"><col style="width:150px"><col style="width:auto"><col style="width:auto"><col style="width:auto"><tr><td style="${hd}">Consultation de suivi</td><td style="${td}">20min</td><td style="${td}">45€</td><td style="${td}"></td></tr><tr><td style="${hd}"></td><td style="${td}">45 min</td><td style="${td}">90€</td><td style="${td}"></td></tr><tr><td style="${hd}">WhatsApp</td><td style="${td}">1 sem.</td><td style="${td}">90€</td><td style="${td}">Délai rép. 24h</td></tr><tr><td style="${hd}">Semaine de suivi</td><td style="${td}">1 sem.</td><td style="${td}">18€ puis 150€</td><td style="${td}">2 RDV 20min + WhatsApp</td></tr><tr><td style="${hd}">Lecture de courbes</td><td style="${td}">20min</td><td style="${td}">45€</td><td style="${td}"></td></tr></table><table style="border-collapse:collapse"><col style="width:150px"><col style="width:auto"><col style="width:auto"><col style="width:auto"><tr><td style="${hd}">Grimoire Fée Dodo</td><td style="${td}">Accès illimité 2 ans</td><td style="${td}">299€</td><td style="${td}"></td></tr><tr><td style="${hd}">Consultations de groupe</td><td style="${td}">1h/sem. (par âge)</td><td style="${td}">29.99€/mois</td><td style="${td}">Sans engagement</td></tr></table></div></details>`;
   }
   if (b.type === 'separator') return `<div class="block block-separator">${text}</div>`;
 
@@ -13484,7 +13533,8 @@ function substituteVars(text) {
     return count >= 2 ? content : '';
   });
   const c = state.client;
-  const parents = [c.prenomParent1, c.prenomParent2].filter(Boolean).join(' & ');
+  const capitalize = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+  const parents = [capitalize(c.prenomParent1), capitalize(c.prenomParent2)].filter(Boolean).join(' & ');
   const pb = c.problematique || '[problématique]';
   const obj = c.objectifs || '[objectifs]';
   const roleShort = { 'les deux parents':'parents', 'la maman':'maman', 'le papa':'papa' }[c.roleParents] || c.roleParents || 'parents';
@@ -13496,8 +13546,8 @@ function substituteVars(text) {
 
   // ── [verif_identite] — question "Vous êtes bien…" ─────────
   const age = c.ageReelStr || c.ageEnfant || '[âge]';
-  const p1 = c.prenomParent1 || '';
-  const p2 = c.prenomParent2 || '';
+  const p1 = capitalize(c.prenomParent1) || '';
+  const p2 = capitalize(c.prenomParent2) || '';
   let roleLabel;
   if (p1 && p2) {
     roleLabel = 'les Parents';
@@ -13514,17 +13564,17 @@ function substituteVars(text) {
   const prenomsList = prenomsParts.length === 2
     ? `${prenomsParts[0]} et ${prenomsParts[1]}`
     : prenomsParts[0] || '[prénom parent]';
-  const verifIdentite = `Vous êtes **BIEN** ${prenomsList}, ${roleLabel} de ${c.prenomEnfant||'[prénom]'} qui a ${age} ?`;
+  const verifIdentite = `Vous êtes **BIEN** ${prenomsList}, ${roleLabel} de ${capitalize(c.prenomEnfant)||'[prénom]'} qui a ${age} ?`;
 
   // ── [accord_enfant] — question accordée selon le sexe ─────
   const isFille = (c.sexe || '').toLowerCase() === 'fille';
   const unUne = isFille ? 'une' : 'un';
   const petitePetit = isFille ? 'petite' : 'petit';
   const filleGarcon = isFille ? 'fille' : 'garçon';
-  const accordEnfant = `Nous sommes **BIEN d'accord** que ${c.prenomEnfant||'[prénom]'} est ${unUne} ${petitePetit} ${filleGarcon} qui est :\n  - En **bonne santé** ?\n  - A été **vu récemment par un médecin** ?`;
+  const accordEnfant = `Nous sommes **BIEN d'accord** que ${capitalize(c.prenomEnfant)||'[prénom]'} est ${unUne} ${petitePetit} ${filleGarcon} qui est :\n  - En **bonne santé** ?\n  - A été **vu récemment par un médecin** ?`;
 
   // Nom de l'enfant stylisé : gras + couleur selon sexe (bleu garçon, rose fille)
-  const prenomRaw = c.prenomEnfant || '';
+  const prenomRaw = capitalize(c.prenomEnfant) || '';
   const prenomColor = isFille ? '#E25098' : '#6495ED';
   const prenomStyled = prenomRaw
     ? `<strong style="color:${prenomColor};font-size:1.15em">${prenomRaw}</strong>`

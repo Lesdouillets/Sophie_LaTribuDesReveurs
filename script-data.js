@@ -250,7 +250,8 @@ const SCRIPT_DATA = {
         { type: "normal", _leftTitle: "Durée", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- On est **ensemble aujourd'hui jusqu'à** [heure_fin]\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">❓ Est-ce que vous avez <strong>bien prévu d'être disponible</strong> jusqu'à [heure_fin] ?</div>" },
         { type: "normal", _leftTitle: "Fonctionnement", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Dans le cadre d'une **1ère consultation**, je vais vous **expliquer comment ça va se passer**\n\n- On va faire ensemble **l'évaluation de la situation de sommeil** de [prénom_enfant]\n\n  - 1. Je vais **m'appuyer sur le questionnaire** que vous avez rempli\n    - Pour **approfondir les choses**\n    - Pour être **sûr de ne passer à côté de rien** en terme d'**information importante**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">❓ En <strong>parlant de ça</strong>, y'a-t-il eu des <strong>changements récents</strong> depuis que vous <strong>m'avez envoyé le questionnaire</strong> ?</div>\n\n  - 2. On va **lire les courbes de taille/poids et périmètre crânien**, car le **sommeil et l'alimentation** sont **étroitement liés**\n\n  - 3. On va **lire ensemble** le **tableau de suivi** que vous avez rempli\n\n  - 4. On va **regarder** aussi **rapidement les photos de la chambre** que vous m'avez envoyé\n\n- À partir de là, je vais :\n  - avoir une **vue détaillée de votre situation**\n  - et pouvoir vous **établir un diagnostic**\n- Ensuite, je vais :\n  - vous **proposer un plan d'action** à mettre en place\n  - par rapport à tout ce que **j'aurai compris de nos échanges**\n\n- L'**idée** de cette **1ère consultation** c'est généralement:\n  - de vous **donner des 1ers conseils**\n  - par rapport à ce que **je comprends**\n  - et ce qui me **semble prioritaire** dans votre situation\n\n- Dans **certains cas**, il y aura **peut-être besoin d'une AUTRE petite consultation** de 20 min\n  - Pour **faire le point sur les 1ères choses** que vous aurez **mises en place**\n  - Pour vous **donner des conseils supplémentaires**\n  - OU Pour **répondre aux questions** qui seraient **survenues durant ces 1ers jours**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">❓ Est-ce que <strong>ça vous convient</strong> ?</div>" },
         { type: "important", _leftTitle: "Médical", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Je **précise** aussi que je **NE suis PAS médecin**, et **NE remplace PAS** votre médecin\n- Les **conseils** que je donne, sont **donnés à titre informatif**\n- SI j'ai le **moindre doute médical** ⇒ Je vous **redirigerai** vers un professionnel de santé\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">❓ Nous sommes <strong>BIEN d'accord</strong> que [prénom_enfant] est [un_une] [petit_petite] [fille_garcon] qui est :<br>• En <strong>bonne santé</strong> ?<br>• A été <strong>vu récemment par un médecin</strong> ?</div>" },
-        { type: "normal", _leftTitle: "Filmée et enregistrée", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- La consultation est **filmée et enregistrée** pour que vous puissiez la **revisionner** à tête reposée (et la montrer au co-parent)\n- Vous pouvez **prendre des notes**, si vous le souhaitez\n- Mais de **toute façon**, je vous **enverrai un compte rendu automatique** de cette consultation\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">❓ Est-ce que c'est <strong>OK pour vous</strong> ?</div>" },
+        { type: "tarifs_accueil" },
+        { type: "normal", _leftTitle: "Filmée et enregistrée", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- La consultation est **filmée et enregistrée** pour que vous puissiez la **revisionner** à tête reposée (🔥 <em>et la montrer au co-parent</em>)\n- Vous pouvez **prendre des notes**, si vous le souhaitez\n- Mais de **toute façon**, je vous **enverrai un compte rendu automatique** de cette consultation\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">❓ Est-ce que c'est <strong>OK pour vous</strong> ?</div>" },
       ]
     },
 
@@ -279,6 +280,7 @@ const SCRIPT_DATA = {
         { type: "normal", _leftTitle: "Journée type", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- **CE QUE** je vous **propose maintenant**,<br>c'est de **dérouler** une **journée type**, pour essayer de **comprendre AU MIEUX** votre quotidien" },
         {
           type: "columns_2",
+          rowTabs: true,
           leftTitle: "📔 Fiche découverte",
           rightTitle: "📊 Lecture des courbes",
           thirdTitle: "📋 Tableau de suivi du sommeil",
@@ -331,7 +333,7 @@ const SCRIPT_DATA = {
       blocks: [
         { type: "obj_intro", _leftTitle: "Objectifs", _leftTitleStyle: "background:#2d3f5c;color:#fff" },
         {
-          type: "option", label: "Lieu de sommeil/lit\nSouhait de changer ?", emoji: "🛌", style: "purple-btn", hideIfPb: ["souhait_changement_lit","souhait_changement_chambre","souhait_changement_lit_chambre"],
+          type: "option", label: "Dort dans la chambre parentale (lit parents)\nSouhait de changer ?", emoji: "🛌", style: "purple-btn", hideIfPb: ["souhait_changement_lit","souhait_changement_chambre","souhait_changement_lit_chambre"],
           blocks: [
             {
               type: "lieu_sommeil_intro_grid",
@@ -369,10 +371,10 @@ const SCRIPT_DATA = {
             {
               type: "option", label: "Dort dans le lit parental", style: "purple",
               blocks: [
-                { type: "normal", text: "- Et plus précisément **dans VOTRE LIT**\n\n- De mon côté, je dois **quand même** vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à faire **dormir** les enfants dans **LEUR PROPRE LIT**…\n  - …car cela **diminue significativement le risque de Mort Inattendue du Nourrisson**\n\n- Mais **au-delà de ça**, l'idée, ce n'est **PAS de vous dire quoi faire.**\n- C'est surtout de **voir CE QUI vous convient** à vous, aujourd'hui.\n\n- Il n'y a **PAS** de **bonne** ou de **mauvaise réponse** :\n  - **certains parents** préfèrent **attendre** encore un peu,\n  - d'**autres** sont **prêts à faire la transition.**" },
+                { type: "normal", text: "- Et plus précisément **dans VOTRE LIT**\n\n- De mon côté, je dois **quand même** vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à faire **dormir** les enfants dans **LEUR PROPRE LIT**…\n  - …car cela **diminue significativement le risque de Mort Inattendue du Nourrisson**\n\n- Mais **au-delà de ça**, l'idée, ce n'est **PAS de vous dire quoi faire.**\n- C'est surtout de **voir CE QUI vous convient** à vous, aujourd'hui.\n\n" },
               ]
             },
-            { type: "question", text: "Est-ce que c'est **quelque chose qui vous CONVIENT** pour l'instant,\n…OU est-ce que vous **aimeriez qu'elle passe dans SA chambre / dans SON lit** ?\n\n- Il n'y a **PAS** de **bonne ou de mauvaise réponse** :\n  - certains parents **préfèrent attendre** encore un peu,\n  - d'autres **sont prêts** à faire la **transition**.\n\n- L'**idée** est surtout de voir ce qui **correspond le mieux** à votre **famille**\n  - Pour que je puisse m**'adapter au mieux**", choice: {
+            { type: "question", text: "Est-ce que c'est **quelque chose qui vous CONVIENT** pour l'instant,\n…OU est-ce que vous **aimeriez qu'elle passe dans SA chambre (dans SON lit)** ?\n\n- Il n'y a **PAS** de **bonne ou de mauvaise réponse** :\n  - certains parents **préfèrent attendre** encore un peu,\n  - d'autres **sont prêts** à faire la **transition**.\n\n- L'**idée** est surtout de voir ce qui **correspond le mieux** à votre **famille**\n  - Pour que je puisse m**'adapter à vos souhaits**", choice: {
               id: "obj_lieu_sommeil",
               required: true,
               options: [
@@ -6765,13 +6767,13 @@ const SCRIPT_DATA = {
           type: "option", label: "Pas eu le temps de tout discuter", style: "purple",
           blocks: [
             { type: "normal", text: "- On a **discuté de pas mal de choses**\n- Mais **malheureusement**, on n'a **PAS** eu le temps de **TOUT** discuter\n- Ce que **je vous propose** c'est que l'on **finisse cette discussion** autour d'**un AUTRE RDV**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">❓ Est-ce que <strong>ça vous irait</strong> ?</div>" },
+            { type: "important", text: "- 🔥 On **peut se voir** le <strong style=\"color:#C0392B\">XXX</strong>" },
             {
               type: "option", label: "💰 Tarifs", style: "purple",
               blocks: [
                 { type: "tarifs_tableau" }
               ]
             },
-            { type: "important", text: "🔥 On **peut se voir** le <strong style=\"color:#C0392B\">XXX</strong>" }
           ]
         },
         { type: "normal", _leftTitle: "Félicitations !", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "👏 En tout cas, ON VOIT :\n  - que vous avez **essayé de mettre des choses en place**\n  - et AVEC CE QU'ON **vient de voir ensemble** :\n    - vous avez **toutes les bases**\n    - pour que ça **évolue dans le bon sens** !" },
