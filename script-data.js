@@ -262,7 +262,7 @@ const SCRIPT_DATA = {
       blocks: [
         { type: "pb_intro", _leftTitle: "Problématique", _leftTitleStyle: "background:#2d3f5c;color:#fff" },
         {
-          type: "option", _floatingBubble: true, _bubbleBottom: "320px", label: "Si pleurs difficiles", emoji: "😭", style: "pleurs",
+          type: "option", label: "Si pleurs difficiles", emoji: "😭", style: "pleurs",
           blocks: [
             { type: "empathie", text: "- J'entends que c'est **difficile pour vous** d'**entendre** votre enfant **pleurer**...\n- Merci de me le confier.\n- Il y a **beaucoup de parents** POUR QUI :\n  - c'est **vraiment compliqué**,\n  - et **chacun a sa sensibilité** là-dessus\n  - et **c'est OK**\n- L'**idée ici**, ça ne va **PAS ÊTRE de vous forcer** à faire **quelque chose qui ne vous correspond pas**.\n- On va plutôt **adapter les choses à vous**, à CE QUE vous **ÊTES CAPABLE de faire** aujourd'hui.\n- Parce que :\n  - **PLUS** vous serez **[aligne_alignee] avec vous-même**\n  - **PLUS** ce **sera fluide :**\n    - pour vous...\n    - et **pour votre enfant aussi.**\n- Et on va justement **trouver ensemble :**\n  - une **façon de faire**\n  - QUI **respecte ça**" }
           ]
