@@ -4217,6 +4217,9 @@
       border: none;
       border-radius: 0;
       margin: 0;
+      /* padding aligné sur sol-cat-intro (14px 20px) pour éviter le décrochage horizontal
+         entre intro/outro de catégorie et le contenu de l'enfant en singleChildMode */
+      padding: 14px 20px;
     }
     .sol-floating-btns {
       position: fixed; right: 30px; bottom: 250px;
@@ -6885,7 +6888,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=442"></script>
+<script src="script-data.js?v=443"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -12703,7 +12706,7 @@ function renderSolutionsCheckboxes(opts) {
           pastilleLabel = `${dynEmoji2} ${dynLabel2}`;
         }
         if (pastilleLabel) {
-          singleChildPastille = `<div style="padding:10px 14px 4px"><div style="display:inline-block;padding:9px 22px;background:${c.main};color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)">${pastilleLabel}</div></div>`;
+          singleChildPastille = `<div style="padding:10px 20px 4px"><div style="display:inline-block;padding:9px 22px;background:${c.main};color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)">${pastilleLabel}</div></div>`;
         }
       }
       // Cas spécial flatten : on saute le niveau enfant et on affiche directement les petits-enfants
