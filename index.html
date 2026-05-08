@@ -473,6 +473,12 @@
       letter-spacing: 1.2px; color: rgba(255,255,255,0.35);
       padding: 12px 18px 5px;
     }
+    /* Séparateur visuel entre les groupes de sections (Obligatoires / Par problématique) */
+    .sidebar-section-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.18);
+      margin: 12px 14px;
+    }
     /* Variante collapsible : label cliquable avec flèche */
     .sidebar-section-label.collapsible {
       cursor: pointer;
@@ -6482,7 +6488,8 @@
     <div class="sidebar" id="sidebar">
       <div class="sidebar-section-label">Sections obligatoires</div>
       <div id="nav-required"></div>
-      <div class="sidebar-section-label collapsible" style="margin-top:10px" data-section-key="conditional" onclick="toggleSidebarSection('conditional')"><span class="ssl-arrow">▾</span><span>Par problématique</span></div>
+      <div class="sidebar-section-divider"></div>
+      <div class="sidebar-section-label collapsible" data-section-key="conditional" onclick="toggleSidebarSection('conditional')"><span class="ssl-arrow">▾</span><span>Par problématique</span></div>
       <div id="nav-conditional"></div>
       <div class="sidebar-section-label collapsible" style="margin-top:10px" data-section-key="plan" onclick="toggleSidebarSection('plan')"><span class="ssl-arrow">▾</span><span>Plan d'action</span></div>
       <div id="nav-plan"></div>
@@ -7221,7 +7228,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=564"></script>
+<script src="script-data.js?v=565"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
