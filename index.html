@@ -6863,7 +6863,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=404"></script>
+<script src="script-data.js?v=405"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -10009,6 +10009,12 @@ function openInfoPanel(btnId) {
   } else {
     panel.classList.remove('info-panel-wide');
   }
+  // Layout grille 2 colonnes si flag _layoutGrid:true (ex. Ecueils avec ses 15 sections)
+  if (data.layoutGrid) {
+    bodyEl.classList.add('info-grid-layout');
+  } else {
+    bodyEl.classList.remove('info-grid-layout');
+  }
   // Réafficher l'ancien bouton actif (si on switche d'un trigger à un autre)
   if (window.__activeInfoBtnId && window.__activeInfoBtnId !== btnId) {
     document.querySelectorAll(`[data-info-btn-id="${window.__activeInfoBtnId}"]`).forEach(b => b.classList.remove('info-btn-active-hidden'));
@@ -10067,6 +10073,27 @@ function _infoPanelOutsideClickHandler(e) {
 }
 
 // Idem pour setup-info-panel (info panel de la fiche client / setup)
+// TOC navigation : ouvre la section collapsible correspondant à l'anchor
+// (utilisée par les emojis du TOC en haut d'Ecueils)
+function openEcueilSection(anchorId) {
+  const details = document.getElementById(anchorId);
+  if (!details) return;
+  if (!details.open) {
+    details.open = true; // déclenchera 'toggle' → accordion + scroll automatiques
+  } else {
+    // Déjà ouvert : juste scroll
+    const summary = details.querySelector(':scope > summary');
+    const scrollContainer = details.closest('#info-body') || document.scrollingElement;
+    if (summary && scrollContainer) {
+      const containerRect = scrollContainer.getBoundingClientRect();
+      const summaryRect = summary.getBoundingClientRect();
+      const targetScroll = (scrollContainer.scrollTop || 0) + (summaryRect.top - containerRect.top) - 12;
+      scrollContainer.scrollTo({ top: Math.max(0, targetScroll), behavior: 'smooth' });
+    }
+  }
+}
+window.openEcueilSection = openEcueilSection;
+
 function _setupInfoPanelOutsideClickHandler(e) {
   const panel = document.getElementById('setup-info-panel');
   if (!panel || !panel.classList.contains('open')) return;
@@ -10481,7 +10508,8 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
       if (styleParts.length) wrapStyle = ` style="${styleParts.join(';')}"`;
       // Mode collapsible : section pliable via <details>/<summary>
       if (b._collapsible) {
-        return `<details class="block-with-left-title block-collapsible"${wrapStyle}><summary class="block-left-title block-collapsible-summary"${ltStyle}>${substituteVars(b._leftTitle)}</summary>${wrapOnly}</details>${addBtn}`;
+        const anchorAttr = b._anchorId ? ` id="${b._anchorId}"` : '';
+        return `<details${anchorAttr} class="block-with-left-title block-collapsible"${wrapStyle}><summary class="block-left-title block-collapsible-summary"${ltStyle}>${substituteVars(b._leftTitle)}</summary>${wrapOnly}</details>${addBtn}`;
       }
       return `<div class="block-with-left-title"${wrapStyle}><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div>${wrapOnly}</div>${addBtn}`;
     }
@@ -11806,7 +11834,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const label = substituteVars(tb.label || 'Plus d\'infos');
       const title = substituteVars(tb.title || tb.label || 'Informations');
       const contentHtml = renderBlocks(Array.isArray(tb.blocks) ? tb.blocks : [], sectionId, (depth||0)+1, path||String(i));
-      window.__infoButtons[btnId] = { title, content: contentHtml, wide: !!tb._wide };
+      window.__infoButtons[btnId] = { title, content: contentHtml, wide: !!tb._wide, layoutGrid: !!tb._layoutGrid };
       // Si 1 seul bouton : classe .inline-right (positionné absolument)
       // Si > 1 : classe .in-stack (positionnement géré par le container parent)
       const cls = trailingBtnsList.length > 1 ? 'info-btn in-stack' : 'info-btn inline-right';

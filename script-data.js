@@ -6513,22 +6513,11 @@ const SCRIPT_DATA = {
                 label: "Ecueils",
                 title: "🚧 Ecueils",
                 _wide: true,
+                _layoutGrid: true,
                 blocks: [
-                  { type: "normal", _collapsible: true, showIfAgeMaxMonths: 12, _leftTitle: "🔄 Bascule dos / ventre", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "*= Comportement normal lié à l'acquisition d'une nouvelle compétence*\n⇒ Normal que le retournement dans les 2 sens ne s'acquière pas en 1 fois", embeddedActions: [
-                    {
-                      label: "Si ponctuelle", emoji: "✋", style: "action-rose-poudre", _pillStyle: true, mutexGroup: "bascule-dos-ventre",
-                      blocks: [
-                        { type: "normal", text: "- **OK pour [le_la] retourner** 3-4 fois" }
-                      ]
-                    },
-                    {
-                      label: "Si récurrent", emoji: "🔁", style: "action-rose-poudre", _pillStyle: true, mutexGroup: "bascule-dos-ventre",
-                      blocks: [
-                        { type: "normal", text: "- **Accompagnez-[le_la]** dans ses émotions pour qu'[il_elle] **découvre de nouvelles façons de s'endormir**\n  ⇒ **Apportez** de la confiance que [prénom_enfant] peut **réussir à s'endormir** *(encouragements)*\n- Sur les temps d'éveil : faire du **Tummy Time**\n  - **Pressez le pied** de [prénom_enfant] pour [lui_elle] faire découvrir qu'[il_elle] peut **plier le genou** et **se faire basculer** *(côté jambe tendue)*. Attention à la position du bras qui peut être coincé\n  - Avec une **arche colorée** ou qui fait du bruit, [il_elle] attrape les objets en levant sa tête\n- Faire les **exercices avec une turbulette**" }
-                      ]
-                    }
-                  ] },
-                  { type: "normal", _collapsible: true, _leftTitle: "🧸 Jetée de doudou / tétine", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "*= Réaction normale liée à la colère*", embeddedActions: [
+                  { type: "normal", _noBorder: true, text: "<div class=\"ecueils-toc\"><span class=\"ecueils-toc-item\" onclick=\"openEcueilSection('a-jetee-doudou')\" title=\"Jetée de doudou / tétine\">🧸</span><span class=\"ecueils-toc-item\" onclick=\"openEcueilSection('a-perte-doudou')\" title=\"Perte de doudou\">🔍</span><span class=\"ecueils-toc-item\" onclick=\"openEcueilSection('a-bascule')\" title=\"Bascule dos / ventre\">🔄</span><span class=\"ecueils-toc-item\" onclick=\"openEcueilSection('a-mise-debout')\" title=\"Mise debout\">🧍</span><span class=\"ecueils-toc-item\" onclick=\"openEcueilSection('a-se-couche')\" title=\"Se couche par terre\">🛏️</span><span class=\"ecueils-toc-item\" onclick=\"openEcueilSection('a-met-bazar')\" title=\"Met le bazar\">🌪️</span><span class=\"ecueils-toc-item\" onclick=\"openEcueilSection('a-se-fait-mal')\" title=\"Se fait mal volontairement\">🤕</span><span class=\"ecueils-toc-item\" onclick=\"openEcueilSection('a-fait-mal-parents')\" title=\"Fait mal aux parents\">👊</span><span class=\"ecueils-toc-item\" onclick=\"openEcueilSection('a-vomissements')\" title=\"Vomissements volontaires\">🤮</span><span class=\"ecueils-toc-item\" onclick=\"openEcueilSection('a-mouille')\" title=\"Mouille son lit\">💧</span><span class=\"ecueils-toc-item\" onclick=\"openEcueilSection('a-porte-ouverte')\" title=\"Demande porte ouverte\">🚪</span><span class=\"ecueils-toc-item\" onclick=\"openEcueilSection('a-allume-lumiere')\" title=\"Allume la lumière\">💡</span><span class=\"ecueils-toc-item\" onclick=\"openEcueilSection('a-peurs')\" title=\"Peurs : noir / monstres\">🧙</span><span class=\"ecueils-toc-item\" onclick=\"openEcueilSection('a-multiples-rappels')\" title=\"Multiples rappels\">💬</span><span class=\"ecueils-toc-item\" onclick=\"openEcueilSection('a-motivation')\" title=\"Motivation / renforcement\">🏆</span></div>" },
+                  { type: "normal", _noBorder: true, text: "<div class=\"cat-header\">🧸 Objets de réconfort</div>" },
+                  { type: "normal", _collapsible: true, _anchorId: "a-jetee-doudou", _leftTitle: "🧸 Jetée de doudou / tétine", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "*= Réaction normale liée à la colère*", embeddedActions: [
                     {
                       label: "Au début", emoji: "🌱", style: "action-rose-poudre-clair", _pillStyle: true, mutexGroup: "jetee-doudou",
                       blocks: [
@@ -6548,8 +6537,56 @@ const SCRIPT_DATA = {
                       ]
                     }
                   ] },
-                  { type: "normal", _collapsible: true, _leftTitle: "🧸 Perte de doudou dans le lit", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "- **Rajouter des doudous** dans le lit\n- ❓ Est-ce que **doudou est assez gros** pour être retrouvé ?\n- Privilégier des **doudous plats** pour ne **pas rouler**\n- Mettre un **tour de lit** ou changer vers un **lit parapluie ou lit filet** pour **éviter la chute** du doudou **à travers les barreaux**\n[if_age_min:7]\n- **Rapprocher le doudou** de sa main pour qu'[il_elle] s'en saisisse\n- **Accompagner les émotions et [lui_elle] faire confiance** pour qu'[il_elle] retrouve OU s'endorme sans le doudou\n[/if_age_min]" },
-                  { type: "normal", _collapsible: true, _leftTitle: "🤮 Vomissements volontaires", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "*= Réaction physiologique, due aux contractions de l'estomac*", embeddedActions: [
+                  { type: "normal", _collapsible: true, _anchorId: "a-perte-doudou", _leftTitle: "🔍 Perte de doudou dans le lit", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "- **Rajouter des doudous** dans le lit\n- ❓ Est-ce que **doudou est assez gros** pour être retrouvé ?\n- Privilégier des **doudous plats** pour ne **pas rouler**\n- Mettre un **tour de lit** ou changer vers un **lit parapluie ou lit filet** pour **éviter la chute** du doudou **à travers les barreaux**\n[if_age_min:7]\n- **Rapprocher le doudou** de sa main pour qu'[il_elle] s'en saisisse\n- **Accompagner les émotions et [lui_elle] faire confiance** pour qu'[il_elle] retrouve OU s'endorme sans le doudou\n[/if_age_min]" },
+                  { type: "normal", _noBorder: true, text: "<div class=\"cat-header\">🛌 Comportements physiques</div>" },
+                  { type: "normal", _collapsible: true, _anchorId: "a-bascule", showIfAgeMaxMonths: 12, _leftTitle: "🔄 Bascule dos / ventre", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "*= Comportement normal lié à l'acquisition d'une nouvelle compétence*\n⇒ Normal que le retournement dans les 2 sens ne s'acquière pas en 1 fois", embeddedActions: [
+                    {
+                      label: "Si ponctuelle", emoji: "✋", style: "action-rose-poudre", _pillStyle: true, mutexGroup: "bascule-dos-ventre",
+                      blocks: [
+                        { type: "normal", text: "- **OK pour [le_la] retourner** 3-4 fois" }
+                      ]
+                    },
+                    {
+                      label: "Si récurrent", emoji: "🔁", style: "action-rose-poudre", _pillStyle: true, mutexGroup: "bascule-dos-ventre",
+                      blocks: [
+                        { type: "normal", text: "- **Accompagnez-[le_la]** dans ses émotions pour qu'[il_elle] **découvre de nouvelles façons de s'endormir**\n  ⇒ **Apportez** de la confiance que [prénom_enfant] peut **réussir à s'endormir** *(encouragements)*\n- Sur les temps d'éveil : faire du **Tummy Time**\n  - **Pressez le pied** de [prénom_enfant] pour [lui_elle] faire découvrir qu'[il_elle] peut **plier le genou** et **se faire basculer** *(côté jambe tendue)*. Attention à la position du bras qui peut être coincé\n  - Avec une **arche colorée** ou qui fait du bruit, [il_elle] attrape les objets en levant sa tête\n- Faire les **exercices avec une turbulette**" }
+                      ]
+                    }
+                  ] },
+                  { type: "normal", _collapsible: true, _anchorId: "a-mise-debout", _leftTitle: "🧍 Mise debout", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "- C'est **son droit** et **sa manière d'exprimer sa colère**\n\n- **Ne pas montrer d'émotion** si c'est le cas\n- Ne **pas être dans une sur-intervention** pour remettre en position allongée\n  ⇒ pourrait faire **oublier l'objectif initial** + pourrait **entraîner un bras de fer** « debout-allongé »\n- **Recouchez-[le_la]** délicatement **toutes les 5 min OU** quand l'**émotion ↘**\n- Lui dire qu'[il_elle] serait **mieux allongé** pour dormir\n- **Invitez-[le_la] à se coucher régulièrement SANS l'imposer**\n- Si **BB résiste physiquement**, alors **ne PAS insister**" },
+                  { type: "normal", _collapsible: true, _anchorId: "a-se-couche", _leftTitle: "🛏️ Se couche par terre", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "*= Réaction normale liée à sa colère*\n\n- **Laissez-[le_la] dormir par terre** pour :\n  - Exprimer sa colère\n  - Expérimenter… que ce n'est pas agréable" },
+                  { type: "normal", _collapsible: true, _anchorId: "a-met-bazar", _leftTitle: "🌪️ Met le bazar", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "*= Extériorisation de la colère ⇒ Normal*\n\n- **Avant** : s'assurer qu'il n'y a **pas d'objets dangereux** dans la chambre\n- **Pendant** : **Laissez-[le_la]** exprimer son émotion sans intervenir\n- **Le lendemain** : proposer de **ranger avec le + de détachement** pour ne pas créer un nouvel enjeu relationnel" },
+                  { type: "normal", _noBorder: true, text: "<div class=\"cat-header\">🤕 Auto-protection</div>" },
+                  { type: "normal", _collapsible: true, _anchorId: "a-se-fait-mal", _leftTitle: "🤕 Se fait mal volontairement", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "", embeddedActions: [
+                    {
+                      label: "Que dire ?", emoji: "💬", style: "action-rose-poudre-clair", _pillStyle: true, mutexGroup: "se-fait-mal",
+                      blocks: [
+                        { type: "normal", text: "- Parler à [prénom_enfant], c'est **[lui_elle] qui est responsable de son corps** et de son bien-être\n- **Papa et Maman ne peuvent rien faire pour ça**, mais ils **peuvent l'emmener à l'hôpital**" }
+                      ]
+                    },
+                    {
+                      label: "Que faire ?", emoji: "🛠️", style: "action-rose-poudre-clair", _pillStyle: true, mutexGroup: "se-fait-mal",
+                      blocks: [
+                        { type: "normal", text: "- **Avant**\n  - **Sécuriser en amont** la chambre *(si lit ouvert)* ou le lit\n  - Espacer le lit du mur\n- **Pendant**\n  - **Rester impassible**\n  - **Continuer** l'accompagnement des émotions\n  - **Soigner** *(si ce n'est PAS l'enjeu)*\n- **Le lendemain**\n  - **S'enquérir avec empathie** de son état\n  - **MAIS ne pas montrer d'inquiétude**\n  - Soigner" }
+                      ]
+                    }
+                  ] },
+                  { type: "normal", _collapsible: true, _anchorId: "a-fait-mal-parents", _leftTitle: "👊 Fait mal aux parents", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "", embeddedActions: [
+                    {
+                      label: "Le soir", emoji: "🌙", style: "action-rose-poudre-clair", _pillStyle: true, mutexGroup: "fait-mal-parents",
+                      blocks: [
+                        { type: "normal", text: "- **S'écarter** *(ex : chaise plus loin)*\n- *« Aïe, tu m'as fait mal, je m'écarte pour ne plus avoir mal »*\n- Indiquer que **vous reviendrez** quand **[il_elle] ne vous fera plus mal**" }
+                      ]
+                    },
+                    {
+                      label: "En journée", emoji: "☀️", style: "action-rose-poudre-clair", _pillStyle: true, mutexGroup: "fait-mal-parents",
+                      blocks: [
+                        { type: "normal", text: "*(s'[il_elle] fait mal en journée)*\n- **Contenir [prénom_enfant] tendrement** mais **avec fermeté** avec ses bras et/ou jambes\n- **Communiquer sur le pourquoi** du geste :\n  *« Je comprends que tu sois énervé pour XXX, mais je dois aussi me protéger / protéger ta sœur, alors je vais te garder dans les bras un instant. J'écoute ta tristesse / colère. Tu peux pleurer si tu en as besoin »*" }
+                      ]
+                    }
+                  ] },
+                  { type: "normal", _noBorder: true, text: "<div class=\"cat-header\">🤮 Réactions corporelles</div>" },
+                  { type: "normal", _collapsible: true, _anchorId: "a-vomissements", _leftTitle: "🤮 Vomissements volontaires", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "*= Réaction physiologique, due aux contractions de l'estomac*", embeddedActions: [
                     {
                       label: "Les 1ères fois", emoji: "🌱", style: "action-rose-poudre-clair", _pillStyle: true, mutexGroup: "vomissements-volontaires",
                       blocks: [
@@ -6569,22 +6606,9 @@ const SCRIPT_DATA = {
                       ]
                     }
                   ] },
-                  { type: "normal", _collapsible: true, _leftTitle: "🧍 Mise debout", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "- C'est **son droit** et **sa manière d'exprimer sa colère**\n\n- **Ne pas montrer d'émotion** si c'est le cas\n- Ne **pas être dans une sur-intervention** pour remettre en position allongée\n  ⇒ pourrait faire **oublier l'objectif initial** + pourrait **entraîner un bras de fer** « debout-allongé »\n- **Recouchez-[le_la]** délicatement **toutes les 5 min OU** quand l'**émotion ↘**\n- Lui dire qu'[il_elle] serait **mieux allongé** pour dormir\n- **Invitez-[le_la] à se coucher régulièrement SANS l'imposer**\n- Si **BB résiste physiquement**, alors **ne PAS insister**" },
-                  { type: "normal", _collapsible: true, _leftTitle: "🤕 Se fait mal volontairement", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "", embeddedActions: [
-                    {
-                      label: "Que dire ?", emoji: "💬", style: "action-rose-poudre-clair", _pillStyle: true, mutexGroup: "se-fait-mal",
-                      blocks: [
-                        { type: "normal", text: "- Parler à [prénom_enfant], c'est **[lui_elle] qui est responsable de son corps** et de son bien-être\n- **Papa et Maman ne peuvent rien faire pour ça**, mais ils **peuvent l'emmener à l'hôpital**" }
-                      ]
-                    },
-                    {
-                      label: "Que faire ?", emoji: "🛠️", style: "action-rose-poudre-clair", _pillStyle: true, mutexGroup: "se-fait-mal",
-                      blocks: [
-                        { type: "normal", text: "- **Avant**\n  - **Sécuriser en amont** la chambre *(si lit ouvert)* ou le lit\n  - Espacer le lit du mur\n- **Pendant**\n  - **Rester impassible**\n  - **Continuer** l'accompagnement des émotions\n  - **Soigner** *(si ce n'est PAS l'enjeu)*\n- **Le lendemain**\n  - **S'enquérir avec empathie** de son état\n  - **MAIS ne pas montrer d'inquiétude**\n  - Soigner" }
-                      ]
-                    }
-                  ] },
-                  { type: "normal", _collapsible: true, _leftTitle: "🚪 Demande porte ouverte", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "**Que faire ?**\n- **Fermer** la porte à chaque **apaisement**\n- **SI** le **1er soir, trop difficile** ⇒ **OK** pour entrouverte\n  - **MAIS imposer la règle** : *« Lorsque tu es **dans ton lit**, la porte est **entrouverte**, lorsque **tu sors** de ton lit, la **porte se referme** »*\n  - Le parent **reste près de la porte SANS être visible** pour pouvoir **agir et fermer** la porte si besoin", embeddedActions: [
+                  { type: "normal", _collapsible: true, _anchorId: "a-mouille", _leftTitle: "💧 Mouille volontairement son lit (pipi / gourde)", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "- Laisser **à disposition** une **couche et un pyjama** de rechange\n- **Autonomiser** [prénom_enfant] **en journée** en pratiquant les gestes de change\n- Installer en amont un **lit de camp**" },
+                  { type: "normal", _noBorder: true, text: "<div class=\"cat-header\">💡 Manipulation de l'environnement</div>" },
+                  { type: "normal", _collapsible: true, _anchorId: "a-porte-ouverte", _leftTitle: "🚪 Demande porte ouverte", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "**Que faire ?**\n- **Fermer** la porte à chaque **apaisement**\n- **SI** le **1er soir, trop difficile** ⇒ **OK** pour entrouverte\n  - **MAIS imposer la règle** : *« Lorsque tu es **dans ton lit**, la porte est **entrouverte**, lorsque **tu sors** de ton lit, la **porte se referme** »*\n  - Le parent **reste près de la porte SANS être visible** pour pouvoir **agir et fermer** la porte si besoin", embeddedActions: [
                     {
                       label: "Si votre enfant a peur du noir", emoji: "🌑", style: "action-rose-poudre-clair", _pillStyle: true, mutexGroup: "porte-ouverte",
                       blocks: [
@@ -6598,21 +6622,9 @@ const SCRIPT_DATA = {
                       ]
                     }
                   ] },
-                  { type: "normal", _collapsible: true, _leftTitle: "👊 Fait mal aux parents", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "", embeddedActions: [
-                    {
-                      label: "Le soir", emoji: "🌙", style: "action-rose-poudre-clair", _pillStyle: true, mutexGroup: "fait-mal-parents",
-                      blocks: [
-                        { type: "normal", text: "- **S'écarter** *(ex : chaise plus loin)*\n- *« Aïe, tu m'as fait mal, je m'écarte pour ne plus avoir mal »*\n- Indiquer que **vous reviendrez** quand **[il_elle] ne vous fera plus mal**" }
-                      ]
-                    },
-                    {
-                      label: "En journée", emoji: "☀️", style: "action-rose-poudre-clair", _pillStyle: true, mutexGroup: "fait-mal-parents",
-                      blocks: [
-                        { type: "normal", text: "*(s'[il_elle] fait mal en journée)*\n- **Contenir [prénom_enfant] tendrement** mais **avec fermeté** avec ses bras et/ou jambes\n- **Communiquer sur le pourquoi** du geste :\n  *« Je comprends que tu sois énervé pour XXX, mais je dois aussi me protéger / protéger ta sœur, alors je vais te garder dans les bras un instant. J'écoute ta tristesse / colère. Tu peux pleurer si tu en as besoin »*" }
-                      ]
-                    }
-                  ] },
-                  { type: "normal", _collapsible: true, _leftTitle: "🧙 Peurs : noir / monstres…", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "", embeddedActions: [
+                  { type: "normal", _collapsible: true, _anchorId: "a-allume-lumiere", _leftTitle: "💡 Allume la lumière", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "- **Laisser-[le_la] dormir avec la lumière allumée** pour :\n  - Exprimer sa colère\n  - Expérimenter… que ce n'est pas agréable\n\n- Sinon\n  - **Retirer l'ampoule**\n  - **Couper** l'arrivée du **courant** dans la chambre" },
+                  { type: "normal", _noBorder: true, text: "<div class=\"cat-header\">🧙 Émotions</div>" },
+                  { type: "normal", _collapsible: true, _anchorId: "a-peurs", _leftTitle: "🧙 Peurs : noir / monstres…", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "", embeddedActions: [
                     {
                       label: "Peur du noir", emoji: "🌑", style: "action-rose-poudre-clair", _pillStyle: true, mutexGroup: "peurs-top",
                       blocks: [
@@ -6639,12 +6651,9 @@ const SCRIPT_DATA = {
                       ]
                     }
                   ] },
-                  { type: "normal", _collapsible: true, _leftTitle: "🌪️ Met le bazar", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "*= Extériorisation de la colère ⇒ Normal*\n\n- **Avant** : s'assurer qu'il n'y a **pas d'objets dangereux** dans la chambre\n- **Pendant** : **Laissez-[le_la]** exprimer son émotion sans intervenir\n- **Le lendemain** : proposer de **ranger avec le + de détachement** pour ne pas créer un nouvel enjeu relationnel" },
-                  { type: "normal", _collapsible: true, _leftTitle: "💧 Mouille volontairement son lit (pipi / gourde)", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "- Laisser **à disposition** une **couche et un pyjama** de rechange\n- **Autonomiser** [prénom_enfant] **en journée** en pratiquant les gestes de change\n- Installer en amont un **lit de camp**" },
-                  { type: "normal", _collapsible: true, _leftTitle: "💡 Allume la lumière", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "- **Laisser-[le_la] dormir avec la lumière allumée** pour :\n  - Exprimer sa colère\n  - Expérimenter… que ce n'est pas agréable\n\n- Sinon\n  - **Retirer l'ampoule**\n  - **Couper** l'arrivée du **courant** dans la chambre" },
-                  { type: "normal", _collapsible: true, _leftTitle: "🛏️ Se couche par terre", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "*= Réaction normale liée à sa colère*\n\n- **Laissez-[le_la] dormir par terre** pour :\n  - Exprimer sa colère\n  - Expérimenter… que ce n'est pas agréable" },
-                  { type: "normal", _collapsible: true, _leftTitle: "💬💬💬 Multiples rappels", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "- Mes conseils :\n  - **Mettez en place** un **tableau de rituel**<div style=\"margin:8px 0\"><img src=\"assets/livre-rituel-forkids.png\" alt=\"Tableau de rituel avec lumières\" style=\"max-width:380px;width:100%;border-radius:8px;border:1px solid #cbd5e0\"></div>\n\n  - **Répondez 1 SEULE fois à ses appels**\n\n  - **Anticipez** les rappels :\n    - Nez qui coule ⇒ **boîte de mouchoirs** à disposition de l'enfant\n    - Couette mal mise ⇒ **surpyjama** ou **couette zippée**\n    - Doudou perdu ⇒ mettez un **2ème doudou**, rendez le doudou visible la nuit (**ruban phosphorescent**…)\n    - Bouton qui gratte ⇒ pendant le temps de soins pendant le rituel, proposez de la **pommade anti-démangeaisons**\n    - Dernier câlin ⇒ pendant le rituel, verbalisez bien ce dernier câlin\n    - Soif ⇒ **Gourde** à proximité\n  - **Donnez 3 cartes pour 3 rappels** ⇒ au-delà : **vous ne revenez pas dans la chambre** (diminuez le nombre de cartes au fil du temps)\n\n  - **Mettez en place** un **tableau de récompenses :**\n    - **Chaque nuit SANS rappel** : [prénom_enfant] a le matin :\n      - Chocolat / bonbon\n      - Élément d'un kit playmobil\n\n  - Vous pouvez aussi faire des **jeux de rôle en journée** *(ex : avec une poupée que l'on couche dans son lit de poupée) :*\n    - Quel rituel lui faire ?\n    - Que dire si elle se réveille ?\n\n  - Il y a aussi les **livres de Caroline Ferriol** pour les + grands (6,90 €) :\n    - *Arthur met du temps à s'endormir*\n    - *Jade veut dormir avec Papa et Maman*\n    - *Louise ne veut pas aller se coucher*" },
-                  { type: "normal", _collapsible: true, showIfAgeMinMonths: 17, _leftTitle: "🏆 Motivation / renforcement positif (enfant + grand)", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "- **Tableau de récompenses** : **Chaque nuit SANS rappel**, [prénom_enfant] a le matin :\n  - Chocolat / bonbon\n  - Élément d'un kit Playmobil<div style=\"margin:8px 0\"><img src=\"assets/tableau-recompenses.png\" alt=\"Tableau de motivation enfant\" style=\"max-width:380px;width:100%;border-radius:8px;border:1px solid #cbd5e0\"></div>" }
+                  { type: "normal", _noBorder: true, text: "<div class=\"cat-header\">💬 Rappels & motivation</div>" },
+                  { type: "normal", _collapsible: true, _anchorId: "a-multiples-rappels", _leftTitle: "💬💬💬 Multiples rappels", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "- Mes conseils :\n  - **Mettez en place** un **tableau de rituel**<div style=\"margin:8px 0\"><img src=\"assets/livre-rituel-forkids.png\" alt=\"Tableau de rituel avec lumières\" style=\"max-width:380px;width:100%;border-radius:8px;border:1px solid #cbd5e0\"></div>\n\n  - **Répondez 1 SEULE fois à ses appels**\n\n  - **Anticipez** les rappels :\n    - Nez qui coule ⇒ **boîte de mouchoirs** à disposition de l'enfant\n    - Couette mal mise ⇒ **surpyjama** ou **couette zippée**\n    - Doudou perdu ⇒ mettez un **2ème doudou**, rendez le doudou visible la nuit (**ruban phosphorescent**…)\n    - Bouton qui gratte ⇒ pendant le temps de soins pendant le rituel, proposez de la **pommade anti-démangeaisons**\n    - Dernier câlin ⇒ pendant le rituel, verbalisez bien ce dernier câlin\n    - Soif ⇒ **Gourde** à proximité\n  - **Donnez 3 cartes pour 3 rappels** ⇒ au-delà : **vous ne revenez pas dans la chambre** (diminuez le nombre de cartes au fil du temps)\n\n  - **Mettez en place** un **tableau de récompenses :**\n    - **Chaque nuit SANS rappel** : [prénom_enfant] a le matin :\n      - Chocolat / bonbon\n      - Élément d'un kit playmobil\n\n  - Vous pouvez aussi faire des **jeux de rôle en journée** *(ex : avec une poupée que l'on couche dans son lit de poupée) :*\n    - Quel rituel lui faire ?\n    - Que dire si elle se réveille ?\n\n  - Il y a aussi les **livres de Caroline Ferriol** pour les + grands (6,90 €) :\n    - *Arthur met du temps à s'endormir*\n    - *Jade veut dormir avec Papa et Maman*\n    - *Louise ne veut pas aller se coucher*" },
+                  { type: "normal", _collapsible: true, _anchorId: "a-motivation", showIfAgeMinMonths: 17, _leftTitle: "🏆 Motivation / renforcement positif (enfant + grand)", _leftTitleStyle: "background:#EFD4D8;color:#6d3540;--cat-main:#a86b78", text: "- **Tableau de récompenses** : **Chaque nuit SANS rappel**, [prénom_enfant] a le matin :\n  - Chocolat / bonbon\n  - Élément d'un kit Playmobil<div style=\"margin:8px 0\"><img src=\"assets/tableau-recompenses.png\" alt=\"Tableau de motivation enfant\" style=\"max-width:380px;width:100%;border-radius:8px;border:1px solid #cbd5e0\"></div>" }
                 ]
               },
               {
