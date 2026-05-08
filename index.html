@@ -3950,22 +3950,41 @@
       50% { opacity: 1; }
     }
     /* V. Diagnostic — uniformiser les courbe_cards_grid imbriqués dans une section pour qu'ils
-       ressemblent aux sol-child-card de Plan d'action (fond blanc, alignés à gauche, plus petits). */
+       ressemblent aux sol-child-card de Plan d'action (fond blanc, alignés à gauche, plus petits,
+       même hauteur, layout colonne avec emoji en haut + titre dessous). */
     .diag-cat-content .courbe-cards-grid {
       justify-content: flex-start !important;
     }
     .diag-cat-content .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card,
     .diag-cat-content .courbe-cards-grid > .courbe-card {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 6px !important;
       flex: 1 1 140px !important;
       min-width: 140px !important;
       max-width: 220px !important;
-      min-height: auto !important;
-      padding: 12px 14px !important;
+      min-height: 100px !important;
+      padding: 14px 14px !important;
       background: #fff !important;
       border: 2px solid var(--cat-dark, #4b5563) !important;
       border-radius: 12px !important;
       box-shadow: 0 2px 6px rgba(0,0,0,0.06) !important;
       color: var(--cat-dark, #4b5563) !important;
+      text-align: center !important;
+    }
+    .diag-cat-content .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-emoji,
+    .diag-cat-content .courbe-cards-grid > .courbe-card .ccc-emoji {
+      font-size: 28px !important;
+      line-height: 1 !important;
+    }
+    .diag-cat-content .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-title,
+    .diag-cat-content .courbe-cards-grid > .courbe-card .ccc-title {
+      font-weight: 700 !important;
+      font-size: 13.5px !important;
+      color: var(--cat-dark, #4b5563) !important;
+      line-height: 1.25 !important;
     }
     .diag-cat-content .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card:hover,
     .diag-cat-content .courbe-cards-grid > .courbe-card:hover {
@@ -3983,9 +4002,6 @@
     .diag-cat-content .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card.active .ccc-title,
     .diag-cat-content .courbe-cards-grid > .courbe-card.active .ccc-title {
       color: #fff !important;
-    }
-    .diag-cat-content .courbe-cards-grid-wrap > .courbe-cards-grid > .courbe-card .ccc-title {
-      color: var(--cat-dark, #4b5563) !important;
     }
     .diag-search-input {
       width: 260px; max-width: 100%; padding: 6px 12px;
@@ -7031,7 +7047,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=514"></script>
+<script src="script-data.js?v=515"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
