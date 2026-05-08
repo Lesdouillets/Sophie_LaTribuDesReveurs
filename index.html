@@ -2298,8 +2298,8 @@
     }
     .sos-section.open .sos-section-body { display: block; }
     .sos-section-body ul { padding-left: 22px; margin: 10px 0 4px; }
-    .sos-section-body li { font-size: 14px; line-height: 1.7; color: var(--text); margin-bottom: 4px; }
-    .sos-section-body p { font-size: 14px; line-height: 1.6; color: var(--text); margin: 6px 0; }
+    .sos-section-body li { font-size: 15px; line-height: 1.75; color: var(--text); margin-bottom: 4px; }
+    .sos-section-body p { font-size: 15px; line-height: 1.75; color: var(--text); margin: 6px 0; }
     .sos-section-body strong { color: #C0392B; font-weight: 700; }
     .sos-section-body em { color: var(--text-light); font-style: normal; }
     .sos-aside {
@@ -7190,7 +7190,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=533"></script>
+<script src="script-data.js?v=535"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9911,11 +9911,17 @@ function setMeetCorner(corner) {
 }
 window.toggleMeetMode = toggleMeetMode;
 window.setMeetCorner = setMeetCorner;
-// Restaurer le mode au chargement
+// Restaurer le mode au chargement (défaut: bottom-right si rien en localStorage)
 document.addEventListener('DOMContentLoaded', () => {
   try {
     const saved = localStorage.getItem('tdr_meet_corner');
-    if (saved && MEET_CORNER_ARROW[saved]) _meetUpdateUI(saved);
+    if (saved === null) {
+      // Première visite : activer bottom-right par défaut
+      _meetUpdateUI('bottom-right');
+      try { localStorage.setItem('tdr_meet_corner', 'bottom-right'); } catch(e){}
+    } else if (saved && MEET_CORNER_ARROW[saved]) {
+      _meetUpdateUI(saved);
+    }
   } catch(e){}
 });
 
