@@ -11658,11 +11658,12 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const groups = Array.isArray(b.groups) ? b.groups : [];
     const syncId = b.syncId || '';
     const syncChecks = (syncId && state.gclSyncChecks && state.gclSyncChecks[syncId]) || null;
-    // Texte d'intro optionnel (avant les cases) — permet d'inclure le bloc "Soupçons allergie" inline
-    const introHtml = b.text ? `<div class="gcl-intro-text" style="grid-column:1/-1;font-size:14px;line-height:1.55;color:#1e293b;margin-bottom:6px">${substituteVars(b.text)}</div>` : '';
+    // Texte d'intro optionnel — affiché AU-DESSUS du bloc "À cocher avec les parents" (hors du cadre violet)
+    const introHtml = b.text ? `<div class="gcl-leading-text">${substituteVars(b.text)}</div>` : '';
     const syncAttr = syncId ? ` data-sync-id="${syncId}"` : '';
-    return `<div class="block-grouped-checklist"${syncAttr}>
-      ${introHtml}
+    const wrapStart = b.text ? `<div class="gcl-with-intro">${introHtml}` : '';
+    const wrapEnd = b.text ? `</div>` : '';
+    return `${wrapStart}<div class="block-grouped-checklist"${syncAttr}>
       ${groups.map((g, gi) => `
         <div class="gcl-group">
           ${g.title ? `<div class="gcl-group-title">${substituteVars(g.title)}</div>` : ''}
