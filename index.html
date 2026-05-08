@@ -5135,6 +5135,11 @@
                 oninput="computeClientFields()">
             </div>
             <div class="form-group">
+              <label>Âge gestationnel à la naissance <span style="color:#aaa;font-size:11px">(ex: 39+2 = 39 SA + 2 jours, terme = 40+0)</span></label>
+              <input type="text" id="age-gestationnel" placeholder="ex. 39+2" autocomplete="off"
+                oninput="computeClientFields()">
+            </div>
+            <div class="form-group">
               <label>Date du terme <span style="color:#aaa;font-size:11px">(si prématuré)</span></label>
               <input type="date" id="date-terme" oninput="computeClientFields()">
             </div>
@@ -6904,7 +6909,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=462"></script>
+<script src="script-data.js?v=463"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7900,6 +7905,7 @@ function populateFormFromClient(c) {
   set('nom-famille-enfant', c.nomFamille);
   set('age-enfant', c.ageEnfant);
   set('age-corrige-manuel', c.ageCorrigeManuel);
+  set('age-gestationnel', c.ageGestationnel);
   set('date-naissance', c.dateNaissance);
   set('date-terme', c.dateTerme);
   set('sexe-enfant', c.sexe);
@@ -8266,6 +8272,7 @@ function autoSaveFiche() {
     c.dateTerme = document.getElementById('date-terme')?.value || '';
     c.ageEnfant = document.getElementById('age-enfant')?.value.trim() || c.ageEnfant || '';
     c.ageCorrigeManuel = document.getElementById('age-corrige-manuel')?.value.trim() || '';
+    c.ageGestationnel = document.getElementById('age-gestationnel')?.value.trim() || '';
     c.poids = document.getElementById('poids-enfant')?.value || '';
     c.taillePere = document.getElementById('taille-pere')?.value || '';
     c.tailleMere = document.getElementById('taille-mere')?.value || '';
@@ -8335,6 +8342,7 @@ async function saveFicheOnly() {
     nomFamille: document.getElementById('nom-famille-enfant')?.value.trim() || '',
     ageEnfant: document.getElementById('age-enfant')?.value.trim() || (ageReel?.str || ''),
     ageCorrigeManuel: document.getElementById('age-corrige-manuel')?.value.trim() || '',
+    ageGestationnel: document.getElementById('age-gestationnel')?.value.trim() || '',
     sexe, fratrie: document.getElementById('fratrie-enfant')?.value.trim() || '',
     dateNaissance: dateNaiss, dateTerme,
     poids: document.getElementById('poids-enfant')?.value || '',
@@ -8661,15 +8669,106 @@ function besoinLait(mois, poids) {
   return { formula: 'Autour de 500 mL / 24h', volume: '' };
 }
 
+// Helper : parse une chaîne d'âge (libre) en nombre TOTAL de jours
+// Accepte : "1 an", "8 mois", "8,5 mois", "6 sem", "12 j" et combinaisons.
+function parseAgeStringToDays(s) {
+  if (!s || typeof s !== 'string') return null;
+  let totalDays = 0;
+  let matched = false;
+  const ym = s.match(/(\d+)\s*an/i); if (ym) { totalDays += parseInt(ym[1]) * 365.25; matched = true; }
+  const mm = s.match(/([\d]+[.,]?\d*)\s*mois/i); if (mm) { totalDays += parseFloat(mm[1].replace(',', '.')) * 30.4375; matched = true; }
+  const wm = s.match(/(\d+)\s*sem/i); if (wm) { totalDays += parseInt(wm[1]) * 7; matched = true; }
+  const dm = s.match(/(\d+)\s*(?:jour|j\b)/i); if (dm) { totalDays += parseInt(dm[1]); matched = true; }
+  if (!matched) return null;
+  return Math.round(totalDays);
+}
+
+// Helper : parse l'âge gestationnel "XX+YY" → nb de jours de prématurité (par rapport au terme = 280 jours)
+// Renvoie un nombre ≥ 0 si prématuré, 0 si à terme, null si invalide
+function parseGestationnelToPrematureDays(s) {
+  if (!s || typeof s !== 'string') return null;
+  const m = s.match(/^\s*(\d+)\s*\+\s*(\d+)\s*$/);
+  if (!m) return null;
+  const sem = parseInt(m[1], 10);
+  const jours = parseInt(m[2], 10);
+  if (jours >= 7) return null; // jours doit être 0-6
+  const totalDaysGest = sem * 7 + jours;
+  const prematureDays = 280 - totalDaysGest; // 40 SA = 280 jours
+  return prematureDays > 0 ? prematureDays : 0;
+}
+
+// Flag pour éviter la récursion infinie quand computeClientFields modifie des inputs qui retriggent oninput
+let _computeClientFieldsRunning = false;
 function computeClientFields() {
-  const dateNaiss = document.getElementById('date-naissance')?.value;
-  const dateTerme = document.getElementById('date-terme')?.value;
+  if (_computeClientFieldsRunning) return;
+  _computeClientFieldsRunning = true;
+  try {
+  let dateNaiss = document.getElementById('date-naissance')?.value;
+  let dateTerme = document.getElementById('date-terme')?.value;
   const consultDate = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
   const taillePere = parseFloat(document.getElementById('taille-pere')?.value);
   const tailleMere = parseFloat(document.getElementById('taille-mere')?.value);
   const sexe = document.getElementById('sexe-enfant')?.value;
   const ageManuel = document.getElementById('age-enfant')?.value.trim();
   const ageCorrigeManuel = document.getElementById('age-corrige-manuel')?.value.trim();
+  const ageGestationnel = document.getElementById('age-gestationnel')?.value.trim();
+
+  // ─── AUTO-CALCULS BIDIRECTIONNELS ────────────────────────────────────────
+  // 1. Si âge réel manuel saisi sans date naissance → calculer date naissance = consultation - âge
+  if (ageManuel && !dateNaiss && consultDate) {
+    const days = parseAgeStringToDays(ageManuel);
+    if (days !== null) {
+      const consult = new Date(consultDate);
+      const naissD = new Date(consult);
+      naissD.setDate(consult.getDate() - days);
+      const dn = document.getElementById('date-naissance');
+      if (dn) {
+        dn.value = naissD.toISOString().slice(0, 10);
+        dateNaiss = dn.value;
+      }
+    }
+  }
+  // 2. Si âge gestationnel + date naissance → calculer date du terme
+  //    (terme = naissance + jours de prématurité = naissance + (280 - âge gestationnel en jours))
+  if (ageGestationnel && dateNaiss) {
+    const prematureDays = parseGestationnelToPrematureDays(ageGestationnel);
+    if (prematureDays !== null && prematureDays > 0) {
+      const naiss = new Date(dateNaiss);
+      const terme = new Date(naiss);
+      terme.setDate(naiss.getDate() + prematureDays);
+      const dt = document.getElementById('date-terme');
+      const newStr = terme.toISOString().slice(0, 10);
+      if (dt && dt.value !== newStr) {
+        dt.value = newStr;
+        dateTerme = newStr;
+      }
+    } else if (prematureDays === 0) {
+      // À terme (40+0 ou plus) : pas de prématurité → vider date-terme
+      const dt = document.getElementById('date-terme');
+      if (dt && dt.value) {
+        dt.value = '';
+        dateTerme = '';
+      }
+    }
+  }
+  // 3. Si âge corrigé manuel + date naissance + pas d'âge gestationnel → calculer date du terme
+  //    (terme = consultation - âge corrigé)
+  if (ageCorrigeManuel && dateNaiss && !ageGestationnel && consultDate) {
+    const days = parseAgeStringToDays(ageCorrigeManuel);
+    if (days !== null) {
+      const consult = new Date(consultDate);
+      const terme = new Date(consult);
+      terme.setDate(consult.getDate() - days);
+      const dt = document.getElementById('date-terme');
+      const newStr = terme.toISOString().slice(0, 10);
+      // Ne mettre à jour que si différent ET que terme > naissance (sinon prématurité négative)
+      if (dt && dt.value !== newStr && new Date(newStr) > new Date(dateNaiss)) {
+        dt.value = newStr;
+        dateTerme = newStr;
+      }
+    }
+  }
+  // ─── Fin des auto-calculs bidirectionnels ────────────────────────────────
 
   const ageReel = calcAge(dateNaiss, consultDate);
   const ageCorrige = (dateTerme && dateNaiss && new Date(dateTerme) > new Date(dateNaiss)) ? calcAge(dateTerme, consultDate) : calcAge(dateNaiss, consultDate);
@@ -8827,6 +8926,9 @@ function computeClientFields() {
   if (typeof updateSiesteHighlight === 'function') updateSiesteHighlight();
   // Auto-sauvegarde silencieuse (debounced 600ms) pour persister les champs fiche
   if (typeof autoSaveFiche === 'function') autoSaveFiche();
+  } finally {
+    _computeClientFieldsRunning = false;
+  }
 }
 
 // ═══════════════════════════════════════════════════
