@@ -6933,7 +6933,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=490"></script>
+<script src="script-data.js?v=491"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9905,6 +9905,9 @@ function buildSidebarPlanSolutions() {
         const savedScroll = (onPlan && contentArea) ? contentArea.scrollTop : null;
         if (planActionIdx >= 0 && !onPlan) navigateTo(planActionIdx);
         if (typeof afterFn === 'function') afterFn();
+        // Rebuild sidebar pour refléter les changements (toggle expand, chevron, etc.)
+        // Quand !onPlan, navigateTo() s'en charge déjà ; sinon il faut le faire ici.
+        if (onPlan && typeof buildSidebar === 'function') buildSidebar();
         if (typeof renderCurrentSection === 'function') renderCurrentSection();
         if (savedScroll != null && contentArea) {
           requestAnimationFrame(() => { contentArea.scrollTop = savedScroll; });
