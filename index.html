@@ -4545,28 +4545,27 @@
     body:has(.info-panel.info-panel-blue.open) .sol-floating-btns {
       right: 1220px;
     }
-    /* Bulle BD : SVG en arrière-plan (forme d'ovale avec queue triangulaire au coin
-       bas-gauche). Bouton transparent autour, contenu (emoji + label) au centre du
-       corps de la bulle. */
+    /* Bulle BD : forme via background-image SVG (data URL) — toujours rendu, peu
+       importe le navigateur. Forme = ovale + queue triangulaire au coin bas-gauche.
+       Couleur = bandeau du panel "Si pleurs difficiles" (#5e7194 + bordure #2d3f5c). */
     .sol-floating-btn {
       position: relative;
       width: 220px; height: 200px;
       border: none;
-      background: transparent !important;
+      background: transparent;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 200' preserveAspectRatio='none'><path d='M 110 12 C 50 12 12 42 12 80 C 12 112 35 135 78 142 L 38 195 L 102 138 C 158 135 208 112 208 80 C 208 42 170 12 110 12 Z' fill='%235e7194' stroke='%232d3f5c' stroke-width='4' stroke-linejoin='round'/></svg>");
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
       cursor: pointer; padding: 0;
-      transition: transform 0.15s;
-      filter: drop-shadow(0 4px 14px rgba(45,63,92,0.35));
+      transition: transform 0.15s, filter 0.15s;
+      filter: drop-shadow(0 4px 14px rgba(45,63,92,0.32));
     }
-    .sol-floating-btn:hover { transform: scale(1.06); }
+    .sol-floating-btn:hover { transform: scale(1.06); filter: drop-shadow(0 6px 18px rgba(45,63,92,0.45)); }
     .sol-floating-btn:active { transform: scale(0.97); }
-    .sol-floating-btn-svg {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      display: block;
-    }
+    .sol-floating-btn-svg { display: none !important; }
     .sol-floating-btn-content {
       position: absolute;
-      top: 12%; left: 12%; right: 12%; bottom: 35%;
+      top: 14%; left: 12%; right: 12%; bottom: 32%;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       gap: 4px; color: #ffffff !important;
@@ -7221,7 +7220,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=555"></script>
+<script src="script-data.js?v=556"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
