@@ -351,6 +351,14 @@ const SCRIPT_DATA = {
                   blocks: [
                     { type: "normal", text: "- **Nanny Care**\n  - Matelas épaisseur de 13cm MAX et densité 35kg/m3\n  - Jusque 7 mois (jusque BB bouge pour éviter les fausses alertes)\n  - Surveille la **respiration** (détecte **toute absence ou irrégularité** de respiration **MAIS PAS si respirations qui s'amenuisent** et qui n'o**xygène plus le cerveau**)\n  - Prix : ≃200€\n  - https://www.nanny-care.com/3-e-shop-moniteurs-respiratoires-bebe\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN\n\n- **Chausette Owlet DreamSock**\n  - Surveille la **fréquence cardiaque** et le **taux d'oxygène**\n  - Risque de **brûlure si usage prolongé** ⇒ Changer de pied régulièrement\n  - Prix : ≃300€\n  - https://owletcare.fr/products/owlet-dream-sock\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN" }
                   ]
+                },
+                {
+                  label: "Pourquoi je ne recommande PAS de lit ouvert avant 2,5/3 ans ?",
+                  title: "Pourquoi je ne recommande PAS de lit ouvert avant 2,5/3 ans ?",
+                  width: "360px",
+                  blocks: [
+                    { type: "normal", text: "- Ça peut **créer de l'insécurité** car il n'y a **pas de possibilité de se nicher**, [il_elle] peut se sentir beaucoup trop **« exposé »**\n- C'est **difficile** pour un enfant de cet âge de **respecter la règle** *« Tu vas rester dans ton lit »*\n- C'est une **responsabilité trop lourde** *(car le **désir d'éveil** est fort)*\n- Ça peut :\n  - conduire à **+ d'interactions avec les parents** avec les **allers-retours** pour [le_la] ramener au lit\n  - créer des **conflits** qui pourraient être évités\n  - et [il_elle] peut aussi **risquer de tomber**, se **faire mal**, et **associer le sommeil** à quelque chose de **négatif**\n\n- ⇒ Le **lit fermé** offre un **cadre physique** au sommeil avec la **présence des barreaux** *(ou lit parapluie !)*" }
+                  ]
                 }
               ]
             },
@@ -4947,7 +4955,15 @@ const SCRIPT_DATA = {
       {
         id: "env", title: "Environnement de sommeil", emoji: "🏠", alwaysOpen: true,
         introBlocks: [
-          { type: "normal", text: "- Maintenant, je vous **propose d'aborder** un **nouveau levier : \"l'environnement de sommeil\"** de [prénom_enfant]\n- C'est **quelque chose** sur LEQUEL on PEUT **agir ASSEZ facilement**, mais qu'on a **souvent tendance à négliger**… **alors** qu'il **joue un rôle clé** dans la **qualité du sommeil.**\n- **Pour bien s'endormir** et **réussir à enchaîner les cycles**, un bébé a **besoin d'un environnement** qui lui **envoie des repères clairs** : *\"c'est le moment du dodo.\"*" },
+          { type: "normal", text: "- Maintenant, je vous **propose d'aborder** un **nouveau levier : \"l'environnement de sommeil\"** de [prénom_enfant]\n- C'est **quelque chose** sur LEQUEL on PEUT **agir ASSEZ facilement**, mais qu'on a **souvent tendance à négliger**… **alors** qu'il **joue un rôle clé** dans la **qualité du sommeil.**\n- **Pour bien s'endormir** et **réussir à enchaîner les cycles**, un bébé a **besoin d'un environnement** qui lui **envoie des repères clairs** : *\"c'est le moment du dodo.\"*",
+            trailingInfoButton: {
+              label: "Pourquoi je ne recommande PAS de lit ouvert avant 2,5/3 ans ?",
+              title: "Pourquoi je ne recommande PAS de lit ouvert avant 2,5/3 ans ?",
+              blocks: [
+                { type: "normal", text: "- Ça peut **créer de l'insécurité** car il n'y a **pas de possibilité de se nicher**, [il_elle] peut se sentir beaucoup trop **« exposé »**\n- C'est **difficile** pour un enfant de cet âge de **respecter la règle** *« Tu vas rester dans ton lit »*\n- C'est une **responsabilité trop lourde** *(car le **désir d'éveil** est fort)*\n- Ça peut :\n  - conduire à **+ d'interactions avec les parents** avec les **allers-retours** pour [le_la] ramener au lit\n  - créer des **conflits** qui pourraient être évités\n  - et [il_elle] peut aussi **risquer de tomber**, se **faire mal**, et **associer le sommeil** à quelque chose de **négatif**\n\n- ⇒ Le **lit fermé** offre un **cadre physique** au sommeil avec la **présence des barreaux** *(ou lit parapluie !)*" }
+              ]
+            }
+          },
           { type: "normal", _leftTitle: "Connait pas ses sensibilités", text: "- Comme on ne **connait pas** encore les **sensibilités** de [prénom_enfant] **par rapport** à son **environnement de sommeil,**\n- Moi, je voulais vous **partager quelques pistes** POUR rendre son **cadre du sommeil :**\n  - le + **confortable**\n  - **+ optimal possible.**\n- Le **but** n'est **PAS** de **tout changer**, mais de vous **donner des idées** pour **créer un environnement apaisant** pour [prénom_enfant].\n- **Concrètement**, il y a **plusieurs éléments** sur lesquels **on peut jouer**…" },
         ],
         children: [
