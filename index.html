@@ -4534,8 +4534,9 @@
     body:has(.info-panel.info-panel-blue.open) .sol-floating-btns {
       right: 1220px;
     }
-    /* Bulle BD : forme ovale (border-radius:50% sur rectangle 170x125) + queue
-       triangulaire au coin bas-gauche pour évoquer une bulle de bande dessinée. */
+    /* Bulle BD : forme ovale, bleu, sans pseudo-éléments (qui causaient des artefacts
+       de rendu). Pour évoquer une bulle BD on garde l'aspect oval+bordure+ombre,
+       sans queue triangulaire. */
     .sol-floating-btn {
       position: relative;
       display: flex !important;
@@ -4544,41 +4545,21 @@
       justify-content: center;
       gap: 4px;
       width: 170px;
-      height: 125px;
+      height: 130px;
       padding: 10px 14px;
-      border: 3px solid #3b82f6;
+      border: 3px solid #2563eb;
       border-radius: 50%;
-      background: #dbeafe !important;
+      background: #bfdbfe !important;
       color: #1e3a8a !important;
       cursor: pointer;
-      box-shadow: 0 4px 16px rgba(59,130,246,0.28);
+      box-shadow: 0 4px 16px rgba(37,99,235,0.32);
       transition: transform 0.15s, box-shadow 0.15s;
       text-align: center;
       box-sizing: border-box;
       overflow: visible;
     }
-    .sol-floating-btn:hover { transform: scale(1.06); box-shadow: 0 6px 20px rgba(59,130,246,0.4); }
+    .sol-floating-btn:hover { transform: scale(1.06); box-shadow: 0 6px 20px rgba(37,99,235,0.45); }
     .sol-floating-btn:active { transform: scale(0.97); }
-    /* Queue triangulaire — bordure bleu foncé (légèrement + grande, derrière) */
-    .sol-floating-btn::before {
-      content: '';
-      position: absolute;
-      bottom: -38px; left: 26px;
-      width: 50px; height: 44px;
-      background: #3b82f6;
-      clip-path: polygon(50% 0, 100% 0, 0 100%);
-      z-index: 1;
-    }
-    /* Queue triangulaire — remplissage bleu clair (par-dessus, légèrement + petit) */
-    .sol-floating-btn::after {
-      content: '';
-      position: absolute;
-      bottom: -32px; left: 30px;
-      width: 42px; height: 36px;
-      background: #dbeafe;
-      clip-path: polygon(45% 0, 100% 0, 0 100%);
-      z-index: 2;
-    }
     /* SVG legacy neutralisé */
     .sol-floating-btn-svg { display: none !important; }
     .sol-floating-btn-content {
@@ -4588,7 +4569,6 @@
       gap: 4px; color: #1e3a8a !important;
       font-weight: 700; pointer-events: none;
       width: 100%;
-      z-index: 3;
     }
     .sol-floating-btn-content span:first-child { font-size: 32px !important; line-height: 1; }
     .sol-floating-btn-content span:last-child { font-size: 13px !important; line-height: 1.2; color: #1e3a8a !important; }
@@ -7237,7 +7217,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=546"></script>
+<script src="script-data.js?v=547"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
