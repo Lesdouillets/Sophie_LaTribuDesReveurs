@@ -4462,7 +4462,9 @@
     .sol-row input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; flex-shrink: 0; }
     .sol-row-emoji { font-size: 16px; line-height: 1; flex-shrink: 0; }
     .sol-row-label { color: #334155; }
-    .sol-row input[type="checkbox"]:checked + .sol-row-label { font-weight: 700; color: #0f172a; }
+    /* `~` (sibling général) au lieu de `+` (sibling immédiat) pour fonctionner même quand
+       un .sol-row-emoji est intercalé entre la checkbox et le label (cas APLV, RGO, etc.) */
+    .sol-row input[type="checkbox"]:checked ~ .sol-row-label { font-weight: 700; color: #0f172a; }
     /* Sous-options des sol-row-sub (cases sous une catégorie parent) :
        quand cochée, mettre le label en gras (utilise :has() pour styler le label-parent
        en fonction de l'état du checkbox-enfant) */
@@ -6897,7 +6899,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=455"></script>
+<script src="script-data.js?v=456"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
