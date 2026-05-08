@@ -7049,7 +7049,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=516"></script>
+<script src="script-data.js?v=517"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -11757,10 +11757,9 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         contentHtml = `<div class="sol-active-content courbe-card-content diag-cat-content" data-section-cat="${activeCat}" data-card-id="${activeId}" style="border:3px solid ${colors.main};background:#ffffff !important;padding:0;${cssVars}">
           <div class="sol-active-banner" style="background:${colors.main}">${catEmoji} ${catLabel}</div>
           ${singlePastilleHtml}
-          <div style="padding:0 14px"><button type="button" class="courbe-card-close" onclick="closeCourbeCard(this)">✕ Fermer</button></div>
           ${childCardsHtml}
           ${childContentHtml}
-          <div style="padding:0 14px 14px"><button type="button" class="courbe-card-close courbe-card-close-bottom" onclick="closeCourbeCard(this)">✕ Fermer</button></div>
+          <div style="padding:14px"><button type="button" class="courbe-card-close courbe-card-close-bottom" onclick="closeCourbeCard(this)">✕ Fermer</button></div>
         </div>`;
       }
     }
@@ -12044,7 +12043,6 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         } else {
           contentHtml = `<div class="courbe-card-content" data-card-id="${activeId}">
             <div class="courbe-card-banner">${bannerLabel}</div>
-            <button type="button" class="courbe-card-close" onclick="closeCourbeCard(this)">✕ Fermer</button>
             ${inner}
             <button type="button" class="courbe-card-close courbe-card-close-bottom" onclick="closeCourbeCard(this)">✕ Fermer</button>
           </div>`;
@@ -13604,7 +13602,7 @@ function renderSolutionsCheckboxes(opts) {
             `</div>`;
         }
       }
-      // Ordre : bannière → pastille (singleChildMode) → intro de la catégorie → cards/contenu → outro
+      // Ordre : bannière → pastille (singleChildMode) → intro de la catégorie → cards/contenu → outro → bouton Fermer (bas)
       // (la pastille apparaît juste sous le bandeau pour identifier l'enfant unique tout de suite)
       activeContentHtml = `<div class="sol-active-content" data-section-cat="${cat.id}" style="border:3px solid ${c.main}">
         <div class="sol-active-banner" style="background:${c.main}">${cat.emoji || ''} ${cat.title}</div>
@@ -13613,6 +13611,7 @@ function renderSolutionsCheckboxes(opts) {
         ${envCardsOverride !== null ? envCardsOverride : cardsHtml}
         ${envCardsOverride !== null ? envChildContentOverride : childContentHtml}
         ${outroHtml}
+        <div style="padding:14px 20px 16px"><button type="button" class="courbe-card-close courbe-card-close-bottom" onclick="setSolActiveCat('${cat.id}')">✕ Fermer</button></div>
       </div>`;
     }
   }
