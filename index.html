@@ -6883,7 +6883,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=425"></script>
+<script src="script-data.js?v=426"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -13376,7 +13376,7 @@ function showLitTransitionDialog(onAfterChoice) {
 }
 window.showLitTransitionDialog = showLitTransitionDialog;
 
-function toggleOption(header) {
+function toggleOption(header, skipScroll) {
   const content = header.nextElementSibling;
   const toggle = header.querySelector('.option-toggle');
   const arrow = header.querySelector('.option-arrow');
@@ -13414,7 +13414,8 @@ function toggleOption(header) {
       }
       // Pour les purple-btn (IV. Objectifs) : scroller la vue pour que le haut du bouton ouvert
       // soit en haut du panel central, pas au milieu/en bas
-      if (optionDiv.classList.contains('purple-btn')) {
+      // skipScroll=true : ne pas scroller (utilisé lors de la restauration des options ouvertes après re-render)
+      if (optionDiv.classList.contains('purple-btn') && !skipScroll) {
         const wrap = optionDiv.closest('.edit-block-wrap') || optionDiv;
         setTimeout(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
       }
@@ -14481,6 +14482,12 @@ function selectTickboxChoice(el) {
       sol_barreau: 'souhait_chgmt_lit_sol_barreau'
     };
     Object.values(mapping).forEach(pb => setPb(pb, false));
+    // Effacer les flags manuallyEdited sur les 5 sous-cartes pour que l'auto-sync s'applique
+    // (sinon, si l'utilisateur avait coché/décoché manuellement une carte avant, le cascade IV.→VIII. est bloqué)
+    const CHGMT_LIT_SUB_IDS = ['env_chgmt_lit_parental_cododo', 'env_chgmt_lit_parental_barreau', 'env_chgmt_lit_cododo_barreau', 'env_chgmt_lit_barreau_ouvert', 'env_chgmt_lit_sol_barreau'];
+    if (state.courbeCardsTickedManuallyEdited) {
+      CHGMT_LIT_SUB_IDS.forEach(id => state.courbeCardsTickedManuallyEdited.delete(id));
+    }
     const currentValue = wasSelected ? null : el.dataset.value;
     const targetPb = currentValue ? mapping[currentValue] : null;
     if (targetPb) setPb(targetPb, true);
@@ -14625,7 +14632,8 @@ function selectTickboxChoice(el) {
           const content = opt.querySelector(':scope > .option-content');
           if (!content || content.classList.contains('open')) return;
           const header = opt.querySelector(':scope > .option-header');
-          if (header && typeof toggleOption === 'function') toggleOption(header);
+          // skipScroll=true → ne pas faire scrollIntoView (sinon le scroll remonte au début de l'option)
+          if (header && typeof toggleOption === 'function') toggleOption(header, true);
         });
         // Re-restaurer le scroll après le toggle des options (qui peut modifier la hauteur du DOM)
         if (!skipScrollRestore && savedScrollTop != null && contentAreaForScroll) {
