@@ -392,6 +392,8 @@ const SCRIPT_DATA = {
                 required: true,
                 requireWhenParentSelected: { cid: "obj_lieu_sommeil", value: "changer_lit" },
                 options: [
+                  { icon: "🛏", label: "Lit parental ⇒ Cododo", value: "parental_cododo", variant: "negative" },
+                  { icon: "🛏", label: "Lit parental ⇒ Lit à barreaux", value: "parental_barreau", variant: "negative" },
                   { icon: "🛏", label: "Cododo ⇒ Lit à barreaux", value: "cododo_barreau", variant: "negative" },
                   { icon: "🛌", label: "Lit à barreaux ⇒ Lit ouvert", value: "barreau_ouvert", variant: "negative" }
                 ]
