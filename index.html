@@ -10098,8 +10098,8 @@ function openEcueilSection(anchorId) {
 }
 window.openEcueilSection = openEcueilSection;
 
-// Rendre les bulles de BD (sol-floating-btns inline) draggables.
-// Délégué au document pour fonctionner même après re-render.
+// Rendre les bulles de BD (sol-floating-btns inline) draggables + auto-positionnées
+// au-dessus du bouton Suivant pour ne jamais le masquer.
 let _bubbleDragState = null;
 document.addEventListener('mousedown', (e) => {
   const btn = e.target.closest('.sol-floating-btns[data-inline-bubble="1"] .sol-floating-btn');
@@ -10135,6 +10135,10 @@ document.addEventListener('mouseup', (e) => {
   const wrap = _bubbleDragState.wrap;
   const moved = _bubbleDragState.moved;
   wrap.classList.remove('bubble-dragging');
+  if (moved) {
+    // Marquer que l'utilisateur a déplacé la bulle → bloquer le repositionnement auto
+    wrap.dataset.userMoved = 'true';
+  }
   _bubbleDragState = null;
   // Si l'utilisateur a déplacé la bulle, on annule le clic suivant pour éviter d'ouvrir le panneau
   if (moved) {
@@ -10142,6 +10146,54 @@ document.addEventListener('mouseup', (e) => {
     wrap.addEventListener('click', cancelClick, { once: true, capture: true });
   }
 });
+
+// Reposition automatique : place la bulle au-dessus du bouton Suivant
+// (sans jamais le couvrir) tant que l'utilisateur ne l'a pas déplacée.
+function repositionFloatingBubble() {
+  document.querySelectorAll('.sol-floating-btns[data-inline-bubble="1"]').forEach(wrap => {
+    if (wrap.dataset.userMoved === 'true') return;
+    const nextBtn = document.querySelector('.btn-nav.btn-next');
+    if (!nextBtn) return;
+    const nextRect = nextBtn.getBoundingClientRect();
+    const bubbleH = wrap.offsetHeight || 200;
+    const margin = 30;
+    let targetTop;
+    if (nextRect.top > 0 && nextRect.top < window.innerHeight) {
+      // Suivant visible → placer la bulle juste au-dessus avec marge
+      targetTop = nextRect.top - bubbleH - margin;
+      // Si pas assez de place en haut, mettre la bulle EN DESSOUS du bouton
+      if (targetTop < 80) targetTop = nextRect.bottom + margin;
+    } else if (nextRect.top >= window.innerHeight) {
+      // Suivant en dessous du viewport → bulle en bas-droite par défaut
+      targetTop = window.innerHeight - bubbleH - 40;
+    } else {
+      // Suivant déjà passé au-dessus → bulle en haut-droite
+      targetTop = 100;
+    }
+    wrap.style.top = Math.max(60, targetTop) + 'px';
+    wrap.style.right = '30px';
+    wrap.style.left = 'auto';
+    wrap.style.bottom = 'auto';
+  });
+}
+window.repositionFloatingBubble = repositionFloatingBubble;
+
+// Appeler le reposition sur scroll + resize + après chaque navigation
+let _bubbleRepositionTimer = null;
+function _scheduleBubbleReposition() {
+  if (_bubbleRepositionTimer) cancelAnimationFrame(_bubbleRepositionTimer);
+  _bubbleRepositionTimer = requestAnimationFrame(repositionFloatingBubble);
+}
+window.addEventListener('scroll', _scheduleBubbleReposition, true);
+window.addEventListener('resize', _scheduleBubbleReposition);
+// Observer les changements de taille du contenu (texte qui change) pour repositionner
+if (typeof ResizeObserver !== 'undefined') {
+  const _bubbleContentObserver = new ResizeObserver(_scheduleBubbleReposition);
+  document.addEventListener('DOMContentLoaded', () => {
+    const ca = document.getElementById('content-area');
+    if (ca) _bubbleContentObserver.observe(ca);
+  });
+}
 
 function _setupInfoPanelOutsideClickHandler(e) {
   const panel = document.getElementById('setup-info-panel');
@@ -10303,6 +10355,11 @@ function renderCurrentSection() {
     html += `<div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn-nav btn-next" style="flex-direction:column;padding:11px 22px;line-height:1.25;align-items:center;gap:2px" onclick="const i=state.sections.findIndex(s=>s.id==='plan_action'); if(i>=0) navigateTo(i);"><span>⏭️ Passer :</span><span style="font-size:13px;opacity:0.9;font-weight:500">Progressivité &amp; Gestion des émotions</span></button></div>`;
   }
   area.innerHTML = html;
+  // Reset du flag userMoved sur les bulles (changement de section = nouvelle bulle)
+  // puis reposition auto au prochain frame (après que le DOM soit peint)
+  if (typeof repositionFloatingBubble === 'function') {
+    requestAnimationFrame(() => requestAnimationFrame(repositionFloatingBubble));
+  }
   // Marquer les parents qui contiennent 2+ boutons action frères (pour le centrage CSS)
   markActionSiblingContainers(area);
   // Marquer les wrappers qui suivent un bandeau enfant pour appliquer le retrait à droite
