@@ -6883,7 +6883,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=424"></script>
+<script src="script-data.js?v=425"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -14444,7 +14444,7 @@ function selectTickboxChoice(el) {
     // Si on quitte "changer_lit" (passe à autre option ou désélection), reset la sous-question + ses pbs
     if (currentValue !== 'changer_lit') {
       delete state.tickboxChoices['obj_chgmt_lit_type'];
-      ['souhait_chgmt_lit_cododo_barreau','souhait_chgmt_lit_barreau_ouvert','souhait_chgmt_lit_sol_barreau'].forEach(pb => setPb(pb, false));
+      ['souhait_chgmt_lit_parental_cododo','souhait_chgmt_lit_parental_barreau','souhait_chgmt_lit_cododo_barreau','souhait_chgmt_lit_barreau_ouvert','souhait_chgmt_lit_sol_barreau'].forEach(pb => setPb(pb, false));
     }
     // Propager pb → state.selectedSolutions (autoCheckIfPbs sur env_chgmt_lit / env_chgmt_chambre / env_chgmt_lit_chambre)
     // + state.courbeCardsTicked si une sous-pb chgmt_lit est aussi cochée
@@ -14471,9 +14471,11 @@ function selectTickboxChoice(el) {
     }
     syncChanged = true;
   }
-  // obj_chgmt_lit_type → souhait_chgmt_lit_* (mutex parmi les 3 sous-pbs de Changement de lit)
+  // obj_chgmt_lit_type → souhait_chgmt_lit_* (mutex parmi les 5 sous-pbs de Changement de lit)
   if (cid === 'obj_chgmt_lit_type') {
     const mapping = {
+      parental_cododo: 'souhait_chgmt_lit_parental_cododo',
+      parental_barreau: 'souhait_chgmt_lit_parental_barreau',
       cododo_barreau: 'souhait_chgmt_lit_cododo_barreau',
       barreau_ouvert: 'souhait_chgmt_lit_barreau_ouvert',
       sol_barreau: 'souhait_chgmt_lit_sol_barreau'
