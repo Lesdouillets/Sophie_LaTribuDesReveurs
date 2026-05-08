@@ -527,6 +527,13 @@
       opacity: 0.92;
     }
     .nav-item.nav-sub-child .nav-emoji { font-size: 12px; }
+    /* Sous-sous-sous-item (4e niveau) — items DOS/VENTRE de Progressivité */
+    .nav-item.nav-sub-sub-child {
+      padding-left: 78px;
+      font-size: 11px;
+      opacity: 0.88;
+    }
+    .nav-item.nav-sub-sub-child .nav-emoji { font-size: 11px; }
     /* Grisage des sections dont la problématique n'est pas cochée */
     .nav-item.inactive-levier,
     .nav-group-header.inactive-levier {
@@ -6933,7 +6940,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=491"></script>
+<script src="script-data.js?v=492"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9946,9 +9953,31 @@ function buildSidebarPlanSolutions() {
       const emoji = ch.cardEmoji || ch.emoji || '🔹';
       const label = ch.cardLabel || ch.label || ch.id;
 
+      // Détection : enfant ayant un tickbox_choice + courbe_cards_grid filtré par ce tickbox.
+      // Cas type = accomp_progressivite (DOS / VENTRE → 7 items chacun).
+      const subGroups = (() => {
+        if (!Array.isArray(ch.blocks)) return null;
+        const tickboxBlock = ch.blocks.find(b => b && b.type === 'tickbox_choice' && b.id && Array.isArray(b.options));
+        if (!tickboxBlock) return null;
+        const allItems = extractGridItemsFromBlocks(ch.blocks);
+        const itemsUsingTickbox = allItems.filter(it => it && it.id && it.showIfTickbox && it.showIfTickbox.cid === tickboxBlock.id);
+        if (itemsUsingTickbox.length === 0) return null;
+        return tickboxBlock.options.map(opt => ({
+          label: opt.label,
+          icon: opt.icon || '',
+          value: opt.value,
+          cid: tickboxBlock.id,
+          items: itemsUsingTickbox.filter(it => it.showIfTickbox.value === opt.value)
+        }));
+      })();
+      const hasSubGroups = !!(subGroups && subGroups.length > 0);
+
       // Sous-enfants : items dans courbe_cards_grid (récursif dans les blocks)
-      const gridItemsAll = extractGridItemsFromBlocks(ch.blocks).filter(isGridItemVisibleSidebar).filter(it => it && it.id);
-      const hasSubChildren = gridItemsAll.length > 0;
+      // Si subGroups détecté, on n'utilise plus la liste plate (les items sont rendus sous chaque groupe).
+      const gridItemsAll = hasSubGroups
+        ? []
+        : extractGridItemsFromBlocks(ch.blocks).filter(isGridItemVisibleSidebar).filter(it => it && it.id);
+      const hasSubChildren = hasSubGroups || gridItemsAll.length > 0;
       const isChildExpanded = state.planSidebarChildExpanded.has(ch.id);
 
       const itemDiv = document.createElement('div');
@@ -9972,27 +10001,87 @@ function buildSidebarPlanSolutions() {
 
       // Sous-enfants : affichés uniquement si l'enfant est développé
       if (hasSubChildren && isChildExpanded) {
-        gridItemsAll.forEach(item => {
-          const subItemDiv = document.createElement('div');
-          const isItemTicked = state.courbeCardsTicked && state.courbeCardsTicked.has(item.id);
-          subItemDiv.className = 'nav-item nav-sub-child' + (isItemTicked ? '' : ' inactive-levier');
-          const itemEmoji = item.emoji || '·';
-          const itemLabel = item.compactLabel || item.label || item.id;
-          subItemDiv.innerHTML = `<span class="nav-emoji">${itemEmoji}</span><span class="nav-title">${itemLabel}</span>`;
-          subItemDiv.onclick = () => {
-            if (planActionIdx >= 0) navigateTo(planActionIdx);
-            state.solActiveCat = catId;
-            if (!state.solActiveChildByCat) state.solActiveChildByCat = {};
-            state.solActiveChildByCat[catId] = item.id;
-            if (typeof renderCurrentSection === 'function') renderCurrentSection();
-            // Scroll to the sub-card after render
-            setTimeout(() => {
-              const card = document.querySelector(`[data-card-id="${item.id}"]`);
-              if (card && typeof card.scrollIntoView === 'function') card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 120);
-          };
-          childrenDiv.appendChild(subItemDiv);
-        });
+        if (hasSubGroups) {
+          // Cas DOS/VENTRE : groupes au niveau 3, items au niveau 4
+          subGroups.forEach(group => {
+            const groupKey = `${ch.id}__${group.value}`;
+            const isGroupExpanded = state.planSidebarChildExpanded.has(groupKey);
+            const choices = state.tickboxChoices || {};
+            const isGroupActive = choices[group.cid] === group.value;
+            const groupDiv = document.createElement('div');
+            const hasGroupItems = group.items.length > 0;
+            groupDiv.className = 'nav-item nav-sub-child' + (hasGroupItems ? ' nav-has-children' : '') + (isGroupActive ? '' : ' inactive-levier');
+            const groupChevron = hasGroupItems
+              ? `<span class="nav-child-arrow" style="font-size:10px;width:12px;text-align:center;color:rgba(255,255,255,0.55);flex-shrink:0">${isGroupExpanded ? '▾' : '▸'}</span>`
+              : '';
+            groupDiv.innerHTML = `${groupChevron}<span class="nav-emoji">${group.icon}</span><span class="nav-title">${group.label}</span>`;
+            groupDiv.onclick = () => {
+              if (hasGroupItems) {
+                if (state.planSidebarChildExpanded.has(groupKey)) state.planSidebarChildExpanded.delete(groupKey);
+                else state.planSidebarChildExpanded.add(groupKey);
+              }
+              navigateAndPreserveScroll(() => {
+                state.solActiveCat = catId;
+                // Cocher le tickbox correspondant (DOS/VENTRE) pour faire apparaître le contenu
+                if (typeof setTickboxChoiceFromSol === 'function') {
+                  setTickboxChoiceFromSol(group.cid, group.value);
+                }
+              });
+            };
+            childrenDiv.appendChild(groupDiv);
+
+            if (isGroupExpanded) {
+              group.items.forEach(item => {
+                const subItemDiv = document.createElement('div');
+                const isItemTicked = state.courbeCardsTicked && state.courbeCardsTicked.has(item.id);
+                subItemDiv.className = 'nav-item nav-sub-sub-child' + (isItemTicked ? '' : ' inactive-levier');
+                const itemEmoji = item.emoji || '·';
+                const itemLabel = item.compactLabel || item.label || item.id;
+                subItemDiv.innerHTML = `<span class="nav-emoji">${itemEmoji}</span><span class="nav-title">${itemLabel}</span>`;
+                subItemDiv.onclick = () => {
+                  navigateAndPreserveScroll(() => {
+                    state.solActiveCat = catId;
+                    if (!state.solActiveChildByCat) state.solActiveChildByCat = {};
+                    state.solActiveChildByCat[catId] = item.id;
+                    // S'assurer que le tickbox du groupe est activé pour que le contenu de l'item soit visible
+                    if (typeof setTickboxChoiceFromSol === 'function') {
+                      setTickboxChoiceFromSol(group.cid, group.value);
+                    }
+                  });
+                  // Scroll vers la carte de l'item
+                  setTimeout(() => {
+                    const card = document.querySelector(`[data-card-id="${item.id}"]`);
+                    if (card && typeof card.scrollIntoView === 'function') card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  }, 150);
+                };
+                childrenDiv.appendChild(subItemDiv);
+              });
+            }
+          });
+        } else {
+          // Cas standard : items directement au niveau 3
+          gridItemsAll.forEach(item => {
+            const subItemDiv = document.createElement('div');
+            const isItemTicked = state.courbeCardsTicked && state.courbeCardsTicked.has(item.id);
+            subItemDiv.className = 'nav-item nav-sub-child' + (isItemTicked ? '' : ' inactive-levier');
+            const itemEmoji = item.emoji || '·';
+            const itemLabel = item.compactLabel || item.label || item.id;
+            subItemDiv.innerHTML = `<span class="nav-emoji">${itemEmoji}</span><span class="nav-title">${itemLabel}</span>`;
+            subItemDiv.onclick = () => {
+              if (planActionIdx >= 0) navigateTo(planActionIdx);
+              state.solActiveCat = catId;
+              if (!state.solActiveChildByCat) state.solActiveChildByCat = {};
+              state.solActiveChildByCat[catId] = item.id;
+              if (typeof renderCurrentSection === 'function') renderCurrentSection();
+              // Scroll to the sub-card after render
+              setTimeout(() => {
+                const card = document.querySelector(`[data-card-id="${item.id}"]`);
+                if (card && typeof card.scrollIntoView === 'function') card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }, 120);
+            };
+            childrenDiv.appendChild(subItemDiv);
+          });
+        }
       }
     });
     groupDiv.appendChild(childrenDiv);
