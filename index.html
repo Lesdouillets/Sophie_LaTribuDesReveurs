@@ -6904,7 +6904,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=461"></script>
+<script src="script-data.js?v=462"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -12553,6 +12553,19 @@ function renderSolutionsCheckboxes(opts) {
         if (tickedItems.length === 1) {
           const it = tickedItems[0];
           return [`${it.emoji ? it.emoji + ' ' : ''}${it.label || it.id}`];
+        }
+        // Cas spécial accomp_progressivite : items DOS/VENTRE sont des twins (compactLabel partagé).
+        // Cocher 1 sous-option tique les 2 twins → on filtre par accomp_position_choice pour
+        // afficher le label de la position choisie (ex: "DOS - Bercement (dans les bras)").
+        if (tickedItems.length >= 1 && ch.id === 'accomp_progressivite') {
+          const pos = state.tickboxChoices && state.tickboxChoices['accomp_position_choice'];
+          const matchKey = pos === 'dos' ? '_dos_' : (pos === 'ventre' ? '_ventre_' : null);
+          if (matchKey) {
+            const matched = tickedItems.find(it => it.id && it.id.includes(matchKey));
+            if (matched) {
+              return [`${matched.emoji ? matched.emoji + ' ' : ''}${matched.label || matched.id}`];
+            }
+          }
         }
         // Sinon (2+ tickées ou aucune) : on tombe sur le label du parent (cardLabel) plus bas
       }
