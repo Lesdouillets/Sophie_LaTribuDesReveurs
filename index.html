@@ -6940,7 +6940,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=492"></script>
+<script src="script-data.js?v=493"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -10042,7 +10042,9 @@ function buildSidebarPlanSolutions() {
                   navigateAndPreserveScroll(() => {
                     state.solActiveCat = catId;
                     if (!state.solActiveChildByCat) state.solActiveChildByCat = {};
-                    state.solActiveChildByCat[catId] = item.id;
+                    // Pour env les items sont aplatis (item.id), pour les autres categories
+                    // l'enfant actif est la parent (ch.id) ; l'item est ensuite identifié par sa carte.
+                    state.solActiveChildByCat[catId] = (catId === 'env') ? item.id : ch.id;
                     // S'assurer que le tickbox du groupe est activé pour que le contenu de l'item soit visible
                     if (typeof setTickboxChoiceFromSol === 'function') {
                       setTickboxChoiceFromSol(group.cid, group.value);
@@ -10052,7 +10054,7 @@ function buildSidebarPlanSolutions() {
                   setTimeout(() => {
                     const card = document.querySelector(`[data-card-id="${item.id}"]`);
                     if (card && typeof card.scrollIntoView === 'function') card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  }, 150);
+                  }, 200);
                 };
                 childrenDiv.appendChild(subItemDiv);
               });
@@ -10068,16 +10070,18 @@ function buildSidebarPlanSolutions() {
             const itemLabel = item.compactLabel || item.label || item.id;
             subItemDiv.innerHTML = `<span class="nav-emoji">${itemEmoji}</span><span class="nav-title">${itemLabel}</span>`;
             subItemDiv.onclick = () => {
-              if (planActionIdx >= 0) navigateTo(planActionIdx);
-              state.solActiveCat = catId;
-              if (!state.solActiveChildByCat) state.solActiveChildByCat = {};
-              state.solActiveChildByCat[catId] = item.id;
-              if (typeof renderCurrentSection === 'function') renderCurrentSection();
+              navigateAndPreserveScroll(() => {
+                state.solActiveCat = catId;
+                if (!state.solActiveChildByCat) state.solActiveChildByCat = {};
+                // Pour env les items sont aplatis (item.id), pour les autres categories
+                // l'enfant actif est le parent (ch.id) ; l'item est ensuite identifié par sa carte.
+                state.solActiveChildByCat[catId] = (catId === 'env') ? item.id : ch.id;
+              });
               // Scroll to the sub-card after render
               setTimeout(() => {
                 const card = document.querySelector(`[data-card-id="${item.id}"]`);
                 if (card && typeof card.scrollIntoView === 'function') card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              }, 120);
+              }, 200);
             };
             childrenDiv.appendChild(subItemDiv);
           });
