@@ -7258,7 +7258,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=557"></script>
+<script src="script-data.js?v=558"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -11790,12 +11790,15 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const fbTitle = substituteVars(b.title || b.label || '');
       const fbContent = renderBlocks(Array.isArray(b.blocks) ? b.blocks : [], sectionId, (depth||0)+1, String(path||i));
       window.__infoButtons[fbId] = { title: fbTitle, content: fbContent, style: b.style || '' };
-      // Bulle BD : SVG forme d'ovale avec queue triangulaire au coin bas-gauche
-      const svg = `<svg class="sol-floating-btn-svg" viewBox="0 0 220 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M 110 12 C 50 12 12 42 12 80 C 12 112 35 135 78 142 L 38 195 L 102 138 C 158 135 208 112 208 80 C 208 42 170 12 110 12 Z" fill="#5e7194" stroke="#2d3f5c" stroke-width="4" stroke-linejoin="round"/></svg>`;
       // _bubbleLeft: true → positionne à gauche (évite d'occulter le bouton Suivant qui est à droite)
       const posStyle = b._bubbleLeft ? 'left:30px;right:auto' : (b._bubbleBottom ? `bottom:${b._bubbleBottom}` : '');
       const styleAttr = posStyle ? `style="${posStyle}"` : '';
-      return `<div class="sol-floating-btns" data-inline-bubble="1" ${styleAttr}><button type="button" class="sol-floating-btn" onclick="openInfoPanel('${fbId}')" title="${fbTitle}">${svg}<div class="sol-floating-btn-content"><span style="font-size:24px">${b.emoji||'💡'}</span><span style="font-size:12px">${substituteVars(b.label||'')}</span></div></button></div>`;
+      // Bulle BD : styles INLINE pour bypass tout problème de spécificité CSS
+      const btnInlineStyle = 'position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:180px;height:130px;padding:14px 18px;border:4px solid #2d3f5c;border-radius:50%;background:#5e7194;color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(45,63,92,0.35);overflow:visible;box-sizing:border-box;text-align:center;font-family:inherit';
+      // Queue triangulaire ajoutée via 2 spans absolutely positionned
+      const tailOuter = '<span aria-hidden="true" style="position:absolute;bottom:-44px;left:18px;width:0;height:0;border-style:solid;border-width:44px 24px 0 0;border-color:#2d3f5c transparent transparent transparent;z-index:1;pointer-events:none"></span>';
+      const tailInner = '<span aria-hidden="true" style="position:absolute;bottom:-34px;left:24px;width:0;height:0;border-style:solid;border-width:36px 18px 0 0;border-color:#5e7194 transparent transparent transparent;z-index:2;pointer-events:none"></span>';
+      return `<div class="sol-floating-btns" data-inline-bubble="1" ${styleAttr}><button type="button" class="sol-floating-btn" onclick="openInfoPanel('${fbId}')" title="${fbTitle}" style="${btnInlineStyle}">${tailOuter}${tailInner}<span style="font-size:32px;line-height:1;position:relative;z-index:3">${b.emoji||'💡'}</span><span style="font-size:13px;line-height:1.2;color:#fff;font-weight:700;position:relative;z-index:3">${substituteVars(b.label||'')}</span></button></div>`;
     }
     const dangerClass = b.style === 'danger' ? ' danger' : '';
     const pleursClass = b.style === 'pleurs' ? ' pleurs' : '';
@@ -13944,8 +13947,11 @@ function renderSolutionsCheckboxes(opts) {
               const fbTitle = substituteVars(fb.title || fb.label || '');
               const fbContent = renderBlocks(Array.isArray(fb.blocks) ? fb.blocks : [], 'float_'+cat.id+'_'+activeChild.id+'_'+fi);
               window.__infoButtons[fbId] = { title: fbTitle, content: fbContent };
-              const svg = `<svg class="sol-floating-btn-svg" viewBox="0 0 220 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M 110 12 C 50 12 12 42 12 80 C 12 112 35 135 78 142 L 38 195 L 102 138 C 158 135 208 112 208 80 C 208 42 170 12 110 12 Z" fill="#5e7194" stroke="#2d3f5c" stroke-width="4" stroke-linejoin="round"/></svg>`;
-              return `<button type="button" class="sol-floating-btn" onclick="openInfoPanel('${fbId}')" title="${fbTitle}">${svg}<div class="sol-floating-btn-content"><span style="font-size:28px">${fb.emoji||'💡'}</span><span style="font-size:13px">${substituteVars(fb.label||'')}</span></div></button>`;
+              // Bulle BD : styles INLINE pour bypass tout problème de spécificité CSS
+              const btnInlineStyle = 'position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:180px;height:130px;padding:14px 18px;border:4px solid #2d3f5c;border-radius:50%;background:#5e7194;color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(45,63,92,0.35);overflow:visible;box-sizing:border-box;text-align:center;font-family:inherit';
+              const tailOuter = '<span aria-hidden="true" style="position:absolute;bottom:-44px;left:18px;width:0;height:0;border-style:solid;border-width:44px 24px 0 0;border-color:#2d3f5c transparent transparent transparent;z-index:1;pointer-events:none"></span>';
+              const tailInner = '<span aria-hidden="true" style="position:absolute;bottom:-34px;left:24px;width:0;height:0;border-style:solid;border-width:36px 18px 0 0;border-color:#5e7194 transparent transparent transparent;z-index:2;pointer-events:none"></span>';
+              return `<button type="button" class="sol-floating-btn" onclick="openInfoPanel('${fbId}')" title="${fbTitle}" style="${btnInlineStyle}">${tailOuter}${tailInner}<span style="font-size:32px;line-height:1;position:relative;z-index:3">${fb.emoji||'💡'}</span><span style="font-size:13px;line-height:1.2;color:#fff;font-weight:700;position:relative;z-index:3">${substituteVars(fb.label||'')}</span></button>`;
             }).join('') + '</div>';
           }
           // En singleChildMode, retirer la bordure interne (sinon double liseré avec sol-active-content)
