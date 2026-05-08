@@ -2222,7 +2222,7 @@ const SCRIPT_DATA = {
           { type: "normal", _leftTitle: "Pas médecin", text: "- Donc l'idée ici, ce n'est **PAS** de **donner un diagnostic**, ce n'est **PAS mon rôle**, je ne suis **PAS médecin**\n  mais plutôt de vous **donner des pistes** :\n  - pour **apaiser** [prénom_enfant], et voir ce qui peut :\n    - être mis en place\n    - ou exploré\n\n---\n\n- Parce qu'**1 fois** cette **base** rétablie\n  ⇒ **tout le reste devient beaucoup + simple, efficace …et durable dans le temps !**" },
         ],
         children: [
-          { id: "conf_aplv", label: "APLV", cardLabel: "APLV suspectée", cardEmoji: "🌿", autoCheckIfPbs: ["allergie_seule", "rgo_allergie"],
+          { id: "conf_aplv", label: "APLV suspectée", cardLabel: "APLV suspectée", cardEmoji: "🌿", autoCheckIfPbs: ["allergie_seule", "rgo_allergie"],
             floatingButtons: [
               {
                 label: "Maman culpabilise", emoji: "😭", title: "Si Maman culpabilise", color: "#a855f7",
