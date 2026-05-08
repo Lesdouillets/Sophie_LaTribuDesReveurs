@@ -4857,6 +4857,19 @@ const SCRIPT_DATA = {
               },
               { type: "normal",
                 _leftTitle: "Supprimer",
+                showIfAgeMaxMonths: 5,
+                showIfAnyOf: [
+                  { pb: "souhait_tetine" },
+                  { tickbox: { cid: "obj_tetine_static", value: "supprimer" } },
+                  { tickbox: { cid: "obj_tetine_static", value: "hybride" } },
+                  { tickbox: { cid: "strategie_tetine_choice", value: "supprimer" } },
+                  { tickbox: { cid: "strategie_tetine_choice", value: "hybride" } }
+                ],
+                text: "- Je vous conseille de la **supprimer du jour au lendemain**… comme un **pansement qu'on arrache**\n  ⇒ On **y va \"franco\"**, on **coupe TOUTES les tétines** de la **maison**\n  ⇒ et comme ça il n'y a **plus de risque** de **retour en arrière !**"
+              },
+              { type: "normal",
+                _leftTitle: "Supprimer",
+                showIfAgeMinMonths: 6,
                 showIfAnyOf: [
                   { pb: "souhait_tetine" },
                   { tickbox: { cid: "obj_tetine_static", value: "supprimer" } },
