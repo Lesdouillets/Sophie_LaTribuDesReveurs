@@ -4463,6 +4463,13 @@
     .sol-row-emoji { font-size: 16px; line-height: 1; flex-shrink: 0; }
     .sol-row-label { color: #334155; }
     .sol-row input[type="checkbox"]:checked + .sol-row-label { font-weight: 700; color: #0f172a; }
+    /* Sous-options des sol-row-sub (cases sous une catégorie parent) :
+       quand cochée, mettre le label en gras (utilise :has() pour styler le label-parent
+       en fonction de l'état du checkbox-enfant) */
+    .sol-row-sub label:has(> input[type="checkbox"]:checked) {
+      font-weight: 700;
+      color: #0f172a;
+    }
 
     /* Grid de cards parent (Confort, Nutrition, etc.) — comme diag-cat-card */
     .sol-parent-cards-grid {
@@ -6890,7 +6897,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=452"></script>
+<script src="script-data.js?v=454"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
