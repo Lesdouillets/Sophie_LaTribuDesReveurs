@@ -2190,6 +2190,17 @@
     body[data-meet-mode="top-left"] .info-body {
       padding-top: calc(100vh - var(--meet-h)) !important;
     }
+    /* Fiche client (#setup-screen) : réduire la largeur de la colonne formulaire
+       (.setup-right) du côté de la zone vidéo, pour ne pas que la PiP cache le texte.
+       La sidebar (.setup-left) n'est pas affectée. */
+    body[data-meet-mode$="-right"] #setup-screen .setup-right {
+      padding-right: var(--meet-w);
+      box-sizing: border-box;
+    }
+    body[data-meet-mode$="-left"] #setup-screen .setup-right {
+      padding-left: var(--meet-w);
+      box-sizing: border-box;
+    }
     /* Wrapping dynamique : blocs visuellement dans la zone vidéo → marge côté vidéo.
        S'applique à tout élément marqué [data-meet-overlap="1"] (peu importe le conteneur,
        pour couvrir #content-area, #setup-screen, et les sous-conteneurs nested). */
@@ -4534,9 +4545,8 @@
     body:has(.info-panel.info-panel-blue.open) .sol-floating-btns {
       right: 1220px;
     }
-    /* Bulle BD : forme ovale, bleu, sans pseudo-éléments (qui causaient des artefacts
-       de rendu). Pour évoquer une bulle BD on garde l'aspect oval+bordure+ombre,
-       sans queue triangulaire. */
+    /* Bulle BD : forme ovale, fond bleu vif (gradient identique au bandeau du
+       info-panel-blue qui s'ouvre au clic), bordure bleu foncé, texte blanc. */
     .sol-floating-btn {
       position: relative;
       display: flex !important;
@@ -4547,18 +4557,18 @@
       width: 170px;
       height: 130px;
       padding: 10px 14px;
-      border: 3px solid #2563eb;
+      border: 3px solid #1e40af;
       border-radius: 50%;
-      background: #bfdbfe !important;
-      color: #1e3a8a !important;
+      background: linear-gradient(135deg, #3b82f6, #1e40af) !important;
+      color: #ffffff !important;
       cursor: pointer;
-      box-shadow: 0 4px 16px rgba(37,99,235,0.32);
+      box-shadow: 0 4px 16px rgba(30,64,175,0.4);
       transition: transform 0.15s, box-shadow 0.15s;
       text-align: center;
       box-sizing: border-box;
       overflow: visible;
     }
-    .sol-floating-btn:hover { transform: scale(1.06); box-shadow: 0 6px 20px rgba(37,99,235,0.45); }
+    .sol-floating-btn:hover { transform: scale(1.06); box-shadow: 0 6px 20px rgba(30,64,175,0.55); }
     .sol-floating-btn:active { transform: scale(0.97); }
     /* SVG legacy neutralisé */
     .sol-floating-btn-svg { display: none !important; }
@@ -4566,12 +4576,12 @@
       position: relative;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      gap: 4px; color: #1e3a8a !important;
+      gap: 4px; color: #ffffff !important;
       font-weight: 700; pointer-events: none;
       width: 100%;
     }
     .sol-floating-btn-content span:first-child { font-size: 32px !important; line-height: 1; }
-    .sol-floating-btn-content span:last-child { font-size: 13px !important; line-height: 1.2; color: #1e3a8a !important; }
+    .sol-floating-btn-content span:last-child { font-size: 13px !important; line-height: 1.2; color: #ffffff !important; }
     .sol-child-content .block { max-width: 100%; box-sizing: border-box; overflow-wrap: break-word; }
     /* Bloc "🧩 Solutions identifiées" façon Leviers identifiés */
     .block-solutions-identifiees {
@@ -7230,7 +7240,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=548"></script>
+<script src="script-data.js?v=549"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
