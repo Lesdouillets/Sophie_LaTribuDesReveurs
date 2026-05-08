@@ -4551,37 +4551,32 @@
     body:has(.info-panel.info-panel-blue.open) .sol-floating-btns {
       right: 1220px;
     }
-    /* Bulle BD : forme via clip-path (le navigateur découpe directement le bouton
-       à la forme de la bulle BD). Couleur de fond = couleur du bandeau (#5e7194).
-       Pour la bordure, on superpose 2 éléments (outer dark + inner color), via une
-       structure span imbriquée. Mais on peut simuler en utilisant un drop-shadow
-       qui donne un contour. Plus simple : juste fond solide, drop-shadow pour effet. */
+    /* Bulle BD : setup exact d'hier 20h (commit 1766b80) — qui fonctionnait. */
     .sol-floating-btn {
       position: relative;
       width: 200px; height: 200px;
-      border: none;
-      background-color: #5e7194 !important;
-      background-image: none !important;
+      border: none; background: transparent !important;
       cursor: pointer; padding: 0;
-      transition: transform 0.15s;
-      -webkit-clip-path: path('M 100 15 C 40 15 10 45 10 85 C 10 120 35 145 78 152 L 62 178 L 100 150 C 155 148 190 120 190 85 C 190 45 160 15 100 15 Z');
-      clip-path: path('M 100 15 C 40 15 10 45 10 85 C 10 120 35 145 78 152 L 62 178 L 100 150 C 155 148 190 120 190 85 C 190 45 160 15 100 15 Z');
+      opacity: 0.9;
+      transition: transform 0.15s, opacity 0.15s;
     }
-    .sol-floating-btn:hover { transform: scale(1.05); }
-    .sol-floating-btn:active { transform: scale(0.98); }
-    /* SVG inline masqué — la forme vient de clip-path */
-    .sol-floating-btn-svg { display: none !important; }
+    .sol-floating-btn:hover { transform: scale(1.06); opacity: 1; }
+    .sol-floating-btn:active { transform: scale(0.97); }
+    .sol-floating-btn-svg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      filter: drop-shadow(0 3px 12px rgba(59,130,246,0.3));
+    }
     .sol-floating-btn-content {
       position: absolute;
-      top: 25%; left: 10%; right: 10%;
+      top: 22%; left: 9%; right: 9%;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      gap: 6px; color: #ffffff;
+      gap: 4px; color: #fff;
       font-weight: 700; pointer-events: none;
-      text-align: center;
     }
     .sol-floating-btn-content span:first-child { font-size: 32px !important; line-height: 1; }
-    .sol-floating-btn-content span:last-child { font-size: 14px !important; line-height: 1.2; color: #ffffff; }
+    .sol-floating-btn-content span:last-child { font-size: 14px !important; line-height: 1.2; }
     .sol-child-content .block { max-width: 100%; box-sizing: border-box; overflow-wrap: break-word; }
     /* Bloc "🧩 Solutions identifiées" façon Leviers identifiés */
     .block-solutions-identifiees {
@@ -7228,7 +7223,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=565"></script>
+<script src="script-data.js?v=566"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -11760,9 +11755,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const fbTitle = substituteVars(b.title || b.label || '');
       const fbContent = renderBlocks(Array.isArray(b.blocks) ? b.blocks : [], sectionId, (depth||0)+1, String(path||i));
       window.__infoButtons[fbId] = { title: fbTitle, content: fbContent, style: b.style || '' };
-      // Bulle BD : SVG inline avec la forme exacte d'il y a 2 jours (corps + queue intégrée)
-      // Couleur du bandeau "Si pleurs difficiles" : #5e7194 fill + #2d3f5c stroke
-      const svg = `<svg class="sol-floating-btn-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M 100 15 C 40 15 10 45 10 85 C 10 120 35 145 78 152 L 62 178 L 100 150 C 155 148 190 120 190 85 C 190 45 160 15 100 15 Z" fill="#5e7194" stroke="#2d3f5c" stroke-width="3" stroke-linejoin="round"/></svg>`;
+      // Bulle BD : SVG inline (setup exact d'hier 20h commit 1766b80 qui marchait)
+      const svg = `<svg class="sol-floating-btn-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M 100 15 C 40 15 10 45 10 85 C 10 120 35 145 78 152 L 62 178 L 100 150 C 155 148 190 120 190 85 C 190 45 160 15 100 15 Z" fill="#5e7194" stroke="#2d3f5c" stroke-width="2" stroke-linejoin="round"/></svg>`;
       // _bubbleLeft: true → positionne à gauche (évite d'occulter le bouton Suivant qui est à droite)
       const posStyle = b._bubbleLeft ? 'left:30px;right:auto' : (b._bubbleBottom ? `bottom:${b._bubbleBottom}` : '');
       const styleAttr = posStyle ? `style="${posStyle}"` : '';
@@ -13915,8 +13909,8 @@ function renderSolutionsCheckboxes(opts) {
               const fbTitle = substituteVars(fb.title || fb.label || '');
               const fbContent = renderBlocks(Array.isArray(fb.blocks) ? fb.blocks : [], 'float_'+cat.id+'_'+activeChild.id+'_'+fi);
               window.__infoButtons[fbId] = { title: fbTitle, content: fbContent };
-              // Bulle BD : SVG inline forme d'il y a 2 jours, couleur bandeau (#5e7194/#2d3f5c)
-              const svg = `<svg class="sol-floating-btn-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M 100 15 C 40 15 10 45 10 85 C 10 120 35 145 78 152 L 62 178 L 100 150 C 155 148 190 120 190 85 C 190 45 160 15 100 15 Z" fill="#5e7194" stroke="#2d3f5c" stroke-width="3" stroke-linejoin="round"/></svg>`;
+              // Bulle BD : SVG inline (setup exact d'hier 20h commit 1766b80 qui marchait)
+              const svg = `<svg class="sol-floating-btn-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M 100 15 C 40 15 10 45 10 85 C 10 120 35 145 78 152 L 62 178 L 100 150 C 155 148 190 120 190 85 C 190 45 160 15 100 15 Z" fill="#5e7194" stroke="#2d3f5c" stroke-width="2" stroke-linejoin="round"/></svg>`;
               return `<button type="button" class="sol-floating-btn" onclick="openInfoPanel('${fbId}')" title="${fbTitle}">${svg}<div class="sol-floating-btn-content"><span style="font-size:28px">${fb.emoji||'💡'}</span><span style="font-size:13px">${substituteVars(fb.label||'')}</span></div></button>`;
             }).join('') + '</div>';
           }
