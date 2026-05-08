@@ -7049,7 +7049,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=518"></script>
+<script src="script-data.js?v=519"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -13174,7 +13174,8 @@ function renderSolutionsCheckboxes(opts) {
                 if (nestedGrid) {
                   const nestedVisible = nestedGrid.items.filter(sub => !isHiddenByAge(sub));
                   if (nestedVisible.length) {
-                    nestedSubRows = `<div style="padding-left:24px;display:flex;flex-direction:column;gap:3px;margin-top:3px">` +
+                    // Retrait incrémental : chaque niveau imbriqué décale de 28px (visuel hiérarchique clair)
+                    nestedSubRows = `<div style="padding-left:28px;display:flex;flex-direction:column;gap:3px;margin-top:3px">` +
                       nestedVisible.map(sub => {
                         const subTicked = state.courbeCardsTicked.has(sub.id);
                         // Sous-sous-sous : si sub a son propre courbe_cards_grid (ex. Espacement → Espacement/Inversion)
@@ -13184,10 +13185,26 @@ function renderSolutionsCheckboxes(opts) {
                           if (subNestedGrid) {
                             const subNestedVisible = subNestedGrid.items.filter(s => !isHiddenByAge(s));
                             if (subNestedVisible.length) {
-                              subSubRows = `<div style="padding-left:24px;display:flex;flex-direction:column;gap:3px;margin-top:3px">` +
+                              subSubRows = `<div style="padding-left:28px;display:flex;flex-direction:column;gap:3px;margin-top:3px">` +
                                 subNestedVisible.map(s => {
                                   const sTicked = state.courbeCardsTicked.has(s.id);
-                                  return `<label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer"><input type="checkbox" ${sTicked?'checked':''} onchange="toggleCourbeCardTickFromSol('${s.id}')"> ${s.emoji || ''} ${s.label || s.id}</label>`;
+                                  // Niveau 5 : si s a son propre courbe_cards_grid (rare mais possible pour Lait → Biberon → Espacement → Espacement normal/Inversion)
+                                  let subSubSubRows = '';
+                                  if (Array.isArray(s.blocks)) {
+                                    const subSubNestedGrid = s.blocks.find(bbb => bbb && bbb.type === 'courbe_cards_grid' && Array.isArray(bbb.items));
+                                    if (subSubNestedGrid) {
+                                      const subSubNestedVisible = subSubNestedGrid.items.filter(ss => !isHiddenByAge(ss));
+                                      if (subSubNestedVisible.length) {
+                                        subSubSubRows = `<div style="padding-left:28px;display:flex;flex-direction:column;gap:3px;margin-top:3px">` +
+                                          subSubNestedVisible.map(ss => {
+                                            const ssTicked = state.courbeCardsTicked.has(ss.id);
+                                            return `<label style="display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer"><input type="checkbox" ${ssTicked?'checked':''} onchange="toggleCourbeCardTickFromSol('${ss.id}')"> ${ss.emoji || ''} ${ss.label || ss.id}</label>`;
+                                          }).join('') +
+                                          `</div>`;
+                                      }
+                                    }
+                                  }
+                                  return `<div><label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer"><input type="checkbox" ${sTicked?'checked':''} onchange="toggleCourbeCardTickFromSol('${s.id}')"> ${s.emoji || ''} ${s.label || s.id}</label>${subSubSubRows}</div>`;
                                 }).join('') +
                                 `</div>`;
                             }
