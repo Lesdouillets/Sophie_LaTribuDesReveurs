@@ -7248,7 +7248,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=551"></script>
+<script src="script-data.js?v=552"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -15014,6 +15014,13 @@ function substituteVars(text) {
     const pbList = pbs.split(',').map(p => p.trim()).filter(Boolean);
     const anyMatched = pbList.some(p => state.selectedPbs && state.selectedPbs.has(p));
     return anyMatched ? '' : content;
+  });
+  // Conditionnel inline : [if_enseigne:feedodo|tribu]contenu[/if_enseigne] → contenu visible
+  // si l'enseigne courante correspond. Ex. [if_enseigne:feedodo]Tiffany Deroyer chez Fée Dodo…[/if_enseigne]
+  text = String(text).replace(/\[if_enseigne:([^\]]+)\]([\s\S]*?)\[\/if_enseigne\]/g, (m, ens, content) => {
+    const list = ens.split(',').map(e => e.trim()).filter(Boolean);
+    const cur = (typeof currentEnseigne !== 'undefined') ? currentEnseigne : 'tribu';
+    return list.includes(cur) ? content : '';
   });
   // Conditionnel inline : [if_alim:val1,val2]contenu[/if_alim] → contenu visible si au moins une valeur d'alimentation listée correspond
   // (match contre state.client.alimentation OU state.client.allaitementMode, comme showIfAlim au niveau bloc)

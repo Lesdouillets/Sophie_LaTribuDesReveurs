@@ -2338,7 +2338,7 @@ const SCRIPT_DATA = {
             { type: "normal", _leftTitle: "Allergies croisées", text: "- Les **laits** de :\n<ul style=\"margin:4px 0 6px 0;padding-left:40px;list-style:disc\"><li>Jument</li><li>Brebis</li><li>Chèvre</li><li>Ânesse</li><li>Soja</li></ul>ont des **propriétés très proches du lait de vache**\n⇒ À 92 %, il y a des **allergies croisées**\n⇒ Donc ces laits là, sont **AUSSI à proscrire** dans le **cadre d'une éviction**" },
             {
               type: "normal", _leftTitle: "Diététicienne nutritionniste pédiatrique",
-              text: "- Un **diététicienne nutritionniste pédiatrique** pourra vous **aider dans cette éviction**\n  ⇒ car **beaucoup d'aliments** ont des **traces de protéines cachées** (charcuterie, biscuit, plats préparés…)\n\n- Nous avons **Tiffany Deroyer** chez Fée Dodo qui pourra vous **venir en aide sur l'alimentation**<br><span style=\"display:inline-block;padding-left:1.5em\">et la consultation est **souvent prise en charge par la Mutuelle**</span>",
+              text: "- Un **diététicienne nutritionniste pédiatrique** pourra vous **aider dans cette éviction**\n  ⇒ car **beaucoup d'aliments** ont des **traces de protéines cachées** (charcuterie, biscuit, plats préparés…)\n[if_enseigne:feedodo]\n\n- Nous avons **Tiffany Deroyer** chez Fée Dodo qui pourra vous **venir en aide sur l'alimentation**<br><span style=\"display:inline-block;padding-left:1.5em\">et la consultation est **souvent prise en charge par la Mutuelle**</span>[/if_enseigne]",
               trailingInfoButton: {
                 label: "Diététicienne pédiatrique",
                 title: "Diététicienne nutritionniste pédiatrique",
