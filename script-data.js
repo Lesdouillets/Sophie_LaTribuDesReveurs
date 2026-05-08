@@ -1978,7 +1978,7 @@ const SCRIPT_DATA = {
     {
       id: "strategie_rendormissement",
       problematiqueId: "strategie_rendormissement",
-      title: "Stratégie de sommeil",
+      title: "Stratégies de sommeil",
       emoji: "😴",
       blocks: [
         { type: "normal", text: "- Aujourd'hui, **[prénom_enfant]** ne s'endort que :" },
