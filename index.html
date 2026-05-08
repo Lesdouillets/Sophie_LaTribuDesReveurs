@@ -4203,11 +4203,15 @@
       margin: 0;
     }
     .sol-floating-btns {
-      position: fixed; right: 30px; bottom: 120px;
+      position: fixed; right: 30px; bottom: 250px;
       display: flex; flex-direction: column; gap: 14px;
       z-index: 250;
       transition: right 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s;
     }
+    /* La bulle de BD est draggable : curseur grab sur le SVG */
+    .sol-floating-btns[data-inline-bubble="1"] .sol-floating-btn { cursor: grab; }
+    .sol-floating-btns[data-inline-bubble="1"] .sol-floating-btn:active { cursor: grabbing; }
+    .sol-floating-btns.bubble-dragging { transition: none !important; }
     /* Quand l'info-panel est ouvert, décaler la bulle vers la gauche du panel */
     body:has(.info-panel.open) .sol-floating-btns {
       right: 620px;
@@ -6863,7 +6867,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=407"></script>
+<script src="script-data.js?v=408"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -10093,6 +10097,51 @@ function openEcueilSection(anchorId) {
   }
 }
 window.openEcueilSection = openEcueilSection;
+
+// Rendre les bulles de BD (sol-floating-btns inline) draggables.
+// Délégué au document pour fonctionner même après re-render.
+let _bubbleDragState = null;
+document.addEventListener('mousedown', (e) => {
+  const btn = e.target.closest('.sol-floating-btns[data-inline-bubble="1"] .sol-floating-btn');
+  if (!btn) return;
+  const wrap = btn.closest('.sol-floating-btns');
+  if (!wrap) return;
+  const rect = wrap.getBoundingClientRect();
+  _bubbleDragState = {
+    wrap,
+    startX: e.clientX,
+    startY: e.clientY,
+    origLeft: rect.left,
+    origTop: rect.top,
+    moved: false
+  };
+  wrap.classList.add('bubble-dragging');
+  e.preventDefault();
+});
+document.addEventListener('mousemove', (e) => {
+  if (!_bubbleDragState) return;
+  const dx = e.clientX - _bubbleDragState.startX;
+  const dy = e.clientY - _bubbleDragState.startY;
+  if (Math.abs(dx) > 3 || Math.abs(dy) > 3) _bubbleDragState.moved = true;
+  const newLeft = _bubbleDragState.origLeft + dx;
+  const newTop = _bubbleDragState.origTop + dy;
+  _bubbleDragState.wrap.style.left = newLeft + 'px';
+  _bubbleDragState.wrap.style.top = newTop + 'px';
+  _bubbleDragState.wrap.style.right = 'auto';
+  _bubbleDragState.wrap.style.bottom = 'auto';
+});
+document.addEventListener('mouseup', (e) => {
+  if (!_bubbleDragState) return;
+  const wrap = _bubbleDragState.wrap;
+  const moved = _bubbleDragState.moved;
+  wrap.classList.remove('bubble-dragging');
+  _bubbleDragState = null;
+  // Si l'utilisateur a déplacé la bulle, on annule le clic suivant pour éviter d'ouvrir le panneau
+  if (moved) {
+    const cancelClick = (ev) => { ev.stopPropagation(); ev.preventDefault(); };
+    wrap.addEventListener('click', cancelClick, { once: true, capture: true });
+  }
+});
 
 function _setupInfoPanelOutsideClickHandler(e) {
   const panel = document.getElementById('setup-info-panel');
