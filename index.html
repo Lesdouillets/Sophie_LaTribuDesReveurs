@@ -4545,74 +4545,33 @@
     body:has(.info-panel.info-panel-blue.open) .sol-floating-btns {
       right: 1220px;
     }
-    /* Bulle BD pure CSS : ovale (border-radius:50%) + queue triangulaire en
-       pseudo-element. Couleurs = bandeau du panel "Si pleurs difficiles" (#5e7194). */
+    /* Bulle BD : SVG inline (forme parfaite d'il y a 2 jours).
+       Bouton transparent, le SVG dessine le corps + la queue intégrée. */
     .sol-floating-btn {
-      position: relative !important;
-      display: block !important;
-      width: 180px !important;
-      height: 130px !important;
-      padding: 0 !important;
-      border: 4px solid #2d3f5c !important;
-      border-radius: 50% !important;
-      background-color: #5e7194 !important;
-      background-image: none !important;
-      cursor: pointer;
-      box-shadow: 0 4px 14px rgba(45,63,92,0.35);
-      transition: transform 0.15s, box-shadow 0.15s;
-      overflow: visible !important;
-      box-sizing: border-box;
-      color: #ffffff !important;
+      position: relative;
+      width: 200px; height: 200px;
+      border: none; background: transparent !important;
+      cursor: pointer; padding: 0;
+      transition: transform 0.15s;
     }
-    .sol-floating-btn:hover { transform: scale(1.06); box-shadow: 0 6px 20px rgba(45,63,92,0.5); }
-    .sol-floating-btn:active { transform: scale(0.97); }
-    /* Queue triangulaire — bordure foncée */
-    .sol-floating-btn::before {
-      content: '' !important;
-      position: absolute !important;
-      bottom: -42px !important;
-      left: 18px !important;
-      width: 0 !important;
-      height: 0 !important;
-      border-style: solid !important;
-      border-width: 0 24px 44px 18px !important;
-      border-color: transparent transparent #2d3f5c transparent !important;
-      transform: rotate(180deg) !important;
-      z-index: 1;
+    .sol-floating-btn:hover { transform: scale(1.05); }
+    .sol-floating-btn:active { transform: scale(0.98); }
+    .sol-floating-btn-svg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      filter: drop-shadow(0 4px 14px rgba(45,63,92,0.35));
     }
-    /* Queue triangulaire — remplissage bleu (par-dessus, légèrement + petit) */
-    .sol-floating-btn::after {
-      content: '' !important;
-      position: absolute !important;
-      bottom: -32px !important;
-      left: 24px !important;
-      width: 0 !important;
-      height: 0 !important;
-      border-style: solid !important;
-      border-width: 0 18px 36px 14px !important;
-      border-color: transparent transparent #5e7194 transparent !important;
-      transform: rotate(180deg) !important;
-      z-index: 2;
-    }
-    .sol-floating-btn-svg { display: none !important; }
     .sol-floating-btn-content {
-      position: absolute !important;
-      top: 0; left: 0; right: 0; bottom: 0;
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 4px;
-      color: #ffffff !important;
-      font-weight: 700;
-      pointer-events: none;
+      position: absolute;
+      top: 25%; left: 10%; right: 10%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 6px; color: #ffffff;
+      font-weight: 700; pointer-events: none;
       text-align: center;
-      padding: 12px 16px;
-      box-sizing: border-box;
-      z-index: 3;
     }
     .sol-floating-btn-content span:first-child { font-size: 32px !important; line-height: 1; }
-    .sol-floating-btn-content span:last-child { font-size: 13px !important; line-height: 1.2; color: #ffffff !important; }
+    .sol-floating-btn-content span:last-child { font-size: 14px !important; line-height: 1.2; color: #ffffff; }
     .sol-child-content .block { max-width: 100%; box-sizing: border-box; overflow-wrap: break-word; }
     /* Bloc "🧩 Solutions identifiées" façon Leviers identifiés */
     .block-solutions-identifiees {
@@ -7258,7 +7217,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=559"></script>
+<script src="script-data.js?v=561"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -11790,15 +11749,13 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const fbTitle = substituteVars(b.title || b.label || '');
       const fbContent = renderBlocks(Array.isArray(b.blocks) ? b.blocks : [], sectionId, (depth||0)+1, String(path||i));
       window.__infoButtons[fbId] = { title: fbTitle, content: fbContent, style: b.style || '' };
+      // Bulle BD : SVG inline avec la forme exacte d'il y a 2 jours (corps + queue intégrée)
+      // Couleur du bandeau "Si pleurs difficiles" : #5e7194 fill + #2d3f5c stroke
+      const svg = `<svg class="sol-floating-btn-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M 100 15 C 40 15 10 45 10 85 C 10 120 35 145 78 152 L 62 178 L 100 150 C 155 148 190 120 190 85 C 190 45 160 15 100 15 Z" fill="#5e7194" stroke="#2d3f5c" stroke-width="3" stroke-linejoin="round"/></svg>`;
       // _bubbleLeft: true → positionne à gauche (évite d'occulter le bouton Suivant qui est à droite)
       const posStyle = b._bubbleLeft ? 'left:30px;right:auto' : (b._bubbleBottom ? `bottom:${b._bubbleBottom}` : '');
       const styleAttr = posStyle ? `style="${posStyle}"` : '';
-      // Bulle BD : styles INLINE pour bypass tout problème de spécificité CSS
-      const btnInlineStyle = 'position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:180px;height:130px;padding:14px 18px;border:4px solid #2d3f5c;border-radius:50%;background:#5e7194;color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(45,63,92,0.35);overflow:visible;box-sizing:border-box;text-align:center;font-family:inherit';
-      // Queue triangulaire ajoutée via 2 spans absolutely positionned
-      const tailOuter = '<span aria-hidden="true" style="position:absolute;bottom:-44px;left:18px;width:0;height:0;border-style:solid;border-width:44px 24px 0 0;border-color:#2d3f5c transparent transparent transparent;z-index:1;pointer-events:none"></span>';
-      const tailInner = '<span aria-hidden="true" style="position:absolute;bottom:-34px;left:24px;width:0;height:0;border-style:solid;border-width:36px 18px 0 0;border-color:#5e7194 transparent transparent transparent;z-index:2;pointer-events:none"></span>';
-      return `<div class="sol-floating-btns" data-inline-bubble="1" ${styleAttr}><button type="button" class="sol-floating-btn" onclick="openInfoPanel('${fbId}')" title="${fbTitle}" style="${btnInlineStyle}">${tailOuter}${tailInner}<span style="font-size:32px;line-height:1;position:relative;z-index:3">${b.emoji||'💡'}</span><span style="font-size:13px;line-height:1.2;color:#fff;font-weight:700;position:relative;z-index:3">${substituteVars(b.label||'')}</span></button></div>`;
+      return `<div class="sol-floating-btns" data-inline-bubble="1" ${styleAttr}><button type="button" class="sol-floating-btn" onclick="openInfoPanel('${fbId}')" title="${fbTitle}">${svg}<div class="sol-floating-btn-content"><span style="font-size:24px">${b.emoji||'💡'}</span><span style="font-size:12px">${substituteVars(b.label||'')}</span></div></button></div>`;
     }
     const dangerClass = b.style === 'danger' ? ' danger' : '';
     const pleursClass = b.style === 'pleurs' ? ' pleurs' : '';
@@ -13947,11 +13904,9 @@ function renderSolutionsCheckboxes(opts) {
               const fbTitle = substituteVars(fb.title || fb.label || '');
               const fbContent = renderBlocks(Array.isArray(fb.blocks) ? fb.blocks : [], 'float_'+cat.id+'_'+activeChild.id+'_'+fi);
               window.__infoButtons[fbId] = { title: fbTitle, content: fbContent };
-              // Bulle BD : styles INLINE pour bypass tout problème de spécificité CSS
-              const btnInlineStyle = 'position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:180px;height:130px;padding:14px 18px;border:4px solid #2d3f5c;border-radius:50%;background:#5e7194;color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(45,63,92,0.35);overflow:visible;box-sizing:border-box;text-align:center;font-family:inherit';
-              const tailOuter = '<span aria-hidden="true" style="position:absolute;bottom:-44px;left:18px;width:0;height:0;border-style:solid;border-width:44px 24px 0 0;border-color:#2d3f5c transparent transparent transparent;z-index:1;pointer-events:none"></span>';
-              const tailInner = '<span aria-hidden="true" style="position:absolute;bottom:-34px;left:24px;width:0;height:0;border-style:solid;border-width:36px 18px 0 0;border-color:#5e7194 transparent transparent transparent;z-index:2;pointer-events:none"></span>';
-              return `<button type="button" class="sol-floating-btn" onclick="openInfoPanel('${fbId}')" title="${fbTitle}" style="${btnInlineStyle}">${tailOuter}${tailInner}<span style="font-size:32px;line-height:1;position:relative;z-index:3">${fb.emoji||'💡'}</span><span style="font-size:13px;line-height:1.2;color:#fff;font-weight:700;position:relative;z-index:3">${substituteVars(fb.label||'')}</span></button>`;
+              // Bulle BD : SVG inline forme d'il y a 2 jours, couleur bandeau (#5e7194/#2d3f5c)
+              const svg = `<svg class="sol-floating-btn-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M 100 15 C 40 15 10 45 10 85 C 10 120 35 145 78 152 L 62 178 L 100 150 C 155 148 190 120 190 85 C 190 45 160 15 100 15 Z" fill="#5e7194" stroke="#2d3f5c" stroke-width="3" stroke-linejoin="round"/></svg>`;
+              return `<button type="button" class="sol-floating-btn" onclick="openInfoPanel('${fbId}')" title="${fbTitle}">${svg}<div class="sol-floating-btn-content"><span style="font-size:28px">${fb.emoji||'💡'}</span><span style="font-size:13px">${substituteVars(fb.label||'')}</span></div></button>`;
             }).join('') + '</div>';
           }
           // En singleChildMode, retirer la bordure interne (sinon double liseré avec sol-active-content)
