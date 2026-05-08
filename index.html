@@ -6940,7 +6940,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=493"></script>
+<script src="script-data.js?v=495"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9699,8 +9699,9 @@ function extractGridItemsFromBlocks(blocks) {
   return items;
 }
 
-// Filtrage de visibilité d'un item de courbe_cards_grid (showIfTickbox / hideIfTickbox).
+// Filtrage de visibilité d'un item de courbe_cards_grid (tickbox + alim + âge).
 function isGridItemVisibleSidebar(item) {
+  if (!item) return false;
   const choices = (typeof state !== 'undefined' && state.tickboxChoices) || {};
   if (item.showIfTickbox) {
     const checks = Array.isArray(item.showIfTickbox) ? item.showIfTickbox : [item.showIfTickbox];
@@ -9710,7 +9711,42 @@ function isGridItemVisibleSidebar(item) {
     const checks = Array.isArray(item.hideIfTickbox) ? item.hideIfTickbox : [item.hideIfTickbox];
     if (checks.some(c => choices[c.cid] === c.value)) return false;
   }
+  // Filtre alim (item.alim ou item.showIfAlim)
+  const alimReq = item.alim || item.showIfAlim;
+  if (alimReq) {
+    const itemAlims = Array.isArray(alimReq) ? alimReq : [alimReq];
+    const c = (typeof state !== 'undefined' && state.client) || {};
+    const alim = Array.isArray(c.alimentation) ? c.alimentation : [];
+    const allaitMode = Array.isArray(c.allaitementMode) ? c.allaitementMode : [];
+    if (!itemAlims.some(a => alim.includes(a) || allaitMode.includes(a))) return false;
+  }
+  // Filtre âge corrigé (showIfAgeMinMonths / showIfAgeMaxMonths)
+  if (item.showIfAgeMinMonths != null || item.showIfAgeMaxMonths != null) {
+    const age = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
+    if (age == null) return false;
+    if (item.showIfAgeMinMonths != null && age < item.showIfAgeMinMonths) return false;
+    if (item.showIfAgeMaxMonths != null && age > item.showIfAgeMaxMonths) return false;
+  }
   return true;
+}
+
+// Récupère les items directs (courbe_cards_grid) à l'intérieur d'un item donné.
+// Recurse dans b.blocks pour gérer le cas où le grid est wrappé dans un grouped_block.
+function getDirectSubItemsFromItem(item) {
+  if (!item || !Array.isArray(item.blocks)) return [];
+  const subs = [];
+  const walk = (blocks) => {
+    if (!Array.isArray(blocks)) return;
+    blocks.forEach(b => {
+      if (b && b.type === 'courbe_cards_grid' && Array.isArray(b.items)) {
+        subs.push(...b.items.filter(it => it && it.id));
+      }
+      // Recurse dans les sous-blocs (mais pas dans les items, qui sont des sous-niveaux)
+      if (b && Array.isArray(b.blocks)) walk(b.blocks);
+    });
+  };
+  walk(item.blocks);
+  return subs;
 }
 
 function buildSidebar() {
@@ -9972,12 +10008,77 @@ function buildSidebarPlanSolutions() {
       })();
       const hasSubGroups = !!(subGroups && subGroups.length > 0);
 
-      // Sous-enfants : items dans courbe_cards_grid (récursif dans les blocks)
+      // Sous-enfants : items DIRECTS (premier niveau) du courbe_cards_grid de l'enfant.
       // Si subGroups détecté, on n'utilise plus la liste plate (les items sont rendus sous chaque groupe).
-      const gridItemsAll = hasSubGroups
-        ? []
-        : extractGridItemsFromBlocks(ch.blocks).filter(isGridItemVisibleSidebar).filter(it => it && it.id);
+      // On extrait uniquement les items au 1er niveau (recurse dans b.blocks mais pas dans items).
+      // La récursion vers les niveaux profonds (Lait → Biberon → Jus végétal …) est faite
+      // par renderSidebarItemRecursive ci-dessous.
+      const directGridItems = (() => {
+        if (hasSubGroups || !Array.isArray(ch.blocks)) return [];
+        const out = [];
+        const walk = (blocks) => {
+          if (!Array.isArray(blocks)) return;
+          blocks.forEach(b => {
+            if (b && b.type === 'courbe_cards_grid' && Array.isArray(b.items)) {
+              out.push(...b.items.filter(it => it && it.id));
+            }
+            if (b && Array.isArray(b.blocks)) walk(b.blocks);
+          });
+        };
+        walk(ch.blocks);
+        return out;
+      })();
+      const gridItemsAll = directGridItems.filter(isGridItemVisibleSidebar);
       const hasSubChildren = hasSubGroups || gridItemsAll.length > 0;
+
+      // Helper récursif : rend un item + ses sous-items (et sous-sous-items, etc.).
+      // padLeft progresse de 20px par niveau (38=enfant, 58=niv3, 78=niv4, 98=niv5, ...).
+      const renderSidebarItemRecursive = (item, level, container, contextGroup) => {
+        if (!item || !item.id) return;
+        const subItemsRaw = getDirectSubItemsFromItem(item);
+        const subItems = subItemsRaw.filter(isGridItemVisibleSidebar);
+        const hasSubs = subItems.length > 0;
+        const isExpanded = state.planSidebarChildExpanded.has(item.id);
+        const itemDiv = document.createElement('div');
+        const isItemTicked = state.courbeCardsTicked && state.courbeCardsTicked.has(item.id);
+        const padLeft = 38 + (level - 2) * 20;
+        const levelCls = level === 3 ? 'nav-sub-child' : (level === 4 ? 'nav-sub-sub-child' : 'nav-sub-sub-child');
+        itemDiv.className = 'nav-item ' + levelCls + (hasSubs ? ' nav-has-children' : '') + (isItemTicked ? '' : ' inactive-levier');
+        itemDiv.style.paddingLeft = padLeft + 'px';
+        itemDiv.style.fontSize = Math.max(10.5, 12.5 - (level - 2) * 0.5) + 'px';
+        const chevronIt = hasSubs
+          ? `<span class="nav-child-arrow" style="font-size:10px;width:12px;text-align:center;color:rgba(255,255,255,0.55);flex-shrink:0">${isExpanded ? '▾' : '▸'}</span>`
+          : '';
+        const itEmoji = item.emoji || '·';
+        const itLabel = item.compactLabel || item.label || item.id;
+        itemDiv.innerHTML = `${chevronIt}<span class="nav-emoji">${itEmoji}</span><span class="nav-title">${itLabel}</span>`;
+        itemDiv.onclick = () => {
+          if (hasSubs) {
+            if (state.planSidebarChildExpanded.has(item.id)) state.planSidebarChildExpanded.delete(item.id);
+            else state.planSidebarChildExpanded.add(item.id);
+          }
+          navigateAndPreserveScroll(() => {
+            state.solActiveCat = catId;
+            if (!state.solActiveChildByCat) state.solActiveChildByCat = {};
+            // Pour env les items sont aplatis ; pour les autres, l'enfant actif reste le parent (ch.id).
+            state.solActiveChildByCat[catId] = (catId === 'env') ? item.id : ch.id;
+            // Si on est dans un sous-groupe (DOS/VENTRE), garantir le tickbox actif.
+            if (contextGroup && typeof setTickboxChoiceFromSol === 'function') {
+              setTickboxChoiceFromSol(contextGroup.cid, contextGroup.value);
+            }
+          });
+          // Scroll vers la carte de l'item
+          setTimeout(() => {
+            const card = document.querySelector(`[data-card-id="${item.id}"]`);
+            if (card && typeof card.scrollIntoView === 'function') card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 200);
+        };
+        container.appendChild(itemDiv);
+        // Récursion : si développé, rendre les sous-items au niveau suivant
+        if (hasSubs && isExpanded) {
+          subItems.forEach(sub => renderSidebarItemRecursive(sub, level + 1, container, contextGroup));
+        }
+      };
       const isChildExpanded = state.planSidebarChildExpanded.has(ch.id);
 
       const itemDiv = document.createElement('div');
@@ -10031,59 +10132,16 @@ function buildSidebarPlanSolutions() {
             childrenDiv.appendChild(groupDiv);
 
             if (isGroupExpanded) {
-              group.items.forEach(item => {
-                const subItemDiv = document.createElement('div');
-                const isItemTicked = state.courbeCardsTicked && state.courbeCardsTicked.has(item.id);
-                subItemDiv.className = 'nav-item nav-sub-sub-child' + (isItemTicked ? '' : ' inactive-levier');
-                const itemEmoji = item.emoji || '·';
-                const itemLabel = item.compactLabel || item.label || item.id;
-                subItemDiv.innerHTML = `<span class="nav-emoji">${itemEmoji}</span><span class="nav-title">${itemLabel}</span>`;
-                subItemDiv.onclick = () => {
-                  navigateAndPreserveScroll(() => {
-                    state.solActiveCat = catId;
-                    if (!state.solActiveChildByCat) state.solActiveChildByCat = {};
-                    // Pour env les items sont aplatis (item.id), pour les autres categories
-                    // l'enfant actif est la parent (ch.id) ; l'item est ensuite identifié par sa carte.
-                    state.solActiveChildByCat[catId] = (catId === 'env') ? item.id : ch.id;
-                    // S'assurer que le tickbox du groupe est activé pour que le contenu de l'item soit visible
-                    if (typeof setTickboxChoiceFromSol === 'function') {
-                      setTickboxChoiceFromSol(group.cid, group.value);
-                    }
-                  });
-                  // Scroll vers la carte de l'item
-                  setTimeout(() => {
-                    const card = document.querySelector(`[data-card-id="${item.id}"]`);
-                    if (card && typeof card.scrollIntoView === 'function') card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  }, 200);
-                };
-                childrenDiv.appendChild(subItemDiv);
+              // Items au niveau 4, récursif (peut avoir des sous-items au niveau 5+)
+              group.items.filter(isGridItemVisibleSidebar).forEach(item => {
+                renderSidebarItemRecursive(item, 4, childrenDiv, group);
               });
             }
           });
         } else {
-          // Cas standard : items directement au niveau 3
+          // Cas standard : items au niveau 3, récursif (peut avoir des sous-items au niveau 4+)
           gridItemsAll.forEach(item => {
-            const subItemDiv = document.createElement('div');
-            const isItemTicked = state.courbeCardsTicked && state.courbeCardsTicked.has(item.id);
-            subItemDiv.className = 'nav-item nav-sub-child' + (isItemTicked ? '' : ' inactive-levier');
-            const itemEmoji = item.emoji || '·';
-            const itemLabel = item.compactLabel || item.label || item.id;
-            subItemDiv.innerHTML = `<span class="nav-emoji">${itemEmoji}</span><span class="nav-title">${itemLabel}</span>`;
-            subItemDiv.onclick = () => {
-              navigateAndPreserveScroll(() => {
-                state.solActiveCat = catId;
-                if (!state.solActiveChildByCat) state.solActiveChildByCat = {};
-                // Pour env les items sont aplatis (item.id), pour les autres categories
-                // l'enfant actif est le parent (ch.id) ; l'item est ensuite identifié par sa carte.
-                state.solActiveChildByCat[catId] = (catId === 'env') ? item.id : ch.id;
-              });
-              // Scroll to the sub-card after render
-              setTimeout(() => {
-                const card = document.querySelector(`[data-card-id="${item.id}"]`);
-                if (card && typeof card.scrollIntoView === 'function') card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              }, 200);
-            };
-            childrenDiv.appendChild(subItemDiv);
+            renderSidebarItemRecursive(item, 3, childrenDiv, null);
           });
         }
       }
