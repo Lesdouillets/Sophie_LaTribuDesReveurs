@@ -6904,7 +6904,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=459"></script>
+<script src="script-data.js?v=460"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -12717,6 +12717,19 @@ function renderSolutionsCheckboxes(opts) {
                 const it2 = tickedItems2[0];
                 dynEmoji2 = it2.emoji || dynEmoji2;
                 dynLabel2 = it2.label || it2.id;
+              } else if (tickedItems2.length >= 1 && activeChildObj.id === 'accomp_progressivite') {
+                // Cas spécial Progressivité : les items DOS/VENTRE sont des twins (compactLabel
+                // partagé). Quand on coche "Bercement bras", les 2 twins sont tickés. On filtre
+                // par accomp_position_choice (DOS ou VENTRE) pour afficher le label correct.
+                const pos = state.tickboxChoices && state.tickboxChoices['accomp_position_choice'];
+                const matchKey = pos === 'dos' ? '_dos_' : (pos === 'ventre' ? '_ventre_' : null);
+                if (matchKey) {
+                  const matched = tickedItems2.find(it => it.id && it.id.includes(matchKey));
+                  if (matched) {
+                    dynEmoji2 = matched.emoji || dynEmoji2;
+                    dynLabel2 = matched.label || matched.id;
+                  }
+                }
               }
             }
           }
