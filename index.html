@@ -2168,14 +2168,17 @@
        position de la vidéo (calculé en JS via _meetUpdateOverlap). Ces blocs reçoivent
        un attribut data-meet-overlap="1" qui leur applique une marge sur le côté de la vidéo.
        En scrollant, l'attribut s'enlève dès que le bloc sort de la zone → largeur normale.
-       On ajoute aussi un padding-bottom pour permettre de scroller jusqu'au bas. */
+       On ajoute un padding GÉNÉREUX pour permettre de scroller plus haut, afin que le
+       dernier bloc de contenu puisse passer AU-DESSUS de la zone vidéo et reprendre toute
+       sa largeur (= calc(100vh - var(--meet-h))) — la marge équivaut à la hauteur d'écran
+       libre au-dessus de la vidéo. */
     body[data-meet-mode="bottom-right"] #content-area,
     body[data-meet-mode="bottom-left"] #content-area {
-      padding-bottom: var(--meet-h) !important;
+      padding-bottom: calc(100vh - var(--meet-h)) !important;
     }
     body[data-meet-mode="top-right"] #content-area,
     body[data-meet-mode="top-left"] #content-area {
-      padding-top: var(--meet-h) !important;
+      padding-top: calc(100vh - var(--meet-h)) !important;
     }
     /* Wrapping dynamique : blocs visuellement dans la zone vidéo → marge côté vidéo */
     body[data-meet-mode="bottom-right"] #content-area > [data-meet-overlap="1"],
@@ -7177,7 +7180,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=531"></script>
+<script src="script-data.js?v=532"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
