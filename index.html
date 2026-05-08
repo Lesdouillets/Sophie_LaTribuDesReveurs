@@ -4524,26 +4524,50 @@
     }
     .sol-floating-btn {
       position: relative;
-      width: 200px; height: 200px;
-      border: none; background: transparent !important;
+      width: 170px; height: 140px;
+      border: 3px solid #3b82f6;
+      border-radius: 50%;
+      background: #dbeafe;
       cursor: pointer; padding: 0;
-      opacity: 0.9;
-      transition: transform 0.15s, opacity 0.15s;
+      opacity: 0.95;
+      box-shadow: 0 4px 16px rgba(59,130,246,0.28);
+      transition: transform 0.15s, opacity 0.15s, box-shadow 0.15s;
+      overflow: visible;
     }
     .sol-floating-btn:hover { transform: scale(1.06); opacity: 1; }
     .sol-floating-btn:active { transform: scale(0.97); }
-    .sol-floating-btn-svg {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      filter: drop-shadow(0 3px 12px rgba(59,130,246,0.3));
+    /* Queue triangulaire (bordure bleu foncé) */
+    .sol-floating-btn::before {
+      content: '';
+      position: absolute;
+      bottom: -34px; left: 22px;
+      width: 50px; height: 42px;
+      background: #3b82f6;
+      clip-path: polygon(50% 0, 100% 0, 0 100%);
+      z-index: 1;
     }
+    /* Queue triangulaire (remplissage bleu clair, légèrement plus petit) */
+    .sol-floating-btn::after {
+      content: '';
+      position: absolute;
+      bottom: -28px; left: 26px;
+      width: 42px; height: 35px;
+      background: #dbeafe;
+      clip-path: polygon(45% 0, 100% 0, 0 100%);
+      z-index: 2;
+    }
+    /* SVG legacy gardé pour compat — masqué (rendu 100% CSS désormais) */
+    .sol-floating-btn-svg { display: none; }
     .sol-floating-btn-content {
       position: absolute;
-      top: 22%; left: 9%; right: 9%;
+      inset: 0;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       gap: 4px; color: #1e3a8a;
       font-weight: 700; pointer-events: none;
+      padding: 12px 16px; box-sizing: border-box;
+      text-align: center;
+      z-index: 3;
     }
     .sol-floating-btn-content span:first-child { font-size: 32px !important; line-height: 1; }
     .sol-floating-btn-content span:last-child { font-size: 14px !important; line-height: 1.2; }
@@ -7194,7 +7218,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=538"></script>
+<script src="script-data.js?v=539"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
