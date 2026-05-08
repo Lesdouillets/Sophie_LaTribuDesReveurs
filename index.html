@@ -2180,14 +2180,16 @@
     body[data-meet-mode="top-left"] #content-area {
       padding-top: calc(100vh - var(--meet-h)) !important;
     }
-    /* Wrapping dynamique : blocs visuellement dans la zone vidéo → marge côté vidéo */
-    body[data-meet-mode="bottom-right"] #content-area > [data-meet-overlap="1"],
-    body[data-meet-mode="top-right"] #content-area > [data-meet-overlap="1"] {
+    /* Wrapping dynamique : blocs visuellement dans la zone vidéo → marge côté vidéo.
+       S'applique à tout élément marqué [data-meet-overlap="1"] (peu importe le conteneur,
+       pour couvrir #content-area, #setup-screen, et les sous-conteneurs nested). */
+    body[data-meet-mode="bottom-right"] [data-meet-overlap="1"],
+    body[data-meet-mode="top-right"] [data-meet-overlap="1"] {
       margin-right: var(--meet-w) !important;
       transition: margin 0.18s ease;
     }
-    body[data-meet-mode="bottom-left"] #content-area > [data-meet-overlap="1"],
-    body[data-meet-mode="top-left"] #content-area > [data-meet-overlap="1"] {
+    body[data-meet-mode="bottom-left"] [data-meet-overlap="1"],
+    body[data-meet-mode="top-left"] [data-meet-overlap="1"] {
       margin-left: var(--meet-w) !important;
       transition: margin 0.18s ease;
     }
@@ -7218,7 +7220,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=539"></script>
+<script src="script-data.js?v=540"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9827,9 +9829,26 @@ function _meetUpdateOverlap() {
   const viewportH = window.innerHeight;
   const videoTop = isBottom ? (viewportH - meetH - 10) : (60 + 10); // 60px = approx header height
   const videoBottom = videoTop + meetH;
-  const contentArea = document.getElementById('content-area');
-  if (!contentArea) return;
-  Array.from(contentArea.children).forEach(el => {
+  // Pour chaque conteneur principal (consultation + fiche client), parcourir ses
+  // enfants directs ET ceux du 1er niveau qu'on déplie pour aller un cran plus loin.
+  const containers = [
+    document.getElementById('content-area'),
+    document.getElementById('setup-screen')
+  ].filter(Boolean);
+  // Rassembler les blocs candidats : enfants directs du conteneur, + enfants directs de
+  // chaque sous-conteneur de premier niveau (ex: option-content, sol-active-content).
+  const candidates = new Set();
+  containers.forEach(container => {
+    Array.from(container.children).forEach(el => {
+      candidates.add(el);
+      // Aller chercher des sous-conteneurs susceptibles de contenir des blocs internes
+      el.querySelectorAll(':scope > .option-content, :scope > .sol-active-content, :scope > .courbe-card-content, :scope > .info-body, :scope .open-action > .option-content, :scope .block-with-left-title > div').forEach(sub => {
+        Array.from(sub.children).forEach(c => candidates.add(c));
+      });
+    });
+  });
+  candidates.forEach(el => {
+    if (!el || !el.getBoundingClientRect) return;
     const rect = el.getBoundingClientRect();
     const overlaps = rect.top < videoBottom && rect.bottom > videoTop;
     if (overlaps) {
@@ -9855,10 +9874,27 @@ function _meetSetupOverlap() {
   // Re-calcul quand le contenu de #content-area change (navigation, render)
   if (!_meetMutationObs) {
     _meetMutationObs = new MutationObserver(() => _meetScheduleOverlap());
-    _meetMutationObs.observe(contentArea, { childList: true, subtree: false });
+    // subtree:true pour capter ouverture/fermeture des boutons (qui change la hauteur des blocs).
+    // attributes filtrés sur class+style pour capter les toggle .open-action / display.
+    _meetMutationObs.observe(contentArea, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'style'] });
   }
+  // Aussi sur la fiche client (.setup-screen) si présente
+  const setupScreen = document.getElementById('setup-screen');
+  if (setupScreen && !_meetMutationObsSetup) {
+    _meetMutationObsSetup = new MutationObserver(() => _meetScheduleOverlap());
+    _meetMutationObsSetup.observe(setupScreen, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'style'] });
+  }
+  // Re-calcul aussi sur tout clic dans le contenu (fallback : ouverture de boutons via onclick)
+  contentArea.addEventListener('click', _meetScheduleOverlapDelayed, true);
+  if (setupScreen) setupScreen.addEventListener('click', _meetScheduleOverlapDelayed, true);
   // Calcul initial
   _meetScheduleOverlap();
+}
+let _meetMutationObsSetup = null;
+// Petite tempo pour laisser le layout reflow après un click qui ouvre/ferme un bloc
+function _meetScheduleOverlapDelayed() {
+  setTimeout(_meetScheduleOverlap, 50);
+  setTimeout(_meetScheduleOverlap, 200);
 }
 function _meetTeardownOverlap() {
   const contentArea = document.getElementById('content-area');
