@@ -4735,8 +4735,8 @@ const SCRIPT_DATA = {
                 ]
               },
               // ─── Texte fin de carte Siestes pour 4 ans + (temps calme) ──
-              { type: "normal", showIfSieste: "4a-plus-tc",
-                text: "<div style=\"background:#fef9e0;border:1.5px solid #f5d778;border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.55;color:#7c2d12\">💡 Ce <strong>temps calme</strong> est <strong>important et nécessaire</strong> pour [prénom_enfant] puisqu'il permet de <strong>marquer une pause</strong> et <strong>recharger ses batteries</strong> pour la <strong>2ème partie de la journée</strong>.</div>"
+              { type: "normal", showIfSieste: "4a-plus-tc", _leftTitle: "Temps calme = important",
+                text: "- Ce **temps calme** est **important et nécessaire** pour [prénom_enfant] puisqu'il permet de **marquer une pause** et **recharger ses batteries** pour la **2ème partie de la journée**."
               }
             ]
           },
