@@ -6883,7 +6883,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=440"></script>
+<script src="script-data.js?v=441"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -11187,9 +11187,18 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     // (label en haut) + tout le contenu déplié sous chaque pastille, empilées verticalement
     if (b.expandAllAsPills) {
       const themeCls2 = b.theme ? ` theme-${b.theme}` : '';
+      // Si 1 seul item visible : pas de pastille (redondante avec la pastille "déjà plus haut"
+      // qui identifie l'enfant actif au-dessus du bandeau de la catégorie). On laisse juste
+      // 2 lignes vides via margin-top pour aérer entre l'intro et le contenu.
+      const singleItemNoPill = visibleItems.length === 1;
       const pillsHtml = visibleItems.map((it, idx) => {
         const innerBlocks = Array.isArray(it.blocks) ? it.blocks : [];
         const inner = renderBlocks(innerBlocks, sectionId, (depth||0)+1, `${path||i}.cc.${it.id || idx}`);
+        if (singleItemNoPill) {
+          return `<div class="ccg-pill-section ccg-pill-section--no-pill" data-card-id="${it.id || ''}" style="margin-top:2.4em">
+            <div class="ccg-pill-content">${inner}</div>
+          </div>`;
+        }
         return `<div class="ccg-pill-section" data-card-id="${it.id || ''}">
           <div class="ccg-pill"><span class="ccg-pill-emoji">${it.emoji || '📄'}</span><span class="ccg-pill-label">${substituteVars(it.label || '')}</span></div>
           <div class="ccg-pill-content">${inner}</div>
