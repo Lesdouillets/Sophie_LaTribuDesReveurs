@@ -6294,18 +6294,6 @@
       <div class="sos-header">
         <div>
           <div class="sos-header-title">🆘 Outils SOS</div>
-          <div style="display:flex;gap:2px;margin-top:3px;align-items:center">
-            <button type="button" onmousedown="event.preventDefault();execWithSelection('bold');saveSosContent()" style="background:none;border:1px solid rgba(255,255,255,0.3);border-radius:3px;padding:1px 6px;cursor:pointer;font-weight:900;font-size:10px;color:white;min-width:0" title="Gras">G</button>
-            <button type="button" onmousedown="event.preventDefault();execWithSelection('italic');saveSosContent()" style="background:none;border:1px solid rgba(255,255,255,0.3);border-radius:3px;padding:1px 6px;cursor:pointer;font-style:italic;font-size:10px;color:white;min-width:0" title="Italique">I</button>
-            <button type="button" onmousedown="event.preventDefault();execWithSelection('underline');saveSosContent()" style="background:none;border:1px solid rgba(255,255,255,0.3);border-radius:3px;padding:1px 6px;cursor:pointer;text-decoration:underline;font-size:10px;color:white;min-width:0" title="Souligné">S</button>
-            <button type="button" onmousedown="event.preventDefault();execWithSelection('insertUnorderedList');saveSosContent()" style="background:none;border:1px solid rgba(255,255,255,0.3);border-radius:3px;padding:1px 5px;cursor:pointer;font-size:9px;color:white;min-width:0" title="Liste à puces">•≡</button>
-            <button type="button" onmousedown="event.preventDefault();execWithSelection('indent');saveSosContent()" style="background:none;border:1px solid rgba(255,255,255,0.3);border-radius:3px;padding:1px 5px;cursor:pointer;font-size:9px;color:white;min-width:0" title="Retrait →">→</button>
-            <button type="button" onmousedown="event.preventDefault();execWithSelection('outdent');saveSosContent()" style="background:none;border:1px solid rgba(255,255,255,0.3);border-radius:3px;padding:1px 5px;cursor:pointer;font-size:9px;color:white;min-width:0" title="← Retrait">←</button>
-            <span class="color-palette-wrap" style="position:relative">
-              <button type="button" onmousedown="event.preventDefault();toggleColorPalette(this)" style="background:none;border:1px solid rgba(255,255,255,0.3);border-radius:3px;padding:1px 5px;cursor:pointer;font-size:9px;min-width:0" title="Couleur">🎨</button>
-              <script>document.currentScript.parentElement.insertAdjacentHTML('beforeend', createColorPaletteHTML("function(c){execWithSelection('foreColor',c);saveSosContent()}"))</script>
-            </span>
-          </div>
         </div>
         <button class="sos-close-btn" onclick="toggleSosPanel()">✕</button>
       </div>
@@ -6961,7 +6949,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=499"></script>
+<script src="script-data.js?v=501"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7166,6 +7154,9 @@ let state = {
   solBrowseMode: false,
   solBrowseTargetId: null, // ID de l'élément cliqué (enfant ou item à n'importe quel niveau)
   solBrowseScrollTarget: null,
+  // Cases cochées dans les grouped_checklist synchronisées (e.g. APLV symptômes
+  // partagés entre V. Diagnostic et VIII. Plan d'action). Format : { syncId: Set<itemId> }
+  gclSyncChecks: {},
 };
 
 // Recherche récursive d'une cible par ID dans une catégorie de solutions
@@ -11628,17 +11619,29 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   if (b.type === 'grouped_checklist') {
     const sid = sectionId || 'nosec';
     const groups = Array.isArray(b.groups) ? b.groups : [];
-    return `<div class="block-grouped-checklist">
+    const syncId = b.syncId || '';
+    const syncChecks = (syncId && state.gclSyncChecks && state.gclSyncChecks[syncId]) || null;
+    // Texte d'intro optionnel (avant les cases) — permet d'inclure le bloc "Soupçons allergie" inline
+    const introHtml = b.text ? `<div class="gcl-intro-text" style="grid-column:1/-1;font-size:14px;line-height:1.55;color:#1e293b;margin-bottom:6px">${substituteVars(b.text)}</div>` : '';
+    const syncAttr = syncId ? ` data-sync-id="${syncId}"` : '';
+    return `<div class="block-grouped-checklist"${syncAttr}>
+      ${introHtml}
       ${groups.map((g, gi) => `
         <div class="gcl-group">
           ${g.title ? `<div class="gcl-group-title">${substituteVars(g.title)}</div>` : ''}
           ${(g.items || []).map((item, ii) => {
-            // Item peut être une string OU un objet { text, subItem: true }
+            // Item peut être une string OU un objet { id?, text, subItem: true }
             const isObj = item && typeof item === 'object';
             const text = isObj ? (item.text || '') : item;
+            const itemId = (isObj && item.id) ? item.id : '';
             const subCls = (isObj && item.subItem) ? ' gcl-sub-item' : '';
-            return `<label class="checklist-item gcl-item${subCls}">
-              <input type="checkbox" onchange="this.closest('.checklist-item').classList.toggle('checked', this.checked); if (this.checked && this.closest('.gcl-item').classList.contains('gcl-sub-item')) { let prev = this.closest('.gcl-item').previousElementSibling; while (prev && prev.classList.contains('gcl-sub-item')) prev = prev.previousElementSibling; if (prev) { const pcb = prev.querySelector('input[type=checkbox]'); if (pcb && !pcb.checked) { pcb.checked = true; prev.classList.add('checked'); } } }">
+            const isChecked = !!(syncChecks && itemId && syncChecks.has(itemId));
+            const checkedAttr = isChecked ? ' checked' : '';
+            const checkedCls = isChecked ? ' checked' : '';
+            const itemAttr = itemId ? ` data-item-id="${itemId}"` : '';
+            const syncOnchange = (syncId && itemId) ? `if (typeof toggleGclSyncItem === 'function') toggleGclSyncItem('${syncId}', '${itemId}', this.checked); ` : '';
+            return `<label class="checklist-item gcl-item${subCls}${checkedCls}"${itemAttr}>
+              <input type="checkbox"${checkedAttr} onchange="${syncOnchange}this.closest('.checklist-item').classList.toggle('checked', this.checked); if (this.checked && this.closest('.gcl-item').classList.contains('gcl-sub-item')) { let prev = this.closest('.gcl-item').previousElementSibling; while (prev && prev.classList.contains('gcl-sub-item')) prev = prev.previousElementSibling; if (prev) { const pcb = prev.querySelector('input[type=checkbox]'); if (pcb && !pcb.checked) { pcb.checked = true; prev.classList.add('checked'); if (typeof toggleGclSyncItem === 'function') { const sid = prev.dataset.itemId; if (sid) toggleGclSyncItem('${syncId}', sid, true); } } } }">
               <span>${substituteVars(text)}</span>
             </label>`;
           }).join('')}
@@ -13470,6 +13473,27 @@ function renderSolutionsCheckboxes(opts) {
   </div>
   ${parentCardsHtml ? `<div class="courbe-cards-grid-wrap sol-parent-cards-grid-wrap"><div class="courbe-cards-grid diag-categories-grid">${parentCardsHtml}</div></div>${activeContentHtml}` : ''}`;
 }
+
+// Synchronise une case d'un grouped_checklist partagée par plusieurs sections (ex. APLV symptômes
+// dans V. Diagnostic + VIII. Plan d'action). Tous les rendus avec le même syncId reflètent l'état.
+function toggleGclSyncItem(syncId, itemId, checked) {
+  if (!syncId || !itemId) return;
+  if (!state.gclSyncChecks) state.gclSyncChecks = {};
+  if (!state.gclSyncChecks[syncId]) state.gclSyncChecks[syncId] = new Set();
+  if (checked) state.gclSyncChecks[syncId].add(itemId);
+  else state.gclSyncChecks[syncId].delete(itemId);
+  // Mettre à jour le DOM pour TOUTES les instances visibles avec le même syncId+itemId
+  // (utile si plusieurs grouped_checklist partagent le syncId dans la même page)
+  try {
+    document.querySelectorAll(`.block-grouped-checklist[data-sync-id="${syncId}"] .gcl-item[data-item-id="${itemId}"]`).forEach(el => {
+      const cb = el.querySelector('input[type="checkbox"]');
+      if (cb && cb.checked !== checked) cb.checked = checked;
+      el.classList.toggle('checked', checked);
+    });
+  } catch (e) {}
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.toggleGclSyncItem = toggleGclSyncItem;
 
 // Quitter le browse mode (déclenché par le bouton "Vue complète" sur Plan d'action en mode sidebar)
 function exitSolBrowseMode() {

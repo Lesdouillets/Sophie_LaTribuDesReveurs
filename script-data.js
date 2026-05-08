@@ -603,45 +603,46 @@ const SCRIPT_DATA = {
         { type: "normal", text: "⇒ c'est **normal** que ce soit **difficile pour vous.**\n\n- Et **dans ces moments-là**,<br>**mon rôle**, c'est vraiment de **prendre un peu de recul sur l'ensemble**.<br>Parce que **chez les bébés**, très souvent, **tout est un peu lié**.\n\n- Et JUSTEMENT… dans ce que **vous m'avez décrit**…<br>il y a **plusieurs petites choses** qui **attirent mon attention**\n\n- Vous **m'avez parlé** :" },
         {
           type: "grouped_checklist",
+          syncId: "aplv_symptomes",
           groups: [
             {
               items: [
-                "Refus de s'alimenter (+ se cambre)",
-                "Douleurs",
-                "Eczéma / peau atopique / psoriasis",
-                "Régurgitations :",
-                { text: "en jet", subItem: true },
-                { text: "sur tout le temps d'éveil", subItem: true },
-                { text: "lait caillé", subItem: true },
+                { id: "refus_alim", text: "Refus de s'alimenter (+ se cambre)" },
+                { id: "douleurs", text: "Douleurs" },
+                { id: "eczema", text: "Eczéma / peau atopique / psoriasis" },
+                { id: "regurg", text: "Régurgitations :" },
+                { id: "regurg_jet", text: "en jet", subItem: true },
+                { id: "regurg_eveil", text: "sur tout le temps d'éveil", subItem: true },
+                { id: "regurg_caille", text: "lait caillé", subItem: true },
               ]
             },
             {
               items: [
-                "Respiration sifflante / bruits de dinosaure",
-                "Ronflements (amygdales enflammées)",
-                "Dort la bouche ouverte",
+                { id: "respiration", text: "Respiration sifflante / bruits de dinosaure" },
+                { id: "ronflements", text: "Ronflements (amygdales enflammées)" },
+                { id: "bouche_ouverte", text: "Dort la bouche ouverte" },
               ]
             },
             {
               title: "Sphère ORL :",
               items: [
-                "Otites à répétition",
-                "Toux chronique",
-                "Bronchite à répétition",
-                "Qu'il soit enrhumé très souvent",
+                { id: "otites", text: "Otites à répétition" },
+                { id: "toux", text: "Toux chronique" },
+                { id: "bronchite", text: "Bronchite à répétition" },
+                { id: "enrhume", text: "Qu'il soit enrhumé très souvent" },
               ]
             },
             {
               items: [
-                "Selles diarrhéiques",
-                "Selles glaireuses",
-                "Selles avec des traces de sang",
+                { id: "selles_diarrhe", text: "Selles diarrhéiques" },
+                { id: "selles_glaireuses", text: "Selles glaireuses" },
+                { id: "selles_sang", text: "Selles avec des traces de sang" },
               ]
             },
             {
               items: [
-                "Terrain allergique dans la famille",
-                "Le fait qu'il ait eu des <strong>compléments de lait artificiel contenant des PLV entières</strong> à la naissance, puis qu'il n'a plus été en contact direct avec les PLV (allaitement = PLV moins en contact direct)",
+                { id: "terrain_familial", text: "Terrain allergique dans la famille" },
+                { id: "complements_plv", text: "Le fait qu'il ait eu des <strong>compléments de lait artificiel contenant des PLV entières</strong> à la naissance, puis qu'il n'a plus été en contact direct avec les PLV (allaitement = PLV moins en contact direct)" },
               ]
             },
           ]
@@ -672,45 +673,46 @@ const SCRIPT_DATA = {
         { type: "normal", text: "- Avant de **commencer à parler \"sommeil\"**<br>j'aimerais, si vous êtes d'accord, qu'on **prenne un petit moment**<br>pour **revenir** sur CE QUE **vous m'avez partagé**\n\n- Parce que DANS CE QUE **vous m'avez décrit**…<br>il y a **plusieurs petites choses** qui ONT **attiré mon attention**\n\n- Vous **m'avez parlé** :" },
         {
           type: "grouped_checklist",
+          syncId: "aplv_symptomes",
           groups: [
             {
               items: [
-                "Refus de s'alimenter (+ se cambre)",
-                "Douleurs",
-                "Eczéma / peau atopique / psoriasis",
-                "Régurgitations :",
-                { text: "en jet", subItem: true },
-                { text: "sur tout le temps d'éveil", subItem: true },
-                { text: "lait caillé", subItem: true },
+                { id: "refus_alim", text: "Refus de s'alimenter (+ se cambre)" },
+                { id: "douleurs", text: "Douleurs" },
+                { id: "eczema", text: "Eczéma / peau atopique / psoriasis" },
+                { id: "regurg", text: "Régurgitations :" },
+                { id: "regurg_jet", text: "en jet", subItem: true },
+                { id: "regurg_eveil", text: "sur tout le temps d'éveil", subItem: true },
+                { id: "regurg_caille", text: "lait caillé", subItem: true },
               ]
             },
             {
               items: [
-                "Respiration sifflante / bruits de dinosaure",
-                "Ronflements (amygdales enflammées)",
-                "Dort la bouche ouverte",
+                { id: "respiration", text: "Respiration sifflante / bruits de dinosaure" },
+                { id: "ronflements", text: "Ronflements (amygdales enflammées)" },
+                { id: "bouche_ouverte", text: "Dort la bouche ouverte" },
               ]
             },
             {
               title: "Sphère ORL :",
               items: [
-                "Otites à répétition",
-                "Toux chronique",
-                "Bronchite à répétition",
-                "Qu'il soit enrhumé très souvent",
+                { id: "otites", text: "Otites à répétition" },
+                { id: "toux", text: "Toux chronique" },
+                { id: "bronchite", text: "Bronchite à répétition" },
+                { id: "enrhume", text: "Qu'il soit enrhumé très souvent" },
               ]
             },
             {
               items: [
-                "Selles diarrhéiques",
-                "Selles glaireuses",
-                "Selles avec des traces de sang",
+                { id: "selles_diarrhe", text: "Selles diarrhéiques" },
+                { id: "selles_glaireuses", text: "Selles glaireuses" },
+                { id: "selles_sang", text: "Selles avec des traces de sang" },
               ]
             },
             {
               items: [
-                "Terrain allergique dans la famille",
-                "Le fait qu'il ait eu des <strong>compléments de lait artificiel contenant des PLV entières</strong> à la naissance, puis qu'il n'a plus été en contact direct avec les PLV (allaitement = PLV moins en contact direct)",
+                { id: "terrain_familial", text: "Terrain allergique dans la famille" },
+                { id: "complements_plv", text: "Le fait qu'il ait eu des <strong>compléments de lait artificiel contenant des PLV entières</strong> à la naissance, puis qu'il n'a plus été en contact direct avec les PLV (allaitement = PLV moins en contact direct)" },
               ]
             },
           ]
@@ -2242,48 +2244,50 @@ const SCRIPT_DATA = {
               }
             ],
             blocks: [
-            { type: "normal", _leftTitle: "Soupçons allergie", text: "- Dans ce qu'on a discuté tout à l'heure, il y a **quelques petites choses** qui me font **penser** à une **possible allergie.**\n- Vous **m'avez parlé :**" },
             {
               type: "grouped_checklist",
+              syncId: "aplv_symptomes",
+              _leftTitle: "Soupçons allergie",
+              text: "- Dans ce qu'on a discuté tout à l'heure, il y a **quelques petites choses** qui me font **penser** à une **possible allergie.**\n- Vous **m'avez parlé :**",
               groups: [
                 {
                   items: [
-                    "Refus de s'alimenter (+ se cambre)",
-                    "Douleurs",
-                    "Eczéma / peau atopique / psoriasis",
-                    "Régurgitations :",
-                    { text: "en jet", subItem: true },
-                    { text: "sur tout le temps d'éveil", subItem: true },
-                    { text: "lait caillé", subItem: true },
+                    { id: "refus_alim", text: "Refus de s'alimenter (+ se cambre)" },
+                    { id: "douleurs", text: "Douleurs" },
+                    { id: "eczema", text: "Eczéma / peau atopique / psoriasis" },
+                    { id: "regurg", text: "Régurgitations :" },
+                    { id: "regurg_jet", text: "en jet", subItem: true },
+                    { id: "regurg_eveil", text: "sur tout le temps d'éveil", subItem: true },
+                    { id: "regurg_caille", text: "lait caillé", subItem: true },
                   ]
                 },
                 {
                   items: [
-                    "Respiration sifflante / bruits de dinosaure",
-                    "Ronflements (amygdales enflammées)",
-                    "Dort la bouche ouverte",
+                    { id: "respiration", text: "Respiration sifflante / bruits de dinosaure" },
+                    { id: "ronflements", text: "Ronflements (amygdales enflammées)" },
+                    { id: "bouche_ouverte", text: "Dort la bouche ouverte" },
                   ]
                 },
                 {
                   title: "Sphère ORL :",
                   items: [
-                    "Otites à répétition",
-                    "Toux chronique",
-                    "Bronchite à répétition",
-                    "Qu'il soit enrhumé très souvent",
+                    { id: "otites", text: "Otites à répétition" },
+                    { id: "toux", text: "Toux chronique" },
+                    { id: "bronchite", text: "Bronchite à répétition" },
+                    { id: "enrhume", text: "Qu'il soit enrhumé très souvent" },
                   ]
                 },
                 {
                   items: [
-                    "Selles diarrhéiques",
-                    "Selles glaireuses",
-                    "Selles avec des traces de sang",
+                    { id: "selles_diarrhe", text: "Selles diarrhéiques" },
+                    { id: "selles_glaireuses", text: "Selles glaireuses" },
+                    { id: "selles_sang", text: "Selles avec des traces de sang" },
                   ]
                 },
                 {
                   items: [
-                    "Terrain allergique dans la famille",
-                    "Le fait qu'il ait eu des <strong>compléments de lait artificiel contenant des PLV entières</strong> à la naissance, puis qu'il n'a plus été en contact direct avec les PLV (allaitement = PLV moins en contact direct). Normalement 1 bib / semaine",
+                    { id: "terrain_familial", text: "Terrain allergique dans la famille" },
+                    { id: "complements_plv", text: "Le fait qu'il ait eu des <strong>compléments de lait artificiel contenant des PLV entières</strong> à la naissance, puis qu'il n'a plus été en contact direct avec les PLV (allaitement = PLV moins en contact direct). Normalement 1 bib / semaine" },
                   ]
                 },
               ]
