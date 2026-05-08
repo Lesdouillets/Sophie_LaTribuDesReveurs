@@ -2462,6 +2462,7 @@ const SCRIPT_DATA = {
               trailingInfoButton: {
                 label: "Parents en Confiance",
                 title: "Parents en Confiance",
+                _wrapWidth: "220px",
                 blocks: [
                   { type: "normal", text: "- **Virginie Ferrandez** *(Infirmière IBCLC)* de **Parents en Confiance** *(Instagram)* peut aussi **vous aider** pour **comprendre** et **soulager le RGO** de [prénom_enfant]" }
                 ]

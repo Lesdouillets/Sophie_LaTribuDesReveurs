@@ -7248,7 +7248,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=552"></script>
+<script src="script-data.js?v=553"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -13189,9 +13189,12 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const btnEmoji = tb.emoji || '💡';
       return `<button type="button" class="${cls}" contenteditable="false" data-info-btn-id="${btnId}" onclick="openInfoPanel('${btnId}')" style="${btnStyle}"><span class="info-btn-emoji" style="margin-right:8px">${btnEmoji}</span><span>${label}</span></button>`;
     }).join('');
+    // Détection d'une largeur custom sur le 1er trailingButton (utilisé pour réduire
+    // la taille de l'encadré quand le contenu est court — ex: "Parents en Confiance")
+    const customW = trailingBtnsList[0] && trailingBtnsList[0]._wrapWidth ? trailingBtnsList[0]._wrapWidth : '380px';
     trailingBtnHtml = trailingBtnsList.length > 1
-      ? `<div class="info-btns-stack" contenteditable="false" style="width:380px;float:right;margin:0 0 10px 14px">${btnsInner}</div>`
-      : `<div contenteditable="false" style="width:380px;float:right;margin:0 0 10px 14px">${btnsInner}</div>`;
+      ? `<div class="info-btns-stack" contenteditable="false" style="width:${customW};float:right;margin:0 0 10px 14px">${btnsInner}</div>`
+      : `<div contenteditable="false" style="width:${customW};float:right;margin:0 0 10px 14px">${btnsInner}</div>`;
   }
   // Boutons action embarqués à l'intérieur du bloc texte (via embeddedActions)
   let embeddedHtml = '';
