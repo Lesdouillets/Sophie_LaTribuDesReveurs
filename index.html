@@ -7070,7 +7070,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=521"></script>
+<script src="script-data.js?v=522"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -11731,14 +11731,44 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         // CSS variables sur les conteneurs : permettent aux blocs internes (incl. futurs bloc-titres)
         // de prendre les couleurs de la catégorie via var(--cat-main / --cat-dark / --cat-light).
         const cssVars = `--cat-main:${colors.main};--cat-dark:${colors.dark};--cat-light:${colors.light||'#fef2f2'}`;
-        // Pastille (mode singleChildMode équivalent : 1 seule section → pastille avec son titre)
+        // Pastille : reflète la PB spécifique cliquée (ou les PBs cocchées) plutôt que le titre de la section.
+        // Utile car pour env / strategie / relationnel, une SEULE section (env_general, etc.) couvre plusieurs PBs
+        // → si on prend section title, on retombe sur le label de la catégorie (redondant).
+        // On fait la même résolution que les sous-titres des cards parent (cf. cardsHtml.subTitles plus haut).
         let singlePastilleHtml = '';
         if (isSingleSection) {
           const s = subSections[0];
-          const secTitle = getSectionDisplayTitle(s);
-          const sEmoji = s.emoji || '';
-          const pastilleLabel = `${sEmoji ? sEmoji + ' ' : ''}${secTitle}`;
-          singlePastilleHtml = `<div style="padding:10px 20px 4px"><div style="display:inline-block;padding:9px 22px;background:${colors.main};color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)">${pastilleLabel}</div></div>`;
+          // Résolution du label : selon la catégorie, on prend le label des PBs cocchées (PB_LABELS) si possible
+          let pastilleText = '';
+          if (activeCat === 'rythme') {
+            const labels = new Set();
+            (state.selectedPbs || new Set()).forEach(pb => {
+              if (!pb.startsWith('rythme_')) return;
+              if (pb.startsWith('rythme_reveil_')) labels.add('Réveils matinaux');
+              else if (pb === 'rythme_te_trop_long' || pb === 'rythme_te_long_siestes_courtes' || pb === 'rythme_te_long_reveils_matinaux') labels.add("Temps d'éveil trop long");
+              else if (pb === 'rythme_te_trop_court' || pb === 'rythme_te_court_siestes_courtes') labels.add("Temps d'éveil trop court");
+              else if (pb === 'rythme_siestes_courtes') labels.add('Siestes courtes');
+              else if (pb === 'rythme_horaires_aleatoires') labels.add('Horaires aléatoires');
+              else if (pb === 'rythme_activite_physique') labels.add("Pas d'activité physique");
+            });
+            pastilleText = [...labels].join(' / ');
+          } else if (activeCat === 'env') {
+            const envPbs = { env_obscurite: 'Obscurité', env_temperature: 'Température', env_lit_ouvert: 'Lit ouvert', env_rituel: 'Rituel', env_cadre: 'Cadre', env_stimulations: 'Stimulations', env_ecrans: 'Écrans' };
+            pastilleText = Object.keys(envPbs).filter(pb => state.selectedPbs && state.selectedPbs.has(pb)).map(pb => envPbs[pb]).join(' / ');
+          } else if (activeCat === 'strategie') {
+            const stratPbs = { strategie_rendormissement: 'Rendormissement difficile', strategie_enjeu_relationnel: 'Enjeu relationnel', strategie_tetine: 'Dépendance tétine' };
+            pastilleText = Object.keys(stratPbs).filter(pb => state.selectedPbs && state.selectedPbs.has(pb)).map(pb => stratPbs[pb]).join(' / ');
+          } else if (activeCat === 'relationnel') {
+            const relPbs = { relationnel_lit_parental: 'Lit parental', relationnel_conflit_autres: 'Conflits', relationnel_rappels: 'Rappels' };
+            pastilleText = Object.keys(relPbs).filter(pb => state.selectedPbs && state.selectedPbs.has(pb)).map(pb => relPbs[pb]).join(' / ');
+          }
+          // Fallback : utiliser le titre de la section (utile pour confort_physique / nutrition où chaque PB a sa propre section)
+          if (!pastilleText) {
+            const secTitle = getSectionDisplayTitle(s);
+            const sEmoji = s.emoji || '';
+            pastilleText = `${sEmoji ? sEmoji + ' ' : ''}${secTitle}`;
+          }
+          singlePastilleHtml = `<div style="padding:10px 20px 4px"><div style="display:inline-block;padding:9px 22px;background:${colors.main};color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)">${pastilleText}</div></div>`;
         }
         // Cartes enfant + contenu actif (si plusieurs sous-sections)
         let childCardsHtml = '';
