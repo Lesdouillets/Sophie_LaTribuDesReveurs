@@ -326,14 +326,11 @@ const SCRIPT_DATA = {
         {
           type: "option", label: "Dort dans la chambre parentale (lit parents)\nSouhait de changer ?", emoji: "🛌", style: "purple-btn", hideIfPb: ["souhait_changement_lit","souhait_changement_chambre","souhait_changement_lit_chambre"],
           blocks: [
-            {
-              type: "lieu_sommeil_intro_grid",
-              text: "",
-              buttons: [
+            { type: "normal", _leftTitle: "Petite question", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- J'ai aussi une **petite question** par rapport au **LIEU de sommeil**\n- Aujourd'hui, [prénom_enfant] **dort dans VOTRE chambre**",
+              trailingInfoButtons: [
                 {
                   label: "Cododo",
                   title: "Cododo",
-                  width: "360px",
                   blocks: [
                     { type: "normal", text: "- **Cododo** :\n  - *Co-rooming* : lits accolés ✅\n  - *Room-sharing* : partage de chambre ✅\n  - *Bed-sharing* : partage de lit ❌\n- Le cododo est **recommandé par l'OMS jusque 6 mois** en prévention de la MIN (Mort Inattendue du Nourrisson) :\n  - Parent + vigilant\n  - Synchronisation des respirations parents/enfant\n- En revanche, le **partage de lit** (*bed-sharing*) est vivement **déconseillé** par l'OMS (↗ le risque MIN)" },
                     { type: "normal", text: "<details style=\"border:1.5px solid #fcd34d;border-radius:10px;background:#fffbeb;padding:10px 14px\"><summary style=\"cursor:pointer;font-weight:800;color:#7c2d12;font-style:italic;user-select:none;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px\"><span>📊 Risque relatif de décès selon le mode de couchage</span><span style=\"font-size:13px\">▾</span></summary><table style=\"width:100%;border-collapse:collapse;font-size:13px;margin-top:10px\"><thead><tr style=\"background:#fef3c7\"><th style=\"padding:8px 10px;border:1px solid #fcd34d;text-align:left;color:#7c2d12\">Mode de couchage</th><th style=\"padding:8px 10px;border:1px solid #fcd34d;text-align:center;color:#7c2d12\">Risque</th></tr></thead><tbody><tr><td style=\"padding:6px 10px;border:1px solid #fcd34d\">Lit mère pendant la tétée puis berceau</td><td style=\"padding:6px 10px;border:1px solid #fcd34d;text-align:center;font-weight:700\">0,66</td></tr><tr><td style=\"padding:6px 10px;border:1px solid #fcd34d\">Partage de la chambre</td><td style=\"padding:6px 10px;border:1px solid #fcd34d;text-align:center;font-weight:700\">1</td></tr><tr><td style=\"padding:6px 10px;border:1px solid #fcd34d\">Chambre séparée</td><td style=\"padding:6px 10px;border:1px solid #fcd34d;text-align:center;font-weight:700\">1,9</td></tr><tr><td style=\"padding:6px 10px;border:1px solid #fcd34d\">Partage du lit maternel</td><td style=\"padding:6px 10px;border:1px solid #fcd34d;text-align:center;font-weight:700\">2,75</td></tr><tr><td style=\"padding:6px 10px;border:1px solid #fcd34d\">Sur un canapé avec son enfant</td><td style=\"padding:6px 10px;border:1px solid #fcd34d;text-align:center;font-weight:700;color:#dc2626\">31,25</td></tr></tbody></table><div style=\"margin-top:14px;font-size:14px;line-height:1.6\"><div style=\"font-style:italic;margin-bottom:6px\">Si on prend pour risque moyen (<strong>1</strong>) le partage de chambre, le risque :</div><ul style=\"margin:0 0 0 22px;padding:0;list-style:disc\"><li><strong>×2</strong> pour la <strong>chambre séparée</strong> (1,9)</li><li><strong>×3</strong> si bébé dort dans le <strong>lit parental</strong> (2,75)</li><li><strong>×30</strong> — <strong>Majeur</strong> si le couchage est <strong>inadapté</strong></li><li><strong>2× moins de risque</strong> (0,66) si bébé est reposé dans son <strong>berceau près de la maman</strong> que si le berceau est loin dans la chambre parentale</li></ul></div></details>" }
@@ -342,7 +339,6 @@ const SCRIPT_DATA = {
                 {
                   label: "Si souhait de néanmoins partager le même lit",
                   title: "Si souhait de néanmoins partager le même lit",
-                  width: "360px",
                   blocks: [
                     { type: "normal", text: "**Environnement de sommeil**\n\n- Mettre [prénom_enfant] sur le **dos** dans **sa gigoteuse**\n- **Retirer les coussins, couette et couverture** (tout ce qui est lourd et pourrait étouffer [prénom_enfant])\n- Placer **[prénom_enfant] du côté de Maman** (elle a des hormones de vigilance que n'a pas le co-parent)\n- Cheveux de la maman attachés\n- Faire attention à la **fermeté du matelas** (pas trop mou : de canapé-lit ou matelas à eau)\n- Température autour de 18°\n- Veiller à ce que [prénom_enfant] **ne puisse pas tomber** = mettre barrière de lit\n- Attention à ne pas **se retrouver coincé** (sur le côté et/ou tête de lit) = lit contre le mur et cadre de lit collé au matelas\n- Investir dans une chaussette connectée Owlet (alarme de respiration)\n- Pas d'autres enfants dans le lit" },
                     { type: "normal", text: "**Pour les parents**\n\n- **Ne pas boire de l'alcool** ou consommer des substances illicites ⇒ Moins de vigilance ⇒ ↗ MIN\n- Ne pas être fumeur ⇒ Attention au tabagisme passif\n- Ne pas souffrir d'obésité morbide\n- **A éviter si vous êtes très fatigué** ⇒ Moins de vigilance ⇒ ↗ MIN" },
@@ -352,7 +348,6 @@ const SCRIPT_DATA = {
                 {
                   label: "Alarme de respiration",
                   title: "Alarme de respiration",
-                  width: "360px",
                   blocks: [
                     { type: "normal", text: "- **Nanny Care**\n  - Matelas épaisseur de 13cm MAX et densité 35kg/m3\n  - Jusque 7 mois (jusque BB bouge pour éviter les fausses alertes)\n  - Surveille la **respiration** (détecte **toute absence ou irrégularité** de respiration **MAIS PAS si respirations qui s'amenuisent** et qui n'o**xygène plus le cerveau**)\n  - Prix : ≃200€\n  - https://www.nanny-care.com/3-e-shop-moniteurs-respiratoires-bebe\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN\n\n- **Chausette Owlet DreamSock**\n  - Surveille la **fréquence cardiaque** et le **taux d'oxygène**\n  - Risque de **brûlure si usage prolongé** ⇒ Changer de pied régulièrement\n  - Prix : ≃300€\n  - https://owletcare.fr/products/owlet-dream-sock\n  - ⚠ Ne prévient pas de la MIN mais diminue le risque\n  - Permet de se rassurer et prévenir la MIN" }
                   ]
@@ -360,14 +355,12 @@ const SCRIPT_DATA = {
                 {
                   label: "Pourquoi je ne recommande PAS de lit ouvert avant 2,5/3 ans ?",
                   title: "Pourquoi je ne recommande PAS de lit ouvert avant 2,5/3 ans ?",
-                  width: "360px",
                   blocks: [
                     { type: "normal", text: "- Ça peut **créer de l'insécurité** car il n'y a **pas de possibilité de se nicher**, [il_elle] peut se sentir beaucoup trop **« exposé »**\n- C'est **difficile** pour un enfant de cet âge de **respecter la règle** *« Tu vas rester dans ton lit »*\n- C'est une **responsabilité trop lourde** *(car le **désir d'éveil** est fort)*\n- Ça peut :\n  - conduire à **+ d'interactions avec les parents** avec les **allers-retours** pour [le_la] ramener au lit\n  - créer des **conflits** qui pourraient être évités\n  - et [il_elle] peut aussi **risquer de tomber**, se **faire mal**, et **associer le sommeil** à quelque chose de **négatif**\n\n- ⇒ Le **lit fermé** offre un **cadre physique** au sommeil avec la **présence des barreaux** *(ou lit parapluie !)*" }
                   ]
                 }
               ]
             },
-            { type: "normal", _leftTitle: "Petite question", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- J'ai aussi une **petite question** par rapport au **LIEU de sommeil**\n- Aujourd'hui, [prénom_enfant] **dort dans VOTRE chambre**" },
             {
               type: "option", label: "Dort dans le lit parental", style: "purple",
               blocks: [
