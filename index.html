@@ -6883,7 +6883,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=427"></script>
+<script src="script-data.js?v=428"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -13047,6 +13047,16 @@ function toggleSolution(id, checked) {
       }
     });
   }
+  // Mutex : enfants de la catégorie 'confort_physique' (APLV vs RGO) — 1 seule active à la fois
+  const CONFORT_MUTEX_IDS = ['conf_aplv', 'conf_rgo'];
+  if (checked && CONFORT_MUTEX_IDS.includes(id)) {
+    CONFORT_MUTEX_IDS.forEach(other => {
+      if (other !== id) {
+        state.selectedSolutions.delete(other);
+        state.selectedSolutionsManuallyEdited.add(other);
+      }
+    });
+  }
   updateSolutionsModal();
   if (typeof buildSections === 'function') buildSections();
   if (typeof buildSidebar === 'function') buildSidebar();
@@ -15366,6 +15376,14 @@ function toggleCourbeCardTick(tickEl) {
   const CHGMT_TICK_MUTEX = ['env_chgmt_lit', 'env_chgmt_chambre', 'env_chgmt_lit_chambre'];
   if (!wasTicked && CHGMT_TICK_MUTEX.includes(cardId)) {
     CHGMT_TICK_MUTEX.forEach(other => {
+      if (other !== cardId) state.cardPersonalTicks.delete(other);
+    });
+    if (typeof renderCurrentSection === 'function') renderCurrentSection();
+  }
+  // Mutex : APLV / Conseils RGO (sous-cartes de la catégorie 'confort_physique') — 1 seule active à la fois
+  const CONFORT_TICK_MUTEX = ['conf_aplv', 'conf_rgo'];
+  if (!wasTicked && CONFORT_TICK_MUTEX.includes(cardId)) {
+    CONFORT_TICK_MUTEX.forEach(other => {
       if (other !== cardId) state.cardPersonalTicks.delete(other);
     });
     if (typeof renderCurrentSection === 'function') renderCurrentSection();
