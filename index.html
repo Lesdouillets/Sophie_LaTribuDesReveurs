@@ -6961,7 +6961,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=497"></script>
+<script src="script-data.js?v=499"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7162,10 +7162,50 @@ let state = {
   // Par défaut : "Par problématique" est replié, "Plan d'action" est ouvert.
   sidebarSectionCollapsed: new Set(['conditional']),
   // Mode "Browse" depuis le sidebar : navigation rapide sans cocher les leviers/solutions
-  // → affiche uniquement le contenu de la carte parent active (sans "Solutions identifiées" + cards row)
+  // → affiche uniquement le contenu de l'item cliqué (sans "Solutions identifiées" + cards row + frères/soeurs)
   solBrowseMode: false,
-  solBrowseScrollTarget: null, // ID de la carte/sous-item à scroller après render
+  solBrowseTargetId: null, // ID de l'élément cliqué (enfant ou item à n'importe quel niveau)
+  solBrowseScrollTarget: null,
 };
+
+// Recherche récursive d'une cible par ID dans une catégorie de solutions
+// Renvoie le child ou item correspondant à l'ID, ou null si introuvable.
+function findSolTargetById(catId, targetId) {
+  if (!targetId) return null;
+  const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
+  const cat = sols.find(c => c.id === catId);
+  if (!cat) return null;
+  function searchInBlocks(blocks) {
+    if (!Array.isArray(blocks)) return null;
+    for (const b of blocks) {
+      if (b && b.type === 'courbe_cards_grid' && Array.isArray(b.items)) {
+        for (const it of b.items) {
+          if (!it) continue;
+          if (it.id === targetId) return it;
+          if (Array.isArray(it.blocks)) {
+            const found = searchInBlocks(it.blocks);
+            if (found) return found;
+          }
+        }
+      }
+      if (b && Array.isArray(b.blocks)) {
+        const found = searchInBlocks(b.blocks);
+        if (found) return found;
+      }
+    }
+    return null;
+  }
+  for (const ch of (cat.children || [])) {
+    if (!ch) continue;
+    if (ch.id === targetId) return ch;
+    if (Array.isArray(ch.blocks)) {
+      const found = searchInBlocks(ch.blocks);
+      if (found) return found;
+    }
+  }
+  return null;
+}
+window.findSolTargetById = findSolTargetById;
 
 // Nettoyage des overrides — supprimer TOUT pour forcer la re-sync
 // Incrémentez ce numéro pour forcer un nouveau nettoyage
@@ -10004,8 +10044,8 @@ function buildSidebarPlanSolutions() {
           optDiv.onclick = () => {
             navigateAndPreserveScroll(() => {
               state.solActiveCat = catId;
-              // Browse mode : on règle juste tickboxChoices pour que le contenu correspondant s'affiche,
-              // SANS appeler setTickboxChoiceFromSol (qui modifierait selectedSolutions/selectedPbs).
+              // Browse mode : cible = strat_tetine, choix tickbox réglé en direct
+              state.solBrowseTargetId = 'strat_tetine';
               if (!state.tickboxChoices) state.tickboxChoices = {};
               state.tickboxChoices['strategie_tetine_choice'] = opt.val;
               state.tickboxChoices['obj_tetine_static'] = opt.val;
@@ -10090,20 +10130,16 @@ function buildSidebarPlanSolutions() {
           }
           navigateAndPreserveScroll(() => {
             state.solActiveCat = catId;
+            // Browse mode : cible = cet item → affichage direct de son contenu
+            state.solBrowseTargetId = item.id;
             if (!state.solActiveChildByCat) state.solActiveChildByCat = {};
             state.solActiveChildByCat[catId] = (catId === 'env') ? item.id : ch.id;
             // Si on est dans un sous-groupe (DOS/VENTRE), régler le tickbox EN DIRECT
-            // (sans setTickboxChoiceFromSol qui cocherait selectedSolutions/selectedPbs).
             if (contextGroup) {
               if (!state.tickboxChoices) state.tickboxChoices = {};
               state.tickboxChoices[contextGroup.cid] = contextGroup.value;
             }
           });
-          // Scroll vers la carte de l'item
-          setTimeout(() => {
-            const card = document.querySelector(`[data-card-id="${item.id}"]`);
-            if (card && typeof card.scrollIntoView === 'function') card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }, 200);
         };
         container.appendChild(itemDiv);
         // Récursion : si développé, rendre les sous-items au niveau suivant
@@ -10128,6 +10164,10 @@ function buildSidebarPlanSolutions() {
         }
         navigateAndPreserveScroll(() => {
           state.solActiveCat = catId;
+          // Browse mode : cible = cet enfant → affichage direct de son contenu (intro cat + pastille + texte)
+          state.solBrowseTargetId = ch.id;
+          if (!state.solActiveChildByCat) state.solActiveChildByCat = {};
+          state.solActiveChildByCat[catId] = ch.id;
         });
       };
       childrenDiv.appendChild(itemDiv);
@@ -10155,7 +10195,10 @@ function buildSidebarPlanSolutions() {
               }
               navigateAndPreserveScroll(() => {
                 state.solActiveCat = catId;
-                // Browse mode : régler le tickbox EN DIRECT (sans setTickboxChoiceFromSol qui modifierait selectedSolutions/selectedPbs)
+                // Browse mode : cible = enfant parent (les items DOS/VENTRE n'ont pas leur propre id), tickbox réglé
+                state.solBrowseTargetId = ch.id;
+                if (!state.solActiveChildByCat) state.solActiveChildByCat = {};
+                state.solActiveChildByCat[catId] = ch.id;
                 if (!state.tickboxChoices) state.tickboxChoices = {};
                 state.tickboxChoices[group.cid] = group.value;
               });
@@ -10333,6 +10376,7 @@ function navigateTo(idx) {
   state.currentIdx = Math.max(0, Math.min(idx, state.sections.length-1));
   // Reset browse mode quand on navigue (les handlers sidebar le réactiveront si besoin)
   state.solBrowseMode = false;
+  state.solBrowseTargetId = null;
   buildSidebar();
   renderCurrentSection();
   // Restaurer le scroll si on revient sur V. Diagnostic ; sinon remettre à 0
@@ -13182,11 +13226,37 @@ function renderSolutionsCheckboxes(opts) {
   let activeContentHtml = '';
   if (activeCat) {
     const cat = sols.find(c => c.id === activeCat);
+
+    // BROWSE TARGET : rendu direct (banner + intro + pastille + contenu) de l'item cliqué dans le sidebar.
+    // Court-circuite la logique standard (cards/grille/etc.) — l'utilisatrice voit juste ce qu'elle a cliqué.
+    if (cat && isBrowseMode && state.solBrowseTargetId) {
+      const target = (typeof findSolTargetById === 'function') ? findSolTargetById(activeCat, state.solBrowseTargetId) : null;
+      if (target) {
+        const c = catColorMap[cat.id] || { main:'#666', dark:'#333' };
+        const introHtml = Array.isArray(cat.introBlocks) && cat.introBlocks.length
+          ? `<div class="sol-cat-intro" data-section-cat="${cat.id}" style="--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">${renderBlocks(cat.introBlocks, 'sol_' + cat.id)}</div>`
+          : '';
+        const targetEmoji = target.cardEmoji || target.emoji || '📄';
+        const targetLabel = target.cardLabel || target.label || target.id;
+        const pastilleLabel = `${targetEmoji} ${targetLabel}`;
+        const pastilleHtml = `<div style="padding:10px 20px 4px"><div style="display:inline-block;padding:9px 22px;background:${c.main};color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)">${pastilleLabel}</div></div>`;
+        const targetContentHtml = Array.isArray(target.blocks) && target.blocks.length
+          ? `<div class="sol-child-content sol-child-content--single" data-section-cat="${cat.id}" style="position:relative;border:none;border-radius:0;margin:0;padding:14px 20px;--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">${renderBlocks(target.blocks, 'sol_' + cat.id + '_' + target.id)}</div>`
+          : '<div class="block block-normal" style="margin:14px 20px;padding:14px 18px"><em>(Pas de contenu pour cet élément.)</em></div>';
+        activeContentHtml = `<div class="sol-active-content" data-section-cat="${cat.id}" style="border:3px solid ${c.main}">
+          <div class="sol-active-banner" style="background:${c.main}">${cat.emoji || ''} ${cat.title}</div>
+          ${introHtml}
+          ${pastilleHtml}
+          ${targetContentHtml}
+        </div>`;
+      }
+    }
+
     const allVisibleChildren = cat ? (cat.children || []).filter(ch => !isChHiddenByAge(ch)) : [];
     const checkedChildrenForActive = isBrowseMode
       ? allVisibleChildren
       : allVisibleChildren.filter(ch => state.selectedSolutions.has(ch.id));
-    if (cat && checkedChildrenForActive.length > 0) {
+    if (!activeContentHtml && cat && checkedChildrenForActive.length > 0) {
       const c = catColorMap[cat.id] || { main:'#666', dark:'#333' };
       const children = cat.children || [];
       const checkedChildren = checkedChildrenForActive;
@@ -13197,10 +13267,14 @@ function renderSolutionsCheckboxes(opts) {
         ? `<div class="sol-cat-outro" data-section-cat="${cat.id}" style="--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'};margin-top:14px">${renderBlocks(cat.outroBlocks, 'sol_outro_' + cat.id)}</div>`
         : '';
       // Si 1 seul enfant coche : afficher directement son contenu (pas de grille de sous-cards)
-      const singleChildMode = checkedChildren.length === 1;
-      const activeChildId = singleChildMode
-        ? checkedChildren[0].id
-        : ((state.solActiveChildByCat && state.solActiveChildByCat[cat.id]) || null);
+      // EN BROWSE MODE : si un enfant est explicitement actif, on force singleChildMode
+      // → affiche l'intro de la catégorie + pastille + contenu de cet enfant, sans frères/soeurs.
+      const browseActiveChildId = (isBrowseMode && state.solActiveChildByCat && state.solActiveChildByCat[cat.id]) || null;
+      const browseChildExists = !!(browseActiveChildId && checkedChildren.find(c => c.id === browseActiveChildId));
+      const singleChildMode = (checkedChildren.length === 1) || browseChildExists;
+      const activeChildId = browseChildExists
+        ? browseActiveChildId
+        : (singleChildMode ? checkedChildren[0].id : ((state.solActiveChildByCat && state.solActiveChildByCat[cat.id]) || null));
       // singleChildMode : on cache TOUJOURS la grosse carte parente — une pastille (oval pill)
       // injectée au début de childContentHtml fait office d'identification visuelle.
       // (Avant : on ne masquait que si l'enfant actif avait expandAllAsPills.)
@@ -13365,10 +13439,11 @@ function renderSolutionsCheckboxes(opts) {
             `</div>`;
         }
       }
+      // Ordre : bannière → intro de la catégorie → pastille de l'enfant → cards (ou contenu enfant) → outro
       activeContentHtml = `<div class="sol-active-content" data-section-cat="${cat.id}" style="border:3px solid ${c.main}">
         <div class="sol-active-banner" style="background:${c.main}">${cat.emoji || ''} ${cat.title}</div>
-        ${singleChildPastille}
         ${introHtml}
+        ${singleChildPastille}
         ${envCardsOverride !== null ? envCardsOverride : cardsHtml}
         ${envCardsOverride !== null ? envChildContentOverride : childContentHtml}
         ${outroHtml}
@@ -13399,6 +13474,7 @@ function renderSolutionsCheckboxes(opts) {
 // Quitter le browse mode (déclenché par le bouton "Vue complète" sur Plan d'action en mode sidebar)
 function exitSolBrowseMode() {
   state.solBrowseMode = false;
+  state.solBrowseTargetId = null;
   if (typeof renderCurrentSection === 'function') renderCurrentSection();
   if (typeof buildSidebar === 'function') buildSidebar();
 }
