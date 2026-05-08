@@ -2181,24 +2181,38 @@
       padding-left: var(--meet-w) !important;
       padding-top: var(--meet-h) !important;
     }
-    /* Vignette pointillée 1ère apparition (5s) pour aider à placer la PiP de Meet */
+    /* Vignette pointillée — visible en permanence quand le mode visio est ON
+       (aide à placer la PiP de Meet). Cliquable (✕) pour la masquer pour la session. */
     body[data-meet-mode] .meet-zone-hint {
       position: fixed;
       width: var(--meet-w);
       height: var(--meet-h);
-      border: 2px dashed #5e7194;
+      border: 3px dashed #5e7194;
       border-radius: 12px;
-      background: rgba(94,113,148,0.06);
-      display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px;
-      font-size: 12px; color: #5e7194; font-weight: 700; text-align: center;
-      pointer-events: none; z-index: 90;
-      animation: meetZoneFade 5s ease-in forwards;
+      background: rgba(94,113,148,0.10);
+      display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px;
+      font-size: 13px; color: #5e7194; font-weight: 700; text-align: center;
+      z-index: 90;
+      box-shadow: 0 0 0 4px rgba(94,113,148,0.06);
     }
+    body[data-meet-mode] .meet-zone-hint .meet-zone-hint-close {
+      position: absolute;
+      top: 6px; right: 6px;
+      width: 24px; height: 24px;
+      border: 1.5px solid #5e7194;
+      background: rgba(255,255,255,0.92);
+      color: #5e7194;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 13px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0; line-height: 1;
+    }
+    body[data-meet-mode] .meet-zone-hint .meet-zone-hint-close:hover { background: #fff; }
     body[data-meet-mode="bottom-right"] .meet-zone-hint { right: 10px; bottom: 10px; }
     body[data-meet-mode="bottom-left"] .meet-zone-hint { left: 10px; bottom: 10px; }
     body[data-meet-mode="top-right"] .meet-zone-hint { right: 10px; top: 70px; }
     body[data-meet-mode="top-left"] .meet-zone-hint { left: 10px; top: 70px; }
-    @keyframes meetZoneFade { 0% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
     /* Petit menu pour choisir le coin */
     .meet-corner-menu {
       position: absolute;
@@ -7156,7 +7170,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=528"></script>
+<script src="script-data.js?v=529"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9760,20 +9774,18 @@ function _meetUpdateUI(corner) {
     body.setAttribute('data-meet-mode', corner);
     if (btn) btn.style.background = '#e0e8f4';
     if (badge) { badge.style.display = ''; badge.textContent = MEET_CORNER_ARROW[corner] || '↘'; }
-    // Indice visuel "Posez la vidéo Meet ici" (5s puis fade)
+    // Vignette pointillée — visible en permanence (cliquable ✕ pour la masquer pour la session)
     let hint = document.getElementById('meet-zone-hint');
     if (!hint) {
       hint = document.createElement('div');
       hint.id = 'meet-zone-hint';
       hint.className = 'meet-zone-hint';
-      hint.innerHTML = '<div style="font-size:22px">📹</div><div>Posez la vidéo<br>Meet ici</div>';
+      hint.innerHTML = '<button type="button" class="meet-zone-hint-close" title="Masquer" onclick="document.getElementById(\'meet-zone-hint\').remove()">✕</button><div style="font-size:30px">📹</div><div style="line-height:1.3">Posez la vidéo<br>Meet ici</div>';
       body.appendChild(hint);
     } else {
-      // Re-trigger animation
-      hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = '';
       hint.style.visibility = '';
+      hint.style.opacity = '';
     }
-    setTimeout(() => { try { hint.remove(); } catch(e){} }, 5500);
     // Marquer le bouton actif dans le menu
     if (menu) menu.querySelectorAll('.meet-corner-btn[data-corner]').forEach(b => {
       b.classList.toggle('active', b.dataset.corner === corner);
