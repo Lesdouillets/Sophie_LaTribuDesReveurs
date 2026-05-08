@@ -3968,7 +3968,9 @@
       min-height: 100px !important;
       padding: 14px 14px !important;
       background: #fff !important;
-      border: 2px solid var(--cat-dark, #4b5563) !important;
+      /* Border color = couleur "main" (claire) de la catégorie, comme dans Plan d'action sol-child-content .courbe-card.
+         Différent par catégorie via --cat-main hérité du conteneur parent. */
+      border: 2px solid var(--cat-main, #fdba74) !important;
       border-radius: 12px !important;
       box-shadow: 0 2px 6px rgba(0,0,0,0.06) !important;
       color: var(--cat-dark, #4b5563) !important;
@@ -7047,7 +7049,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=515"></script>
+<script src="script-data.js?v=516"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
