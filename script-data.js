@@ -402,9 +402,11 @@ const SCRIPT_DATA = {
         {
           type: "option", label: "Position ventrale\nSouhait de garder ou non ?", emoji: "🙂‍↕️", style: "purple-btn", hideIfPb: "souhait_position_dorsale",
           blocks: [
+            { type: "normal", _leftTitle: "Position ventrale = Position la + physiologique", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- J'ai également une **question** concernant la **position de sommeil** de [prénom_enfant].\n- Aujourd'hui, elle **semble s'endormir sur le ventre**… c'est devenu **SA stratégie** pour **trouver le sommeil**…\n  - c'est **quelque chose** que l'on **observe souvent** chez les bébés car c'est la **position la + physiologique** pour le corps" },
+            { type: "normal", _leftTitle: "Recommandations de l'OMS", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- **Néanmoins**, je dois aussi vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à **poser son enfant** sur le **DOS**…\n  - …car cette position **diminue significativement le risque de Mort Inattendue du Nourrisson**" },
             {
               type: "lieu_sommeil_intro_grid",
-              text: "- J'ai également une **question** concernant la **position de sommeil** de [prénom_enfant].\n- Aujourd'hui, elle **semble s'endormir sur le ventre**… c'est devenu **SA stratégie** pour **trouver le sommeil**…\n  - c'est **quelque chose** que l'on **observe souvent** chez les bébés car c'est la **position la + physiologique** pour le corps\n\n- **Néanmoins**, je dois aussi vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à **poser son enfant** sur le **DOS**…\n  - …car cette position **diminue significativement le risque de Mort Inattendue du Nourrisson**\n\n- Il n'y a **PAS** de **bonne ou mauvaise réponse**… SEULEMENT CELLE qui **correspond à vos besoins** !",
+              text: "",
               buttons: [
                 {
                   label: "Position ventrale vs. dorsale",
@@ -416,8 +418,8 @@ const SCRIPT_DATA = {
                 }
               ]
             },
-            { type: "normal", text: "- **Mon rôle** c'est de vous **transmettre ces informations..**\n  - …tout en **restant à l'écoute** de **votre réalité**\n\n- Il n'y a **pas de bonne ou mauvaise réponse**..\n  - ...**SEULEMENT CELLE** qui **correspond à vos besoins** !" },
-            { type: "question", text: "J'**aimerais** beaucoup **connaître votre point de vue** sur ce sujet…\n- Souhaitez-vous **rester**\n  - **en position ventrale**\n  - ou changer **vers la position dorsale**?\n\n- Cela me **permettra** **d'adapter au mieux mon accompagnement** à votre famille\n  - ...et à **vos préférences.**", choice: {
+            { type: "normal", _leftTitle: "Voir ce qui VOUS convient", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- **Mon rôle** c'est de vous **transmettre ces informations..**\n  - …tout en **restant à l'écoute** de **votre réalité**\n\n- Il n'y a **pas de bonne ou mauvaise réponse**..\n  - ...**SEULEMENT CELLE** qui **correspond à vos besoins** !" },
+            { type: "question", text: "Voilà, j'**aimerais** beaucoup **connaître votre point de vue** sur ce sujet…\n- Souhaitez-vous **rester** :\n  - **en position ventrale**\n  - ou changer **vers la position dorsale**?\n\n- Cela me **permettra** **d'adapter AU MIEUX mon accompagnement** à votre famille\n  - ...et à **vos préférences.**", choice: {
               id: "obj_position_sommeil",
               required: true,
               options: [
