@@ -6949,7 +6949,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=501"></script>
+<script src="script-data.js?v=502"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9540,7 +9540,32 @@ function initUI() {
 
 function toggleSosPanel() {
   const panel = document.getElementById('sos-panel');
-  if (panel) panel.classList.toggle('open');
+  if (!panel) return;
+  panel.classList.toggle('open');
+  // Si on vient d'ouvrir le panel SOS, écouter les clics extérieurs pour le refermer.
+  if (panel.classList.contains('open')) {
+    // Délai pour éviter que le clic d'ouverture (sur le bouton 🆘) ne déclenche immédiatement la fermeture.
+    setTimeout(() => {
+      document.addEventListener('mousedown', _sosOutsideClickHandler, true);
+    }, 0);
+  } else {
+    document.removeEventListener('mousedown', _sosOutsideClickHandler, true);
+  }
+}
+function _sosOutsideClickHandler(e) {
+  const panel = document.getElementById('sos-panel');
+  if (!panel || !panel.classList.contains('open')) {
+    document.removeEventListener('mousedown', _sosOutsideClickHandler, true);
+    return;
+  }
+  // Ne pas refermer si le clic est dans le panel lui-même
+  if (panel.contains(e.target)) return;
+  // Ne pas refermer si le clic est sur le bouton 🆘 d'ouverture (toggleSosPanel s'en occupe)
+  const sosBtn = e.target.closest('[onclick*="toggleSosPanel"]');
+  if (sosBtn) return;
+  // Refermer
+  panel.classList.remove('open');
+  document.removeEventListener('mousedown', _sosOutsideClickHandler, true);
 }
 
 // ─── SOS auto-save ───
