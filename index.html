@@ -6883,7 +6883,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=437"></script>
+<script src="script-data.js?v=438"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -12652,55 +12652,49 @@ function renderSolutionsCheckboxes(opts) {
           // Filtrer les tickbox_choice déjà affichés dans la liste compacte (ex. accomp_progressivite)
           // pour ne pas les dupliquer dans la vue rectangulaire détaillée
           const blocksForRender = (activeChild.blocks || []).filter(b => !(b && b.type === 'tickbox_choice'));
-          // singleChildMode : injecter une pastille (oval pill, alignée à gauche, couleur du bandeau)
-          // au début du contenu pour identifier l'enfant actif (à la place de la grosse carte).
-          // - strat_tetine : pastille = choix (Garder/Supprimer/Hybride)
-          // - autres : pastille = emoji + label (dynamique si une sous-carte est tickée)
-          let singleChildPastilleHtml = '';
-          if (singleChildMode) {
-            let pastilleLabel = '';
-            if (activeChild.id === 'strat_tetine') {
-              let tchoice = null;
-              if (state.tickboxChoices) {
-                tchoice = state.tickboxChoices['strategie_tetine_choice'] || state.tickboxChoices['obj_tetine_static'] || null;
-              }
-              if (!tchoice && state.selectedPbs && state.selectedPbs.has('souhait_tetine')) tchoice = 'supprimer';
-              pastilleLabel = ({ garder: '✅ Garder', supprimer: '❌ Supprimer', hybride: '🔀 Hybride' })[tchoice || ''] || '';
-            } else {
-              // Pastille générique : emoji + label, dynamique si une sous-carte est tickée
-              let dynEmoji2 = activeChild.cardEmoji || '📄';
-              let dynLabel2 = activeChild.cardLabel || activeChild.label || activeChild.id;
-              if (Array.isArray(activeChild.blocks)) {
-                const grid2 = activeChild.blocks.find(b => b && b.type === 'courbe_cards_grid' && Array.isArray(b.items));
-                if (grid2 && state.courbeCardsTicked) {
-                  const tickedItems2 = grid2.items.filter(it => state.courbeCardsTicked.has(it.id));
-                  if (tickedItems2.length === 1) {
-                    const it2 = tickedItems2[0];
-                    dynEmoji2 = it2.emoji || dynEmoji2;
-                    dynLabel2 = it2.label || it2.id;
-                  }
-                }
-              }
-              pastilleLabel = `${dynEmoji2} ${dynLabel2}`;
-            }
-            if (pastilleLabel) {
-              singleChildPastilleHtml = `<div style="padding:4px 0 10px"><div style="display:inline-block;padding:9px 22px;background:${c.main};color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)">${pastilleLabel}</div></div>`;
-            }
-          }
           childContentHtml = `<div class="sol-child-content${childContentExtraClass}" data-section-cat="${cat.id}" style="position:relative;border-color:${c.main};--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">` +
-            singleChildPastilleHtml +
             floatingBtnsHtml +
             renderBlocks(blocksForRender, 'sol_' + cat.id + '_' + activeChild.id) +
             closeBtnBottom +
             `</div>`;
         }
       }
-      // En singleChildMode : pastille avec le nom de l'enfant (style courbe-card-banner) sous la banniere parent
-      // ⚠️ Utilise getDisplayLabelsForChild pour respecter la règle :
-      //    - exactement 1 sous-carte tickée → nom de la sous-carte (ex: "🥑 Gras")
-      //    - sinon → nom du parent (ex: "🥄 Diversification")
-      // Plus de pastille en singleChildMode — on affiche désormais la carte unique active dans cardsHtml
-      const singleChildPastille = '';
+      // singleChildMode : pastille (oval pill, alignée à gauche, couleur du bandeau) placée
+      // SOUS le bandeau du category (sol-active-banner) — visible peu importe le path utilisé
+      // (childContentHtml normal OU envChildContentOverride pour env/shouldFlattenChildren).
+      // - strat_tetine : pastille = choix (Garder/Supprimer/Hybride)
+      // - autres : pastille = emoji + label (dynamique si une sous-carte est tickée)
+      let singleChildPastille = '';
+      if (singleChildMode && activeChildObj) {
+        let pastilleLabel = '';
+        if (activeChildObj.id === 'strat_tetine') {
+          let tchoice = null;
+          if (state.tickboxChoices) {
+            tchoice = state.tickboxChoices['strategie_tetine_choice'] || state.tickboxChoices['obj_tetine_static'] || null;
+          }
+          if (!tchoice && state.selectedPbs && state.selectedPbs.has('souhait_tetine')) tchoice = 'supprimer';
+          pastilleLabel = ({ garder: '✅ Garder', supprimer: '❌ Supprimer', hybride: '🔀 Hybride' })[tchoice || ''] || '';
+        } else {
+          // Pastille générique : emoji + label, dynamique si une sous-carte est tickée
+          let dynEmoji2 = activeChildObj.cardEmoji || '📄';
+          let dynLabel2 = activeChildObj.cardLabel || activeChildObj.label || activeChildObj.id;
+          if (Array.isArray(activeChildObj.blocks)) {
+            const grid2 = activeChildObj.blocks.find(b => b && b.type === 'courbe_cards_grid' && Array.isArray(b.items));
+            if (grid2 && state.courbeCardsTicked) {
+              const tickedItems2 = grid2.items.filter(it => state.courbeCardsTicked.has(it.id));
+              if (tickedItems2.length === 1) {
+                const it2 = tickedItems2[0];
+                dynEmoji2 = it2.emoji || dynEmoji2;
+                dynLabel2 = it2.label || it2.id;
+              }
+            }
+          }
+          pastilleLabel = `${dynEmoji2} ${dynLabel2}`;
+        }
+        if (pastilleLabel) {
+          singleChildPastille = `<div style="padding:10px 14px 4px"><div style="display:inline-block;padding:9px 22px;background:${c.main};color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)">${pastilleLabel}</div></div>`;
+        }
+      }
       // Cas spécial flatten : on saute le niveau enfant et on affiche directement les petits-enfants
       // - env (Environnement de sommeil) : toujours (chambre/lit toujours sautés)
       // - nutrition : uniquement quand 1 seul enfant est coché (lait OU diversification OU allaitement)
@@ -12747,7 +12741,7 @@ function renderSolutionsCheckboxes(opts) {
       }
       activeContentHtml = `<div class="sol-active-content" data-section-cat="${cat.id}" style="border:3px solid ${c.main}">
         <div class="sol-active-banner" style="background:${c.main}">${cat.emoji || ''} ${cat.title}</div>
-        ${envCardsOverride !== null ? '' : singleChildPastille}
+        ${singleChildPastille}
         ${introHtml}
         ${envCardsOverride !== null ? envCardsOverride : cardsHtml}
         ${envCardsOverride !== null ? envChildContentOverride : childContentHtml}
