@@ -6904,7 +6904,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=458"></script>
+<script src="script-data.js?v=459"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -12752,20 +12752,31 @@ function renderSolutionsCheckboxes(opts) {
             });
           }
         });
-        const envActiveItemId = (state.solActiveChildByCat && state.solActiveChildByCat[cat.id]) || null;
+        // Si 1 seul petit-enfant tické (singleItemMode flatten) : pas de cards, auto-active
+        // → la pastille (singleChildPastille) déjà placée au-dessus identifie l'item actif.
+        const singleFlattenItem = combinedItems.length === 1;
+        const envActiveItemId = singleFlattenItem
+          ? combinedItems[0].id
+          : ((state.solActiveChildByCat && state.solActiveChildByCat[cat.id]) || null);
         const activeItem = combinedItems.find(it => it.id === envActiveItemId);
-        envCardsOverride = `<div class="sol-child-cards">` + combinedItems.map(it => {
-          const isActive = envActiveItemId === it.id;
-          const ticked = state.courbeCardsTicked && state.courbeCardsTicked.has(it.id);
-          return `<div class="sol-child-card${isActive?' active':''}" data-card-id="${it.id}" style="border-color:${c.dark};${isActive?'background:'+c.main+';color:#fff':'background:#fff;color:'+c.dark}" onclick="toggleSolChildCard('${cat.id}','${it.id}')">
-            <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${ticked ? '✅' : '☐'}</span>
-            <span class="solc-emoji">${it.emoji || '📄'}</span>
-            <span class="solc-label">${it.label || it.id}</span>
-          </div>`;
-        }).join('') + `</div>`;
+        if (singleFlattenItem) {
+          envCardsOverride = '';
+        } else {
+          envCardsOverride = `<div class="sol-child-cards">` + combinedItems.map(it => {
+            const isActive = envActiveItemId === it.id;
+            const ticked = state.courbeCardsTicked && state.courbeCardsTicked.has(it.id);
+            return `<div class="sol-child-card${isActive?' active':''}" data-card-id="${it.id}" style="border-color:${c.dark};${isActive?'background:'+c.main+';color:#fff':'background:#fff;color:'+c.dark}" onclick="toggleSolChildCard('${cat.id}','${it.id}')">
+              <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${ticked ? '✅' : '☐'}</span>
+              <span class="solc-emoji">${it.emoji || '📄'}</span>
+              <span class="solc-label">${it.label || it.id}</span>
+            </div>`;
+          }).join('') + `</div>`;
+        }
         envChildContentOverride = '';
         if (activeItem && Array.isArray(activeItem.blocks) && activeItem.blocks.length) {
-          envChildContentOverride = `<div class="sol-child-content" data-section-cat="${cat.id}" style="position:relative;border-color:${c.main};--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">` +
+          // Pas de bordure interne si singleFlattenItem (la pastille au-dessus suffit + sol-active-content fournit déjà la bordure)
+          const contentClassExtra = singleFlattenItem ? ' sol-child-content--single sol-child-content' : ' sol-child-content';
+          envChildContentOverride = `<div class="${contentClassExtra}" data-section-cat="${cat.id}" style="position:relative;border-color:${c.main};--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">` +
             renderBlocks(activeItem.blocks, 'sol_' + cat.id + '_' + activeItem.id) +
             `</div>`;
         }
