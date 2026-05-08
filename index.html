@@ -1592,6 +1592,15 @@
       box-shadow: var(--shadow);
       background: var(--card-bg, #ffffff);
     }
+    /* grouped_checklist avec _leftTitle : liseré coloré comme un bloc titre+texte standard */
+    .block-with-left-title > .edit-block-wrap > .block-grouped-checklist,
+    .block-with-left-title > .block-grouped-checklist {
+      border-left: 3px solid var(--cat-main, #cbd5e0) !important;
+      border-radius: 12px 8px 8px 12px;
+      margin: 0;
+      box-sizing: border-box;
+      background: var(--card-bg, #ffffff);
+    }
     .q-text ul, .q-text ol { padding-left: 24px; margin: 6px 0; }
     .q-text li { margin-bottom: 4px; }
     #edit-block-textarea ul, #edit-block-textarea ol { padding-left: 24px; margin: 6px 0; }
@@ -6950,7 +6959,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=503"></script>
+<script src="script-data.js?v=504"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
