@@ -7258,7 +7258,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=558"></script>
+<script src="script-data.js?v=559"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -18182,13 +18182,29 @@ function toggleNotesPanel() {
     if (_notesOriginalTop > maxTop) {
       panel.style.top = Math.max(10, maxTop) + 'px';
     }
+    // Click-outside : fermer le panel si on clique en dehors
+    setTimeout(() => {
+      document.addEventListener('mousedown', _notesOutsideClickHandler, true);
+    }, 0);
   } else {
     // FERMETURE : restaurer la position d'origine (où l'utilisateur l'avait avant ouverture)
     if (_notesOriginalTop !== null) {
       panel.style.top = _notesOriginalTop + 'px';
       _notesOriginalTop = null;
     }
+    document.removeEventListener('mousedown', _notesOutsideClickHandler, true);
   }
+}
+function _notesOutsideClickHandler(e) {
+  const panel = document.getElementById('notes-panel');
+  if (!panel || notesPanelCollapsed) {
+    document.removeEventListener('mousedown', _notesOutsideClickHandler, true);
+    return;
+  }
+  // Si le clic est dans le panel notes → on ne ferme pas
+  if (panel.contains(e.target)) return;
+  // Sinon → fermer le panel
+  toggleNotesPanel();
 }
 
 function initNotesPosition() {
