@@ -6867,7 +6867,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=408"></script>
+<script src="script-data.js?v=409"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -13156,7 +13156,15 @@ function renderBesoinsSommeil(tranches) {
   const corrigeTxt = state.client.ageCorrigeStr || state.client.ageCorrigeManuel || (nonEmpty(corrige) ? corrige + ' mois' : '');
   const reelTxt = state.client.ageReelStr || (nonEmpty(reel) ? reel + ' mois' : (months + ' mois'));
   const ageLabel = hasCorrige ? (corrigeTxt + badgeCorrige) : (reelTxt + badgeReel);
-  const prenom = state.client.prenomEnfant || '[prénom]';
+  // Prénom stylisé (capitalize + couleur rose/bleu selon sexe + bold + 1.15em)
+  // pour cohérence avec le rendu via [prénom_enfant] dans substituteVars
+  const prenomRaw = (state.client.prenomEnfant || '').trim();
+  const isFilleBS = (state.client.sexe || '').toLowerCase() === 'fille';
+  const prenomColorBS = isFilleBS ? '#E25098' : '#6495ED';
+  const prenomCap = prenomRaw ? prenomRaw.charAt(0).toUpperCase() + prenomRaw.slice(1) : '';
+  const prenom = prenomCap
+    ? `<strong style="color:${prenomColorBS};font-size:1.15em">${prenomCap}</strong>`
+    : '[prénom]';
   function matchAge(t) {
     if (isNaN(months)) return false;
     const a = t.age;
