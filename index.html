@@ -3378,6 +3378,22 @@
       box-shadow: none !important;
       background: transparent !important;
     }
+    /* Exception : quand un bloc-titre+texte (.block-with-left-title) est imbriqué dans un purple-btn
+       (ex: IV. Objectifs > Position ventrale), restaurer le fond blanc + bordures de la zone texte
+       pour qu'elle soit distincte du bloc-titre coloré (sinon le fond du wrapper transparaît). */
+    .block-option.purple-btn .option-content .block-with-left-title > .block.block-normal,
+    .block-option.purple-btn .option-content .block-with-left-title > .block.block-important,
+    .block-option.purple-btn .option-content .block-with-left-title > .block.block-conseil,
+    .block-option.purple-btn .option-content .block-with-left-title > .block.block-empathie,
+    .block-option.purple-btn .option-content .block-with-left-title > .edit-block-wrap > .block.block-normal,
+    .block-option.purple-btn .option-content .block-with-left-title > .edit-block-wrap > .block.block-important,
+    .block-option.purple-btn .option-content .block-with-left-title > .edit-block-wrap > .block.block-conseil,
+    .block-option.purple-btn .option-content .block-with-left-title > .edit-block-wrap > .block.block-empathie {
+      background: var(--card-bg) !important;
+      border: 1px solid var(--border) !important;
+      border-left: 3px solid var(--cat-main, #cbd5e0) !important;
+      box-shadow: var(--shadow) !important;
+    }
     /* Le container nested purple à l'intérieur d'un purple-btn :
        mini-bouton violet compact, centré, avec bordure dashed (comme le parent purple-btn) */
     .block-option.purple-btn .block-option.purple:not(:has(> .option-content.open)) {
@@ -6867,7 +6883,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=415"></script>
+<script src="script-data.js?v=416"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
