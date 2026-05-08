@@ -4213,9 +4213,9 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.18);
     }
     /* singleChildMode : pas de double liseré (le sol-active-content parent fournit deja la bordure)
-       Sélecteur préfixé .sol-active-content pour battre la spécificité de la règle ci-dessus
-       (qui a 2 classes : .sol-active-content .sol-child-content). */
-    .sol-active-content .sol-child-content--single {
+       Sélecteur 3 classes (.sol-active-content + .sol-child-content + .sol-child-content--single)
+       pour battre toutes les autres règles, y compris celles définies plus tard dans le CSS. */
+    .sol-active-content .sol-child-content.sol-child-content--single {
       border: none;
       border-radius: 0;
       margin: 0;
@@ -6890,7 +6890,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=446"></script>
+<script src="script-data.js?v=447"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
