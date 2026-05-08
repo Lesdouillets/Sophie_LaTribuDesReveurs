@@ -6933,7 +6933,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=489"></script>
+<script src="script-data.js?v=490"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7127,6 +7127,10 @@ let state = {
   diagScrollTop: 0,
   pbSidebarExpanded: new Set(),
   planSidebarExpanded: new Set(),
+  // Enfants (nav-child) ayant des sous-enfants : développés/réduits.
+  // Tout est réduit par défaut (Set vide).
+  planSidebarChildExpanded: new Set(),
+  pbSidebarChildExpanded: new Set(),
   sidebarSectionCollapsed: new Set(),
 };
 
@@ -9754,11 +9758,19 @@ function buildSidebar() {
       const hasSubItems = innerBanners.length > 0 || gridItems.length > 0;
       if (hasSubItems) {
         // Rendu : entrée de section parent + sous-items pour chaque bandeau levier ET chaque item de grille
+        // Sous-items réduits par défaut → chevron pour développer/réduire
+        const isChildExpanded = state.pbSidebarChildExpanded.has(section.id);
         const sectionDiv = document.createElement('div');
-        sectionDiv.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'') + (section.isActiveLevier ? '' : ' inactive-levier');
-        sectionDiv.innerHTML = `<span class="nav-emoji">${section.emoji||'📄'}</span><span class="nav-title">${getSectionDisplayTitle(section)}</span>${state.completedSet.has(idx)?'<span class="nav-check">✓</span>':''}`;
-        sectionDiv.onclick = () => navigateTo(idx);
+        sectionDiv.className = 'nav-item nav-child nav-has-children' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'') + (section.isActiveLevier ? '' : ' inactive-levier');
+        const chevronPb = `<span class="nav-child-arrow" style="font-size:10px;width:12px;text-align:center;color:rgba(255,255,255,0.55);flex-shrink:0">${isChildExpanded ? '▾' : '▸'}</span>`;
+        sectionDiv.innerHTML = `${chevronPb}<span class="nav-emoji">${section.emoji||'📄'}</span><span class="nav-title">${getSectionDisplayTitle(section)}</span>${state.completedSet.has(idx)?'<span class="nav-check">✓</span>':''}`;
+        sectionDiv.onclick = () => {
+          if (state.pbSidebarChildExpanded.has(section.id)) state.pbSidebarChildExpanded.delete(section.id);
+          else state.pbSidebarChildExpanded.add(section.id);
+          navigateTo(idx);
+        };
         childrenDiv.appendChild(sectionDiv);
+        if (!isChildExpanded) return; // sous-items masqués si pas développé
         // 1. Bandeaux internes (option_banner)
         innerBanners.forEach(b => {
           const leverLabel = (typeof PB_LABELS !== 'undefined' && PB_LABELS[b.leverId]) ? PB_LABELS[b.leverId] : (b.label || b.leverId);
@@ -9928,42 +9940,57 @@ function buildSidebarPlanSolutions() {
       }
 
       const isActive = state.selectedSolutions && state.selectedSolutions.has(ch.id);
-      const itemDiv = document.createElement('div');
-      itemDiv.className = 'nav-item nav-child' + (isActive ? '' : ' inactive-levier');
       const emoji = ch.cardEmoji || ch.emoji || '🔹';
       const label = ch.cardLabel || ch.label || ch.id;
-      itemDiv.innerHTML = `<span class="nav-emoji">${emoji}</span><span class="nav-title">${label}</span>`;
+
+      // Sous-enfants : items dans courbe_cards_grid (récursif dans les blocks)
+      const gridItemsAll = extractGridItemsFromBlocks(ch.blocks).filter(isGridItemVisibleSidebar).filter(it => it && it.id);
+      const hasSubChildren = gridItemsAll.length > 0;
+      const isChildExpanded = state.planSidebarChildExpanded.has(ch.id);
+
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'nav-item nav-child' + (isActive ? '' : ' inactive-levier') + (hasSubChildren ? ' nav-has-children' : '');
+      // Si l'enfant a des sous-enfants → ajouter une chevron pour le toggle
+      const chevron = hasSubChildren
+        ? `<span class="nav-child-arrow" style="font-size:10px;width:12px;text-align:center;color:rgba(255,255,255,0.55);flex-shrink:0">${isChildExpanded ? '▾' : '▸'}</span>`
+        : '';
+      itemDiv.innerHTML = `${chevron}<span class="nav-emoji">${emoji}</span><span class="nav-title">${label}</span>`;
       itemDiv.onclick = () => {
+        // Si l'enfant a des sous-enfants → toggle expand/collapse + naviguer
+        if (hasSubChildren) {
+          if (state.planSidebarChildExpanded.has(ch.id)) state.planSidebarChildExpanded.delete(ch.id);
+          else state.planSidebarChildExpanded.add(ch.id);
+        }
         navigateAndPreserveScroll(() => {
           state.solActiveCat = catId;
         });
       };
       childrenDiv.appendChild(itemDiv);
 
-      // Sous-enfants : items dans courbe_cards_grid (récursif dans les blocks)
-      const gridItems = extractGridItemsFromBlocks(ch.blocks);
-      gridItems.filter(isGridItemVisibleSidebar).forEach(item => {
-        if (!item || !item.id) return;
-        const subItemDiv = document.createElement('div');
-        const isItemTicked = state.courbeCardsTicked && state.courbeCardsTicked.has(item.id);
-        subItemDiv.className = 'nav-item nav-sub-child' + (isItemTicked ? '' : ' inactive-levier');
-        const itemEmoji = item.emoji || '·';
-        const itemLabel = item.compactLabel || item.label || item.id;
-        subItemDiv.innerHTML = `<span class="nav-emoji">${itemEmoji}</span><span class="nav-title">${itemLabel}</span>`;
-        subItemDiv.onclick = () => {
-          if (planActionIdx >= 0) navigateTo(planActionIdx);
-          state.solActiveCat = catId;
-          if (!state.solActiveChildByCat) state.solActiveChildByCat = {};
-          state.solActiveChildByCat[catId] = item.id;
-          if (typeof renderCurrentSection === 'function') renderCurrentSection();
-          // Scroll to the sub-card after render
-          setTimeout(() => {
-            const card = document.querySelector(`[data-card-id="${item.id}"]`);
-            if (card && typeof card.scrollIntoView === 'function') card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }, 120);
-        };
-        childrenDiv.appendChild(subItemDiv);
-      });
+      // Sous-enfants : affichés uniquement si l'enfant est développé
+      if (hasSubChildren && isChildExpanded) {
+        gridItemsAll.forEach(item => {
+          const subItemDiv = document.createElement('div');
+          const isItemTicked = state.courbeCardsTicked && state.courbeCardsTicked.has(item.id);
+          subItemDiv.className = 'nav-item nav-sub-child' + (isItemTicked ? '' : ' inactive-levier');
+          const itemEmoji = item.emoji || '·';
+          const itemLabel = item.compactLabel || item.label || item.id;
+          subItemDiv.innerHTML = `<span class="nav-emoji">${itemEmoji}</span><span class="nav-title">${itemLabel}</span>`;
+          subItemDiv.onclick = () => {
+            if (planActionIdx >= 0) navigateTo(planActionIdx);
+            state.solActiveCat = catId;
+            if (!state.solActiveChildByCat) state.solActiveChildByCat = {};
+            state.solActiveChildByCat[catId] = item.id;
+            if (typeof renderCurrentSection === 'function') renderCurrentSection();
+            // Scroll to the sub-card after render
+            setTimeout(() => {
+              const card = document.querySelector(`[data-card-id="${item.id}"]`);
+              if (card && typeof card.scrollIntoView === 'function') card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 120);
+          };
+          childrenDiv.appendChild(subItemDiv);
+        });
+      }
     });
     groupDiv.appendChild(childrenDiv);
     planContainer.appendChild(groupDiv);
