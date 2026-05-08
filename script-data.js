@@ -4818,7 +4818,7 @@ const SCRIPT_DATA = {
         ]
       },
       {
-        id: "strategie", title: "Stratégie de sommeil", emoji: "😴",
+        id: "strategie", title: "Tétine", emoji: "🍭",
         children: [
           { id: "strat_tetine", label: "Tétine", cardLabel: "Tétine", cardEmoji: "🍭", autoCheckIfPbs: ["souhait_tetine"],
             blocks: [
