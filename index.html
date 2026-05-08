@@ -2164,22 +2164,29 @@
     /* Variables pour la zone réservée — ajustables si besoin
        Format vertical (≈ ratio 2:3) pour matcher la PiP de Google Meet en mode 2 participants empilés */
     body[data-meet-mode] { --meet-w: 240px; --meet-h: 380px; }
-    /* Bas-droite (par défaut) */
-    body[data-meet-mode="bottom-right"] #content-area {
-      padding-right: var(--meet-w) !important;
-      padding-bottom: var(--meet-h) !important;
-    }
+    /* Le texte prend toute la largeur normalement — sauf les blocs VISUELLEMENT à la
+       position de la vidéo (calculé en JS via _meetUpdateOverlap). Ces blocs reçoivent
+       un attribut data-meet-overlap="1" qui leur applique une marge sur le côté de la vidéo.
+       En scrollant, l'attribut s'enlève dès que le bloc sort de la zone → largeur normale.
+       On ajoute aussi un padding-bottom pour permettre de scroller jusqu'au bas. */
+    body[data-meet-mode="bottom-right"] #content-area,
     body[data-meet-mode="bottom-left"] #content-area {
-      padding-left: var(--meet-w) !important;
       padding-bottom: var(--meet-h) !important;
     }
-    body[data-meet-mode="top-right"] #content-area {
-      padding-right: var(--meet-w) !important;
+    body[data-meet-mode="top-right"] #content-area,
+    body[data-meet-mode="top-left"] #content-area {
       padding-top: var(--meet-h) !important;
     }
-    body[data-meet-mode="top-left"] #content-area {
-      padding-left: var(--meet-w) !important;
-      padding-top: var(--meet-h) !important;
+    /* Wrapping dynamique : blocs visuellement dans la zone vidéo → marge côté vidéo */
+    body[data-meet-mode="bottom-right"] #content-area > [data-meet-overlap="1"],
+    body[data-meet-mode="top-right"] #content-area > [data-meet-overlap="1"] {
+      margin-right: var(--meet-w) !important;
+      transition: margin 0.18s ease;
+    }
+    body[data-meet-mode="bottom-left"] #content-area > [data-meet-overlap="1"],
+    body[data-meet-mode="top-left"] #content-area > [data-meet-overlap="1"] {
+      margin-left: var(--meet-w) !important;
+      transition: margin 0.18s ease;
     }
     /* Vignette pointillée — visible en permanence quand le mode visio est ON
        (aide à placer la PiP de Meet). Cliquable (✕) pour la masquer pour la session. */
@@ -7170,7 +7177,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=529"></script>
+<script src="script-data.js?v=531"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9765,6 +9772,61 @@ function initUI() {
 // que le texte/cards/boutons ne soient pas recouverts par la vidéo. Aucune logique
 // existante n'est modifiée — c'est purement visuel via data-meet-mode sur <body>.
 const MEET_CORNER_ARROW = { 'bottom-right':'↘', 'bottom-left':'↙', 'top-right':'↗', 'top-left':'↖' };
+// Détecte les blocs (children directs de #content-area) visuellement dans la zone réservée
+// (= bloc dont la bbox vertical chevauche [videoTop, videoBottom] dans le viewport).
+// Marqués via data-meet-overlap="1" — le CSS applique alors margin-right (ou left).
+let _meetWrapRaf = null;
+let _meetMutationObs = null;
+function _meetUpdateOverlap() {
+  _meetWrapRaf = null;
+  const corner = document.body.dataset.meetMode;
+  if (!corner) return;
+  const meetH = parseFloat(getComputedStyle(document.body).getPropertyValue('--meet-h')) || 380;
+  const isBottom = corner.startsWith('bottom');
+  const viewportH = window.innerHeight;
+  const videoTop = isBottom ? (viewportH - meetH - 10) : (60 + 10); // 60px = approx header height
+  const videoBottom = videoTop + meetH;
+  const contentArea = document.getElementById('content-area');
+  if (!contentArea) return;
+  Array.from(contentArea.children).forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const overlaps = rect.top < videoBottom && rect.bottom > videoTop;
+    if (overlaps) {
+      if (el.dataset.meetOverlap !== '1') el.dataset.meetOverlap = '1';
+    } else {
+      if (el.dataset.meetOverlap) delete el.dataset.meetOverlap;
+    }
+  });
+}
+function _meetScheduleOverlap() {
+  if (_meetWrapRaf || !document.body.dataset.meetMode) return;
+  _meetWrapRaf = requestAnimationFrame(_meetUpdateOverlap);
+}
+function _meetClearOverlap() {
+  document.querySelectorAll('[data-meet-overlap]').forEach(el => delete el.dataset.meetOverlap);
+}
+function _meetSetupOverlap() {
+  // Attacher le listener scroll sur le conteneur de scroll (#content-area)
+  const contentArea = document.getElementById('content-area');
+  if (!contentArea) return;
+  contentArea.addEventListener('scroll', _meetScheduleOverlap, { passive: true });
+  window.addEventListener('resize', _meetScheduleOverlap);
+  // Re-calcul quand le contenu de #content-area change (navigation, render)
+  if (!_meetMutationObs) {
+    _meetMutationObs = new MutationObserver(() => _meetScheduleOverlap());
+    _meetMutationObs.observe(contentArea, { childList: true, subtree: false });
+  }
+  // Calcul initial
+  _meetScheduleOverlap();
+}
+function _meetTeardownOverlap() {
+  const contentArea = document.getElementById('content-area');
+  if (contentArea) contentArea.removeEventListener('scroll', _meetScheduleOverlap);
+  window.removeEventListener('resize', _meetScheduleOverlap);
+  if (_meetMutationObs) { _meetMutationObs.disconnect(); _meetMutationObs = null; }
+  _meetClearOverlap();
+}
+
 function _meetUpdateUI(corner) {
   const body = document.body;
   const btn = document.getElementById('btn-meet-mode');
@@ -9774,6 +9836,7 @@ function _meetUpdateUI(corner) {
     body.setAttribute('data-meet-mode', corner);
     if (btn) btn.style.background = '#e0e8f4';
     if (badge) { badge.style.display = ''; badge.textContent = MEET_CORNER_ARROW[corner] || '↘'; }
+    _meetSetupOverlap();
     // Vignette pointillée — visible en permanence (cliquable ✕ pour la masquer pour la session)
     let hint = document.getElementById('meet-zone-hint');
     if (!hint) {
@@ -9797,6 +9860,7 @@ function _meetUpdateUI(corner) {
     const hint = document.getElementById('meet-zone-hint');
     if (hint) hint.remove();
     if (menu) menu.querySelectorAll('.meet-corner-btn[data-corner]').forEach(b => b.classList.remove('active'));
+    _meetTeardownOverlap();
   }
 }
 function toggleMeetMode(e) {
