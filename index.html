@@ -5134,7 +5134,7 @@
               <div class="form-group" style="margin:0">
                 <label>Âge réel <span style="color:#aaa;font-size:11px">(au jour de la consultation)</span></label>
                 <input type="text" id="age-enfant" placeholder="ex. 6 semaines ou 8 mois 12 jours" autocomplete="off"
-                  oninput="computeClientFields()">
+                  oninput="computeClientFields('age-enfant')">
               </div>
             </div>
             <div style="border:2px solid var(--border);border-radius:10px;padding:12px 14px;background:#fafbfc;display:flex;flex-direction:column;gap:10px">
@@ -5146,12 +5146,12 @@
               <div class="form-group" style="margin:0">
                 <label>Âge gestationnel à la naissance <span style="color:#aaa;font-size:11px">(ex: 39+2 = 39 SA + 2 jours, terme = 40+0)</span></label>
                 <input type="text" id="age-gestationnel" placeholder="ex. 39+2" autocomplete="off"
-                  oninput="computeClientFields()">
+                  oninput="computeClientFields('age-gestationnel')">
               </div>
               <div class="form-group" style="margin:0">
                 <label>Âge corrigé <span style="color:#aaa;font-size:11px">(au jour de la consultation)</span></label>
                 <input type="text" id="age-corrige-manuel" placeholder="ex. 6 semaines ou 6 mois 5 jours" autocomplete="off"
-                  oninput="computeClientFields()">
+                  oninput="computeClientFields('age-corrige-manuel')">
               </div>
             </div>
           </div>
@@ -6915,7 +6915,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=467"></script>
+<script src="script-data.js?v=468"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -8705,7 +8705,10 @@ function parseGestationnelToPrematureDays(s) {
 
 // Flag pour éviter la récursion infinie quand computeClientFields modifie des inputs qui retriggent oninput
 let _computeClientFieldsRunning = false;
-function computeClientFields() {
+// triggeredBy : id du champ qui a déclenché l'appel (ex: 'age-gestationnel')
+// Permet de FORCER la recomputation de la date du terme quand l'utilisateur tape l'âge gestationnel
+// (sinon la règle "ne remplit que si vide" empêcherait la mise à jour)
+function computeClientFields(triggeredBy) {
   if (_computeClientFieldsRunning) return;
   _computeClientFieldsRunning = true;
   try {
@@ -8720,28 +8723,35 @@ function computeClientFields() {
   const ageGestationnel = document.getElementById('age-gestationnel')?.value.trim();
 
   // ─── AUTO-CALCULS BIDIRECTIONNELS ────────────────────────────────────────
-  // 1. Si âge réel manuel saisi sans date naissance → calculer date naissance = consultation - âge
-  if (ageManuel && !dateNaiss && consultDate) {
-    const days = parseAgeStringToDays(ageManuel);
-    if (days !== null) {
-      const consult = new Date(consultDate);
-      const naissD = new Date(consult);
-      naissD.setDate(consult.getDate() - days);
-      const dn = document.getElementById('date-naissance');
-      if (dn) {
+  // 1. Si âge réel manuel + consultation → calculer date naissance = consultation - âge
+  //    - Si déclenché par 'age-enfant' : force la mise à jour (même si dateNaiss a déjà une valeur)
+  //    - Sinon : uniquement si dateNaiss est vide
+  if (ageManuel && consultDate) {
+    const dn = document.getElementById('date-naissance');
+    const forceUpdate = (triggeredBy === 'age-enfant');
+    if (dn && (!dateNaiss || forceUpdate)) {
+      const days = parseAgeStringToDays(ageManuel);
+      if (days !== null) {
+        const consult = new Date(consultDate);
+        const naissD = new Date(consult);
+        naissD.setDate(consult.getDate() - days);
         dn.value = naissD.toISOString().slice(0, 10);
         dateNaiss = dn.value;
       }
     }
   }
-  // 2. Si âge gestationnel + date naissance → calculer date du terme (uniquement si vide)
-  //    (terme = naissance + jours de prématurité = naissance + (280 - âge gestationnel en jours))
-  //    ⚠️ On ne remplit que si dt est VIDE pour permettre à l'utilisateur de l'effacer/modifier
+  // 2. Si âge gestationnel + date naissance → calculer date du terme
+  //    Comportement :
+  //    - Si l'utilisateur vient de modifier l'âge gestationnel (triggeredBy === 'age-gestationnel') :
+  //      on FORCE la mise à jour de la date du terme (même si elle a déjà une valeur)
+  //    - Sinon (autre champ modifié) : on remplit seulement si dt est VIDE
+  //      (l'utilisateur peut effacer/modifier la date du terme sans qu'elle soit écrasée)
   if (ageGestationnel && dateNaiss) {
     const prematureDays = parseGestationnelToPrematureDays(ageGestationnel);
     if (prematureDays !== null && prematureDays > 0) {
       const dt = document.getElementById('date-terme');
-      if (dt && !dt.value) {
+      const forceUpdate = (triggeredBy === 'age-gestationnel');
+      if (dt && (!dt.value || forceUpdate)) {
         const naiss = new Date(dateNaiss);
         const terme = new Date(naiss);
         terme.setDate(naiss.getDate() + prematureDays);
@@ -8749,14 +8759,23 @@ function computeClientFields() {
         dt.value = newStr;
         dateTerme = newStr;
       }
+    } else if (prematureDays === 0 && triggeredBy === 'age-gestationnel') {
+      // À terme (40+0) ET déclenché par l'âge gestationnel → vider date-terme
+      const dt = document.getElementById('date-terme');
+      if (dt && dt.value) {
+        dt.value = '';
+        dateTerme = '';
+      }
     }
-    // À terme (40+0) : pas de prématurité → on ne touche PAS à dt (l'utilisateur garde le contrôle)
   }
   // 3. Si âge corrigé manuel + date naissance + pas d'âge gestationnel → calculer date du terme
-  //    (terme = consultation - âge corrigé), uniquement si dt vide
+  //    (terme = consultation - âge corrigé)
+  //    - Si déclenché par 'age-corrige-manuel' : force la mise à jour
+  //    - Sinon : uniquement si dt vide
   if (ageCorrigeManuel && dateNaiss && !ageGestationnel && consultDate) {
     const dt = document.getElementById('date-terme');
-    if (dt && !dt.value) {
+    const forceUpdate = (triggeredBy === 'age-corrige-manuel');
+    if (dt && (!dt.value || forceUpdate)) {
       const days = parseAgeStringToDays(ageCorrigeManuel);
       if (days !== null) {
         const consult = new Date(consultDate);
