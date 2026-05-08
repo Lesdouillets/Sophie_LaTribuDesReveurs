@@ -6883,7 +6883,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=420"></script>
+<script src="script-data.js?v=421"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -15327,6 +15327,16 @@ function toggleCourbeCardTick(tickEl) {
   if (!wasTicked && ESPACEMENT_SUBS.includes(cardId)) {
     ESPACEMENT_SUBS.forEach(sub => {
       if (sub !== cardId) state.cardPersonalTicks.delete(sub);
+    });
+    if (typeof renderCurrentSection === 'function') renderCurrentSection();
+  }
+  // Mutex : Changement de lit / Changement de chambre / Changement de lit + chambre (sous-cartes de la catégorie 'changement')
+  // → cocher l'une décoche automatiquement les 2 autres. Exception : env_partage_chambre reste indépendant
+  // (il peut être tické en // d'un changement de lit/chambre).
+  const CHGMT_TICK_MUTEX = ['env_chgmt_lit', 'env_chgmt_chambre', 'env_chgmt_lit_chambre'];
+  if (!wasTicked && CHGMT_TICK_MUTEX.includes(cardId)) {
+    CHGMT_TICK_MUTEX.forEach(other => {
+      if (other !== cardId) state.cardPersonalTicks.delete(other);
     });
     if (typeof renderCurrentSection === 'function') renderCurrentSection();
   }
