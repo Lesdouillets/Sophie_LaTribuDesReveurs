@@ -4545,8 +4545,8 @@
     body:has(.info-panel.info-panel-blue.open) .sol-floating-btns {
       right: 1220px;
     }
-    /* Bulle BD : forme ovale, fond bleu vif (gradient identique au bandeau du
-       info-panel-blue qui s'ouvre au clic), bordure bleu foncé, texte blanc. */
+    /* Bulle BD : forme ovale 170x125 avec queue triangulaire au coin bas-gauche,
+       comme il y a 2 jours. Couleur = bandeau du panel "Si pleurs difficiles" (#5e7194). */
     .sol-floating-btn {
       position: relative;
       display: flex !important;
@@ -4555,21 +4555,41 @@
       justify-content: center;
       gap: 4px;
       width: 170px;
-      height: 130px;
+      height: 125px;
       padding: 10px 14px;
-      border: 3px solid #1e40af;
+      border: 3px solid #2d3f5c;
       border-radius: 50%;
-      background: linear-gradient(135deg, #3b82f6, #1e40af) !important;
+      background: #5e7194 !important;
       color: #ffffff !important;
       cursor: pointer;
-      box-shadow: 0 4px 16px rgba(30,64,175,0.4);
+      box-shadow: 0 4px 16px rgba(45,63,92,0.32);
       transition: transform 0.15s, box-shadow 0.15s;
       text-align: center;
       box-sizing: border-box;
       overflow: visible;
     }
-    .sol-floating-btn:hover { transform: scale(1.06); box-shadow: 0 6px 20px rgba(30,64,175,0.55); }
+    .sol-floating-btn:hover { transform: scale(1.06); box-shadow: 0 6px 20px rgba(45,63,92,0.45); }
     .sol-floating-btn:active { transform: scale(0.97); }
+    /* Queue triangulaire — bordure foncée (légèrement + grande, derrière) */
+    .sol-floating-btn::before {
+      content: '';
+      position: absolute;
+      bottom: -38px; left: 26px;
+      width: 50px; height: 44px;
+      background: #2d3f5c;
+      clip-path: polygon(50% 0, 100% 0, 0 100%);
+      z-index: 1;
+    }
+    /* Queue triangulaire — remplissage de la bulle (par-dessus, légèrement + petit) */
+    .sol-floating-btn::after {
+      content: '';
+      position: absolute;
+      bottom: -32px; left: 30px;
+      width: 42px; height: 36px;
+      background: #5e7194;
+      clip-path: polygon(45% 0, 100% 0, 0 100%);
+      z-index: 2;
+    }
     /* SVG legacy neutralisé */
     .sol-floating-btn-svg { display: none !important; }
     .sol-floating-btn-content {
@@ -4579,6 +4599,7 @@
       gap: 4px; color: #ffffff !important;
       font-weight: 700; pointer-events: none;
       width: 100%;
+      z-index: 3;
     }
     .sol-floating-btn-content span:first-child { font-size: 32px !important; line-height: 1; }
     .sol-floating-btn-content span:last-child { font-size: 13px !important; line-height: 1.2; color: #ffffff !important; }
@@ -7227,7 +7248,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=550"></script>
+<script src="script-data.js?v=551"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
