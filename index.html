@@ -582,6 +582,11 @@
       color: #334155 !important;
       font-weight: 400 !important;
     }
+    /* Spécificité augmentée avec :not() pour battre la règle ci-dessus
+       qui force font-weight: 400 sur les pb-items normaux */
+    .problematiques-grid .pb-item.checked:not(.pb-title-style-l1):not(.pb-title-style):not(.pb-consequence-style),
+    #modal-pb-list .pb-item.checked:not(.pb-title-style-l1):not(.pb-title-style):not(.pb-consequence-style),
+    #diag-pb-container .pb-item.checked:not(.pb-title-style-l1):not(.pb-title-style):not(.pb-consequence-style),
     .problematiques-grid .pb-item.checked,
     #modal-pb-list .pb-item.checked,
     #diag-pb-container .pb-item.checked {
@@ -6899,7 +6904,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=456"></script>
+<script src="script-data.js?v=457"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
