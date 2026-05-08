@@ -6933,7 +6933,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=488"></script>
+<script src="script-data.js?v=489"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9885,6 +9885,20 @@ function buildSidebarPlanSolutions() {
     childrenDiv.className = 'nav-group-children';
     if (!isExpanded) childrenDiv.style.display = 'none';
     children.forEach(ch => {
+      // Helper : préserve le scroll de #content-area si on est déjà sur Plan d'action
+      // (évite le saut au top quand on clique sur un parent du sidebar).
+      const navigateAndPreserveScroll = (afterFn) => {
+        const onPlan = state.currentIdx === planActionIdx;
+        const contentArea = document.getElementById('content-area');
+        const savedScroll = (onPlan && contentArea) ? contentArea.scrollTop : null;
+        if (planActionIdx >= 0 && !onPlan) navigateTo(planActionIdx);
+        if (typeof afterFn === 'function') afterFn();
+        if (typeof renderCurrentSection === 'function') renderCurrentSection();
+        if (savedScroll != null && contentArea) {
+          requestAnimationFrame(() => { contentArea.scrollTop = savedScroll; });
+        }
+      };
+
       // Cas spécial : strat_tetine → ne pas afficher le label "Tétine" (redondant avec la catégorie),
       // afficher directement les 3 choix (Garder / Supprimer / Hybride) comme sous-parents.
       if (ch.id === 'strat_tetine') {
@@ -9901,13 +9915,12 @@ function buildSidebarPlanSolutions() {
           optDiv.className = 'nav-item nav-child' + (isCurrent ? '' : ' inactive-levier');
           optDiv.innerHTML = `<span class="nav-emoji">${opt.emoji}</span><span class="nav-title">${opt.label}</span>`;
           optDiv.onclick = () => {
-            if (planActionIdx >= 0) navigateTo(planActionIdx);
-            state.solActiveCat = catId;
-            if (typeof setTickboxChoiceFromSol === 'function') {
-              setTickboxChoiceFromSol('strategie_tetine_choice', opt.val);
-            } else if (typeof renderCurrentSection === 'function') {
-              renderCurrentSection();
-            }
+            navigateAndPreserveScroll(() => {
+              state.solActiveCat = catId;
+              if (typeof setTickboxChoiceFromSol === 'function') {
+                setTickboxChoiceFromSol('strategie_tetine_choice', opt.val);
+              }
+            });
           };
           childrenDiv.appendChild(optDiv);
         });
@@ -9921,9 +9934,9 @@ function buildSidebarPlanSolutions() {
       const label = ch.cardLabel || ch.label || ch.id;
       itemDiv.innerHTML = `<span class="nav-emoji">${emoji}</span><span class="nav-title">${label}</span>`;
       itemDiv.onclick = () => {
-        if (planActionIdx >= 0) navigateTo(planActionIdx);
-        state.solActiveCat = catId;
-        if (typeof renderCurrentSection === 'function') renderCurrentSection();
+        navigateAndPreserveScroll(() => {
+          state.solActiveCat = catId;
+        });
       };
       childrenDiv.appendChild(itemDiv);
 
