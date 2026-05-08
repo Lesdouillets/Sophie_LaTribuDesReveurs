@@ -7031,7 +7031,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=513"></script>
+<script src="script-data.js?v=514"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -11693,13 +11693,20 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         // de prendre les couleurs de la catégorie via var(--cat-main / --cat-dark / --cat-light).
         const cssVars = `--cat-main:${colors.main};--cat-dark:${colors.dark};--cat-light:${colors.light||'#fef2f2'}`;
         // Pastille (mode singleChildMode équivalent : 1 seule section → pastille avec son titre)
+        // Sauf si le titre de la section est identique au label de la catégorie (env_general → "Environnement de sommeil")
+        // → pastille redondante avec le bandeau, on ne la montre pas.
         let singlePastilleHtml = '';
         if (isSingleSection) {
           const s = subSections[0];
           const secTitle = getSectionDisplayTitle(s);
           const sEmoji = s.emoji || '';
-          const pastilleLabel = `${sEmoji ? sEmoji + ' ' : ''}${secTitle}`;
-          singlePastilleHtml = `<div style="padding:10px 20px 4px"><div style="display:inline-block;padding:9px 22px;background:${colors.main};color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)">${pastilleLabel}</div></div>`;
+          const catShortL = (catLabel || '').replace(/^[^A-Za-zÀ-ÿ]+/, '').trim().toLowerCase();
+          const secTitleL = (secTitle || '').trim().toLowerCase();
+          const titlesMatch = catShortL === secTitleL;
+          if (!titlesMatch) {
+            const pastilleLabel = `${sEmoji ? sEmoji + ' ' : ''}${secTitle}`;
+            singlePastilleHtml = `<div style="padding:10px 20px 4px"><div style="display:inline-block;padding:9px 22px;background:${colors.main};color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)">${pastilleLabel}</div></div>`;
+          }
         }
         // Cartes enfant + contenu actif (si plusieurs sous-sections)
         let childCardsHtml = '';
