@@ -5466,8 +5466,9 @@
             </div>
             <div class="form-group full">
               <label>Durée prévue</label>
-              <select id="consult-duree">
-                <option value="75">1h15 (par défaut)</option>
+              <select id="consult-duree" onchange="state._userSetConsultDuree = true">
+                <option value="90" data-only-enseigne="tribu">1h30</option>
+                <option value="75" data-only-enseigne="feedodo">1h15</option>
                 <option value="40">40 minutes</option>
                 <option value="20">20 minutes</option>
               </select>
@@ -6915,7 +6916,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=470"></script>
+<script src="script-data.js?v=471"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7254,6 +7255,34 @@ function updateEnseigneUI() {
   // Sync hidden input
   const sel = document.getElementById('enseigne-select');
   if (sel && currentEnseigne) sel.value = currentEnseigne;
+  // Synchroniser la durée de consultation par défaut selon l'enseigne :
+  // La Tribu → 1h30 (90 min), Fée Dodo → 1h15 (75 min).
+  // On ne change la valeur que si l'utilisateur n'a pas explicitement modifié la durée.
+  // De plus : on cache l'option 1h30 quand on est sur Fée Dodo (et inversement).
+  const dureeSel = document.getElementById('consult-duree');
+  if (dureeSel) {
+    // Filtrer les options selon data-only-enseigne
+    Array.from(dureeSel.options).forEach(opt => {
+      const onlyFor = opt.getAttribute('data-only-enseigne');
+      if (onlyFor && onlyFor !== currentEnseigne) {
+        opt.style.display = 'none';
+        opt.disabled = true;
+      } else {
+        opt.style.display = '';
+        opt.disabled = false;
+      }
+    });
+    // Si l'utilisateur n'a pas custom-choisi, mettre la valeur par défaut de l'enseigne
+    if (!state._userSetConsultDuree) {
+      dureeSel.value = currentEnseigne === 'feedodo' ? '75' : '90';
+    } else {
+      // Si la valeur courante est masquée par l'enseigne actuelle, replier sur le défaut
+      const currentOpt = dureeSel.options[dureeSel.selectedIndex];
+      if (currentOpt && currentOpt.disabled) {
+        dureeSel.value = currentEnseigne === 'feedodo' ? '75' : '90';
+      }
+    }
+  }
 }
 
 function toggleAutreAllergie() {
