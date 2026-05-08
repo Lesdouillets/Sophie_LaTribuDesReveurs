@@ -837,16 +837,16 @@
     }
     /* Retraits incrémentaux pour les sous-niveaux à l'intérieur d'une catégorie data-cat
        (ex: Nutrition → Courbes pas OK → Courbe diminue → Espacement → Trop long).
-       Chaque niveau imbriqué décale de 16px par rapport à son parent. */
+       Chaque niveau imbriqué décale de 28px par rapport à son parent (visuel hiérarchique clair). */
     .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) .pb-category.pb-level-2,
     #modal-pb-list .pb-category:has(> .pb-category-title > [data-cat]) .pb-category.pb-level-2,
     #diag-pb-container .pb-category:has(> .pb-category-title > [data-cat]) .pb-category.pb-level-2 {
-      margin-left: 16px !important;
+      margin-left: 28px !important;
     }
     .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) .pb-category.pb-level-3,
     #modal-pb-list .pb-category:has(> .pb-category-title > [data-cat]) .pb-category.pb-level-3,
     #diag-pb-container .pb-category:has(> .pb-category-title > [data-cat]) .pb-category.pb-level-3 {
-      margin-left: 16px !important;
+      margin-left: 28px !important;
     }
     .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) .pb-category.pb-level-2 > .pb-items > .pb-item,
     .problematiques-grid .pb-category:has(> .pb-category-title > [data-cat]) .pb-category.pb-level-3 > .pb-items > .pb-item,
@@ -854,7 +854,7 @@
     #modal-pb-list .pb-category:has(> .pb-category-title > [data-cat]) .pb-category.pb-level-3 > .pb-items > .pb-item,
     #diag-pb-container .pb-category:has(> .pb-category-title > [data-cat]) .pb-category.pb-level-2 > .pb-items > .pb-item,
     #diag-pb-container .pb-category:has(> .pb-category-title > [data-cat]) .pb-category.pb-level-3 > .pb-items > .pb-item {
-      margin-left: 16px !important;
+      margin-left: 28px !important;
     }
     /* Titres de sub-catégories (level-1/2/3 à l'intérieur des .pb-items) :
        fond pastel discret pour ne pas clasher avec le titre coloré du parent */
@@ -7070,7 +7070,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=523"></script>
+<script src="script-data.js?v=524"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
