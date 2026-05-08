@@ -370,10 +370,13 @@ const SCRIPT_DATA = {
             {
               type: "option", label: "Dort dans le lit parental", style: "purple",
               blocks: [
-                { type: "normal", text: "- Et plus précisément **dans VOTRE LIT**\n\n- De mon côté, je dois **quand même** vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à faire **dormir** les enfants dans **LEUR PROPRE LIT**…\n  - …car cela **diminue significativement le risque de Mort Inattendue du Nourrisson**\n\n- Mais **au-delà de ça**, l'idée, ce n'est **PAS de vous dire quoi faire.**\n- C'est surtout de **voir CE QUI vous convient** à vous, aujourd'hui.\n\n" },
+                { type: "normal", _leftTitle: "Petite question", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- J'ai aussi une **petite question** par rapport au **LIEU de sommeil**\n- Aujourd'hui, [prénom_enfant] **dort dans VOTRE chambre**" },
+                { type: "normal", _leftTitle: "Dans votre lit", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Et plus précisément **dans VOTRE LIT**" },
+                { type: "normal", _leftTitle: "Recommandations OMS", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- De mon côté, je dois **quand même** vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à faire **dormir** les enfants dans **LEUR PROPRE LIT**…\n  - …car cela **diminue significativement le risque de Mort Inattendue du Nourrisson**" },
+                { type: "normal", _leftTitle: "Voir ce qui VOUS convient", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Mais **au-delà de ça**, l'idée, ce n'est **PAS de vous dire quoi faire**\n- C'est surtout de **voir CE QUI vous convient** à vous, aujourd'hui\n- Parce qu'il y a :\n  - **CE QUI est recommandé**\n  - **ET CE QUI est possible** dans votre **réalité du quotidien**\n  - **MAIS aussi CE QUI est en accord avec vos souhaits**" }
               ]
             },
-            { type: "question", text: "Est-ce que c'est **quelque chose qui vous CONVIENT** pour l'instant,\n…OU est-ce que vous **aimeriez qu'elle passe dans SA chambre (dans SON lit)** ?\n\n- Il n'y a **PAS** de **bonne ou de mauvaise réponse** :\n  - certains parents **préfèrent attendre** encore un peu,\n  - d'autres **sont prêts** à faire la **transition**.\n\n- L'**idée** est surtout de voir ce qui **correspond le mieux** à votre **famille**\n  - Pour que je puisse m**'adapter à vos souhaits**", choice: {
+            { type: "question", text: "Est-ce que c'est **quelque chose qui vous CONVIENT** pour l'instant,\n…OU est-ce que vous **aimeriez qu'elle passe dans SA chambre (dans SON lit)** ?\n\n- Il n'y a **PAS** de **bonne ou de mauvaise réponse** :\n  - certains parents **préfèrent attendre** encore un peu,\n  - d'autres **sont prêts** à faire la **transition**\n\n- L'**idée** est surtout de voir ce qui **correspond le mieux** à votre **famille**\n  - Pour que je puisse m**'adapter à vos souhaits**", choice: {
               id: "obj_lieu_sommeil",
               required: true,
               options: [
