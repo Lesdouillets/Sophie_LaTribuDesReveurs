@@ -2415,7 +2415,7 @@ const SCRIPT_DATA = {
                 {
                   id: "rgo_rituel", emoji: "🌙", label: "Rituel du soir",
                   blocks: [
-                    { type: "normal", _leftTitle: "Lait en 1er + routine", text: "- Le soir, l'idée, c'est d'être **encore plus doux** :\n  - ❌ Éviter les **sur-stimulations** avant le coucher\n  - ✅ Anticiper le **change AVANT le lait** ⇒ les manipulations peuvent faire remonter le reflux\n  - ✅ Mettre en place une **routine** ⇒ sécurise et diminue le stress. Les pleurs peuvent aggraver l'irritation de l'œsophage *(ex : repas → temps calme → rituel → coucher)*\n\n- 💡 Un bébé **suffisamment verticalisé la journée**, PEUT ne **pas** avoir **besoin d'être verticalisé la nuit**" },
+                    { type: "normal", _leftTitle: "Lait en 1er + routine", text: "- Le soir, l'idée, c'est d'être **encore plus doux** :\n  - ❌ Éviter les **sur-stimulations** avant le coucher\n  - ✅ Anticiper le **change AVANT le lait** ⇒ les manipulations peuvent faire remonter le reflux\n  - ✅ Mettre en place une **routine** ⇒ sécurise et diminue le stress. Les pleurs peuvent aggraver l'irritation de l'œsophage *(ex : repas → temps calme → rituel → coucher)*" },
                   ]
                 },
               ]
