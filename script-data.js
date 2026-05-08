@@ -229,6 +229,8 @@ const PB_LABELS = {
   'souhait_tetine': 'Suppression de la tétine',
   'souhait_position_dorsale': 'Vers une position dorsale',
   'souhait_changement_lit': 'Changement de lit',
+  'souhait_chgmt_lit_parental_cododo': 'Lit parental ⇒ Cododo',
+  'souhait_chgmt_lit_parental_barreau': 'Lit parental ⇒ Lit à barreaux',
   'souhait_chgmt_lit_cododo_barreau': 'Cododo ⇒ Lit à barreaux',
   'souhait_chgmt_lit_barreau_ouvert': 'Lit à barreaux ⇒ Lit ouvert',
   'souhait_chgmt_lit_sol_barreau': '(Retour) Lit ouvert ⇒ Lit à barreaux',
@@ -5159,6 +5161,14 @@ const SCRIPT_DATA = {
                       type: "courbe_cards_grid",
                       alwaysShowAll: true,
                       items: [
+                        { id: "env_chgmt_lit_parental_cododo", emoji: "🛏", label: "Lit parental ⇒ Cododo", pb: "souhait_chgmt_lit_parental_cododo", blocks: [
+                          { type: "normal", _leftTitle: "Quelle transition ?", text: "- Si vous souhaitez **[le_la] passer** de **votre lit** ⇒ à son **lit cododo**" },
+                          { type: "normal", _leftTitle: "Conseils", text: "- Je vous invite à :\n  - **dormir avec ses nouveaux draps**, pour **garder des repères olfactifs**\n  - lui **verbaliser souvent** que *« c'est ici qu'[il_elle] va dormir, parce que **c'est [un_une] [grand_grande]** maintenant ! »*\n  - Vous pouvez aussi **[LE_LA] mettre dans son lit**, durant ses **temps d'éveil** pour qu'[il_elle] se **familiarise avec les lieux**\n  - **N'hésitez pas à fermer le cododo** quand [il_elle] dort pour **garder ce sentiment de sécurité** en étant dans un **espace restreint**\n\n- 💡 N'hésitez pas **les 1ers jours**, à **vous écouter**, et [le_la] **prendre dans les bras** pour [le_la] **rassurer dans ce nouvel environnement**" }
+                        ] },
+                        { id: "env_chgmt_lit_parental_barreau", emoji: "🛏", label: "Lit parental ⇒ Lit à barreaux", pb: "souhait_chgmt_lit_parental_barreau", blocks: [
+                          { type: "normal", _leftTitle: "Quelle transition ?", text: "- Si vous souhaitez **[le_la] passer** de **votre lit** ⇒ à son **lit à barreaux**" },
+                          { type: "normal", _leftTitle: "Conseils", text: "- Je vous invite à :\n  - **dormir avec ses nouveaux draps**, pour **garder des repères olfactifs**\n  - lui **montrer son lit** avec beaucoup de **joie**\n  - lui **verbaliser souvent** que *« c'est ici qu'[il_elle] va dormir, parce que **c'est [un_une] [grand_grande]** maintenant ! »*\n  - Vous pouvez aussi **[LE_LA] mettre dans son lit**, durant ses **temps d'éveil** pour qu'[il_elle] se **familiarise avec les lieux**\n\n- 💡 N'hésitez pas **les 1ers jours**, à **vous écouter**, et [le_la] **prendre dans les bras** pour [le_la] **rassurer dans ce nouvel environnement**" }
+                        ] },
                         { id: "env_chgmt_lit_cododo_barreau", emoji: "🛏", label: "Cododo ⇒ Lit à barreaux", pb: "souhait_chgmt_lit_cododo_barreau", blocks: [
                           { type: "normal", _leftTitle: "Quelle transition ?", text: "- Si v**ous souhaitez** [le_la] passer **de son cododo** ⇒ à son **lit à barreaux / parapluie**" },
                           { type: "normal", _leftTitle: "Conseils", text: "- Je vous invite à :\n  - d'une part, à **fermer le cododo** quand il dort actuellement… **si ce n'est déjà fait**\n  - **dormir avec ses nouveaux draps**, pour **garder des repères olfactifs**\n  - lui **montrer son lit** avec beaucoup de **joie**\n  - lui **verbaliser souvent** que *« c'est ici qu'[il_elle] va dormir, parce que **c'est [un_une] [grand_grande]** maintenant ! »*\n  - Vous pouvez aussi **[LE_LA] mettre dans son lit**, durant ses **temps d'éveil** pour qu'il se **familiarise avec les lieux**\n\n- 💡 N'hésitez pas **les 1ers jours**, à **vous écouter**, et [le_la] **prendre dans les bras** pour [le_la] **rassurer dans ce nouvel environnement**\n\n" }
