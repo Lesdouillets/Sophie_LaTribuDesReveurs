@@ -6933,7 +6933,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=486"></script>
+<script src="script-data.js?v=488"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9885,6 +9885,35 @@ function buildSidebarPlanSolutions() {
     childrenDiv.className = 'nav-group-children';
     if (!isExpanded) childrenDiv.style.display = 'none';
     children.forEach(ch => {
+      // Cas spécial : strat_tetine → ne pas afficher le label "Tétine" (redondant avec la catégorie),
+      // afficher directement les 3 choix (Garder / Supprimer / Hybride) comme sous-parents.
+      if (ch.id === 'strat_tetine') {
+        const choices = state.tickboxChoices || {};
+        const currentChoice = choices['strategie_tetine_choice'] || choices['obj_tetine_static'] || '';
+        const tetineOpts = [
+          { val: 'garder',    label: 'Garder',    emoji: '✅' },
+          { val: 'supprimer', label: 'Supprimer', emoji: '❌' },
+          { val: 'hybride',   label: 'Hybride',   emoji: '🔀' }
+        ];
+        tetineOpts.forEach(opt => {
+          const isCurrent = currentChoice === opt.val;
+          const optDiv = document.createElement('div');
+          optDiv.className = 'nav-item nav-child' + (isCurrent ? '' : ' inactive-levier');
+          optDiv.innerHTML = `<span class="nav-emoji">${opt.emoji}</span><span class="nav-title">${opt.label}</span>`;
+          optDiv.onclick = () => {
+            if (planActionIdx >= 0) navigateTo(planActionIdx);
+            state.solActiveCat = catId;
+            if (typeof setTickboxChoiceFromSol === 'function') {
+              setTickboxChoiceFromSol('strategie_tetine_choice', opt.val);
+            } else if (typeof renderCurrentSection === 'function') {
+              renderCurrentSection();
+            }
+          };
+          childrenDiv.appendChild(optDiv);
+        });
+        return; // skip standard child + sub-children rendering
+      }
+
       const isActive = state.selectedSolutions && state.selectedSolutions.has(ch.id);
       const itemDiv = document.createElement('div');
       itemDiv.className = 'nav-item nav-child' + (isActive ? '' : ' inactive-levier');
@@ -11185,13 +11214,14 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
     if (!state.courbeCardsActiveByGrid) state.courbeCardsActiveByGrid = {};
     const gridPath = 'diagnostic_inline_sections';
+    // Mêmes codes couleurs que VIII. Plan d'action (catColorMap) — couleurs solides, pas de dégradé
     const catColors = {
-      nutrition: { main: '#f97316', light: '#fed7aa', pastel: '#fff7ed', dark: '#c2410c' },
-      rythme: { main: '#22c55e', light: '#bbf7d0', pastel: '#f0fdf4', dark: '#166534' },
-      strategie: { main: '#3b82f6', light: '#bfdbfe', pastel: '#eff6ff', dark: '#1e3a8a' },
-      env: { main: '#8b5cf6', light: '#ddd6fe', pastel: '#f5f3ff', dark: '#5b21b6' },
-      relationnel: { main: '#ec4899', light: '#fbcfe8', pastel: '#fdf2f8', dark: '#831843' },
-      confort_physique: { main: '#dc2626', light: '#fecaca', pastel: '#fef2f2', dark: '#7f1d1d' },
+      nutrition:        { main: '#d4845a', dark: '#a05a1c', light: '#e8c19a', pastel: '#ffffff' },
+      rythme:           { main: '#7da589', dark: '#4a6b54', light: '#bdd1c4', pastel: '#ffffff' },
+      strategie:        { main: '#5d7a99', dark: '#2a4060', light: '#b8c4d6', pastel: '#ffffff' },
+      env:              { main: '#9d83b0', dark: '#4f3d62', light: '#c9b6d6', pastel: '#ffffff' },
+      relationnel:      { main: '#c98aa8', dark: '#5e3a52', light: '#f0c0d8', pastel: '#ffffff' },
+      confort_physique: { main: '#dc2626', dark: '#b91c1c', light: '#e8b8b0', pastel: '#ffffff' },
     };
     const catEmojis = {
       nutrition: '🍽️',
@@ -11254,9 +11284,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         const relPbs = { relationnel_lit_parental: 'Lit parental', relationnel_conflit_autres: 'Conflits', relationnel_rappels: 'Rappels' };
         subTitles = Object.keys(relPbs).filter(pb => state.selectedPbs.has(pb)).map(pb => relPbs[pb]).join(' / ');
       }
+      // Couleurs solides (pas de dégradé) : bg = main, border = dark, comme dans VIII. Plan d'action
       const activeStyle = isActive
-        ? `background:linear-gradient(90deg,${colors.dark},${colors.main});color:white;border:3px solid ${colors.dark};box-shadow:0 6px 18px ${colors.main}66`
-        : `border:3px solid ${colors.main};background:${colors.pastel};box-shadow:0 2px 8px ${colors.main}33`;
+        ? `background:${colors.main};color:white;border:3px solid ${colors.dark};box-shadow:0 0 0 4px ${colors.dark}cc,0 6px 22px ${colors.dark}aa`
+        : `background:${colors.main};color:white;border:3px solid ${colors.dark};box-shadow:0 2px 8px ${colors.dark}33`;
       // Pas d'inline style sur le titre — la couleur est gérée via les règles CSS .diag-cat-card[data-section-cat=...]
       return `<div class="courbe-card${activeCls}${dimmedCls} diag-cat-card" data-card-id="${cardId}" data-section-cat="${cat}" style="${activeStyle}" onclick="openCourbeCard(this)">
         <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${tickIcon}</span>
@@ -11274,17 +11305,36 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         const colors = catColors[activeCat] || { main:'#9ca3af', dark:'#4b5563' };
         const catLabel = (typeof PB_CATEGORY_LABELS !== 'undefined' && PB_CATEGORY_LABELS[activeCat]) ? PB_CATEGORY_LABELS[activeCat] : activeCat;
         const catShortLabel = (catLabel || '').replace(/^[^A-Za-zÀ-ÿ]+/, '').trim().toLowerCase();
-        // Rendre toutes les sections de cette catégorie à la suite
-        const sectionsInner = activeGroup.sections.map(s => {
+        // Rendu : si 1 seule section → affichage direct (pas de carte enfant)
+        //         si plusieurs sections → cartes enfant (sol-child-card style) + contenu de la section active
+        const subSections = activeGroup.sections;
+        const isSingleSection = subSections.length === 1;
+        let sectionsInner = '';
+        if (isSingleSection) {
+          const s = subSections[0];
           const inner = renderBlocks(getOverrideBlocks(s), s.id);
-          const secTitle = getSectionDisplayTitle(s);
-          // Masquer le sub-banner si son titre est le même que celui de la catégorie parente (redondant)
-          const showBanner = secTitle && secTitle.trim().toLowerCase() !== catShortLabel;
-          const sectionBanner = showBanner ? `<div class="diag-section-banner" style="background:${colors.main}">${s.emoji || ''} ${secTitle}</div>` : '';
-          return `${sectionBanner}<div class="diag-section-body">${inner}</div>`;
-        }).join('');
-        contentHtml = `<div class="courbe-card-content" data-card-id="${activeId}" style="border:3px solid ${colors.main};box-shadow:0 4px 16px ${colors.main}33">
-          <div class="courbe-card-banner inline-conditional-parent-banner" data-category="${activeCat}" style="margin:0 0 12px;border-radius:10px 10px 0 0;color:white">${catLabel}</div>
+          sectionsInner = `<div class="diag-section-body diag-single-section">${inner}</div>`;
+        } else {
+          if (!state.diagActiveSubSection) state.diagActiveSubSection = {};
+          const activeSubId = state.diagActiveSubSection[activeCat] || subSections[0].id;
+          const childCardsHtml = `<div class="sol-child-cards">` + subSections.map(s => {
+            const isActiveS = s.id === activeSubId;
+            const styleA = isActiveS
+              ? `border-color:${colors.dark};background:${colors.main};color:#fff`
+              : `border-color:${colors.main};background:#fff;color:${colors.dark}`;
+            const secTitle = getSectionDisplayTitle(s);
+            return `<div class="sol-child-card${isActiveS ? ' active' : ''}" data-card-id="${s.id}" style="${styleA}" onclick="setDiagActiveSubSection('${activeCat}','${s.id.replace(/'/g, "\\'")}')">
+              <span class="solc-emoji">${s.emoji || '📄'}</span>
+              <span class="solc-label">${secTitle}</span>
+            </div>`;
+          }).join('') + `</div>`;
+          const activeSection = subSections.find(s => s.id === activeSubId) || subSections[0];
+          const inner = activeSection ? renderBlocks(getOverrideBlocks(activeSection), activeSection.id) : '';
+          sectionsInner = childCardsHtml + `<div class="sol-child-content" style="border-color:${colors.main}">${inner}</div>`;
+        }
+        // Fond blanc autour du contenu (au lieu du jaunâtre #fff7ed par défaut sur .courbe-card-content)
+        contentHtml = `<div class="courbe-card-content diag-cat-content" data-card-id="${activeId}" style="background:#ffffff;border:3px solid ${colors.main};box-shadow:0 4px 16px ${colors.main}33">
+          <div class="courbe-card-banner inline-conditional-parent-banner" data-category="${activeCat}" style="margin:0 0 12px;border-radius:10px 10px 0 0;color:white;background:${colors.main}">${catLabel}</div>
           <button type="button" class="courbe-card-close" onclick="closeCourbeCard(this)">✕ Fermer</button>
           ${sectionsInner}
           <button type="button" class="courbe-card-close courbe-card-close-bottom" onclick="closeCourbeCard(this)">✕ Fermer</button>
@@ -15405,6 +15455,15 @@ function closeCourbeCard(btnEl) {
   }, 60);
 }
 window.closeCourbeCard = closeCourbeCard;
+
+// V. Diagnostic : changement de sous-section active dans une catégorie ouverte
+// (cartes enfant style sol-child-card pour basculer entre les sections d'une même catégorie)
+function setDiagActiveSubSection(catId, sectionId) {
+  if (!state.diagActiveSubSection) state.diagActiveSubSection = {};
+  state.diagActiveSubSection[catId] = sectionId;
+  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+}
+window.setDiagActiveSubSection = setDiagActiveSubSection;
 
 // Tout cocher / Tout décocher les enfants d'une catégorie dans "Solutions identifiées"
 // Helper : filtre âge/alim/sieste — même logique que isChHiddenByAge dans renderSolutionsCheckboxes
