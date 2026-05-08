@@ -6993,7 +6993,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=507"></script>
+<script src="script-data.js?v=508"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -11627,28 +11627,43 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         ${subTitles ? `<span class="ccc-subtitle">${subTitles}</span>` : ''}
       </div>`;
     }).join('');
-    // Contenu de la catégorie active
+    // Contenu de la catégorie active — réplique exactement la structure VIII. Plan d'action :
+    // sol-active-content (cadre coloré) → sol-active-banner (titre catégorie) → pastille (si 1 sous-section)
+    // → sol-child-cards (si plusieurs sous-sections) → contenu (intro + section active).
     let contentHtml = '';
     if (activeId && activeId.startsWith('cat_')) {
       const activeCat = activeId.slice(4);
       const activeGroup = groupsByCat.find(g => g.cat === activeCat);
       if (activeGroup) {
-        const colors = catColors[activeCat] || { main:'#9ca3af', dark:'#4b5563' };
+        const colors = catColors[activeCat] || { main:'#9ca3af', dark:'#4b5563', light:'#e2e8f0' };
         const catLabel = (typeof PB_CATEGORY_LABELS !== 'undefined' && PB_CATEGORY_LABELS[activeCat]) ? PB_CATEGORY_LABELS[activeCat] : activeCat;
-        const catShortLabel = (catLabel || '').replace(/^[^A-Za-zÀ-ÿ]+/, '').trim().toLowerCase();
-        // Rendu : si 1 seule section → affichage direct (pas de carte enfant)
-        //         si plusieurs sections → cartes enfant (sol-child-card style) + contenu de la section active
+        const catEmoji = catEmojis[activeCat] || '📄';
         const subSections = activeGroup.sections;
         const isSingleSection = subSections.length === 1;
-        let sectionsInner = '';
+        // CSS variables sur les conteneurs : permettent aux blocs internes (incl. futurs bloc-titres)
+        // de prendre les couleurs de la catégorie via var(--cat-main / --cat-dark / --cat-light).
+        const cssVars = `--cat-main:${colors.main};--cat-dark:${colors.dark};--cat-light:${colors.light||'#fef2f2'}`;
+        // Pastille (mode singleChildMode équivalent : 1 seule section → pastille avec son titre)
+        let singlePastilleHtml = '';
+        if (isSingleSection) {
+          const s = subSections[0];
+          const secTitle = getSectionDisplayTitle(s);
+          const sEmoji = s.emoji || '';
+          const pastilleLabel = `${sEmoji ? sEmoji + ' ' : ''}${secTitle}`;
+          singlePastilleHtml = `<div style="padding:10px 20px 4px"><div style="display:inline-block;padding:9px 22px;background:${colors.main};color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)">${pastilleLabel}</div></div>`;
+        }
+        // Cartes enfant + contenu actif (si plusieurs sous-sections)
+        let childCardsHtml = '';
+        let childContentHtml = '';
         if (isSingleSection) {
           const s = subSections[0];
           const inner = renderBlocks(getOverrideBlocks(s), s.id);
-          sectionsInner = `<div class="diag-section-body diag-single-section">${inner}</div>`;
+          // Mode "single-mode" : pas de bordure interne (la sol-active-content fournit déjà la bordure)
+          childContentHtml = `<div class="sol-child-content sol-child-content--single" data-section-cat="${activeCat}" style="position:relative;border:none;border-radius:0;margin:0;padding:14px 20px;${cssVars}">${inner}</div>`;
         } else {
           if (!state.diagActiveSubSection) state.diagActiveSubSection = {};
           const activeSubId = state.diagActiveSubSection[activeCat] || subSections[0].id;
-          const childCardsHtml = `<div class="sol-child-cards">` + subSections.map(s => {
+          childCardsHtml = `<div class="sol-child-cards">` + subSections.map(s => {
             const isActiveS = s.id === activeSubId;
             const styleA = isActiveS
               ? `border-color:${colors.dark};background:${colors.main};color:#fff`
@@ -11661,14 +11676,17 @@ function renderBlockInner(b, i, sectionId, depth, path) {
           }).join('') + `</div>`;
           const activeSection = subSections.find(s => s.id === activeSubId) || subSections[0];
           const inner = activeSection ? renderBlocks(getOverrideBlocks(activeSection), activeSection.id) : '';
-          sectionsInner = childCardsHtml + `<div class="sol-child-content" style="border-color:${colors.main}">${inner}</div>`;
+          childContentHtml = `<div class="sol-child-content" data-section-cat="${activeCat}" style="border-color:${colors.main};${cssVars}">${inner}</div>`;
         }
-        // Fond blanc autour du contenu (au lieu du jaunâtre #fff7ed par défaut sur .courbe-card-content)
-        contentHtml = `<div class="courbe-card-content diag-cat-content" data-card-id="${activeId}" style="background:#ffffff;border:3px solid ${colors.main};box-shadow:0 4px 16px ${colors.main}33">
-          <div class="courbe-card-banner inline-conditional-parent-banner" data-category="${activeCat}" style="margin:0 0 12px;border-radius:10px 10px 0 0;color:white;background:${colors.main}">${catLabel}</div>
-          <button type="button" class="courbe-card-close" onclick="closeCourbeCard(this)">✕ Fermer</button>
-          ${sectionsInner}
-          <button type="button" class="courbe-card-close courbe-card-close-bottom" onclick="closeCourbeCard(this)">✕ Fermer</button>
+        // Structure équivalente à sol-active-content de Plan d'action.
+        // On garde la classe courbe-card-content pour compat (closeCourbeCard la cherche), avec background blanc inline pour overrider le jaunâtre.
+        contentHtml = `<div class="sol-active-content courbe-card-content diag-cat-content" data-section-cat="${activeCat}" data-card-id="${activeId}" style="border:3px solid ${colors.main};background:#ffffff !important;padding:0;${cssVars}">
+          <div class="sol-active-banner" style="background:${colors.main}">${catEmoji} ${catLabel}</div>
+          ${singlePastilleHtml}
+          <div style="padding:0 14px"><button type="button" class="courbe-card-close" onclick="closeCourbeCard(this)">✕ Fermer</button></div>
+          ${childCardsHtml}
+          ${childContentHtml}
+          <div style="padding:0 14px 14px"><button type="button" class="courbe-card-close courbe-card-close-bottom" onclick="closeCourbeCard(this)">✕ Fermer</button></div>
         </div>`;
       }
     }
