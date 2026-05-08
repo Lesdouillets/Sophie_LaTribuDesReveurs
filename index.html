@@ -6671,10 +6671,10 @@
 
 <!-- PANNEAU NOTES FLOTTANT (visible pendant consultation) -->
 <div class="session-notes-wrap" id="notes-panel" style="display:none">
-  <div class="notes-header">
-    <span class="notes-drag-handle" id="notes-drag-handle">⠿</span>
+  <div class="notes-header" onclick="onNotesHeaderClick(event)" style="cursor:pointer">
+    <span class="notes-drag-handle" id="notes-drag-handle" onclick="event.stopPropagation()">⠿</span>
     <span style="flex:1">📝 Notes de session</span>
-    <span class="notes-collapse-btn" id="notes-collapse-icon" onclick="toggleNotesPanel()">▲</span>
+    <span class="notes-collapse-btn" id="notes-collapse-icon">▲</span>
   </div>
   <div class="notes-body" id="notes-body" style="display:none">
     <textarea id="session-notes-textarea" placeholder="Vos notes libres pendant la consultation…&#10;(sauvegarde automatique)"></textarea>
@@ -16622,22 +16622,36 @@ function deleteSession(e, id) {
 // NOTES PANEL
 // ═══════════════════════════════════════════════════
 let notesPanelCollapsed = true;
+// Clic sur le bandeau notes (sauf sur la poignée de drag) → toggle
+function onNotesHeaderClick(e) {
+  // Si on clique sur la poignée drag, on ne toggle pas (elle a son propre stopPropagation déjà)
+  toggleNotesPanel();
+}
+window.onNotesHeaderClick = onNotesHeaderClick;
+
+let _notesOriginalTop = null;
+
 function toggleNotesPanel() {
   notesPanelCollapsed = !notesPanelCollapsed;
   document.getElementById('notes-body').style.display = notesPanelCollapsed ? 'none' : '';
   document.getElementById('notes-collapse-icon').textContent = notesPanelCollapsed ? '▲' : '▼';
-  // Quand on déploie, le panneau grandit vers le bas — vérifier qu'il reste visible à l'écran
-  // (sinon le textarea sort en bas et on ne peut pas écrire)
+  const panel = document.getElementById('notes-panel');
+  if (!panel) return;
   if (!notesPanelCollapsed) {
-    const panel = document.getElementById('notes-panel');
-    if (panel) {
-      panel.offsetHeight; // forcer le reflow
-      const panelHeight = panel.offsetHeight;
-      const currentTop = parseInt(panel.style.top) || 0;
-      const maxTop = window.innerHeight - panelHeight - 10;
-      if (currentTop > maxTop) {
-        panel.style.top = Math.max(10, maxTop) + 'px';
-      }
+    // OUVERTURE : sauvegarder la position avant déplacement éventuel,
+    // puis vérifier que le panneau déployé reste visible (sinon on remonte le top)
+    _notesOriginalTop = parseInt(panel.style.top) || 0;
+    panel.offsetHeight; // forcer le reflow
+    const panelHeight = panel.offsetHeight;
+    const maxTop = window.innerHeight - panelHeight - 10;
+    if (_notesOriginalTop > maxTop) {
+      panel.style.top = Math.max(10, maxTop) + 'px';
+    }
+  } else {
+    // FERMETURE : restaurer la position d'origine (où l'utilisateur l'avait avant ouverture)
+    if (_notesOriginalTop !== null) {
+      panel.style.top = _notesOriginalTop + 'px';
+      _notesOriginalTop = null;
     }
   }
 }
