@@ -6909,7 +6909,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=463"></script>
+<script src="script-data.js?v=465"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -8728,43 +8728,40 @@ function computeClientFields() {
       }
     }
   }
-  // 2. Si âge gestationnel + date naissance → calculer date du terme
+  // 2. Si âge gestationnel + date naissance → calculer date du terme (uniquement si vide)
   //    (terme = naissance + jours de prématurité = naissance + (280 - âge gestationnel en jours))
+  //    ⚠️ On ne remplit que si dt est VIDE pour permettre à l'utilisateur de l'effacer/modifier
   if (ageGestationnel && dateNaiss) {
     const prematureDays = parseGestationnelToPrematureDays(ageGestationnel);
     if (prematureDays !== null && prematureDays > 0) {
-      const naiss = new Date(dateNaiss);
-      const terme = new Date(naiss);
-      terme.setDate(naiss.getDate() + prematureDays);
       const dt = document.getElementById('date-terme');
-      const newStr = terme.toISOString().slice(0, 10);
-      if (dt && dt.value !== newStr) {
+      if (dt && !dt.value) {
+        const naiss = new Date(dateNaiss);
+        const terme = new Date(naiss);
+        terme.setDate(naiss.getDate() + prematureDays);
+        const newStr = terme.toISOString().slice(0, 10);
         dt.value = newStr;
         dateTerme = newStr;
-      }
-    } else if (prematureDays === 0) {
-      // À terme (40+0 ou plus) : pas de prématurité → vider date-terme
-      const dt = document.getElementById('date-terme');
-      if (dt && dt.value) {
-        dt.value = '';
-        dateTerme = '';
       }
     }
+    // À terme (40+0) : pas de prématurité → on ne touche PAS à dt (l'utilisateur garde le contrôle)
   }
   // 3. Si âge corrigé manuel + date naissance + pas d'âge gestationnel → calculer date du terme
-  //    (terme = consultation - âge corrigé)
+  //    (terme = consultation - âge corrigé), uniquement si dt vide
   if (ageCorrigeManuel && dateNaiss && !ageGestationnel && consultDate) {
-    const days = parseAgeStringToDays(ageCorrigeManuel);
-    if (days !== null) {
-      const consult = new Date(consultDate);
-      const terme = new Date(consult);
-      terme.setDate(consult.getDate() - days);
-      const dt = document.getElementById('date-terme');
-      const newStr = terme.toISOString().slice(0, 10);
-      // Ne mettre à jour que si différent ET que terme > naissance (sinon prématurité négative)
-      if (dt && dt.value !== newStr && new Date(newStr) > new Date(dateNaiss)) {
-        dt.value = newStr;
-        dateTerme = newStr;
+    const dt = document.getElementById('date-terme');
+    if (dt && !dt.value) {
+      const days = parseAgeStringToDays(ageCorrigeManuel);
+      if (days !== null) {
+        const consult = new Date(consultDate);
+        const terme = new Date(consult);
+        terme.setDate(consult.getDate() - days);
+        const newStr = terme.toISOString().slice(0, 10);
+        // Vérif que terme > naissance (sinon prématurité négative)
+        if (new Date(newStr) > new Date(dateNaiss)) {
+          dt.value = newStr;
+          dateTerme = newStr;
+        }
       }
     }
   }
@@ -8801,9 +8798,8 @@ function computeClientFields() {
     if (ageReel) {
       document.getElementById('age-reel-calc').textContent = ageReel.str;
       document.getElementById('age-reel-mois').textContent = ageReel.totalMois + ' mois • ' + ageReel.totalJours + ' jours';
-      // Auto-fill manual field if empty
-      const ageEl = document.getElementById('age-enfant');
-      if (ageEl && !ageEl.value) ageEl.value = ageReel.str;
+      // Pas d'auto-remplissage du champ manuel age-enfant — l'utilisateur peut maintenant
+      // saisir/effacer librement (l'âge calculé est affiché dans le panneau "Âges calculés")
     } else if (ageManuel) {
       document.getElementById('age-reel-calc').textContent = ageManuel;
       document.getElementById('age-reel-mois').textContent = '(saisi manuellement)';
@@ -8827,9 +8823,8 @@ function computeClientFields() {
         const moisEl = document.getElementById('age-corrige-mois');
         moisEl.textContent += ` (né ${diffSem} sem. tôt)`;
       }
-      // Toujours mettre à jour le champ manuel avec l'âge calculé
-      const acEl = document.getElementById('age-corrige-manuel');
-      if (acEl) acEl.value = ageCorrige ? ageCorrige.str : '';
+      // Pas d'auto-remplissage du champ manuel age-corrige-manuel — l'utilisateur peut
+      // maintenant saisir/effacer librement (l'âge calculé est affiché dans le panneau)
     } else if (ageCorrigeManuel) {
       document.getElementById('age-corrige-calc').textContent = ageCorrigeManuel;
       document.getElementById('age-corrige-mois').textContent = '(saisi manuellement)';
