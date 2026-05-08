@@ -6883,7 +6883,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=429"></script>
+<script src="script-data.js?v=430"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -12412,6 +12412,13 @@ function renderSolutionsCheckboxes(opts) {
       const chEmoji = ch.cardEmoji ? `<span class="sol-row-emoji">${ch.cardEmoji}</span>` : '';
       const rowLabelText = ch.label || ch.id;
       const rowLabelHtml = ch.solChecklistUnderline ? `<u>${rowLabelText}</u>` : rowLabelText;
+      // strat_tetine : la catégorie "Tétine" sert déjà de header → masquer la ligne parent
+      // pour ne montrer que les 3 choix (Garder/Supprimer/Hybride). Les liens existants
+      // (toggleSolution, autoCheckIfPbs, sync state.selectedSolutions) restent intacts —
+      // seul l'affichage de la checkbox parente est supprimé.
+      if (ch.id === 'strat_tetine') {
+        return `<div data-sol-id="${ch.id}" class="sol-row-wrap">${subRows}</div>`;
+      }
       return `<div data-sol-id="${ch.id}" class="sol-row-wrap${rowClass}"><div class="sol-row-header"><label class="sol-row" style="flex:1">
         <input type="checkbox" ${checked?'checked':''} onchange="toggleSolution('${ch.id}', this.checked)">
         ${chEmoji}<span class="sol-row-label">${rowLabelHtml}</span>
