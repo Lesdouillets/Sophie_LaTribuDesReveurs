@@ -5084,6 +5084,19 @@
       background: #fef9e0; border: 1.5px solid #f5d778; border-radius: 10px;
       padding: 16px 20px; font-size: 14.5px; line-height: 1.55; color: #7c2d12;
     }
+    /* Mode visio bas-droite : pour le bloc emploi du temps, empiler le tableau et
+       son encadré jaune verticalement (colonne) au lieu de côte-à-côte. Comme ça
+       l'encadré n'est plus caché par la PiP — il passe SOUS le tableau, et la zone
+       vidéo n'empiète que sur du blanc. L'utilisateur scrolle pour lire l'encadré. */
+    body[data-meet-mode$="-right"] .emploi-temps-layout,
+    body[data-meet-mode$="-left"] .emploi-temps-layout {
+      flex-direction: column;
+      flex-wrap: wrap;
+    }
+    body[data-meet-mode$="-right"] .emploi-temps-aside,
+    body[data-meet-mode$="-left"] .emploi-temps-aside {
+      width: 100%; max-width: 520px;
+    }
     .block-with-left-title:has(> .edit-block-wrap > .emploi-temps-block),
     .block-with-left-title:has(> .emploi-temps-block) { margin-top: 28px; }
     .emploi-temps-tbl {
@@ -7217,7 +7230,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=547"></script>
+<script src="script-data.js?v=548"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
