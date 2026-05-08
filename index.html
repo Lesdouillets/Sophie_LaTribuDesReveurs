@@ -4551,7 +4551,7 @@
     body:has(.info-panel.info-panel-blue.open) .sol-floating-btns {
       right: 1220px;
     }
-    /* Bulle BD : setup exact d'hier 20h (commit 1766b80) — qui fonctionnait. */
+    /* Bulle BD : setup exact d'hier 19h (commit 8a38fa2) — qui marchait pour toi. */
     .sol-floating-btn {
       position: relative;
       width: 200px; height: 200px;
@@ -4572,7 +4572,7 @@
       top: 22%; left: 9%; right: 9%;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      gap: 4px; color: #fff;
+      gap: 4px; color: #1e3a8a;
       font-weight: 700; pointer-events: none;
     }
     .sol-floating-btn-content span:first-child { font-size: 32px !important; line-height: 1; }
@@ -11755,8 +11755,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const fbTitle = substituteVars(b.title || b.label || '');
       const fbContent = renderBlocks(Array.isArray(b.blocks) ? b.blocks : [], sectionId, (depth||0)+1, String(path||i));
       window.__infoButtons[fbId] = { title: fbTitle, content: fbContent, style: b.style || '' };
-      // Bulle BD : SVG inline (setup exact d'hier 20h commit 1766b80 qui marchait)
-      const svg = `<svg class="sol-floating-btn-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M 100 15 C 40 15 10 45 10 85 C 10 120 35 145 78 152 L 62 178 L 100 150 C 155 148 190 120 190 85 C 190 45 160 15 100 15 Z" fill="#5e7194" stroke="#2d3f5c" stroke-width="2" stroke-linejoin="round"/></svg>`;
+      // Bulle BD : SVG inline (setup exact d'hier 19h commit 8a38fa2 qui marchait pour toi)
+      const svg = `<svg class="sol-floating-btn-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M 100 15 C 40 15 10 45 10 85 C 10 120 35 145 78 152 L 62 178 L 100 150 C 155 148 190 120 190 85 C 190 45 160 15 100 15 Z" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" stroke-linejoin="round"/></svg>`;
       // _bubbleLeft: true → positionne à gauche (évite d'occulter le bouton Suivant qui est à droite)
       const posStyle = b._bubbleLeft ? 'left:30px;right:auto' : (b._bubbleBottom ? `bottom:${b._bubbleBottom}` : '');
       const styleAttr = posStyle ? `style="${posStyle}"` : '';
