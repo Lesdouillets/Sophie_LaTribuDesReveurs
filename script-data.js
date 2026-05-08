@@ -367,10 +367,10 @@ const SCRIPT_DATA = {
                 }
               ]
             },
+            { type: "normal", _leftTitle: "Petite question", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- J'ai aussi une **petite question** par rapport au **LIEU de sommeil**\n- Aujourd'hui, [prénom_enfant] **dort dans VOTRE chambre**" },
             {
               type: "option", label: "Dort dans le lit parental", style: "purple",
               blocks: [
-                { type: "normal", _leftTitle: "Petite question", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- J'ai aussi une **petite question** par rapport au **LIEU de sommeil**\n- Aujourd'hui, [prénom_enfant] **dort dans VOTRE chambre**" },
                 { type: "normal", _leftTitle: "Dans votre lit", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Et plus précisément **dans VOTRE LIT**" },
                 { type: "normal", _leftTitle: "Recommandations OMS", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- De mon côté, je dois **quand même** vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à faire **dormir** les enfants dans **LEUR PROPRE LIT**…\n  - …car cela **diminue significativement le risque de Mort Inattendue du Nourrisson**" },
                 { type: "normal", _leftTitle: "Voir ce qui VOUS convient", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Mais **au-delà de ça**, l'idée, ce n'est **PAS de vous dire quoi faire**\n- C'est surtout de **voir CE QUI vous convient** à vous, aujourd'hui\n- Parce qu'il y a :\n  - **CE QUI est recommandé**\n  - **ET CE QUI est possible** dans votre **réalité du quotidien**\n  - **MAIS aussi CE QUI est en accord avec vos souhaits**" }
