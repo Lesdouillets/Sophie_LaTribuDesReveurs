@@ -7237,7 +7237,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=545"></script>
+<script src="script-data.js?v=546"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9849,17 +9849,12 @@ function _meetUpdateOverlap() {
   const viewportH = window.innerHeight;
   const videoTop = isBottom ? (viewportH - meetH - 10) : (60 + 10);
   const videoBottom = videoTop + meetH;
-  // Enfants directs des conteneurs principaux (consultation + fiche client). Pas de
-  // descente en profondeur : ça évitait les artefacts visuels (rails dark-blue
-  // dupliqués à droite des blocs avec _leftTitle, etc.).
-  const containers = [
-    document.getElementById('content-area'),
-    document.getElementById('setup-screen')
-  ].filter(Boolean);
-  const candidates = [];
-  containers.forEach(container => {
-    Array.from(container.children).forEach(el => candidates.push(el));
-  });
+  // Enfants directs de #content-area uniquement (consultation). Pas de descente en
+  // profondeur (évite les artefacts sur les rails dark-blue des blocs avec _leftTitle).
+  // La fiche client (#setup-screen) est exclue : son layout flex (sidebar + form) ne
+  // se prête pas au narrowing — appliquer margin-right créait 2 colonnes bleu marine.
+  const contentArea = document.getElementById('content-area');
+  const candidates = contentArea ? Array.from(contentArea.children) : [];
   candidates.forEach(el => {
     if (!el || !el.getBoundingClientRect) return;
     // Exclure les blocs avec encadré latéral intégré (emploi_du_temps a son propre
@@ -9902,19 +9897,11 @@ function _meetSetupOverlap() {
     // attributes filtrés sur class+style pour capter les toggle .open-action / display.
     _meetMutationObs.observe(contentArea, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'style'] });
   }
-  // Aussi sur la fiche client (.setup-screen) si présente
-  const setupScreen = document.getElementById('setup-screen');
-  if (setupScreen && !_meetMutationObsSetup) {
-    _meetMutationObsSetup = new MutationObserver(() => _meetScheduleOverlap());
-    _meetMutationObsSetup.observe(setupScreen, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'style'] });
-  }
   // Re-calcul aussi sur tout clic dans le contenu (fallback : ouverture de boutons via onclick)
   contentArea.addEventListener('click', _meetScheduleOverlapDelayed, true);
-  if (setupScreen) setupScreen.addEventListener('click', _meetScheduleOverlapDelayed, true);
   // Calcul initial
   _meetScheduleOverlap();
 }
-let _meetMutationObsSetup = null;
 // Petite tempo pour laisser le layout reflow après un click qui ouvre/ferme un bloc
 function _meetScheduleOverlapDelayed() {
   setTimeout(_meetScheduleOverlap, 50);
