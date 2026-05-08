@@ -6915,7 +6915,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=468"></script>
+<script src="script-data.js?v=469"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -8782,11 +8782,12 @@ function computeClientFields(triggeredBy) {
         const terme = new Date(consult);
         terme.setDate(consult.getDate() - days);
         const newStr = terme.toISOString().slice(0, 10);
-        // Vérif que terme > naissance (sinon prématurité négative)
-        if (new Date(newStr) > new Date(dateNaiss)) {
-          dt.value = newStr;
-          dateTerme = newStr;
-        }
+        // Pas de validation terme > naissance : on écrit la date même si elle est antérieure
+        // à la naissance (cas d'un âge corrigé > âge réel, médicalement incohérent mais possible
+        // en saisie). La couche d'affichage et la prise en compte par les calculs (calcAge etc.)
+        // gèrent déjà le cas terme <= naissance (= pas de prématurité = âge corrigé = réel).
+        dt.value = newStr;
+        dateTerme = newStr;
       }
     }
   }
