@@ -6961,7 +6961,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=505"></script>
+<script src="script-data.js?v=506"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -13479,11 +13479,12 @@ function renderSolutionsCheckboxes(opts) {
             `</div>`;
         }
       }
-      // Ordre : bannière → intro de la catégorie → pastille de l'enfant → cards (ou contenu enfant) → outro
+      // Ordre : bannière → pastille (singleChildMode) → intro de la catégorie → cards/contenu → outro
+      // (la pastille apparaît juste sous le bandeau pour identifier l'enfant unique tout de suite)
       activeContentHtml = `<div class="sol-active-content" data-section-cat="${cat.id}" style="border:3px solid ${c.main}">
         <div class="sol-active-banner" style="background:${c.main}">${cat.emoji || ''} ${cat.title}</div>
-        ${introHtml}
         ${singleChildPastille}
+        ${introHtml}
         ${envCardsOverride !== null ? envCardsOverride : cardsHtml}
         ${envCardsOverride !== null ? envChildContentOverride : childContentHtml}
         ${outroHtml}
