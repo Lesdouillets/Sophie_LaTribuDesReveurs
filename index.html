@@ -6961,7 +6961,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=496"></script>
+<script src="script-data.js?v=497"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7159,7 +7159,8 @@ let state = {
   // Tout est réduit par défaut (Set vide).
   planSidebarChildExpanded: new Set(),
   pbSidebarChildExpanded: new Set(),
-  sidebarSectionCollapsed: new Set(),
+  // Par défaut : "Par problématique" est replié, "Plan d'action" est ouvert.
+  sidebarSectionCollapsed: new Set(['conditional']),
   // Mode "Browse" depuis le sidebar : navigation rapide sans cocher les leviers/solutions
   // → affiche uniquement le contenu de la carte parent active (sans "Solutions identifiées" + cards row)
   solBrowseMode: false,
