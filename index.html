@@ -4545,32 +4545,70 @@
     body:has(.info-panel.info-panel-blue.open) .sol-floating-btns {
       right: 1220px;
     }
-    /* Bulle BD : forme via background-image SVG (data URL) — toujours rendu, peu
-       importe le navigateur. Forme = ovale + queue triangulaire au coin bas-gauche.
-       Couleur = bandeau du panel "Si pleurs difficiles" (#5e7194 + bordure #2d3f5c). */
+    /* Bulle BD pure CSS : ovale (border-radius:50%) + queue triangulaire en
+       pseudo-element. Couleurs = bandeau du panel "Si pleurs difficiles" (#5e7194). */
     .sol-floating-btn {
-      position: relative;
-      width: 220px; height: 200px;
-      border: none;
-      background: transparent;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 200' preserveAspectRatio='none'><path d='M 110 12 C 50 12 12 42 12 80 C 12 112 35 135 78 142 L 38 195 L 102 138 C 158 135 208 112 208 80 C 208 42 170 12 110 12 Z' fill='%235e7194' stroke='%232d3f5c' stroke-width='4' stroke-linejoin='round'/></svg>");
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
-      cursor: pointer; padding: 0;
-      transition: transform 0.15s, filter 0.15s;
-      filter: drop-shadow(0 4px 14px rgba(45,63,92,0.32));
+      position: relative !important;
+      display: block !important;
+      width: 180px !important;
+      height: 130px !important;
+      padding: 0 !important;
+      border: 4px solid #2d3f5c !important;
+      border-radius: 50% !important;
+      background-color: #5e7194 !important;
+      background-image: none !important;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(45,63,92,0.35);
+      transition: transform 0.15s, box-shadow 0.15s;
+      overflow: visible !important;
+      box-sizing: border-box;
+      color: #ffffff !important;
     }
-    .sol-floating-btn:hover { transform: scale(1.06); filter: drop-shadow(0 6px 18px rgba(45,63,92,0.45)); }
+    .sol-floating-btn:hover { transform: scale(1.06); box-shadow: 0 6px 20px rgba(45,63,92,0.5); }
     .sol-floating-btn:active { transform: scale(0.97); }
+    /* Queue triangulaire — bordure foncée */
+    .sol-floating-btn::before {
+      content: '' !important;
+      position: absolute !important;
+      bottom: -42px !important;
+      left: 18px !important;
+      width: 0 !important;
+      height: 0 !important;
+      border-style: solid !important;
+      border-width: 0 24px 44px 18px !important;
+      border-color: transparent transparent #2d3f5c transparent !important;
+      transform: rotate(180deg) !important;
+      z-index: 1;
+    }
+    /* Queue triangulaire — remplissage bleu (par-dessus, légèrement + petit) */
+    .sol-floating-btn::after {
+      content: '' !important;
+      position: absolute !important;
+      bottom: -32px !important;
+      left: 24px !important;
+      width: 0 !important;
+      height: 0 !important;
+      border-style: solid !important;
+      border-width: 0 18px 36px 14px !important;
+      border-color: transparent transparent #5e7194 transparent !important;
+      transform: rotate(180deg) !important;
+      z-index: 2;
+    }
     .sol-floating-btn-svg { display: none !important; }
     .sol-floating-btn-content {
-      position: absolute;
-      top: 14%; left: 12%; right: 12%; bottom: 32%;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 4px; color: #ffffff !important;
-      font-weight: 700; pointer-events: none;
+      position: absolute !important;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 4px;
+      color: #ffffff !important;
+      font-weight: 700;
+      pointer-events: none;
       text-align: center;
+      padding: 12px 16px;
+      box-sizing: border-box;
       z-index: 3;
     }
     .sol-floating-btn-content span:first-child { font-size: 32px !important; line-height: 1; }
@@ -7220,7 +7258,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=556"></script>
+<script src="script-data.js?v=557"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
