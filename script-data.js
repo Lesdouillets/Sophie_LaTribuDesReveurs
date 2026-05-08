@@ -280,26 +280,10 @@ const SCRIPT_DATA = {
       emoji: "🔍",
       blocks: [
         { type: "normal", _leftTitle: "Journée type", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- **CE QUE** je vous **propose maintenant**,<br>c'est de **dérouler** une **journée type**, pour essayer de **comprendre AU MIEUX** votre quotidien" },
-        {
-          type: "columns_2",
-          rowTabs: true,
-          leftTitle: "📔 Fiche découverte",
-          rightTitle: "📊 Lecture des courbes",
-          thirdTitle: "📋 Tableau de suivi du sommeil",
-          fourthTitle: "📸 Photos de la chambre",
-          left: [
-            { type: "normal", text: "<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:12px 14px;margin-top:0;font-size:14px;line-height:1.5\"><div style=\"display:grid;grid-template-columns:auto auto 1fr;gap:6px 8px;align-items:start\"><span>❓</span><span>•</span><span><strong>CE QU'ON peut faire</strong>, c'est qu'on peut <strong>commencer par le réveil</strong> du matin, <strong>si ça vous va</strong> ?</span></div></div><div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:12px 14px;margin-top:8px;font-size:14px;line-height:1.5\"><div style=\"display:grid;grid-template-columns:auto auto 1fr;gap:6px 8px;align-items:start\"><span>❓</span><span>•</span><span>À quelle heure se <strong>réveille-t-il le matin</strong> ?</span><span></span><span>•</span><span>Est-ce que c'est un horaire qui <strong>vous convient</strong> ?</span></div><div style=\"margin-top:10px;padding-left:30px;display:flex;align-items:center;gap:8px;flex-wrap:wrap\"><span style=\"font-size:13px;font-weight:700;color:#9a3412\">⏰ Horaire souhaité :</span><input type=\"time\" data-horaire-souhaite=\"1\" oninput=\"onHoraireSouhaiteChange(this)\" style=\"padding:5px 8px;border:1.5px solid #fb923c;border-radius:8px;font-size:13px;font-weight:700;color:#9a3412;background:white\"></div></div>" }
-          ],
-          right: [
-            { type: "normal", text: "<ul style=\"margin:2px 0 2px 18px;padding:0;list-style:disc\"><li style=\"line-height:1.5\">On va maintenant <strong>regarder les courbes</strong></li></ul><div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:12px 14px;margin-top:8px;margin-bottom:14px;font-size:14px;line-height:1.5\"><div style=\"display:grid;grid-template-columns:auto auto 1fr;gap:6px 8px;align-items:start\"><span>❓</span><span>•</span><span>Avez-vous les <strong>courbes devant vous</strong> ?</span><span></span><span>•</span><span>On va <strong>commencer</strong> par lire la <strong>courbe du périmètre crânien</strong></span></div></div><div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:12px 14px;margin-top:8px;margin-bottom:28px;font-size:14px;line-height:1.5\"><div id=\"dec-taille-parents\"></div><div style=\"display:grid;grid-template-columns:auto auto 1fr;gap:6px 8px;align-items:start;margin-top:28px\"><span>❓</span><span>•</span><span>Avez-vous des <strong>personnes très GRANDES dans vos familles</strong> ?</span></div></div>" }
-          ],
-          third: [
-            { type: "normal", text: "<ul style=\"margin:2px 0 2px 18px;padding:0;list-style:disc\"><li style=\"line-height:1.5\">Maintenant, on va <strong>lire ensemble</strong> le <strong>tableau de suivi du sommeil</strong> que vous avez rempli</li></ul>" }
-          ],
-          fourth: [
-            { type: "normal", text: "<ul style=\"margin:2px 0 2px 18px;padding:0;list-style:disc\"><li style=\"line-height:1.5\">On va maintenant <strong>regarder rapidement les photos</strong> de la chambre</li></ul>" }
-          ]
-        },
+        { type: "normal", _leftTitle: "📔 Fiche découverte", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:12px 14px;margin-top:0;font-size:14px;line-height:1.5\"><div style=\"display:grid;grid-template-columns:auto auto 1fr;gap:6px 8px;align-items:start\"><span>❓</span><span>•</span><span><strong>CE QU'ON peut faire</strong>, c'est qu'on peut <strong>commencer par le réveil</strong> du matin, <strong>si ça vous va</strong> ?</span></div></div><div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:12px 14px;margin-top:8px;font-size:14px;line-height:1.5\"><div style=\"display:grid;grid-template-columns:auto auto 1fr;gap:6px 8px;align-items:start\"><span>❓</span><span>•</span><span>À quelle heure se <strong>réveille-t-il le matin</strong> ?</span><span></span><span>•</span><span>Est-ce que c'est un horaire qui <strong>vous convient</strong> ?</span></div><div style=\"margin-top:10px;padding-left:30px;display:flex;align-items:center;gap:8px;flex-wrap:wrap\"><span style=\"font-size:13px;font-weight:700;color:#9a3412\">⏰ Horaire souhaité :</span><input type=\"time\" data-horaire-souhaite=\"1\" oninput=\"onHoraireSouhaiteChange(this)\" style=\"padding:5px 8px;border:1.5px solid #fb923c;border-radius:8px;font-size:13px;font-weight:700;color:#9a3412;background:white\"></div></div>" },
+        { type: "normal", _leftTitle: "📊 Lecture des courbes", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- On va maintenant **regarder les courbes**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:12px 14px;margin-top:8px;margin-bottom:14px;font-size:14px;line-height:1.5\"><div style=\"display:grid;grid-template-columns:auto auto 1fr;gap:6px 8px;align-items:start\"><span>❓</span><span>•</span><span>Avez-vous les <strong>courbes devant vous</strong> ?</span><span></span><span>•</span><span>On va <strong>commencer</strong> par lire la <strong>courbe du périmètre crânien</strong></span></div></div><div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:12px 14px;margin-top:8px;margin-bottom:28px;font-size:14px;line-height:1.5\"><div id=\"dec-taille-parents\"></div><div style=\"display:grid;grid-template-columns:auto auto 1fr;gap:6px 8px;align-items:start;margin-top:28px\"><span>❓</span><span>•</span><span>Avez-vous des <strong>personnes très GRANDES dans vos familles</strong> ?</span></div></div>" },
+        { type: "normal", _leftTitle: "📋 Tableau de suivi du sommeil", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Maintenant, on va **lire ensemble** le **tableau de suivi du sommeil** que vous avez rempli" },
+        { type: "normal", _leftTitle: "📸 Photos de la chambre", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- On va maintenant **regarder rapidement les photos** de la chambre" },
         { type: "decouverte_notes_question", _leftTitle: "Notes émotionnelles", _leftTitleStyle: "background:#2d3f5c;color:#fff" },
         {
           type: "option", _floatingBubble: true, label: "Si Maman en dépression/très fatiguée", emoji: "😭", style: "pleurs",
@@ -437,10 +421,8 @@ const SCRIPT_DATA = {
       blocks: [
         { type: "normal", _leftTitle: "Vue globale", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- OK, là super, j'ai eu **beaucoup d'informations**\n- MERCI !\n\n- **Maintenant, j'ai :**\n  - une **vue PLUS globale** de la situation\n  - ET des **solutions à mettre en œuvre**" },
         {
-          type: "columns_2",
-          leftTitle: "📊 Besoins de sommeil selon l'âge",
-          rightTitle: "📋 Difficultés identifiées",
-          left: [
+          type: "grouped_block", _leftTitle: "📊 Besoins de sommeil selon l'âge", _leftTitleStyle: "background:#2d3f5c;color:#fff",
+          blocks: [
             { type: "normal", text: "- D'après les **données consolidées** de la <em>**National Sleep Foundation**</em> (États-Unis) ET du **laboratoire français d'étude du sommeil** :\n\n- [prénom_enfant] a des <strong style=\"color:#c0392b\">BESOINS</strong> pour son âge\n- ⚠️ Je parle toujours en **<span style=\"border-bottom:1px dashed currentColor;cursor:help\" title=\"L'âge qu'aurait eu votre enfant s'il était né à terme. Cela permet de connaître l'âge de maturation du cerveau.\">âge CORRIGÉ</span>**" },
             {
               type: "besoins_sommeil",
@@ -454,13 +436,11 @@ const SCRIPT_DATA = {
                 { age: "4-5 ans", nuit: "11h-13h (moy. 11-12h)", jour: "2h-3h ou 45 min temps calme", total: "12h-16h (moy. 13-14h)", siestes: "1 sieste ou temps calme" },
               ]
             },
-          ],
-          thirdTitle: "✨ La bonne nouvelle",
-          thirdStyle: "news-red",
-          third: [
-            { type: "normal", text: "<ul style=\"margin:0;padding-left:20px\"><li style=\"line-height:1.6\">MAIS la <strong>bonne nouvelle</strong> c'est que :<ul style=\"margin:4px 0 0 0;padding-left:22px\"><li style=\"line-height:1.6\"><strong>TOUT</strong> ce que vous m'avez partagé a du sens, est <strong>explicable</strong></li><li style=\"line-height:1.6\">Mais <strong>SURTOUT</strong> que c'est <strong>solutionnable</strong> !</li><li style=\"line-height:1.6\">ET que je peux vous <strong>accompagner</strong> pour les troubles du sommeil de [prénom_enfant]</li></ul></li></ul>" },
-          ],
-          right: [
+          ]
+        },
+        {
+          type: "grouped_block", _leftTitle: "📋 Difficultés identifiées", _leftTitleStyle: "background:#2d3f5c;color:#fff",
+          blocks: [
             {
               type: "option", label: "Pas de dette de sommeil", emoji: "✅", style: "action-green", _pillStyle: true, _purpleContent: true, mutexGroup: "diag-sommeil",
               blocks: [
@@ -490,6 +470,7 @@ const SCRIPT_DATA = {
             },
           ]
         },
+        { type: "normal", _leftTitle: "✨ La bonne nouvelle", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "<ul style=\"margin:0;padding-left:20px\"><li style=\"line-height:1.6\">MAIS la <strong>bonne nouvelle</strong> c'est que :<ul style=\"margin:4px 0 0 0;padding-left:22px\"><li style=\"line-height:1.6\"><strong>TOUT</strong> ce que vous m'avez partagé a du sens, est <strong>explicable</strong></li><li style=\"line-height:1.6\">Mais <strong>SURTOUT</strong> que c'est <strong>solutionnable</strong> !</li><li style=\"line-height:1.6\">ET que je peux vous <strong>accompagner</strong> pour les troubles du sommeil de [prénom_enfant]</li></ul></li></ul>" },
         { type: "leviers_dynamiques" },
         { type: "leviers_count", _leftTitle: "Nombre de levier(s) identifié(s)", _leftTitleStyle: "background:#2d3f5c;color:#fff" },
         { type: "normal", _leftTitle: "Pas le temps de tout voir aujourd'hui", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- On n'aura **PEUT-ÊTRE pas le temps** de tout voir aujourd'hui :\n- mais on pourra **toujours reprendre un RDV plus tard** pour **discuter des points** que l'on n'aura **pas eu le temps de voir aujourd'hui.**\n\n- Donc, **CE QUE je vois en 1er**, c'est **quelque chose au niveau de**…" },
