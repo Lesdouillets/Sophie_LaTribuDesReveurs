@@ -4545,22 +4545,26 @@
     body:has(.info-panel.info-panel-blue.open) .sol-floating-btns {
       right: 1220px;
     }
-    /* Bulle BD : SVG inline (forme parfaite d'il y a 2 jours).
-       Bouton transparent, le SVG dessine le corps + la queue intégrée. */
+    /* Bulle BD : SVG en background-image base64 (forme parfaite d'il y a 2 jours).
+       Le base64 garantit que l'image est rendue dans tous les navigateurs sans problème
+       d'encodage URL. Le SVG inline visible est masqué (display:none). */
     .sol-floating-btn {
       position: relative;
       width: 200px; height: 200px;
-      border: none; background: transparent !important;
+      border: none;
+      background-color: transparent;
+      background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIj48cGF0aCBkPSJNIDEwMCAxNSBDIDQwIDE1IDEwIDQ1IDEwIDg1IEMgMTAgMTIwIDM1IDE0NSA3OCAxNTIgTCA2MiAxNzggTCAxMDAgMTUwIEMgMTU1IDE0OCAxOTAgMTIwIDE5MCA4NSBDIDE5MCA0NSAxNjAgMTUgMTAwIDE1IFoiIGZpbGw9IiM1ZTcxOTQiIHN0cm9rZT0iIzJkM2Y1YyIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
       cursor: pointer; padding: 0;
-      transition: transform 0.15s;
-    }
-    .sol-floating-btn:hover { transform: scale(1.05); }
-    .sol-floating-btn:active { transform: scale(0.98); }
-    .sol-floating-btn-svg {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
+      transition: transform 0.15s, filter 0.15s;
       filter: drop-shadow(0 4px 14px rgba(45,63,92,0.35));
     }
+    .sol-floating-btn:hover { transform: scale(1.05); filter: drop-shadow(0 6px 18px rgba(45,63,92,0.5)); }
+    .sol-floating-btn:active { transform: scale(0.98); }
+    /* SVG inline rendu masqué — la forme est dessinée via background-image */
+    .sol-floating-btn-svg { display: none !important; }
     .sol-floating-btn-content {
       position: absolute;
       top: 25%; left: 10%; right: 10%;
@@ -7217,7 +7221,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=561"></script>
+<script src="script-data.js?v=562"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
