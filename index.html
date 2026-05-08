@@ -6883,7 +6883,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=435"></script>
+<script src="script-data.js?v=437"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -12010,20 +12010,31 @@ function setTickboxChoiceFromSol(cid, value) {
   if (!state.tickboxChoices) state.tickboxChoices = {};
   // Propager sur les 2 cids tétine pour garantir cohérence (et éviter l'alerte de conflit)
   if (cid === 'strategie_tetine_choice' || cid === 'obj_tetine_static') {
-    state.tickboxChoices['strategie_tetine_choice'] = value;
-    state.tickboxChoices['obj_tetine_static'] = value;
+    if (value) {
+      state.tickboxChoices['strategie_tetine_choice'] = value;
+      state.tickboxChoices['obj_tetine_static'] = value;
+    } else {
+      // Désélection (value vide) → supprimer les choix
+      delete state.tickboxChoices['strategie_tetine_choice'];
+      delete state.tickboxChoices['obj_tetine_static'];
+    }
     // Synchroniser la pb souhait_tetine
     if (!state.selectedPbs) state.selectedPbs = new Set();
     if (value === 'supprimer') state.selectedPbs.add('souhait_tetine');
     else state.selectedPbs.delete('souhait_tetine');
-    // Auto-cocher la solution Tétine + protéger contre syncSolutionsFromPbs
+    // Auto-cocher / décocher la solution Tétine selon qu'un choix est actif
     if (!state.selectedSolutions) state.selectedSolutions = new Set();
     if (!state.selectedSolutionsManuallyEdited) state.selectedSolutionsManuallyEdited = new Set();
-    state.selectedSolutions.add('strat_tetine');
-    state.selectedSolutionsManuallyEdited.add('strat_tetine');
+    if (value) {
+      state.selectedSolutions.add('strat_tetine');
+      state.selectedSolutionsManuallyEdited.add('strat_tetine');
+    } else {
+      state.selectedSolutions.delete('strat_tetine');
+      state.selectedSolutionsManuallyEdited.delete('strat_tetine');
+    }
     // Synchroniser les checkboxes IV. Objectifs / V. Diagnostic visibles
     document.querySelectorAll('.block-tickbox-choice[data-choice-id="obj_tetine_static"] .tbc-opt, .block-tickbox-choice[data-choice-id="strategie_tetine_choice"] .tbc-opt').forEach(opt => {
-      opt.classList.toggle('tbc-selected', opt.dataset.value === value);
+      opt.classList.toggle('tbc-selected', !!value && opt.dataset.value === value);
     });
   } else {
     state.tickboxChoices[cid] = value;
@@ -12247,10 +12258,12 @@ function renderSolutionsCheckboxes(opts) {
           { val: 'supprimer', label: '❌ Supprimer' },
           { val: 'hybride', label: '🔀 Hybride' }
         ];
-        // Nom unique par panneau (compactOnly vs main vs fiche) pour éviter les conflits de groupe radio
-        const tetineRadioName = 'sol-tetine-sub-' + (compactOnly ? 'cmp' : 'main') + '-' + Math.random().toString(36).slice(2,8);
-        subRows = `<div class="sol-row-sub" style="padding-left:30px;display:flex;flex-direction:column;gap:4px;margin-top:4px">` +
-          opts.map(o => `<label style="display:flex;align-items:center;gap:6px;font-size:14px;cursor:pointer"><input type="radio" name="${tetineRadioName}" value="${o.val}" ${tchoice===o.val?'checked':''} onchange="setTickboxChoiceFromSol('strategie_tetine_choice','${o.val}')"> ${o.label}</label>`).join('') +
+        // Checkboxes carrées (au lieu de radios ronds) — la mutex est gérée par
+        // setTickboxChoiceFromSol qui écrit dans state.tickboxChoices['strategie_tetine_choice']
+        // (1 seule valeur stockable) → cocher l'une décoche visuellement les autres au prochain render.
+        // Retrait à gauche augmenté (60px au lieu de 30px) pour les indenter sous le titre de catégorie.
+        subRows = `<div class="sol-row-sub" style="padding-left:60px;display:flex;flex-direction:column;gap:4px;margin-top:4px">` +
+          opts.map(o => `<label style="display:flex;align-items:center;gap:6px;font-size:14px;cursor:pointer"><input type="checkbox" value="${o.val}" ${tchoice===o.val?'checked':''} onchange="setTickboxChoiceFromSol('strategie_tetine_choice', this.checked ? '${o.val}' : '')"> ${o.label}</label>`).join('') +
           `</div>`;
       }
       // Sous-options : checkboxes reflétant state.courbeCardsTicked
@@ -12488,6 +12501,19 @@ function renderSolutionsCheckboxes(opts) {
   // Helper : renvoie les labels des sous-items tickees (state.courbeCardsTicked) d'un enfant ;
   // sinon fallback sur le label de l'enfant (cardLabel/label/id)
   const getDisplayLabelsForChild = (ch) => {
+    // strat_tetine : sous-titre = choix actif (Garder/Supprimer/Hybride) à la place du label "Tétine"
+    // (sinon la carte parent afficherait "Tétine" puis sous-titre "🍭 Tétine" — redondance).
+    if (ch.id === 'strat_tetine') {
+      let tchoice = null;
+      if (state.tickboxChoices) {
+        tchoice = state.tickboxChoices['strategie_tetine_choice'] || state.tickboxChoices['obj_tetine_static'] || null;
+      }
+      if (!tchoice && state.selectedPbs && state.selectedPbs.has('souhait_tetine')) tchoice = 'supprimer';
+      const choiceLabel = ({ garder: '✅ Garder', supprimer: '❌ Supprimer', hybride: '🔀 Hybride' })[tchoice || ''];
+      if (choiceLabel) return [choiceLabel];
+      // Pas de choix : ne pas afficher de sous-titre
+      return [];
+    }
     if (Array.isArray(ch.blocks)) {
       const grid = ch.blocks.find(b => b && b.type === 'courbe_cards_grid' && Array.isArray(b.items));
       if (grid && state.courbeCardsTicked) {
@@ -12573,19 +12599,15 @@ function renderSolutionsCheckboxes(opts) {
       const activeChildId = singleChildMode
         ? checkedChildren[0].id
         : ((state.solActiveChildByCat && state.solActiveChildByCat[cat.id]) || null);
-      // Si l'enfant actif (singleChildMode) a un courbe_cards_grid avec expandAllAsPills,
-      // on cache la sol-child-card parent — la pastille magenta à l'intérieur fait office d'identification
+      // singleChildMode : on cache TOUJOURS la grosse carte parente — une pastille (oval pill)
+      // injectée au début de childContentHtml fait office d'identification visuelle.
+      // (Avant : on ne masquait que si l'enfant actif avait expandAllAsPills.)
       const activeChildObj = activeChildId ? checkedChildren.find(c => c.id === activeChildId) : null;
-      const activeChildHasPills = activeChildObj && Array.isArray(activeChildObj.blocks) &&
-        activeChildObj.blocks.some(b => b && b.type === 'courbe_cards_grid' && b.expandAllAsPills);
-      const skipChildCards = singleChildMode && activeChildHasPills;
+      const skipChildCards = singleChildMode;
       const cardsHtml = (checkedChildren.length && !skipChildCards) ? `<div class="sol-child-cards">` + checkedChildren.map(ch => {
         const isActive = activeChildId === ch.id;
         if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
         const childTicked = state.cardPersonalTicks.has(ch.id);
-        // strat_tetine : pas de carte parente "Tétine" — la pastille (Garder/Supprimer/Hybride)
-        // injectée au début de childContentHtml fait office d'identification visuelle.
-        if (ch.id === 'strat_tetine') return '';
         // Affichage dynamique : si EXACTEMENT 1 sous-carte est tickée, afficher son emoji+label à la place du parent
         let dynEmoji = ch.cardEmoji || '📄';
         let dynLabel = ch.cardLabel || ch.label || ch.id;
@@ -12630,27 +12652,43 @@ function renderSolutionsCheckboxes(opts) {
           // Filtrer les tickbox_choice déjà affichés dans la liste compacte (ex. accomp_progressivite)
           // pour ne pas les dupliquer dans la vue rectangulaire détaillée
           const blocksForRender = (activeChild.blocks || []).filter(b => !(b && b.type === 'tickbox_choice'));
-          // Pour strat_tetine : injecter une pastille (façon "tranche d'âge" de l'emploi du temps)
-          // qui affiche le choix actif (Garder/Supprimer/Hybride) — alignée à gauche, légèrement plus
-          // grosse, couleur identique au bandeau (c.main).
-          let stratTetinePillHtml = '';
-          if (activeChild.id === 'strat_tetine') {
-            let tchoice = null;
-            if (state.tickboxChoices) {
-              tchoice = state.tickboxChoices['strategie_tetine_choice'] || state.tickboxChoices['obj_tetine_static'] || null;
+          // singleChildMode : injecter une pastille (oval pill, alignée à gauche, couleur du bandeau)
+          // au début du contenu pour identifier l'enfant actif (à la place de la grosse carte).
+          // - strat_tetine : pastille = choix (Garder/Supprimer/Hybride)
+          // - autres : pastille = emoji + label (dynamique si une sous-carte est tickée)
+          let singleChildPastilleHtml = '';
+          if (singleChildMode) {
+            let pastilleLabel = '';
+            if (activeChild.id === 'strat_tetine') {
+              let tchoice = null;
+              if (state.tickboxChoices) {
+                tchoice = state.tickboxChoices['strategie_tetine_choice'] || state.tickboxChoices['obj_tetine_static'] || null;
+              }
+              if (!tchoice && state.selectedPbs && state.selectedPbs.has('souhait_tetine')) tchoice = 'supprimer';
+              pastilleLabel = ({ garder: '✅ Garder', supprimer: '❌ Supprimer', hybride: '🔀 Hybride' })[tchoice || ''] || '';
+            } else {
+              // Pastille générique : emoji + label, dynamique si une sous-carte est tickée
+              let dynEmoji2 = activeChild.cardEmoji || '📄';
+              let dynLabel2 = activeChild.cardLabel || activeChild.label || activeChild.id;
+              if (Array.isArray(activeChild.blocks)) {
+                const grid2 = activeChild.blocks.find(b => b && b.type === 'courbe_cards_grid' && Array.isArray(b.items));
+                if (grid2 && state.courbeCardsTicked) {
+                  const tickedItems2 = grid2.items.filter(it => state.courbeCardsTicked.has(it.id));
+                  if (tickedItems2.length === 1) {
+                    const it2 = tickedItems2[0];
+                    dynEmoji2 = it2.emoji || dynEmoji2;
+                    dynLabel2 = it2.label || it2.id;
+                  }
+                }
+              }
+              pastilleLabel = `${dynEmoji2} ${dynLabel2}`;
             }
-            if (!tchoice && state.selectedPbs && state.selectedPbs.has('souhait_tetine')) tchoice = 'supprimer';
-            const pillLabel = {
-              garder:    '✅ Garder',
-              supprimer: '❌ Supprimer',
-              hybride:   '🔀 Hybride'
-            }[tchoice || ''];
-            if (pillLabel) {
-              stratTetinePillHtml = `<div style="padding:4px 0 10px"><div style="display:inline-block;padding:9px 22px;background:${c.main};color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)">${pillLabel}</div></div>`;
+            if (pastilleLabel) {
+              singleChildPastilleHtml = `<div style="padding:4px 0 10px"><div style="display:inline-block;padding:9px 22px;background:${c.main};color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)">${pastilleLabel}</div></div>`;
             }
           }
           childContentHtml = `<div class="sol-child-content${childContentExtraClass}" data-section-cat="${cat.id}" style="position:relative;border-color:${c.main};--cat-main:${c.main};--cat-dark:${c.dark};--cat-light:${c.light||'#fef2f2'}">` +
-            stratTetinePillHtml +
+            singleChildPastilleHtml +
             floatingBtnsHtml +
             renderBlocks(blocksForRender, 'sol_' + cat.id + '_' + activeChild.id) +
             closeBtnBottom +
