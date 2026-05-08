@@ -6883,7 +6883,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=428"></script>
+<script src="script-data.js?v=429"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -13091,6 +13091,9 @@ function toggleSolGroup(catId) {
   if (currentlyCollapsed) state.solGroupsCollapsed.delete(catId);
   else state.solGroupsCollapsed.add(catId);
   if (typeof renderCurrentSection === 'function') renderCurrentSection();
+  // Mettre à jour le modal Solutions identifiées + la fiche client (sinon le clic sur la
+  // catégorie n'ouvre/ferme rien dans ces 2 vues)
+  if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.toggleSolGroup = toggleSolGroup;
@@ -13101,6 +13104,8 @@ function toggleSolRow(rowId) {
   if (state.solRowsCollapsed.has(rowId)) state.solRowsCollapsed.delete(rowId);
   else state.solRowsCollapsed.add(rowId);
   if (typeof renderCurrentSection === 'function') renderCurrentSection();
+  // Mettre à jour aussi le modal + fiche client (cohérence triple-vue)
+  if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.toggleSolRow = toggleSolRow;
