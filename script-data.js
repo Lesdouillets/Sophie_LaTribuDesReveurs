@@ -328,7 +328,7 @@ const SCRIPT_DATA = {
           blocks: [
             {
               type: "lieu_sommeil_intro_grid",
-              text: "- J'ai aussi une **petite question** par rapport au **LIEU de sommeil**\n- Aujourd'hui, [prénom_enfant] **dort dans VOTRE chambre**",
+              text: "",
               buttons: [
                 {
                   label: "Cododo",
