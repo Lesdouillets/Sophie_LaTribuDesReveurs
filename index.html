@@ -6890,7 +6890,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=448"></script>
+<script src="script-data.js?v=449"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -14704,6 +14704,10 @@ function selectTickboxChoice(el) {
     if (typeof buildSections === 'function') buildSections();
     if (typeof buildSidebar === 'function') buildSidebar();
     if (typeof renderCurrentSection === 'function') renderCurrentSection();
+    // Re-rendre aussi le modal Solutions identifiées + la fiche client (pour appliquer la Solution B :
+    // pulse + message quand un tickbox_choice est partiellement rempli, ex: DOS/VENTRE sans case
+    // d'accompagnement, ou case d'accompagnement sans DOS/VENTRE).
+    if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
     // Restaurer la position de scroll (sauf si un scroll explicite est programmé)
     if (!skipScrollRestore && savedScrollTop != null && contentAreaForScroll) {
       // Restaurer immédiatement + après un tick pour contrer un éventuel reset asynchrone
