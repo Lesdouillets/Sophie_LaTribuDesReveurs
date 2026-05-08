@@ -4955,7 +4955,7 @@ const SCRIPT_DATA = {
       {
         id: "env", title: "Environnement de sommeil", emoji: "🏠", alwaysOpen: true,
         introBlocks: [
-          { type: "normal", text: "- Maintenant, je vous **propose d'aborder** un **nouveau levier : \"l'environnement de sommeil\"** de [prénom_enfant]\n- C'est **quelque chose** sur LEQUEL on PEUT **agir ASSEZ facilement**, mais qu'on a **souvent tendance à négliger**… **alors** qu'il **joue un rôle clé** dans la **qualité du sommeil.**\n- **Pour bien s'endormir** et **réussir à enchaîner les cycles**, un bébé a **besoin d'un environnement** qui lui **envoie des repères clairs** : *\"c'est le moment du dodo.\"*",
+          { type: "normal", _leftTitle: "Ne connait pas sa sensibilité", text: "- Maintenant, je vous **propose d'aborder** un **nouveau levier : \"l'environnement de sommeil\"** de [prénom_enfant]\n- C'est **quelque chose** sur LEQUEL on PEUT **agir ASSEZ facilement**, mais qu'on a **souvent tendance à négliger**… **alors** qu'il **joue un rôle clé** dans la **qualité du sommeil.**\n- **Pour bien s'endormir** et **réussir à enchaîner les cycles**, un bébé a **besoin d'un environnement** qui lui **envoie des repères clairs** : *\"c'est le moment du dodo.\"*",
             trailingInfoButton: {
               label: "Pourquoi je ne recommande PAS de lit ouvert avant 2,5/3 ans ?",
               title: "Pourquoi je ne recommande PAS de lit ouvert avant 2,5/3 ans ?",
