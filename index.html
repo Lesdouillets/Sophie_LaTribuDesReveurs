@@ -6929,7 +6929,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=481"></script>
+<script src="script-data.js?v=482"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -11525,6 +11525,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const w = btn.width || '420px';
       return `<button type="button" class="info-btn" style="width:${w};min-width:0;margin:0" onclick="openInfoPanel('${btnId}')"><span class="info-btn-emoji">💡</span><span>${label}</span></button>`;
     }).join('');
+    // Si pas de texte d'intro, ne pas afficher la carte vide à gauche — afficher uniquement les boutons
+    if (!intro || !intro.trim()) {
+      return `<div class="lieu-sommeil-intro-grid" style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;align-items:flex-start">${btnsHtml}</div>`;
+    }
     return `<div class="lieu-sommeil-intro-grid" style="display:flex;align-items:flex-start;gap:20px;margin-bottom:14px"><div class="block block-normal" style="flex:1;margin-bottom:0">${intro}</div><div style="display:flex;flex-direction:column;gap:10px;flex-shrink:0">${btnsHtml}</div></div>`;
   }
 
