@@ -283,6 +283,9 @@
     .form-grid .full { grid-column: 1 / -1; }
 
     .form-group { display: flex; flex-direction: column; gap: 6px; }
+    /* Option avec suffixe "(par défaut)" : entièrement en italique
+       (impossible de styler uniquement une partie du texte d'un <option> en HTML) */
+    #consult-duree option[data-default-suffix="true"] { font-style: italic; }
     .form-group label { font-size: 13px; font-weight: 600; color: var(--text-light); }
     .form-group input,
     .form-group select,
@@ -5467,8 +5470,8 @@
             <div class="form-group full">
               <label>Durée prévue</label>
               <select id="consult-duree" onchange="state._userSetConsultDuree = true">
-                <option value="90" data-only-enseigne="tribu">1h30</option>
-                <option value="75" data-only-enseigne="feedodo">1h15</option>
+                <option value="90" data-only-enseigne="tribu" data-default-suffix="true">1h30 (par défaut)</option>
+                <option value="75" data-only-enseigne="feedodo" data-default-suffix="true">1h15 (par défaut)</option>
                 <option value="40">40 minutes</option>
                 <option value="20">20 minutes</option>
               </select>
@@ -6916,7 +6919,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=472"></script>
+<script src="script-data.js?v=473"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
