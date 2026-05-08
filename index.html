@@ -1601,6 +1601,38 @@
       box-sizing: border-box;
       background: var(--card-bg, #ffffff);
     }
+    /* Wrapper avec texte d'intro AU-DESSUS du bloc "À cocher avec les parents" (cadre violet),
+       le tout dans un même bloc-titre+texte (ex. APLV "Soupçons allergie"). */
+    .gcl-with-intro {
+      background: var(--card-bg, #ffffff);
+      border-radius: 12px 8px 8px 12px;
+      padding: 14px 18px;
+      box-sizing: border-box;
+    }
+    .gcl-with-intro .gcl-leading-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+    .gcl-with-intro .gcl-leading-text ul,
+    .gcl-with-intro .gcl-leading-text ol { padding-left: 24px; margin: 4px 0; }
+    .gcl-with-intro .gcl-leading-text li { margin-bottom: 3px; }
+    .gcl-with-intro > .block-grouped-checklist {
+      margin-top: 22px; /* laisse de la place au badge "À cocher avec les parents" */
+    }
+    .block-with-left-title > .edit-block-wrap > .gcl-with-intro,
+    .block-with-left-title > .gcl-with-intro {
+      border-left: 3px solid var(--cat-main, #cbd5e0);
+      border-radius: 12px 8px 8px 12px;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    /* Annule le liseré sur le bloc grouped_checklist quand il est imbriqué dans gcl-with-intro
+       (le liseré est porté par le wrapper externe à la place) */
+    .gcl-with-intro > .block-grouped-checklist {
+      border-left: 1.5px dashed #a78bfa !important;
+    }
     .q-text ul, .q-text ol { padding-left: 24px; margin: 6px 0; }
     .q-text li { margin-bottom: 4px; }
     #edit-block-textarea ul, #edit-block-textarea ol { padding-left: 24px; margin: 6px 0; }
@@ -6961,7 +6993,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=506"></script>
+<script src="script-data.js?v=507"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
