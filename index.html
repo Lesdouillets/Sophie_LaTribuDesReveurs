@@ -4545,60 +4545,33 @@
     body:has(.info-panel.info-panel-blue.open) .sol-floating-btns {
       right: 1220px;
     }
-    /* Bulle BD : forme ovale 170x125 avec queue triangulaire au coin bas-gauche,
-       comme il y a 2 jours. Couleur = bandeau du panel "Si pleurs difficiles" (#5e7194). */
+    /* Bulle BD : SVG en arrière-plan (forme d'ovale avec queue triangulaire au coin
+       bas-gauche). Bouton transparent autour, contenu (emoji + label) au centre du
+       corps de la bulle. */
     .sol-floating-btn {
       position: relative;
-      display: flex !important;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      width: 170px;
-      height: 125px;
-      padding: 10px 14px;
-      border: 3px solid #2d3f5c;
-      border-radius: 50%;
-      background: #5e7194 !important;
-      color: #ffffff !important;
-      cursor: pointer;
-      box-shadow: 0 4px 16px rgba(45,63,92,0.32);
-      transition: transform 0.15s, box-shadow 0.15s;
-      text-align: center;
-      box-sizing: border-box;
-      overflow: visible;
+      width: 220px; height: 200px;
+      border: none;
+      background: transparent !important;
+      cursor: pointer; padding: 0;
+      transition: transform 0.15s;
+      filter: drop-shadow(0 4px 14px rgba(45,63,92,0.35));
     }
-    .sol-floating-btn:hover { transform: scale(1.06); box-shadow: 0 6px 20px rgba(45,63,92,0.45); }
+    .sol-floating-btn:hover { transform: scale(1.06); }
     .sol-floating-btn:active { transform: scale(0.97); }
-    /* Queue triangulaire — bordure foncée (légèrement + grande, derrière) */
-    .sol-floating-btn::before {
-      content: '';
-      position: absolute;
-      bottom: -38px; left: 26px;
-      width: 50px; height: 44px;
-      background: #2d3f5c;
-      clip-path: polygon(50% 0, 100% 0, 0 100%);
-      z-index: 1;
+    .sol-floating-btn-svg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      display: block;
     }
-    /* Queue triangulaire — remplissage de la bulle (par-dessus, légèrement + petit) */
-    .sol-floating-btn::after {
-      content: '';
-      position: absolute;
-      bottom: -32px; left: 30px;
-      width: 42px; height: 36px;
-      background: #5e7194;
-      clip-path: polygon(45% 0, 100% 0, 0 100%);
-      z-index: 2;
-    }
-    /* SVG legacy neutralisé */
-    .sol-floating-btn-svg { display: none !important; }
     .sol-floating-btn-content {
-      position: relative;
+      position: absolute;
+      top: 12%; left: 12%; right: 12%; bottom: 35%;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       gap: 4px; color: #ffffff !important;
       font-weight: 700; pointer-events: none;
-      width: 100%;
+      text-align: center;
       z-index: 3;
     }
     .sol-floating-btn-content span:first-child { font-size: 32px !important; line-height: 1; }
@@ -7248,7 +7221,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=553"></script>
+<script src="script-data.js?v=554"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -11780,7 +11753,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const fbTitle = substituteVars(b.title || b.label || '');
       const fbContent = renderBlocks(Array.isArray(b.blocks) ? b.blocks : [], sectionId, (depth||0)+1, String(path||i));
       window.__infoButtons[fbId] = { title: fbTitle, content: fbContent, style: b.style || '' };
-      const svg = ``;
+      // Bulle BD : SVG forme d'ovale avec queue triangulaire au coin bas-gauche
+      const svg = `<svg class="sol-floating-btn-svg" viewBox="0 0 220 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M 110 12 C 50 12 12 42 12 80 C 12 112 35 135 78 142 L 38 195 L 102 138 C 158 135 208 112 208 80 C 208 42 170 12 110 12 Z" fill="#5e7194" stroke="#2d3f5c" stroke-width="4" stroke-linejoin="round"/></svg>`;
       // _bubbleLeft: true → positionne à gauche (évite d'occulter le bouton Suivant qui est à droite)
       const posStyle = b._bubbleLeft ? 'left:30px;right:auto' : (b._bubbleBottom ? `bottom:${b._bubbleBottom}` : '');
       const styleAttr = posStyle ? `style="${posStyle}"` : '';
@@ -13933,7 +13907,7 @@ function renderSolutionsCheckboxes(opts) {
               const fbTitle = substituteVars(fb.title || fb.label || '');
               const fbContent = renderBlocks(Array.isArray(fb.blocks) ? fb.blocks : [], 'float_'+cat.id+'_'+activeChild.id+'_'+fi);
               window.__infoButtons[fbId] = { title: fbTitle, content: fbContent };
-              const svg = ``;
+              const svg = `<svg class="sol-floating-btn-svg" viewBox="0 0 220 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M 110 12 C 50 12 12 42 12 80 C 12 112 35 135 78 142 L 38 195 L 102 138 C 158 135 208 112 208 80 C 208 42 170 12 110 12 Z" fill="#5e7194" stroke="#2d3f5c" stroke-width="4" stroke-linejoin="round"/></svg>`;
               return `<button type="button" class="sol-floating-btn" onclick="openInfoPanel('${fbId}')" title="${fbTitle}">${svg}<div class="sol-floating-btn-content"><span style="font-size:28px">${fb.emoji||'💡'}</span><span style="font-size:13px">${substituteVars(fb.label||'')}</span></div></button>`;
             }).join('') + '</div>';
           }
