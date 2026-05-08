@@ -6933,7 +6933,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=484"></script>
+<script src="script-data.js?v=486"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9671,6 +9671,37 @@ function collectSectionInnerBanners(section) {
   return out;
 }
 
+// Récupère récursivement tous les items des `courbe_cards_grid` dans un tableau de blocks.
+// Utilisé pour lister les sous-enfants navigables dans le sidebar
+// (à la fois pour "Plan d'action" et "Par problématique").
+function extractGridItemsFromBlocks(blocks) {
+  const items = [];
+  if (!Array.isArray(blocks)) return items;
+  blocks.forEach(b => {
+    if (b && b.type === 'courbe_cards_grid' && Array.isArray(b.items)) {
+      items.push(...b.items);
+    }
+    if (b && Array.isArray(b.blocks)) {
+      items.push(...extractGridItemsFromBlocks(b.blocks));
+    }
+  });
+  return items;
+}
+
+// Filtrage de visibilité d'un item de courbe_cards_grid (showIfTickbox / hideIfTickbox).
+function isGridItemVisibleSidebar(item) {
+  const choices = (typeof state !== 'undefined' && state.tickboxChoices) || {};
+  if (item.showIfTickbox) {
+    const checks = Array.isArray(item.showIfTickbox) ? item.showIfTickbox : [item.showIfTickbox];
+    if (!checks.some(c => choices[c.cid] === c.value)) return false;
+  }
+  if (item.hideIfTickbox) {
+    const checks = Array.isArray(item.hideIfTickbox) ? item.hideIfTickbox : [item.hideIfTickbox];
+    if (checks.some(c => choices[c.cid] === c.value)) return false;
+  }
+  return true;
+}
+
 function buildSidebar() {
   try {
   ['nav-required','nav-conditional','nav-plan'].forEach(id => document.getElementById(id).innerHTML='');
@@ -9717,13 +9748,18 @@ function buildSidebar() {
     items.forEach(({section, idx}) => {
       // Trouver les bandeaux internes (option_banner avec leverId) pour les lister comme sous-items
       const innerBanners = collectSectionInnerBanners(section);
-      if (innerBanners.length > 0) {
-        // Rendu : entrée de section parent + sous-items pour chaque bandeau levier
+      // Extraire aussi les items des courbe_cards_grid (sous-enfants navigables)
+      const sectionBlocks = getOverrideBlocks(section) || [];
+      const gridItems = extractGridItemsFromBlocks(sectionBlocks).filter(isGridItemVisibleSidebar);
+      const hasSubItems = innerBanners.length > 0 || gridItems.length > 0;
+      if (hasSubItems) {
+        // Rendu : entrée de section parent + sous-items pour chaque bandeau levier ET chaque item de grille
         const sectionDiv = document.createElement('div');
         sectionDiv.className = 'nav-item nav-child' + (idx===state.currentIdx?' active':'') + (state.completedSet.has(idx)?' completed':'') + (section.isActiveLevier ? '' : ' inactive-levier');
         sectionDiv.innerHTML = `<span class="nav-emoji">${section.emoji||'📄'}</span><span class="nav-title">${getSectionDisplayTitle(section)}</span>${state.completedSet.has(idx)?'<span class="nav-check">✓</span>':''}`;
         sectionDiv.onclick = () => navigateTo(idx);
         childrenDiv.appendChild(sectionDiv);
+        // 1. Bandeaux internes (option_banner)
         innerBanners.forEach(b => {
           const leverLabel = (typeof PB_LABELS !== 'undefined' && PB_LABELS[b.leverId]) ? PB_LABELS[b.leverId] : (b.label || b.leverId);
           const leverEmoji = b.emoji || '•';
@@ -9743,6 +9779,29 @@ function buildSidebar() {
                 const banner = area && area.querySelector(`.block-option-banner[data-lever-id="${CSS.escape(b.leverId)}"]`);
                 if (banner) banner.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }, 50);
+            });
+          };
+          childrenDiv.appendChild(subDiv);
+        });
+        // 2. Items des courbe_cards_grid (sous-enfants)
+        gridItems.forEach(item => {
+          if (!item || !item.id) return;
+          const isItemTicked = state.courbeCardsTicked && state.courbeCardsTicked.has(item.id);
+          const subDiv = document.createElement('div');
+          subDiv.className = 'nav-item nav-child nav-sub-child' + (isItemTicked ? '' : ' inactive-levier');
+          const itemEmoji = item.emoji || '·';
+          const itemLabel = item.compactLabel || item.label || item.id;
+          subDiv.innerHTML = `<span class="nav-emoji">${itemEmoji}</span><span class="nav-title">${itemLabel}</span>`;
+          subDiv.onclick = (e) => {
+            e.stopPropagation();
+            navigateTo(idx);
+            // Attendre le rendu puis scroll à la carte (data-card-id)
+            requestAnimationFrame(() => {
+              setTimeout(() => {
+                const area = document.getElementById('content-area');
+                const card = area && area.querySelector(`[data-card-id="${CSS.escape(item.id)}"]`);
+                if (card && typeof card.scrollIntoView === 'function') card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }, 80);
             });
           };
           childrenDiv.appendChild(subDiv);
@@ -9800,6 +9859,7 @@ function buildSidebarPlanSolutions() {
   if (!sols.length) return;
   const planActionIdx = state.sections.findIndex(s => s.id === 'plan_action');
   const catOrder = ['confort_physique', 'nutrition', 'rythme', 'strategie', 'env', 'changement', 'journee', 'relationnel', 'sante', 'accompagnement'];
+
   catOrder.forEach(catId => {
     const cat = sols.find(c => c.id === catId);
     if (!cat) return;
@@ -9837,6 +9897,31 @@ function buildSidebarPlanSolutions() {
         if (typeof renderCurrentSection === 'function') renderCurrentSection();
       };
       childrenDiv.appendChild(itemDiv);
+
+      // Sous-enfants : items dans courbe_cards_grid (récursif dans les blocks)
+      const gridItems = extractGridItemsFromBlocks(ch.blocks);
+      gridItems.filter(isGridItemVisibleSidebar).forEach(item => {
+        if (!item || !item.id) return;
+        const subItemDiv = document.createElement('div');
+        const isItemTicked = state.courbeCardsTicked && state.courbeCardsTicked.has(item.id);
+        subItemDiv.className = 'nav-item nav-sub-child' + (isItemTicked ? '' : ' inactive-levier');
+        const itemEmoji = item.emoji || '·';
+        const itemLabel = item.compactLabel || item.label || item.id;
+        subItemDiv.innerHTML = `<span class="nav-emoji">${itemEmoji}</span><span class="nav-title">${itemLabel}</span>`;
+        subItemDiv.onclick = () => {
+          if (planActionIdx >= 0) navigateTo(planActionIdx);
+          state.solActiveCat = catId;
+          if (!state.solActiveChildByCat) state.solActiveChildByCat = {};
+          state.solActiveChildByCat[catId] = item.id;
+          if (typeof renderCurrentSection === 'function') renderCurrentSection();
+          // Scroll to the sub-card after render
+          setTimeout(() => {
+            const card = document.querySelector(`[data-card-id="${item.id}"]`);
+            if (card && typeof card.scrollIntoView === 'function') card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 120);
+        };
+        childrenDiv.appendChild(subItemDiv);
+      });
     });
     groupDiv.appendChild(childrenDiv);
     planContainer.appendChild(groupDiv);
