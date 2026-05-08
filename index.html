@@ -6890,7 +6890,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=449"></script>
+<script src="script-data.js?v=450"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -12277,10 +12277,10 @@ function renderSolutionsCheckboxes(opts) {
         // Checkboxes carrées (au lieu de radios ronds) — la mutex est gérée par
         // setTickboxChoiceFromSol qui écrit dans state.tickboxChoices['strategie_tetine_choice']
         // (1 seule valeur stockable) → cocher l'une décoche visuellement les autres au prochain render.
-        // Retrait à gauche : 30px, identique aux sous-options des autres catégories au-dessus
-        // (Confort physique, Nutrition, Environnement…) pour un alignement cohérent.
-        subRows = `<div class="sol-row-sub" style="padding-left:30px;display:flex;flex-direction:column;gap:4px;margin-top:4px">` +
-          opts.map(o => `<label style="display:flex;align-items:center;gap:6px;font-size:14px;cursor:pointer"><input type="checkbox" value="${o.val}" ${tchoice===o.val?'checked':''} onchange="setTickboxChoiceFromSol('strategie_tetine_choice', this.checked ? '${o.val}' : '')"> ${o.label}</label>`).join('') +
+        // Style .sol-row (padding 5px 6px, gap 8px) pour aligner les 3 cases avec les cases
+        // parent des autres catégories au-dessus (APLV, Conseils RGO, Diversification…).
+        subRows = `<div class="sol-row-sub" style="display:flex;flex-direction:column;gap:0;margin-top:0">` +
+          opts.map(o => `<label class="sol-row" style="cursor:pointer"><input type="checkbox" value="${o.val}" ${tchoice===o.val?'checked':''} onchange="setTickboxChoiceFromSol('strategie_tetine_choice', this.checked ? '${o.val}' : '')"><span class="sol-row-label">${o.label}</span></label>`).join('') +
           `</div>`;
       }
       // Sous-options : checkboxes reflétant state.courbeCardsTicked
