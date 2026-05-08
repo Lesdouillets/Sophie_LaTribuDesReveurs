@@ -2259,6 +2259,16 @@
     body[data-meet-mode="bottom-right"] .sol-floating-btns { bottom: calc(250px + var(--meet-h)) !important; }
     body[data-meet-mode="top-right"] .sol-floating-btns { right: calc(30px + var(--meet-w)) !important; }
     body[data-meet-mode="bottom-right"] .info-panel.open { right: var(--meet-w); }
+    /* SOS panel : quand mode visio est sur la droite (bottom-right ou top-right), déplacer
+       le panel SOS sur la GAUCHE (entre sidebar et content) pour éviter le chevauchement
+       avec la PiP de Google Meet. Utilise flex `order` pour réordonner sans changer le DOM. */
+    body[data-meet-mode$="-right"] .sidebar { order: 1; }
+    body[data-meet-mode$="-right"] .sos-panel {
+      order: 2;
+      border-left: none;
+      border-right: 1.5px solid var(--border);
+    }
+    body[data-meet-mode$="-right"] #content-area { order: 3; }
     .sos-body {
       overflow-y: auto; padding: 12px; flex: 1; display: flex; flex-direction: column; gap: 6px;
     }
@@ -7180,7 +7190,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=532"></script>
+<script src="script-data.js?v=533"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
