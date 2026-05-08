@@ -6883,7 +6883,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=430"></script>
+<script src="script-data.js?v=432"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -12583,6 +12583,28 @@ function renderSolutionsCheckboxes(opts) {
         const isActive = activeChildId === ch.id;
         if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
         const childTicked = state.cardPersonalTicks.has(ch.id);
+        // strat_tetine : remplacer la carte parente "Tétine" par une pastille
+        // affichant le choix actif (Garder/Supprimer/Hybride) — façon "tranche d'âge"
+        // de l'emploi du temps. La pastille utilise la couleur de la catégorie (= bandeau)
+        // pour rester cohérente visuellement. Pas de checkbox/tick : purement informative.
+        if (ch.id === 'strat_tetine') {
+          let tchoice = null;
+          if (state.tickboxChoices) {
+            tchoice = state.tickboxChoices['strategie_tetine_choice'] || state.tickboxChoices['obj_tetine_static'] || null;
+          }
+          if (!tchoice && state.selectedPbs && state.selectedPbs.has('souhait_tetine')) tchoice = 'supprimer';
+          const pillLabel = {
+            garder:    '✅ Garder',
+            supprimer: '❌ Supprimer',
+            hybride:   '🔀 Hybride'
+          }[tchoice || ''] || null;
+          if (pillLabel) {
+            // Couleur = catégorie (c.main) → identique au bandeau
+            return `<div style="display:flex;justify-content:center;width:100%;padding:4px 0"><div style="display:inline-block;padding:7px 18px;background:${c.main};color:#fff;border-radius:999px;font-weight:700;font-size:13.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)">${pillLabel}</div></div>`;
+          }
+          // Pas de choix actif : ne rien afficher (pas de carte parente)
+          return '';
+        }
         // Affichage dynamique : si EXACTEMENT 1 sous-carte est tickée, afficher son emoji+label à la place du parent
         let dynEmoji = ch.cardEmoji || '📄';
         let dynLabel = ch.cardLabel || ch.label || ch.id;
