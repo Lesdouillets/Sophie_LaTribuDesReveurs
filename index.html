@@ -6993,7 +6993,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=510"></script>
+<script src="script-data.js?v=511"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -11554,6 +11554,15 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       relationnel:      { main: '#c98aa8', dark: '#5e3a52', light: '#f0c0d8', pastel: '#ffffff' },
       confort_physique: { main: '#dc2626', dark: '#b91c1c', light: '#e8b8b0', pastel: '#ffffff' },
     };
+    // Mêmes bordures vives que VIII. Plan d'action (catVividBorderMap) — utilisées pour le contour des cartes parent
+    const catVividBorders = {
+      nutrition: '#ea580c',
+      rythme: '#166534',
+      strategie: '#1e3a8a',
+      env: '#5b21b6',
+      relationnel: '#be185d',
+      confort_physique: '#b91c1c',
+    };
     const catEmojis = {
       nutrition: '🍽️',
       rythme: '⏰',
@@ -11615,10 +11624,12 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         const relPbs = { relationnel_lit_parental: 'Lit parental', relationnel_conflit_autres: 'Conflits', relationnel_rappels: 'Rappels' };
         subTitles = Object.keys(relPbs).filter(pb => state.selectedPbs.has(pb)).map(pb => relPbs[pb]).join(' / ');
       }
-      // Couleurs solides (pas de dégradé) : bg = main, border = dark, comme dans VIII. Plan d'action
+      // Couleurs solides (pas de dégradé) : bg = main, border = vividBorder (= Plan d'action),
+      // glow box-shadow sur active. Le rendu actif/inactif est aligné sur Plan d'action.
+      const vividBorder = catVividBorders[cat] || colors.dark;
       const activeStyle = isActive
-        ? `background:${colors.main};color:white;border:3px solid ${colors.dark};box-shadow:0 0 0 4px ${colors.dark}cc,0 6px 22px ${colors.dark}aa`
-        : `background:${colors.main};color:white;border:3px solid ${colors.dark};box-shadow:0 2px 8px ${colors.dark}33`;
+        ? `background:${colors.main};color:white;border:3px solid ${vividBorder};box-shadow:0 0 0 4px ${colors.dark}cc,0 6px 22px ${colors.dark}aa`
+        : `background:${colors.main};color:white;border:3px solid ${vividBorder};box-shadow:0 2px 8px ${vividBorder}33`;
       // Pas d'inline style sur le titre — la couleur est gérée via les règles CSS .diag-cat-card[data-section-cat=...]
       return `<div class="courbe-card${activeCls}${dimmedCls} diag-cat-card" data-card-id="${cardId}" data-section-cat="${cat}" style="${activeStyle}" onclick="openCourbeCard(this)">
         <span class="ccc-tick" onclick="event.stopPropagation(); toggleCourbeCardTick(this)">${tickIcon}</span>
@@ -11665,9 +11676,9 @@ function renderBlockInner(b, i, sectionId, depth, path) {
           const activeSubId = state.diagActiveSubSection[activeCat] || subSections[0].id;
           childCardsHtml = `<div class="sol-child-cards">` + subSections.map(s => {
             const isActiveS = s.id === activeSubId;
-            const styleA = isActiveS
-              ? `border-color:${colors.dark};background:${colors.main};color:#fff`
-              : `border-color:${colors.main};background:#fff;color:${colors.dark}`;
+            // Mêmes styles que Plan d'action sol-child-card : border = dark dans les 2 états,
+            // bg = main + texte blanc si active, sinon bg = #fff + texte = dark.
+            const styleA = `border-color:${colors.dark};${isActiveS ? 'background:' + colors.main + ';color:#fff' : 'background:#fff;color:' + colors.dark}`;
             const secTitle = getSectionDisplayTitle(s);
             return `<div class="sol-child-card${isActiveS ? ' active' : ''}" data-card-id="${s.id}" style="${styleA}" onclick="setDiagActiveSubSection('${activeCat}','${s.id.replace(/'/g, "\\'")}')">
               <span class="solc-emoji">${s.emoji || '📄'}</span>
