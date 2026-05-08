@@ -521,6 +521,27 @@
     .nav-group-children { }
     .nav-item.nav-child { padding-left: 38px; font-size: 12.5px; }
     /* Sous-sous-item = levier à l'intérieur d'une section avec bandeaux internes (env/relationnel/strategie) */
+    /* Bouton "Vue complète" en mode browse (Plan d'action depuis sidebar) */
+    .sol-browse-wrap {
+      position: relative;
+    }
+    .sol-browse-exit-btn {
+      display: block;
+      margin: 0 0 14px;
+      padding: 10px 18px;
+      background: #f0f4fa;
+      color: #2d3f5c;
+      border: 1.5px solid #b8c4d6;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .sol-browse-exit-btn:hover {
+      background: #e0e8f4;
+      border-color: #5e7194;
+    }
     .nav-item.nav-sub-child {
       padding-left: 58px;
       font-size: 11.5px;
@@ -6940,7 +6961,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=495"></script>
+<script src="script-data.js?v=496"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7139,6 +7160,10 @@ let state = {
   planSidebarChildExpanded: new Set(),
   pbSidebarChildExpanded: new Set(),
   sidebarSectionCollapsed: new Set(),
+  // Mode "Browse" depuis le sidebar : navigation rapide sans cocher les leviers/solutions
+  // → affiche uniquement le contenu de la carte parent active (sans "Solutions identifiées" + cards row)
+  solBrowseMode: false,
+  solBrowseScrollTarget: null, // ID de la carte/sous-item à scroller après render
 };
 
 // Nettoyage des overrides — supprimer TOUT pour forcer la re-sync
@@ -9942,15 +9967,18 @@ function buildSidebarPlanSolutions() {
     children.forEach(ch => {
       // Helper : préserve le scroll de #content-area si on est déjà sur Plan d'action
       // (évite le saut au top quand on clique sur un parent du sidebar).
+      // → Active aussi le BROWSE MODE : navigation rapide depuis le sidebar SANS modifier
+      //   state.selectedSolutions ni state.selectedPbs (juste browse pour trouver une info).
       const navigateAndPreserveScroll = (afterFn) => {
         const onPlan = state.currentIdx === planActionIdx;
         const contentArea = document.getElementById('content-area');
         const savedScroll = (onPlan && contentArea) ? contentArea.scrollTop : null;
         if (planActionIdx >= 0 && !onPlan) navigateTo(planActionIdx);
+        // Activer le mode browse APRÈS navigateTo (qui aurait reset le flag) :
+        // VIII. Plan d'action affichera uniquement le contenu de la carte parent active.
+        state.solBrowseMode = true;
         if (typeof afterFn === 'function') afterFn();
-        // Rebuild sidebar pour refléter les changements (toggle expand, chevron, etc.)
-        // Quand !onPlan, navigateTo() s'en charge déjà ; sinon il faut le faire ici.
-        if (onPlan && typeof buildSidebar === 'function') buildSidebar();
+        if (typeof buildSidebar === 'function') buildSidebar();
         if (typeof renderCurrentSection === 'function') renderCurrentSection();
         if (savedScroll != null && contentArea) {
           requestAnimationFrame(() => { contentArea.scrollTop = savedScroll; });
@@ -9975,9 +10003,11 @@ function buildSidebarPlanSolutions() {
           optDiv.onclick = () => {
             navigateAndPreserveScroll(() => {
               state.solActiveCat = catId;
-              if (typeof setTickboxChoiceFromSol === 'function') {
-                setTickboxChoiceFromSol('strategie_tetine_choice', opt.val);
-              }
+              // Browse mode : on règle juste tickboxChoices pour que le contenu correspondant s'affiche,
+              // SANS appeler setTickboxChoiceFromSol (qui modifierait selectedSolutions/selectedPbs).
+              if (!state.tickboxChoices) state.tickboxChoices = {};
+              state.tickboxChoices['strategie_tetine_choice'] = opt.val;
+              state.tickboxChoices['obj_tetine_static'] = opt.val;
             });
           };
           childrenDiv.appendChild(optDiv);
@@ -10060,11 +10090,12 @@ function buildSidebarPlanSolutions() {
           navigateAndPreserveScroll(() => {
             state.solActiveCat = catId;
             if (!state.solActiveChildByCat) state.solActiveChildByCat = {};
-            // Pour env les items sont aplatis ; pour les autres, l'enfant actif reste le parent (ch.id).
             state.solActiveChildByCat[catId] = (catId === 'env') ? item.id : ch.id;
-            // Si on est dans un sous-groupe (DOS/VENTRE), garantir le tickbox actif.
-            if (contextGroup && typeof setTickboxChoiceFromSol === 'function') {
-              setTickboxChoiceFromSol(contextGroup.cid, contextGroup.value);
+            // Si on est dans un sous-groupe (DOS/VENTRE), régler le tickbox EN DIRECT
+            // (sans setTickboxChoiceFromSol qui cocherait selectedSolutions/selectedPbs).
+            if (contextGroup) {
+              if (!state.tickboxChoices) state.tickboxChoices = {};
+              state.tickboxChoices[contextGroup.cid] = contextGroup.value;
             }
           });
           // Scroll vers la carte de l'item
@@ -10123,10 +10154,9 @@ function buildSidebarPlanSolutions() {
               }
               navigateAndPreserveScroll(() => {
                 state.solActiveCat = catId;
-                // Cocher le tickbox correspondant (DOS/VENTRE) pour faire apparaître le contenu
-                if (typeof setTickboxChoiceFromSol === 'function') {
-                  setTickboxChoiceFromSol(group.cid, group.value);
-                }
+                // Browse mode : régler le tickbox EN DIRECT (sans setTickboxChoiceFromSol qui modifierait selectedSolutions/selectedPbs)
+                if (!state.tickboxChoices) state.tickboxChoices = {};
+                state.tickboxChoices[group.cid] = group.value;
               });
             };
             childrenDiv.appendChild(groupDiv);
@@ -10300,6 +10330,8 @@ function navigateTo(idx) {
     state.diagScrollTop = contentArea.scrollTop;
   }
   state.currentIdx = Math.max(0, Math.min(idx, state.sections.length-1));
+  // Reset browse mode quand on navigue (les handlers sidebar le réactiveront si besoin)
+  state.solBrowseMode = false;
   buildSidebar();
   renderCurrentSection();
   // Restaurer le scroll si on revient sur V. Diagnostic ; sinon remettre à 0
@@ -13142,10 +13174,17 @@ function renderSolutionsCheckboxes(opts) {
   // Partie 3 : contenu de la catégorie active (intro + children cards + child content)
   // On ne rend que si la catégorie active a encore au moins un enfant coché
   // (sinon le bandeau resterait orphelin après décochage du dernier enfant)
+  // EXCEPTION : en BROWSE MODE (sidebar nav), on rend avec TOUS les enfants visibles
+  // (pas seulement ceux dans selectedSolutions) pour que l'utilisatrice puisse trouver
+  // l'info rapidement sans rien cocher.
+  const isBrowseMode = !!state.solBrowseMode;
   let activeContentHtml = '';
   if (activeCat) {
     const cat = sols.find(c => c.id === activeCat);
-    const checkedChildrenForActive = cat ? (cat.children || []).filter(ch => !isChHiddenByAge(ch) && state.selectedSolutions.has(ch.id)) : [];
+    const allVisibleChildren = cat ? (cat.children || []).filter(ch => !isChHiddenByAge(ch)) : [];
+    const checkedChildrenForActive = isBrowseMode
+      ? allVisibleChildren
+      : allVisibleChildren.filter(ch => state.selectedSolutions.has(ch.id));
     if (cat && checkedChildrenForActive.length > 0) {
       const c = catColorMap[cat.id] || { main:'#666', dark:'#333' };
       const children = cat.children || [];
@@ -13341,12 +13380,28 @@ function renderSolutionsCheckboxes(opts) {
       <div class="solutions-identifiees-body">${compactGroups}</div>
     </div>`;
   }
+  // BROWSE MODE : afficher uniquement le contenu de la carte active (sans Solutions identifiées + cards row).
+  // Le bouton "Vue complète" en haut permet de revenir à la vue normale.
+  if (isBrowseMode) {
+    return `<div class="sol-browse-wrap">
+      <button type="button" class="sol-browse-exit-btn" onclick="exitSolBrowseMode()">↩ Vue complète (Solutions identifiées + toutes les cartes)</button>
+      ${activeContentHtml || '<div class="block block-normal" style="padding:14px 18px"><em>(Cliquez sur un élément du sidebar pour afficher son contenu.)</em></div>'}
+    </div>`;
+  }
   return `<div class="block block-solutions-identifiees">
     <div class="solutions-identifiees-header">🧩 Solutions identifiées</div>
     <div class="solutions-identifiees-body">${compactGroups}</div>
   </div>
   ${parentCardsHtml ? `<div class="courbe-cards-grid-wrap sol-parent-cards-grid-wrap"><div class="courbe-cards-grid diag-categories-grid">${parentCardsHtml}</div></div>${activeContentHtml}` : ''}`;
 }
+
+// Quitter le browse mode (déclenché par le bouton "Vue complète" sur Plan d'action en mode sidebar)
+function exitSolBrowseMode() {
+  state.solBrowseMode = false;
+  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+  if (typeof buildSidebar === 'function') buildSidebar();
+}
+window.exitSolBrowseMode = exitSolBrowseMode;
 
 // Synchro : pour chaque solution qui n'a pas été manuellement éditée,
 // la cocher si au moins une pb de autoCheckIfPbs est cochée.
