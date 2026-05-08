@@ -4615,7 +4615,7 @@ const SCRIPT_DATA = {
                   label: "Si difficile de rester 45min dans sa chambre",
                   title: "Si difficile de rester 45min dans sa chambre",
                   blocks: [
-                    { type: "normal", text: "- S'il est **difficile** pour [prénom_enfant] de **rester 45min** dans sa **chambre**, vous pouvez :\n  - au début, **rester avec [lui_elle]** pendant la **2ème partie** du **temps calme**\n  - pour qu'[il_elle] reste **au moins 45min** dans sa **chambre** *(sans trop [le_la] stimuler)*" }
+                    { type: "normal", text: "- S'il est **difficile** pour [prénom_enfant] de **rester 45min** dans sa **chambre**, vous pouvez :\n  - au début, **rester avec [lui_elle]** pendant la **2ème partie** du **temps calme**<br>pour qu'[il_elle] reste **au moins 45min** dans sa **chambre** *(sans trop [le_la] stimuler)*" }
                   ]
                 }
               },
