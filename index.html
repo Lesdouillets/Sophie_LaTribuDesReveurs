@@ -6883,7 +6883,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=434"></script>
+<script src="script-data.js?v=435"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -12583,6 +12583,9 @@ function renderSolutionsCheckboxes(opts) {
         const isActive = activeChildId === ch.id;
         if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
         const childTicked = state.cardPersonalTicks.has(ch.id);
+        // strat_tetine : pas de carte parente "Tétine" — la pastille (Garder/Supprimer/Hybride)
+        // injectée au début de childContentHtml fait office d'identification visuelle.
+        if (ch.id === 'strat_tetine') return '';
         // Affichage dynamique : si EXACTEMENT 1 sous-carte est tickée, afficher son emoji+label à la place du parent
         let dynEmoji = ch.cardEmoji || '📄';
         let dynLabel = ch.cardLabel || ch.label || ch.id;
@@ -12595,22 +12598,6 @@ function renderSolutionsCheckboxes(opts) {
               dynEmoji = it.emoji || dynEmoji;
               dynLabel = it.label || it.id;
             }
-          }
-        }
-        // strat_tetine : ajouter le choix (Garder/Supprimer/Hybride) en sous-titre sous "Tétine"
-        if (ch.id === 'strat_tetine') {
-          let tchoice = null;
-          if (state.tickboxChoices) {
-            tchoice = state.tickboxChoices['strategie_tetine_choice'] || state.tickboxChoices['obj_tetine_static'] || null;
-          }
-          if (!tchoice && state.selectedPbs && state.selectedPbs.has('souhait_tetine')) tchoice = 'supprimer';
-          const choiceLabel = {
-            garder:    '✅ Garder',
-            supprimer: '❌ Supprimer',
-            hybride:   '🔀 Hybride'
-          }[tchoice || ''];
-          if (choiceLabel) {
-            dynLabel = `${dynLabel}<br><span style="font-size:0.85em;font-weight:600;opacity:0.95;letter-spacing:0.2px">${choiceLabel}</span>`;
           }
         }
         return `<div class="sol-child-card${isActive?' active':''}" data-card-id="${ch.id}" style="border-color:${c.dark};${isActive?'background:'+c.main+';color:#fff':'background:#fff;color:'+c.dark}" onclick="toggleSolChildCard('${cat.id}','${ch.id}')">
