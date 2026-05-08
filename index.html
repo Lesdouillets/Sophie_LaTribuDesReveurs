@@ -7223,7 +7223,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=568"></script>
+<script src="script-data.js?v=569"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -12843,7 +12843,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       return `<div class="block block-normal"><ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Alors maintenant, j'aimerais <strong>savoir</strong> quels sont vos <strong>objectifs aujourd'hui</strong></li><li style="margin-bottom:3px;line-height:1.65">Je vais <strong>relire CE QUE vous m'avez marqué</strong>… pour être <strong>sûre qu'on est bien alignés</strong>.</li></ul><div class="pb-recap-intro" style="margin-top:14px">• <u>Vous m'avez écrit :</u></div><div class="pb-recap-text"><em>${objHtml}</em></div><div style="background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin-top:14px;font-weight:400;line-height:1.7"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start"><span>❓</span><span>•</span><span>Est-ce que ça <strong>correspond toujours</strong> à ce que vous <strong>souhaitez aujourd'hui</strong> ?</span><span></span><span>•</span><span>Est-ce que vous avez <strong>quelque chose</strong> à <strong>ajouter</strong> ou <strong>ajuster</strong> ?</span></div></div></div>`;
     } else {
       const prenom = substituteVars('[prénom_enfant]');
-      return `<div class="block block-question"><div class="q-text"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start"><span>❓</span><span>•</span><span>J'aimerais maintenant <strong>savoir quels sont vos objectifs</strong> aujourd'hui pour ${prenom}.</span><span></span><span>•</span><span>Qu'est-ce que vous <strong>souhaitez idéalement mettre en place</strong> ?</span></div></div></div>`;
+      return `<div class="block block-question"><div class="q-text"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start"><span>❓</span><span>•</span><span>J'aimerais maintenant <strong>savoir quels sont vos objectifs</strong> aujourd'hui pour ${prenom}</span><span></span><span>•</span><span>Qu'est-ce que vous <strong>souhaitez idéalement mettre en place</strong> ?</span></div></div></div>`;
     }
   }
 
@@ -17726,7 +17726,7 @@ function openEditBlockModal(sectionId, path) {
     'pb_question': `Est-ce que c'est **toujours d'actualité** ?`,
     'obj_intro': state.client.objectifs?.trim()
       ? `Alors maintenant, j'aimerais **savoir** quels sont vos **objectifs aujourd'hui**\nJe vais **relire CE QUE vous m'avez marqué**… pour être **sûre qu'on est bien alignés**.`
-      : `J'aimerais maintenant **savoir quels sont vos objectifs** aujourd'hui pour [prénom_enfant].\nQu'est-ce que vous **souhaitez idéalement mettre en place** ?`,
+      : `J'aimerais maintenant **savoir quels sont vos objectifs** aujourd'hui pour [prénom_enfant]\nQu'est-ce que vous **souhaitez idéalement mettre en place** ?`,
     'obj_question': `Est-ce que ça **correspond toujours** à ce que vous **souhaitez aujourd'hui** ?\nEst-ce que vous avez **quelque chose** à **ajouter** ou **ajuster** ?`,
   };
   if (b && dynamicEditTexts[b.type]) {
