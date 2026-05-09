@@ -13242,6 +13242,11 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         const subItems = isTetine
           ? getTetineSubItems()
           : collectGridSubItems(ch.blocks, 1);
+        // Détecter si ch est un PARENT (a un courbe_cards_grid dans ses blocks)
+        // ou un LEAF (pas de grid). Un parent ne doit JAMAIS être affiché seul sans
+        // descendant sélectionné — comme dans Plan d'action via applyParentTickCascade.
+        const hasGrid = Array.isArray(ch.blocks) && ch.blocks.some(b => b && b.type === 'courbe_cards_grid');
+        if (hasGrid && !subItems.length) return; // parent sans enfant sélectionné → cacher
         if (!isSelected && !subItems.length) return;
         // Cas Tétine : ne pas afficher le parent "Tétine" (le titre de catégorie le rappelle déjà),
         // afficher seulement les sous-options (Garder/Supprimer/Hybride) au niveau 0.
