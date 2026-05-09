@@ -13175,7 +13175,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
           blk.items.forEach(it => {
             if (courbeTicked.has(it.id)) {
               const subSub = collectGridSubItems(it.blocks, level + 1);
-              items.push({ id: it.id, label: it.label || it.compactLabel || it.id, emoji: it.emoji || '', level });
+              // Cascade : un item hérite du tick si AU MOINS un de ses descendants directs
+              // ou indirects est tické (ticks.has) OU déjà marqué _tickedByDescendant
+              const anyDescTicked = subSub.some(s => ticks.has(s.id) || s._tickedByDescendant);
+              items.push({ id: it.id, label: it.label || it.compactLabel || it.id, emoji: it.emoji || '', level, _tickedByDescendant: anyDescTicked });
               items.push(...subSub);
             }
           });
@@ -13206,8 +13209,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         if (isTetine) {
           subItems.forEach(it => allItems.push({ ...it, level: 0 }));
         } else {
-          // Cascade : si un sous-enfant est tické, le parent hérite aussi du tick (GREEN)
-          const anyDescendantTicked = subItems.some(s => ticks.has(s.id));
+          // Cascade : si un sous-enfant (à n'importe quel niveau) est tické, le parent
+          // hérite aussi du tick (GREEN). Inclut les marquages _tickedByDescendant déjà
+          // calculés sur les niveaux intermédiaires par collectGridSubItems.
+          const anyDescendantTicked = subItems.some(s => ticks.has(s.id) || s._tickedByDescendant);
           allItems.push({ id: ch.id, label: ch.label || ch.cardLabel || ch.id, emoji: ch.emoji || ch.cardEmoji || '', level: 0, _tickedByDescendant: anyDescendantTicked });
           allItems.push(...subItems);
         }
