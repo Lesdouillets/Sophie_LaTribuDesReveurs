@@ -1600,6 +1600,13 @@
     [data-section-cat="confort_physique"] .block-with-left-title,
     [data-section-cat="confort_physique"] .block-left-title { background: #fef2f2 !important; }
     .block-with-left-title > .edit-block-wrap { margin-bottom: 0; height: 100%; }
+    /* VIII. Plan d'action : block-solutions-identifiees a des sous-cards (parent-cards-grid)
+       qui se rendent COMME SIBLINGS dans le même edit-block-wrap. Avec height:100% ci-dessus,
+       le wrap est figé à la hauteur du 1er enfant et les cards débordent par-dessus les
+       boutons Précédent/Suivant. Forcer height:auto pour ce cas. */
+    .block-with-left-title > .edit-block-wrap:has(> .block-solutions-identifiees) {
+      height: auto !important;
+    }
     .block-with-left-title > .edit-block-wrap > .block,
     .block-with-left-title > .block {
       border-left: 3px solid var(--cat-main, #cbd5e0);
