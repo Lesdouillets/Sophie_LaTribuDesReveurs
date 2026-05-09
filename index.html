@@ -4849,7 +4849,7 @@
     .agenda-btn-small:hover { background: #f5f7fb; }
     .agenda-btn-svg-small { width: 38px; height: auto; filter: drop-shadow(0 2px 4px rgba(45,63,92,0.2)); }
     .solutions-identifiees-body { padding: 12px 20px; display: flex; gap: 24px; align-items: flex-start; contain: layout style paint; transform: translateZ(0); }
-    .solutions-identifiees-body > .sol-col { flex: 1 1 50%; min-width: 0; max-width: 50%; display: flex; flex-direction: column; gap: 18px; }
+    .solutions-identifiees-body > .sol-col { flex: 1 1 50%; min-width: 0; max-width: 50%; display: flex; flex-direction: column; gap: 8px; }
     .sol-group { width: 100%; margin-bottom: 0; }
     @media (max-width: 900px) { .solutions-identifiees-body { flex-direction: column; } }
     /* sol-group en format bloc-titre : titre à gauche (140px) + checkboxes à droite, blocs indépendants avec gap */
@@ -13232,7 +13232,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         if (hasAnySelected) {
           const prenom = (state.client && state.client.prenomEnfant) ? state.client.prenomEnfant : '[prénom]';
           allItems.push({ id: 'accomp_resume_4outils', label: '4 outils', emoji: '🛠️', level: 0, _selected: true, _ticked: ticks.has('accomp_resume_4outils') });
-          allItems.push({ id: 'accomp_resume_comment', label: 'Comment accompagner ' + prenom, emoji: '🤝', level: 0, _selected: true, _ticked: ticks.has('accomp_resume_comment') });
+          allItems.push({ id: 'accomp_resume_comment', label: 'Comment accompagner ' + prenom + ' ?', emoji: '🤝', level: 0, _selected: true, _ticked: ticks.has('accomp_resume_comment') });
         }
         if (!allItems.length) return '';
         // Skip la boucle children normale
