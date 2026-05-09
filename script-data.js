@@ -622,6 +622,7 @@ const SCRIPT_DATA = {
       emoji: "🧩",
       blocks: [
         { type: "solutions_checkboxes", _leftTitle: "Solutions identifiées", _leftTitleStyle: "background:#2d3f5c;color:#fff" },
+        { type: "solutions_parent_cards" },
       ]
     },
 
