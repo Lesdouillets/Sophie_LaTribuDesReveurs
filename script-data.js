@@ -6883,13 +6883,12 @@ const SCRIPT_DATA = {
             { type: "question", _leftTitle: "Questions ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "Est-ce qu'il vous **reste des questions** ?" },
             { type: "question", _leftTitle: "Quand ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "**QUAND** est-ce que vous **PENSEZ** **POUVOIR COMMENCER** à **METTRE ces changements en place** ?" },
             {
-              type: "option", label: "🔥 Si Pas pris de RDV", style: "purple", _compactClosed: true,
+              type: "option", label: "🔥 Si Pas pris de RDV", style: "purple", _compactClosed: true, _leftTitle: "Prise de RDV", _leftTitleStyle: "background:#2d3f5c;color:#fff",
               blocks: [
-                { type: "important", text: "- 🔥 Au vu de ce qu'on s'est dit, je pense qu'il serait **intéressant de se revoir**\n\n- Sachant que **vous voulez commencer** le <strong style=\"color:#C0392B\">XXX</strong>, on **peut se voir** le <strong style=\"color:#C0392B\">XXX</strong>" },
-                { type: "agenda_button" },
-                { type: "question", text: "Qu'est-ce que <strong>vous en pensez</strong> ?", embeddedActions: [
+                { type: "important", text: "- 🔥 Au vu de ce qu'on s'est dit, je pense qu'il serait **intéressant de se revoir**\n\n- Sachant que **vous voulez commencer** le <strong style=\"color:#C0392B\">XXX</strong>, on **peut se voir** le <strong style=\"color:#C0392B\">XXX</strong>\n[agenda_btn:small]" },
+                { type: "question", _leftTitle: "Qu'en pensez-vous ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "Qu'est-ce que <strong>vous en pensez</strong> ?", embeddedActions: [
                   {
-                    label: "💰 Tarifs", style: "purple", _noPurpleStyle: true,
+                    label: "💰 Tarifs", style: "action-yellow", _pillStyle: true,
                     blocks: [
                       { type: "tarifs_tableau" }
                     ]
