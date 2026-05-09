@@ -265,7 +265,7 @@ const SCRIPT_DATA = {
       blocks: [
         { type: "pb_intro", _leftTitle: "Problématique", _leftTitleStyle: "background:#2d3f5c;color:#fff" },
         {
-          type: "option", _floatingBubble: true, _bubbleLeft: true, label: "Si pleurs difficiles", emoji: "😭", style: "pleurs",
+          type: "option", _floatingBubble: true, label: "Si pleurs difficiles", emoji: "😭", style: "pleurs",
           blocks: [
             { type: "normal", _leftTitle: "J'entends que c'est difficile", _leftTitleStyle: "background:#9AAFC2;color:#fff", text: "- J'entends que c'est **difficile pour vous** d'**entendre** [prénom_enfant] pleurer…\n- Et **vous avez bien fait** de me le dire" },
             { type: "normal", _leftTitle: "Vous n'êtes pas la seule", _leftTitleStyle: "background:#9AAFC2;color:#fff", text: "- Et c'est quelque chose que **beaucoup de parents ressentent AUSSI**\n  ⇒ **CE QUE vous ressentez** est **totalement légitime**" },
