@@ -7469,7 +7469,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=616"></script>
+<script src="script-data.js?v=617"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -13383,8 +13383,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const tbContent = renderBlocks(Array.isArray(tb.blocks) ? tb.blocks : [], sectionId, (depth||0)+1, path||String(i));
       window.__infoButtons[btnId] = { title: tbTitle, content: tbContent };
       const tbEmoji = tb.emoji || '💡';
-      const wrapW = tb._wrapWidth || '160px';
-      qTrailingHtml = `<div contenteditable="false" style="float:right;width:${wrapW};margin:0 0 8px 14px"><button type="button" class="info-btn" onclick="openInfoPanel('${btnId}')" style="width:100%;min-width:0;padding:8px 12px;font-size:14px"><span class="info-btn-emoji">${tbEmoji}</span><span>${tbLabel}</span></button></div>`;
+      const wrapW = tb._wrapWidth || '185px';
+      qTrailingHtml = `<div contenteditable="false" style="float:right;width:${wrapW};margin:0 0 12px 18px"><button type="button" class="info-btn" onclick="openInfoPanel('${btnId}')" style="width:100%;min-width:0;padding:10px 14px"><span class="info-btn-emoji">${tbEmoji}</span><span>${tbLabel}</span></button></div>`;
     }
     return `<div class="block block-question">
       ${qTrailingHtml}
