@@ -3638,12 +3638,19 @@
       white-space: normal;
     }
     /* Variante compacte du purple-btn (sub-options sous tableau emploi du temps,
-       et boutons "Difficultés identifiées" dans V. Diagnostic) — largeur FIXE pour
-       que tous les boutons aient la même taille, et hauteur un peu plus grande. */
+       et boutons "Difficultés identifiées" dans V. Diagnostic + "Objectifs PAS faisables"
+       dans VI via embeddedActions) — largeur FIXE pour que tous les boutons aient la
+       même taille, et hauteur un peu plus grande. */
     .edit-block-wrap:has(> .block-option.purple-btn.compact-btn:not(.open-action)) {
       height: auto;
       width: 220px !important;
       margin-right: 12px !important;
+    }
+    /* Pareil quand le compact-btn est dans embeddedActions (pas wrapé dans edit-block-wrap) */
+    .embedded-actions > .block-option.purple-btn.compact-btn:not(.open-action) {
+      width: 220px !important;
+      max-width: 220px !important;
+      flex: 0 0 220px !important;
     }
     .block-option.purple-btn.compact-btn:not(.open-action) {
       border-width: 2px;
@@ -7337,7 +7344,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=595"></script>
+<script src="script-data.js?v=597"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
