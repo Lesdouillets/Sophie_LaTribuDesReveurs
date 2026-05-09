@@ -12823,7 +12823,13 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   if (b.type === 'tarifs_accueil') {
     const hd = 'padding:6px 10px;border:1px solid #ddd;font-weight:600;background:#2d3f5c;color:white';
     const td = 'padding:6px 10px;border:1px solid #ddd;background:white';
-    const tableHtml = `<div style="overflow-x:auto;font-size:13px"><table style="border-collapse:collapse;margin-bottom:12px;width:100%"><tr><td style="${hd}">Consultation de suivi</td><td style="${td}">20 min</td><td style="${td}">45 €</td></tr><tr><td style="${hd}"></td><td style="${td}">45 min</td><td style="${td}">90 €</td></tr><tr><td style="${hd}">WhatsApp</td><td style="${td}">1 sem.</td><td style="${td}">90 € — Délai rép. 24h</td></tr><tr><td style="${hd}">Semaine de suivi</td><td style="${td}">1 sem.</td><td style="${td}">18 € puis 150 € — 2 RDV 20min + WhatsApp</td></tr><tr><td style="${hd}">Lecture de courbes</td><td style="${td}">20 min</td><td style="${td}">45 €</td></tr></table><table style="border-collapse:collapse;width:100%"><tr><td style="${hd}">Grimoire Fée Dodo</td><td style="${td}">Accès illimité 2 ans</td><td style="${td}">299 €</td></tr><tr><td style="${hd}">Consultations de groupe</td><td style="${td}">1h/sem. (par âge)</td><td style="${td}">29,99 €/mois — Sans engagement</td></tr></table></div>`;
+    // Lignes spécifiques Fée Dodo (cachées si enseigne = La Tribu des Rêveurs)
+    const isFeedodo = (typeof currentEnseigne !== 'undefined') && currentEnseigne === 'feedodo';
+    const lectureCourbesRow = isFeedodo ? `<tr><td style="${hd}">Lecture de courbes</td><td style="${td}">20 min</td><td style="${td}">45 €</td></tr>` : '';
+    const secondTable = isFeedodo
+      ? `<table style="border-collapse:collapse;width:100%"><tr><td style="${hd}">Grimoire Fée Dodo</td><td style="${td}">Accès illimité 2 ans</td><td style="${td}">299 €</td></tr><tr><td style="${hd}">Consultations de groupe</td><td style="${td}">1h/sem. (par âge)</td><td style="${td}">29,99 €/mois — Sans engagement</td></tr></table>`
+      : '';
+    const tableHtml = `<div style="overflow-x:auto;font-size:13px"><table style="border-collapse:collapse;margin-bottom:12px;width:100%"><tr><td style="${hd}">Consultation de suivi</td><td style="${td}">20 min</td><td style="${td}">45 €</td></tr><tr><td style="${hd}"></td><td style="${td}">45 min</td><td style="${td}">90 €</td></tr><tr><td style="${hd}">WhatsApp</td><td style="${td}">1 sem.</td><td style="${td}">90 € — Délai rép. 24h</td></tr><tr><td style="${hd}">Semaine de suivi</td><td style="${td}">1 sem.</td><td style="${td}">18 € puis 150 € — 2 RDV 20min + WhatsApp</td></tr>${lectureCourbesRow}</table>${secondTable}</div>`;
     window.__infoButtons = window.__infoButtons || {};
     window.__infoButtons['tarifs-accueil-panel'] = { title: 'Tarifs', content: tableHtml };
     return '';
