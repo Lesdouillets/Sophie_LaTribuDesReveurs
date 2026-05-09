@@ -7481,7 +7481,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=626"></script>
+<script src="script-data.js?v=627"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -13296,14 +13296,15 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         const textColor = ticked ? GREEN : RED;
         const checkedAttr = ticked ? 'checked' : '';
         const indent = it.level * 24;
-        // Un parent (a des enfants) ne peut PAS être coché/décoché manuellement
-        // → checkbox disabled, l'état dérive uniquement des enfants
+        // Un parent (a des enfants) ne peut PAS être coché/décoché manuellement.
+        // On utilise onclick="event.preventDefault()" plutôt que disabled pour garder
+        // l'apparence d'une case normale (pas de grisé).
         const isParent = !!it._hasChildren;
-        const disabledAttr = isParent ? 'disabled' : '';
+        const onclickAttr = isParent ? `onclick="event.preventDefault()"` : '';
         const onchangeAttr = isParent ? '' : `onchange="toggleCardTickFromResume('${it.id}')"`;
         const labelStyle = isParent ? 'flex:1;cursor:default' : 'flex:1';
         const cbStyle = isParent ? 'cursor:default' : '';
-        return `<div data-sol-id="${it.id}" class="sol-row-wrap" style="margin-left:${indent}px"><div class="sol-row-header"><label class="sol-row" style="${labelStyle}"><input type="checkbox" ${checkedAttr} ${disabledAttr} ${onchangeAttr} style="${cbStyle}">${it.emoji ? `<span class="sol-row-emoji">${it.emoji}</span>` : ''}<span class="sol-row-label" style="color:${textColor} !important;font-weight:700">${substituteVars(it.label)}</span></label></div></div>`;
+        return `<div data-sol-id="${it.id}" class="sol-row-wrap" style="margin-left:${indent}px"><div class="sol-row-header"><label class="sol-row" style="${labelStyle}"><input type="checkbox" ${checkedAttr} ${onclickAttr} ${onchangeAttr} style="${cbStyle}">${it.emoji ? `<span class="sol-row-emoji">${it.emoji}</span>` : ''}<span class="sol-row-label" style="color:${textColor} !important;font-weight:700">${substituteVars(it.label)}</span></label></div></div>`;
       }).join('');
       return `<div class="sol-group block-with-left-title" data-cat="${cat.id}"><div class="sol-group-title" style="background:${colors.main};color:#fff"><span style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:22px;line-height:1">${cat.emoji || ''}</span><span>${cat.title}</span></span></div><div class="sol-group-content" style="border:2px solid ${colors.light};display:flex;flex-direction:column;justify-content:center"><div class="sol-group-rows">${rows}</div></div></div>`;
     }).filter(Boolean);
