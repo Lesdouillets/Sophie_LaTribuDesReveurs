@@ -7481,7 +7481,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=629"></script>
+<script src="script-data.js?v=630"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -16444,8 +16444,21 @@ function onDiagnosticPbChange() {
     // Sauvegarder et restaurer la position de scroll pour éviter le "saut"
     const contentArea = document.getElementById('content-area');
     const savedScroll = contentArea ? contentArea.scrollTop : 0;
+    // Stabiliser la largeur pendant le re-render pour éviter le saut horizontal des colonnes
+    // (innerHTML replacement passe par un état transitoire où la largeur peut varier)
+    let _stabW = 0;
+    if (contentArea) {
+      _stabW = contentArea.offsetWidth;
+      contentArea.style.width = _stabW + 'px';
+    }
     renderCurrentSection();
-    if (contentArea) contentArea.scrollTop = savedScroll;
+    if (contentArea) {
+      contentArea.scrollTop = savedScroll;
+      // Libérer la largeur fixée au prochain frame (laisser le browser stabiliser le layout)
+      requestAnimationFrame(() => {
+        contentArea.style.width = '';
+      });
+    }
     autoSaveActiveConsultation();
   }, 0);
 }
