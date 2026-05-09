@@ -3514,17 +3514,22 @@
     .block-option.purple .option-content { background: #f5f0ff; }
     .block-option.purple .option-content .block:not(.block-question):not(.block-conseil-vert):not(.block-fin-consultation) { background: #f5f0ff; border-color: #d4c4f0; }
     .block-option.purple > .option-content > .edit-block-wrap:first-child .block { border: none; box-shadow: none; background: #f5f0ff; }
-    /* Quand l'option purple est ouverte (open-action) : retirer le fond violet de son
-       contenu pour que les blocs texte intérieurs s'affichent sans wrap violet. */
-    .block-option.purple.open-action { background: transparent !important; border-color: transparent !important; }
-    .block-option.purple.open-action > .option-content,
-    .block-option.purple.open-action > .option-content .block:not(.block-question):not(.block-conseil-vert):not(.block-fin-consultation),
+    /* Quand l'option purple est ouverte (open-action) : retirer COMPLÈTEMENT le fond
+       violet de son contenu et de ses blocs internes. */
+    .block-option.purple.open-action,
+    .block-option.purple.open-action .option-content,
+    .block-option.purple.open-action .option-content .block:not(.block-question):not(.block-conseil-vert):not(.block-fin-consultation),
+    .block-option.purple.open-action .option-content .edit-block-wrap > .block:not(.block-question):not(.block-conseil-vert):not(.block-fin-consultation),
+    .block-option.purple.open-action .option-content .block-with-left-title,
+    .block-option.purple.open-action .option-content .block-with-left-title > .block,
+    .block-option.purple.open-action .option-content .block-with-left-title > .edit-block-wrap > .block,
     .block-option.purple.open-action > .option-content > .edit-block-wrap:first-child .block {
-      background: var(--card-bg) !important;
+      background: #ffffff !important;
+      background-color: #ffffff !important;
     }
-    .block-option.purple.open-action > .option-content .block-with-left-title > .block,
-    .block-option.purple.open-action > .option-content .block-with-left-title > .edit-block-wrap > .block {
-      background: var(--card-bg) !important;
+    .block-option.purple.open-action { border-color: transparent !important; }
+    .block-option.purple.open-action .option-content .block-with-left-title > .block,
+    .block-option.purple.open-action .option-content .block-with-left-title > .edit-block-wrap > .block {
       border: 1px solid var(--border) !important;
       box-shadow: var(--shadow) !important;
     }
