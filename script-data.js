@@ -6840,9 +6840,9 @@ const SCRIPT_DATA = {
       blocks: [
         { type: "normal", _leftTitle: "Résumé", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- **Donc si je résume ce qu'on s'est dit !**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">❓ C'est <strong>bien ça</strong> ?<br>Est-ce <strong>clair pour vous</strong> ?</div>" },
         {
-          type: "option", label: "Pas eu le temps de tout discuter", style: "purple", _compactClosed: true,
+          type: "option", label: "🔥 Pas eu le temps de tout discuter", style: "purple", _compactClosed: true,
           blocks: [
-            { type: "normal", _leftTitle: "Pas eu le temps de tout discuter", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- On a **discuté de pas mal de choses**\n- Mais **malheureusement**, on n'a **PAS** eu le temps de **TOUT** discuter" },
+            { type: "normal", _leftTitle: "🔥 Pas eu le temps de tout discuter", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- On a **discuté de pas mal de choses**\n- Mais **malheureusement**, on n'a **PAS** eu le temps de **TOUT** discuter" },
             {
               type: "grouped_block", _leftTitle: "RDV ?", _leftTitleStyle: "background:#2d3f5c;color:#fff",
               blocks: [
