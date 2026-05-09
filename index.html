@@ -7232,7 +7232,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=575"></script>
+<script src="script-data.js?v=576"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -11289,11 +11289,21 @@ function repositionFloatingBubble() {
       }
     }
     wrap.style.top = Math.max(60, targetTop) + 'px';
-    // _bubbleLeft : positionner à gauche au lieu de droite (évite de couvrir Suivant
-    // ou un texte important sur la droite). Lu via data-attribute.
+    // _bubbleLeft : positionner pour ne pas couvrir le bouton Suivant (qui est à droite).
+    // Si mode visio actif sur la droite, on place la bulle JUSTE À GAUCHE de la zone
+    // vidéo (= right: meet-w + 30). Sinon (pas de mode visio, ou mode visio à gauche),
+    // on revient au coin gauche extrême (left: 30px).
     if (wrap.dataset.bubbleLeft === '1') {
-      wrap.style.left = '30px';
-      wrap.style.right = 'auto';
+      if (meetMode && meetMode.endsWith('-right')) {
+        // Bulle à gauche de la zone vidéo (qui est à droite)
+        const meetW = parseFloat(getComputedStyle(document.body).getPropertyValue('--meet-w')) || 240;
+        wrap.style.right = (meetW + 30) + 'px';
+        wrap.style.left = 'auto';
+      } else {
+        // Pas de meet mode à droite → coin gauche extrême
+        wrap.style.left = '30px';
+        wrap.style.right = 'auto';
+      }
     } else {
       wrap.style.right = rightVal + 'px';
       wrap.style.left = 'auto';
