@@ -1600,17 +1600,9 @@
     [data-section-cat="confort_physique"] .block-with-left-title,
     [data-section-cat="confort_physique"] .block-left-title { background: #fef2f2 !important; }
     .block-with-left-title > .edit-block-wrap { margin-bottom: 0; height: 100%; }
-    /* VIII. Plan d'action : block-solutions-identifiees a des sous-cards (parent-cards-grid)
-       qui se rendent COMME SIBLINGS dans le même edit-block-wrap. Avec height:100% ci-dessus
-       + align-items:stretch sur le grid, le wrap est figé à la hauteur d'un seul enfant et
-       les cards débordent par-dessus les boutons Précédent/Suivant. Forcer height:auto et
-       align-self:start pour que la cellule grid prenne sa taille naturelle. */
+    /* VIII. Plan d'action : retirer le fond du wrap (le titre garde son fond navy via inline) */
     .block-with-left-title:has(> .edit-block-wrap > .block-solutions-identifiees) {
       background: transparent !important;
-    }
-    .block-with-left-title > .edit-block-wrap:has(> .block-solutions-identifiees) {
-      height: auto !important;
-      align-self: start !important;
     }
     .block-with-left-title > .edit-block-wrap > .block,
     .block-with-left-title > .block {
@@ -13145,49 +13137,83 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     window.__infoButtons['tarifs-accueil-panel'] = { title: 'Tarifs', content: tableHtml };
     return '';
   }
-  // Récap des Solutions identifiées (pour IX. Reformulation) — affiche les catégories
-  // ayant au moins une solution cochée, chaque item en vert si tické sur sa carte,
-  // rouge sinon.
+  // Récap des Solutions identifiées (pour IX. Reformulation) — wrappé dans un encadré
+  // navy. Affiche les catégories avec items cochés, en checkboxes : chaque item est
+  // VERT (checkbox cochée) si tické sur sa carte (cardPersonalTicks) ; ROUGE (checkbox
+  // non cochée) sinon. Cliquer une case rouge → toggle le tick → devient verte.
   if (b.type === 'solutions_resume') {
     const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
     const selectedSols = state.selectedSolutions || new Set();
+    const courbeTicked = state.courbeCardsTicked || new Set();
     const ticks = state.cardPersonalTicks || new Set();
-    if (!selectedSols.size) return '';
-    const catColorMap = {
-      confort_physique: '#dc2626', nutrition: '#a05a1c', rythme: '#4a6b54',
-      strategie: '#2a4060', env: '#4f3d62', changement: '#3d4570',
-      journee: '#92400e', relationnel: '#5e3a52', sante: '#3d6b67',
-      accompagnement: '#831043'
+    const tbChoices = state.tickboxChoices || {};
+    // Couleurs MAIN (mêmes que les bandeaux de Solutions identifiées en VIII)
+    const catMainMap = {
+      confort_physique: '#dc2626', nutrition: '#d4845a', rythme: '#7da589',
+      strategie: '#5d7a99', env: '#9d83b0', changement: '#8089a8',
+      journee: '#e6cc6b', relationnel: '#c98aa8', sante: '#7ba8a3',
+      accompagnement: '#be185d'
     };
-    function collectChecked(node, level) {
-      level = level || 0;
-      const out = [];
-      const childList = Array.isArray(node.children) ? node.children : [];
-      childList.forEach(ch => {
-        const isSelected = selectedSols.has(ch.id);
-        const sub = collectChecked(ch, level + 1);
-        if (isSelected || sub.length) {
-          out.push({ id: ch.id, label: ch.label || ch.cardLabel || ch.id, emoji: ch.emoji || ch.cardEmoji || '', level, ticked: ticks.has(ch.id), selected: isSelected });
-          out.push(...sub);
+    // Couleurs verte/rouge
+    const GREEN = '#16a34a', RED = '#dc2626';
+    function isItemTicked(id) { return ticks.has(id); }
+    // Collecte récursive : pour chaque enfant coché, collecte ses sous-items cochés
+    // (courbe_cards_grid items dans courbeCardsTicked), avec tous les niveaux imbriqués.
+    function collectGridSubItems(blocks, level) {
+      const items = [];
+      if (!Array.isArray(blocks)) return items;
+      blocks.forEach(blk => {
+        if (blk && blk.type === 'courbe_cards_grid' && Array.isArray(blk.items)) {
+          blk.items.forEach(it => {
+            if (courbeTicked.has(it.id)) {
+              const subSub = collectGridSubItems(it.blocks, level + 1);
+              items.push({ id: it.id, label: it.label || it.compactLabel || it.id, emoji: it.emoji || '', level });
+              items.push(...subSub);
+            }
+          });
         }
       });
+      return items;
+    }
+    // Items spéciaux pour Tétine (sub-options stockées dans tickboxChoices)
+    function getTetineSubItems() {
+      const out = [];
+      const choice = tbChoices['strategie_tetine_choice'] || tbChoices['obj_tetine_static'] || '';
+      if (!choice) return out;
+      const labels = { garder: '✅ Garder', supprimer: '❌ Supprimer', hybride: '🔀 Hybride' };
+      // Pour le tick : on utilise un id pseudo "strat_tetine_<choice>"
+      const pseudoId = 'strat_tetine_' + choice;
+      out.push({ id: pseudoId, label: labels[choice] || choice, emoji: '', level: 1 });
       return out;
     }
     const blocks = sols.map(cat => {
-      const items = collectChecked(cat, 0);
-      if (!items.length) return '';
-      const color = catColorMap[cat.id] || '#475569';
-      const lis = items.map(it => {
-        if (!it.selected) return ''; // un parent non-coché qui contient un enfant coché : on ne montre QUE l'enfant
-        const txtColor = it.ticked ? '#16a34a' : '#dc2626';
-        const indent = it.level * 16;
-        return `<li style="color:${txtColor};font-weight:600;line-height:1.55;margin-left:${indent}px">${it.emoji ? it.emoji + ' ' : ''}${substituteVars(it.label)}</li>`;
-      }).filter(Boolean).join('');
-      if (!lis) return '';
-      return `<div class="block-with-left-title" style="background:transparent;margin-bottom:10px"><div class="block-left-title" style="background:${color};color:#fff">${cat.emoji || ''} ${cat.title}</div><div style="padding:10px 14px;background:#fff;border:1px solid #e2e8f0;border-radius:0 8px 8px 0"><ul style="margin:0;padding-left:22px;list-style:disc">${lis}</ul></div></div>`;
+      const children = (cat.children || []);
+      const allItems = []; // [{id,label,emoji,level}]
+      children.forEach(ch => {
+        const isSelected = selectedSols.has(ch.id);
+        const subItems = (ch.id === 'strat_tetine')
+          ? getTetineSubItems()
+          : collectGridSubItems(ch.blocks, 1);
+        if (!isSelected && !subItems.length) return;
+        // Inclure le parent si sélectionné OU s'il a des sous-items cochés
+        if (isSelected || subItems.length) {
+          allItems.push({ id: ch.id, label: ch.label || ch.cardLabel || ch.id, emoji: ch.emoji || ch.cardEmoji || '', level: 0 });
+          allItems.push(...subItems);
+        }
+      });
+      if (!allItems.length) return '';
+      const color = catMainMap[cat.id] || '#475569';
+      const rows = allItems.map(it => {
+        const ticked = isItemTicked(it.id);
+        const textColor = ticked ? GREEN : RED;
+        const checkedAttr = ticked ? 'checked' : '';
+        const indent = it.level * 22;
+        return `<label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:${textColor};font-weight:600;line-height:1.55;margin-left:${indent}px;padding:2px 0"><input type="checkbox" ${checkedAttr} onchange="toggleCardTickFromResume('${it.id}')" style="width:16px;height:16px;cursor:pointer;accent-color:${ticked ? GREEN : RED}">${it.emoji ? it.emoji + ' ' : ''}${substituteVars(it.label)}</label>`;
+      }).join('');
+      return `<div style="margin-bottom:10px;background:#fff;border-radius:8px;overflow:hidden;display:grid;grid-template-columns:160px 1fr;align-items:start"><div style="background:${color};color:#fff;padding:12px 14px;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:0.4px">${cat.emoji || ''} ${cat.title}</div><div style="padding:10px 14px">${rows}</div></div>`;
     }).filter(Boolean).join('');
     if (!blocks) return '';
-    return `<div class="block block-solutions-resume" style="border:none;background:transparent;box-shadow:none;padding:0">${blocks}</div>`;
+    return `<div class="block block-solutions-resume" style="background:#2d3f5c;padding:14px;border-radius:10px;margin:14px 0;border:none;box-shadow:0 2px 6px rgba(45,63,92,0.18)"><div style="color:#fff;font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;padding:0 4px 10px">📋 Récap Solutions</div>${blocks}</div>`;
   }
 
   if (b.type === 'separator') return `<div class="block block-separator">${text}</div>`;
@@ -17325,6 +17351,21 @@ function toggleCourbeCardTick(tickEl) {
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.toggleCourbeCardTick = toggleCourbeCardTick;
+
+// Toggle un tick depuis le récap solutions (IX. Reformulation). Manipule
+// state.cardPersonalTicks puis re-render la section pour mettre à jour les couleurs.
+function toggleCardTickFromResume(cardId) {
+  if (!cardId) return;
+  if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
+  if (state.cardPersonalTicks.has(cardId)) {
+    state.cardPersonalTicks.delete(cardId);
+  } else {
+    state.cardPersonalTicks.add(cardId);
+  }
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+}
+window.toggleCardTickFromResume = toggleCardTickFromResume;
 
 function restoreDecouverteNotes(root) {
   if (!state.decouverteNotes) return;
