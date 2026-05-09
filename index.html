@@ -13167,18 +13167,26 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       accompagnement:   { main: '#be185d', light: '#ebabc6' }
     };
     const GREEN = '#16a34a', RED = '#1e293b';
+    // Helper : un item est "sélectionné" dans Plan d'action via N'IMPORTE quel mécanisme
+    // (compact checkbox parent OU sub OU top-right tick OU choix Tétine).
+    function isItemSelected(id) {
+      return courbeTicked.has(id) || selectedSols.has(id) || ticks.has(id);
+    }
     function collectGridSubItems(blocks, level) {
       const items = [];
       if (!Array.isArray(blocks)) return items;
       blocks.forEach(blk => {
         if (blk && blk.type === 'courbe_cards_grid' && Array.isArray(blk.items)) {
           blk.items.forEach(it => {
-            if (courbeTicked.has(it.id)) {
-              const subSub = collectGridSubItems(it.blocks, level + 1);
-              // Cascade : un item hérite du tick si AU MOINS un de ses descendants directs
-              // ou indirects est tické (ticks.has) OU déjà marqué _tickedByDescendant
-              const anyDescTicked = subSub.some(s => ticks.has(s.id) || s._tickedByDescendant);
-              items.push({ id: it.id, label: it.label || it.compactLabel || it.id, emoji: it.emoji || '', level, _tickedByDescendant: anyDescTicked });
+            // Récursion TOUJOURS : on collecte tous les descendants sélectionnés,
+            // même si l'item parent lui-même n'est pas (encore) tické.
+            const subSub = collectGridSubItems(it.blocks, level + 1);
+            const anyDescSelected = subSub.some(s => isItemSelected(s.id) || s._selected);
+            const selfSelected = isItemSelected(it.id);
+            // Inclure l'item dans la liste s'il est sélectionné OU si un descendant l'est
+            // (cascade up : on remonte tous les ancêtres d'un item tické).
+            if (selfSelected || anyDescSelected) {
+              items.push({ id: it.id, label: it.label || it.compactLabel || it.id, emoji: it.emoji || '', level, _selected: selfSelected || anyDescSelected });
               items.push(...subSub);
             }
           });
@@ -13191,12 +13199,43 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const choice = tbChoices['strategie_tetine_choice'] || tbChoices['obj_tetine_static'] || '';
       if (!choice) return out;
       const labels = { garder: '✅ Garder', supprimer: '❌ Supprimer', hybride: '🔀 Hybride' };
-      out.push({ id: 'strat_tetine_' + choice, label: labels[choice] || choice, emoji: '', level: 1 });
+      // Le choix actif est "sélectionné" → GREEN automatique dans le récap
+      out.push({ id: 'strat_tetine_' + choice, label: labels[choice] || choice, emoji: '', level: 1, _selected: true });
       return out;
     }
     const groupsArr = sols.map(cat => {
       const children = (cat.children || []);
       const allItems = [];
+      // Cas spécial Accompagnement : si AU MOINS un sous-item du plan d'action est
+      // sélectionné (n'importe quel parent ou descendant), on remplace l'affichage par
+      // 2 items fixes ("4 outils" + "Comment accompagner [prénom]") au lieu de mirrorer
+      // le détail de Plan d'action.
+      if (cat.id === 'accompagnement') {
+        const hasAnySelected = (cat.children || []).some(ch => {
+          if (selectedSols.has(ch.id)) return true;
+          if (ticks.has(ch.id)) return true;
+          if (courbeTicked.has(ch.id)) return true;
+          // Vérifier aussi les descendants
+          const subs = collectGridSubItems(ch.blocks, 1);
+          return subs.length > 0;
+        });
+        if (hasAnySelected) {
+          const prenom = (state.client && state.client.prenomEnfant) ? state.client.prenomEnfant : '[prénom]';
+          allItems.push({ id: 'accomp_resume_4outils', label: '4 outils', emoji: '🛠️', level: 0, _selected: true });
+          allItems.push({ id: 'accomp_resume_comment', label: 'Comment accompagner ' + prenom, emoji: '🤝', level: 0, _selected: true });
+        }
+        if (!allItems.length) return '';
+        // Skip la boucle children normale
+        const colors = catColorMap[cat.id] || { main: '#475569', light: '#cbd5e0' };
+        const rows = allItems.map(it => {
+          const ticked = !!it._selected || isItemSelected(it.id);
+          const textColor = ticked ? GREEN : RED;
+          const checkedAttr = ticked ? 'checked' : '';
+          const indent = it.level * 24;
+          return `<div data-sol-id="${it.id}" class="sol-row-wrap" style="margin-left:${indent}px"><div class="sol-row-header"><label class="sol-row" style="flex:1"><input type="checkbox" ${checkedAttr} onchange="toggleCardTickFromResume('${it.id}')">${it.emoji ? `<span class="sol-row-emoji">${it.emoji}</span>` : ''}<span class="sol-row-label" style="color:${textColor} !important;font-weight:700">${substituteVars(it.label)}</span></label></div></div>`;
+        }).join('');
+        return `<div class="sol-group block-with-left-title" data-cat="${cat.id}"><div class="sol-group-title" style="background:${colors.main};color:#fff"><span style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:22px;line-height:1">${cat.emoji || ''}</span><span>${cat.title}</span></span></div><div class="sol-group-content" style="border:2px solid ${colors.light};display:flex;flex-direction:column;justify-content:center"><div class="sol-group-rows">${rows}</div></div></div>`;
+      }
       children.forEach(ch => {
         const isSelected = selectedSols.has(ch.id);
         const isTetine = ch.id === 'strat_tetine';
@@ -13209,18 +13248,19 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         if (isTetine) {
           subItems.forEach(it => allItems.push({ ...it, level: 0 }));
         } else {
-          // Cascade : si un sous-enfant (à n'importe quel niveau) est tické, le parent
-          // hérite aussi du tick (GREEN). Inclut les marquages _tickedByDescendant déjà
-          // calculés sur les niveaux intermédiaires par collectGridSubItems.
-          const anyDescendantTicked = subItems.some(s => ticks.has(s.id) || s._tickedByDescendant);
-          allItems.push({ id: ch.id, label: ch.label || ch.cardLabel || ch.id, emoji: ch.emoji || ch.cardEmoji || '', level: 0, _tickedByDescendant: anyDescendantTicked });
+          // Cascade : un parent est "sélectionné" (GREEN) si lui-même est sélectionné OU
+          // si au moins un descendant (à n'importe quel niveau) est sélectionné.
+          const anyDescSelected = subItems.some(s => isItemSelected(s.id) || s._selected);
+          const selfSelected = isItemSelected(ch.id);
+          allItems.push({ id: ch.id, label: ch.label || ch.cardLabel || ch.id, emoji: ch.emoji || ch.cardEmoji || '', level: 0, _selected: selfSelected || anyDescSelected });
           allItems.push(...subItems);
         }
       });
       if (!allItems.length) return '';
       const colors = catColorMap[cat.id] || { main: '#475569', light: '#cbd5e0' };
       const rows = allItems.map(it => {
-        const ticked = ticks.has(it.id) || !!it._tickedByDescendant;
+        // GREEN si l'item est sélectionné (n'importe quel mécanisme) OU si un descendant l'est
+        const ticked = !!it._selected || isItemSelected(it.id);
         const textColor = ticked ? GREEN : RED;
         const checkedAttr = ticked ? 'checked' : '';
         const indent = it.level * 24;
