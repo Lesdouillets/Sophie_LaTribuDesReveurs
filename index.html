@@ -423,15 +423,15 @@
       align-items: stretch;
       flex-shrink: 0;
       overflow: hidden;
-      max-height: 72px;
+      max-height: 96px;
       transition: max-height 0.3s;
     }
     .pb-objectif-bar.collapsed { max-height: 34px; }
     .pob-item {
-      flex: 1; padding: 6px 16px;
+      flex: 1; padding: 10px 18px;
       border-right: 1px solid rgba(82,183,136,0.3);
-      font-size: 13px;
-      display: flex; gap: 6px; align-items: flex-start; overflow: hidden;
+      font-size: 14px;
+      display: flex; gap: 8px; align-items: flex-start; overflow: hidden;
     }
     .pob-item:last-child { border-right: none; }
     .pob-label { font-weight: 700; color: var(--primary-dark); white-space: nowrap; flex-shrink: 0; }
@@ -6636,7 +6636,6 @@
     <div class="pob-item">
       <span class="pob-label">🎯 Objectif :</span>
       <span class="pob-text" id="pob-objectif">–</span>
-      <button class="pob-toggle-btn" onclick="togglePobBar()" id="pob-toggle-btn">▲ Réduire</button>
     </div>
   </div>
 
