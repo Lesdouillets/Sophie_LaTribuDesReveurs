@@ -4882,9 +4882,10 @@
     .sol-group.collapsed .sol-group-arrow { transform: rotate(-90deg); }
     .sol-group.collapsed .sol-group-rows { display: none; }
     /* Section "Accompagnement" : séparation visuelle au-dessus (spécifique à cette section) */
+    /* Espacement au-dessus de la ligne = gap des sol-col (12px). En-dessous = padding-top: 12px. */
     .sol-group[data-cat="accompagnement"] {
-      margin-top: 32px;
-      padding-top: 24px;
+      margin-top: 0;
+      padding-top: 12px;
       border-top: 2px dashed #cbd5e0;
     }
     /* Boutons "S'il RESTE" / "S'il SORT" — chaque bouton occupe 50% de la largeur (1 colonne chacun).
@@ -7480,7 +7481,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=625"></script>
+<script src="script-data.js?v=626"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -13233,18 +13234,22 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         });
         if (hasAnySelected) {
           const prenom = (state.client && state.client.prenomEnfant) ? state.client.prenomEnfant : '[prénom]';
-          allItems.push({ id: 'accomp_resume_4outils', label: '4 outils', emoji: '🛠️', level: 0, _selected: true, _ticked: ticks.has('accomp_resume_4outils') });
-          allItems.push({ id: 'accomp_resume_comment', label: 'Comment accompagner ' + prenom + ' ?', emoji: '🤝', level: 0, _selected: true, _ticked: ticks.has('accomp_resume_comment') });
+          // Items synthétiques : cochés par défaut. L'utilisateur peut les décocher
+          // → on les enregistre dans state.recapAccompUntoggled (set des items décochés).
+          const recapOff = state.recapAccompUntoggled || new Set();
+          allItems.push({ id: 'accomp_resume_4outils', label: '4 outils', emoji: '🛠️', level: 0, _selected: true, _ticked: !recapOff.has('accomp_resume_4outils') });
+          allItems.push({ id: 'accomp_resume_comment', label: 'Comment accompagner ' + prenom + ' ?', emoji: '🤝', level: 0, _selected: true, _ticked: !recapOff.has('accomp_resume_comment') });
         }
         if (!allItems.length) return '';
         // Skip la boucle children normale
         const colors = catColorMap[cat.id] || { main: '#475569', light: '#cbd5e0' };
         const rows = allItems.map(it => {
-          const ticked = !!it._selected || isItemSelected(it.id);
+          // Couleur basée sur _ticked (pas _selected) → permet le décochage manuel
+          const ticked = !!it._ticked;
           const textColor = ticked ? GREEN : RED;
           const checkedAttr = ticked ? 'checked' : '';
           const indent = it.level * 24;
-          return `<div data-sol-id="${it.id}" class="sol-row-wrap" style="margin-left:${indent}px"><div class="sol-row-header"><label class="sol-row" style="flex:1"><input type="checkbox" ${checkedAttr} onchange="toggleCardTickFromResume('${it.id}')">${it.emoji ? `<span class="sol-row-emoji">${it.emoji}</span>` : ''}<span class="sol-row-label" style="color:${textColor} !important;font-weight:700">${substituteVars(it.label)}</span></label></div></div>`;
+          return `<div data-sol-id="${it.id}" class="sol-row-wrap" style="margin-left:${indent}px"><div class="sol-row-header"><label class="sol-row" style="flex:1"><input type="checkbox" ${checkedAttr} onchange="toggleRecapAccompTick('${it.id}')">${it.emoji ? `<span class="sol-row-emoji">${it.emoji}</span>` : ''}<span class="sol-row-label" style="color:${textColor} !important;font-weight:700">${substituteVars(it.label)}</span></label></div></div>`;
         }).join('');
         return `<div class="sol-group block-with-left-title" data-cat="${cat.id}"><div class="sol-group-title" style="background:${colors.main};color:#fff"><span style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:22px;line-height:1">${cat.emoji || ''}</span><span>${cat.title}</span></span></div><div class="sol-group-content" style="border:2px solid ${colors.light};display:flex;flex-direction:column;justify-content:center"><div class="sol-group-rows">${rows}</div></div></div>`;
       }
@@ -17533,6 +17538,21 @@ function toggleCardTickFromResume(cardId) {
 }
 window.toggleCardTickFromResume = toggleCardTickFromResume;
 
+// Toggle pour les items synthétiques d'Accompagnement dans le récap (4 outils, Comment accompagner [prénom])
+// Les items sont cochés par défaut. Ce set traque ceux que l'utilisateur a décochés manuellement.
+function toggleRecapAccompTick(id) {
+  if (!id) return;
+  if (!state.recapAccompUntoggled) state.recapAccompUntoggled = new Set();
+  if (state.recapAccompUntoggled.has(id)) {
+    state.recapAccompUntoggled.delete(id);
+  } else {
+    state.recapAccompUntoggled.add(id);
+  }
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+}
+window.toggleRecapAccompTick = toggleRecapAccompTick;
+
 function restoreDecouverteNotes(root) {
   if (!state.decouverteNotes) return;
   const scope = root || document;
@@ -18232,6 +18252,7 @@ function newConsultation() {
     state.courbeCardsTicked = new Set();
     state.courbeCardsTickedManuallyEdited = new Set();
     state.cardPersonalTicks = new Set();
+    state.recapAccompUntoggled = new Set();
     state.solActiveCat = null;
     state.solActiveChildByCat = {};
     clearActiveConsultation();
@@ -18280,6 +18301,7 @@ function autoSaveActiveConsultation() {
         courbeCardsTicked: state.courbeCardsTicked ? [...state.courbeCardsTicked] : [],
         courbeCardsTickedManuallyEdited: state.courbeCardsTickedManuallyEdited ? [...state.courbeCardsTickedManuallyEdited] : [],
         cardPersonalTicks: state.cardPersonalTicks ? [...state.cardPersonalTicks] : [],
+        recapAccompUntoggled: state.recapAccompUntoggled ? [...state.recapAccompUntoggled] : [],
         selectedSolutions: state.selectedSolutions ? [...state.selectedSolutions] : [],
         selectedSolutionsManuallyEdited: state.selectedSolutionsManuallyEdited ? [...state.selectedSolutionsManuallyEdited] : [],
         savedAt: Date.now()
@@ -18362,6 +18384,7 @@ function restoreActiveConsultation() {
     // Migration : si l'ancienne sauvegarde n'a pas cardPersonalTicks, hériter de courbeCardsTicked
     // (avant le split, courbeCardsTicked servait aussi pour les ticks de cartes)
     state.cardPersonalTicks = new Set(snap.cardPersonalTicks || snap.courbeCardsTicked || []);
+    state.recapAccompUntoggled = new Set(snap.recapAccompUntoggled || []);
     // Re-peupler le formulaire + reconstruire l'UI
     populateFormFromClient(state.client);
     buildSections();
