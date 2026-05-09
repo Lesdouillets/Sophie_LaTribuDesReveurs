@@ -4724,6 +4724,39 @@
       color: white; font-size: 15px; font-weight: 800;
       letter-spacing: 0.4px; padding: 12px 20px;
     }
+    /* Bouton "Prendre rendez-vous" — lien vers l'agenda Google.
+       Visuel : grosse illustration clipboard + chrono + stylo (fond transparent). */
+    .block-agenda-btn-wrap {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      margin: 12px 0 !important;
+      text-align: center;
+    }
+    .agenda-btn {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: transparent;
+      color: #2d3f5c !important;
+      font-size: 16px;
+      font-weight: 800;
+      text-decoration: none;
+      border-radius: 14px;
+      transition: transform 0.15s, filter 0.15s;
+      letter-spacing: 0.3px;
+    }
+    .agenda-btn-svg {
+      width: 220px;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 6px 16px rgba(45,63,92,0.22));
+    }
+    .agenda-btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+    .agenda-btn:active { transform: translateY(0); }
     .solutions-identifiees-body { padding: 12px 20px; columns: 2; column-gap: 24px; }
     .sol-group { width: 100%; break-inside: avoid; page-break-inside: avoid; -webkit-column-break-inside: avoid; margin-bottom: 18px; }
     @media (max-width: 900px) { .solutions-identifiees-body { columns: 1; } }
@@ -7356,11 +7389,17 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=598"></script>
+<script src="script-data.js?v=599"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
 // ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
+// AGENDA — URL temporaire ; remplacer ici quand l'URL définitive sera disponible
+// (ex. Google Workspace Appointment Schedules : https://calendar.app.google/xxxx)
+// ═══════════════════════════════════════════════════
+const AGENDA_URL = 'https://calendar.google.com/';
+
 const SUPA_URL = 'https://chgtvqpfjkasttjktupf.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNoZ3R2cXBmamthc3R0amt0dXBmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3MjIyNzgsImV4cCI6MjA5MTI5ODI3OH0.LT_Z47Yu-ZHZjEcH8IZwDigMfAH6WJre1oluni1-mvE';
 const db = window.supabase.createClient(SUPA_URL, SUPA_KEY);
@@ -11876,7 +11915,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','nutri_repartition_table','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid','vicious_circle','columns_2','solutions_checkboxes'].includes(b.type);
+    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','nutri_repartition_table','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid','vicious_circle','columns_2','solutions_checkboxes','agenda_button'].includes(b.type);
     const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
@@ -13100,6 +13139,83 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     <div class="block block-question">
       <div class="q-text" contenteditable="true"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start"><span>❓</span><span>•</span><span>Est-ce que ça correspond toujours à ce que vous souhaitez aujourd'hui ?</span><span></span><span>•</span><span>Est-ce que vous avez quelque chose à ajouter ou préciser ?</span></div></div>
     </div>`;
+  }
+
+  if (b.type === 'agenda_button') {
+    const label = substituteVars(b.label || 'Prendre rendez-vous');
+    const svg = `<svg class="agenda-btn-svg" viewBox="0 0 220 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Clipboard back (dark navy) -->
+      <rect x="20" y="36" width="150" height="208" rx="12" fill="#1f3354"/>
+      <!-- Paper -->
+      <rect x="30" y="46" width="130" height="188" rx="6" fill="#ffffff"/>
+      <!-- Clip top -->
+      <rect x="80" y="24" width="30" height="22" rx="4" fill="#9aa6b8"/>
+      <rect x="84" y="20" width="22" height="6" rx="2" fill="#7c8898"/>
+      <!-- AGENDA title -->
+      <text x="95" y="74" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="16" fill="#1f3354" letter-spacing="1.5">AGENDA</text>
+      <!-- Rows -->
+      <g font-family="Arial, sans-serif">
+        <!-- Row 1 (checked) -->
+        <rect x="42" y="92" width="12" height="12" rx="2.5" fill="none" stroke="#1f3354" stroke-width="1.6"/>
+        <path d="M 44 98 L 47.5 101.5 L 53 95" stroke="#facc15" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="60" y1="99" x2="148" y2="99" stroke="#cbd5e0" stroke-width="3.5" stroke-linecap="round"/>
+        <!-- Row 2 (checked) -->
+        <rect x="42" y="114" width="12" height="12" rx="2.5" fill="none" stroke="#1f3354" stroke-width="1.6"/>
+        <path d="M 44 120 L 47.5 123.5 L 53 117" stroke="#facc15" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="60" y1="121" x2="148" y2="121" stroke="#cbd5e0" stroke-width="3.5" stroke-linecap="round"/>
+        <!-- Row 3 (empty) -->
+        <rect x="42" y="136" width="12" height="12" rx="2.5" fill="none" stroke="#1f3354" stroke-width="1.6"/>
+        <line x1="60" y1="143" x2="148" y2="143" stroke="#cbd5e0" stroke-width="3.5" stroke-linecap="round"/>
+        <!-- Row 4 (checked) -->
+        <rect x="42" y="158" width="12" height="12" rx="2.5" fill="none" stroke="#1f3354" stroke-width="1.6"/>
+        <path d="M 44 164 L 47.5 167.5 L 53 161" stroke="#facc15" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="60" y1="165" x2="148" y2="165" stroke="#cbd5e0" stroke-width="3.5" stroke-linecap="round"/>
+        <!-- Row 5 (empty) -->
+        <rect x="42" y="180" width="12" height="12" rx="2.5" fill="none" stroke="#1f3354" stroke-width="1.6"/>
+        <line x1="60" y1="187" x2="148" y2="187" stroke="#cbd5e0" stroke-width="3.5" stroke-linecap="round"/>
+        <!-- Row 6 (checked) -->
+        <rect x="42" y="202" width="12" height="12" rx="2.5" fill="none" stroke="#1f3354" stroke-width="1.6"/>
+        <path d="M 44 208 L 47.5 211.5 L 53 205" stroke="#facc15" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="60" y1="209" x2="148" y2="209" stroke="#cbd5e0" stroke-width="3.5" stroke-linecap="round"/>
+      </g>
+      <!-- Stopwatch (top right) -->
+      <g transform="translate(140, 26)">
+        <!-- Sound waves -->
+        <path d="M 6 18 Q 9 12 15 11" stroke="#1f3354" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M 1 26 Q 4 14 14 12" stroke="#1f3354" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.55"/>
+        <path d="M 56 11 Q 62 12 65 18" stroke="#1f3354" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M 57 12 Q 67 14 70 26" stroke="#1f3354" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.55"/>
+        <!-- Top button -->
+        <rect x="32" y="6" width="8" height="6" rx="1.5" fill="#1f3354"/>
+        <rect x="30" y="11" width="12" height="4" rx="1" fill="#1f3354"/>
+        <!-- Outer face -->
+        <circle cx="36" cy="40" r="26" fill="#1f3354"/>
+        <circle cx="36" cy="40" r="22" fill="#ffffff"/>
+        <!-- Hour ticks -->
+        <g stroke="#1f3354" stroke-width="1.5" stroke-linecap="round">
+          <line x1="36" y1="22" x2="36" y2="26"/>
+          <line x1="50" y1="40" x2="54" y2="40"/>
+          <line x1="36" y1="58" x2="36" y2="54"/>
+          <line x1="22" y1="40" x2="18" y2="40"/>
+        </g>
+        <!-- Hands -->
+        <line x1="36" y1="40" x2="36" y2="27" stroke="#1f3354" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="36" y1="40" x2="48" y2="40" stroke="#1f3354" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="36" cy="40" r="2.5" fill="#1f3354"/>
+      </g>
+      <!-- Pen (right side) -->
+      <g transform="translate(168, 130)">
+        <!-- Body -->
+        <rect x="0" y="0" width="16" height="70" rx="4" fill="#1f3354"/>
+        <rect x="0" y="14" width="16" height="6" fill="#3b5680"/>
+        <!-- Tip -->
+        <polygon points="0,70 16,70 8,90" fill="#1f3354"/>
+        <polygon points="6,82 10,82 8,90" fill="#cbd5e0"/>
+        <!-- Clip -->
+        <rect x="2" y="6" width="3" height="22" rx="1" fill="#3b5680"/>
+      </g>
+    </svg>`;
+    return `<div class="block block-agenda-btn-wrap"><a class="agenda-btn" href="${AGENDA_URL}" target="_blank" rel="noopener noreferrer">${svg}<span class="agenda-btn-label">${label}</span></a></div>`;
   }
 
   if (b.type === 'tarifs_tableau') {

@@ -6844,6 +6844,7 @@ const SCRIPT_DATA = {
           blocks: [
             { type: "normal", text: "- On a **discuté de pas mal de choses**\n- Mais **malheureusement**, on n'a **PAS** eu le temps de **TOUT** discuter\n- Ce que **je vous propose** c'est que l'on **finisse cette discussion** autour d'**un AUTRE RDV**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">❓ Est-ce que <strong>ça vous irait</strong> ?</div>" },
             { type: "important", text: "- 🔥 On **peut se voir** le <strong style=\"color:#C0392B\">XXX</strong>" },
+            { type: "agenda_button" },
             {
               type: "option", label: "💰 Tarifs", style: "purple",
               blocks: [
@@ -6885,6 +6886,7 @@ const SCRIPT_DATA = {
               type: "option", label: "🔥 Si Pas pris de RDV", style: "purple", _compactClosed: true,
               blocks: [
                 { type: "important", text: "- 🔥 Au vu de ce qu'on s'est dit, je pense qu'il serait **intéressant de se revoir**\n\n- Sachant que **vous voulez commencer** le <strong style=\"color:#C0392B\">XXX</strong>, on **peut se voir** le <strong style=\"color:#C0392B\">XXX</strong>" },
+                { type: "agenda_button" },
                 { type: "question", text: "Qu'est-ce que <strong>vous en pensez</strong> ?", embeddedActions: [
                   {
                     label: "💰 Tarifs", style: "purple", _noPurpleStyle: true,
@@ -6925,6 +6927,7 @@ const SCRIPT_DATA = {
               ]
             },
             { type: "normal", _leftTitle: "Proposition autre RDV", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Je ne **peux PAS vous laisser** avec quelque chose qui ne vous **convient PAS** OU qui **n'est PAS aidant** pour vous.\n- Mais là, **malheureusement** je dois **arrêter là**\n- <strong style=\"color:#C0392B\"><u>JE</u></strong> n'ai **PAS pris le bon chemin**\n⇒ on va **trouver un autre chemin ensemble** et qui vous **convienne mieux**\n- MAIS **SI vous êtes d'accord**, je vous **propose qu'on se revoie** (gratuitement) :\n  - pour **reprendre tout ça + tranquillement**\n  - **simplifier**,\n  - et **ajuster** vraiment à **VOTRE rythme**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\"><div style=\"display:grid;grid-template-columns:auto auto 1fr;gap:6px 8px;align-items:start\"><span>❓</span><span>•</span><span>Est-ce que <strong>ça vous irait</strong> qu'on <strong>reprogramme un temps ensemble</strong> pour <strong>retravailler les choses + simplement</strong>, à VOTRE rythme ?</span><span></span><span>•</span><span>🔥 Écoutez, le <strong style=\"color:#C0392B\">XXX</strong> à <strong style=\"color:#C0392B\">XXX</strong> heures je suis libre, est-ce que <strong>ça vous conviendrait</strong> ?</span></div></div>" },
+            { type: "agenda_button" },
             { type: "normal", _leftTitle: "Re-parle prochainement", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Ok, donc **on se reparle prochainement**\n- **En attendant**, vous pouvez :\n  - vous **reposer sur ce que l'on s'est dit**,\n  - et on **reprendra notre conversation**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">❓ Est-ce que c'est <strong>OK pour vous</strong> ?</div>" },
             { type: "normal", _leftTitle: "Bonne journée", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Je vous souhaite une **bonne journée** et à **très bientôt**" },
             { type: "fin_consultation", text: "🏁 **FIN DE LA CONSULTATION** 🏁" }
