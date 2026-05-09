@@ -13167,26 +13167,34 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       accompagnement:   { main: '#be185d', light: '#ebabc6' }
     };
     const GREEN = '#16a34a', RED = '#1e293b';
-    // Helper : un item est "sélectionné" dans Plan d'action via N'IMPORTE quel mécanisme
-    // (compact checkbox parent OU sub OU top-right tick OU choix Tétine).
+    // Helper : un item est "présent en Plan d'action" (selectedSolutions, courbeCardsTicked
+    // ou tickboxChoices) → utilisé pour FILTRER ce qui apparaît dans le récap.
+    // Pour la COULEUR (vert/noir), on utilise UNIQUEMENT cardPersonalTicks (ticks).
     function isItemSelected(id) {
-      return courbeTicked.has(id) || selectedSols.has(id) || ticks.has(id);
+      return courbeTicked.has(id) || selectedSols.has(id);
     }
+    function isItemTicked(id) { return ticks.has(id); }
     function collectGridSubItems(blocks, level) {
       const items = [];
       if (!Array.isArray(blocks)) return items;
       blocks.forEach(blk => {
         if (blk && blk.type === 'courbe_cards_grid' && Array.isArray(blk.items)) {
           blk.items.forEach(it => {
-            // Récursion TOUJOURS : on collecte tous les descendants sélectionnés,
-            // même si l'item parent lui-même n'est pas (encore) tické.
+            // Récursion TOUJOURS pour collecter tous les descendants sélectionnés
             const subSub = collectGridSubItems(it.blocks, level + 1);
             const anyDescSelected = subSub.some(s => isItemSelected(s.id) || s._selected);
+            const anyDescTicked = subSub.some(s => isItemTicked(s.id) || s._ticked);
             const selfSelected = isItemSelected(it.id);
-            // Inclure l'item dans la liste s'il est sélectionné OU si un descendant l'est
-            // (cascade up : on remonte tous les ancêtres d'un item tické).
+            const selfTicked = isItemTicked(it.id);
             if (selfSelected || anyDescSelected) {
-              items.push({ id: it.id, label: it.label || it.compactLabel || it.id, emoji: it.emoji || '', level, _selected: selfSelected || anyDescSelected });
+              items.push({
+                id: it.id,
+                label: it.label || it.compactLabel || it.id,
+                emoji: it.emoji || '',
+                level,
+                _selected: selfSelected || anyDescSelected,
+                _ticked: selfTicked || anyDescTicked
+              });
               items.push(...subSub);
             }
           });
@@ -13199,8 +13207,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const choice = tbChoices['strategie_tetine_choice'] || tbChoices['obj_tetine_static'] || '';
       if (!choice) return out;
       const labels = { garder: '✅ Garder', supprimer: '❌ Supprimer', hybride: '🔀 Hybride' };
-      // Le choix actif est "sélectionné" → GREEN automatique dans le récap
-      out.push({ id: 'strat_tetine_' + choice, label: labels[choice] || choice, emoji: '', level: 1, _selected: true });
+      // Le choix actif est "sélectionné" (donc affiché). Pour le tick (vert), seul un
+      // tick explicite sur la carte (cardPersonalTicks) le rend vert.
+      const pseudoId = 'strat_tetine_' + choice;
+      out.push({ id: pseudoId, label: labels[choice] || choice, emoji: '', level: 1, _selected: true, _ticked: ticks.has(pseudoId) });
       return out;
     }
     const groupsArr = sols.map(cat => {
@@ -13221,8 +13231,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         });
         if (hasAnySelected) {
           const prenom = (state.client && state.client.prenomEnfant) ? state.client.prenomEnfant : '[prénom]';
-          allItems.push({ id: 'accomp_resume_4outils', label: '4 outils', emoji: '🛠️', level: 0, _selected: true });
-          allItems.push({ id: 'accomp_resume_comment', label: 'Comment accompagner ' + prenom, emoji: '🤝', level: 0, _selected: true });
+          allItems.push({ id: 'accomp_resume_4outils', label: '4 outils', emoji: '🛠️', level: 0, _selected: true, _ticked: ticks.has('accomp_resume_4outils') });
+          allItems.push({ id: 'accomp_resume_comment', label: 'Comment accompagner ' + prenom, emoji: '🤝', level: 0, _selected: true, _ticked: ticks.has('accomp_resume_comment') });
         }
         if (!allItems.length) return '';
         // Skip la boucle children normale
@@ -13253,19 +13263,28 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         if (isTetine) {
           subItems.forEach(it => allItems.push({ ...it, level: 0 }));
         } else {
-          // Cascade : un parent est "sélectionné" (GREEN) si lui-même est sélectionné OU
-          // si au moins un descendant (à n'importe quel niveau) est sélectionné.
+          // Cascade : un parent est "sélectionné" si lui-même OU au moins un descendant l'est
+          // → filtre l'affichage. Le tick (cardPersonalTicks) cascade séparément.
           const anyDescSelected = subItems.some(s => isItemSelected(s.id) || s._selected);
           const selfSelected = isItemSelected(ch.id);
-          allItems.push({ id: ch.id, label: ch.label || ch.cardLabel || ch.id, emoji: ch.emoji || ch.cardEmoji || '', level: 0, _selected: selfSelected || anyDescSelected });
+          const anyDescTicked = subItems.some(s => isItemTicked(s.id) || s._ticked);
+          const selfTicked = isItemTicked(ch.id);
+          allItems.push({
+            id: ch.id,
+            label: ch.label || ch.cardLabel || ch.id,
+            emoji: ch.emoji || ch.cardEmoji || '',
+            level: 0,
+            _selected: selfSelected || anyDescSelected,
+            _ticked: selfTicked || anyDescTicked
+          });
           allItems.push(...subItems);
         }
       });
       if (!allItems.length) return '';
       const colors = catColorMap[cat.id] || { main: '#475569', light: '#cbd5e0' };
       const rows = allItems.map(it => {
-        // GREEN si l'item est sélectionné (n'importe quel mécanisme) OU si un descendant l'est
-        const ticked = !!it._selected || isItemSelected(it.id);
+        // GREEN UNIQUEMENT si l'item ou un descendant est dans cardPersonalTicks (top-right tick)
+        const ticked = !!it._ticked || isItemTicked(it.id);
         const textColor = ticked ? GREEN : RED;
         const checkedAttr = ticked ? 'checked' : '';
         const indent = it.level * 24;
