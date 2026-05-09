@@ -7469,7 +7469,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=614"></script>
+<script src="script-data.js?v=615"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -13371,10 +13371,27 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     // — l'auteur du bloc gère lui-même le ❓ dans son HTML.
     const isRawHtml = /^\s*<\w+/.test(raw);
     const innerHtml = isRawHtml ? text : `❓ ${text}`;
+    // Support trailingInfoButton (singulier) pour les blocs question — bouton flottant à
+    // droite qui ouvre un info-panel latéral (même pattern que I. Accueil).
+    let qTrailingHtml = '';
+    if (b.trailingInfoButton) {
+      const tb = b.trailingInfoButton;
+      window.__infoButtons = window.__infoButtons || {};
+      const btnId = `info-btn-${sectionId||'x'}-${String(path||i).replace(/\./g,'-')}-qtrail`;
+      const tbLabel = substituteVars(tb.label || 'Plus d\'infos');
+      const tbTitle = substituteVars(tb.title || tb.label || 'Informations');
+      const tbContent = renderBlocks(Array.isArray(tb.blocks) ? tb.blocks : [], sectionId, (depth||0)+1, path||String(i));
+      window.__infoButtons[btnId] = { title: tbTitle, content: tbContent };
+      const tbEmoji = tb.emoji || '💡';
+      const wrapW = tb._wrapWidth || '160px';
+      qTrailingHtml = `<div contenteditable="false" style="float:right;width:${wrapW};margin:0 0 8px 14px"><button type="button" class="info-btn" onclick="openInfoPanel('${btnId}')" style="width:100%;min-width:0;padding:8px 12px;font-size:14px"><span class="info-btn-emoji">${tbEmoji}</span><span>${tbLabel}</span></button></div>`;
+    }
     return `<div class="block block-question">
+      ${qTrailingHtml}
       <div class="q-text" contenteditable="true">${innerHtml}</div>
       ${choiceHtml}
       ${qEmbeddedHtml}
+      ${qTrailingHtml ? '<div style="clear:both"></div>' : ''}
     </div>`;
   }
 

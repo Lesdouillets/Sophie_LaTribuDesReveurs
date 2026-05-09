@@ -6887,15 +6887,13 @@ const SCRIPT_DATA = {
             {
               type: "option", label: "🔥 Si Pas pris de RDV", style: "purple", _compactClosed: true,
               blocks: [
-                { type: "normal", _noBorder: true, _leftTitle: "Intéressant de se revoir", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "<div style=\"background:#ffffff;border:1px solid #e2e8f0;border-radius:10px;padding:14px 18px\">- Au vu de ce qu'on s'est dit, je pense qu'il serait <strong>intéressant de se revoir</strong>\n- 🔥 Sachant que <strong>vous voulez commencer</strong> le <strong style=\"color:#C0392B\">XXX</strong>, on <strong>peut se voir</strong> le <strong style=\"color:#C0392B\">XXX</strong>\n[agenda_btn:small]</div>" },
-                { type: "question", _leftTitle: "Qu'en pensez-vous ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "Qu'est-ce que <strong>vous en pensez</strong> ?", embeddedActions: [
-                  {
-                    label: "💰 Tarifs", style: "action-yellow", _pillStyle: true,
-                    blocks: [
-                      { type: "tarifs_tableau" }
-                    ]
-                  }
-                ]}
+                { type: "normal", _noBorder: true, _leftTitle: "Intéressant de se revoir", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "<div style=\"background:#ffffff;border:1px solid #e2e8f0;border-radius:10px;padding:14px 18px\"><ul style=\"margin:0;padding-left:22px;list-style:disc\"><li style=\"line-height:1.65;margin-bottom:6px\">Au vu de ce qu'on s'est dit, je pense qu'il serait <strong>intéressant de se revoir</strong></li><li style=\"line-height:1.65\">🔥 Sachant que <strong>vous voulez commencer</strong> le <strong style=\"color:#C0392B\">XXX</strong>, on <strong>peut se voir</strong> le <strong style=\"color:#C0392B\">XXX</strong></li></ul>[agenda_btn:small]</div>" },
+                { type: "question", _leftTitle: "Qu'en pensez-vous ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "Qu'est-ce que <strong>vous en pensez</strong> ?", trailingInfoButton: {
+                  label: "Tarifs", emoji: "💰",
+                  blocks: [
+                    { type: "tarifs_tableau" }
+                  ]
+                }}
               ]
             },
             { type: "question", _leftTitle: "Dernière question", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "Moi, j'ai une **dernière question** pour VOUS qui est **très importante** :<br>⇒ Comment vous **vous sentez LÀ,** à **l'idée de mettre** tout ceci **en place** ?" },
