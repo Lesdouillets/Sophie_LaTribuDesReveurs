@@ -15023,34 +15023,23 @@ function toggleOption(header, skipScroll) {
         const wrap = optionDiv.closest('.edit-block-wrap') || optionDiv;
         setTimeout(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
       }
-      // Click-outside-close pour les purple-btn compact (V. Diagnostic) ET pour les
-      // purple-btn de IV. Objectifs (Lieu de sommeil, Position ventrale) ET pour les
-      // gros boutons action.pill-style en V. Diagnostic (Pas de dette / Difficultés
-      // sommeil / Difficultés alimentaires) et VI. Objectifs revus (Faisables / PAS
-      // faisables) : fermer si clic en dehors de l'encadré de l'option.
-      const _curSecId = state.sections && state.sections[state.currentIdx]?.id;
-      const _inObjectifs = _curSecId === 'objectifs';
-      const _purpleBtnInObj = optionDiv.classList.contains('purple-btn') && !optionDiv.classList.contains('compact-btn') && _inObjectifs;
-      const _actionPillInDiagOrRevus = optionDiv.classList.contains('action') && optionDiv.classList.contains('pill-style') && (_curSecId === 'diagnostic' || _curSecId === 'objectifs_revus');
-      if (optionDiv.classList.contains('compact-btn') || _purpleBtnInObj || _actionPillInDiagOrRevus) {
-        setTimeout(() => {
-          const handler = (e) => {
-            if (!optionDiv.classList.contains('open-action')) {
-              document.removeEventListener('mousedown', handler, true);
-              return;
-            }
-            if (optionDiv.contains(e.target)) return;
-            // Ne pas fermer si le clic est sur un overlay/dialog/info-panel global
-            // (modals affichés en dehors de l'optionDiv mais déclenchés depuis l'intérieur).
-            if (e.target.closest('.ltd-overlay, .info-panel-overlay, .info-panel, [class*="overlay"]')) return;
-            // Fermer
-            const innerHeader = optionDiv.querySelector(':scope > .option-header');
-            if (innerHeader) toggleOption(innerHeader, true);
+      // Click-outside-close GLOBAL : tout bouton toggleable (action / pleurs /
+       // purple-btn / purple) se referme si on clique en dehors de son encadré.
+       // Les overlays/dialogs/info-panels sont exemptés.
+      setTimeout(() => {
+        const handler = (e) => {
+          if (!optionDiv.classList.contains('open-action')) {
             document.removeEventListener('mousedown', handler, true);
-          };
-          document.addEventListener('mousedown', handler, true);
-        }, 0);
-      }
+            return;
+          }
+          if (optionDiv.contains(e.target)) return;
+          if (e.target.closest('.ltd-overlay, .info-panel-overlay, .info-panel, [class*="overlay"]')) return;
+          const innerHeader = optionDiv.querySelector(':scope > .option-header');
+          if (innerHeader) toggleOption(innerHeader, true);
+          document.removeEventListener('mousedown', handler, true);
+        };
+        document.addEventListener('mousedown', handler, true);
+      }, 0);
     } else {
       // Validation avant fermeture : si l'option contient obj_chgmt_lit_type et que la sous-option n'est pas sélectionnée,
       // proposer le choix dans un modal qui coche automatiquement la pb correspondante
