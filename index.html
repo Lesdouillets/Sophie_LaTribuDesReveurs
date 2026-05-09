@@ -4847,9 +4847,9 @@
     }
     .agenda-btn-small:hover { background: #f5f7fb; }
     .agenda-btn-svg-small { width: 38px; height: auto; filter: drop-shadow(0 2px 4px rgba(45,63,92,0.2)); }
-    .solutions-identifiees-body { padding: 12px 20px; columns: 2; column-gap: 24px; }
-    .sol-group { width: 100%; break-inside: avoid; page-break-inside: avoid; -webkit-column-break-inside: avoid; margin-bottom: 18px; }
-    @media (max-width: 900px) { .solutions-identifiees-body { columns: 1; } }
+    .solutions-identifiees-body { padding: 12px 20px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px 24px; align-items: start; }
+    .sol-group { width: 100%; margin-bottom: 0; }
+    @media (max-width: 900px) { .solutions-identifiees-body { grid-template-columns: 1fr; } }
     /* sol-group en format bloc-titre : titre à gauche (140px) + checkboxes à droite, blocs indépendants avec gap */
     .sol-group.block-with-left-title {
       display: grid; grid-template-columns: 140px 1fr;
@@ -7478,7 +7478,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=623"></script>
+<script src="script-data.js?v=624"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -13216,7 +13216,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       return `<div class="sol-group block-with-left-title" data-cat="${cat.id}"><div class="sol-group-title" style="background:${colors.main};color:#fff"><span style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:22px;line-height:1">${cat.emoji || ''}</span><span>${cat.title}</span></span></div><div class="sol-group-content" style="border:2px solid ${colors.light};display:flex;flex-direction:column;justify-content:center"><div class="sol-group-rows">${rows}</div></div></div>`;
     }).filter(Boolean).join('');
     if (!groups) return '';
-    return `<div class="block block-solutions-resume" style="border:2px solid #2d3f5c;border-radius:10px;padding:12px;margin:14px 0;background:transparent;box-shadow:none"><div class="block-solutions-identifiees" style="border:none;box-shadow:none;background:transparent;padding:0;margin:0"><div class="solutions-identifiees-body" style="padding:0;columns:2;column-gap:18px">${groups}</div></div></div>`;
+    return `<div class="block block-solutions-resume" style="border:2px solid #2d3f5c;border-radius:10px;padding:12px;margin:14px 0;background:transparent;box-shadow:none"><div class="block-solutions-identifiees" style="border:none;box-shadow:none;background:transparent;padding:0;margin:0"><div class="solutions-identifiees-body" style="padding:0;display:grid;grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);gap:14px;align-items:start">${groups}</div></div></div>`;
   }
 
   if (b.type === 'separator') return `<div class="block block-separator">${text}</div>`;
@@ -17360,17 +17360,21 @@ function toggleCourbeCardTick(tickEl) {
 window.toggleCourbeCardTick = toggleCourbeCardTick;
 
 // Toggle un tick depuis le récap solutions (IX. Reformulation). Manipule
-// state.cardPersonalTicks puis re-render la section pour mettre à jour les couleurs.
+// state.cardPersonalTicks et met à jour UNIQUEMENT le label de la ligne cliquée
+// (pas de re-render complet → évite le saut de colonne dans le layout columns:2).
 function toggleCardTickFromResume(cardId) {
   if (!cardId) return;
   if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
-  if (state.cardPersonalTicks.has(cardId)) {
-    state.cardPersonalTicks.delete(cardId);
-  } else {
-    state.cardPersonalTicks.add(cardId);
-  }
+  const willBeTicked = !state.cardPersonalTicks.has(cardId);
+  if (willBeTicked) state.cardPersonalTicks.add(cardId);
+  else state.cardPersonalTicks.delete(cardId);
+  // Mettre à jour la couleur du label DANS le récap uniquement (évite le re-render complet)
+  const GREEN = '#16a34a', BLACK = '#1e293b';
+  const newColor = willBeTicked ? GREEN : BLACK;
+  document.querySelectorAll('.block-solutions-resume .sol-row-wrap[data-sol-id="' + cardId + '"] .sol-row-label').forEach(label => {
+    label.style.setProperty('color', newColor, 'important');
+  });
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
-  if (typeof renderCurrentSection === 'function') renderCurrentSection();
 }
 window.toggleCardTickFromResume = toggleCardTickFromResume;
 
