@@ -7481,7 +7481,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=630"></script>
+<script src="script-data.js?v=631"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -16441,24 +16441,13 @@ function onDiagnosticPbChange() {
     if (state.courbeCardsActiveByGrid) {
       delete state.courbeCardsActiveByGrid['diagnostic_inline_sections'];
     }
-    // Sauvegarder et restaurer la position de scroll pour éviter le "saut"
-    const contentArea = document.getElementById('content-area');
-    const savedScroll = contentArea ? contentArea.scrollTop : 0;
-    // Stabiliser la largeur pendant le re-render pour éviter le saut horizontal des colonnes
-    // (innerHTML replacement passe par un état transitoire où la largeur peut varier)
-    let _stabW = 0;
-    if (contentArea) {
-      _stabW = contentArea.offsetWidth;
-      contentArea.style.width = _stabW + 'px';
-    }
-    renderCurrentSection();
-    if (contentArea) {
-      contentArea.scrollTop = savedScroll;
-      // Libérer la largeur fixée au prochain frame (laisser le browser stabiliser le layout)
-      requestAnimationFrame(() => {
-        contentArea.style.width = '';
-      });
-    }
+    // Mise à jour in-place : ne PAS re-render toute la section (le multi-column #diag-pb-container
+    // se ré-équilibre et fait sauter les colonnes). On met juste à jour les blocs affectés :
+    // - leviers_count (déjà fait via updateDiagLeviersCount ci-dessus)
+    // - conditional_sections_inline (cartes de catégories qui dépendent des PBs cochées)
+    // - panel Solutions identifiées (s'il existe dans la section courante — pas le cas en V. Diag)
+    _refreshDiagnosticConditionalInPlace();
+    _refreshSolutionsBlockInPlace();
     autoSaveActiveConsultation();
   }, 0);
 }
@@ -17523,6 +17512,26 @@ function _collectAllDescendants(node) {
 // Mise à jour DOM in-place des blocks Solutions identifiées (panel checkboxes + cards parent
 // au-dessus). Évite le saut horizontal des colonnes flex causé par renderCurrentSection.
 // Utilisé par toggleSolution / toggleCourbeCardTickFromSol pour Plan d'action et Diagnostic.
+// Mise à jour DOM in-place du bloc conditional_sections_inline (cartes de catégories
+// dans V. Diagnostic). Évite le saut horizontal des colonnes du multi-column layout
+// (#diag-pb-container) causé par renderCurrentSection.
+function _refreshDiagnosticConditionalInPlace() {
+  const wrapper = document.querySelector('.diagnostic-sections-wrapper');
+  if (!wrapper) return;
+  const editWrap = wrapper.closest('.edit-block-wrap');
+  if (!editWrap) return;
+  const section = state.sections[state.currentIdx];
+  if (!section) return;
+  const blocks = (typeof getOverrideBlocks === 'function') ? getOverrideBlocks(section) : (section.blocks || []);
+  const condBlock = blocks.find(b => b && b.type === 'conditional_sections_inline');
+  if (!condBlock || typeof renderBlockInner !== 'function') return;
+  const newHtml = renderBlockInner(condBlock, 0, section.id, 0, '');
+  const editCtrls = editWrap.querySelector('.edit-block-controls');
+  const editCtrlsHtml = editCtrls ? editCtrls.outerHTML : '';
+  editWrap.innerHTML = editCtrlsHtml + newHtml;
+}
+window._refreshDiagnosticConditionalInPlace = _refreshDiagnosticConditionalInPlace;
+
 function _refreshSolutionsBlockInPlace() {
   if (typeof renderSolutionsCheckboxes !== 'function') return;
   // 1. Panel checkboxes (.block-solutions-identifiees)
