@@ -2143,12 +2143,12 @@
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
     /* SOS PANEL — right rail integrated in app-body */
-    /* Bouton SOS flottant — carré, 2x plus gros que les btn-icon, coin droit
-       sous le bandeau vert (descendu pour ne pas le chevaucher) */
+    /* Bouton SOS flottant — carré, 2x plus gros que les btn-icon, COIN haut-droite
+       sous le bandeau vert (collé au bord droit) */
     #btn-sos-floating {
       position: fixed;
       top: 130px;
-      right: 20px;
+      right: 6px;
       width: 64px;
       height: 64px;
       border: none;
@@ -3655,8 +3655,8 @@
       transform: translateY(-1px);
       box-shadow: 0 4px 14px rgba(124,58,237,0.28);
     }
-    /* Ouvert : plein écran (100% largeur), fond transparent + pas de bordure
-       (avant : fond violet clair + bordure dashed violet — retiré sur demande) */
+    /* Ouvert : plein écran (100% largeur), fond TRANSPARENT (pas de violet derrière
+       les blocs texte) + bordure dashed violet conservée (encadré visuel) */
     .block-option.purple-btn.open-action {
       width: auto !important;
       max-width: none !important;
@@ -3665,8 +3665,8 @@
       border-radius: var(--radius);
       margin: 10px 0 !important;
       background: transparent !important;
-      border: none !important;
-      box-shadow: none !important;
+      border: 3px dashed #7c3aed !important;
+      box-shadow: 0 2px 8px rgba(124,58,237,0.18) !important;
       box-sizing: border-box;
     }
     .block-option.purple-btn.open-action > .option-content {
@@ -7295,7 +7295,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=580"></script>
+<script src="script-data.js?v=583"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE

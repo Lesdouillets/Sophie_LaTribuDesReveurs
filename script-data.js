@@ -359,14 +359,18 @@ const SCRIPT_DATA = {
                     { type: "normal", text: "- Ça peut **créer de l'insécurité** car il n'y a **pas de possibilité de se nicher**, [il_elle] peut se sentir beaucoup trop **« exposé »**\n- C'est **difficile** pour un enfant de cet âge de **respecter la règle** *« Tu vas rester dans ton lit »*\n- C'est une **responsabilité trop lourde** *(car le **désir d'éveil** est fort)*\n- Ça peut :\n  - conduire à **+ d'interactions avec les parents** avec les **allers-retours** pour [le_la] ramener au lit\n  - créer des **conflits** qui pourraient être évités\n  - et [il_elle] peut aussi **risquer de tomber**, se **faire mal**, et **associer le sommeil** à quelque chose de **négatif**\n\n- ⇒ Le **lit fermé** offre un **cadre physique** au sommeil avec la **présence des barreaux** *(ou lit parapluie !)*" }
                   ]
                 }
-              ]
-            },
-            {
-              type: "option", label: "Dort dans le lit parental", style: "purple",
-              blocks: [
-                { type: "normal", _leftTitle: "Dans votre lit", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Et plus précisément **dans VOTRE LIT**" },
-                { type: "normal", _leftTitle: "Recommandations OMS", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- De mon côté, je dois **quand même** vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à faire **dormir** les enfants dans **LEUR PROPRE LIT**…\n  - …car cela **diminue significativement le risque de Mort Inattendue du Nourrisson**" },
-                { type: "normal", _leftTitle: "Voir ce qui VOUS convient", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Mais **au-delà de ça**, l'idée, ce n'est **PAS de vous dire quoi faire**\n- C'est surtout de **voir CE QUI vous convient** à vous, aujourd'hui\n- Parce qu'il y a :\n  - **CE QUI est recommandé**\n  - **ET CE QUI est possible** dans votre **réalité du quotidien**\n  - **MAIS aussi CE QUI est en accord avec vos souhaits**" }
+              ],
+              // Bouton "Dort dans le lit parental" embarqué DANS le bloc "Petite question",
+              // sous la phrase "Aujourd'hui, [prénom] dort dans VOTRE chambre"
+              embeddedActions: [
+                {
+                  label: "Dort dans le lit parental", style: "purple",
+                  blocks: [
+                    { type: "normal", _leftTitle: "Dans votre lit", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Et plus précisément **dans VOTRE LIT**" },
+                    { type: "normal", _leftTitle: "Recommandations OMS", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- De mon côté, je dois **quand même** vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à faire **dormir** les enfants dans **LEUR PROPRE LIT**…\n  - …car cela **diminue significativement le risque de Mort Inattendue du Nourrisson**" },
+                    { type: "normal", _leftTitle: "Voir ce qui VOUS convient", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Mais **au-delà de ça**, l'idée, ce n'est **PAS de vous dire quoi faire**\n- C'est surtout de **voir CE QUI vous convient** à vous, aujourd'hui\n- Parce qu'il y a :\n  - **CE QUI est recommandé**\n  - **ET CE QUI est possible** dans votre **réalité du quotidien**\n  - **MAIS aussi CE QUI est en accord avec vos souhaits**" }
+                  ]
+                }
               ]
             },
             { type: "question", text: "Est-ce que c'est **quelque chose qui vous CONVIENT** pour l'instant,\n…OU est-ce que vous **aimeriez qu'elle passe dans SA chambre (dans SON lit)** ?\n\n- Il n'y a **PAS** de **bonne ou de mauvaise réponse** :\n  - certains parents **préfèrent attendre** encore un peu,\n  - d'autres **sont prêts** à faire la **transition**\n\n- L'**idée** est surtout de voir ce qui **correspond le mieux** à votre **famille**\n  - Pour que je puisse m**'adapter à vos souhaits**", choice: {
@@ -405,9 +409,19 @@ const SCRIPT_DATA = {
               blocks: [
                 { type: "normal", text: "<table style=\"width:100%;border-collapse:collapse;font-size:13px\"><thead><tr style=\"background:#f5f0ff\"><th style=\"padding:8px 10px;border:1px solid #c4b5e0;text-align:left;color:#5b21b6;width:34%\"></th><th style=\"padding:8px 10px;border:1px solid #c4b5e0;text-align:center;color:#5b21b6\">Position dorsale</th><th style=\"padding:8px 10px;border:1px solid #c4b5e0;text-align:center;color:#5b21b6\">Position ventrale</th></tr></thead><tbody><tr><td style=\"padding:8px 10px;border:1px solid #c4b5e0;font-weight:700;background:#faf7ff\">MIN ?</td><td style=\"padding:8px 10px;border:1px solid #c4b5e0\">↘ les risques (depuis la campagne de prévention des années '90, ↘ de <strong>80%</strong> des cas de MIN)</td><td style=\"padding:8px 10px;border:1px solid #c4b5e0;color:#dc2626;font-weight:600\">Principal facteur de risque de la MIN</td></tr><tr><td style=\"padding:8px 10px;border:1px solid #c4b5e0;font-weight:700;background:#faf7ff\">Plagiocéphalie ?<br><em style=\"font-weight:400;font-size:11px;color:#78716c\">= déformation du crâne</em></td><td style=\"padding:8px 10px;border:1px solid #c4b5e0\">↗ les risques (ex : S. dans transat)</td><td style=\"padding:8px 10px;border:1px solid #c4b5e0\">↘ les risques</td></tr><tr><td style=\"padding:8px 10px;border:1px solid #c4b5e0;font-weight:700;background:#faf7ff\">Bon pour le squelette ?</td><td style=\"padding:8px 10px;border:1px solid #c4b5e0\"><strong>Non</strong> : ne respecte pas la courbe en C de la colonne vertébrale</td><td style=\"padding:8px 10px;border:1px solid #c4b5e0\"><strong>Oui</strong> : s'apparente aux conditions de S. in-utéro ou en portage et permet la bonne courbure de la colonne vertébrale</td></tr><tr><td style=\"padding:8px 10px;border:1px solid #c4b5e0;font-weight:700;background:#faf7ff\">Réflexe de Moro ?</td><td style=\"padding:8px 10px;border:1px solid #c4b5e0\">Très présent, incontrôlable (donc multiples réveils)</td><td style=\"padding:8px 10px;border:1px solid #c4b5e0\">Limité</td></tr><tr><td style=\"padding:8px 10px;border:1px solid #c4b5e0;font-weight:700;background:#faf7ff\">Motricité et sentiment de sécurité ?</td><td style=\"padding:8px 10px;border:1px solid #c4b5e0\"><strong>Non</strong> : ventre exposé, impossibilité de ramper</td><td style=\"padding:8px 10px;border:1px solid #c4b5e0\"><strong>Oui</strong> : permet le mouvement autonome, le nichage et l'odeur de ses mains (liquide amniotique)</td></tr><tr><td style=\"padding:8px 10px;border:1px solid #c4b5e0;font-weight:700;background:#faf7ff\">Automassage ?</td><td style=\"padding:8px 10px;border:1px solid #c4b5e0\">Impossible</td><td style=\"padding:8px 10px;border:1px solid #c4b5e0\"><strong>Possible</strong> : facilite la digestion</td></tr><tr><td style=\"padding:8px 10px;border:1px solid #c4b5e0;font-weight:700;background:#faf7ff\">Accès aux mains / pouces pour faciliter les stratégies de S. autonomes ?</td><td style=\"padding:8px 10px;border:1px solid #c4b5e0\">Non</td><td style=\"padding:8px 10px;border:1px solid #c4b5e0\">Oui</td></tr></tbody></table>" }
               ]
-            } },
-            { type: "normal", _leftTitle: "Recommandations de l'OMS", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- **Néanmoins**, je dois aussi vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à **poser son enfant** sur le **DOS**…\n  - …car cette position **diminue significativement** le **risque de Mort Inattendue du Nourrisson**" },
-            { type: "normal", _leftTitle: "Voir ce qui VOUS convient", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- **Mon rôle** c'est de vous **transmettre ces informations..**<br>…tout en **restant à l'écoute** de **votre réalité**\n\n- Il n'y a **pas de bonne ou mauvaise réponse**..<br>...**SEULEMENT CELLE** qui **correspond à vos besoins** !" },
+            },
+              // Bouton "Dort sur le ventre" embarqué DANS le bloc "Position ventrale = ...",
+              // sous la phrase "Aujourd'hui, elle semble s'endormir sur le ventre…"
+              embeddedActions: [
+                {
+                  label: "Dort sur le ventre", style: "purple",
+                  blocks: [
+                    { type: "normal", _leftTitle: "Recommandations de l'OMS", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- **Néanmoins**, je dois aussi vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à **poser son enfant** sur le **DOS**…\n  - …car cette position **diminue significativement** le **risque de Mort Inattendue du Nourrisson**" },
+                    { type: "normal", _leftTitle: "Voir ce qui VOUS convient", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- **Mon rôle** c'est de vous **transmettre ces informations..**<br>…tout en **restant à l'écoute** de **votre réalité**\n\n- Il n'y a **pas de bonne ou mauvaise réponse**..<br>...**SEULEMENT CELLE** qui **correspond à vos besoins** !" }
+                  ]
+                }
+              ]
+            },
             { type: "question", text: "Voilà, j'**aimerais** beaucoup **connaître votre point de vue** sur ce sujet…\n- Souhaitez-vous **rester** :\n  - **en position ventrale**\n  - ou changer **vers la position dorsale**?\n\n- Cela me **permettra** **d'adapter AU MIEUX mon accompagnement** à votre famille\n  - ...et à **vos préférences.**", choice: {
               id: "obj_position_sommeil",
               required: true,
@@ -430,7 +444,7 @@ const SCRIPT_DATA = {
       blocks: [
         { type: "normal", _leftTitle: "Vue globale", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- OK, là super, j'ai eu **beaucoup d'informations**\n- MERCI !\n\n- **Maintenant, j'ai :**\n  - une **vue PLUS globale** de la situation\n  - ET des **solutions à mettre en œuvre**" },
         {
-          type: "grouped_block", _leftTitle: "📊 Besoins de sommeil selon l'âge", _leftTitleStyle: "background:#2d3f5c;color:#fff",
+          type: "grouped_block", _leftTitle: "Besoins de sommeil selon l'âge", _leftTitleStyle: "background:#2d3f5c;color:#fff",
           blocks: [
             { type: "normal", text: "- D'après les **données consolidées** de la <em>**National Sleep Foundation**</em> (États-Unis) ET du **laboratoire français d'étude du sommeil** :\n\n- [prénom_enfant] a des <strong style=\"color:#c0392b\">BESOINS</strong> pour son âge\n- ⚠️ Je parle toujours en **<span style=\"border-bottom:1px dashed currentColor;cursor:help\" title=\"L'âge qu'aurait eu votre enfant s'il était né à terme. Cela permet de connaître l'âge de maturation du cerveau.\">âge CORRIGÉ</span>**" },
             {
@@ -448,38 +462,78 @@ const SCRIPT_DATA = {
           ]
         },
         {
-          type: "grouped_block", _leftTitle: "📋 Difficultés identifiées", _leftTitleStyle: "background:#2d3f5c;color:#fff",
+          type: "grouped_block", _leftTitle: "Difficultés identifiées", _leftTitleStyle: "background:#2d3f5c;color:#fff",
           blocks: [
             {
               type: "option", label: "Pas de dette de sommeil", emoji: "✅", style: "action-green", _pillStyle: true, _purpleContent: true, mutexGroup: "diag-sommeil",
               blocks: [
                 { type: "normal", text: "- La **bonne nouvelle** c'est qu'aujourd'hui [prénom_enfant] n'est **PAS en dette de sommeil**\n- 👏 Vous faites **TOUT** pour que ça ne **soit pas le cas**!" },
-                { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau du temps d'endormissement :</u>** Par contre, je vois des **difficultés** sur la **durée d'endormissement** … qui est **très longue**", _purpleDark: true },
-                { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau du nombre de siestes …</u>** Par contre, je peux voir que le **nombre de siestes** … ne **correspond PAS** aux **besoins** d'un enfant de **cet âge**", _purpleDark: true },
+                {
+                  type: "option", style: "purple-btn", _compact: true, label: "Temps d'endormissement",
+                  blocks: [
+                    { type: "normal", text: "- Par contre, je vois des **difficultés** sur la **durée d'endormissement** … qui est **très longue**" }
+                  ]
+                },
+                {
+                  type: "option", style: "purple-btn", _compact: true, label: "Nombre de siestes",
+                  blocks: [
+                    { type: "normal", text: "- Par contre, je peux voir que le **nombre de siestes** … ne **correspond PAS** aux **besoins** d'un enfant de **cet âge**" }
+                  ]
+                },
               ]
             },
             {
               type: "option", label: "Difficultés de sommeil identifiées", emoji: "❌", style: "action", _pillStyle: true, _purpleContent: true, mutexGroup: "diag-sommeil",
               blocks: [
                 { type: "normal", text: "- Au vu de ce qu'on s'est dit\n- En effet, vous aviez **BIEN identifié** que [prénom_enfant] a des **difficultés de sommeil**.\n<br>", _noBorder: true },
-                { type: "normal", text: "- <u>OPTION</u> : **<u>Temps d'endormissement trop long :</u>** Il y a une **petite problématique** au niveau des **durées d'endormissement**… qui sont **très longues**", _purpleDark: true },
-                { type: "normal", text: "- <u>OPTION</u> : **<u>Durée des siestes trop courte :</u>** Il y a aussi un **petit caillou** concernant la **durée des siestes**… qui sont **très courtes**", _purpleDark: true },
-                { type: "normal", text: "- <u>OPTION</u> : **<u>Nombre de siestes inadapté :</u>** Il y a aussi **quelque chose à travailler** au niveau du **nombre de siestes**… qui ne **correspondent PAS** forcément aux **besoins de son âge**", _purpleDark: true },
+                {
+                  type: "option", style: "purple-btn", _compact: true, label: "Temps d'endormissement",
+                  blocks: [
+                    { type: "normal", text: "- Il y a une **petite problématique** au niveau des **durées d'endormissement**… qui sont **très longues**" }
+                  ]
+                },
+                {
+                  type: "option", style: "purple-btn", _compact: true, label: "Durée des siestes",
+                  blocks: [
+                    { type: "normal", text: "- Il y a aussi un **petit caillou** concernant la **durée des siestes**… qui sont **très courtes**" }
+                  ]
+                },
+                {
+                  type: "option", style: "purple-btn", _compact: true, label: "Nombre de siestes",
+                  blocks: [
+                    { type: "normal", text: "- Il y a aussi **quelque chose à travailler** au niveau du **nombre de siestes**… qui ne **correspondent PAS** forcément aux **besoins de son âge**" }
+                  ]
+                },
               ]
             },
             {
               type: "option", label: "Difficultés alimentaires IDENTIFIÉES (courbes en déclin)", emoji: "🍼", style: "action-yellow", _pillStyle: true, _purpleContent: true,
               blocks: [
                 { type: "normal", text: "- Je valide **AUSSI des difficultés alimentaires** parce que…\n- En effet,", _noBorder: true },
-                { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau des courbes qu'on a vues ensemble,</u>** il y a quelque chose qui se joue", _purpleDark: true },
-                { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau des différents symptômes que vous m'avez partagés,</u>** il y a quelque chose à creuser", _purpleDark: true },
-                { type: "normal", text: "- <u>OPTION</u> : **<u>Au niveau de son inconfort,</u>** pour [prénom_enfant] il faudrait comprendre pourquoi il est ainsi", _purpleDark: true },
+                {
+                  type: "option", style: "purple-btn", _compact: true, label: "Courbes",
+                  blocks: [
+                    { type: "normal", text: "- Au niveau des **courbes qu'on a vues ensemble**, il y a quelque chose qui se joue" }
+                  ]
+                },
+                {
+                  type: "option", style: "purple-btn", _compact: true, label: "Symptômes",
+                  blocks: [
+                    { type: "normal", text: "- Au niveau des **différents symptômes que vous m'avez partagés**, il y a quelque chose à creuser" }
+                  ]
+                },
+                {
+                  type: "option", style: "purple-btn", _compact: true, label: "Inconfort",
+                  blocks: [
+                    { type: "normal", text: "- Au niveau de son **inconfort**, pour [prénom_enfant] il faudrait comprendre pourquoi il est ainsi" }
+                  ]
+                },
                 { type: "normal", text: "- Du coup, il y a **BIEN quelque chose** qui **NE VA PAS** du côté de la **nutrition**", _noBorder: true },
               ]
             },
           ]
         },
-        { type: "normal", _leftTitle: "✨ La bonne nouvelle", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "<ul style=\"margin:0;padding-left:20px\"><li style=\"line-height:1.6\">MAIS la <strong>bonne nouvelle</strong> c'est que :<ul style=\"margin:4px 0 0 0;padding-left:22px\"><li style=\"line-height:1.6\"><strong>TOUT</strong> ce que vous m'avez partagé a du sens, est <strong>explicable</strong></li><li style=\"line-height:1.6\">Mais <strong>SURTOUT</strong> que c'est <strong>solutionnable</strong> !</li><li style=\"line-height:1.6\">ET que je peux vous <strong>accompagner</strong> pour les troubles du sommeil de [prénom_enfant]</li></ul></li></ul>" },
+        { type: "normal", _leftTitle: "La bonne nouvelle", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "<ul style=\"margin:0;padding-left:20px\"><li style=\"line-height:1.6\">MAIS la <strong>bonne nouvelle</strong> c'est que :<ul style=\"margin:4px 0 0 0;padding-left:22px\"><li style=\"line-height:1.6\"><strong>TOUT</strong> ce que vous m'avez partagé a du sens, est <strong>explicable</strong></li><li style=\"line-height:1.6\">Mais <strong>SURTOUT</strong> que c'est <strong>solutionnable</strong> !</li><li style=\"line-height:1.6\">ET que je peux vous <strong>accompagner</strong> pour les troubles du sommeil de [prénom_enfant]</li></ul></li></ul>" },
         { type: "leviers_dynamiques" },
         { type: "leviers_count", _leftTitle: "Nombre de levier(s) identifié(s)", _leftTitleStyle: "background:#2d3f5c;color:#fff" },
         { type: "normal", _leftTitle: "Pas le temps de tout voir aujourd'hui", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- On n'aura **PEUT-ÊTRE pas le temps** de tout voir aujourd'hui :\n- mais on pourra **toujours reprendre un RDV plus tard** pour **discuter des points** que l'on n'aura **pas eu le temps de voir aujourd'hui.**\n\n- Donc, **CE QUE je vois en 1er**, c'est **quelque chose au niveau de**…" },
