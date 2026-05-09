@@ -4847,7 +4847,7 @@
     }
     .agenda-btn-small:hover { background: #f5f7fb; }
     .agenda-btn-svg-small { width: 38px; height: auto; filter: drop-shadow(0 2px 4px rgba(45,63,92,0.2)); }
-    .solutions-identifiees-body { padding: 12px 20px; display: flex; gap: 24px; align-items: flex-start; }
+    .solutions-identifiees-body { padding: 12px 20px; display: flex; gap: 24px; align-items: flex-start; contain: layout style paint; }
     .solutions-identifiees-body > .sol-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
     .sol-group { width: 100%; margin-bottom: 0; }
     @media (max-width: 900px) { .solutions-identifiees-body { flex-direction: column; } }
@@ -13221,9 +13221,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       return `<div class="sol-group block-with-left-title" data-cat="${cat.id}"><div class="sol-group-title" style="background:${colors.main};color:#fff"><span style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:22px;line-height:1">${cat.emoji || ''}</span><span>${cat.title}</span></span></div><div class="sol-group-content" style="border:2px solid ${colors.light};display:flex;flex-direction:column;justify-content:center"><div class="sol-group-rows">${rows}</div></div></div>`;
     }).filter(Boolean);
     if (!groupsArr.length) return '';
-    // Distribuer en 2 colonnes manuelles (alternance) — pas de re-balance auto comme columns:2
-    const c1 = [], c2 = [];
-    groupsArr.forEach((html, i) => { (i % 2 === 0 ? c1 : c2).push(html); });
+    // Distribuer en 2 colonnes séquentielles : 1ère moitié à gauche, 2ème à droite (même ordre que VIII).
+    const half = Math.ceil(groupsArr.length / 2);
+    const c1 = groupsArr.slice(0, half);
+    const c2 = groupsArr.slice(half);
     const groups = `<div class="sol-col">${c1.join('')}</div><div class="sol-col">${c2.join('')}</div>`;
     return `<div class="block block-solutions-resume" style="border:2px solid #2d3f5c;border-radius:10px;padding:12px;margin:14px 0;background:transparent;box-shadow:none"><div class="block-solutions-identifiees" style="border:none;box-shadow:none;background:transparent;padding:0;margin:0"><div class="solutions-identifiees-body" style="padding:0">${groups}</div></div></div>`;
   }
@@ -14130,11 +14131,12 @@ function renderSolutionsCheckboxes(opts) {
       <div class="sol-group-content" style="border:2px solid ${c.light}">${bulkBtns}<div class="sol-group-rows">${rows}</div>${inlineIntroHtml}</div>
     </div>`;
   }).filter(Boolean);
-  // Distribuer les groupes en 2 colonnes manuelles (alternance) pour éviter le saut
-  // de colonnes lié au CSS multi-column (qui réequilibre dynamiquement).
+  // Distribuer en 2 colonnes séquentielles : 1ère moitié à gauche, 2ème à droite.
+  // Évite le saut visuel du CSS multi-column qui ré-équilibre dynamiquement.
   const __sgArr = compactGroups;
-  const __col1 = [], __col2 = [];
-  __sgArr.forEach((html, i) => { (i % 2 === 0 ? __col1 : __col2).push(html); });
+  const __half = Math.ceil(__sgArr.length / 2);
+  const __col1 = __sgArr.slice(0, __half);
+  const __col2 = __sgArr.slice(__half);
   const compactGroupsHtml = `<div class="sol-col">${__col1.join('')}</div><div class="sol-col">${__col2.join('')}</div>`;
 
   // Partie 2 : grid des cards parent (réutilise les classes de V. Diagnostic courbe-card + diag-cat-card)
