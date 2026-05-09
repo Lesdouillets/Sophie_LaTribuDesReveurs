@@ -7481,7 +7481,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=631"></script>
+<script src="script-data.js?v=632"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -14447,7 +14447,9 @@ function renderSolutionsCheckboxes(opts) {
               const fbId = `float-${cat.id}-${activeChild.id}-${fi}`;
               const fbTitle = substituteVars(fb.title || fb.label || '');
               const fbContent = renderBlocks(Array.isArray(fb.blocks) ? fb.blocks : [], 'float_'+cat.id+'_'+activeChild.id+'_'+fi);
-              window.__infoButtons[fbId] = { title: fbTitle, content: fbContent };
+              // style: 'pleurs' par défaut pour que le bandeau du panel matche la couleur
+              // du bullet bleu (#5e7194) — même rendu que les _floatingBubble en II. Problématique
+              window.__infoButtons[fbId] = { title: fbTitle, content: fbContent, style: fb.style || 'pleurs' };
               // Bulle BD : SVG inline — couleur du bandeau (#5e7194) + bordure foncée
               const svg = `<svg class="sol-floating-btn-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M 100 15 C 40 15 10 45 10 85 C 10 120 35 145 78 152 L 62 178 L 100 150 C 155 148 190 120 190 85 C 190 45 160 15 100 15 Z" fill="#5e7194" stroke="#2d3f5c" stroke-width="2" stroke-linejoin="round"/></svg>`;
               return `<button type="button" class="sol-floating-btn" onclick="openInfoPanel('${fbId}')" title="${fbTitle}">${svg}<div class="sol-floating-btn-content"><span style="font-size:28px">${fb.emoji||'💡'}</span><span style="font-size:13px">${substituteVars(fb.label||'')}</span></div></button>`;
