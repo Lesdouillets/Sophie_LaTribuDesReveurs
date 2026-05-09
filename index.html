@@ -13189,12 +13189,19 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       const allItems = [];
       children.forEach(ch => {
         const isSelected = selectedSols.has(ch.id);
-        const subItems = (ch.id === 'strat_tetine')
+        const isTetine = ch.id === 'strat_tetine';
+        const subItems = isTetine
           ? getTetineSubItems()
           : collectGridSubItems(ch.blocks, 1);
         if (!isSelected && !subItems.length) return;
-        allItems.push({ id: ch.id, label: ch.label || ch.cardLabel || ch.id, emoji: ch.emoji || ch.cardEmoji || '', level: 0 });
-        allItems.push(...subItems);
+        // Cas Tétine : ne pas afficher le parent "Tétine" (le titre de catégorie le rappelle déjà),
+        // afficher seulement les sous-options (Garder/Supprimer/Hybride) au niveau 0.
+        if (isTetine) {
+          subItems.forEach(it => allItems.push({ ...it, level: 0 }));
+        } else {
+          allItems.push({ id: ch.id, label: ch.label || ch.cardLabel || ch.id, emoji: ch.emoji || ch.cardEmoji || '', level: 0 });
+          allItems.push(...subItems);
+        }
       });
       if (!allItems.length) return '';
       const colors = catColorMap[cat.id] || { main: '#475569', light: '#cbd5e0' };
@@ -13205,10 +13212,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         const indent = it.level * 24;
         return `<div data-sol-id="${it.id}" class="sol-row-wrap" style="margin-left:${indent}px"><div class="sol-row-header"><label class="sol-row" style="flex:1;color:${textColor};font-weight:600"><input type="checkbox" ${checkedAttr} onchange="toggleCardTickFromResume('${it.id}')">${it.emoji ? `<span class="sol-row-emoji">${it.emoji}</span>` : ''}<span class="sol-row-label">${substituteVars(it.label)}</span></label></div></div>`;
       }).join('');
-      return `<div class="sol-group block-with-left-title" data-cat="${cat.id}"><div class="sol-group-title" style="background:${colors.main};color:#fff"><span style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:22px;line-height:1">${cat.emoji || ''}</span><span>${cat.title}</span></span></div><div class="sol-group-content" style="border:2px solid ${colors.light}"><div class="sol-group-rows">${rows}</div></div></div>`;
+      return `<div class="sol-group block-with-left-title" data-cat="${cat.id}"><div class="sol-group-title" style="background:${colors.main};color:#fff"><span style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:22px;line-height:1">${cat.emoji || ''}</span><span>${cat.title}</span></span></div><div class="sol-group-content" style="border:2px solid ${colors.light};display:flex;flex-direction:column;justify-content:center"><div class="sol-group-rows">${rows}</div></div></div>`;
     }).filter(Boolean).join('');
     if (!groups) return '';
-    return `<div class="block block-solutions-resume" style="border:2px solid #2d3f5c;border-radius:10px;padding:12px;margin:14px 0;background:transparent;box-shadow:none"><div class="block-solutions-identifiees" style="border:none;box-shadow:none;background:transparent;padding:0;margin:0"><div class="solutions-identifiees-body" style="padding:0;columns:1">${groups}</div></div></div>`;
+    return `<div class="block block-solutions-resume" style="border:2px solid #2d3f5c;border-radius:10px;padding:12px;margin:14px 0;background:transparent;box-shadow:none"><div class="block-solutions-identifiees" style="border:none;box-shadow:none;background:transparent;padding:0;margin:0"><div class="solutions-identifiees-body" style="padding:0;columns:2;column-gap:18px">${groups}</div></div></div>`;
   }
 
   if (b.type === 'separator') return `<div class="block block-separator">${text}</div>`;
