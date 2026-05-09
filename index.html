@@ -2144,26 +2144,36 @@
 
     /* SOS PANEL — right rail integrated in app-body */
     /* Bouton SOS flottant — carré, 2x plus gros que les btn-icon, COIN haut-droite
-       sous le bandeau vert (collé au bord droit) */
+       sous le bandeau vert (collé au bord droit). Liseré rouge + effet glowy. */
     #btn-sos-floating {
       position: fixed;
       top: 100px;
       right: 6px;
       width: 64px;
       height: 64px;
-      border: none;
+      border: 2.5px solid #c52f26;
       border-radius: 12px;
       background: #fff;
-      box-shadow: 0 4px 16px rgba(197,47,38,0.35);
+      box-shadow: 0 0 16px rgba(220,38,38,0.55), 0 0 4px rgba(220,38,38,0.7), 0 4px 14px rgba(197,47,38,0.35);
       cursor: pointer;
       font-size: 34px;
       line-height: 1;
       display: flex; align-items: center; justify-content: center;
-      transition: transform 0.15s, box-shadow 0.15s;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
       z-index: 240;
       padding: 0;
+      animation: btnSosPulse 2.4s ease-in-out infinite;
     }
-    #btn-sos-floating:hover { transform: scale(1.08); box-shadow: 0 6px 22px rgba(197,47,38,0.5); }
+    @keyframes btnSosPulse {
+      0%, 100% { box-shadow: 0 0 16px rgba(220,38,38,0.55), 0 0 4px rgba(220,38,38,0.7), 0 4px 14px rgba(197,47,38,0.35); }
+      50%      { box-shadow: 0 0 26px rgba(220,38,38,0.85), 0 0 8px rgba(220,38,38,0.95), 0 4px 16px rgba(197,47,38,0.5); }
+    }
+    #btn-sos-floating:hover {
+      transform: scale(1.08);
+      border-color: #ef4444;
+      box-shadow: 0 0 30px rgba(220,38,38,0.95), 0 0 10px rgba(220,38,38,1), 0 6px 22px rgba(197,47,38,0.5);
+      animation: none;
+    }
     #btn-sos-floating:active { transform: scale(0.96); }
     /* SOS panel : modal centré (comme Solutions / Problématiques) au lieu de slide latéral */
     .sos-panel {
@@ -3623,20 +3633,24 @@
       white-space: normal;
     }
     /* Variante compacte du purple-btn (sub-options sous tableau emploi du temps,
-       et boutons "Difficultés identifiées" dans V. Diagnostic) — auto-width au lieu
-       de 50% pour pouvoir aligner plusieurs boutons courts sur la même ligne. */
+       et boutons "Difficultés identifiées" dans V. Diagnostic) — largeur FIXE pour
+       que tous les boutons aient la même taille, et hauteur un peu plus grande. */
     .edit-block-wrap:has(> .block-option.purple-btn.compact-btn:not(.open-action)) {
       height: auto;
-      width: auto !important;
-      max-width: 240px !important;
+      width: 220px !important;
       margin-right: 12px !important;
     }
     .block-option.purple-btn.compact-btn:not(.open-action) {
       border-width: 2px;
       border-radius: 10px;
+      min-height: 64px;
+    }
+    .block-option.purple-btn.compact-btn:not(.open-action) > .option-header {
+      min-height: 64px !important;
+      padding: 12px 14px !important;
     }
     /* Masquer le bouton "✕ Fermer" DU HAUT pour les compact-btn (gardons celui du bas).
-       L'utilisateur veut un seul bouton fermer dans les boutons violet de V. Diagnostic. */
+       L'utilisateur veut un seul bouton fermer dans les boutons violet. */
     .block-option.purple-btn.compact-btn .action-close-btn:not(.action-close-btn-bottom) {
       display: none !important;
     }
@@ -7305,7 +7319,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=586"></script>
+<script src="script-data.js?v=588"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -14949,6 +14963,24 @@ function toggleOption(header, skipScroll) {
       if (optionDiv.classList.contains('purple-btn') && !skipScroll) {
         const wrap = optionDiv.closest('.edit-block-wrap') || optionDiv;
         setTimeout(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+      }
+      // Click-outside-close pour les purple-btn compact (V. Diagnostic): fermer si clic
+      // en dehors de l'encadré de l'option
+      if (optionDiv.classList.contains('compact-btn')) {
+        setTimeout(() => {
+          const handler = (e) => {
+            if (!optionDiv.classList.contains('open-action')) {
+              document.removeEventListener('mousedown', handler, true);
+              return;
+            }
+            if (optionDiv.contains(e.target)) return;
+            // Fermer
+            const innerHeader = optionDiv.querySelector(':scope > .option-header');
+            if (innerHeader) toggleOption(innerHeader, true);
+            document.removeEventListener('mousedown', handler, true);
+          };
+          document.addEventListener('mousedown', handler, true);
+        }, 0);
       }
     } else {
       // Validation avant fermeture : si l'option contient obj_chgmt_lit_type et que la sous-option n'est pas sélectionnée,
