@@ -6883,7 +6883,7 @@ const SCRIPT_DATA = {
             {
               type: "option", label: "🔥 Si Pas pris de RDV", style: "purple", _compactClosed: true,
               blocks: [
-                { type: "normal", _noBorder: true, _leftTitle: "On peut se voir le...", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "<div style=\"background:#ffffff;border:1px solid #e2e8f0;border-radius:10px;padding:14px 18px\">- 🔥 Au vu de ce qu'on s'est dit, je pense qu'il serait <strong>intéressant de se revoir</strong>\n- Sachant que <strong>vous voulez commencer</strong> le <strong style=\"color:#C0392B\">XXX</strong>, on <strong>peut se voir</strong> le <strong style=\"color:#C0392B\">XXX</strong>\n[agenda_btn:small]</div>" },
+                { type: "normal", _noBorder: true, _leftTitle: "Intéressant de se revoir", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "<div style=\"background:#ffffff;border:1px solid #e2e8f0;border-radius:10px;padding:14px 18px\">- Au vu de ce qu'on s'est dit, je pense qu'il serait <strong>intéressant de se revoir</strong>\n- 🔥 Sachant que <strong>vous voulez commencer</strong> le <strong style=\"color:#C0392B\">XXX</strong>, on <strong>peut se voir</strong> le <strong style=\"color:#C0392B\">XXX</strong>\n[agenda_btn:small]</div>" },
                 { type: "question", _leftTitle: "Qu'en pensez-vous ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "Qu'est-ce que <strong>vous en pensez</strong> ?", embeddedActions: [
                   {
                     label: "💰 Tarifs", style: "action-yellow", _pillStyle: true,
