@@ -3386,6 +3386,22 @@
     .embedded-actions:has(> .block-option.action-yellow:only-child) {
       justify-content: flex-end !important;
     }
+    /* Bloc question avec un seul Tarifs jaune en embedded-actions : layout en GRID
+       (q-text à gauche, bouton à droite, alignés sur la même ligne) — utilisé en
+       X. Validation OUI > Si Pas pris de RDV ("Qu'en pensez-vous ?" + Tarifs) */
+    .block-question:has(> .embedded-actions > .block-option.action-yellow:only-child) {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 16px;
+    }
+    .block-question:has(> .embedded-actions > .block-option.action-yellow:only-child) > .q-text {
+      grid-column: 1;
+    }
+    .block-question:has(> .embedded-actions > .block-option.action-yellow:only-child) > .embedded-actions {
+      grid-column: 2;
+      margin-top: 0;
+    }
     /* Option purple dans un bloc question (ex: 💰 Tarifs) : fond transparent, liseré rouge fin, label rouge */
     /* Spécificité élevée pour battre `.block-option.action.open-action .block-option.purple` */
     .block-option.action .block-question .embedded-actions > .block-option.purple,
@@ -3523,6 +3539,25 @@
       margin: 0 !important;
       border: 3px dashed #7c3aed !important;
       border-radius: 12px !important;
+      background: transparent !important;
+    }
+    /* Retirer le fond violet du contenu et des blocs internes quand le compact-closed est ouvert.
+       Spécificité augmentée pour battre `.block-option.action.open-action .block-option.purple {bg !important}`. */
+    .block-option.action.open-action .block-option.purple.compact-closed.open-action,
+    .block-option.purple.compact-closed.open-action {
+      background: transparent !important;
+    }
+    .block-option.action.open-action .block-option.purple.compact-closed.open-action > .option-content,
+    .block-option.purple.compact-closed.open-action > .option-content {
+      background: transparent !important;
+    }
+    .block-option.action.open-action .block-option.purple.compact-closed.open-action > .option-content .block:not(.block-question):not(.block-conseil-vert):not(.block-fin-consultation),
+    .block-option.purple.compact-closed.open-action > .option-content .block:not(.block-question):not(.block-conseil-vert):not(.block-fin-consultation) {
+      background: transparent !important;
+    }
+    .block-option.action.open-action .block-option.purple.compact-closed.open-action > .option-content .block-with-left-title,
+    .block-option.purple.compact-closed.open-action > .option-content .block-with-left-title {
+      background: transparent !important;
     }
     /* Spécificité élevée pour battre `.block-option.action.open-action .block-option.purple`
        (border 2px solid) quand le compact-closed est imbriqué et ouvert */
@@ -7426,7 +7461,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=609"></script>
+<script src="script-data.js?v=610"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
