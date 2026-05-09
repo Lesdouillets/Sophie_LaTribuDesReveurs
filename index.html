@@ -4757,6 +4757,10 @@
     }
     .agenda-btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
     .agenda-btn:active { transform: translateY(0); }
+    /* Variante "small" — pour insertion inline dans un encadré (ex: bulle rouge X. Validation NON) */
+    .agenda-btn-wrap-small { margin: 8px 0 !important; }
+    .agenda-btn-small { gap: 4px; padding: 6px 10px; font-size: 13px; }
+    .agenda-btn-svg-small { width: 110px; }
     .solutions-identifiees-body { padding: 12px 20px; columns: 2; column-gap: 24px; }
     .sol-group { width: 100%; break-inside: avoid; page-break-inside: avoid; -webkit-column-break-inside: avoid; margin-bottom: 18px; }
     @media (max-width: 900px) { .solutions-identifiees-body { columns: 1; } }
@@ -7389,7 +7393,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=601"></script>
+<script src="script-data.js?v=602"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -13142,80 +13146,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
 
   if (b.type === 'agenda_button') {
-    const label = substituteVars(b.label || 'Prendre rendez-vous');
-    const svg = `<svg class="agenda-btn-svg" viewBox="0 0 220 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- Clipboard back (dark navy) -->
-      <rect x="20" y="36" width="150" height="208" rx="12" fill="#1f3354"/>
-      <!-- Paper -->
-      <rect x="30" y="46" width="130" height="188" rx="6" fill="#ffffff"/>
-      <!-- Clip top -->
-      <rect x="80" y="24" width="30" height="22" rx="4" fill="#9aa6b8"/>
-      <rect x="84" y="20" width="22" height="6" rx="2" fill="#7c8898"/>
-      <!-- AGENDA title -->
-      <text x="95" y="74" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="16" fill="#1f3354" letter-spacing="1.5">AGENDA</text>
-      <!-- Rows -->
-      <g font-family="Arial, sans-serif">
-        <!-- Row 1 (checked) -->
-        <rect x="42" y="92" width="12" height="12" rx="2.5" fill="none" stroke="#1f3354" stroke-width="1.6"/>
-        <path d="M 44 98 L 47.5 101.5 L 53 95" stroke="#facc15" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <line x1="60" y1="99" x2="148" y2="99" stroke="#cbd5e0" stroke-width="3.5" stroke-linecap="round"/>
-        <!-- Row 2 (checked) -->
-        <rect x="42" y="114" width="12" height="12" rx="2.5" fill="none" stroke="#1f3354" stroke-width="1.6"/>
-        <path d="M 44 120 L 47.5 123.5 L 53 117" stroke="#facc15" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <line x1="60" y1="121" x2="148" y2="121" stroke="#cbd5e0" stroke-width="3.5" stroke-linecap="round"/>
-        <!-- Row 3 (empty) -->
-        <rect x="42" y="136" width="12" height="12" rx="2.5" fill="none" stroke="#1f3354" stroke-width="1.6"/>
-        <line x1="60" y1="143" x2="148" y2="143" stroke="#cbd5e0" stroke-width="3.5" stroke-linecap="round"/>
-        <!-- Row 4 (checked) -->
-        <rect x="42" y="158" width="12" height="12" rx="2.5" fill="none" stroke="#1f3354" stroke-width="1.6"/>
-        <path d="M 44 164 L 47.5 167.5 L 53 161" stroke="#facc15" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <line x1="60" y1="165" x2="148" y2="165" stroke="#cbd5e0" stroke-width="3.5" stroke-linecap="round"/>
-        <!-- Row 5 (empty) -->
-        <rect x="42" y="180" width="12" height="12" rx="2.5" fill="none" stroke="#1f3354" stroke-width="1.6"/>
-        <line x1="60" y1="187" x2="148" y2="187" stroke="#cbd5e0" stroke-width="3.5" stroke-linecap="round"/>
-        <!-- Row 6 (checked) -->
-        <rect x="42" y="202" width="12" height="12" rx="2.5" fill="none" stroke="#1f3354" stroke-width="1.6"/>
-        <path d="M 44 208 L 47.5 211.5 L 53 205" stroke="#facc15" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <line x1="60" y1="209" x2="148" y2="209" stroke="#cbd5e0" stroke-width="3.5" stroke-linecap="round"/>
-      </g>
-      <!-- Stopwatch (top right) -->
-      <g transform="translate(140, 26)">
-        <!-- Sound waves -->
-        <path d="M 6 18 Q 9 12 15 11" stroke="#1f3354" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M 1 26 Q 4 14 14 12" stroke="#1f3354" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.55"/>
-        <path d="M 56 11 Q 62 12 65 18" stroke="#1f3354" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M 57 12 Q 67 14 70 26" stroke="#1f3354" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.55"/>
-        <!-- Top button -->
-        <rect x="32" y="6" width="8" height="6" rx="1.5" fill="#1f3354"/>
-        <rect x="30" y="11" width="12" height="4" rx="1" fill="#1f3354"/>
-        <!-- Outer face -->
-        <circle cx="36" cy="40" r="26" fill="#1f3354"/>
-        <circle cx="36" cy="40" r="22" fill="#ffffff"/>
-        <!-- Hour ticks -->
-        <g stroke="#1f3354" stroke-width="1.5" stroke-linecap="round">
-          <line x1="36" y1="22" x2="36" y2="26"/>
-          <line x1="50" y1="40" x2="54" y2="40"/>
-          <line x1="36" y1="58" x2="36" y2="54"/>
-          <line x1="22" y1="40" x2="18" y2="40"/>
-        </g>
-        <!-- Hands -->
-        <line x1="36" y1="40" x2="36" y2="27" stroke="#1f3354" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="36" y1="40" x2="48" y2="40" stroke="#1f3354" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="36" cy="40" r="2.5" fill="#1f3354"/>
-      </g>
-      <!-- Pen (right side) -->
-      <g transform="translate(168, 130)">
-        <!-- Body -->
-        <rect x="0" y="0" width="16" height="70" rx="4" fill="#1f3354"/>
-        <rect x="0" y="14" width="16" height="6" fill="#3b5680"/>
-        <!-- Tip -->
-        <polygon points="0,70 16,70 8,90" fill="#1f3354"/>
-        <polygon points="6,82 10,82 8,90" fill="#cbd5e0"/>
-        <!-- Clip -->
-        <rect x="2" y="6" width="3" height="22" rx="1" fill="#3b5680"/>
-      </g>
-    </svg>`;
-    return `<div class="block block-agenda-btn-wrap"><a class="agenda-btn" href="${AGENDA_URL}" target="_blank" rel="noopener noreferrer">${svg}<span class="agenda-btn-label">${label}</span></a></div>`;
+    return renderAgendaButtonHTML({ small: !!b._small, label: b.label });
   }
 
   if (b.type === 'tarifs_tableau') {
@@ -15315,6 +15246,68 @@ function renderViciousCircleSVG(s1, s2, s3, s4, uid) {
   return `<div style="margin:22px auto;display:flex;justify-content:center"><svg viewBox="0 0 680 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:480px;height:auto;overflow:visible"><defs><radialGradient id="${uid}bg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ecfdf5" stop-opacity="0.9"/><stop offset="100%" stop-color="#ecfdf5" stop-opacity="0"/></radialGradient><marker id="${uid}ar" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto"><path d="M0,0 L12,6 L0,12 L3,6 Z" fill="#065f46"/></marker></defs><circle cx="340" cy="230" r="215" fill="url(#${uid}bg)"/><path d="M 450 75 A 110 110 0 0 1 550 185" stroke="#065f46" stroke-width="3.5" fill="none" marker-end="url(#${uid}ar)" stroke-linecap="round"/><path d="M 550 275 A 110 110 0 0 1 450 385" stroke="#065f46" stroke-width="3.5" fill="none" marker-end="url(#${uid}ar)" stroke-linecap="round"/><path d="M 230 385 A 110 110 0 0 1 130 275" stroke="#065f46" stroke-width="3.5" fill="none" marker-end="url(#${uid}ar)" stroke-linecap="round"/><path d="M 130 185 A 110 110 0 0 1 230 75" stroke="#065f46" stroke-width="3.5" fill="none" marker-end="url(#${uid}ar)" stroke-linecap="round"/><foreignObject x="230" y="30" width="220" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="${pillStyle}">${s1}</div></foreignObject><foreignObject x="440" y="185" width="220" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="${pillStyle}">${s2}</div></foreignObject><foreignObject x="230" y="340" width="220" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="${pillStyle}">${s3}</div></foreignObject><foreignObject x="20" y="185" width="220" height="90"><div xmlns="http://www.w3.org/1999/xhtml" style="${pillStyle}">${s4}</div></foreignObject><text x="340" y="223" text-anchor="middle" font-size="16" font-weight="700" fill="#065f46" font-style="italic" letter-spacing="0.5">Cercle vicieux</text><text x="340" y="263" text-anchor="middle" font-size="34">🔁</text></svg></div>`;
 }
 
+// Helper : génère le HTML du bouton "Prendre rendez-vous" (lien vers AGENDA_URL).
+// Variantes : { small: true } → version réduite (~110px) à insérer dans une bulle/encadré.
+function renderAgendaButtonHTML(opts) {
+  const small = !!(opts && opts.small);
+  const labelTxt = (opts && opts.label) || 'Prendre rendez-vous';
+  const label = (typeof substituteVars === 'function') ? substituteVars(labelTxt) : labelTxt;
+  const svg = `<svg class="agenda-btn-svg${small ? ' agenda-btn-svg-small' : ''}" viewBox="0 0 220 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect x="20" y="36" width="150" height="208" rx="12" fill="#1f3354"/>
+    <rect x="30" y="46" width="130" height="188" rx="6" fill="#ffffff"/>
+    <rect x="80" y="24" width="30" height="22" rx="4" fill="#9aa6b8"/>
+    <rect x="84" y="20" width="22" height="6" rx="2" fill="#7c8898"/>
+    <text x="95" y="74" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="16" fill="#1f3354" letter-spacing="1.5">AGENDA</text>
+    <g font-family="Arial, sans-serif">
+      <rect x="42" y="92" width="12" height="12" rx="2.5" fill="none" stroke="#1f3354" stroke-width="1.6"/>
+      <path d="M 44 98 L 47.5 101.5 L 53 95" stroke="#facc15" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="60" y1="99" x2="148" y2="99" stroke="#cbd5e0" stroke-width="3.5" stroke-linecap="round"/>
+      <rect x="42" y="114" width="12" height="12" rx="2.5" fill="none" stroke="#1f3354" stroke-width="1.6"/>
+      <path d="M 44 120 L 47.5 123.5 L 53 117" stroke="#facc15" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="60" y1="121" x2="148" y2="121" stroke="#cbd5e0" stroke-width="3.5" stroke-linecap="round"/>
+      <rect x="42" y="136" width="12" height="12" rx="2.5" fill="none" stroke="#1f3354" stroke-width="1.6"/>
+      <line x1="60" y1="143" x2="148" y2="143" stroke="#cbd5e0" stroke-width="3.5" stroke-linecap="round"/>
+      <rect x="42" y="158" width="12" height="12" rx="2.5" fill="none" stroke="#1f3354" stroke-width="1.6"/>
+      <path d="M 44 164 L 47.5 167.5 L 53 161" stroke="#facc15" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="60" y1="165" x2="148" y2="165" stroke="#cbd5e0" stroke-width="3.5" stroke-linecap="round"/>
+      <rect x="42" y="180" width="12" height="12" rx="2.5" fill="none" stroke="#1f3354" stroke-width="1.6"/>
+      <line x1="60" y1="187" x2="148" y2="187" stroke="#cbd5e0" stroke-width="3.5" stroke-linecap="round"/>
+      <rect x="42" y="202" width="12" height="12" rx="2.5" fill="none" stroke="#1f3354" stroke-width="1.6"/>
+      <path d="M 44 208 L 47.5 211.5 L 53 205" stroke="#facc15" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="60" y1="209" x2="148" y2="209" stroke="#cbd5e0" stroke-width="3.5" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(140, 26)">
+      <path d="M 6 18 Q 9 12 15 11" stroke="#1f3354" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M 1 26 Q 4 14 14 12" stroke="#1f3354" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.55"/>
+      <path d="M 56 11 Q 62 12 65 18" stroke="#1f3354" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M 57 12 Q 67 14 70 26" stroke="#1f3354" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.55"/>
+      <rect x="32" y="6" width="8" height="6" rx="1.5" fill="#1f3354"/>
+      <rect x="30" y="11" width="12" height="4" rx="1" fill="#1f3354"/>
+      <circle cx="36" cy="40" r="26" fill="#1f3354"/>
+      <circle cx="36" cy="40" r="22" fill="#ffffff"/>
+      <g stroke="#1f3354" stroke-width="1.5" stroke-linecap="round">
+        <line x1="36" y1="22" x2="36" y2="26"/>
+        <line x1="50" y1="40" x2="54" y2="40"/>
+        <line x1="36" y1="58" x2="36" y2="54"/>
+        <line x1="22" y1="40" x2="18" y2="40"/>
+      </g>
+      <line x1="36" y1="40" x2="36" y2="27" stroke="#1f3354" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="36" y1="40" x2="48" y2="40" stroke="#1f3354" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="36" cy="40" r="2.5" fill="#1f3354"/>
+    </g>
+    <g transform="translate(168, 130)">
+      <rect x="0" y="0" width="16" height="70" rx="4" fill="#1f3354"/>
+      <rect x="0" y="14" width="16" height="6" fill="#3b5680"/>
+      <polygon points="0,70 16,70 8,90" fill="#1f3354"/>
+      <polygon points="6,82 10,82 8,90" fill="#cbd5e0"/>
+      <rect x="2" y="6" width="3" height="22" rx="1" fill="#3b5680"/>
+    </g>
+  </svg>`;
+  const wrapClass = 'block block-agenda-btn-wrap' + (small ? ' agenda-btn-wrap-small' : '');
+  const btnClass = 'agenda-btn' + (small ? ' agenda-btn-small' : '');
+  return `<div class="${wrapClass}"><a class="${btnClass}" href="${AGENDA_URL}" target="_blank" rel="noopener noreferrer">${svg}<span class="agenda-btn-label">${label}</span></a></div>`;
+}
+
 function substituteVars(text) {
   if (!text) return '';
   // Conditionnel inline : [if_pb:pb1,pb2]contenu[/if_pb] → contenu visible si au moins une pb listée est cochée
@@ -15633,6 +15626,8 @@ function substituteVars(text) {
     .replace(/\[enthousiaste_enthousiaste\]/g, 'enthousiaste')
     .replace(/\[besoin_nuit\]/g, getBesoinNuit())
     .replace(/\[pb_text\]/g, pb)
+    .replace(/\[agenda_btn:small\]/g, () => renderAgendaButtonHTML({ small: true }))
+    .replace(/\[agenda_btn\]/g, () => renderAgendaButtonHTML())
     .replace(/\[obj_text\]/g, obj)
     .replace(/\[XXX – rappeler ici la problématique écrite par les parents\]/g, pb)
     .replace(/\[XXX – rappeler les objectifs des parents\]/g, obj)
