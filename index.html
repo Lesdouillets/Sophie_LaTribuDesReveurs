@@ -3649,14 +3649,20 @@
       min-height: 64px !important;
       padding: 12px 14px !important;
     }
-    /* Masquer le bouton "✕ Fermer" DU HAUT pour les compact-btn (gardons celui du bas).
-       L'utilisateur veut un seul bouton fermer dans les boutons violet. */
-    .block-option.purple-btn.compact-btn .action-close-btn:not(.action-close-btn-bottom) {
+    /* Masquer le bouton "✕ Fermer" DU HAUT pour TOUS les boutons violet (purple-btn
+       + purple) — gardons uniquement celui du bas. Couvre :
+       - Lieu de sommeil ("Dort dans la chambre parentale") — purple-btn
+       - Position ventrale — purple-btn
+       - Difficultés identifiées (V. Diagnostic) compacts — purple-btn.compact-btn
+       - Objectifs PAS faisables (VI) compacts — purple-btn.compact-btn
+       - "Dort dans le lit parental" (embedded dans Lieu de sommeil) — purple
+    */
+    .block-option.purple-btn .action-close-btn:not(.action-close-btn-bottom),
+    .block-option.purple .action-close-btn:not(.action-close-btn-bottom) {
       display: none !important;
     }
     /* Pareil pour les 3 boutons colorés "Difficultés identifiées" (action/action-green/
-       action-yellow avec pill-style) en V. Diagnostic : masquer le 1er Fermer (haut),
-       garder uniquement celui du bas. */
+       action-yellow avec pill-style) en V. Diagnostic + OUI/NON en VII. */
     .block-option.action.pill-style .action-close-btn:not(.action-close-btn-bottom) {
       display: none !important;
     }
@@ -7326,7 +7332,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=593"></script>
+<script src="script-data.js?v=595"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
