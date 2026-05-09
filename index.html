@@ -7481,7 +7481,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=627"></script>
+<script src="script-data.js?v=628"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -17504,6 +17504,27 @@ function _collectAllDescendants(node) {
   walk(node.blocks);
   return ids;
 }
+// Mise à jour DOM in-place des lignes du récap (évite le saut visuel d'un re-render complet).
+// Après un toggle, state.cardPersonalTicks contient déjà l'état cascadé complet — on lit
+// juste cet état pour mettre à jour checkbox + couleur label de chaque ligne visible.
+function _refreshResumeRowsInPlace() {
+  const ticks = state.cardPersonalTicks || new Set();
+  const recapOff = state.recapAccompUntoggled || new Set();
+  const GREEN = '#16a34a', BLACK = '#1e293b';
+  document.querySelectorAll('.block-solutions-resume [data-sol-id]').forEach(row => {
+    const id = row.getAttribute('data-sol-id');
+    let ticked;
+    if (id === 'accomp_resume_4outils' || id === 'accomp_resume_comment') {
+      ticked = !recapOff.has(id);
+    } else {
+      ticked = ticks.has(id);
+    }
+    const cb = row.querySelector('input[type=checkbox]');
+    const lbl = row.querySelector('.sol-row-label');
+    if (cb) cb.checked = ticked;
+    if (lbl) lbl.style.setProperty('color', ticked ? GREEN : BLACK, 'important');
+  });
+}
 // Toggle un tick depuis le récap solutions (IX. Reformulation), avec cascade UP (un
 // enfant tické coche aussi ses ancêtres) et cascade DOWN (décocher un enfant retire
 // l'ancêtre si plus aucun de ses descendants n'est tické).
@@ -17535,7 +17556,8 @@ function toggleCardTickFromResume(cardId) {
     }
   }
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
-  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+  // Mise à jour in-place : pas de renderCurrentSection (qui causait le saut de colonne)
+  _refreshResumeRowsInPlace();
 }
 window.toggleCardTickFromResume = toggleCardTickFromResume;
 
@@ -17550,7 +17572,8 @@ function toggleRecapAccompTick(id) {
     state.recapAccompUntoggled.add(id);
   }
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
-  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+  // Mise à jour in-place : pas de renderCurrentSection (qui causait le saut de colonne)
+  _refreshResumeRowsInPlace();
 }
 window.toggleRecapAccompTick = toggleRecapAccompTick;
 
