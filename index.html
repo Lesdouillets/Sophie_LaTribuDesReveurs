@@ -7477,7 +7477,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=622"></script>
+<script src="script-data.js?v=623"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -13137,28 +13137,29 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     window.__infoButtons['tarifs-accueil-panel'] = { title: 'Tarifs', content: tableHtml };
     return '';
   }
-  // Récap des Solutions identifiées (pour IX. Reformulation) — wrappé dans un encadré
-  // navy. Affiche les catégories avec items cochés, en checkboxes : chaque item est
-  // VERT (checkbox cochée) si tické sur sa carte (cardPersonalTicks) ; ROUGE (checkbox
-  // non cochée) sinon. Cliquer une case rouge → toggle le tick → devient verte.
+  // Récap des Solutions identifiées (pour IX. Reformulation) — réutilise EXACTEMENT
+  // la même structure HTML que les groupes Solutions identifiées (VIII), filtrée pour
+  // ne montrer que les items cochés. Couleurs vert/rouge selon cardPersonalTicks.
+  // Wrappé dans un fin liseré navy (sans fond), placé sous "Donc si je résume".
   if (b.type === 'solutions_resume') {
     const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
     const selectedSols = state.selectedSolutions || new Set();
     const courbeTicked = state.courbeCardsTicked || new Set();
     const ticks = state.cardPersonalTicks || new Set();
     const tbChoices = state.tickboxChoices || {};
-    // Couleurs MAIN (mêmes que les bandeaux de Solutions identifiées en VIII)
-    const catMainMap = {
-      confort_physique: '#dc2626', nutrition: '#d4845a', rythme: '#7da589',
-      strategie: '#5d7a99', env: '#9d83b0', changement: '#8089a8',
-      journee: '#e6cc6b', relationnel: '#c98aa8', sante: '#7ba8a3',
-      accompagnement: '#be185d'
+    const catColorMap = {
+      confort_physique: { main: '#dc2626', light: '#e8b8b0' },
+      nutrition:        { main: '#d4845a', light: '#e8c19a' },
+      rythme:           { main: '#7da589', light: '#bdd1c4' },
+      strategie:        { main: '#5d7a99', light: '#b8c4d6' },
+      env:              { main: '#9d83b0', light: '#c9b6d6' },
+      changement:       { main: '#8089a8', light: '#bbc1d8' },
+      journee:          { main: '#e6cc6b', light: '#fef3c7' },
+      relationnel:      { main: '#c98aa8', light: '#f0c0d8' },
+      sante:            { main: '#7ba8a3', light: '#bdd6d2' },
+      accompagnement:   { main: '#be185d', light: '#ebabc6' }
     };
-    // Couleurs verte/rouge
     const GREEN = '#16a34a', RED = '#dc2626';
-    function isItemTicked(id) { return ticks.has(id); }
-    // Collecte récursive : pour chaque enfant coché, collecte ses sous-items cochés
-    // (courbe_cards_grid items dans courbeCardsTicked), avec tous les niveaux imbriqués.
     function collectGridSubItems(blocks, level) {
       const items = [];
       if (!Array.isArray(blocks)) return items;
@@ -13175,45 +13176,39 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       });
       return items;
     }
-    // Items spéciaux pour Tétine (sub-options stockées dans tickboxChoices)
     function getTetineSubItems() {
       const out = [];
       const choice = tbChoices['strategie_tetine_choice'] || tbChoices['obj_tetine_static'] || '';
       if (!choice) return out;
       const labels = { garder: '✅ Garder', supprimer: '❌ Supprimer', hybride: '🔀 Hybride' };
-      // Pour le tick : on utilise un id pseudo "strat_tetine_<choice>"
-      const pseudoId = 'strat_tetine_' + choice;
-      out.push({ id: pseudoId, label: labels[choice] || choice, emoji: '', level: 1 });
+      out.push({ id: 'strat_tetine_' + choice, label: labels[choice] || choice, emoji: '', level: 1 });
       return out;
     }
-    const blocks = sols.map(cat => {
+    const groups = sols.map(cat => {
       const children = (cat.children || []);
-      const allItems = []; // [{id,label,emoji,level}]
+      const allItems = [];
       children.forEach(ch => {
         const isSelected = selectedSols.has(ch.id);
         const subItems = (ch.id === 'strat_tetine')
           ? getTetineSubItems()
           : collectGridSubItems(ch.blocks, 1);
         if (!isSelected && !subItems.length) return;
-        // Inclure le parent si sélectionné OU s'il a des sous-items cochés
-        if (isSelected || subItems.length) {
-          allItems.push({ id: ch.id, label: ch.label || ch.cardLabel || ch.id, emoji: ch.emoji || ch.cardEmoji || '', level: 0 });
-          allItems.push(...subItems);
-        }
+        allItems.push({ id: ch.id, label: ch.label || ch.cardLabel || ch.id, emoji: ch.emoji || ch.cardEmoji || '', level: 0 });
+        allItems.push(...subItems);
       });
       if (!allItems.length) return '';
-      const color = catMainMap[cat.id] || '#475569';
+      const colors = catColorMap[cat.id] || { main: '#475569', light: '#cbd5e0' };
       const rows = allItems.map(it => {
-        const ticked = isItemTicked(it.id);
+        const ticked = ticks.has(it.id);
         const textColor = ticked ? GREEN : RED;
         const checkedAttr = ticked ? 'checked' : '';
-        const indent = it.level * 22;
-        return `<label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:${textColor};font-weight:600;line-height:1.55;margin-left:${indent}px;padding:2px 0"><input type="checkbox" ${checkedAttr} onchange="toggleCardTickFromResume('${it.id}')" style="width:16px;height:16px;cursor:pointer;accent-color:${ticked ? GREEN : RED}">${it.emoji ? it.emoji + ' ' : ''}${substituteVars(it.label)}</label>`;
+        const indent = it.level * 24;
+        return `<div data-sol-id="${it.id}" class="sol-row-wrap" style="margin-left:${indent}px"><div class="sol-row-header"><label class="sol-row" style="flex:1;color:${textColor};font-weight:600"><input type="checkbox" ${checkedAttr} onchange="toggleCardTickFromResume('${it.id}')">${it.emoji ? `<span class="sol-row-emoji">${it.emoji}</span>` : ''}<span class="sol-row-label">${substituteVars(it.label)}</span></label></div></div>`;
       }).join('');
-      return `<div style="margin-bottom:10px;background:#fff;border-radius:8px;overflow:hidden;display:grid;grid-template-columns:160px 1fr;align-items:start"><div style="background:${color};color:#fff;padding:12px 14px;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:0.4px">${cat.emoji || ''} ${cat.title}</div><div style="padding:10px 14px">${rows}</div></div>`;
+      return `<div class="sol-group block-with-left-title" data-cat="${cat.id}"><div class="sol-group-title" style="background:${colors.main};color:#fff"><span style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:22px;line-height:1">${cat.emoji || ''}</span><span>${cat.title}</span></span></div><div class="sol-group-content" style="border:2px solid ${colors.light}"><div class="sol-group-rows">${rows}</div></div></div>`;
     }).filter(Boolean).join('');
-    if (!blocks) return '';
-    return `<div class="block block-solutions-resume" style="background:#2d3f5c;padding:14px;border-radius:10px;margin:14px 0;border:none;box-shadow:0 2px 6px rgba(45,63,92,0.18)"><div style="color:#fff;font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;padding:0 4px 10px">📋 Récap Solutions</div>${blocks}</div>`;
+    if (!groups) return '';
+    return `<div class="block block-solutions-resume" style="border:2px solid #2d3f5c;border-radius:10px;padding:12px;margin:14px 0;background:transparent;box-shadow:none"><div class="block-solutions-identifiees" style="border:none;box-shadow:none;background:transparent;padding:0;margin:0"><div class="solutions-identifiees-body" style="padding:0;columns:1">${groups}</div></div></div>`;
   }
 
   if (b.type === 'separator') return `<div class="block block-separator">${text}</div>`;
@@ -15828,6 +15823,10 @@ function substituteVars(text) {
     .replace(/\[pb_text\]/g, pb)
     .replace(/\[agenda_btn:small\]/g, () => renderAgendaButtonHTML({ small: true }))
     .replace(/\[agenda_btn\]/g, () => renderAgendaButtonHTML())
+    .replace(/\[solutions_resume\]/g, () => {
+      const tmp = renderBlockInner({ type: 'solutions_resume' }, 0, '', 0, '');
+      return (tmp || '').replace(/\n\s*/g, '');
+    })
     .replace(/\[obj_text\]/g, obj)
     .replace(/\[XXX – rappeler ici la problématique écrite par les parents\]/g, pb)
     .replace(/\[XXX – rappeler les objectifs des parents\]/g, obj)
