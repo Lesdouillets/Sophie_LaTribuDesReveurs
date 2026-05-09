@@ -552,13 +552,13 @@ const SCRIPT_DATA = {
               // 5 boutons violets compacts (style identique à V. Diagnostic Difficultés identifiées)
               embeddedActions: [
                 {
-                  label: "Nuits complètes (besoin de temps d'alimentation car PETIT)", style: "purple-btn", _compact: true,
+                  label: "Nuits complètes<br>(besoin de temps d'alimentation car PETIT)", style: "purple-btn", _compact: true,
                   blocks: [
                     { type: "normal", text: "- bébé trop petit ⇒ Il a encore **besoin de temps d'alimentation** la nuit\n- Son estomac n'est pas assez gros pour **\"TENIR\"** toute la nuit\n- ⇒ Il a donc encore **besoin de temps d'alimentation** la nuit" }
                   ]
                 },
                 {
-                  label: "Nuits complètes (besoin de rattrapage de courbe)", style: "purple-btn", _compact: true,
+                  label: "Nuits complètes<br>(besoin de rattrapage de courbe)", style: "purple-btn", _compact: true,
                   blocks: [
                     { type: "normal", text: "- Aujourd'hui, votre enfant a besoin de faire un **rattrapage de courbe**\n- Il est possible que les **temps d'alimentation** la nuit soient encore présents quelque temps\n- Mais c'est **TEMPORAIRE** :\n  - le temps que sa **courbe de poids** remonte\n  - et que ses **apports alimentaires** se remettent en journée\n- ⇒ Il a donc encore **besoin de temps d'alimentation** la nuit de manière **temporaire**" }
                   ]

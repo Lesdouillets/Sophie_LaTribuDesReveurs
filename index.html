@@ -7356,7 +7356,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=596"></script>
+<script src="script-data.js?v=597"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -15024,11 +15024,15 @@ function toggleOption(header, skipScroll) {
         setTimeout(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
       }
       // Click-outside-close pour les purple-btn compact (V. Diagnostic) ET pour les
-      // purple-btn de IV. Objectifs (Lieu de sommeil, Position ventrale) : fermer si
-      // clic en dehors de l'encadré de l'option.
-      const _inObjectifs = state.sections && state.sections[state.currentIdx]?.id === 'objectifs';
+      // purple-btn de IV. Objectifs (Lieu de sommeil, Position ventrale) ET pour les
+      // gros boutons action.pill-style en V. Diagnostic (Pas de dette / Difficultés
+      // sommeil / Difficultés alimentaires) et VI. Objectifs revus (Faisables / PAS
+      // faisables) : fermer si clic en dehors de l'encadré de l'option.
+      const _curSecId = state.sections && state.sections[state.currentIdx]?.id;
+      const _inObjectifs = _curSecId === 'objectifs';
       const _purpleBtnInObj = optionDiv.classList.contains('purple-btn') && !optionDiv.classList.contains('compact-btn') && _inObjectifs;
-      if (optionDiv.classList.contains('compact-btn') || _purpleBtnInObj) {
+      const _actionPillInDiagOrRevus = optionDiv.classList.contains('action') && optionDiv.classList.contains('pill-style') && (_curSecId === 'diagnostic' || _curSecId === 'objectifs_revus');
+      if (optionDiv.classList.contains('compact-btn') || _purpleBtnInObj || _actionPillInDiagOrRevus) {
         setTimeout(() => {
           const handler = (e) => {
             if (!optionDiv.classList.contains('open-action')) {
