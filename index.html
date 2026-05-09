@@ -2143,13 +2143,52 @@
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
     /* SOS PANEL — right rail integrated in app-body */
-    .sos-panel {
-      width: 0; flex-shrink: 0;
-      display: flex; flex-direction: column; overflow: hidden;
-      background: #fafafa; border-left: 1.5px solid var(--border);
-      transition: width 0.28s cubic-bezier(0.4,0,0.2,1);
+    /* Bouton SOS flottant — 2x plus gros que les btn-icon, coin haut-droite sous le header */
+    #btn-sos-floating {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      width: 64px;
+      height: 64px;
+      border: none;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 4px 16px rgba(197,47,38,0.35);
+      cursor: pointer;
+      font-size: 34px;
+      line-height: 1;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.15s, box-shadow 0.15s;
+      z-index: 240;
+      padding: 0;
     }
-    .sos-panel.open { width: 920px; }
+    #btn-sos-floating:hover { transform: scale(1.08); box-shadow: 0 6px 22px rgba(197,47,38,0.5); }
+    #btn-sos-floating:active { transform: scale(0.96); }
+    /* SOS panel : modal centré (comme Solutions / Problématiques) au lieu de slide latéral */
+    .sos-panel {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45); z-index: 1000;
+      align-items: center; justify-content: center;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .sos-panel.open {
+      display: flex;
+      width: 100%; height: 100%;
+    }
+    /* Le contenu du modal SOS = box centrée 920px max */
+    .sos-panel.open > .sos-header,
+    .sos-panel.open > .sos-body {
+      width: 92vw;
+      max-width: 920px;
+    }
+    .sos-panel.open > .sos-header { border-radius: 14px 14px 0 0; }
+    .sos-panel.open > .sos-body {
+      border-radius: 0 0 14px 14px;
+      max-height: 78vh;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
     .sos-header {
       background: #c52f26;
       color: white; padding: 14px 18px;
@@ -6450,7 +6489,6 @@
     </div>
     <div class="header-actions">
       <button class="btn-edit-mode" id="btn-edit-mode" onclick="toggleEditMode()">✏️ Éditer</button>
-      <button class="btn-icon" title="Outils SOS" onclick="toggleSosPanel()" style="font-size:17px">🆘</button>
       <span style="position:relative;display:inline-flex">
         <button class="btn-icon" id="btn-meet-mode" title="Mode visio (réserve un coin pour la PiP de Google Meet)" onclick="toggleMeetMode(event)" style="position:relative;font-size:17px">📹<span id="btn-meet-mode-corner" style="display:none;position:absolute;top:-2px;right:-2px;background:#5e7194;color:#fff;font-size:9px;font-weight:700;border-radius:8px;padding:0 4px;line-height:13px;min-width:14px;text-align:center">↘</span></button>
         <div id="meet-corner-menu" class="meet-corner-menu" onclick="event.stopPropagation()">
@@ -6995,6 +7033,9 @@
 
   </div><!-- /app-body -->
 
+  <!-- BOUTON SOS FLOTTANT (coin haut-droite, sous le header) — 2x plus gros que les btn-icon -->
+  <button id="btn-sos-floating" type="button" title="Outils SOS" onclick="toggleSosPanel()">🆘</button>
+
   <!-- REMINDERS FLOTTANTS (stack en bas à droite) -->
   <div id="reminders-stack">
     <!-- "Fin des objectifs" — 1 min après démarrage si pas arrivé à V. Diagnostic -->
@@ -7232,7 +7273,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=576"></script>
+<script src="script-data.js?v=578"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -10015,12 +10056,19 @@ function _sosOutsideClickHandler(e) {
     document.removeEventListener('mousedown', _sosOutsideClickHandler, true);
     return;
   }
-  // Ne pas refermer si le clic est dans le panel lui-même
+  // Mode modal centré : si le clic est sur l'overlay lui-même (.sos-panel direct,
+  // pas un enfant), fermer le modal.
+  if (e.target === panel) {
+    panel.classList.remove('open');
+    document.removeEventListener('mousedown', _sosOutsideClickHandler, true);
+    return;
+  }
+  // Si le clic est dans le contenu du panel (header/body), ne pas refermer
   if (panel.contains(e.target)) return;
-  // Ne pas refermer si le clic est sur le bouton 🆘 d'ouverture (toggleSosPanel s'en occupe)
-  const sosBtn = e.target.closest('[onclick*="toggleSosPanel"]');
+  // Ne pas refermer si le clic est sur le bouton 🆘 d'ouverture
+  const sosBtn = e.target.closest('[onclick*="toggleSosPanel"]') || e.target.closest('#btn-sos-floating');
   if (sosBtn) return;
-  // Refermer
+  // Sinon, refermer
   panel.classList.remove('open');
   document.removeEventListener('mousedown', _sosOutsideClickHandler, true);
 }
@@ -15973,9 +16021,19 @@ function selectTickboxChoice(el) {
     syncChanged = true;
   }
   // obj_position_sommeil → souhait_position_dorsale (cocher si "dorsale", décocher si "ventrale")
+  // + auto-cocher le bouton ventre/dos dans Solutions identifiées → Progressivité
+  // (accomp_position_choice). Mapping : "ventrale" → "ventre" / "dorsale" → "dos"
   if (cid === 'obj_position_sommeil') {
     const currentValue = wasSelected ? null : el.dataset.value;
     setPb('souhait_position_dorsale', currentValue === 'dorsale');
+    // Auto-set accomp_position_choice (Solutions → Progressivité)
+    const positionMap = { ventrale: 'ventre', dorsale: 'dos' };
+    if (currentValue && positionMap[currentValue]) {
+      state.tickboxChoices['accomp_position_choice'] = positionMap[currentValue];
+    } else {
+      // Désélection → effacer aussi le choix lié
+      delete state.tickboxChoices['accomp_position_choice'];
+    }
     syncChanged = true;
   }
   // accomp_position_choice → re-render pour mettre à jour le filtrage des sous-cartes DOS/VENTRE
