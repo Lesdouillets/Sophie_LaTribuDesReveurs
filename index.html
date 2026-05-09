@@ -13210,7 +13210,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         const textColor = ticked ? GREEN : RED;
         const checkedAttr = ticked ? 'checked' : '';
         const indent = it.level * 24;
-        return `<div data-sol-id="${it.id}" class="sol-row-wrap" style="margin-left:${indent}px"><div class="sol-row-header"><label class="sol-row" style="flex:1;color:${textColor};font-weight:600"><input type="checkbox" ${checkedAttr} onchange="toggleCardTickFromResume('${it.id}')">${it.emoji ? `<span class="sol-row-emoji">${it.emoji}</span>` : ''}<span class="sol-row-label">${substituteVars(it.label)}</span></label></div></div>`;
+        return `<div data-sol-id="${it.id}" class="sol-row-wrap" style="margin-left:${indent}px"><div class="sol-row-header"><label class="sol-row" style="flex:1"><input type="checkbox" ${checkedAttr} onchange="toggleCardTickFromResume('${it.id}')">${it.emoji ? `<span class="sol-row-emoji">${it.emoji}</span>` : ''}<span class="sol-row-label" style="color:${textColor} !important;font-weight:700">${substituteVars(it.label)}</span></label></div></div>`;
       }).join('');
       return `<div class="sol-group block-with-left-title" data-cat="${cat.id}"><div class="sol-group-title" style="background:${colors.main};color:#fff"><span style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:22px;line-height:1">${cat.emoji || ''}</span><span>${cat.title}</span></span></div><div class="sol-group-content" style="border:2px solid ${colors.light};display:flex;flex-direction:column;justify-content:center"><div class="sol-group-rows">${rows}</div></div></div>`;
     }).filter(Boolean).join('');
