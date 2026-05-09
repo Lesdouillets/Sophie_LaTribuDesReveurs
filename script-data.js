@@ -412,7 +412,7 @@ const SCRIPT_DATA = {
             } },
             { type: "normal", _leftTitle: "Recommandations de l'OMS", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- **Néanmoins**, je dois aussi vous **partager les recommandations de l'OMS**…\n  - …qui **encouragent** à **poser son enfant** sur le **DOS**…\n  - …car cette position **diminue significativement** le **risque de Mort Inattendue du Nourrisson**" },
             { type: "normal", _leftTitle: "Voir ce qui VOUS convient", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- **Mon rôle** c'est de vous **transmettre ces informations..**<br>…tout en **restant à l'écoute** de **votre réalité**\n\n- Il n'y a **pas de bonne ou mauvaise réponse**..<br>...**SEULEMENT CELLE** qui **correspond à vos besoins** !" },
-            { type: "question", text: "Voilà, j'**aimerais** beaucoup **connaître votre point de vue** sur ce sujet…\n- Souhaitez-vous **rester** :\n  - **en position ventrale**\n  - ou changer **vers la position dorsale**?\n\n- Cela me **permettra** **d'adapter AU MIEUX mon accompagnement** à votre famille\n  - ...et à **vos préférences.**", choice: {
+            { type: "question", _leftTitle: "Souhait ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "Voilà, j'**aimerais** beaucoup **connaître votre point de vue** sur ce sujet…\n- Souhaitez-vous **rester** :\n  - **en position ventrale**\n  - ou changer **vers la position dorsale**?\n\n- Cela me **permettra** **d'adapter AU MIEUX mon accompagnement** à votre famille\n  - ...et à **vos préférences.**", choice: {
               id: "obj_position_sommeil",
               required: true,
               options: [
