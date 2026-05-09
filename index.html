@@ -3654,6 +3654,12 @@
     .block-option.purple-btn.compact-btn .action-close-btn:not(.action-close-btn-bottom) {
       display: none !important;
     }
+    /* Pareil pour les 3 boutons colorés "Difficultés identifiées" (action/action-green/
+       action-yellow avec pill-style) en V. Diagnostic : masquer le 1er Fermer (haut),
+       garder uniquement celui du bas. */
+    .block-option.action.pill-style .action-close-btn:not(.action-close-btn-bottom) {
+      display: none !important;
+    }
     .block-option.purple-btn.compact-btn > .option-header {
       flex-direction: row !important;
       align-items: center !important;
@@ -7320,7 +7326,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=589"></script>
+<script src="script-data.js?v=592"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE

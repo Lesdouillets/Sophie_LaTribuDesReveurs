@@ -373,7 +373,7 @@ const SCRIPT_DATA = {
                 }
               ]
             },
-            { type: "question", text: "Est-ce que c'est **quelque chose qui vous CONVIENT** pour l'instant,\n…OU est-ce que vous **aimeriez qu'elle passe dans SA chambre (dans SON lit)** ?\n\n- Il n'y a **PAS** de **bonne ou de mauvaise réponse** :\n  - certains parents **préfèrent attendre** encore un peu,\n  - d'autres **sont prêts** à faire la **transition**\n\n- L'**idée** est surtout de voir ce qui **correspond le mieux** à votre **famille**\n  - Pour que je puisse m**'adapter à vos souhaits**", choice: {
+            { type: "question", _leftTitle: "Souhait ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "Est-ce que c'est **quelque chose qui vous CONVIENT** pour l'instant,\n…OU est-ce que vous **aimeriez qu'elle passe dans SA chambre (dans SON lit)** ?\n\n- Il n'y a **PAS** de **bonne ou de mauvaise réponse** :\n  - certains parents **préfèrent attendre** encore un peu,\n  - d'autres **sont prêts** à faire la **transition**\n\n- L'**idée** est surtout de voir ce qui **correspond le mieux** à votre **famille**\n  - Pour que je puisse m**'adapter à vos souhaits**", choice: {
               id: "obj_lieu_sommeil",
               required: true,
               options: [
@@ -540,41 +540,47 @@ const SCRIPT_DATA = {
         {
           type: "option", label: "Objectifs faisables", emoji: "✅", style: "action-green", _pillStyle: true, mutexGroup: "objectifs-revus",
           blocks: [
-            { type: "normal", text: "- Par rapport aux **objectifs que vous avez donnés**\n  ⇒ moi ce que **je pense** c'est que c'est **tout à fait COHÉRENTS et FAISABLES**" }
+            { type: "normal", _leftTitle: "Objectifs faisables", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Par rapport aux **objectifs que vous avez donnés**\n  ⇒ moi ce que **je pense** c'est que c'est **tout à fait COHÉRENTS et FAISABLES**" }
           ]
         },
         {
           type: "option", label: "Objectifs PAS faisables", emoji: "❌", style: "action", _pillStyle: true, mutexGroup: "objectifs-revus",
           blocks: [
-            { type: "normal", text: "- Par rapport aux **objectifs que vous avez donnés**\n  ⇒ Il y a **certains points** que je **voudrais re-discuter avec vous**" },
             {
-              type: "option", label: "Nuits complètes (mais besoin de temps d'alimentation car PETIT)", style: "purple",
-              blocks: [
-                { type: "normal", text: "- bébé trop petit ⇒ Il a encore **besoin de temps d'alimentation** la nuit\n- Son estomac n'est pas assez gros pour **\"TENIR\"** toute la nuit\n- ⇒ Il a donc encore **besoin de temps d'alimentation** la nuit" }
-              ]
-            },
-            {
-              type: "option", label: "Nuits complètes (mais besoin de rattrapage de courbe)", style: "purple",
-              blocks: [
-                { type: "normal", text: "- Aujourd'hui, votre enfant a besoin de faire un **rattrapage de courbe**\n- Il est possible que les **temps d'alimentation** la nuit soient encore présents quelque temps\n- Mais c'est **TEMPORAIRE** :\n  - le temps que sa **courbe de poids** remonte\n  - et que ses **apports alimentaires** se remettent en journée\n- ⇒ Il a donc encore **besoin de temps d'alimentation** la nuit de manière **temporaire**" }
-              ]
-            },
-            {
-              type: "option", label: "Si la crèche ne suit pas les recommandations", style: "purple",
-              blocks: [
-                { type: "normal", text: "- Si la crèche ne suit pas vos recommandations :\n  - ⇒ ça aura un **impact sur ses nuits** (ex: réveils nocturnes, réveils matinaux, terreurs nocturnes)\n  - ⇒ Vous faites un **test** et voyez si la crèche lui correspond ou pas" }
-              ]
-            },
-            {
-              type: "option", label: "Si activités qui obligent à réveiller l'enfant", style: "purple",
-              blocks: [
-                { type: "normal", text: "- Si votre enfant est réveillé pour aller à des activités :\n  - Son corps aura la validation que c'est **OK de faire de courtes siestes**\n  - Ne comprendra pas ses **variations de rythmes**\n  - Et n'arrivera pas à **enchaîner les cycles de sommeil** pour ses siestes\n- De plus, le **manque de sommeil de jour** aura un **impact sur ses nuits** (ex: réveils nocturnes, réveils matinaux, terreurs nocturnes)" }
-              ]
-            },
-            {
-              type: "option", label: "Si nuit supérieure à 12h", style: "purple",
-              blocks: [
-                { type: "normal", text: "- Votre enfant fait des nuits qui **correspondent à ses besoins.**\n- Si son horaire de lever ne correspond pas à **VOTRE rythme**\n  - ⇒ on peut voir pour **décaler toute sa journée** (temps d'alimentation, siestes…)" }
+              type: "normal", _leftTitle: "Objectifs PAS faisables", _leftTitleStyle: "background:#2d3f5c;color:#fff",
+              text: "- Par rapport aux **objectifs que vous avez donnés**\n  ⇒ Il y a **certains points** que je **voudrais re-discuter avec vous**",
+              // 5 boutons violets compacts (style identique à V. Diagnostic Difficultés identifiées)
+              embeddedActions: [
+                {
+                  label: "Nuits complètes (besoin de temps d'alimentation car PETIT)", style: "purple-btn", _compact: true,
+                  blocks: [
+                    { type: "normal", text: "- bébé trop petit ⇒ Il a encore **besoin de temps d'alimentation** la nuit\n- Son estomac n'est pas assez gros pour **\"TENIR\"** toute la nuit\n- ⇒ Il a donc encore **besoin de temps d'alimentation** la nuit" }
+                  ]
+                },
+                {
+                  label: "Nuits complètes (besoin de rattrapage de courbe)", style: "purple-btn", _compact: true,
+                  blocks: [
+                    { type: "normal", text: "- Aujourd'hui, votre enfant a besoin de faire un **rattrapage de courbe**\n- Il est possible que les **temps d'alimentation** la nuit soient encore présents quelque temps\n- Mais c'est **TEMPORAIRE** :\n  - le temps que sa **courbe de poids** remonte\n  - et que ses **apports alimentaires** se remettent en journée\n- ⇒ Il a donc encore **besoin de temps d'alimentation** la nuit de manière **temporaire**" }
+                  ]
+                },
+                {
+                  label: "Si la crèche ne suit pas les recommandations", style: "purple-btn", _compact: true,
+                  blocks: [
+                    { type: "normal", text: "- Si la crèche ne suit pas vos recommandations :\n  - ⇒ ça aura un **impact sur ses nuits** (ex: réveils nocturnes, réveils matinaux, terreurs nocturnes)\n  - ⇒ Vous faites un **test** et voyez si la crèche lui correspond ou pas" }
+                  ]
+                },
+                {
+                  label: "Si activités qui obligent à réveiller l'enfant", style: "purple-btn", _compact: true,
+                  blocks: [
+                    { type: "normal", text: "- Si votre enfant est réveillé pour aller à des activités :\n  - Son corps aura la validation que c'est **OK de faire de courtes siestes**\n  - Ne comprendra pas ses **variations de rythmes**\n  - Et n'arrivera pas à **enchaîner les cycles de sommeil** pour ses siestes\n- De plus, le **manque de sommeil de jour** aura un **impact sur ses nuits** (ex: réveils nocturnes, réveils matinaux, terreurs nocturnes)" }
+                  ]
+                },
+                {
+                  label: "Si nuit supérieure à 12h", style: "purple-btn", _compact: true,
+                  blocks: [
+                    { type: "normal", text: "- Votre enfant fait des nuits qui **correspondent à ses besoins.**\n- Si son horaire de lever ne correspond pas à **VOTRE rythme**\n  - ⇒ on peut voir pour **décaler toute sa journée** (temps d'alimentation, siestes…)" }
+                  ]
+                },
               ]
             },
           ]
