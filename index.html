@@ -7481,7 +7481,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=628"></script>
+<script src="script-data.js?v=629"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -14912,7 +14912,7 @@ function toggleSolution(id, checked) {
           if (anyChildTicked) state.selectedSolutions.add(id);
           else state.selectedSolutions.delete(id);
           state.selectedSolutionsManuallyEdited.delete(id);
-          renderCurrentSection();
+          _refreshSolutionsBlockInPlace();
           return;
         }
         found = true;
@@ -14945,7 +14945,7 @@ function toggleSolution(id, checked) {
     const hasSubChoice = choices['strategie_tetine_choice'] || choices['obj_tetine_static'] || (state.selectedPbs && state.selectedPbs.has('souhait_tetine'));
     if (!hasSubChoice) {
       alert('⚠️ Pour cocher « Tétine », il faut d\'abord choisir une sous-option : Garder / Supprimer / Hybride (dans IV. Objectifs ou V. Diagnostic).');
-      renderCurrentSection(); // remet la case à son état précédent
+      _refreshSolutionsBlockInPlace(); // remet la case à son état précédent
       return;
     }
   }
@@ -14999,7 +14999,9 @@ function toggleSolution(id, checked) {
   updateSolutionsModal();
   if (typeof buildSections === 'function') buildSections();
   if (typeof buildSidebar === 'function') buildSidebar();
-  renderCurrentSection();
+  // Mise à jour in-place du panel + cards parent (évite le saut horizontal des colonnes
+  // causé par un renderCurrentSection complet)
+  _refreshSolutionsBlockInPlace();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.toggleSolution = toggleSolution;
@@ -17409,7 +17411,8 @@ function toggleCourbeCardTickFromSol(itId) {
   }
   // Cascade : empêche parent d'être tické sans enfant tické (override toute édition manuelle parent)
   if (typeof applyParentTickCascade === 'function') applyParentTickCascade();
-  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+  // Mise à jour in-place du panel + cards parent (évite le saut horizontal des colonnes)
+  _refreshSolutionsBlockInPlace();
   if (typeof updateSolutionsModal === 'function') updateSolutionsModal();
   if (typeof updateFicheSolutions === 'function') updateFicheSolutions();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
@@ -17440,7 +17443,7 @@ function toggleCourbeCardTick(tickEl) {
     ESPACEMENT_SUBS.forEach(sub => {
       if (sub !== cardId) state.cardPersonalTicks.delete(sub);
     });
-    if (typeof renderCurrentSection === 'function') renderCurrentSection();
+    _refreshSolutionsBlockInPlace();
   }
   // Mutex : Changement de lit / Changement de chambre / Changement de lit + chambre (sous-cartes de la catégorie 'changement')
   // → cocher l'une décoche automatiquement les 2 autres. Exception : env_partage_chambre reste indépendant
@@ -17450,7 +17453,7 @@ function toggleCourbeCardTick(tickEl) {
     CHGMT_TICK_MUTEX.forEach(other => {
       if (other !== cardId) state.cardPersonalTicks.delete(other);
     });
-    if (typeof renderCurrentSection === 'function') renderCurrentSection();
+    _refreshSolutionsBlockInPlace();
   }
   // Mutex : APLV / Conseils RGO (sous-cartes de la catégorie 'confort_physique') — 1 seule active à la fois
   const CONFORT_TICK_MUTEX = ['conf_aplv', 'conf_rgo'];
@@ -17458,7 +17461,7 @@ function toggleCourbeCardTick(tickEl) {
     CONFORT_TICK_MUTEX.forEach(other => {
       if (other !== cardId) state.cardPersonalTicks.delete(other);
     });
-    if (typeof renderCurrentSection === 'function') renderCurrentSection();
+    _refreshSolutionsBlockInPlace();
   }
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
@@ -17504,6 +17507,34 @@ function _collectAllDescendants(node) {
   walk(node.blocks);
   return ids;
 }
+// Mise à jour DOM in-place des blocks Solutions identifiées (panel checkboxes + cards parent
+// au-dessus). Évite le saut horizontal des colonnes flex causé par renderCurrentSection.
+// Utilisé par toggleSolution / toggleCourbeCardTickFromSol pour Plan d'action et Diagnostic.
+function _refreshSolutionsBlockInPlace() {
+  if (typeof renderSolutionsCheckboxes !== 'function') return;
+  // 1. Panel checkboxes (.block-solutions-identifiees)
+  // Exclure ceux imbriqués dans block-solutions-resume (Reformulation, géré séparément)
+  document.querySelectorAll('.block-solutions-identifiees').forEach(panel => {
+    if (panel.closest('.block-solutions-resume')) return;
+    const tmp = document.createElement('div');
+    tmp.innerHTML = renderSolutionsCheckboxes();
+    const newPanel = tmp.querySelector('.block-solutions-identifiees');
+    if (newPanel) panel.innerHTML = newPanel.innerHTML;
+  });
+  // 2. Cards parent + sol-active-content (Plan d'action) — même rendu cardsOnly
+  // Le rendu retourne wrap + sibling activeContent ; on remplace tout le edit-block-wrap interne
+  document.querySelectorAll('.sol-parent-cards-grid-wrap').forEach(wrap => {
+    const editWrap = wrap.closest('.edit-block-wrap');
+    if (!editWrap) return;
+    const editCtrls = editWrap.querySelector('.edit-block-controls');
+    const editCtrlsHtml = editCtrls ? editCtrls.outerHTML : '';
+    const tmp = document.createElement('div');
+    tmp.innerHTML = renderSolutionsCheckboxes({ cardsOnly: true });
+    editWrap.innerHTML = editCtrlsHtml + tmp.innerHTML;
+  });
+}
+window._refreshSolutionsBlockInPlace = _refreshSolutionsBlockInPlace;
+
 // Mise à jour DOM in-place des lignes du récap (évite le saut visuel d'un re-render complet).
 // Après un toggle, state.cardPersonalTicks contient déjà l'état cascadé complet — on lit
 // juste cet état pour mettre à jour checkbox + couleur label de chaque ligne visible.
