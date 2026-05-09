@@ -3622,13 +3622,23 @@
       color: #5b21b6; font-weight: 800; font-size: 14px; text-align: center; line-height: 1.3; order: 1;
       white-space: normal;
     }
-    /* Variante compacte du purple-btn (sub-options sous tableau emploi du temps) */
+    /* Variante compacte du purple-btn (sub-options sous tableau emploi du temps,
+       et boutons "Difficultés identifiées" dans V. Diagnostic) — auto-width au lieu
+       de 50% pour pouvoir aligner plusieurs boutons courts sur la même ligne. */
     .edit-block-wrap:has(> .block-option.purple-btn.compact-btn:not(.open-action)) {
-      height: 60px;
+      height: auto;
+      width: auto !important;
+      max-width: 240px !important;
+      margin-right: 12px !important;
     }
     .block-option.purple-btn.compact-btn:not(.open-action) {
       border-width: 2px;
       border-radius: 10px;
+    }
+    /* Masquer le bouton "✕ Fermer" DU HAUT pour les compact-btn (gardons celui du bas).
+       L'utilisateur veut un seul bouton fermer dans les boutons violet de V. Diagnostic. */
+    .block-option.purple-btn.compact-btn .action-close-btn:not(.action-close-btn-bottom) {
+      display: none !important;
     }
     .block-option.purple-btn.compact-btn > .option-header {
       flex-direction: row !important;
@@ -7295,7 +7305,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=585"></script>
+<script src="script-data.js?v=586"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
