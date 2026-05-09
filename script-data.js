@@ -6843,13 +6843,14 @@ const SCRIPT_DATA = {
           type: "option", label: "Pas eu le temps de tout discuter", style: "purple", _compactClosed: true,
           blocks: [
             { type: "normal", _leftTitle: "Pas eu le temps de tout discuter", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- On a **discuté de pas mal de choses**\n- Mais **malheureusement**, on n'a **PAS** eu le temps de **TOUT** discuter" },
-            { type: "normal", _leftTitle: "RDV ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:0 0 12px;font-weight:400;line-height:1.7\">❓ Est-ce que <strong>ça vous irait</strong> ?</div>\n- 🔥 On **peut se voir** le <strong style=\"color:#C0392B\">XXX</strong>\n[agenda_btn:small]" },
-            {
-              type: "option", label: "💰 Tarifs", style: "purple",
-              blocks: [
-                { type: "tarifs_tableau" }
-              ]
-            },
+            { type: "normal", _leftTitle: "RDV ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:0 0 12px;font-weight:400;line-height:1.7\">❓ Est-ce que <strong>ça vous irait</strong> ?</div>\n- 🔥 On **peut se voir** le <strong style=\"color:#C0392B\">XXX</strong>\n[agenda_btn:small]", embeddedActions: [
+              {
+                label: "💰 Tarifs", style: "action-yellow", _pillStyle: true,
+                blocks: [
+                  { type: "tarifs_tableau" }
+                ]
+              }
+            ] },
           ]
         },
         { type: "normal", _leftTitle: "Félicitations !", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "👏 En tout cas, ON VOIT :\n  - que vous avez **essayé de mettre des choses en place**\n  - et AVEC CE QU'ON **vient de voir ensemble** :\n    - vous avez **toutes les bases**\n    - pour que ça **évolue dans le bon sens** !" },

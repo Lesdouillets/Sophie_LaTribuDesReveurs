@@ -3381,10 +3381,9 @@
     .block-with-left-title .embedded-actions {
       justify-content: flex-start;
     }
-    /* Tarifs (X. Validation OUI > Si Pas pris de RDV) : action-yellow seul dans embedded-actions
-       d'un bloc question → aligné à DROITE */
-    .block-question .embedded-actions:has(> .block-option.action-yellow:only-child),
-    .block-question-inline .embedded-actions:has(> .block-option.action-yellow:only-child) {
+    /* Tarifs : action-yellow seul dans embedded-actions → aligné à DROITE
+       (X. Validation OUI > Si Pas pris de RDV ; IX. Reformulation > Pas eu le temps de tout discuter) */
+    .embedded-actions:has(> .block-option.action-yellow:only-child) {
       justify-content: flex-end !important;
     }
     /* Option purple dans un bloc question (ex: 💰 Tarifs) : fond transparent, liseré rouge fin, label rouge */
@@ -3522,6 +3521,15 @@
       width: 100% !important;
       max-width: 100% !important;
       margin: 0 !important;
+      border: 3px dashed #7c3aed !important;
+      border-radius: 12px !important;
+    }
+    /* Spécificité élevée pour battre `.block-option.action.open-action .block-option.purple`
+       (border 2px solid) quand le compact-closed est imbriqué et ouvert */
+    .block-option.action.open-action .block-option.purple.compact-closed.open-action,
+    .block-with-left-title .block-option.purple.compact-closed.open-action {
+      border: 3px dashed #7c3aed !important;
+      border-radius: 12px !important;
     }
     .block-option.purple .option-header:hover { background: rgba(124,58,237,0.12); }
     .block-option.purple .option-arrow { color: #5b21b6; }
@@ -7418,7 +7426,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=608"></script>
+<script src="script-data.js?v=609"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
