@@ -4847,9 +4847,10 @@
     }
     .agenda-btn-small:hover { background: #f5f7fb; }
     .agenda-btn-svg-small { width: 38px; height: auto; filter: drop-shadow(0 2px 4px rgba(45,63,92,0.2)); }
-    .solutions-identifiees-body { padding: 12px 20px; columns: 2; column-gap: 24px; contain: layout style; }
-    .sol-group { width: 100%; break-inside: avoid; page-break-inside: avoid; -webkit-column-break-inside: avoid; margin-bottom: 18px; }
-    @media (max-width: 900px) { .solutions-identifiees-body { columns: 1; } }
+    .solutions-identifiees-body { padding: 12px 20px; display: flex; gap: 24px; align-items: flex-start; }
+    .solutions-identifiees-body > .sol-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+    .sol-group { width: 100%; margin-bottom: 0; }
+    @media (max-width: 900px) { .solutions-identifiees-body { flex-direction: column; } }
     /* sol-group en format bloc-titre : titre à gauche (140px) + checkboxes à droite, blocs indépendants avec gap */
     .sol-group.block-with-left-title {
       display: grid; grid-template-columns: 140px 1fr;
@@ -13143,6 +13144,10 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   // ne montrer que les items cochés. Couleurs vert/rouge selon cardPersonalTicks.
   // Wrappé dans un fin liseré navy (sans fond), placé sous "Donc si je résume".
   if (b.type === 'solutions_resume') {
+    // Garantir que la cascade parent ← enfants est appliquée avant d'afficher le récap :
+    // si l'utilisateur a coché un sous-enfant (ex. env_obs) sans passer par VIII., on veut
+    // que le parent (env_chambre) soit aussi ajouté à selectedSolutions pour qu'il s'affiche.
+    if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
     const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
     const selectedSols = state.selectedSolutions || new Set();
     const courbeTicked = state.courbeCardsTicked || new Set();
@@ -13185,7 +13190,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       out.push({ id: 'strat_tetine_' + choice, label: labels[choice] || choice, emoji: '', level: 1 });
       return out;
     }
-    const groups = sols.map(cat => {
+    const groupsArr = sols.map(cat => {
       const children = (cat.children || []);
       const allItems = [];
       children.forEach(ch => {
@@ -13214,9 +13219,13 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         return `<div data-sol-id="${it.id}" class="sol-row-wrap" style="margin-left:${indent}px"><div class="sol-row-header"><label class="sol-row" style="flex:1"><input type="checkbox" ${checkedAttr} onchange="toggleCardTickFromResume('${it.id}')">${it.emoji ? `<span class="sol-row-emoji">${it.emoji}</span>` : ''}<span class="sol-row-label" style="color:${textColor} !important;font-weight:700">${substituteVars(it.label)}</span></label></div></div>`;
       }).join('');
       return `<div class="sol-group block-with-left-title" data-cat="${cat.id}"><div class="sol-group-title" style="background:${colors.main};color:#fff"><span style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:22px;line-height:1">${cat.emoji || ''}</span><span>${cat.title}</span></span></div><div class="sol-group-content" style="border:2px solid ${colors.light};display:flex;flex-direction:column;justify-content:center"><div class="sol-group-rows">${rows}</div></div></div>`;
-    }).filter(Boolean).join('');
-    if (!groups) return '';
-    return `<div class="block block-solutions-resume" style="border:2px solid #2d3f5c;border-radius:10px;padding:12px;margin:14px 0;background:transparent;box-shadow:none"><div class="block-solutions-identifiees" style="border:none;box-shadow:none;background:transparent;padding:0;margin:0"><div class="solutions-identifiees-body" style="padding:0;columns:2;column-gap:18px;contain:layout style">${groups}</div></div></div>`;
+    }).filter(Boolean);
+    if (!groupsArr.length) return '';
+    // Distribuer en 2 colonnes manuelles (alternance) — pas de re-balance auto comme columns:2
+    const c1 = [], c2 = [];
+    groupsArr.forEach((html, i) => { (i % 2 === 0 ? c1 : c2).push(html); });
+    const groups = `<div class="sol-col">${c1.join('')}</div><div class="sol-col">${c2.join('')}</div>`;
+    return `<div class="block block-solutions-resume" style="border:2px solid #2d3f5c;border-radius:10px;padding:12px;margin:14px 0;background:transparent;box-shadow:none"><div class="block-solutions-identifiees" style="border:none;box-shadow:none;background:transparent;padding:0;margin:0"><div class="solutions-identifiees-body" style="padding:0">${groups}</div></div></div>`;
   }
 
   if (b.type === 'separator') return `<div class="block block-separator">${text}</div>`;
@@ -14120,7 +14129,13 @@ function renderSolutionsCheckboxes(opts) {
       <div class="sol-group-title" style="background:${c.main};color:#fff" onclick="toggleSolGroup('${cat.id}')"><span class="sol-group-arrow">▾</span><span style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:22px;line-height:1">${cat.emoji || ''}</span><span>${cat.title}</span></span></div>
       <div class="sol-group-content" style="border:2px solid ${c.light}">${bulkBtns}<div class="sol-group-rows">${rows}</div>${inlineIntroHtml}</div>
     </div>`;
-  }).filter(Boolean).join('');
+  }).filter(Boolean);
+  // Distribuer les groupes en 2 colonnes manuelles (alternance) pour éviter le saut
+  // de colonnes lié au CSS multi-column (qui réequilibre dynamiquement).
+  const __sgArr = compactGroups;
+  const __col1 = [], __col2 = [];
+  __sgArr.forEach((html, i) => { (i % 2 === 0 ? __col1 : __col2).push(html); });
+  const compactGroupsHtml = `<div class="sol-col">${__col1.join('')}</div><div class="sol-col">${__col2.join('')}</div>`;
 
   // Partie 2 : grid des cards parent (réutilise les classes de V. Diagnostic courbe-card + diag-cat-card)
   const catPastelMap = {
@@ -14482,7 +14497,7 @@ function renderSolutionsCheckboxes(opts) {
 
   if (compactOnly) {
     return `<div class="block block-solutions-identifiees" style="border:none;box-shadow:none;margin:0">
-      <div class="solutions-identifiees-body">${compactGroups}</div>
+      <div class="solutions-identifiees-body">${compactGroupsHtml}</div>
     </div>`;
   }
   // BROWSE MODE : afficher uniquement le contenu de la carte active (sans Solutions identifiées + cards row).
@@ -14500,7 +14515,7 @@ function renderSolutionsCheckboxes(opts) {
     return parentCardsHtml ? `<div class="courbe-cards-grid-wrap sol-parent-cards-grid-wrap"><div class="courbe-cards-grid diag-categories-grid">${parentCardsHtml}</div></div>${activeContentHtml}` : '';
   }
   return `<div class="block block-solutions-identifiees">
-    <div class="solutions-identifiees-body">${compactGroups}</div>
+    <div class="solutions-identifiees-body">${compactGroupsHtml}</div>
   </div>`;
 }
 
