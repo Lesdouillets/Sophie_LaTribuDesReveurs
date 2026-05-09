@@ -6840,11 +6840,10 @@ const SCRIPT_DATA = {
       blocks: [
         { type: "normal", _leftTitle: "Résumé", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- **Donc si je résume ce qu'on s'est dit !**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">❓ C'est <strong>bien ça</strong> ?<br>Est-ce <strong>clair pour vous</strong> ?</div>" },
         {
-          type: "option", label: "Pas eu le temps de tout discuter", style: "purple",
+          type: "option", label: "Pas eu le temps de tout discuter", style: "purple", _compactClosed: true,
           blocks: [
-            { type: "normal", text: "- On a **discuté de pas mal de choses**\n- Mais **malheureusement**, on n'a **PAS** eu le temps de **TOUT** discuter\n- Ce que **je vous propose** c'est que l'on **finisse cette discussion** autour d'**un AUTRE RDV**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">❓ Est-ce que <strong>ça vous irait</strong> ?</div>" },
-            { type: "important", text: "- 🔥 On **peut se voir** le <strong style=\"color:#C0392B\">XXX</strong>" },
-            { type: "agenda_button" },
+            { type: "normal", _leftTitle: "Pas eu le temps de tout discuter", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- On a **discuté de pas mal de choses**\n- Mais **malheureusement**, on n'a **PAS** eu le temps de **TOUT** discuter" },
+            { type: "normal", _leftTitle: "RDV ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:0 0 12px;font-weight:400;line-height:1.7\">❓ Est-ce que <strong>ça vous irait</strong> ?</div>\n- 🔥 On **peut se voir** le <strong style=\"color:#C0392B\">XXX</strong>\n[agenda_btn:small]" },
             {
               type: "option", label: "💰 Tarifs", style: "purple",
               blocks: [
@@ -6883,9 +6882,9 @@ const SCRIPT_DATA = {
             { type: "question", _leftTitle: "Questions ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "Est-ce qu'il vous **reste des questions** ?" },
             { type: "question", _leftTitle: "Quand ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "**QUAND** est-ce que vous **PENSEZ** **POUVOIR COMMENCER** à **METTRE ces changements en place** ?" },
             {
-              type: "option", label: "🔥 Si Pas pris de RDV", style: "purple", _compactClosed: true, _leftTitle: "Prise de RDV", _leftTitleStyle: "background:#2d3f5c;color:#fff",
+              type: "option", label: "🔥 Si Pas pris de RDV", style: "purple", _compactClosed: true,
               blocks: [
-                { type: "important", text: "- 🔥 Au vu de ce qu'on s'est dit, je pense qu'il serait **intéressant de se revoir**\n\n- Sachant que **vous voulez commencer** le <strong style=\"color:#C0392B\">XXX</strong>, on **peut se voir** le <strong style=\"color:#C0392B\">XXX</strong>\n[agenda_btn:small]" },
+                { type: "normal", _noBorder: true, _leftTitle: "🔥 Au vu de ce qu'on s'est dit, je pense qu'il serait intéressant de se revoir", _leftTitleStyle: "background:#5b21b6;color:#fff", text: "<div style=\"background:#f5f0ff;border:3px dashed #7c3aed;border-radius:12px;padding:14px 18px\">- Sachant que <strong>vous voulez commencer</strong> le <strong style=\"color:#C0392B\">XXX</strong>, on <strong>peut se voir</strong> le <strong style=\"color:#C0392B\">XXX</strong>\n[agenda_btn:small]</div>" },
                 { type: "question", _leftTitle: "Qu'en pensez-vous ?", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "Qu'est-ce que <strong>vous en pensez</strong> ?", embeddedActions: [
                   {
                     label: "💰 Tarifs", style: "action-yellow", _pillStyle: true,
