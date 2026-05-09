@@ -7485,7 +7485,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=620"></script>
+<script src="script-data.js?v=621"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -12011,7 +12011,7 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
   const inner = renderBlockInner(b, i, sectionId, depth, path);
   // Wrap blocks with edit controls (all depths)
   if (sectionId) {
-    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','nutri_repartition_table','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid','vicious_circle','columns_2','solutions_checkboxes','agenda_button'].includes(b.type);
+    const noEdit = ['pb_recap','obj_recap','obj_rappel','besoins_sommeil','leviers_dynamiques','leviers_count','conditional_sections_inline','info_button','grouped_checklist','option_banner','parent_banner','tarifs_tableau','tickbox_choice','tickbox_choice','appert_calculator','nutri_repartition_table','potentiel_genetique_calculator','decouverte_notes_question','lieu_sommeil_intro_grid','conclusion_nutrition','grouped_block','courbe_cards_grid','vicious_circle','columns_2','solutions_checkboxes','agenda_button','solutions_resume'].includes(b.type);
     const editBtn = noEdit ? '' : `<button class="ebc-btn edit" onclick="openEditBlockModal('${sectionId}','${path}')">✏️ Modifier</button>`;
     const delBtn = depth === 0 ? `<button class="ebc-btn del" onclick="deleteBlock('${sectionId}',${i})">🗑 Supprimer</button>` : '';
     const addBtn = depth === 0 ? `<button class="add-block-row" onclick="openAddBlockModal('${sectionId}',${i})">➕ Insérer un bloc ici</button>` : '';
@@ -13141,6 +13141,51 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     window.__infoButtons['tarifs-accueil-panel'] = { title: 'Tarifs', content: tableHtml };
     return '';
   }
+  // Récap des Solutions identifiées (pour IX. Reformulation) — affiche les catégories
+  // ayant au moins une solution cochée, chaque item en vert si tické sur sa carte,
+  // rouge sinon.
+  if (b.type === 'solutions_resume') {
+    const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
+    const selectedSols = state.selectedSolutions || new Set();
+    const ticks = state.cardPersonalTicks || new Set();
+    if (!selectedSols.size) return '';
+    const catColorMap = {
+      confort_physique: '#dc2626', nutrition: '#a05a1c', rythme: '#4a6b54',
+      strategie: '#2a4060', env: '#4f3d62', changement: '#3d4570',
+      journee: '#92400e', relationnel: '#5e3a52', sante: '#3d6b67',
+      accompagnement: '#831043'
+    };
+    function collectChecked(node, level) {
+      level = level || 0;
+      const out = [];
+      const childList = Array.isArray(node.children) ? node.children : [];
+      childList.forEach(ch => {
+        const isSelected = selectedSols.has(ch.id);
+        const sub = collectChecked(ch, level + 1);
+        if (isSelected || sub.length) {
+          out.push({ id: ch.id, label: ch.label || ch.cardLabel || ch.id, emoji: ch.emoji || ch.cardEmoji || '', level, ticked: ticks.has(ch.id), selected: isSelected });
+          out.push(...sub);
+        }
+      });
+      return out;
+    }
+    const blocks = sols.map(cat => {
+      const items = collectChecked(cat, 0);
+      if (!items.length) return '';
+      const color = catColorMap[cat.id] || '#475569';
+      const lis = items.map(it => {
+        if (!it.selected) return ''; // un parent non-coché qui contient un enfant coché : on ne montre QUE l'enfant
+        const txtColor = it.ticked ? '#16a34a' : '#dc2626';
+        const indent = it.level * 16;
+        return `<li style="color:${txtColor};font-weight:600;line-height:1.55;margin-left:${indent}px">${it.emoji ? it.emoji + ' ' : ''}${substituteVars(it.label)}</li>`;
+      }).filter(Boolean).join('');
+      if (!lis) return '';
+      return `<div class="block-with-left-title" style="background:transparent;margin-bottom:10px"><div class="block-left-title" style="background:${color};color:#fff">${cat.emoji || ''} ${cat.title}</div><div style="padding:10px 14px;background:#fff;border:1px solid #e2e8f0;border-radius:0 8px 8px 0"><ul style="margin:0;padding-left:22px;list-style:disc">${lis}</ul></div></div>`;
+    }).filter(Boolean).join('');
+    if (!blocks) return '';
+    return `<div class="block block-solutions-resume" style="border:none;background:transparent;box-shadow:none;padding:0">${blocks}</div>`;
+  }
+
   if (b.type === 'separator') return `<div class="block block-separator">${text}</div>`;
 
   if (b.type === 'pb_intro') {
@@ -14415,10 +14460,15 @@ function renderSolutionsCheckboxes(opts) {
       ${activeContentHtml || '<div class="block block-normal" style="padding:14px 18px"><em>(Cliquez sur un élément du sidebar pour afficher son contenu.)</em></div>'}
     </div>`;
   }
+  // Mode `cardsOnly` : ne renvoie QUE les cartes parentes + activeContent (utilisé en VIII.
+  // Plan d'action via le bloc `solutions_parent_cards`, pour que le bloc-titre "Solutions
+  // identifiées" ne s'étende pas verticalement jusqu'aux cartes parentes).
+  if (opts && opts.cardsOnly) {
+    return parentCardsHtml ? `<div class="courbe-cards-grid-wrap sol-parent-cards-grid-wrap"><div class="courbe-cards-grid diag-categories-grid">${parentCardsHtml}</div></div>${activeContentHtml}` : '';
+  }
   return `<div class="block block-solutions-identifiees">
     <div class="solutions-identifiees-body">${compactGroups}</div>
-  </div>
-  ${parentCardsHtml ? `<div class="courbe-cards-grid-wrap sol-parent-cards-grid-wrap"><div class="courbe-cards-grid diag-categories-grid">${parentCardsHtml}</div></div>${activeContentHtml}` : ''}`;
+  </div>`;
 }
 
 // Synchronise une case d'un grouped_checklist partagée par plusieurs sections (ex. APLV symptômes
