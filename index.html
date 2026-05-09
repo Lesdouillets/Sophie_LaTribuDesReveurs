@@ -1601,11 +1601,16 @@
     [data-section-cat="confort_physique"] .block-left-title { background: #fef2f2 !important; }
     .block-with-left-title > .edit-block-wrap { margin-bottom: 0; height: 100%; }
     /* VIII. Plan d'action : block-solutions-identifiees a des sous-cards (parent-cards-grid)
-       qui se rendent COMME SIBLINGS dans le même edit-block-wrap. Avec height:100% ci-dessus,
-       le wrap est figé à la hauteur du 1er enfant et les cards débordent par-dessus les
-       boutons Précédent/Suivant. Forcer height:auto pour ce cas. */
+       qui se rendent COMME SIBLINGS dans le même edit-block-wrap. Avec height:100% ci-dessus
+       + align-items:stretch sur le grid, le wrap est figé à la hauteur d'un seul enfant et
+       les cards débordent par-dessus les boutons Précédent/Suivant. Forcer height:auto et
+       align-self:start pour que la cellule grid prenne sa taille naturelle. */
+    .block-with-left-title:has(> .edit-block-wrap > .block-solutions-identifiees) {
+      align-items: start !important;
+    }
     .block-with-left-title > .edit-block-wrap:has(> .block-solutions-identifiees) {
       height: auto !important;
+      align-self: start !important;
     }
     .block-with-left-title > .edit-block-wrap > .block,
     .block-with-left-title > .block {
