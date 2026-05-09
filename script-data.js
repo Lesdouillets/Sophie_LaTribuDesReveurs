@@ -621,7 +621,7 @@ const SCRIPT_DATA = {
       title: "VIII. Plan d'action",
       emoji: "🧩",
       blocks: [
-        { type: "solutions_checkboxes" },
+        { type: "solutions_checkboxes", _leftTitle: "Solutions identifiées", _leftTitleStyle: "background:#2d3f5c;color:#fff" },
       ]
     },
 
