@@ -305,7 +305,8 @@
     .form-group textarea { resize: vertical; min-height: 80px; }
 
     /* Problématiques checkboxes */
-    .problematiques-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+    .problematiques-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 24px; contain: layout style paint; transform: translateZ(0); }
+    #diag-pb-container.problematiques-grid { contain: layout style paint; transform: translateZ(0); }
     .pb-category { margin-bottom: 16px; }
     .pb-category-title {
       font-size: 13.5px; font-weight: 700; text-transform: uppercase;
@@ -4847,8 +4848,8 @@
     }
     .agenda-btn-small:hover { background: #f5f7fb; }
     .agenda-btn-svg-small { width: 38px; height: auto; filter: drop-shadow(0 2px 4px rgba(45,63,92,0.2)); }
-    .solutions-identifiees-body { padding: 12px 20px; display: flex; gap: 24px; align-items: flex-start; contain: layout style paint; }
-    .solutions-identifiees-body > .sol-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+    .solutions-identifiees-body { padding: 12px 20px; display: flex; gap: 24px; align-items: flex-start; contain: layout style paint; transform: translateZ(0); }
+    .solutions-identifiees-body > .sol-col { flex: 1 1 50%; min-width: 0; max-width: 50%; display: flex; flex-direction: column; gap: 18px; }
     .sol-group { width: 100%; margin-bottom: 0; }
     @media (max-width: 900px) { .solutions-identifiees-body { flex-direction: column; } }
     /* sol-group en format bloc-titre : titre à gauche (140px) + checkboxes à droite, blocs indépendants avec gap */
