@@ -13205,14 +13205,16 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         if (isTetine) {
           subItems.forEach(it => allItems.push({ ...it, level: 0 }));
         } else {
-          allItems.push({ id: ch.id, label: ch.label || ch.cardLabel || ch.id, emoji: ch.emoji || ch.cardEmoji || '', level: 0 });
+          // Cascade : si un sous-enfant est tické, le parent hérite aussi du tick (GREEN)
+          const anyDescendantTicked = subItems.some(s => ticks.has(s.id));
+          allItems.push({ id: ch.id, label: ch.label || ch.cardLabel || ch.id, emoji: ch.emoji || ch.cardEmoji || '', level: 0, _tickedByDescendant: anyDescendantTicked });
           allItems.push(...subItems);
         }
       });
       if (!allItems.length) return '';
       const colors = catColorMap[cat.id] || { main: '#475569', light: '#cbd5e0' };
       const rows = allItems.map(it => {
-        const ticked = ticks.has(it.id);
+        const ticked = ticks.has(it.id) || !!it._tickedByDescendant;
         const textColor = ticked ? GREEN : RED;
         const checkedAttr = ticked ? 'checked' : '';
         const indent = it.level * 24;
