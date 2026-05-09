@@ -17448,22 +17448,78 @@ function toggleCourbeCardTick(tickEl) {
 }
 window.toggleCourbeCardTick = toggleCourbeCardTick;
 
-// Toggle un tick depuis le récap solutions (IX. Reformulation). Manipule
-// state.cardPersonalTicks et met à jour UNIQUEMENT le label de la ligne cliquée
-// (pas de re-render complet → évite le saut de colonne dans le layout columns:2).
+// Helper : trouve le chemin (ancêtres + item) d'un id dans SCRIPT_DATA.solutions
+function _findResumePath(id) {
+  const sols = (SCRIPT_DATA.solutions && SCRIPT_DATA.solutions.categories) || [];
+  function walkBlocks(blocks, path) {
+    if (!Array.isArray(blocks)) return null;
+    for (const blk of blocks) {
+      if (!blk || blk.type !== 'courbe_cards_grid' || !Array.isArray(blk.items)) continue;
+      for (const it of blk.items) {
+        if (it.id === id) return [...path, it];
+        const found = walkBlocks(it.blocks, [...path, it]);
+        if (found) return found;
+      }
+    }
+    return null;
+  }
+  for (const cat of sols) {
+    for (const ch of (cat.children || [])) {
+      if (ch.id === id) return [ch];
+      const sub = walkBlocks(ch.blocks, [ch]);
+      if (sub) return sub;
+    }
+  }
+  return null;
+}
+// Helper : collecte tous les descendants (ids) d'un noeud
+function _collectAllDescendants(node) {
+  const ids = [];
+  function walk(blocks) {
+    if (!Array.isArray(blocks)) return;
+    blocks.forEach(blk => {
+      if (!blk || blk.type !== 'courbe_cards_grid' || !Array.isArray(blk.items)) return;
+      blk.items.forEach(it => {
+        ids.push(it.id);
+        walk(it.blocks);
+      });
+    });
+  }
+  walk(node.blocks);
+  return ids;
+}
+// Toggle un tick depuis le récap solutions (IX. Reformulation), avec cascade UP (un
+// enfant tické coche aussi ses ancêtres) et cascade DOWN (décocher un enfant retire
+// l'ancêtre si plus aucun de ses descendants n'est tické).
 function toggleCardTickFromResume(cardId) {
   if (!cardId) return;
   if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
+  const path = _findResumePath(cardId);
   const willBeTicked = !state.cardPersonalTicks.has(cardId);
-  if (willBeTicked) state.cardPersonalTicks.add(cardId);
-  else state.cardPersonalTicks.delete(cardId);
-  // Mettre à jour la couleur du label DANS le récap uniquement (évite le re-render complet)
-  const GREEN = '#16a34a', BLACK = '#1e293b';
-  const newColor = willBeTicked ? GREEN : BLACK;
-  document.querySelectorAll('.block-solutions-resume .sol-row-wrap[data-sol-id="' + cardId + '"] .sol-row-label').forEach(label => {
-    label.style.setProperty('color', newColor, 'important');
-  });
+  if (willBeTicked) {
+    state.cardPersonalTicks.add(cardId);
+    // Cascade UP : tick tous les ancêtres
+    if (path) {
+      path.slice(0, -1).forEach(node => state.cardPersonalTicks.add(node.id));
+    }
+  } else {
+    state.cardPersonalTicks.delete(cardId);
+    // Cascade DOWN : untick tous les descendants de cardId
+    if (path) {
+      const target = path[path.length - 1];
+      _collectAllDescendants(target).forEach(d => state.cardPersonalTicks.delete(d));
+      // Cascade UP : pour chaque ancêtre (du plus profond au plus haut), retirer
+      // s'il n'a plus aucun descendant tické
+      const ancestors = path.slice(0, -1).reverse();
+      ancestors.forEach(anc => {
+        const descs = _collectAllDescendants(anc);
+        const anyTicked = descs.some(d => state.cardPersonalTicks.has(d));
+        if (!anyTicked) state.cardPersonalTicks.delete(anc.id);
+      });
+    }
+  }
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+  if (typeof renderCurrentSection === 'function') renderCurrentSection();
 }
 window.toggleCardTickFromResume = toggleCardTickFromResume;
 
