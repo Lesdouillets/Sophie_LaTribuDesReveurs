@@ -7232,7 +7232,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=571"></script>
+<script src="script-data.js?v=572"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -12933,6 +12933,14 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   if (b.type === 'tarifs_tableau') {
     const hd = 'padding:5px 8px;border:1px solid #ddd;font-weight:400;background:#2d3f5c;color:white;width:180px';
     const td = 'padding:5px 8px;border:1px solid #ddd;background:white';
+    // Lignes spécifiques Fée Dodo (cachées si enseigne = La Tribu des Rêveurs)
+    const isFeedodo = (typeof currentEnseigne !== 'undefined') && currentEnseigne === 'feedodo';
+    const lectureCourbesRow = isFeedodo
+      ? `<tr><td style="${hd}">Lecture de courbes</td><td style="${td}">20min</td><td style="${td}">45€</td><td style="${td}"></td></tr>`
+      : '';
+    const secondTable = isFeedodo
+      ? `<table style="border-collapse:collapse"><col style="width:150px"><col style="width:auto"><col style="width:auto"><col style="width:auto"><tr><td style="${hd}">Grimoire Fée Dodo</td><td style="${td}">Accès illimité 2 ans</td><td style="${td}">299€</td><td style="${td}"></td></tr><tr><td style="${hd}">Consultations de groupe</td><td style="${td}">1h/sem. (par âge)</td><td style="${td}">29.99€/mois</td><td style="${td}">Sans engagement</td></tr></table>`
+      : '';
     return `<div class="block block-normal" style="padding:8px;overflow-x:auto;font-size:12px;background:transparent;border:none;box-shadow:none">
       <table style="border-collapse:collapse;margin-bottom:10px">
         <col style="width:150px"><col style="width:auto"><col style="width:auto"><col style="width:auto">
@@ -12940,13 +12948,9 @@ function renderBlockInner(b, i, sectionId, depth, path) {
         <tr><td style="${hd}"></td><td style="${td}">45 min</td><td style="${td}">90€</td><td style="${td}"></td></tr>
         <tr><td style="${hd}">WhatsApp</td><td style="${td}">1 sem.</td><td style="${td}">90€</td><td style="${td}">Délai rép. 24h</td></tr>
         <tr><td style="${hd}">Semaine de suivi</td><td style="${td}">1 sem.</td><td style="${td}">18€ puis 150€</td><td style="${td}">2 RDV 20min + WhatsApp</td></tr>
-        <tr><td style="${hd}">Lecture de courbes</td><td style="${td}">20min</td><td style="${td}">45€</td><td style="${td}"></td></tr>
+        ${lectureCourbesRow}
       </table>
-      <table style="border-collapse:collapse">
-        <col style="width:150px"><col style="width:auto"><col style="width:auto"><col style="width:auto">
-        <tr><td style="${hd}">Grimoire Fée Dodo</td><td style="${td}">Accès illimité 2 ans</td><td style="${td}">299€</td><td style="${td}"></td></tr>
-        <tr><td style="${hd}">Consultations de groupe</td><td style="${td}">1h/sem. (par âge)</td><td style="${td}">29.99€/mois</td><td style="${td}">Sans engagement</td></tr>
-      </table>
+      ${secondTable}
     </div>`;
   }
 
