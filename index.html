@@ -3677,6 +3677,11 @@
     .block-option.purple-btn.open-action > .option-header {
       background: transparent !important;
     }
+    /* Retirer aussi le fond violet sur les wrappers .block-with-left-title à l'intérieur
+       d'un purple-btn ouvert (sinon le fond #f5f0ff du wrapper transparaît). */
+    .block-option.purple-btn.open-action .block-with-left-title {
+      background: transparent !important;
+    }
     .block-option.purple-btn .option-content { padding: 10px 16px 14px; }
     /* Retirer TOUT liseré et fond sur les blocs texte à l'intérieur d'un purple-btn ouvert
        → ils deviennent transparents et laissent apparaître le fond violet clair de la carte */
@@ -7290,7 +7295,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=579"></script>
+<script src="script-data.js?v=580"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
