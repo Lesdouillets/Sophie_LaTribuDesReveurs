@@ -3513,8 +3513,10 @@
     .edit-block-wrap:has(> .block-option.purple.compact-closed:not(.open-action)) {
       display: block !important;
       text-align: left !important;
-      margin: 18px 0 !important;
-      width: 100% !important;
+      margin-top: 18px !important;
+      margin-bottom: 18px !important;
+      margin-left: 0 !important;
+      width: auto !important;
       max-width: 100% !important;
     }
     .block-option.purple.compact-closed:not(.open-action) > .option-header {
@@ -3537,9 +3539,11 @@
     /* Ouvert : simplement 100% du parent, sans débordement */
     .edit-block-wrap:has(> .block-option.purple.compact-closed.open-action) {
       display: block !important;
-      width: 100% !important;
+      width: auto !important;
       max-width: 100% !important;
-      margin: 18px 0 !important;
+      margin-top: 18px !important;
+      margin-bottom: 18px !important;
+      margin-left: 0 !important;
     }
     .block-option.purple.compact-closed.open-action {
       width: 100% !important;
@@ -7469,7 +7473,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=618"></script>
+<script src="script-data.js?v=619"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -13384,14 +13388,21 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       window.__infoButtons[btnId] = { title: tbTitle, content: tbContent };
       const tbEmoji = tb.emoji || '💡';
       const wrapW = tb._wrapWidth || '185px';
-      qTrailingHtml = `<div contenteditable="false" style="float:right;width:${wrapW};margin:0 0 12px 18px"><button type="button" class="info-btn" onclick="openInfoPanel('${btnId}')" style="width:100%;min-width:0;padding:10px 14px"><span class="info-btn-emoji">${tbEmoji}</span><span>${tbLabel}</span></button></div>`;
+      qTrailingHtml = `<div contenteditable="false" style="flex:0 0 ${wrapW};margin-left:18px"><button type="button" class="info-btn" onclick="openInfoPanel('${btnId}')" style="width:100%;min-width:0;padding:10px 14px"><span class="info-btn-emoji">${tbEmoji}</span><span>${tbLabel}</span></button></div>`;
+    }
+    if (qTrailingHtml) {
+      // Layout flex pour centrer verticalement la question avec le bouton trailing
+      return `<div class="block block-question" style="display:flex;align-items:center;gap:0">
+        <div class="q-text" contenteditable="true" style="flex:1;min-width:0">${innerHtml}</div>
+        ${qTrailingHtml}
+        ${choiceHtml}
+        ${qEmbeddedHtml}
+      </div>`;
     }
     return `<div class="block block-question">
-      ${qTrailingHtml}
       <div class="q-text" contenteditable="true">${innerHtml}</div>
       ${choiceHtml}
       ${qEmbeddedHtml}
-      ${qTrailingHtml ? '<div style="clear:both"></div>' : ''}
     </div>`;
   }
 

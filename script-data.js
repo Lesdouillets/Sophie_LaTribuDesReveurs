@@ -6847,9 +6847,10 @@ const SCRIPT_DATA = {
               type: "grouped_block", _leftTitle: "RDV ?", _leftTitleStyle: "background:#2d3f5c;color:#fff",
               blocks: [
                 { type: "normal", _noBorder: true, text: "- Ce que **je vous propose** c'est que l'on **finisse cette discussion** autour d'**un AUTRE RDV**\n[agenda_btn:small]\n- 🔥 On **peut se voir** le <strong style=\"color:#C0392B\">XXX</strong>" },
-                { type: "question", text: "Est-ce que <strong>ça vous irait</strong> ?", embeddedActions: [
-                  { label: "💰 Tarifs", style: "action-yellow", _pillStyle: true, blocks: [{ type: "tarifs_tableau" }] }
-                ]}
+                { type: "question", text: "Est-ce que <strong>ça vous irait</strong> ?", trailingInfoButton: {
+                  label: "Tarifs", emoji: "💰",
+                  blocks: [{ type: "tarifs_tableau" }]
+                }}
               ]
             },
           ]
