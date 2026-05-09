@@ -2147,7 +2147,7 @@
        sous le bandeau vert (collé au bord droit). Liseré rouge + effet glowy. */
     #btn-sos-floating {
       position: fixed;
-      top: 100px;
+      top: 115px;
       right: 6px;
       width: 64px;
       height: 64px;
@@ -4757,10 +4757,17 @@
     }
     .agenda-btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
     .agenda-btn:active { transform: translateY(0); }
-    /* Variante "small" — pour insertion inline dans un encadré (ex: bulle rouge X. Validation NON) */
-    .agenda-btn-wrap-small { margin: 8px 0 !important; }
-    .agenda-btn-small { gap: 4px; padding: 6px 10px; font-size: 13px; }
-    .agenda-btn-svg-small { width: 110px; }
+    /* Variante "small" — image ~1cm, layout horizontal (icône + label sur la même ligne)
+       pour insertion inline dans un encadré (ex: bulle rouge X. Validation NON) */
+    .agenda-btn-wrap-small { margin: 6px 0 !important; }
+    .agenda-btn-small {
+      flex-direction: row;
+      gap: 8px;
+      padding: 4px 10px;
+      font-size: 13px;
+      align-items: center;
+    }
+    .agenda-btn-svg-small { width: 38px; height: auto; filter: drop-shadow(0 2px 4px rgba(45,63,92,0.2)); }
     .solutions-identifiees-body { padding: 12px 20px; columns: 2; column-gap: 24px; }
     .sol-group { width: 100%; break-inside: avoid; page-break-inside: avoid; -webkit-column-break-inside: avoid; margin-bottom: 18px; }
     @media (max-width: 900px) { .solutions-identifiees-body { columns: 1; } }
@@ -15304,7 +15311,11 @@ function renderAgendaButtonHTML(opts) {
   </svg>`;
   const wrapClass = 'block block-agenda-btn-wrap' + (small ? ' agenda-btn-wrap-small' : '');
   const btnClass = 'agenda-btn' + (small ? ' agenda-btn-small' : '');
-  return `<div class="${wrapClass}"><a class="${btnClass}" href="${AGENDA_URL}" target="_blank" rel="noopener noreferrer">${svg}<span class="agenda-btn-label">${label}</span></a></div>`;
+  // IMPORTANT : on produit le HTML sur une seule ligne pour que renderMarkdown
+  // n'injecte pas de <br> à l'intérieur du SVG (chaque \n hors d'une bullet
+  // déclenche un <br>, ce qui casse la structure de l'image).
+  const html = `<div class="${wrapClass}"><a class="${btnClass}" href="${AGENDA_URL}" target="_blank" rel="noopener noreferrer">${svg}<span class="agenda-btn-label">${label}</span></a></div>`;
+  return html.replace(/\n\s*/g, '');
 }
 
 function substituteVars(text) {
