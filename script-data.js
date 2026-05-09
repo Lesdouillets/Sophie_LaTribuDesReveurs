@@ -524,7 +524,7 @@ const SCRIPT_DATA = {
           ]
         },
         { type: "normal", _leftTitle: "La bonne nouvelle", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "<ul style=\"margin:0;padding-left:20px\"><li style=\"line-height:1.6\">MAIS la <strong>bonne nouvelle</strong> c'est que :<ul style=\"margin:4px 0 0 0;padding-left:22px\"><li style=\"line-height:1.6\"><strong>TOUT</strong> ce que vous m'avez partagé a du sens, est <strong>explicable</strong></li><li style=\"line-height:1.6\">Mais <strong>SURTOUT</strong> que c'est <strong>solutionnable</strong> !</li><li style=\"line-height:1.6\">ET que je peux vous <strong>accompagner</strong> pour les troubles du sommeil de [prénom_enfant]</li></ul></li></ul>" },
-        { type: "leviers_dynamiques" },
+        { type: "leviers_dynamiques", _leftTitle: "Leviers identifiés", _leftTitleStyle: "background:#2d3f5c;color:#fff" },
         { type: "leviers_count", _leftTitle: "Nombre de levier(s) identifié(s)", _leftTitleStyle: "background:#2d3f5c;color:#fff" },
         { type: "normal", _leftTitle: "Pas le temps de tout voir aujourd'hui", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- On n'aura **PEUT-ÊTRE pas le temps** de tout voir aujourd'hui :\n- mais on pourra **toujours reprendre un RDV plus tard** pour **discuter des points** que l'on n'aura **pas eu le temps de voir aujourd'hui.**\n\n- Donc, **CE QUE je vois en 1er**, c'est **quelque chose au niveau de**…" },
         { type: "conditional_sections_inline" },

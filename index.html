@@ -3638,24 +3638,36 @@
       white-space: normal;
     }
     /* Variante compacte du purple-btn (sub-options sous tableau emploi du temps,
-       et boutons "Difficultés identifiées" dans V. Diagnostic + "Objectifs PAS faisables"
-       dans VI via embeddedActions) — largeur FIXE pour que tous les boutons aient la
-       même taille, et hauteur un peu plus grande. */
+       et boutons "Difficultés identifiées" dans V. Diagnostic) — largeur FIXE pour
+       que tous les boutons aient la même taille, et hauteur un peu plus grande. */
     .edit-block-wrap:has(> .block-option.purple-btn.compact-btn:not(.open-action)) {
       height: auto;
       width: 220px !important;
       margin-right: 12px !important;
     }
-    /* Pareil quand le compact-btn est dans embeddedActions (pas wrapé dans edit-block-wrap) */
-    .embedded-actions > .block-option.purple-btn.compact-btn:not(.open-action) {
-      width: 220px !important;
-      max-width: 220px !important;
-      flex: 0 0 220px !important;
-    }
     .block-option.purple-btn.compact-btn:not(.open-action) {
       border-width: 2px;
       border-radius: 10px;
       min-height: 64px;
+    }
+    /* VI. Objectifs revus → "Objectifs PAS faisables" : les 5 compact-btn vivent dans
+       .embedded-actions (flex), pas dans une .edit-block-wrap. On force la même taille
+       (220px) que ceux de V. Diagnostic, et on les centre en 3+2 (parent embedded-actions
+       est déjà display:flex flex-wrap:wrap). En ouverture, le bouton prend toute la largeur. */
+    .embedded-actions > .block-option.purple-btn.compact-btn:not(.open-action) {
+      flex: 0 0 220px;
+      width: 220px !important;
+      margin: 0 !important;
+    }
+    .embedded-actions > .block-option.purple-btn.compact-btn.open-action {
+      flex: 1 1 100%;
+      width: 100% !important;
+      margin: 0 !important;
+    }
+    /* Les .embedded-actions à l'intérieur d'un .block-with-left-title sont par défaut
+       justify-content:flex-start ; on force le centre quand elles contiennent des compact-btn. */
+    .block-with-left-title .embedded-actions:has(> .block-option.purple-btn.compact-btn) {
+      justify-content: center !important;
     }
     .block-option.purple-btn.compact-btn:not(.open-action) > .option-header {
       min-height: 64px !important;
@@ -6692,7 +6704,7 @@
       <div class="sos-body" id="sos-body">
 
         <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+          <div class="sos-section-header" onclick="toggleSosSection(this)">
             <span class="sos-section-emoji">🙂</span>
             <span class="sos-section-title">Donner confiance aux parents</span>
             <span class="sos-section-arrow">▼</span>
@@ -6713,7 +6725,7 @@
         </div>
 
         <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+          <div class="sos-section-header" onclick="toggleSosSection(this)">
             <span class="sos-section-emoji">💪</span>
             <span class="sos-section-title">Déculpabiliser les parents</span>
             <span class="sos-section-arrow">▼</span>
@@ -6734,7 +6746,7 @@
         </div>
 
         <div class="sos-section open">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+          <div class="sos-section-header" onclick="toggleSosSection(this)">
             <span class="sos-section-emoji">😭</span>
             <span class="sos-section-title">"Je n'aime pas l'entendre pleurer"</span>
             <span class="sos-section-arrow">▼</span>
@@ -6787,7 +6799,7 @@
         </div>
 
         <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+          <div class="sos-section-header" onclick="toggleSosSection(this)">
             <span class="sos-section-emoji">❤️</span>
             <span class="sos-section-title">Accompagner les émotions</span>
             <span class="sos-section-arrow">▼</span>
@@ -6827,7 +6839,7 @@
         </div>
 
         <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+          <div class="sos-section-header" onclick="toggleSosSection(this)">
             <span class="sos-section-emoji">🚫</span>
             <span class="sos-section-title">Mauvaises habitudes</span>
             <span class="sos-section-arrow">▼</span>
@@ -6854,7 +6866,7 @@
         </div>
 
         <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+          <div class="sos-section-header" onclick="toggleSosSection(this)">
             <span class="sos-section-emoji">🧠</span>
             <span class="sos-section-title">"Pleurer = délétère pour le cerveau"</span>
             <span class="sos-section-arrow">▼</span>
@@ -6886,7 +6898,7 @@
         </div>
 
         <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+          <div class="sos-section-header" onclick="toggleSosSection(this)">
             <span class="sos-section-emoji">💭</span>
             <span class="sos-section-title">Émotions des parents</span>
             <span class="sos-section-arrow">▼</span>
@@ -6913,7 +6925,7 @@
         </div>
 
         <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+          <div class="sos-section-header" onclick="toggleSosSection(this)">
             <span class="sos-section-emoji">⚠️</span>
             <span class="sos-section-title">Maltraitance</span>
             <span class="sos-section-arrow">▼</span>
@@ -6947,7 +6959,7 @@
         </div>
 
         <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+          <div class="sos-section-header" onclick="toggleSosSection(this)">
             <span class="sos-section-emoji">🤱</span>
             <span class="sos-section-title">"Il a besoin de moi, pas d'apprendre à dormir"</span>
             <span class="sos-section-arrow">▼</span>
@@ -6974,7 +6986,7 @@
         </div>
 
         <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+          <div class="sos-section-header" onclick="toggleSosSection(this)">
             <span class="sos-section-emoji">😤</span>
             <span class="sos-section-title">"Il pleure pour manipuler / faire un caprice"</span>
             <span class="sos-section-arrow">▼</span>
@@ -6999,7 +7011,7 @@
         </div>
 
         <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+          <div class="sos-section-header" onclick="toggleSosSection(this)">
             <span class="sos-section-emoji">🤔</span>
             <span class="sos-section-title">"S'il pleure, c'est que ça ne lui convient pas"</span>
             <span class="sos-section-arrow">▼</span>
@@ -7037,7 +7049,7 @@
         </div>
 
         <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+          <div class="sos-section-header" onclick="toggleSosSection(this)">
             <span class="sos-section-emoji">🔁</span>
             <span class="sos-section-title">Entraînement au S. vs. Endormissement autonome</span>
             <span class="sos-section-arrow">▼</span>
@@ -7062,7 +7074,7 @@
         </div>
 
         <div class="sos-section">
-          <div class="sos-section-header" onclick="this.parentElement.classList.toggle('open')">
+          <div class="sos-section-header" onclick="toggleSosSection(this)">
             <span class="sos-section-emoji">💡</span>
             <span class="sos-section-title">L'endormissement autonome n'est pas toujours obligatoire</span>
             <span class="sos-section-arrow">▼</span>
@@ -7344,7 +7356,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=597"></script>
+<script src="script-data.js?v=596"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -10113,6 +10125,14 @@ function toggleSosPanel() {
   panel.classList.toggle('open');
   // Si on vient d'ouvrir le panel SOS, écouter les clics extérieurs pour le refermer.
   if (panel.classList.contains('open')) {
+    // Réinitialiser l'accordéon : seule "Je n'aime pas l'entendre pleurer" est ouverte par défaut
+    const body = document.getElementById('sos-body');
+    if (body) {
+      body.querySelectorAll(':scope > .sos-section').forEach(s => {
+        const isPleurer = s.querySelector('.sos-section-emoji')?.textContent?.trim() === '😭';
+        s.classList.toggle('open', isPleurer);
+      });
+    }
     // Délai pour éviter que le clic d'ouverture (sur le bouton 🆘) ne déclenche immédiatement la fermeture.
     setTimeout(() => {
       document.addEventListener('mousedown', _sosOutsideClickHandler, true);
@@ -10120,6 +10140,20 @@ function toggleSosPanel() {
   } else {
     document.removeEventListener('mousedown', _sosOutsideClickHandler, true);
   }
+}
+// Accordéon SOS : clic sur un header rouge → ouvre cette section et referme
+// celle qui était ouverte (sauf si on clique sur celle déjà ouverte → on la ferme).
+function toggleSosSection(headerEl) {
+  const section = headerEl && headerEl.parentElement;
+  if (!section) return;
+  const isOpen = section.classList.contains('open');
+  const body = document.getElementById('sos-body');
+  if (body) {
+    body.querySelectorAll(':scope > .sos-section.open').forEach(s => {
+      if (s !== section) s.classList.remove('open');
+    });
+  }
+  section.classList.toggle('open', !isOpen);
 }
 function _sosOutsideClickHandler(e) {
   const panel = document.getElementById('sos-panel');
@@ -12113,7 +12147,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       'relationnel_rappels':'📢 Relation — Rappels multiples après le coucher',
     };
     // Afficher checkboxes synchronisées (identiques à la fiche client) via clone
-    return `<div class="block block-leviers-identifies"><div class="leviers-identifies-header">⚙️ Leviers identifiés</div><div id="diag-pb-container"></div></div>`;
+    return `<div class="block block-leviers-identifies"><div id="diag-pb-container"></div></div>`;
   }
 
   if (b.type === 'leviers_count') {
@@ -14989,9 +15023,12 @@ function toggleOption(header, skipScroll) {
         const wrap = optionDiv.closest('.edit-block-wrap') || optionDiv;
         setTimeout(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
       }
-      // Click-outside-close pour les purple-btn compact (V. Diagnostic): fermer si clic
-      // en dehors de l'encadré de l'option
-      if (optionDiv.classList.contains('compact-btn')) {
+      // Click-outside-close pour les purple-btn compact (V. Diagnostic) ET pour les
+      // purple-btn de IV. Objectifs (Lieu de sommeil, Position ventrale) : fermer si
+      // clic en dehors de l'encadré de l'option.
+      const _inObjectifs = state.sections && state.sections[state.currentIdx]?.id === 'objectifs';
+      const _purpleBtnInObj = optionDiv.classList.contains('purple-btn') && !optionDiv.classList.contains('compact-btn') && _inObjectifs;
+      if (optionDiv.classList.contains('compact-btn') || _purpleBtnInObj) {
         setTimeout(() => {
           const handler = (e) => {
             if (!optionDiv.classList.contains('open-action')) {
@@ -14999,6 +15036,9 @@ function toggleOption(header, skipScroll) {
               return;
             }
             if (optionDiv.contains(e.target)) return;
+            // Ne pas fermer si le clic est sur un overlay/dialog/info-panel global
+            // (modals affichés en dehors de l'optionDiv mais déclenchés depuis l'intérieur).
+            if (e.target.closest('.ltd-overlay, .info-panel-overlay, .info-panel, [class*="overlay"]')) return;
             // Fermer
             const innerHeader = optionDiv.querySelector(':scope > .option-header');
             if (innerHeader) toggleOption(innerHeader, true);
@@ -15021,6 +15061,15 @@ function toggleOption(header, skipScroll) {
       if (mutexGroup) {
         // Restaurer la visibilité des frères du même groupe
         showHiddenMutexSiblings(mutexGroup);
+      }
+      // Forcer le recalcul du layout sur les wrappers frères : sans ça, le sélecteur CSS
+      // :has(...:not(.open-action)) ne se réévalue pas toujours côté Chrome et les
+      // .edit-block-wrap voisines (purple-btn, obj-tetine-card en IV. Objectifs) restent
+      // mal positionnées (empilées au lieu d'être en inline-block 50%).
+      const _wrap = optionDiv.closest('.edit-block-wrap');
+      const _parent = _wrap && _wrap.parentElement;
+      if (_parent) {
+        _parent.querySelectorAll(':scope > .edit-block-wrap').forEach(sib => { sib.offsetWidth; });
       }
     }
     toggle.textContent = willOpen ? 'Réduire' : 'Dérouler';
