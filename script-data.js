@@ -745,7 +745,7 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "Allergie difficile à percevoir",
-          text: "- Il **faut savoir** que c'est une **allergie** qui est **de + en + fréquente** chez les bébés\n  et qui, encore aujourd'hui, **passe très souvent SOUS les radars**\n\n- MEME chez les **professionnels de santé**\n- **Pas par négligence** :\n  - Simplement parce que **les signes sont éparpillés un peu partout**\n  - En **consultation médicale**, vous savez, c'est **court** : 15, 20 minutes, grand maximum\n    - C'est **très peu** pour :\n      - rassembler **tous les signes**\n      - et **faire un lien**\n    - Et puis, le médecin, quand on va **lui amener un symptôme**\n      - souvent, il **traitera ce symptôme**, SANS forcément toujours aller voir s'il y a **quelque chose de plus gros derrière**\n- Donc si personne n'a fait le lien jusqu'ici\n  ⇒ **C'est NORMAL**\n\n- Moi, je viens par **la porte du sommeil**\n  je cherche la cause derrière les symptômes\n  et je suis amenée à **explorer des choses DIFFÉRENTES** : *la digestion, la peau, la respiration, les selles, les repas…*\n\n- Ce sont **2 angles différents**, mais les **2 sont complémentaires**"
+          text: "- Il **faut savoir** que c'est une **allergie** qui est **de + en + fréquente** chez les bébés\n  et qui, encore aujourd'hui, **passe très souvent SOUS les radars**\n\n- MEME chez les **professionnels de santé**\n- **Pas par négligence** :\n  - Simplement parce que **les signes sont éparpillés un peu partout**\n  - En **consultation médicale**, vous savez, c'est **court** : 15, 20 minutes, grand maximum\n    - C'est **très peu** pour :\n      - rassembler **tous les signes**\n      - et **faire un lien**\n    - Et puis, le médecin, quand on va **lui amener un symptôme**\n      - souvent, il **traitera ce symptôme**, SANS forcément toujours aller voir s'il y a **quelque chose de plus gros derrière**\n- Donc si personne n'a fait le lien jusqu'ici\n  ⇒ **C'est NORMAL**\n\n- Moi, je viens par **la porte du sommeil**\n  je **cherche la cause** DERRIÈRE les **symptômes**\n  et je suis amenée à **explorer des choses DIFFÉRENTES** : *la digestion, la peau, la respiration, les selles, les repas…*\n\n- Ce sont **2 angles différents**, mais les **2 sont complémentaires**"
         },
         {
           type: "normal", _leftTitle: "Pas médecin",
@@ -765,7 +765,7 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "Trouver la cause",
-          text: "- Et vous savez quoi, [prénom_parent_1] ?\n- Si on identifie **la cause derrière tout ça**\n- Et qu'on **agit dessus**\n  ⇒ [prénom_enfant] va **retrouver du confort**\n  ⇒ Et le sommeil va **suivre, naturellement**\n\n- Parce que c'est ça **l'idée** :\n  - **PAS un pansement qui tient quelques jours**\n  - Mais quelque chose de vraiment **+ DURABLE dans le temps**"
+          text: "- Et vous savez quoi, [prénom_parent_1] ?\n- Si on identifie **la cause derrière tout ça**\n- Et qu'on **agit dessus**\n  ⇒ [prénom_enfant] va **retrouver du confort**\n  ⇒ Et le sommeil va **suivre, naturellement**\n\n- Parce que C'EST ÇA **l'idée** :\n  - **PAS** un **pansement qui tient quelques jours**\n  - Mais **quelque chose** de vraiment **+ DURABLE dans le temps**"
         },
         {
           type: "question", _leftTitle: "Qu'en pensez-vous ?",
@@ -781,10 +781,57 @@ const SCRIPT_DATA = {
       title: "Suspicion Allergie (APLV)",
       emoji: "🌿",
       blocks: [
-        { type: "normal", text: "- Avant de **commencer à parler \"sommeil\"**<br>j'aimerais, si vous êtes d'accord, qu'on **prenne un petit moment**<br>pour **revenir** sur CE QUE **vous m'avez partagé**\n\n- Parce que DANS CE QUE **vous m'avez décrit**…<br>il y a **plusieurs petites choses** qui ONT **attiré mon attention**\n\n- Vous **m'avez parlé** :" },
+        {
+          type: "grouped_block", _leftTitle: "RGO = difficile",
+          blocks: [
+            {
+              type: "normal",
+              text: "- **AVANT** qu'**on commence à parler** \"sommeil\"\n  j'aimerais, **si vous êtes d'accord**, [prénom_parent_1]\n  qu'on **prenne un petit moment**, toutes les 2, pour **revenir** sur **CE QUE vous m'avez partagé**\n\n- D'abord, je voudrais **vous dire quelque chose**\n- Ce que **vous vivez**, là, au quotidien, avec [prénom_enfant], **c'est dur**\n- Je ne dis **PAS CA pour dire**\n  Je le dis parce que **c'est vrai**\n\n- Entre :"
+            },
+            {
+              type: "grouped_checklist",
+              _purpleText: true,
+              groups: [
+                {
+                  items: [
+                    "Sommeil agité",
+                    "Nuits hachées",
+                    "La fatigue",
+                    "L'inconfort",
+                    "Les pleurs",
+                    "Les repas compliqués",
+                    "L'impression d'avoir tout essayé",
+                  ]
+                }
+              ]
+            },
+            {
+              type: "normal",
+              text: "- ⇒ C'est **BEAUCOUP**\n- ⇒ Et c'est **NORMAL** que vous **soyez fatiguée**, et parfois même **inquiète**\n- ⇒ À votre place, **je le serais aussi**<br><br>"
+            },
+            {
+              type: "option", label: "SI ELLE A DES SOUPÇONS", emoji: "🟢", style: "action-green", _pillStyle: true, _purpleContent: true, mutexGroup: "allergie-seule-soupcons",
+              blocks: [
+                { type: "normal", text: "- Et je voudrais qu'on **s'arrête une seconde** sur quelque chose\n\n- [prénom_parent_1], **VOUS**, depuis le début, **vous sentez** qu'il y a **quelque chose qui ne va pas** chez [prénom_enfant]\n- Vous **me l'avez dit**\n- Cette **intuition-là**, cette **petite voix** qui vous dit *« il y a un truc »*\n  ⇒ Elle est **précieuse**\n  ⇒ Elle est **juste**\n- Une **maman qui connaît son bébé** **COMME VOUS connaissez** [prénom_enfant]\n  ⇒ **ça ne se trompe pas**\n\n- Et moi, **mon rôle**, aujourd'hui, c'est de **prendre cette intuition au sérieux**" }
+              ]
+            },
+            {
+              type: "option", label: "SI ELLE N'A PAS DE SOUPÇONS", emoji: "🔴", style: "action", _pillStyle: true, _purpleContent: true, mutexGroup: "allergie-seule-soupcons",
+              blocks: [
+                { type: "normal", text: "- Et je voudrais qu'**on s'arrête** une **seconde sur quelque chose**\n- [prénom_parent_1], vous m'avez **raconté plein de petites choses** sur [prénom_enfant]\n  des **choses que vous vivez**, au quotidien\n\n- Et moi, en vous écoutant :\n  - Il y a certains éléments qui **viennent attirer mon attention**\n  - **Rien d'alarmant** en soi\n  - Mais ce sont des choses qui **méritent qu'on les regarde de près**\n  - Et toutes ces choses, mises ensemble, forment **un tableau que je connais bien**\n\n  - Et aujourd'hui, **mon rôle**, c'est de :\n    - **vous le partager**\n    - et de vous montrer **CE QUE ça raconte**" }
+              ]
+            },
+          ]
+        },
+        {
+          type: "normal", _leftTitle: "Tout est lié",
+          text: "- Parce que **chez les bébés**, vous savez, **tout est lié** : *le sommeil, la digestion, la respiration, la peau…*\n- Et parfois, il faut **JUSTE mettre les pièces du puzzle CÔTE À CÔTE** pour que **l'image globale apparaisse**"
+        },
         {
           type: "grouped_checklist",
+          _leftTitle: "Symptômes allergies",
           syncId: "aplv_symptomes",
+          text: "- Vous m'avez parlé :",
           groups: [
             {
               items: [
@@ -828,10 +875,38 @@ const SCRIPT_DATA = {
             },
           ]
         },
-        { type: "normal", text: "- **Pris séparément**, CE SONT des **choses** qu'on **peut voir assez souvent**<br>mais QUAND on peut **lister au moins 2 symptômes,**<br>là, **ça me fait me dire** qu'il y a **peut-être autre chose derrière**\n\n⇒ pour moi, ça me **met la puce à l'oreille** :\n⇒ il **POURRAIT** s'**agir d'une possible allergie** (notamment aux Protéines de Lait de Vache = APLV)" },
-        { type: "normal", text: "- C'est une **allergie** qui est de **plus en plus diagnostiqué chez les enfants**\n\n- Alors ATTENTION, hein,<br>ça **ne veut pas dire** que c'est **forcément ça**\n  - et moi je ne suis **pas médecin**\n  - je ne **pose pas de diagnostic**\n\n- Mais ça **peut être intéressant** d'en **parler avec votre médecin**\n  - **Pour qu'il explore cette piste**\n    - simplement pour confirmer\n    - ou pour écarter cette hypothèse\n\n- Et puis :\n  - **si ce n'est pas cette piste là**,\n  - c'est **pas grave,**\n  - on **l'écartera du schéma,**\n  - et on **regardera autre chose**" },
-        { type: "normal", text: "- Voilà\n- Je ne sais pas **si ça vous parle**, ce que je vous dit ?\n- Si vous aviez :\n  - des **petits soupçons**\n  - ….ou **pas du tout** ?\n\n- **En attendant**, CE QUE je peux vous dire, c'est **ce qu'on va faire AU MIEUX pour comprendre ce qui se passe**.\n- Moi, je **peux vous expliquer simplement** :\n  - ce qu'on FAIT **…. QUAND on soupçonne une allergie**\n  - JUSTE pour que **vous soyez au courant**\n\n- L'idée, ce n'est PAS DU TOUT de vous inquiéter<br>mais PLUTÔT de **vous accompagner** ET de **vous soutenir**\n\n- Et une fois qu'on aura **remis du confort dans son quotidien**<br>**tout le reste** devient **beaucoup + simple**, et surtout + **durable pour son sommeil**" },
-        { type: "question", text: "Est-ce que ça **vous irait** qu'on **en parle un peu** …tout à l'heure ?" },
+        {
+          type: "normal", _leftTitle: "APLV",
+          text: "- **Voilà**. Maintenant qu'on a **TOUT posé sur la table**\n- J'aimerais qu'on **regarde tout ça** avec un oeil **un peu différent**\n\n- Parce que **C'EST LÀ que les pièces du puzzle commencent à parler**\n- **Pris UN PAR UN** :\n  - **CHACUN** de **ces petits signes**\n  - c'est quelque chose qu'on voit **souvent chez les bébés**\n  - **Rien d'alarmant**, pris isolément\n\n- **MAIS**…\n- Dès qu'on peut en **lister au moins 2**\n- Là, moi, ça me **met la puce à l'oreille**\n\n- Et là, chez [prénom_enfant]\n- On en a **bien + que 2 symptômes**\n  ⇒ Ça me dit qu'il y a **peut-être quelque chose derrière**\n  ⇒ quelque chose qu'**on n'a pas encore identifié**\n\n- Et ce que je vois, moi, avec **mon oeil de consultante**\n  ⇒ c'est qu'il **pourrait s'agir d'une allergie**\n  ⇒ Plus précisément, une **allergie aux Protéines de Lait de Vache**. On appelle ça une **APLV**"
+        },
+        {
+          type: "normal", _leftTitle: "Allergie difficile à percevoir",
+          text: "- Il **faut savoir** que c'est une **allergie** qui est **de + en + fréquente** chez les bébés\n  et qui, encore aujourd'hui, **passe très souvent SOUS les radars**\n\n- MEME chez les **professionnels de santé**\n- **Pas par négligence** :\n  - Simplement parce que **les signes sont éparpillés un peu partout**\n  - En **consultation médicale**, vous savez, c'est **court** : 15, 20 minutes, grand maximum\n    - C'est **très peu** pour :\n      - rassembler **tous les signes**\n      - et **faire un lien**\n    - Et puis, le médecin, quand on va **lui amener un symptôme**\n      - souvent, il **traitera ce symptôme**, SANS forcément toujours aller voir s'il y a **quelque chose de plus gros derrière**\n- Donc si personne n'a fait le lien jusqu'ici\n  ⇒ **C'est NORMAL**\n\n- Moi, je viens par **la porte du sommeil**\n  je **cherche la cause** DERRIÈRE les **symptômes**\n  et je suis amenée à **explorer des choses DIFFÉRENTES** : *la digestion, la peau, la respiration, les selles, les repas…*\n\n- Ce sont **2 angles différents**, mais les **2 sont complémentaires**"
+        },
+        {
+          type: "normal", _leftTitle: "Pas médecin",
+          text: "- Alors **ATTENTION**, hein, [prénom_parent_1], ça ne **veut PAS DIRE** que c'est **FORCÉMENT ÇA**\n  - Je ne suis **PAS médecin**\n  - Je ne **pose PAS de diagnostic**"
+        },
+        {
+          type: "normal", _leftTitle: "En parler avec votre médecin",
+          text: "- **CE QUE je fais**, c'est **vous partager une piste**\n- Et c'est pour ça que **ça pourrait être intéressant** d'en **parler avec votre médecin**, pour qu'il **explore cette piste avec vous** :\n  - simplement pour **confirmer**\n  - ou pour **écarter cette hypothèse**\n\n- **Concrètement**, **CE QUE je vous propose**, c'est de lui amener, **noir sur blanc**, **tous ces petits signes** qu'on a listés ensemble\n- Comme ça, il aura **tous les éléments** pour explorer cette piste avec vous\n\n- Et **SI**, finalement,\n  - ce **n'est PAS CA**\n  - eh bien, **tant mieux**\n  - on **l'écarte**\n  - et on **cherche ailleurs, ensemble**\n    - On **avance**, **pas à pas**"
+        },
+        {
+          type: "normal", _leftTitle: "Si APLV = solutions concrètes",
+          text: "- Et je voudrais vous **rassurer** sur une chose\n\n- Si cette **piste se confirme**, on n'est **PAS devant un mur**\n- On est DEVANT **une explication**\n- Et **une explication**, ça **veut dire** qu'on peut **mettre en place** des **choses concrètes** pour **aider [prénom_enfant]**"
+        },
+        {
+          type: "normal", _leftTitle: "Explications processus soupçons APLV",
+          text: "- Et si **vous êtes d'accord**\n- Je peux **vous expliquer,** tranquillement, simplement, CE QU'ON fait quand on **soupçonne une allergie aux protéines de lait de vache**\n- Juste pour que **vous compreniez comment ça se passe**… **étape par étape**\n\n- Parce que **MON BUT,** aujourd'hui, **ce n'est PAS de vous inquiéter**. PAS DU TOUT\n- C'est de **vous accompagner**, et qu'on avance, vous et moi, **pour soulager [prénom_enfant]** et lui apporter **plus de confort au quotidien**"
+        },
+        {
+          type: "normal", _leftTitle: "Trouver la cause",
+          text: "- Et vous savez quoi, [prénom_parent_1] ?\n- Si on identifie **la cause derrière tout ça**\n- Et qu'on **agit dessus**\n  ⇒ [prénom_enfant] va **retrouver du confort**\n  ⇒ Et le sommeil va **suivre, naturellement**\n\n- Parce que C'EST ÇA **l'idée** :\n  - **PAS** un **pansement qui tient quelques jours**\n  - Mais **quelque chose** de vraiment **+ DURABLE dans le temps**"
+        },
+        {
+          type: "question", _leftTitle: "Qu'en pensez-vous ?",
+          text: "Voilà, [prénom_parent_1]\n- Je vous ai partagé **ce que je voyais**\n- Et je sais que **c'est beaucoup, d'un coup**\n- Maintenant, j'aimerais **vous entendre, VOUS**\n\n- Dites-moi, **avec vos mots à vous**, **CE QUE vous en pensez de tout ça** ?"
+        },
       ]
     },
 
