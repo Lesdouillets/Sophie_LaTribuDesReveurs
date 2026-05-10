@@ -7559,7 +7559,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=640"></script>
+<script src="script-data.js?v=642"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7963,9 +7963,24 @@ function _updateTypeLaitButtons() {
 }
 window._updateTypeLaitButtons = _updateTypeLaitButtons;
 
+// Helper : retourne la "base" de la problematique (= state.client.problematique avec le
+// suffixe state.client.pbExtraNote retiré). Utilisé au render de pb_intro/pb_question pour
+// stabiliser data-base entre navigations (sinon chaque retour ferait croître problematique).
+function _getPbExtraBase() {
+  const pb = (state && state.client && state.client.problematique) || '';
+  const extra = (state && state.client && state.client.pbExtraNote) || '';
+  if (!extra) return pb;
+  if (pb === extra) return '';
+  if (pb.endsWith('\n' + extra)) return pb.slice(0, -(extra.length + 1));
+  if (pb.endsWith(extra)) return pb.slice(0, -extra.length);
+  return pb; // pas de match (ex. onglet édité ailleurs) → base = pb tel quel
+}
+window._getPbExtraBase = _getPbExtraBase;
+
 // Encadré éditable manuel dans II. Problématique : ce que l'utilisateur tape s'AJOUTE à
 // la base (state.client.problematique au moment du render). Synchronise sans re-render
 // (ni la page courante ne change, ni le bandeau pob ne re-render la section).
+// Le contenu est persisté dans state.client.pbExtraNote → restauré quand on revient sur la page.
 // - Sur Enter : ajoute "• " en début de nouvelle ligne
 // - Sur 1ère saisie : préfixe "• " sur la 1ère ligne
 function onPbExtraKeydown(e, ta) {
@@ -7996,8 +8011,10 @@ function onPbExtraInput(ta) {
     combined = base ? (base + '\n' + extra) : extra;
   }
   // Mettre à jour state.client.problematique sans re-render
+  // + state.client.pbExtraNote pour persister le contenu de l'encadré blanc entre navigations
   if (state && state.client) {
     state.client.problematique = combined;
+    state.client.pbExtraNote = extra;
   }
   // Sync fiche client (champ #problematique)
   const ficheField = document.getElementById('problematique');
@@ -13516,25 +13533,31 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   if (b.type === 'separator') return `<div class="block block-separator">${text}</div>`;
 
   if (b.type === 'pb_intro') {
-    const pb = state.client.problematique;
     const prenom = substituteVars('[prénom_enfant]');
-    // Encadré éditable manuel : le contenu actuel de la pb sert de "base" ; le texte tapé
-    // s'ajoute à cette base (state.client.problematique = base + texte tapé).
-    const baseAttr = String(pb || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/\n/g,'&#10;').replace(/</g,'&lt;');
-    const extraBox = `<div class="pb-extra-box"><textarea class="pb-extra-textarea" data-base="${baseAttr}" placeholder="Tapez ici… (chaque Entrée ajoute un • )" oninput="onPbExtraInput(this)" onkeydown="onPbExtraKeydown(event, this)"></textarea></div>`;
-    if (pb && pb.trim()) {
-      const pbHtml = pb.replace(/\n/g, '<br>');
-      return `<div class="block block-normal"><ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Maintenant, je vais <strong>reprendre votre problématique</strong><br>et APRÈS vous allez <strong>m'expliquer CE QUI se passe exactement</strong> pour le sommeil de ${prenom}.</li></ul><div class="pb-recap-intro" style="margin-top:14px">• <u>Donc, vous m'avez écrit :</u></div><div class="pb-recap-text"><em>${pbHtml}</em></div><div style="background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin-top:14px;font-weight:400;line-height:1.7">❓ Est-ce que c'est <strong>toujours d'actualité</strong> ?${extraBox}</div></div>`;
+    // Encadré éditable manuel : on stocke le contenu tapé dans state.client.pbExtraNote
+    // pour qu'il PERSISTE quand l'utilisateur navigue (suivant / autre page).
+    // base = problematique avec pbExtraNote retiré du suffixe → reste stable entre renders.
+    // Le rappel "Donc, vous m'avez écrit" affiche UNIQUEMENT la base (sinon doublon avec l'encadré blanc).
+    const base = _getPbExtraBase();
+    const savedExtra = (state.client && state.client.pbExtraNote) || '';
+    const baseAttr = String(base).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/\n/g,'&#10;').replace(/</g,'&lt;');
+    const taContent = String(savedExtra).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    const extraBox = `<div class="pb-extra-box"><textarea class="pb-extra-textarea" data-base="${baseAttr}" placeholder="Tapez ici…" oninput="onPbExtraInput(this)" onkeydown="onPbExtraKeydown(event, this)">${taContent}</textarea></div>`;
+    if (base && base.trim()) {
+      const baseHtml = base.replace(/\n/g, '<br>');
+      return `<div class="block block-normal"><ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Maintenant, je vais <strong>reprendre votre problématique</strong><br>et APRÈS vous allez <strong>m'expliquer CE QUI se passe exactement</strong> pour le sommeil de ${prenom}.</li></ul><div class="pb-recap-intro" style="margin-top:14px">• <u>Donc, vous m'avez écrit :</u></div><div class="pb-recap-text"><em>${baseHtml}</em></div><div style="background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin-top:14px;font-weight:400;line-height:1.7">❓ Est-ce que c'est <strong>toujours d'actualité</strong> ?${extraBox}</div></div>`;
     } else {
       return `<div class="block block-question"><div class="q-text">❓ Maintenant, j'aimerais <strong>savoir quelle est votre problématique aujourd'hui</strong> pour ${prenom}</div>${extraBox}</div>`;
     }
   }
 
   if (b.type === 'pb_question') {
-    const pb = state.client.problematique;
-    if (!pb || !pb.trim()) return '';
-    const baseAttr = String(pb || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/\n/g,'&#10;').replace(/</g,'&lt;');
-    const extraBox = `<div class="pb-extra-box"><textarea class="pb-extra-textarea" data-base="${baseAttr}" placeholder="Tapez ici… (chaque Entrée ajoute un • )" oninput="onPbExtraInput(this)" onkeydown="onPbExtraKeydown(event, this)"></textarea></div>`;
+    const base = _getPbExtraBase();
+    if (!base || !base.trim()) return '';
+    const savedExtra = (state.client && state.client.pbExtraNote) || '';
+    const baseAttr = String(base).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/\n/g,'&#10;').replace(/</g,'&lt;');
+    const taContent = String(savedExtra).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    const extraBox = `<div class="pb-extra-box"><textarea class="pb-extra-textarea" data-base="${baseAttr}" placeholder="Tapez ici…" oninput="onPbExtraInput(this)" onkeydown="onPbExtraKeydown(event, this)">${taContent}</textarea></div>`;
     return `<div class="block block-question"><div class="q-text">❓ Est-ce que c'est <strong>toujours d'actualité</strong> ?</div>${extraBox}</div>`;
   }
 
