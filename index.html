@@ -282,12 +282,12 @@
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .form-grid .full { grid-column: 1 / -1; }
 
-    /* Sélecteur Sexe enfant : 2 boutons (rose Fille / bleu Garçon) au lieu d'un select */
-    .sexe-enfant-toggle { display: flex; gap: 8px; }
+    /* Sélecteur Sexe enfant + Rôle parent : 2 boutons compacts (rose / bleu) au lieu d'un select */
+    .sexe-enfant-toggle { display: flex; gap: 6px; }
     .sexe-btn {
-      flex: 1; padding: 9px 12px; border-radius: 8px;
+      padding: 6px 12px; border-radius: 8px;
       border: 2px solid #cbd5e0; background: #f8fafc; color: #64748b;
-      font-weight: 700; font-size: 14px; cursor: pointer;
+      font-weight: 700; font-size: 13px; cursor: pointer;
       transition: all 0.15s; line-height: 1.2;
     }
     .sexe-btn:hover:not(.selected) { background: #eef2f7; border-color: #94a3b8; }
@@ -7561,7 +7561,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=646"></script>
+<script src="script-data.js?v=647"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
