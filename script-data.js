@@ -669,7 +669,7 @@ const SCRIPT_DATA = {
             {
               type: "option", label: "SI ELLE A DES SOUPÇONS", emoji: "🟢", style: "action-green", _pillStyle: true, _purpleContent: true, mutexGroup: "rgo-soupcons",
               blocks: [
-                { type: "normal", text: "- Et je voudrais qu'on **s'arrête une seconde** sur quelque chose\n\n- [prénom_parent_1], **VOUS**, depuis le début, **vous sentez** qu'il y a **quelque chose qui ne va pas** chez [prénom_enfant]\n- Vous **me l'avez dit**\n- Cette **intuition-là**, cette **petite voix** qui vous dit *« il y a un truc »*\n  ⇒ Elle est **précieuse**\n  ⇒ Elle est **juste**\n- Une **maman qui connaît son bébé** **COMME VOUS connaissez** [prénom_enfant]\n  ⇒ **ça ne se trompe pas**\n\n- Et moi, **mon rôle**, aujourd'hui, c'est de **prendre cette intuition au sérieux**" }
+                { type: "normal", text: "- Et je voudrais qu'on **s'arrête une seconde** sur quelque chose\n\n- [prénom_parent_1], **VOUS**, depuis le début, **vous sentez** qu'il y a **quelque chose qui ne va pas** chez [prénom_enfant]\n- Vous **me l'avez dit**\n- Cette **intuition-là**, cette **petite voix** qui vous dit *« il y a un truc »*\n  ⇒ et cette intuition elle est **précieuse**\n  ⇒ Elle est **juste**\n- Une **maman qui connaît son bébé** **COMME VOUS connaissez** [prénom_enfant]\n  ⇒ **ça ne se trompe pas**\n\n- Et moi, **mon rôle**, aujourd'hui, c'est de **prendre cette intuition au sérieux**" }
               ]
             },
             {
@@ -812,7 +812,7 @@ const SCRIPT_DATA = {
             {
               type: "option", label: "SI ELLE A DES SOUPÇONS", emoji: "🟢", style: "action-green", _pillStyle: true, _purpleContent: true, mutexGroup: "allergie-seule-soupcons",
               blocks: [
-                { type: "normal", text: "- Et je voudrais qu'on **s'arrête une seconde** sur quelque chose\n\n- [prénom_parent_1], **VOUS**, depuis le début, **vous sentez** qu'il y a **quelque chose qui ne va pas** chez [prénom_enfant]\n- Vous **me l'avez dit**\n- Cette **intuition-là**, cette **petite voix** qui vous dit *« il y a un truc »*\n  ⇒ Elle est **précieuse**\n  ⇒ Elle est **juste**\n- Une **maman qui connaît son bébé** **COMME VOUS connaissez** [prénom_enfant]\n  ⇒ **ça ne se trompe pas**\n\n- Et moi, **mon rôle**, aujourd'hui, c'est de **prendre cette intuition au sérieux**" }
+                { type: "normal", text: "- Et je voudrais qu'on **s'arrête une seconde** sur quelque chose\n\n- [prénom_parent_1], **VOUS**, depuis le début, **vous sentez** qu'il y a **quelque chose qui ne va pas** chez [prénom_enfant]\n- Vous **me l'avez dit**\n- Cette **intuition-là**, cette **petite voix** qui vous dit *« il y a un truc »*\n  ⇒ et cette intuition elle est **précieuse**\n  ⇒ Elle est **juste**\n- Une **maman qui connaît son bébé** **COMME VOUS connaissez** [prénom_enfant]\n  ⇒ **ça ne se trompe pas**\n\n- Et moi, **mon rôle**, aujourd'hui, c'est de **prendre cette intuition au sérieux**" }
               ]
             },
             {
