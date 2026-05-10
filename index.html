@@ -7585,7 +7585,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=680"></script>
+<script src="script-data.js?v=682"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -16367,6 +16367,13 @@ function substituteVars(text) {
       // "il doit toujours rester ..." : tournure impersonnelle ("il" = sujet apparent,
       // ex. "il doit toujours rester un fond de lait dans le biberon")
       /il doit toujours rester\b/gi,
+      // Références au médecin : "il" se rapporte au médecin (générique, reste "il")
+      // → protéger la ligne quand "le médecin" ou "votre médecin" est présent
+      /le médecin[^\n]+/gi,
+      /votre médecin[^\n]+/gi,
+      // Phrases spécifiques où "il" = médecin sans mention explicite sur la même ligne
+      /souvent, il(?:[\s*]+)traitera/gi,
+      /Comme ça, il(?:[\s*]+)aura/gi,
     ];
 
     // Remplacer chaque expression impersonnelle par un placeholder

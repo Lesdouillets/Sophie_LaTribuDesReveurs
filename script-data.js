@@ -757,11 +757,11 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "Si APLV = solutions concrètes",
-          text: "- Et je voudrais **vous rassurer sur une chose**\n\n- Si cette piste se confirme, on **n'est PAS devant un mur**\n- On est **DEVANT une explication**\n- Et une explication, ça veut dire qu'on peut **mettre en place des choses concrètes** pour aider [prénom_enfant]"
+          text: "- Et je voudrais vous **rassurer** sur une chose\n\n- Si cette **piste se confirme**, on n'est **PAS devant un mur**\n- On est DEVANT **une explication**\n- Et **une explication**, ça **veut dire** qu'on peut **mettre en place** des **choses concrètes** pour **aider [prénom_enfant]**"
         },
         {
           type: "normal", _leftTitle: "Explications processus soupçons APLV",
-          text: "- Et **si vous êtes d'accord**\n- Je peux vous expliquer, **tranquillement**, **simplement**, **CE QU'ON fait quand on soupçonne une allergie aux protéines de lait de vache**\n- Juste pour que vous compreniez **comment ça se passe… étape par étape**\n\n- Parce que **MON BUT**, aujourd'hui, ce **n'est PAS de vous inquiéter**. **PAS DU TOUT**\n- C'est de **vous accompagner**, et qu'on avance, vous et moi, pour **soulager [prénom_enfant]** et lui apporter **plus de confort au quotidien**"
+          text: "- Et si **vous êtes d'accord**\n- Je peux **vous expliquer,** tranquillement, simplement, CE QU'ON fait quand on **soupçonne une allergie aux protéines de lait de vache**\n- Juste pour que **vous compreniez comment ça se passe**… **étape par étape**\n\n- Parce que **MON BUT,** aujourd'hui, **ce n'est PAS de vous inquiéter**. PAS DU TOUT\n- C'est de **vous accompagner**, et qu'on avance, vous et moi, **pour soulager [prénom_enfant]** et lui apporter **plus de confort au quotidien**"
         },
         {
           type: "question", _leftTitle: "Qu'en pensez-vous ?",
