@@ -644,7 +644,7 @@ const SCRIPT_DATA = {
           blocks: [
             {
               type: "normal",
-              text: "- **AVANT qu'on commence à parler** \"sommeil\"\n  j'aimerais, si vous êtes d'accord, [prénom_parent_1]\n  qu'on **prenne un petit moment**, toutes les 2, pour **revenir** sur **CE QUE vous m'avez partagé**\n\n- D'abord, je voudrais **vous dire quelque chose**\n- Ce que **vous vivez**, là, au quotidien, avec [prénom_enfant], **c'est dur**\n- Je ne dis **PAS CA pour dire**\n  Je le dis parce que **c'est vrai**\n\n- Entre :"
+              text: "- **AVANT** qu'**on commence à parler** \"sommeil\"\n  j'aimerais, si vous êtes d'accord, [prénom_parent_1]\n  qu'on **prenne un petit moment**, toutes les 2, pour **revenir** sur **CE QUE vous m'avez partagé**\n\n- D'abord, je voudrais **vous dire quelque chose**\n- Ce que **vous vivez**, là, au quotidien, avec [prénom_enfant], **c'est dur**\n- Je ne dis **PAS CA pour dire**\n  Je le dis parce que **c'est vrai**\n\n- Entre :"
             },
             {
               type: "grouped_checklist",
@@ -664,16 +664,16 @@ const SCRIPT_DATA = {
             },
             {
               type: "normal",
-              text: "⇒ C'est **BEAUCOUP**\n⇒ Et c'est **NORMAL** que vous **soyez fatiguée**, et parfois même **inquiète**\n⇒ À votre place, **je le serais aussi**"
+              text: "- ⇒ C'est **BEAUCOUP**\n- ⇒ Et c'est **NORMAL** que vous **soyez fatiguée**, et parfois même **inquiète**\n- ⇒ À votre place, **je le serais aussi**\n\n"
             },
             {
-              type: "option", label: "SI ELLE A DES SOUPÇONS", emoji: "🟢", style: "action-purple", _pillStyle: true, _purpleContent: true, mutexGroup: "rgo-soupcons",
+              type: "option", label: "SI ELLE A DES SOUPÇONS", emoji: "🟢", style: "action-green", _pillStyle: true, _purpleContent: true, mutexGroup: "rgo-soupcons",
               blocks: [
-                { type: "normal", text: "- Et je voudrais qu'on **s'arrête une seconde** sur quelque chose\n- [prénom_parent_1], **VOUS**, depuis le début, **vous sentez** qu'il y a **quelque chose qui ne va pas** chez [prénom_enfant]\n- Vous **me l'avez dit**\n- Cette **intuition-là**, cette **petite voix** qui vous dit *« il y a un truc »*\n  ⇒ elle est **précieuse**\n  ⇒ Elle est **juste**\n- Une **maman qui connaît son bébé** **COMME VOUS connaissez** [prénom_enfant]\n  ⇒ ça ne se trompe pas\n\n- Et moi, **mon rôle**, aujourd'hui, c'est de **prendre cette intuition au sérieux**" }
+                { type: "normal", text: "- Et je voudrais qu'on **s'arrête une seconde** sur quelque chose\n- [prénom_parent_1], **VOUS**, depuis le début, **vous sentez** qu'il y a **quelque chose qui ne va pas** chez [prénom_enfant]\n- Vous **me l'avez dit**\n- Cette **intuition-là**, cette **petite voix** qui vous dit *« il y a un truc »*\n  ⇒ elle est **précieuse**\n  ⇒ Elle est **juste**\n- Une **maman qui connaît son bébé** **COMME VOUS connaissez** [prénom_enfant]\n  ⇒ **ça ne se trompe pas**\n\n- Et moi, **mon rôle**, aujourd'hui, c'est de **prendre cette intuition au sérieux**" }
               ]
             },
             {
-              type: "option", label: "SI ELLE N'A PAS DE SOUPÇONS", emoji: "🔵", style: "action-purple", _pillStyle: true, _purpleContent: true, mutexGroup: "rgo-soupcons",
+              type: "option", label: "SI ELLE N'A PAS DE SOUPÇONS", emoji: "🔴", style: "action", _pillStyle: true, _purpleContent: true, mutexGroup: "rgo-soupcons",
               blocks: [
                 { type: "normal", text: "- Et je voudrais qu'**on s'arrête une seconde sur quelque chose**\n- [prénom_parent_1], vous m'avez **raconté plein de petites choses** sur [prénom_enfant]\n  des **choses que vous vivez**, au quotidien\n\n- Et moi, en vous écoutant :\n  - Il y a certains éléments qui **viennent attirer mon attention**\n  - **Rien d'alarmant** en soi\n  - Mais ce sont des choses qui **méritent qu'on les regarde de près**\n  - Et toutes ces choses, mises ensemble, forment **un tableau que je connais bien**\n  ⇒ Et aujourd'hui, **mon rôle**, c'est de :\n    - **vous le partager**\n    - et de vous montrer **ce que ça raconte**" }
               ]
