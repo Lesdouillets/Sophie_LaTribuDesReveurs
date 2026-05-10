@@ -765,7 +765,7 @@ const SCRIPT_DATA = {
         },
         {
           type: "question", _leftTitle: "Qu'en pensez-vous ?",
-          text: "- Voilà, [prénom_parent_1]\n- Je vous ai partagé **ce que je voyais**\n- Et je sais que **c'est beaucoup, d'un coup**\n- Maintenant, j'aimerais **vous entendre, VOUS**\n- ❓ Dites-moi, **avec vos mots à vous**, **CE QUE vous en pensez de tout ça** ?"
+          text: "Voilà, [prénom_parent_1]\n- Je vous ai partagé **ce que je voyais**\n- Et je sais que **c'est beaucoup, d'un coup**\n- Maintenant, j'aimerais **vous entendre, VOUS**\n\n- Dites-moi, **avec vos mots à vous**, **CE QUE vous en pensez de tout ça** ?"
         },
       ]
     },
