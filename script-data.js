@@ -640,39 +640,44 @@ const SCRIPT_DATA = {
       emoji: "🩺",
       blocks: [
         {
-          type: "normal", _leftTitle: "RGO = difficile",
-          text: "- AVANT qu'on commence à parler \"sommeil\"\n  j'aimerais, si vous êtes d'accord, [prénom_parent_1]\n  qu'on prenne un petit moment, toutes les 2, pour **revenir sur CE QUE vous m'avez partagé**\n\n- D'abord, je voudrais vous dire **quelque chose**\n- **Ce que vous vivez**, là, au quotidien, avec [prénom_enfant], **c'est dur**\n- Je ne **dis PAS CA** pour dire\n  Je le dis **parce que c'est vrai**\n\n- Entre :"
-        },
-        {
-          type: "grouped_checklist",
-          _purpleText: true,
-          groups: [
+          type: "grouped_block", _leftTitle: "RGO = difficile",
+          blocks: [
             {
-              items: [
-                "Le fait qu'[il_elle] <strong>régurgite beaucoup</strong>",
-                "Qu'[il_elle] a du <strong>mal à rester [allonge_allongee]</strong>",
-                "Qu'[il_elle] a un <strong>sommeil très agité</strong>",
-                "Que les <strong>repas sont parfois compliqués</strong>",
-                "Qu'on sent qu'[il_elle] est souvent <strong>[gene_genee] ou inconfortable</strong>",
-                "Qu'[il_elle] <strong>se cambre</strong>",
+              type: "normal",
+              text: "- **AVANT** qu'on commence à parler \"sommeil\"\n  j'aimerais, si vous êtes d'accord, [prénom_parent_1]\n  qu'on prenne un petit moment, toutes les 2, pour **revenir sur CE QUE vous m'avez partagé**\n\n- D'abord, je voudrais vous dire **quelque chose**\n- **Ce que vous vivez**, là, au quotidien, avec [prénom_enfant], **c'est dur**\n- Je ne **dis PAS CA** pour dire\n  Je le dis **parce que c'est vrai**\n\n- Entre :"
+            },
+            {
+              type: "grouped_checklist",
+              _purpleText: true,
+              groups: [
+                {
+                  items: [
+                    "Le fait qu'[il_elle] <strong>régurgite beaucoup</strong>",
+                    "Qu'[il_elle] a du <strong>mal à rester [allonge_allongee]</strong>",
+                    "Qu'[il_elle] a un <strong>sommeil très agité</strong>",
+                    "Que les <strong>repas sont parfois compliqués</strong>",
+                    "Qu'on sent qu'[il_elle] est souvent <strong>[gene_genee] ou inconfortable</strong>",
+                    "Qu'[il_elle] <strong>se cambre</strong>",
+                  ]
+                }
               ]
-            }
-          ]
-        },
-        {
-          type: "normal",
-          text: "⇒ C'est **BEAUCOUP**\n⇒ Et c'est **NORMAL** que vous soyez fatiguée, et parfois même inquiète\n⇒ À votre place, **je le serais aussi**"
-        },
-        {
-          type: "option", label: "SI ELLE A DES SOUPÇONS", emoji: "🟢", style: "action-green", _pillStyle: true, _purpleContent: true, mutexGroup: "rgo-soupcons",
-          blocks: [
-            { type: "normal", text: "- Et je voudrais qu'on **s'arrête une seconde** sur quelque chose\n- [prénom_parent_1], **VOUS**, depuis le début, vous **sentez** qu'il y a **quelque chose qui ne va pas** chez [prénom_enfant]\n- Vous me l'avez dit\n- Cette **intuition-là**, cette petite voix qui vous dit *« il y a un truc »*\n  ⇒ elle est **précieuse**\n  ⇒ Elle est **juste**\n- Une maman qui **connaît son bébé** COMME VOUS connaissez [prénom_enfant]\n  ⇒ ça **ne se trompe pas**\n\n- Et moi, **mon rôle**, aujourd'hui, c'est de **prendre cette intuition au sérieux**" }
-          ]
-        },
-        {
-          type: "option", label: "SI ELLE N'A PAS DE SOUPÇONS", emoji: "🔵", style: "action-blue", _pillStyle: true, _purpleContent: true, mutexGroup: "rgo-soupcons",
-          blocks: [
-            { type: "normal", text: "- Et je voudrais qu'on **s'arrête une seconde** sur quelque chose\n- [prénom_parent_1], vous m'avez raconté **plein de petites choses** sur [prénom_enfant]\n  des choses que vous **vivez, au quotidien**\n\n- Et moi, en vous écoutant :\n  - Il y a **certains éléments** qui viennent **attirer mon attention**\n  - **Rien d'alarmant** en soi\n  - Mais ce sont des choses qui **méritent qu'on les regarde de près**\n  - Et **toutes ces choses**, mises ensemble, **forment un tableau** que je connais bien\n  ⇒ Et aujourd'hui, **mon rôle**, c'est de :\n    - **vous le partager**\n    - et de **vous montrer ce que ça raconte**" }
+            },
+            {
+              type: "normal",
+              text: "⇒ C'est **BEAUCOUP**\n⇒ Et c'est **NORMAL** que vous soyez fatiguée, et parfois même inquiète\n⇒ À votre place, **je le serais aussi**"
+            },
+            {
+              type: "option", label: "SI ELLE A DES SOUPÇONS", emoji: "🟢", style: "action-purple", _pillStyle: true, _purpleContent: true, mutexGroup: "rgo-soupcons",
+              blocks: [
+                { type: "normal", text: "- Et je voudrais qu'on **s'arrête une seconde** sur quelque chose\n- [prénom_parent_1], **VOUS**, depuis le début, vous **sentez** qu'il y a **quelque chose qui ne va pas** chez [prénom_enfant]\n- Vous me l'avez dit\n- Cette **intuition-là**, cette petite voix qui vous dit *« il y a un truc »*\n  ⇒ elle est **précieuse**\n  ⇒ Elle est **juste**\n- Une maman qui **connaît son bébé** **COMME VOUS** connaissez [prénom_enfant]\n  ⇒ ça **ne se trompe pas**\n\n- Et moi, **mon rôle**, aujourd'hui, c'est de **prendre cette intuition au sérieux**" }
+              ]
+            },
+            {
+              type: "option", label: "SI ELLE N'A PAS DE SOUPÇONS", emoji: "🔵", style: "action-purple", _pillStyle: true, _purpleContent: true, mutexGroup: "rgo-soupcons",
+              blocks: [
+                { type: "normal", text: "- Et je voudrais qu'on **s'arrête une seconde** sur quelque chose\n- [prénom_parent_1], vous m'avez raconté **plein de petites choses** sur [prénom_enfant]\n  des choses que vous **vivez, au quotidien**\n\n- Et moi, en vous écoutant :\n  - Il y a **certains éléments** qui viennent **attirer mon attention**\n  - **Rien d'alarmant** en soi\n  - Mais ce sont des choses qui **méritent qu'on les regarde de près**\n  - Et **toutes ces choses**, mises ensemble, **forment un tableau** que je connais bien\n  ⇒ Et aujourd'hui, **mon rôle**, c'est de :\n    - **vous le partager**\n    - et de **vous montrer ce que ça raconte**" }
+              ]
+            },
           ]
         },
         {
@@ -740,15 +745,15 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "Allergie difficile à percevoir",
-          text: "- Il faut savoir que c'est une allergie qui est **de + en + fréquente** chez les bébés\n  et qui, encore aujourd'hui, **passe très souvent SOUS les radars**\n- **Même chez les professionnels de santé**\n- Pas par négligence :\n  - Simplement parce que les **signes sont éparpillés un peu partout**\n  - En consultation médicale, vous savez, c'est **court** : 15, 20 minutes, grand maximum\n    - C'est **très peu** pour rassembler tous les signes et faire un lien\n    - Et puis, le médecin, quand on va lui amener un symptôme, souvent, il **traitera ce symptôme**, SANS forcément toujours aller voir s'il y a **quelque chose de plus gros derrière**\n    - Donc si **personne n'a fait le lien jusqu'ici**\n    - **C'est NORMAL**\n\n- Moi, je viens **par la porte du sommeil**\n  et je suis amenée à **explorer des choses différentes** : la digestion, la peau, la respiration, les selles, les repas…\n\n- Ce sont **2 angles différents**, mais les 2 sont **complémentaires**"
+          text: "- Il faut savoir que c'est une allergie qui est **de + en + fréquente** chez les bébés\n  et qui, encore aujourd'hui, **passe très souvent SOUS les radars**\n- **Même chez les professionnels de santé**\n- Pas par négligence :\n  - Simplement parce que les **signes sont éparpillés un peu partout**\n  - En consultation médicale, vous savez, c'est **court** : 15, 20 minutes, grand maximum\n    - C'est **très peu** pour rassembler tous les signes et faire un lien\n    - Et puis, le médecin, quand on va lui amener un symptôme, souvent, il **traitera ce symptôme**, **SANS forcément toujours aller voir s'il y a quelque chose de plus gros derrière**\n    - Donc si **personne n'a fait le lien jusqu'ici**\n    - **C'est NORMAL**\n\n- Moi, je viens **par la porte du sommeil**\n  et je suis amenée à **explorer des choses différentes** : la digestion, la peau, la respiration, les selles, les repas…\n\n- Ce sont **2 angles différents**, mais les 2 sont **complémentaires**"
         },
         {
           type: "normal", _leftTitle: "Pas médecin",
-          text: "- Alors **ATTENTION**, hein, [prénom_parent_1], ça ne **veut PAS DIRE** que c'est forcément ÇA\n  - Je ne suis **PAS médecin**\n  - Je ne **pose PAS** de diagnostic"
+          text: "- Alors **ATTENTION**, hein, [prénom_parent_1], ça ne **veut PAS DIRE** que c'est forcément **ÇA**\n  - Je ne suis **PAS médecin**\n  - Je ne **pose PAS de diagnostic**"
         },
         {
           type: "normal", _leftTitle: "En parler avec votre médecin",
-          text: "- Ce que je fais, c'est **vous partager une piste**\n- Et c'est pour ça que **ça pourrait être intéressant d'en parler avec votre médecin**, pour qu'il **explore cette piste avec vous** :\n  - simplement pour **confirmer**\n  - ou pour **écarter cette hypothèse**\n\n- **Concrètement**, CE QUE je vous propose, c'est de lui amener, **noir sur blanc**, **tous ces petits signes** qu'on a listés ensemble\n- Comme ça, il aura **tous les éléments** pour explorer cette piste avec vous\n\n- Et SI, finalement,\n  - ce **n'est PAS CA**\n  - eh bien, **tant mieux**\n  - on **l'écarte**\n  - et on **cherche ailleurs, ensemble**\n    - On **avance**, **pas à pas**"
+          text: "- Ce que je fais, c'est **vous partager une piste**\n- Et c'est pour ça que **ça pourrait être intéressant d'en parler avec votre médecin**, pour qu'il **explore cette piste avec vous** :\n  - simplement pour **confirmer**\n  - ou pour **écarter cette hypothèse**\n\n- **Concrètement**, **CE QUE je vous propose**, c'est de lui amener, **noir sur blanc**, **tous ces petits signes** qu'on a listés ensemble\n- Comme ça, il aura **tous les éléments** pour explorer cette piste avec vous\n\n- Et **SI**, finalement,\n  - ce **n'est PAS CA**\n  - eh bien, **tant mieux**\n  - on **l'écarte**\n  - et on **cherche ailleurs, ensemble**\n    - On **avance**, **pas à pas**"
         },
         {
           type: "normal", _leftTitle: "Si APLV = solutions concrètes",
