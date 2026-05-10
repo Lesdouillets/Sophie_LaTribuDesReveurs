@@ -4142,6 +4142,11 @@
     }
     .gcl-item { padding: 3px 0 !important; border-bottom: none !important; align-items: flex-start; }
     .gcl-item > span { line-height: 1.4; }
+    /* Variante violette : texte + cases en violet (utilisé pour symptômes RGO en V. Diagnostic) */
+    .block-grouped-checklist.gcl-purple .gcl-item > span,
+    .block-grouped-checklist.gcl-purple .gcl-item.checked > span { color: #7c3aed !important; font-weight: 600; }
+    .block-grouped-checklist.gcl-purple .gcl-item input[type="checkbox"] { accent-color: #7c3aed; }
+    .block-grouped-checklist.gcl-purple .gcl-group-title { color: #7c3aed; }
     /* Sous-item (décalé à droite + police plus petite) */
     .gcl-item.gcl-sub-item { margin-left: 24px; }
     .gcl-item.gcl-sub-item > span { font-size: 12.5px; }
@@ -7570,7 +7575,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=649"></script>
+<script src="script-data.js?v=652"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -12803,7 +12808,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const syncAttr = syncId ? ` data-sync-id="${syncId}"` : '';
     const wrapStart = b.text ? `<div class="gcl-with-intro">${introHtml}` : '';
     const wrapEnd = b.text ? `</div>` : '';
-    return `${wrapStart}<div class="block-grouped-checklist"${syncAttr}>
+    const gclPurpleClass = b._purpleText ? ' gcl-purple' : '';
+    return `${wrapStart}<div class="block-grouped-checklist${gclPurpleClass}"${syncAttr}>
       ${groups.map((g, gi) => `
         <div class="gcl-group">
           ${g.title ? `<div class="gcl-group-title">${substituteVars(g.title)}</div>` : ''}
@@ -16158,6 +16164,8 @@ function substituteVars(text) {
     .replace(/\[seul_seule\]/g, isFille ? 'seule' : 'seul')
     .replace(/\[grand_grande\]/g, isFille ? 'grande' : 'grand')
     .replace(/\[moteur_motrice\]/g, isFille ? 'motrice' : 'moteur')
+    .replace(/\[allonge_allongee\]/g, isFille ? 'allongée' : 'allongé')
+    .replace(/\[gene_genee\]/g, isFille ? 'gênée' : 'gêné')
     .replace(/\[le_la\]/g, isFille ? 'la' : 'le')
     .replace(/\[Le_La\]/g, isFille ? 'La' : 'Le')
     .replace(/\[LE_LA\]/g, isFille ? 'LA' : 'LE')

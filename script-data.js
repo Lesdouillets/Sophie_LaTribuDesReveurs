@@ -641,7 +641,27 @@ const SCRIPT_DATA = {
       blocks: [
         {
           type: "normal", _leftTitle: "RGO = difficile",
-          text: "- AVANT qu'on commence à parler \"sommeil\"\n  j'aimerais, si vous êtes d'accord, [prénom_parent_1]\n  qu'on prenne un petit moment, toutes les 2, pour **revenir sur CE QUE vous m'avez partagé**\n\n- D'abord, je voudrais vous dire **quelque chose**\n- **Ce que vous vivez**, là, au quotidien, avec [prénom_enfant], **c'est dur**\n- Je ne **dis PAS CA** pour dire\n  Je le dis **parce que c'est vrai**\n\n- Entre :\n  - Le fait qu'il **régurgite beaucoup**\n  - Qu'il a du **mal à rester allongé**\n  - Qu'il a un **sommeil très agité**\n  - Que les **repas sont parfois compliqués**\n  - Qu'on sent qu'il est souvent **gêné ou inconfortable**\n  - Qu'il **se cambre**\n\n⇒ C'est **BEAUCOUP**\n⇒ Et c'est **NORMAL** que vous soyez fatiguée, et parfois même inquiète\n⇒ À votre place, **je le serais aussi**"
+          text: "- AVANT qu'on commence à parler \"sommeil\"\n  j'aimerais, si vous êtes d'accord, [prénom_parent_1]\n  qu'on prenne un petit moment, toutes les 2, pour **revenir sur CE QUE vous m'avez partagé**\n\n- D'abord, je voudrais vous dire **quelque chose**\n- **Ce que vous vivez**, là, au quotidien, avec [prénom_enfant], **c'est dur**\n- Je ne **dis PAS CA** pour dire\n  Je le dis **parce que c'est vrai**\n\n- Entre :"
+        },
+        {
+          type: "grouped_checklist",
+          _purpleText: true,
+          groups: [
+            {
+              items: [
+                "Le fait qu'[il_elle] <strong>régurgite beaucoup</strong>",
+                "Qu'[il_elle] a du <strong>mal à rester [allonge_allongee]</strong>",
+                "Qu'[il_elle] a un <strong>sommeil très agité</strong>",
+                "Que les <strong>repas sont parfois compliqués</strong>",
+                "Qu'on sent qu'[il_elle] est souvent <strong>[gene_genee] ou inconfortable</strong>",
+                "Qu'[il_elle] <strong>se cambre</strong>",
+              ]
+            }
+          ]
+        },
+        {
+          type: "normal",
+          text: "⇒ C'est **BEAUCOUP**\n⇒ Et c'est **NORMAL** que vous soyez fatiguée, et parfois même inquiète\n⇒ À votre place, **je le serais aussi**"
         },
         {
           type: "option", label: "SI ELLE A DES SOUPÇONS", emoji: "🟢", style: "action-green", _pillStyle: true, _purpleContent: true, mutexGroup: "rgo-soupcons",
@@ -660,12 +680,10 @@ const SCRIPT_DATA = {
           text: "- Parce que **chez les bébés**, vous savez, **tout est lié** : le sommeil, la digestion, la respiration, la peau…\n- **Tout se parle**\n- Et parfois, il faut juste **mettre les pièces du puzzle côte à côte** pour que **l'image globale apparaisse**"
         },
         {
-          type: "normal", _leftTitle: "Symptômes allergies",
-          text: "- Vous m'avez parlé :"
-        },
-        {
           type: "grouped_checklist",
+          _leftTitle: "Symptômes allergies",
           syncId: "aplv_symptomes",
+          text: "- Vous m'avez parlé :",
           groups: [
             {
               items: [
@@ -711,7 +729,7 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "APLV",
-          text: "- **Voilà**. Maintenant qu'on a **tout posé sur la table**\n- J'aimerais qu'on **regarde tout ça** avec un œil **un peu différent**\n- Parce que c'est là que les **pièces du puzzle commencent à parler**\n- **Pris UN PAR UN** :\n  - **CHACUN** de ces petits signes\n  - c'est quelque chose qu'on voit **souvent chez les bébés**\n  - **Rien d'alarmant**, pris isolément\n\n- **MAIS**…\n- Dès qu'on peut en **lister au moins 2**\n- Là, moi, ça me **met la puce à l'oreille**\n\n- Et là, chez [prénom_enfant]\n- On en a **bien + que 2**\n  ⇒ Ça me dit qu'il y a **peut-être quelque chose derrière**\n  ⇒ quelque chose qu'**on n'a pas encore identifié**\n- Et ce que je vois, moi, avec **mon œil de consultante**\n  ⇒ c'est qu'il **pourrait s'agir d'une allergie**\n  ⇒ Plus précisément, une **allergie aux Protéines de Lait de Vache**. On appelle ça une **APLV**",
+          text: "- **Voilà**. Maintenant qu'on a **tout posé sur la table**\n- J'aimerais qu'on **regarde tout ça** avec un oeil **un peu différent**\n- Parce que c'est là que les **pièces du puzzle commencent à parler**\n- **Pris UN PAR UN** :\n  - **CHACUN** de ces petits signes\n  - c'est quelque chose qu'on voit **souvent chez les bébés**\n  - **Rien d'alarmant**, pris isolément\n\n- **MAIS**…\n- Dès qu'on peut en **lister au moins 2**\n- Là, moi, ça me **met la puce à l'oreille**\n\n- Et là, chez [prénom_enfant]\n- On en a **bien + que 2**\n  ⇒ Ça me dit qu'il y a **peut-être quelque chose derrière**\n  ⇒ quelque chose qu'**on n'a pas encore identifié**\n\n- Et ce que je vois, moi, avec **mon oeil de consultante**\n  ⇒ c'est qu'il **pourrait s'agir d'une allergie**\n  ⇒ Plus précisément, une **allergie aux Protéines de Lait de Vache**. On appelle ça une **APLV**",
           trailingInfoButton: {
             label: "Causes du RGO",
             title: "Causes du RGO",
