@@ -749,11 +749,11 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "Pas médecin",
-          text: "- Alors **ATTENTION**, hein, [prénom_parent_1], ça ne **veut PAS DIRE** que c'est forcément **ÇA**\n  - Je ne suis **PAS médecin**\n  - Je ne **pose PAS de diagnostic**"
+          text: "- Alors **ATTENTION**, hein, [prénom_parent_1], ça ne **veut PAS DIRE** que c'est **FORCÉMENT ÇA**\n  - Je ne suis **PAS médecin**\n  - Je ne **pose PAS de diagnostic**"
         },
         {
           type: "normal", _leftTitle: "En parler avec votre médecin",
-          text: "- Ce que je fais, c'est **vous partager une piste**\n- Et c'est pour ça que **ça pourrait être intéressant d'en parler avec votre médecin**, pour qu'il **explore cette piste avec vous** :\n  - simplement pour **confirmer**\n  - ou pour **écarter cette hypothèse**\n\n- **Concrètement**, **CE QUE je vous propose**, c'est de lui amener, **noir sur blanc**, **tous ces petits signes** qu'on a listés ensemble\n- Comme ça, il aura **tous les éléments** pour explorer cette piste avec vous\n\n- Et **SI**, finalement,\n  - ce **n'est PAS CA**\n  - eh bien, **tant mieux**\n  - on **l'écarte**\n  - et on **cherche ailleurs, ensemble**\n    - On **avance**, **pas à pas**"
+          text: "- **CE QUE je fais**, c'est **vous partager une piste**\n- Et c'est pour ça que **ça pourrait être intéressant** d'en **parler avec votre médecin**, pour qu'il **explore cette piste avec vous** :\n  - simplement pour **confirmer**\n  - ou pour **écarter cette hypothèse**\n\n- **Concrètement**, **CE QUE je vous propose**, c'est de lui amener, **noir sur blanc**, **tous ces petits signes** qu'on a listés ensemble\n- Comme ça, il aura **tous les éléments** pour explorer cette piste avec vous\n\n- Et **SI**, finalement,\n  - ce **n'est PAS CA**\n  - eh bien, **tant mieux**\n  - on **l'écarte**\n  - et on **cherche ailleurs, ensemble**\n    - On **avance**, **pas à pas**"
         },
         {
           type: "normal", _leftTitle: "Si APLV = solutions concrètes",
