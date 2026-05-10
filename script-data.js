@@ -682,7 +682,7 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "Tout est lié",
-          text: "- Parce que **chez les bébés**, vous savez, **tout est lié** : *le sommeil, la digestion, la respiration, la peau…*\n- **Tout se parle**\n- Et parfois, il faut **JUSTE mettre les pièces du puzzle CÔTE À CÔTE** pour que **l'image globale apparaisse**"
+          text: "- Parce que **chez les bébés**, vous savez, **tout est lié** : *le sommeil, la digestion, la respiration, la peau…*\n- Et parfois, il faut **JUSTE mettre les pièces du puzzle CÔTE À CÔTE** pour que **l'image globale apparaisse**"
         },
         {
           type: "grouped_checklist",
@@ -734,7 +734,7 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "APLV",
-          text: "- **Voilà**. Maintenant qu'on a **TOUT posé sur la table**\n- J'aimerais qu'on **regarde tout ça** avec un oeil **un peu différent**\n\n- Parce que **C'EST LÀ que les pièces du puzzle commencent à parler**\n- **Pris UN PAR UN** :\n  - **CHACUN** de **ces petits signes**\n  - c'est quelque chose qu'on voit **souvent chez les bébés**\n  - **Rien d'alarmant**, pris isolément\n\n- **MAIS**…\n- Dès qu'on peut en **lister au moins 2**\n- Là, moi, ça me **met la puce à l'oreille**\n\n- Et là, chez [prénom_enfant]\n- On en a **bien + que 2**\n  ⇒ Ça me dit qu'il y a **peut-être quelque chose derrière**\n  ⇒ quelque chose qu'**on n'a pas encore identifié**\n\n- Et ce que je vois, moi, avec **mon oeil de consultante**\n  ⇒ c'est qu'il **pourrait s'agir d'une allergie**\n  ⇒ Plus précisément, une **allergie aux Protéines de Lait de Vache**. On appelle ça une **APLV**",
+          text: "- **Voilà**. Maintenant qu'on a **TOUT posé sur la table**\n- J'aimerais qu'on **regarde tout ça** avec un oeil **un peu différent**\n\n- Parce que **C'EST LÀ que les pièces du puzzle commencent à parler**\n- **Pris UN PAR UN** :\n  - **CHACUN** de **ces petits signes**\n  - c'est quelque chose qu'on voit **souvent chez les bébés**\n  - **Rien d'alarmant**, pris isolément\n\n- **MAIS**…\n- Dès qu'on peut en **lister au moins 2**\n- Là, moi, ça me **met la puce à l'oreille**\n\n- Et là, chez [prénom_enfant]\n- On en a **bien + que 2 symptômes**\n  ⇒ Ça me dit qu'il y a **peut-être quelque chose derrière**\n  ⇒ quelque chose qu'**on n'a pas encore identifié**\n\n- Et ce que je vois, moi, avec **mon oeil de consultante**\n  ⇒ c'est qu'il **pourrait s'agir d'une allergie**\n  ⇒ Plus précisément, une **allergie aux Protéines de Lait de Vache**. On appelle ça une **APLV**",
           trailingInfoButton: {
             label: "Causes du RGO",
             title: "Causes du RGO",
@@ -745,7 +745,7 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "Allergie difficile à percevoir",
-          text: "- Il faut savoir que c'est une allergie qui est **de + en + fréquente** chez les bébés\n  et qui, encore aujourd'hui, **passe très souvent SOUS les radars**\n- **Même chez les professionnels de santé**\n- Pas par négligence :\n  - Simplement parce que les **signes sont éparpillés un peu partout**\n  - En consultation médicale, vous savez, c'est **court** : 15, 20 minutes, grand maximum\n    - C'est **très peu** pour rassembler tous les signes et faire un lien\n    - Et puis, le médecin, quand on va lui amener un symptôme, souvent, il **traitera ce symptôme**, **SANS forcément toujours aller voir s'il y a quelque chose de plus gros derrière**\n    - Donc si **personne n'a fait le lien jusqu'ici**\n    - **C'est NORMAL**\n\n- Moi, je viens **par la porte du sommeil**\n  et je suis amenée à **explorer des choses différentes** : la digestion, la peau, la respiration, les selles, les repas…\n\n- Ce sont **2 angles différents**, mais les 2 sont **complémentaires**"
+          text: "- Il **faut savoir** que c'est une **allergie** qui est **de + en + fréquente** chez les bébés\n  et qui, encore aujourd'hui, **passe très souvent SOUS les radars**\n\n- **Même chez les professionnels de santé**\n- Pas par négligence :\n  - Simplement parce que les **signes sont éparpillés un peu partout**\n  - En consultation médicale, vous savez, c'est **court** : 15, 20 minutes, grand maximum\n    - C'est **très peu** pour rassembler tous les signes et faire un lien\n    - Et puis, le médecin, quand on va lui amener un symptôme, souvent, il **traitera ce symptôme**, **SANS forcément toujours aller voir s'il y a quelque chose de plus gros derrière**\n    - Donc si **personne n'a fait le lien jusqu'ici**\n    - **C'est NORMAL**\n\n- Moi, je viens **par la porte du sommeil**\n  et je suis amenée à **explorer des choses différentes** : la digestion, la peau, la respiration, les selles, les repas…\n\n- Ce sont **2 angles différents**, mais les 2 sont **complémentaires**"
         },
         {
           type: "normal", _leftTitle: "Pas médecin",
