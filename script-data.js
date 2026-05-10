@@ -3436,7 +3436,7 @@ const SCRIPT_DATA = {
               { type: "normal", showIfSieste: "2-4m",
                 _leftTitle: "Réveil matinal",
                 _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
-                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT [horaire_souhaite] du matin</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT [horaire_souhaite]</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
               },
               { type: "normal", showIfSieste: "2-4m",
                 _leftTitle: "Alimentation",
@@ -3488,7 +3488,7 @@ const SCRIPT_DATA = {
               { type: "normal", showIfSieste: "4-6m",
                 _leftTitle: "Réveil matinal",
                 _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
-                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT [horaire_souhaite] du matin</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT [horaire_souhaite]</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
               },
               { type: "normal", showIfSieste: "4-6m",
                 _leftTitle: "Alimentation",
@@ -3605,7 +3605,7 @@ const SCRIPT_DATA = {
               { type: "normal", showIfSieste: "6-8m",
                 _leftTitle: "Réveil matinal",
                 _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
-                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT [horaire_souhaite] du matin</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT [horaire_souhaite]</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
               },
               { type: "normal", showIfSieste: "6-8m",
                 _leftTitle: "Alimentation",
@@ -3742,7 +3742,7 @@ const SCRIPT_DATA = {
               { type: "normal", showIfSieste: "8-10m",
                 _leftTitle: "Réveil matinal",
                 _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
-                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT [horaire_souhaite] du matin</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT [horaire_souhaite]</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
               },
               { type: "normal", showIfSieste: "8-10m",
                 _leftTitle: "Alimentation",
@@ -3878,7 +3878,7 @@ const SCRIPT_DATA = {
               { type: "normal", showIfSieste: "8-15m",
                 _leftTitle: "Réveil matinal",
                 _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
-                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT [horaire_souhaite] du matin</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT [horaire_souhaite]</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
               },
               { type: "normal", showIfSieste: "8-15m",
                 _leftTitle: "Alimentation",
@@ -4014,7 +4014,7 @@ const SCRIPT_DATA = {
               { type: "normal", showIfSieste: "15-20m",
                 _leftTitle: "Réveil matinal",
                 _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
-                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT [horaire_souhaite] du matin</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT [horaire_souhaite]</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
               },
               { type: "normal", showIfSieste: "15-20m",
                 _leftTitle: "Alimentation",
@@ -4145,7 +4145,7 @@ const SCRIPT_DATA = {
               { type: "normal", showIfSieste: "15m-3a",
                 _leftTitle: "Réveil matinal",
                 _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
-                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT [horaire_souhaite] du matin</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT [horaire_souhaite]</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
               },
               { type: "normal", showIfSieste: "15m-3a",
                 _leftTitle: "Alimentation",
@@ -4262,7 +4262,7 @@ const SCRIPT_DATA = {
               { type: "normal", showIfSieste: "4a-plus",
                 _leftTitle: "Réveil matinal",
                 _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
-                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT [horaire_souhaite] du matin</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT [horaire_souhaite]</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
               },
               { type: "normal", showIfSieste: "4a-plus",
                 _leftTitle: "Rythme",
@@ -4378,7 +4378,7 @@ const SCRIPT_DATA = {
               { type: "normal", showIfSieste: "4a-plus-tc",
                 _leftTitle: "Réveil matinal",
                 _leftTitleStyle: "background:#bdd1c4;color:#4a6b54;--cat-main:#7da589;font-size:13px",
-                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT [horaire_souhaite] du matin</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
+                text: "<ul style=\"margin:0;padding-left:22px;list-style:disc;line-height:1.6\"><li><div style=\"margin-bottom:6px\">Tout ce qui va se passer <strong>AVANT [horaire_souhaite]</strong>, sera <strong>considéré</strong> comme un <strong>réveil matinal</strong></div><div>⇒ et je vous <strong>indiquerai</strong> la <strong>démarche à suivre</strong> dans <strong>ce cas-là</strong></div></li></ul>"
               },
               { type: "normal", showIfSieste: "4a-plus-tc",
                 _leftTitle: "Rythme",

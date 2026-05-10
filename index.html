@@ -7561,7 +7561,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=645"></script>
+<script src="script-data.js?v=646"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -16115,15 +16115,17 @@ function substituteVars(text) {
     .replace(/\[prénom_parents\]/g, parents||'[parents]')
     .replace(/\[horaire_souhaite\]/g, (() => {
       // Horaire souhaité du réveil (III. Découverte → Fiche découverte). Format HH:MM.
-      // Affichage : "6h" si minutes=00, sinon "6h30". Si vide → "XXh".
+      // Affichage : "6h du matin" si minutes=00, sinon "6h30 du matin".
+      // Si vide → "l'heure du réveil le matin" (= phrase d'origine, pour conserver le texte naturel).
       const wake = (state && state.client && state.client.scheduleWakeUp) || '';
-      if (!wake) return 'XXh';
+      if (!wake) return "l'heure du réveil le matin";
       const parts = wake.split(':');
-      if (parts.length !== 2) return 'XXh';
+      if (parts.length !== 2) return "l'heure du réveil le matin";
       const hNum = parseInt(parts[0], 10);
       const mNum = parseInt(parts[1], 10);
-      if (isNaN(hNum) || isNaN(mNum)) return 'XXh';
-      return mNum === 0 ? hNum + 'h' : hNum + 'h' + (parts[1].length < 2 ? '0' + parts[1] : parts[1]);
+      if (isNaN(hNum) || isNaN(mNum)) return "l'heure du réveil le matin";
+      const hStr = mNum === 0 ? hNum + 'h' : hNum + 'h' + (parts[1].length < 2 ? '0' + parts[1] : parts[1]);
+      return hStr + ' du matin';
     })())
     .replace(/\[age\]/g, age)
     .replace(/\[role_parents\]/g, roleLabel)
