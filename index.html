@@ -7561,7 +7561,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=644"></script>
+<script src="script-data.js?v=645"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -16113,6 +16113,18 @@ function substituteVars(text) {
     .replace(/\[accord_enfant\]/g, accordEnfant)
     .replace(/\[prénom_enfant\]/g, prenomStyled)
     .replace(/\[prénom_parents\]/g, parents||'[parents]')
+    .replace(/\[horaire_souhaite\]/g, (() => {
+      // Horaire souhaité du réveil (III. Découverte → Fiche découverte). Format HH:MM.
+      // Affichage : "6h" si minutes=00, sinon "6h30". Si vide → "XXh".
+      const wake = (state && state.client && state.client.scheduleWakeUp) || '';
+      if (!wake) return 'XXh';
+      const parts = wake.split(':');
+      if (parts.length !== 2) return 'XXh';
+      const hNum = parseInt(parts[0], 10);
+      const mNum = parseInt(parts[1], 10);
+      if (isNaN(hNum) || isNaN(mNum)) return 'XXh';
+      return mNum === 0 ? hNum + 'h' : hNum + 'h' + (parts[1].length < 2 ? '0' + parts[1] : parts[1]);
+    })())
     .replace(/\[age\]/g, age)
     .replace(/\[role_parents\]/g, roleLabel)
     .replace(/\[heure_fin\]/g, heureFin)
