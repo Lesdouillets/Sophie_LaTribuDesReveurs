@@ -652,12 +652,12 @@ const SCRIPT_DATA = {
               groups: [
                 {
                   items: [
-                    "Le fait qu'[il_elle] <strong>régurgite beaucoup</strong>",
-                    "Qu'[il_elle] a du <strong>mal à rester [allonge_allongee]</strong>",
-                    "Qu'[il_elle] a un <strong>sommeil très agité</strong>",
-                    "Que les <strong>repas sont parfois compliqués</strong>",
-                    "Qu'on sent qu'[il_elle] est souvent <strong>[gene_genee] ou inconfortable</strong>",
-                    "Qu'[il_elle] <strong>se cambre</strong>",
+                    "Le fait qu'[il_elle] régurgite beaucoup",
+                    "Qu'[il_elle] a du mal à rester [allonge_allongee]",
+                    "Qu'[il_elle] a un sommeil très agité",
+                    "Que les repas sont parfois compliqués",
+                    "Qu'on sent qu'[il_elle] est souvent [gene_genee] ou inconfortable",
+                    "Qu'[il_elle] se cambre",
                   ]
                 }
               ]
@@ -682,7 +682,7 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "Tout est lié",
-          text: "- Parce que **chez les bébés**, vous savez, **tout est lié** : le sommeil, la digestion, la respiration, la peau…\n- **Tout se parle**\n- Et parfois, il faut juste **mettre les pièces du puzzle côte à côte** pour que **l'image globale apparaisse**"
+          text: "- Parce que **chez les bébés**, vous savez, **tout est lié** : *le sommeil, la digestion, la respiration, la peau…*\n- **Tout se parle**\n- Et parfois, il faut juste **mettre les pièces du puzzle côte à côte** pour que **l'image globale apparaisse**"
         },
         {
           type: "grouped_checklist",
@@ -761,11 +761,11 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "Explications processus soupçons APLV",
-          text: "- Et **si vous êtes d'accord**\n- Je peux vous expliquer, **tranquillement**, **simplement**, CE QU'ON fait quand on **soupçonne une allergie aux protéines de lait de vache**\n- Juste pour que vous compreniez **comment ça se passe… étape par étape**\n\n- Parce que **MON BUT**, aujourd'hui, ce **n'est PAS de vous inquiéter**. **PAS DU TOUT**\n- C'est de **vous accompagner**, et qu'on avance, vous et moi, pour **soulager [prénom_enfant]** et lui apporter **plus de confort au quotidien**"
+          text: "- Et **si vous êtes d'accord**\n- Je peux vous expliquer, **tranquillement**, **simplement**, **CE QU'ON fait quand on soupçonne une allergie aux protéines de lait de vache**\n- Juste pour que vous compreniez **comment ça se passe… étape par étape**\n\n- Parce que **MON BUT**, aujourd'hui, ce **n'est PAS de vous inquiéter**. **PAS DU TOUT**\n- C'est de **vous accompagner**, et qu'on avance, vous et moi, pour **soulager [prénom_enfant]** et lui apporter **plus de confort au quotidien**"
         },
         {
           type: "question", _leftTitle: "Qu'en pensez-vous ?",
-          text: "- Voilà, [prénom_parent_1]\n- Je vous ai partagé **ce que je voyais**\n- Et je sais que **c'est beaucoup, d'un coup**\n- Maintenant, j'aimerais **vous entendre, VOUS**\n- ❓ Dites-moi, **avec vos mots à vous**, CE QUE vous en pensez de tout ça ?"
+          text: "- Voilà, [prénom_parent_1]\n- Je vous ai partagé **ce que je voyais**\n- Et je sais que **c'est beaucoup, d'un coup**\n- Maintenant, j'aimerais **vous entendre, VOUS**\n- ❓ Dites-moi, **avec vos mots à vous**, **CE QUE vous en pensez de tout ça** ?"
         },
       ]
     },

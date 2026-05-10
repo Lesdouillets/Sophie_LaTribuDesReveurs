@@ -4151,9 +4151,10 @@
     }
     .gcl-item { padding: 3px 0 !important; border-bottom: none !important; align-items: flex-start; }
     .gcl-item > span { line-height: 1.4; }
-    /* Variante violette : texte + cases en violet (utilisé pour symptômes RGO en V. Diagnostic) */
-    .block-grouped-checklist.gcl-purple .gcl-item > span,
-    .block-grouped-checklist.gcl-purple .gcl-item.checked > span { color: #7c3aed !important; font-weight: 600; }
+    /* Variante violette : texte + cases en violet (utilisé pour symptômes RGO en V. Diagnostic).
+       Gras UNIQUEMENT quand la case est cochée. */
+    .block-grouped-checklist.gcl-purple .gcl-item > span { color: #7c3aed !important; font-weight: 400; }
+    .block-grouped-checklist.gcl-purple .gcl-item.checked > span { font-weight: 700; }
     .block-grouped-checklist.gcl-purple .gcl-item input[type="checkbox"] { accent-color: #7c3aed; }
     .block-grouped-checklist.gcl-purple .gcl-group-title { color: #7c3aed; }
     /* Sous-item (décalé à droite + police plus petite) */
@@ -7584,7 +7585,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=654"></script>
+<script src="script-data.js?v=657"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
