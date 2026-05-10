@@ -5839,10 +5839,11 @@
             </div>
             <div class="form-group">
               <label>Rôle</label>
-              <select id="sexe-parent1">
-                <option value="maman">👩 Maman</option>
-                <option value="papa">👨 Papa</option>
-              </select>
+              <input type="hidden" id="sexe-parent1" value="maman">
+              <div class="sexe-enfant-toggle">
+                <button type="button" class="sexe-btn sexe-btn-fille selected" data-parent="1" data-role="maman" onclick="setSexeParent(1, 'maman')">👩 Maman</button>
+                <button type="button" class="sexe-btn sexe-btn-garcon" data-parent="1" data-role="papa" onclick="setSexeParent(1, 'papa')">👨 Papa</button>
+              </div>
             </div>
           </div>
         </div>
@@ -5856,10 +5857,11 @@
             </div>
             <div class="form-group">
               <label>Rôle</label>
-              <select id="sexe-parent2">
-                <option value="papa">👨 Papa</option>
-                <option value="maman">👩 Maman</option>
-              </select>
+              <input type="hidden" id="sexe-parent2" value="papa">
+              <div class="sexe-enfant-toggle">
+                <button type="button" class="sexe-btn sexe-btn-fille" data-parent="2" data-role="maman" onclick="setSexeParent(2, 'maman')">👩 Maman</button>
+                <button type="button" class="sexe-btn sexe-btn-garcon selected" data-parent="2" data-role="papa" onclick="setSexeParent(2, 'papa')">👨 Papa</button>
+              </div>
             </div>
           </div>
         </div>
@@ -7559,7 +7561,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=642"></script>
+<script src="script-data.js?v=644"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7936,11 +7938,35 @@ window.setSexeEnfant = setSexeEnfant;
 function _updateSexeEnfantButtons() {
   const input = document.getElementById('sexe-enfant');
   const value = input ? (input.value || '') : '';
-  document.querySelectorAll('.sexe-btn').forEach(btn => {
+  document.querySelectorAll('.sexe-btn[data-sexe]').forEach(btn => {
     btn.classList.toggle('selected', !!value && btn.dataset.sexe === value);
   });
 }
 window._updateSexeEnfantButtons = _updateSexeEnfantButtons;
+
+// Rôle Parent 1 / Parent 2 : 2 boutons (Maman rose / Papa bleu) — pas de désélection
+// (un parent doit toujours avoir un rôle, contrairement au sexe enfant).
+function setSexeParent(parentNum, role) {
+  const input = document.getElementById('sexe-parent' + parentNum);
+  if (!input) return;
+  input.value = role;
+  _updateSexeParentButtons(parentNum);
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.setSexeParent = setSexeParent;
+
+function _updateSexeParentButtons(parentNum) {
+  if (parentNum == null) {
+    [1, 2].forEach(n => _updateSexeParentButtons(n));
+    return;
+  }
+  const input = document.getElementById('sexe-parent' + parentNum);
+  const value = input ? (input.value || '') : '';
+  document.querySelectorAll('.sexe-btn[data-parent="' + parentNum + '"]').forEach(btn => {
+    btn.classList.toggle('selected', btn.dataset.role === value);
+  });
+}
+window._updateSexeParentButtons = _updateSexeParentButtons;
 
 // Type de lait infantile : sélection unique parmi 8 boutons. Re-clic désélectionne.
 // La valeur est stockée dans l'input hidden #type-lait (compat code existant).
@@ -8016,8 +8042,8 @@ function onPbExtraInput(ta) {
     state.client.problematique = combined;
     state.client.pbExtraNote = extra;
   }
-  // Sync fiche client (champ #problematique)
-  const ficheField = document.getElementById('problematique');
+  // Sync fiche client (champ #problematique-text)
+  const ficheField = document.getElementById('problematique-text');
   if (ficheField && ficheField.value !== combined) ficheField.value = combined;
   // Sync bandeau vert au-dessus de l'écran (problématique + objectifs)
   if (typeof updatePobBar === 'function') updatePobBar();
@@ -8025,6 +8051,46 @@ function onPbExtraInput(ta) {
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.onPbExtraInput = onPbExtraInput;
+
+// === Même mécanisme pour IV. Objectifs (encadré blanc dans obj_intro / obj_question) ===
+// state.client.objExtraNote stocke ce que l'utilisateur tape dans l'encadré blanc, pour qu'il
+// PERSISTE entre navigations. base = objectifs avec ce suffixe retiré (stable entre renders).
+function _getObjExtraBase() {
+  const obj = (state && state.client && state.client.objectifs) || '';
+  const extra = (state && state.client && state.client.objExtraNote) || '';
+  if (!extra) return obj;
+  if (obj === extra) return '';
+  if (obj.endsWith('\n' + extra)) return obj.slice(0, -(extra.length + 1));
+  if (obj.endsWith(extra)) return obj.slice(0, -extra.length);
+  return obj;
+}
+window._getObjExtraBase = _getObjExtraBase;
+
+function onObjExtraInput(ta) {
+  // Auto-prefix "• " sur la 1ère ligne dès qu'il y a du texte
+  if (ta.value && !ta.value.startsWith('• ')) {
+    const cursor = ta.selectionStart;
+    ta.value = '• ' + ta.value;
+    ta.selectionStart = ta.selectionEnd = cursor + 2;
+  }
+  const base = ta.dataset.base || '';
+  const extra = (ta.value || '').trim();
+  let combined = base;
+  if (extra) {
+    combined = base ? (base + '\n' + extra) : extra;
+  }
+  if (state && state.client) {
+    state.client.objectifs = combined;
+    state.client.objExtraNote = extra;
+  }
+  // Sync fiche client (champ #objectifs-text)
+  const ficheField = document.getElementById('objectifs-text');
+  if (ficheField && ficheField.value !== combined) ficheField.value = combined;
+  // Sync bandeau pob
+  if (typeof updatePobBar === 'function') updatePobBar();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.onObjExtraInput = onObjExtraInput;
 
 // Helper auto-bullet générique pour textarea (utilisé sur problematique-text et objectifs-text
 // dans l'onglet Consultation). Sur Enter → ajoute "\n• ". Sur 1ère saisie dans textarea vide
@@ -8788,6 +8854,7 @@ function populateFormFromClient(c) {
   set('prenom-parent2', c.prenomParent2);
   set('sexe-parent1', c.sexeParent1 || 'maman');
   set('sexe-parent2', c.sexeParent2 || 'papa');
+  if (typeof _updateSexeParentButtons === 'function') _updateSexeParentButtons();
   set('type-lait', c.typeLait);
   if (typeof _updateTypeLaitButtons === 'function') _updateTypeLaitButtons();
   set('notes-medicales', c.notesMedicales);
@@ -13562,20 +13629,31 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   }
 
   if (b.type === 'obj_intro') {
-    const obj = state.client.objectifs;
-    if (obj && obj.trim()) {
-      const objHtml = obj.replace(/\n/g, '<br>');
-      return `<div class="block block-normal"><ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Alors maintenant, j'aimerais <strong>savoir</strong> quels sont vos <strong>objectifs aujourd'hui</strong></li><li style="margin-bottom:3px;line-height:1.65">Je vais <strong>relire CE QUE vous m'avez marqué</strong>… pour être <strong>sûre qu'on est bien alignés</strong>.</li></ul><div class="pb-recap-intro" style="margin-top:14px">• <u>Vous m'avez écrit :</u></div><div class="pb-recap-text"><em>${objHtml}</em></div><div style="background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin-top:14px;font-weight:400;line-height:1.7"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start"><span>❓</span><span>•</span><span>Est-ce que ça <strong>correspond toujours</strong> à ce que vous <strong>souhaitez aujourd'hui</strong> ?</span><span></span><span>•</span><span>Est-ce que vous avez <strong>quelque chose</strong> à <strong>ajouter</strong> ou <strong>ajuster</strong> ?</span></div></div></div>`;
+    // Encadré éditable manuel (même mécanisme que pb_intro) :
+    // state.client.objExtraNote persiste ce qui est tapé. Le rappel "Vous m'avez écrit"
+    // affiche UNIQUEMENT la base (sinon doublon avec l'encadré blanc en dessous).
+    const base = _getObjExtraBase();
+    const savedExtra = (state.client && state.client.objExtraNote) || '';
+    const baseAttr = String(base).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/\n/g,'&#10;').replace(/</g,'&lt;');
+    const taContent = String(savedExtra).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    const extraBox = `<div class="pb-extra-box"><textarea class="pb-extra-textarea" data-base="${baseAttr}" placeholder="Tapez ici…" oninput="onObjExtraInput(this)" onkeydown="onPbExtraKeydown(event, this)">${taContent}</textarea></div>`;
+    if (base && base.trim()) {
+      const baseHtml = base.replace(/\n/g, '<br>');
+      return `<div class="block block-normal"><ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Alors maintenant, j'aimerais <strong>savoir</strong> quels sont vos <strong>objectifs aujourd'hui</strong></li><li style="margin-bottom:3px;line-height:1.65">Je vais <strong>relire CE QUE vous m'avez marqué</strong>… pour être <strong>sûre qu'on est bien alignés</strong>.</li></ul><div class="pb-recap-intro" style="margin-top:14px">• <u>Vous m'avez écrit :</u></div><div class="pb-recap-text"><em>${baseHtml}</em></div><div style="background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin-top:14px;font-weight:400;line-height:1.7"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start"><span>❓</span><span>•</span><span>Est-ce que ça <strong>correspond toujours</strong> à ce que vous <strong>souhaitez aujourd'hui</strong> ?</span><span></span><span>•</span><span>Est-ce que vous avez <strong>quelque chose</strong> à <strong>ajouter</strong> ou <strong>ajuster</strong> ?</span></div>${extraBox}</div></div>`;
     } else {
       const prenom = substituteVars('[prénom_enfant]');
-      return `<div class="block block-question"><div class="q-text"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start"><span>❓</span><span>•</span><span>J'aimerais maintenant <strong>savoir quels sont vos objectifs</strong> aujourd'hui pour ${prenom}</span><span></span><span>•</span><span>Qu'est-ce que vous <strong>souhaitez idéalement mettre en place</strong> ?</span></div></div></div>`;
+      return `<div class="block block-question"><div class="q-text"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start"><span>❓</span><span>•</span><span>J'aimerais maintenant <strong>savoir quels sont vos objectifs</strong> aujourd'hui pour ${prenom}</span><span></span><span>•</span><span>Qu'est-ce que vous <strong>souhaitez idéalement mettre en place</strong> ?</span></div></div>${extraBox}</div>`;
     }
   }
 
   if (b.type === 'obj_question') {
-    const obj = state.client.objectifs;
-    if (!obj || !obj.trim()) return '';
-    return `<div class="block block-question"><div class="q-text"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start"><span>❓</span><span>•</span><span>Est-ce que ça <strong>correspond toujours</strong> à ce que vous <strong>souhaitez aujourd'hui</strong> ?</span><span></span><span>•</span><span>Est-ce que vous avez <strong>quelque chose</strong> à <strong>ajouter</strong> ou <strong>ajuster</strong> ?</span></div></div></div>`;
+    const base = _getObjExtraBase();
+    if (!base || !base.trim()) return '';
+    const savedExtra = (state.client && state.client.objExtraNote) || '';
+    const baseAttr = String(base).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/\n/g,'&#10;').replace(/</g,'&lt;');
+    const taContent = String(savedExtra).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    const extraBox = `<div class="pb-extra-box"><textarea class="pb-extra-textarea" data-base="${baseAttr}" placeholder="Tapez ici…" oninput="onObjExtraInput(this)" onkeydown="onPbExtraKeydown(event, this)">${taContent}</textarea></div>`;
+    return `<div class="block block-question"><div class="q-text"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start"><span>❓</span><span>•</span><span>Est-ce que ça <strong>correspond toujours</strong> à ce que vous <strong>souhaitez aujourd'hui</strong> ?</span><span></span><span>•</span><span>Est-ce que vous avez <strong>quelque chose</strong> à <strong>ajouter</strong> ou <strong>ajuster</strong> ?</span></div></div>${extraBox}</div>`;
   }
 
   if (b.type === 'pb_recap') {
