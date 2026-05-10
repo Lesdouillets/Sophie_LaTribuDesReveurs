@@ -675,14 +675,14 @@ const SCRIPT_DATA = {
             {
               type: "option", label: "SI ELLE N'A PAS DE SOUPÇONS", emoji: "🔴", style: "action", _pillStyle: true, _purpleContent: true, mutexGroup: "rgo-soupcons",
               blocks: [
-                { type: "normal", text: "- Et je voudrais qu'**on s'arrête une seconde sur quelque chose**\n- [prénom_parent_1], vous m'avez **raconté plein de petites choses** sur [prénom_enfant]\n  des **choses que vous vivez**, au quotidien\n\n- Et moi, en vous écoutant :\n  - Il y a certains éléments qui **viennent attirer mon attention**\n  - **Rien d'alarmant** en soi\n  - Mais ce sont des choses qui **méritent qu'on les regarde de près**\n  - Et toutes ces choses, mises ensemble, forment **un tableau que je connais bien**\n  ⇒ Et aujourd'hui, **mon rôle**, c'est de :\n    - **vous le partager**\n    - et de vous montrer **ce que ça raconte**" }
+                { type: "normal", text: "- Et je voudrais qu'**on s'arrête** une **seconde sur quelque chose**\n- [prénom_parent_1], vous m'avez **raconté plein de petites choses** sur [prénom_enfant]\n  des **choses que vous vivez**, au quotidien\n\n- Et moi, en vous écoutant :\n  - Il y a certains éléments qui **viennent attirer mon attention**\n  - **Rien d'alarmant** en soi\n  - Mais ce sont des choses qui **méritent qu'on les regarde de près**\n  - Et toutes ces choses, mises ensemble, forment **un tableau que je connais bien**\n  ⇒ Et aujourd'hui, **mon rôle**, c'est de :\n    - **vous le partager**\n    - et de vous montrer **CE QUE ça raconte**" }
               ]
             },
           ]
         },
         {
           type: "normal", _leftTitle: "Tout est lié",
-          text: "- Parce que **chez les bébés**, vous savez, **tout est lié** : *le sommeil, la digestion, la respiration, la peau…*\n- **Tout se parle**\n- Et parfois, il faut juste **mettre les pièces du puzzle côte à côte** pour que **l'image globale apparaisse**"
+          text: "- Parce que **chez les bébés**, vous savez, **tout est lié** : *le sommeil, la digestion, la respiration, la peau…*\n- **Tout se parle**\n- Et parfois, il faut **JUSTE mettre les pièces du puzzle côte à côte** pour que **l'image globale apparaisse**"
         },
         {
           type: "grouped_checklist",
