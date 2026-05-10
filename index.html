@@ -1722,6 +1722,31 @@
       padding: 10px 20px !important;
       overflow: hidden;
     }
+    /* Encadré éditable manuel à l'intérieur des encadrés rouges (II. Problématique) :
+       même liseré que le block-question, fond blanc, texte noir.
+       Auto-bullet "• " sur chaque nouvelle ligne (géré dans onPbExtraKeydown). */
+    .pb-extra-box {
+      margin-top: 12px;
+      border: 2.5px solid #e8a0a0;
+      border-radius: 10px;
+      background: #ffffff;
+      padding: 10px 12px;
+    }
+    .pb-extra-textarea {
+      width: 100%;
+      min-height: 80px;
+      border: none;
+      background: transparent;
+      outline: none;
+      font-family: inherit;
+      font-size: 14px;
+      color: #000000;
+      line-height: 1.6;
+      resize: vertical;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .pb-extra-textarea::placeholder { color: #94a3b8; font-style: italic; }
     .block-question::before { display: none; }
     .q-label { display: none; }
     .q-text {
@@ -7519,7 +7544,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=637"></script>
+<script src="script-data.js?v=638"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7922,6 +7947,52 @@ function _updateTypeLaitButtons() {
   });
 }
 window._updateTypeLaitButtons = _updateTypeLaitButtons;
+
+// Encadré éditable manuel dans II. Problématique : ce que l'utilisateur tape s'AJOUTE à
+// la base (state.client.problematique au moment du render). Synchronise sans re-render
+// (ni la page courante ne change, ni le bandeau pob ne re-render la section).
+// - Sur Enter : ajoute "• " en début de nouvelle ligne
+// - Sur 1ère saisie : préfixe "• " sur la 1ère ligne
+function onPbExtraKeydown(e, ta) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const start = ta.selectionStart;
+    const end = ta.selectionEnd;
+    const insert = '\n• ';
+    ta.value = ta.value.slice(0, start) + insert + ta.value.slice(end);
+    ta.selectionStart = ta.selectionEnd = start + insert.length;
+    onPbExtraInput(ta);
+  }
+}
+window.onPbExtraKeydown = onPbExtraKeydown;
+
+function onPbExtraInput(ta) {
+  // Auto-prefix "• " sur la 1ère ligne dès qu'il y a du texte
+  if (ta.value && !ta.value.startsWith('• ')) {
+    const cursor = ta.selectionStart;
+    ta.value = '• ' + ta.value;
+    ta.selectionStart = ta.selectionEnd = cursor + 2;
+  }
+  // Calculer la valeur combinée : base (snapshot au render) + texte tapé
+  const base = ta.dataset.base || '';
+  const extra = (ta.value || '').trim();
+  let combined = base;
+  if (extra) {
+    combined = base ? (base + '\n' + extra) : extra;
+  }
+  // Mettre à jour state.client.problematique sans re-render
+  if (state && state.client) {
+    state.client.problematique = combined;
+  }
+  // Sync fiche client (champ #problematique)
+  const ficheField = document.getElementById('problematique');
+  if (ficheField && ficheField.value !== combined) ficheField.value = combined;
+  // Sync bandeau vert au-dessus de l'écran (problématique + objectifs)
+  if (typeof updatePobBar === 'function') updatePobBar();
+  // Auto-save
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.onPbExtraInput = onPbExtraInput;
 
 function setEnseigneFromSelect(val) {
   setEnseigne(val);
@@ -13406,18 +13477,24 @@ function renderBlockInner(b, i, sectionId, depth, path) {
   if (b.type === 'pb_intro') {
     const pb = state.client.problematique;
     const prenom = substituteVars('[prénom_enfant]');
+    // Encadré éditable manuel : le contenu actuel de la pb sert de "base" ; le texte tapé
+    // s'ajoute à cette base (state.client.problematique = base + texte tapé).
+    const baseAttr = String(pb || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/\n/g,'&#10;').replace(/</g,'&lt;');
+    const extraBox = `<div class="pb-extra-box"><textarea class="pb-extra-textarea" data-base="${baseAttr}" placeholder="Tapez ici… (chaque Entrée ajoute un • )" oninput="onPbExtraInput(this)" onkeydown="onPbExtraKeydown(event, this)"></textarea></div>`;
     if (pb && pb.trim()) {
       const pbHtml = pb.replace(/\n/g, '<br>');
-      return `<div class="block block-normal"><ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Maintenant, je vais <strong>reprendre votre problématique</strong><br>et APRÈS vous allez <strong>m'expliquer CE QUI se passe exactement</strong> pour le sommeil de ${prenom}.</li></ul><div class="pb-recap-intro" style="margin-top:14px">• <u>Donc, vous m'avez écrit :</u></div><div class="pb-recap-text"><em>${pbHtml}</em></div><div style="background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin-top:14px;font-weight:400;line-height:1.7">❓ Est-ce que c'est <strong>toujours d'actualité</strong> ?</div></div>`;
+      return `<div class="block block-normal"><ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Maintenant, je vais <strong>reprendre votre problématique</strong><br>et APRÈS vous allez <strong>m'expliquer CE QUI se passe exactement</strong> pour le sommeil de ${prenom}.</li></ul><div class="pb-recap-intro" style="margin-top:14px">• <u>Donc, vous m'avez écrit :</u></div><div class="pb-recap-text"><em>${pbHtml}</em></div><div style="background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin-top:14px;font-weight:400;line-height:1.7">❓ Est-ce que c'est <strong>toujours d'actualité</strong> ?${extraBox}</div></div>`;
     } else {
-      return `<div class="block block-question"><div class="q-text">❓ Maintenant, j'aimerais <strong>savoir quelle est votre problématique aujourd'hui</strong> pour ${prenom}</div></div>`;
+      return `<div class="block block-question"><div class="q-text">❓ Maintenant, j'aimerais <strong>savoir quelle est votre problématique aujourd'hui</strong> pour ${prenom}</div>${extraBox}</div>`;
     }
   }
 
   if (b.type === 'pb_question') {
     const pb = state.client.problematique;
     if (!pb || !pb.trim()) return '';
-    return `<div class="block block-question"><div class="q-text">❓ Est-ce que c'est <strong>toujours d'actualité</strong> ?</div></div>`;
+    const baseAttr = String(pb || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/\n/g,'&#10;').replace(/</g,'&lt;');
+    const extraBox = `<div class="pb-extra-box"><textarea class="pb-extra-textarea" data-base="${baseAttr}" placeholder="Tapez ici… (chaque Entrée ajoute un • )" oninput="onPbExtraInput(this)" onkeydown="onPbExtraKeydown(event, this)"></textarea></div>`;
+    return `<div class="block block-question"><div class="q-text">❓ Est-ce que c'est <strong>toujours d'actualité</strong> ?</div>${extraBox}</div>`;
   }
 
   if (b.type === 'obj_intro') {
