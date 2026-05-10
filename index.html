@@ -7481,7 +7481,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=632"></script>
+<script src="script-data.js?v=634"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -14142,25 +14142,25 @@ function renderSolutionsCheckboxes(opts) {
                                         subSubSubRows = `<div style="padding-left:28px;display:flex;flex-direction:column;gap:3px;margin-top:3px">` +
                                           subSubNestedVisible.map(ss => {
                                             const ssTicked = state.courbeCardsTicked.has(ss.id);
-                                            return `<label style="display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer"><input type="checkbox" ${ssTicked?'checked':''} onchange="toggleCourbeCardTickFromSol('${ss.id}')"> ${ss.emoji || ''} ${ss.label || ss.id}</label>`;
+                                            return `<label style="display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer"><input type="checkbox" ${ssTicked?'checked':''} onchange="toggleCourbeCardTickFromSol('${ss.id}')"><span style="flex:1;min-width:0">${ss.emoji || ''} ${ss.label || ss.id}</span></label>`;
                                           }).join('') +
                                           `</div>`;
                                       }
                                     }
                                   }
-                                  return `<div><label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer"><input type="checkbox" ${sTicked?'checked':''} onchange="toggleCourbeCardTickFromSol('${s.id}')"> ${s.emoji || ''} ${s.label || s.id}</label>${subSubSubRows}</div>`;
+                                  return `<div><label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer"><input type="checkbox" ${sTicked?'checked':''} onchange="toggleCourbeCardTickFromSol('${s.id}')"><span style="flex:1;min-width:0">${s.emoji || ''} ${s.label || s.id}</span></label>${subSubSubRows}</div>`;
                                 }).join('') +
                                 `</div>`;
                             }
                           }
                         }
-                        return `<div><label style="display:flex;align-items:center;gap:6px;font-size:13.5px;cursor:pointer"><input type="checkbox" ${subTicked?'checked':''} onchange="toggleCourbeCardTickFromSol('${sub.id}')"> ${sub.emoji || ''} ${sub.label || sub.id}</label>${subSubRows}</div>`;
+                        return `<div><label style="display:flex;align-items:center;gap:6px;font-size:13.5px;cursor:pointer"><input type="checkbox" ${subTicked?'checked':''} onchange="toggleCourbeCardTickFromSol('${sub.id}')"><span style="flex:1;min-width:0">${sub.emoji || ''} ${sub.label || sub.id}</span></label>${subSubRows}</div>`;
                       }).join('') +
                       `</div>`;
                   }
                 }
               }
-              return `<div><label style="display:flex;align-items:center;gap:6px;font-size:14px;cursor:pointer"><input type="checkbox" ${itTicked?'checked':''} onchange="${onclickArg}"> ${it.emoji || ''} ${displayLabel}</label>${nestedSubRows}</div>`;
+              return `<div><label style="display:flex;align-items:center;gap:6px;font-size:14px;cursor:pointer"><input type="checkbox" ${itTicked?'checked':''} onchange="${onclickArg}"><span style="flex:1;min-width:0">${it.emoji || ''} ${displayLabel}</span></label>${nestedSubRows}</div>`;
             }).join('') +
             `</div>`;
         }

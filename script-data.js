@@ -5474,7 +5474,7 @@ const SCRIPT_DATA = {
                     ]
                   },
                   {
-                    id: "accomp_lit_ferme_chaise_j7", emoji: "🪑", label: "Accompagnement chaise : Sortir au Jour 7",
+                    id: "accomp_lit_ferme_chaise_j7", emoji: "🪑", label: "Accompagnement chaise : Sortir au Jour&nbsp;7",
                     blocks: [
                       {
                         type: "normal", _leftTitle: "Jours 1, 2 et 3",
@@ -5541,7 +5541,7 @@ const SCRIPT_DATA = {
                     ]
                   },
                   {
-                    id: "accomp_lit_ferme_chaise_apaisement_j1", emoji: "🪑", label: "Accompagnement chaise : Sortir dès l'apaisement au Jour 1",
+                    id: "accomp_lit_ferme_chaise_apaisement_j1", emoji: "🪑", label: "Accompagnement chaise : Sortir dès l'apaisement au Jour&nbsp;1",
                     blocks: [
                       {
                         type: "normal", _leftTitle: "Jours 1, 2 et 3",
@@ -5608,7 +5608,7 @@ const SCRIPT_DATA = {
                     ]
                   },
                   {
-                    id: "accomp_lit_ferme_chaise_coucher_j1", emoji: "🪑", label: "Accompagnement chaise : Sortir après le coucher au Jour 1",
+                    id: "accomp_lit_ferme_chaise_coucher_j1", emoji: "🪑", label: "Accompagnement chaise : Sortir après le coucher au Jour&nbsp;1",
                     blocks: [
                       {
                         type: "normal", _leftTitle: "Dès le 1er soir et tous les autres soirs",
@@ -5851,7 +5851,7 @@ const SCRIPT_DATA = {
                 expandAllAsPills: true,
                 items: [
                   {
-                    id: "accomp_rappels_chaise_coucher_j1", emoji: "🪑", label: "Accompagnement chaise : Sortir après le coucher au Jour 1 <em>(Dépendance à la présence +)</em>",
+                    id: "accomp_rappels_chaise_coucher_j1", emoji: "🪑", label: "Accompagnement chaise : Sortir après le coucher au Jour&nbsp;1 <em>(Dépendance à la présence +)</em>",
                     blocks: [
                       { type: "normal", _leftTitle: "Excitant de communiquer", text: "- Il n'y a **RIEN de PLUS excitant** que de **communiquer** avec Papa et Maman.\n- Et **tous les moyens sont bons** pour **maintenir ce lien** !" },
                       {
@@ -6116,9 +6116,9 @@ const SCRIPT_DATA = {
                       }
                     ]
                   },
-                  { id: "accomp_prog_dos_portage", emoji: "🚼", label: "DOS - Portage (Porte-BB / Poussette)", compactLabel: "Portage (Porte-BB / Poussette)", showIfTickbox: { cid: "accomp_position_choice", value: "dos" },
+                  { id: "accomp_prog_dos_portage", emoji: "🚼", label: "DOS - Portage (Porte-bébé / Poussette)", compactLabel: "Portage (Porte-bébé / Poussette)", showIfTickbox: { cid: "accomp_position_choice", value: "dos" },
                     blocks: [
-                      { type: "normal", _leftTitle: "<div><u>Étape 1 :</u></div><div>Suppression des bercements</div>", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez les bercements**</span> dans le **Porte-BB / Poussette**, **endormez-[le_la]** en **restant statique**\n- <u>En cas d'émotions :</u> **Bercez-[le_la] temporairement**\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
+                      { type: "normal", _leftTitle: "<div><u>Étape 1 :</u></div><div>Suppression des bercements</div>", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez les bercements**</span> dans le **Porte-bébé / Poussette**, **endormez-[le_la]** en **restant statique**\n- <u>En cas d'émotions :</u> **Bercez-[le_la] temporairement**\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
                       { type: "normal", _leftTitle: "<div><u>Étape 2 :</u></div><div>L'accompagner dans son lit</div>", text: "- Mettez-[le_la] **dans son lit [ÉVEILLÉ_ÉVEILLÉE]**\n- Gardez une **main immobile** sur [lui_elle]\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n- *(possibilité de rajouter une étape : mettre votre bras autour de sa tête sans [le_la] toucher pour garder la contenance)*\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
                       { type: "normal", showIfPb: "strategie_tetine", _leftTitle: "<div>🍭 <u>Étape 2bis :</u></div><div>Suppression de la tétine (si stratégie dépendante)</div>", _leftTitleStyle: "background:#f3e8ff;color:#5b21b6;--cat-main:#7c3aed", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez la tétine**</span>\n- Gardez une **main immobile** sur [lui_elle]\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
                       { type: "normal", _leftTitle: "<div><u>Étape 3 :</u></div><div>L'accompagner seulement pendant les émotions avec le toucher</div>", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez le contact physique**</span>\n- <u>En cas d'émotions :</u> Posez une **main immobile** sur [lui_elle] temporairement\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
@@ -6337,7 +6337,7 @@ const SCRIPT_DATA = {
                       }
                     ]
                   },
-                  { id: "accomp_prog_ventre_portage", emoji: "🚼", label: "VENTRE - Portage (Porte-BB / Poussette)", compactLabel: "Portage (Porte-BB / Poussette)", showIfTickbox: { cid: "accomp_position_choice", value: "ventre" },
+                  { id: "accomp_prog_ventre_portage", emoji: "🚼", label: "VENTRE - Portage (Porte-bébé / Poussette)", compactLabel: "Portage (Porte-bébé / Poussette)", showIfTickbox: { cid: "accomp_position_choice", value: "ventre" },
                     blocks: [
                       { type: "normal", _leftTitle: "⚠️ Position ventre", _leftTitleStyle: "background:#fef3c7;color:#92400e;--cat-main:#f59e0b", text: "- ⚠️ L'**OMS recommande de coucher les enfants sur le DOS**\n  ⇒ Il existe des **alarmes de respiration** pour se **rassurer** mais ne **prévient pas à 100%** de la MIN",
                         trailingInfoButtons: [
@@ -6351,7 +6351,7 @@ const SCRIPT_DATA = {
                           }
                         ]
                       },
-                      { type: "normal", _leftTitle: "<div><u>Étape 1 :</u></div><div>Suppression des bercements</div>", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez les bercements**</span> dans le **Porte-BB / Poussette**, **endormez-[le_la]** en **restant statique** *(possibilité d'introduire un **<span style=\"border-bottom:1px dashed currentColor;cursor:help\" title=\"Petit matelas souple qui se transporte facilement\">Topponcino</span>**)*\n- <u>En cas d'émotions :</u> **Bercez-[le_la] temporairement**\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
+                      { type: "normal", _leftTitle: "<div><u>Étape 1 :</u></div><div>Suppression des bercements</div>", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez les bercements**</span> dans le **Porte-bébé / Poussette**, **endormez-[le_la]** en **restant statique** *(possibilité d'introduire un **<span style=\"border-bottom:1px dashed currentColor;cursor:help\" title=\"Petit matelas souple qui se transporte facilement\">Topponcino</span>**)*\n- <u>En cas d'émotions :</u> **Bercez-[le_la] temporairement**\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
                       { type: "normal", _leftTitle: "<div><u>Étape 1bis :</u></div><div>Option si VERTICAL</div>", _leftTitleStyle: "background:#f3e8ff;color:#5b21b6;--cat-main:#7c3aed", text: "- **Allongez-vous** en **position horizontale**\n- Une fois [endormi_endormie], **déposez-[le_la]** dans son lit" },
                       { type: "normal", _leftTitle: "<div><u>Étape 2 :</u></div><div>L'accompagner dans son lit</div>", text: "- Mettez-[le_la] **dans son lit [ÉVEILLÉ_ÉVEILLÉE]**\n- Gardez une **main immobile** sur [lui_elle]\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n- *(possibilité de rajouter une étape : mettre votre bras autour de sa tête sans [le_la] toucher pour garder la contenance)*\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
                       { type: "normal", showIfPb: "strategie_tetine", _leftTitle: "<div>🍭 <u>Étape 2bis :</u></div><div>Suppression de la tétine (si stratégie dépendante)</div>", _leftTitleStyle: "background:#f3e8ff;color:#5b21b6;--cat-main:#7c3aed", text: "- ❌ <span style=\"color:#dc2626\">**Supprimez la tétine**</span>\n- Mettez-[le_la] dans son lit (avec le **<span style=\"border-bottom:1px dashed currentColor;cursor:help\" title=\"Petit matelas souple qui se transporte facilement\">Topponcino</span>**)\n- Gardez une **main immobile** sur [lui_elle]\n- <u>En cas d'émotions :</u> **Bercez-[le_la]** de la main temporairement\n\n- 🧑‍🤝‍🧑 Restez **jusqu'à l'endormissement**" },
