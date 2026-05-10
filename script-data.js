@@ -675,7 +675,7 @@ const SCRIPT_DATA = {
             {
               type: "option", label: "SI ELLE N'A PAS DE SOUPÇONS", emoji: "🔴", style: "action", _pillStyle: true, _purpleContent: true, mutexGroup: "rgo-soupcons",
               blocks: [
-                { type: "normal", text: "- Et je voudrais qu'**on s'arrête** une **seconde sur quelque chose**\n- [prénom_parent_1], vous m'avez **raconté plein de petites choses** sur [prénom_enfant]\n  des **choses que vous vivez**, au quotidien\n\n- Et moi, en vous écoutant :\n  - Il y a certains éléments qui **viennent attirer mon attention**\n  - **Rien d'alarmant** en soi\n  - Mais ce sont des choses qui **méritent qu'on les regarde de près**\n  - Et toutes ces choses, mises ensemble, forment **un tableau que je connais bien**\n\n    - Et aujourd'hui, **mon rôle**, c'est de :\n      - **vous le partager**\n      - et de vous montrer **CE QUE ça raconte**" }
+                { type: "normal", text: "- Et je voudrais qu'**on s'arrête** une **seconde sur quelque chose**\n- [prénom_parent_1], vous m'avez **raconté plein de petites choses** sur [prénom_enfant]\n  des **choses que vous vivez**, au quotidien\n\n- Et moi, en vous écoutant :\n  - Il y a certains éléments qui **viennent attirer mon attention**\n  - **Rien d'alarmant** en soi\n  - Mais ce sont des choses qui **méritent qu'on les regarde de près**\n  - Et toutes ces choses, mises ensemble, forment **un tableau que je connais bien**\n\n        - Et aujourd'hui, **mon rôle**, c'est de :\n          - **vous le partager**\n          - et de vous montrer **CE QUE ça raconte**" }
               ]
             },
           ]
