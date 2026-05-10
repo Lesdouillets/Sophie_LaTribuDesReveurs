@@ -745,7 +745,7 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "Allergie difficile à percevoir",
-          text: "- Il **faut savoir** que c'est une **allergie** qui est **de + en + fréquente** chez les bébés\n  et qui, encore aujourd'hui, **passe très souvent SOUS les radars**\n\n- MEME chez les **professionnels de santé**\n- **Pas par négligence** :\n  - Simplement parce que **les signes sont éparpillés un peu partout**\n  - En **consultation médicale**, vous savez, c'est **court** : 15, 20 minutes, grand maximum\n    - C'est **très peu** pour :\n      - rassembler **tous les signes**\n      - et **faire un lien**\n    - Et puis, le médecin, quand on va **lui amener un symptôme**\n      - souvent, il **traitera ce symptôme**, SANS forcément toujours aller voir s'il y a **quelque chose de plus gros derrière**\n- Donc si personne n'a fait le lien jusqu'ici\n  ⇒ **C'est NORMAL**\n\n- Moi, je viens par **la porte du sommeil**\n  et je suis amenée à **explorer des choses différentes** : *la digestion, la peau, la respiration, les selles, les repas…*\n\n- Ce sont **2 angles différents**, mais les **2 sont complémentaires**"
+          text: "- Il **faut savoir** que c'est une **allergie** qui est **de + en + fréquente** chez les bébés\n  et qui, encore aujourd'hui, **passe très souvent SOUS les radars**\n\n- MEME chez les **professionnels de santé**\n- **Pas par négligence** :\n  - Simplement parce que **les signes sont éparpillés un peu partout**\n  - En **consultation médicale**, vous savez, c'est **court** : 15, 20 minutes, grand maximum\n    - C'est **très peu** pour :\n      - rassembler **tous les signes**\n      - et **faire un lien**\n    - Et puis, le médecin, quand on va **lui amener un symptôme**\n      - souvent, il **traitera ce symptôme**, SANS forcément toujours aller voir s'il y a **quelque chose de plus gros derrière**\n- Donc si personne n'a fait le lien jusqu'ici\n  ⇒ **C'est NORMAL**\n\n- Moi, je viens par **la porte du sommeil**\n  je cherche la cause derrière les symptômes\n  et je suis amenée à **explorer des choses DIFFÉRENTES** : *la digestion, la peau, la respiration, les selles, les repas…*\n\n- Ce sont **2 angles différents**, mais les **2 sont complémentaires**"
         },
         {
           type: "normal", _leftTitle: "Pas médecin",
@@ -762,6 +762,10 @@ const SCRIPT_DATA = {
         {
           type: "normal", _leftTitle: "Explications processus soupçons APLV",
           text: "- Et si **vous êtes d'accord**\n- Je peux **vous expliquer,** tranquillement, simplement, CE QU'ON fait quand on **soupçonne une allergie aux protéines de lait de vache**\n- Juste pour que **vous compreniez comment ça se passe**… **étape par étape**\n\n- Parce que **MON BUT,** aujourd'hui, **ce n'est PAS de vous inquiéter**. PAS DU TOUT\n- C'est de **vous accompagner**, et qu'on avance, vous et moi, **pour soulager [prénom_enfant]** et lui apporter **plus de confort au quotidien**"
+        },
+        {
+          type: "normal", _leftTitle: "Trouver la cause",
+          text: "- Et vous savez quoi, [prénom_parent_1] ?\n- Si on identifie **la cause derrière tout ça**\n- Et qu'on **agit dessus**\n  ⇒ [prénom_enfant] va **retrouver du confort**\n  ⇒ Et le sommeil va **suivre, naturellement**\n\n- Parce que c'est ça **l'idée** :\n  - **PAS un pansement qui tient quelques jours**\n  - Mais quelque chose de vraiment **+ DURABLE dans le temps**"
         },
         {
           type: "question", _leftTitle: "Qu'en pensez-vous ?",
