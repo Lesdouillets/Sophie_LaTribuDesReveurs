@@ -300,8 +300,18 @@
       box-shadow: 0 2px 6px rgba(59, 130, 246, 0.35);
     }
 
+    /* Labels soulignés (form-group) — utilisé pour les titres de section dans Santé */
+    .form-group label.label-underlined { text-decoration: underline; }
+
     /* Sélecteur Type de lait infantile : boutons (au lieu d'un select) */
     .lait-btns { display: flex; flex-wrap: wrap; gap: 8px; max-width: 720px; }
+    /* Variante 2-colonnes : Sans Anti-Reflux | Avec Anti-Reflux (chaque lait face à son AR) */
+    .lait-btns-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-width: 720px; }
+    .lait-col-title {
+      font-size: 12px; font-weight: 700; color: #475569;
+      text-align: center; padding: 4px 0 2px;
+      text-transform: uppercase; letter-spacing: 0.4px;
+    }
     .lait-btn {
       padding: 8px 12px; border-radius: 8px;
       border: 1.5px solid #cbd5e0; background: #f8fafc; color: #475569;
@@ -5918,7 +5928,7 @@
           <h3>🍼 Alimentation</h3>
           <div class="form-grid">
             <div class="form-group full">
-              <label>Mode d'alimentation <span style="color:#aaa;font-size:11px">(plusieurs choix)</span></label>
+              <label class="label-underlined">Mode d'alimentation <span style="color:#aaa;font-size:11px">(plusieurs choix)</span></label>
               <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
                 <label class="pb-item"><input type="checkbox" name="alim" value="Allaitement maternel" data-exclusive="alim_principal"> <span>🤱 Allaitement maternel</span></label>
                 <label class="pb-item"><input type="checkbox" name="alim" value="Biberon lait infantile" data-exclusive="alim_principal"> <span>🍼 Biberon lait infantile</span></label>
@@ -5926,16 +5936,18 @@
                 <label class="pb-item" style="border:1.5px dashed #b0b0b0"><input type="checkbox" name="alim" value="Sevrage en cours"> <span>🔄 Sevrage en cours</span></label>
               </div>
               <div class="form-group full" id="allaitement-mode-group" style="display:none;margin-top:8px">
-                <label>Mode d'allaitement <span style="color:#aaa;font-size:11px">(plusieurs choix possibles)</span></label>
+                <label class="label-underlined">Mode d'allaitement <span style="color:#aaa;font-size:11px">(plusieurs choix possibles)</span></label>
                 <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
                   <label class="pb-item"><input type="checkbox" name="allaitement_mode" value="Allaitement au sein" onchange="enforceAllaitementMode()"> <span>🤱 Allaitement au sein</span></label>
                   <label class="pb-item"><input type="checkbox" name="allaitement_mode" value="Allaitement au biberon" onchange="enforceAllaitementMode()"> <span>🍼 Allaitement au biberon</span></label>
                 </div>
               </div>
               <div class="form-group full" id="type-lait-group" style="display:none;margin-top:8px">
-                <label>Type de lait infantile</label>
+                <label class="label-underlined">Type de lait infantile</label>
                 <input type="hidden" id="type-lait" value="">
-                <div class="lait-btns">
+                <div class="lait-btns lait-btns-grid">
+                  <div class="lait-col-title">Sans Anti-Reflux</div>
+                  <div class="lait-col-title">Avec Anti-Reflux</div>
                   <button type="button" class="lait-btn" data-lait="Lait normal aux PLV" onclick="setTypeLait('Lait normal aux PLV')">Lait « normal » aux PLV</button>
                   <button type="button" class="lait-btn" data-lait="Lait normal aux PLV AR" onclick="setTypeLait('Lait normal aux PLV AR')">Lait « normal » aux PLV Anti-Reflux</button>
                   <button type="button" class="lait-btn" data-lait="Lait PLV hydrolysées HA" onclick="setTypeLait('Lait PLV hydrolysées HA')">Lait à base de PLV hydrolysées (HA)</button>
@@ -5946,12 +5958,15 @@
                   <button type="button" class="lait-btn" data-lait="Lait protéines de riz AR" onclick="setTypeLait('Lait protéines de riz AR')">Lait aux protéines de riz Anti-Reflux</button>
                 </div>
               </div>
-              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
-                <label class="pb-item"><input type="checkbox" name="alim" value="Diversification"> <span>🥑 Diversification</span></label>
-              </div>
-              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
-                <label class="pb-item"><input type="checkbox" name="alim" value="Lait animal"> <span>🥛 Lait animal</span></label>
-                <label class="pb-item"><input type="checkbox" name="alim" value="Jus végétal"> <span>🧃 Jus végétal</span></label>
+              <div style="margin-top:24px">
+                <label class="label-underlined">Autres</label>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
+                  <label class="pb-item"><input type="checkbox" name="alim" value="Diversification"> <span>🥑 Diversification</span></label>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+                  <label class="pb-item"><input type="checkbox" name="alim" value="Lait animal"> <span>🥛 Lait animal</span></label>
+                  <label class="pb-item"><input type="checkbox" name="alim" value="Jus végétal"> <span>🧃 Jus végétal</span></label>
+                </div>
               </div>
             </div>
             <div class="form-group full" style="display:none"><!-- placeholder -->
@@ -6109,11 +6124,11 @@
           <div class="form-grid">
             <div class="form-group full">
               <label>Problématique décrite par les parents</label>
-              <textarea id="problematique-text" rows="4" placeholder="ex. Il ne s'endort pas sans sein, se réveille 5 fois par nuit..."></textarea>
+              <textarea id="problematique-text" rows="4" placeholder="ex. Il ne s'endort pas sans sein, se réveille 5 fois par nuit..." oninput="_autoBulletInput(this)" onkeydown="_autoBulletKeydown(event, this)"></textarea>
             </div>
             <div class="form-group full">
               <label>Objectifs des parents</label>
-              <textarea id="objectifs-text" rows="3" placeholder="ex. Qu'il s'endorme seul dans son lit, pas plus d'1 réveil la nuit..."></textarea>
+              <textarea id="objectifs-text" rows="3" placeholder="ex. Qu'il s'endorme seul dans son lit, pas plus d'1 réveil la nuit..." oninput="_autoBulletInput(this)" onkeydown="_autoBulletKeydown(event, this)"></textarea>
             </div>
           </div>
         </div>
@@ -7544,7 +7559,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=638"></script>
+<script src="script-data.js?v=640"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7993,6 +8008,32 @@ function onPbExtraInput(ta) {
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.onPbExtraInput = onPbExtraInput;
+
+// Helper auto-bullet générique pour textarea (utilisé sur problematique-text et objectifs-text
+// dans l'onglet Consultation). Sur Enter → ajoute "\n• ". Sur 1ère saisie dans textarea vide
+// (= value.length passe à 1) → préfixe "• " devant le caractère tapé.
+function _autoBulletKeydown(e, ta) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const start = ta.selectionStart;
+    const end = ta.selectionEnd;
+    const insert = '\n• ';
+    ta.value = ta.value.slice(0, start) + insert + ta.value.slice(end);
+    ta.selectionStart = ta.selectionEnd = start + insert.length;
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+}
+window._autoBulletKeydown = _autoBulletKeydown;
+
+function _autoBulletInput(ta) {
+  // Préfixe "• " uniquement quand la 1ère saisie remplit un textarea précédemment vide
+  // (détecté par value.length === 1). Évite d'altérer le contenu pré-existant chargé via set().
+  if (ta.value.length === 1 && ta.value !== '•') {
+    ta.value = '• ' + ta.value;
+    ta.selectionStart = ta.selectionEnd = 3;
+  }
+}
+window._autoBulletInput = _autoBulletInput;
 
 function setEnseigneFromSelect(val) {
   setEnseigne(val);
