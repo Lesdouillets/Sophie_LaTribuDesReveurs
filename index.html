@@ -2825,6 +2825,15 @@
       box-shadow: 0 4px 15px rgba(94,166,127,0.30);
     }
 
+    /* OPTION ACTION — variante BLEUE */
+    .block-option.action.action-blue:not(.open-action) {
+      background: #3b82f6;
+      box-shadow: 0 4px 15px rgba(59,130,246,0.30);
+    }
+    .block-option.action.action-blue.open-action > .option-header {
+      background: #3b82f6;
+    }
+
     /* OPTION ACTION — variante ROSE POUDRÉ (style doux non flashy) */
     .block-option.action.action-rose-poudre:not(.open-action) {
       background: #d8a7b1;
@@ -7561,7 +7570,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=647"></script>
+<script src="script-data.js?v=648"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -12361,11 +12370,12 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const purpleClass = b.style === 'purple' ? ' purple' : '';
     const purpleBtnClass = b.style === 'purple-btn' ? ' purple-btn' : '';
     const compactBtnClass = b._compact ? ' compact-btn' : '';
-    const actionClass = (b.style === 'action' || b.style === 'action-green' || b.style === 'action-yellow' || b.style === 'action-rose-poudre' || b.style === 'action-rose-poudre-clair') ? ' action' : '';
+    const actionClass = (b.style === 'action' || b.style === 'action-green' || b.style === 'action-yellow' || b.style === 'action-rose-poudre' || b.style === 'action-rose-poudre-clair' || b.style === 'action-blue') ? ' action' : '';
     const actionGreenClass = b.style === 'action-green' ? ' action-green' : '';
     const actionYellowClass = b.style === 'action-yellow' ? ' action-yellow' : '';
     const actionRosePoudreClass = b.style === 'action-rose-poudre' ? ' action-rose-poudre' : '';
     const actionRosePoudreClairClass = b.style === 'action-rose-poudre-clair' ? ' action-rose-poudre-clair' : '';
+    const actionBlueClass = b.style === 'action-blue' ? ' action-blue' : '';
     const actionPurpleInsideClass = b._purpleContent ? ' action-purple-inside' : '';
     const pillStyleClass = b._pillStyle ? ' pill-style' : '';
     const compactClosedClass = b._compactClosed ? ' compact-closed' : '';
@@ -12373,7 +12383,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const miniClass = b._mini ? ' option-mini' : '';
     const emojiHtml = b.emoji ? `<span class="option-emoji">${b.emoji}</span>` : '';
     const mutexAttr = b.mutexGroup ? ` data-mutex-group="${String(b.mutexGroup).replace(/"/g, '&quot;')}"` : '';
-    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${purpleBtnClass}${compactBtnClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionRosePoudreClass}${actionRosePoudreClairClass}${actionPurpleInsideClass}${pillStyleClass}${compactClosedClass}${cardClass}${miniClass}"${mutexAttr}>
+    return `<div class="block-option${dangerClass}${pleursClass}${purpleClass}${purpleBtnClass}${compactBtnClass}${actionClass}${actionGreenClass}${actionYellowClass}${actionRosePoudreClass}${actionRosePoudreClairClass}${actionBlueClass}${actionPurpleInsideClass}${pillStyleClass}${compactClosedClass}${cardClass}${miniClass}"${mutexAttr}>
       <div class="option-header" onclick="toggleOption(this)">
         <span style="display:flex;align-items:center;gap:6px">
           ${emojiHtml}
@@ -16113,6 +16123,8 @@ function substituteVars(text) {
     .replace(/\[accord_enfant\]/g, accordEnfant)
     .replace(/\[prénom_enfant\]/g, prenomStyled)
     .replace(/\[prénom_parents\]/g, parents||'[parents]')
+    .replace(/\[prénom_parent_1\]/g, p1 || '[prénom parent]')
+    .replace(/\[prénom_parent_2\]/g, p2 || '[prénom parent]')
     .replace(/\[horaire_souhaite\]/g, (() => {
       // Horaire souhaité du réveil (III. Découverte → Fiche découverte). Format HH:MM.
       // Affichage : "6h du matin" si minutes=00, sinon "6h30 du matin".
