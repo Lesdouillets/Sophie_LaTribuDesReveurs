@@ -7570,7 +7570,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=648"></script>
+<script src="script-data.js?v=649"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -16123,7 +16123,7 @@ function substituteVars(text) {
     .replace(/\[accord_enfant\]/g, accordEnfant)
     .replace(/\[prénom_enfant\]/g, prenomStyled)
     .replace(/\[prénom_parents\]/g, parents||'[parents]')
-    .replace(/\[prénom_parent_1\]/g, p1 || '[prénom parent]')
+    .replace(/\[prénom_parent_1\]/g, p1 ? `<strong style="color:#16a34a;font-size:1.15em">${p1}</strong>` : '[prénom parent]')
     .replace(/\[prénom_parent_2\]/g, p2 || '[prénom parent]')
     .replace(/\[horaire_souhaite\]/g, (() => {
       // Horaire souhaité du réveil (III. Découverte → Fiche découverte). Format HH:MM.
