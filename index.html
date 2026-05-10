@@ -282,6 +282,38 @@
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .form-grid .full { grid-column: 1 / -1; }
 
+    /* Sélecteur Sexe enfant : 2 boutons (rose Fille / bleu Garçon) au lieu d'un select */
+    .sexe-enfant-toggle { display: flex; gap: 8px; }
+    .sexe-btn {
+      flex: 1; padding: 9px 12px; border-radius: 8px;
+      border: 2px solid #cbd5e0; background: #f8fafc; color: #64748b;
+      font-weight: 700; font-size: 14px; cursor: pointer;
+      transition: all 0.15s; line-height: 1.2;
+    }
+    .sexe-btn:hover:not(.selected) { background: #eef2f7; border-color: #94a3b8; }
+    .sexe-btn-fille.selected {
+      background: #ec4899; color: #fff; border-color: #be185d;
+      box-shadow: 0 2px 6px rgba(236, 72, 153, 0.35);
+    }
+    .sexe-btn-garcon.selected {
+      background: #3b82f6; color: #fff; border-color: #1d4ed8;
+      box-shadow: 0 2px 6px rgba(59, 130, 246, 0.35);
+    }
+
+    /* Sélecteur Type de lait infantile : boutons (au lieu d'un select) */
+    .lait-btns { display: flex; flex-wrap: wrap; gap: 8px; max-width: 720px; }
+    .lait-btn {
+      padding: 8px 12px; border-radius: 8px;
+      border: 1.5px solid #cbd5e0; background: #f8fafc; color: #475569;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: all 0.15s; line-height: 1.25;
+    }
+    .lait-btn:hover:not(.selected) { background: #eef2f7; border-color: #94a3b8; }
+    .lait-btn.selected {
+      background: #2563eb; color: #fff; border-color: #1d4ed8;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+    }
+
     .form-group { display: flex; flex-direction: column; gap: 6px; }
     /* Option avec suffixe "(par défaut)" : entièrement en italique
        (impossible de styler uniquement une partie du texte d'un <option> en HTML) */
@@ -5000,6 +5032,12 @@
       font-size: 16px !important;
     }
     .sol-row-header { display: flex; align-items: center; gap: 4px; }
+    /* Espace au-dessus de Lit ouvert / Nombreux rappels / Progressivité (Plan d'action — Accompagnement) */
+    .sol-row-wrap[data-sol-id="accomp_lit_ouvert"],
+    .sol-row-wrap[data-sol-id="accomp_rappels_presence"],
+    .sol-row-wrap[data-sol-id="accomp_progressivite"] {
+      margin-top: 18px;
+    }
     .sol-row-arrow { font-size: 11px; transition: transform 0.2s; display: inline-block; cursor: pointer; padding: 4px 8px; opacity: 0.7; }
     .sol-row-arrow:hover { opacity: 1; background: #f1f5f9; border-radius: 4px; }
     .sol-row-collapsed .sol-row-arrow { transform: rotate(-90deg); }
@@ -5670,11 +5708,11 @@
             </div>
             <div class="form-group">
               <label>Sexe <span style="color:#e74c3c">*</span></label>
-              <select id="sexe-enfant" oninput="computeClientFields()">
-                <option value="">– choisir –</option>
-                <option value="Fille">👧 Fille</option>
-                <option value="Garçon">👦 Garçon</option>
-              </select>
+              <input type="hidden" id="sexe-enfant" value="">
+              <div class="sexe-enfant-toggle">
+                <button type="button" class="sexe-btn sexe-btn-fille" data-sexe="Fille" onclick="setSexeEnfant('Fille')">👧 Fille</button>
+                <button type="button" class="sexe-btn sexe-btn-garcon" data-sexe="Garçon" onclick="setSexeEnfant('Garçon')">👦 Garçon</button>
+              </div>
             </div>
             <div class="form-group">
               <label>Fratrie</label>
@@ -5871,17 +5909,17 @@
               </div>
               <div class="form-group full" id="type-lait-group" style="display:none;margin-top:8px">
                 <label>Type de lait infantile</label>
-                <select id="type-lait" style="max-width:420px">
-                  <option value="">–</option>
-                  <option value="Lait normal aux PLV">Lait « normal » aux PLV</option>
-                  <option value="Lait normal aux PLV AR">Lait « normal » aux PLV Anti-Reflux</option>
-                  <option value="Lait PLV hydrolysées HA">Lait à base de PLV hydrolysées (HA)</option>
-                  <option value="Lait PLV hydrolysées HA AR">Lait à base de PLV hydrolysées (HA) Anti-Reflux</option>
-                  <option value="Lait acides aminés PLV">Lait à base d'acides aminés de PLV</option>
-                  <option value="Lait acides aminés PLV AR">Lait à base d'acides aminés de PLV Anti-Reflux</option>
-                  <option value="Lait protéines de riz">Lait aux protéines de riz</option>
-                  <option value="Lait protéines de riz AR">Lait aux protéines de riz Anti-Reflux</option>
-                </select>
+                <input type="hidden" id="type-lait" value="">
+                <div class="lait-btns">
+                  <button type="button" class="lait-btn" data-lait="Lait normal aux PLV" onclick="setTypeLait('Lait normal aux PLV')">Lait « normal » aux PLV</button>
+                  <button type="button" class="lait-btn" data-lait="Lait normal aux PLV AR" onclick="setTypeLait('Lait normal aux PLV AR')">Lait « normal » aux PLV Anti-Reflux</button>
+                  <button type="button" class="lait-btn" data-lait="Lait PLV hydrolysées HA" onclick="setTypeLait('Lait PLV hydrolysées HA')">Lait à base de PLV hydrolysées (HA)</button>
+                  <button type="button" class="lait-btn" data-lait="Lait PLV hydrolysées HA AR" onclick="setTypeLait('Lait PLV hydrolysées HA AR')">Lait à base de PLV hydrolysées (HA) Anti-Reflux</button>
+                  <button type="button" class="lait-btn" data-lait="Lait acides aminés PLV" onclick="setTypeLait('Lait acides aminés PLV')">Lait à base d'acides aminés de PLV</button>
+                  <button type="button" class="lait-btn" data-lait="Lait acides aminés PLV AR" onclick="setTypeLait('Lait acides aminés PLV AR')">Lait à base d'acides aminés de PLV Anti-Reflux</button>
+                  <button type="button" class="lait-btn" data-lait="Lait protéines de riz" onclick="setTypeLait('Lait protéines de riz')">Lait aux protéines de riz</button>
+                  <button type="button" class="lait-btn" data-lait="Lait protéines de riz AR" onclick="setTypeLait('Lait protéines de riz AR')">Lait aux protéines de riz Anti-Reflux</button>
+                </div>
               </div>
               <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
                 <label class="pb-item"><input type="checkbox" name="alim" value="Diversification"> <span>🥑 Diversification</span></label>
@@ -7481,7 +7519,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=634"></script>
+<script src="script-data.js?v=637"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -7840,6 +7878,50 @@ function setEnseigne(enseigne) {
 function setEnseigneFromCard(val) {
   setEnseigne(val);
 }
+
+// Sexe enfant : toggle entre 2 boutons (Fille rose / Garçon bleu).
+// Re-clic sur le bouton actif désélectionne. La valeur est stockée dans l'input hidden #sexe-enfant
+// (compatible avec le code existant qui lit/écrit .value sur cet ID).
+function setSexeEnfant(value) {
+  const input = document.getElementById('sexe-enfant');
+  if (!input) return;
+  // Re-clic sur le bouton actif → désélection
+  const newValue = (input.value === value) ? '' : value;
+  input.value = newValue;
+  _updateSexeEnfantButtons();
+  if (typeof computeClientFields === 'function') computeClientFields();
+}
+window.setSexeEnfant = setSexeEnfant;
+
+function _updateSexeEnfantButtons() {
+  const input = document.getElementById('sexe-enfant');
+  const value = input ? (input.value || '') : '';
+  document.querySelectorAll('.sexe-btn').forEach(btn => {
+    btn.classList.toggle('selected', !!value && btn.dataset.sexe === value);
+  });
+}
+window._updateSexeEnfantButtons = _updateSexeEnfantButtons;
+
+// Type de lait infantile : sélection unique parmi 8 boutons. Re-clic désélectionne.
+// La valeur est stockée dans l'input hidden #type-lait (compat code existant).
+function setTypeLait(value) {
+  const input = document.getElementById('type-lait');
+  if (!input) return;
+  const newValue = (input.value === value) ? '' : value;
+  input.value = newValue;
+  _updateTypeLaitButtons();
+  if (typeof computeClientFields === 'function') computeClientFields();
+}
+window.setTypeLait = setTypeLait;
+
+function _updateTypeLaitButtons() {
+  const input = document.getElementById('type-lait');
+  const value = input ? (input.value || '') : '';
+  document.querySelectorAll('.lait-btn').forEach(btn => {
+    btn.classList.toggle('selected', !!value && btn.dataset.lait === value);
+  });
+}
+window._updateTypeLaitButtons = _updateTypeLaitButtons;
 
 function setEnseigneFromSelect(val) {
   setEnseigne(val);
@@ -8567,6 +8649,7 @@ function populateFormFromClient(c) {
   set('date-naissance', c.dateNaissance);
   set('date-terme', c.dateTerme);
   set('sexe-enfant', c.sexe);
+  if (typeof _updateSexeEnfantButtons === 'function') _updateSexeEnfantButtons();
   set('fratrie-enfant', c.fratrie);
   set('poids-enfant', c.poids);
   set('taille-pere', c.taillePere);
@@ -8577,6 +8660,7 @@ function populateFormFromClient(c) {
   set('sexe-parent1', c.sexeParent1 || 'maman');
   set('sexe-parent2', c.sexeParent2 || 'papa');
   set('type-lait', c.typeLait);
+  if (typeof _updateTypeLaitButtons === 'function') _updateTypeLaitButtons();
   set('notes-medicales', c.notesMedicales);
   set('autre-allergie-text', c.autreAllergieText);
   set('email-famille', c.email);

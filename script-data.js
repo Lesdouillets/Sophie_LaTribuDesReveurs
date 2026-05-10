@@ -5474,7 +5474,7 @@ const SCRIPT_DATA = {
                     ]
                   },
                   {
-                    id: "accomp_lit_ferme_chaise_j7", emoji: "🪑", label: "Accompagnement chaise : Sortir au Jour&nbsp;7",
+                    id: "accomp_lit_ferme_chaise_j7", emoji: "🪑", label: "Chaise : Sortir au Jour&nbsp;7",
                     blocks: [
                       {
                         type: "normal", _leftTitle: "Jours 1, 2 et 3",
@@ -5541,7 +5541,7 @@ const SCRIPT_DATA = {
                     ]
                   },
                   {
-                    id: "accomp_lit_ferme_chaise_apaisement_j1", emoji: "🪑", label: "Accompagnement chaise : Sortir dès l'apaisement au Jour&nbsp;1",
+                    id: "accomp_lit_ferme_chaise_apaisement_j1", emoji: "🪑", label: "Chaise : Sortir dès l'apaisement au Jour&nbsp;1",
                     blocks: [
                       {
                         type: "normal", _leftTitle: "Jours 1, 2 et 3",
@@ -5608,7 +5608,7 @@ const SCRIPT_DATA = {
                     ]
                   },
                   {
-                    id: "accomp_lit_ferme_chaise_coucher_j1", emoji: "🪑", label: "Accompagnement chaise : Sortir après le coucher au Jour&nbsp;1",
+                    id: "accomp_lit_ferme_chaise_coucher_j1", emoji: "🪑", label: "Chaise : Sortir après le coucher au Jour&nbsp;1",
                     blocks: [
                       {
                         type: "normal", _leftTitle: "Dès le 1er soir et tous les autres soirs",
@@ -5851,7 +5851,7 @@ const SCRIPT_DATA = {
                 expandAllAsPills: true,
                 items: [
                   {
-                    id: "accomp_rappels_chaise_coucher_j1", emoji: "🪑", label: "Accompagnement chaise : Sortir après le coucher au Jour&nbsp;1 <em>(Dépendance à la présence +)</em>",
+                    id: "accomp_rappels_chaise_coucher_j1", emoji: "🪑", label: "Chaise : Sortir après le coucher au Jour&nbsp;1 <em>(Dépendance à la présence +)</em>",
                     blocks: [
                       { type: "normal", _leftTitle: "Excitant de communiquer", text: "- Il n'y a **RIEN de PLUS excitant** que de **communiquer** avec Papa et Maman.\n- Et **tous les moyens sont bons** pour **maintenir ce lien** !" },
                       {
