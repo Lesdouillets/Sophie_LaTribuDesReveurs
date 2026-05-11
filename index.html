@@ -10132,6 +10132,20 @@ function startConsultation() {
     if (typeof promptSexeEnfantRequired === 'function') promptSexeEnfantRequired();
     return;
   }
+  // Si l'enfant a un âge réel ET un âge corrigé (= prématuré OU coché "réel=corrigé"),
+  // l'objectif de sieste doit être choisi avant de démarrer la consultation
+  const _dnVal = (document.getElementById('date-naissance')?.value || '').trim();
+  const _dtVal = (document.getElementById('date-terme')?.value || '').trim();
+  const _aeVal = (document.getElementById('age-enfant')?.value || '').trim();
+  const _acmVal = (document.getElementById('age-corrige-manuel')?.value || '').trim();
+  const _agVal = (document.getElementById('age-gestationnel')?.value || '').trim();
+  const _hasReel = !!(_dnVal || _aeVal);
+  const _hasCorr = !!(_dtVal || _acmVal || _agVal);
+  const _siesteVal = document.querySelector('input[name="sieste"]:checked')?.value || '';
+  if (_hasReel && _hasCorr && !_siesteVal) {
+    if (typeof promptSiesteRequired === 'function') promptSiesteRequired();
+    return;
+  }
   const consultDate2 = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
   const dateNaiss = document.getElementById('date-naissance')?.value;
   const dateTerme = document.getElementById('date-terme')?.value;
@@ -10891,22 +10905,27 @@ function updateHeader() {
   // Âge corrigé (ligne séparée) — affiché dès qu'il est disponible, même négatif
   const acEl = document.getElementById('header-age-corrige');
   let ageCorrigeText = '';
-  // Priorité 1 : calculé depuis les dates (prématuré)
-  const premature = c.dateTerme && c.dateNaissance && c.dateTerme !== c.dateNaissance
-    && new Date(c.dateTerme) > new Date(c.dateNaissance);
-  if (premature) {
-    if (c.ageCorrigeStr) {
-      ageCorrigeText = c.ageCorrigeStrCourt || c.ageCorrigeStr;
-    } else {
-      // Terme pas encore atteint → calcul négatif
-      const consultDate = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
-      const diffJours = Math.floor((new Date(consultDate) - new Date(c.dateTerme)) / (1000*60*60*24));
-      ageCorrigeText = diffJours + ' jours';
+  // Cas spécial : "Âge réel = âge corrigé" coché → afficher EXACTEMENT le même format que l'âge réel
+  if (c.ageCorrEqReel) {
+    ageCorrigeText = (c.ageReelStrCourt || c.ageReelStr || c.ageEnfant || '').trim();
+  } else {
+    // Priorité 1 : calculé depuis les dates (prématuré)
+    const premature = c.dateTerme && c.dateNaissance && c.dateTerme !== c.dateNaissance
+      && new Date(c.dateTerme) > new Date(c.dateNaissance);
+    if (premature) {
+      if (c.ageCorrigeStr) {
+        ageCorrigeText = c.ageCorrigeStrCourt || c.ageCorrigeStr;
+      } else {
+        // Terme pas encore atteint → calcul négatif
+        const consultDate = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
+        const diffJours = Math.floor((new Date(consultDate) - new Date(c.dateTerme)) / (1000*60*60*24));
+        ageCorrigeText = diffJours + ' jours';
+      }
     }
-  }
-  // Priorité 2 : saisi manuellement
-  if (!ageCorrigeText && c.ageCorrigeManuel) {
-    ageCorrigeText = c.ageCorrigeManuel;
+    // Priorité 2 : saisi manuellement
+    if (!ageCorrigeText && c.ageCorrigeManuel) {
+      ageCorrigeText = c.ageCorrigeManuel;
+    }
   }
   if (ageCorrigeText) {
     acEl.textContent = '✏️ corrigé : ' + ageCorrigeText;
@@ -19040,6 +19059,51 @@ window._updateAgeDom = _updateAgeDom;
 // Checkbox "Âge réel = âge corrigé" dans la fiche client : copie l'âge réel
 // dans le champ âge corrigé (manuel) et la date de terme = date de naissance.
 // Quand on décoche, on libère les champs sans les vider.
+// Affiche un modal bloquant qui exige de choisir un objectif de sieste.
+// Réutilise EXACTEMENT le HTML de l'onglet Sieste de la fiche client (couleurs, glow, format).
+function promptSiesteRequired() {
+  if (document.getElementById('sieste-required-modal')) return;
+  // Cloner le HTML de l'onglet Sieste pour garder couleurs/format/glow identiques
+  const ficheSieste = document.getElementById('sieste-options');
+  const siesteInnerHtml = ficheSieste ? ficheSieste.outerHTML : '<div>Section sieste indisponible</div>';
+  const overlay = document.createElement('div');
+  overlay.id = 'sieste-required-modal';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:9999999;background:rgba(0,0,0,0.55);display:flex;align-items:flex-start;justify-content:center;padding:40px 20px;overflow:auto;font-family:inherit';
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:14px;padding:24px 28px;max-width:680px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,0.3)">
+      <div style="font-size:20px;font-weight:800;color:#dc2626;margin-bottom:6px;text-align:center">⚠️ Information manquante</div>
+      <div style="font-size:14px;color:#475569;margin-bottom:18px;text-align:center;line-height:1.5">L'<strong>objectif de sieste</strong> est obligatoire pour démarrer la consultation. Choisissez la case qui correspond à l'âge de l'enfant&nbsp;:</div>
+      <div id="sieste-modal-host">${siesteInnerHtml}</div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px;border-top:1px solid #e2e8f0;padding-top:14px">
+        <button type="button" id="sieste-modal-cancel" style="padding:10px 16px;border:1.5px solid #cbd5e0;background:#fff;color:#475569;border-radius:8px;font-weight:600;cursor:pointer">Annuler</button>
+        <button type="button" id="sieste-modal-confirm" style="padding:10px 18px;border:none;background:#16a34a;color:#fff;border-radius:8px;font-weight:700;cursor:pointer">Valider et démarrer</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  // Rebrancher les onchange des radios clonés sur le set principal de la fiche client
+  // (l'ID #sieste-options existe en double — on cible le clone dans le modal via querySelectorAll)
+  const modalRadios = overlay.querySelectorAll('input[name="sieste"]');
+  modalRadios.forEach(r => {
+    r.addEventListener('change', () => {
+      // Synchroniser le radio "vrai" dans la fiche client
+      const real = document.querySelector(`#tab-sieste input[name="sieste"][value="${r.value}"]`);
+      if (real) { real.checked = true; if (typeof onSiesteChange === 'function') onSiesteChange(); }
+    });
+  });
+  // Refresh glow doré sur les cases clonées (la fonction updateSiesteHighlight utilise
+  // document.querySelectorAll('.sieste-row') donc les rows clonées sont aussi mises à jour)
+  if (typeof updateSiesteHighlight === 'function') updateSiesteHighlight();
+  overlay.querySelector('#sieste-modal-cancel').onclick = () => overlay.remove();
+  overlay.querySelector('#sieste-modal-confirm').onclick = () => {
+    const selected = document.querySelector('#tab-sieste input[name="sieste"]:checked')?.value
+                  || overlay.querySelector('input[name="sieste"]:checked')?.value;
+    if (!selected) { alert('Merci de choisir une case avant de valider.'); return; }
+    overlay.remove();
+    if (typeof startConsultation === 'function') startConsultation();
+  };
+}
+window.promptSiesteRequired = promptSiesteRequired;
+
 function onAgeCorrEqReelToggle() {
   const cb = document.getElementById('age-corr-eq-reel');
   if (!cb) return;
@@ -19347,7 +19411,7 @@ function _renderAccueilIntakeForm() {
   } else if (p2Raw) {
     parentRoleHtml = p2Role === 'papa' ? 'le papa' : 'la maman';
   }
-  // Phrase d'intro selon état — "MAMAN" rouge gras majuscule entre 🔥
+  // Phrase d'intro selon état — "MAMAN" rouge gras majuscule entre 🔥, "sais JUSTE" en gras
   const mamanFire = `🔥<strong style="color:#dc2626">MAMAN</strong>🔥`;
   let introHtml;
   if (hasParent && hasChild) {
@@ -19356,14 +19420,16 @@ function _renderAccueilIntakeForm() {
   } else if (hasParent && !hasChild) {
     introHtml = `❓ Vous devez être ${parentNamesHtml} mais je <strong>NE</strong> connais <strong>ENCORE le prénom de VOTRE enfant</strong> !`;
   } else if (!hasParent && hasChild) {
-    introHtml = `❓ Pour le moment, je sais JUSTE qu'une ${mamanFire} est <strong>face à moi</strong>… mais je <strong>NE</strong> connais <strong>ENCORE VOTRE prénom</strong> !`;
+    introHtml = `❓ Pour le moment, je <strong>sais JUSTE</strong> qu'1 ${mamanFire} est <strong>face à moi</strong>… mais je <strong>NE</strong> connais <strong>ENCORE VOTRE prénom</strong> !`;
   } else {
-    introHtml = `❓ Pour le moment, je sais JUSTE qu'une ${mamanFire} est <strong>face à moi</strong>… mais je <strong>NE</strong> connais <strong>ENCORE AUCUN prénom</strong> !`;
+    introHtml = `❓ Pour le moment, je <strong>sais JUSTE</strong> qu'1 ${mamanFire} est <strong>face à moi</strong>… mais je <strong>NE</strong> connais <strong>ENCORE AUCUN prénom</strong> !`;
   }
   // Bloc question parent : caché si un prénom de parent est déjà renseigné
   // Styles inline pour garantir 0 espacement entre les 3 rows (résiste aux conflits CSS)
-  const parentStackStyle = 'display:flex;flex-direction:column;gap:0;margin:4px 0 8px;line-height:1';
-  const parentRowStyle = 'display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0;line-height:1;padding:0';
+  const parentStackStyle = 'display:flex;flex-direction:column;gap:0;margin:4px 0 8px;line-height:0';
+  const parentRowStyle = 'display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0;padding:0;line-height:0';
+  const compactInputStyle = 'padding:4px 8px;font-size:13px;line-height:1.2;border:1.5px solid #cbd5e0;border-radius:6px';
+  const compactBtnStyle = 'padding:4px 10px;font-size:12.5px;line-height:1.2;border:1.5px solid;border-radius:6px;font-weight:700;cursor:pointer';
   const parentBlock = hasParent ? '' : `
   <li style="margin-bottom:4px"><strong>Comment vous appelez-vous</strong> ?
     <div class="accueil-parent-stack" style="${parentStackStyle}">
