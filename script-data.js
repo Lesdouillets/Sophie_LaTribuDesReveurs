@@ -644,7 +644,7 @@ const SCRIPT_DATA = {
           blocks: [
             {
               type: "normal",
-              text: "- **AVANT** qu'**on commence à parler** \"sommeil\"\n  j'aimerais, **si vous êtes d'accord**, [prénom_parent_1]\n  qu'on **prenne un petit moment**, toutes les 2, pour **revenir** sur **CE QUE vous m'avez partagé**\n\n- D'abord, je voudrais **vous dire quelque chose**\n- Ce que **vous vivez**, là, au quotidien, avec [prénom_enfant], **c'est dur**\n- Je ne dis **PAS CA pour dire**\n  Je le dis parce que **c'est vrai**\n\n- Entre :"
+              text: "- **AVANT** qu'**on commence à parler** \"sommeil\"\n  j'aimerais, **si vous êtes d'accord**, [prénom_parent_1]\n  qu'on **prenne un petit moment**, toutes les 2, pour **revenir** sur **CE QUE vous m'avez partagé**\n\n- D'abord, je voudrais **vous dire quelque chose**\n- Ce que **vous vivez**, là, au quotidien, avec [prénom_enfant], **c'est dur**\n- Je ne dis **PAS ÇA pour le dire**\n  Je le dis parce que **c'est vrai**\n\n- Entre :"
             },
             {
               type: "grouped_checklist",
@@ -675,7 +675,7 @@ const SCRIPT_DATA = {
             {
               type: "option", label: "SI ELLE N'A PAS DE SOUPÇONS", emoji: "🔴", style: "action", _pillStyle: true, _purpleContent: true, mutexGroup: "rgo-soupcons",
               blocks: [
-                { type: "normal", text: "- Et je voudrais qu'**on s'arrête** une **seconde sur quelque chose**\n- [prénom_parent_1], vous m'avez **raconté plein de petites choses** sur [prénom_enfant]\n  des **choses que vous vivez**, au quotidien\n\n- Et moi, en vous écoutant :\n  - Il y a certains éléments qui **viennent attirer mon attention**\n  - **Rien d'alarmant** en soi\n  - Mais ce sont des choses qui **méritent qu'on les regarde de près**\n  - Et toutes ces choses, mises ensemble, forment **un tableau que je connais bien**\n\n  - Et aujourd'hui, **mon rôle**, c'est de :\n    - **vous le partager**\n    - et de vous montrer **CE QUE ça raconte**" }
+                { type: "normal", text: "- Et je voudrais qu'**on s'arrête** une **seconde sur quelque chose**\n\n- [prénom_parent_1], vous m'avez **raconté plein de petites choses** sur [prénom_enfant]\n  des **choses que vous vivez**, au quotidien\n\n- Et moi, en vous écoutant :\n  - Il y a certains éléments qui **viennent attirer mon attention**\n  - **Rien d'alarmant** en soi\n  - Mais ce sont des choses qui **méritent qu'on les regarde de près**\n  - Et toutes ces choses, mises ensemble, forment **un tableau que je connais bien**\n\n  - Et aujourd'hui, **mon rôle**, c'est de :\n    - **vous le partager**\n    - et de vous montrer **CE QUE ça raconte**" }
               ]
             },
           ]
@@ -786,7 +786,7 @@ const SCRIPT_DATA = {
           blocks: [
             {
               type: "normal",
-              text: "- **AVANT** qu'**on commence à parler** \"sommeil\"\n  j'aimerais, **si vous êtes d'accord**, [prénom_parent_1]\n  qu'on **prenne un petit moment**, toutes les 2, pour **revenir** sur **CE QUE vous m'avez partagé**\n\n- D'abord, je voudrais **vous dire quelque chose**\n- Ce que **vous vivez**, là, au quotidien, avec [prénom_enfant], **c'est dur**\n- Je ne dis **PAS CA pour dire**\n  Je le dis parce que **c'est vrai**\n\n- Entre :"
+              text: "- **AVANT** qu'**on commence à parler** \"sommeil\"\n  j'aimerais, **si vous êtes d'accord**, [prénom_parent_1]\n  qu'on **prenne un petit moment**, toutes les 2, pour **revenir** sur **CE QUE vous m'avez partagé**\n\n- D'abord, je voudrais **vous dire quelque chose**\n- Ce que **vous vivez**, là, au quotidien, avec [prénom_enfant], **c'est dur**\n- Je ne dis **PAS ÇA pour le dire**\n  Je le dis parce que **c'est vrai**\n\n- Entre :"
             },
             {
               type: "grouped_checklist",
@@ -818,7 +818,7 @@ const SCRIPT_DATA = {
             {
               type: "option", label: "SI ELLE N'A PAS DE SOUPÇONS", emoji: "🔴", style: "action", _pillStyle: true, _purpleContent: true, mutexGroup: "allergie-seule-soupcons",
               blocks: [
-                { type: "normal", text: "- Et je voudrais qu'**on s'arrête** une **seconde sur quelque chose**\n- [prénom_parent_1], vous m'avez **raconté plein de petites choses** sur [prénom_enfant]\n  des **choses que vous vivez**, au quotidien\n\n- Et moi, en vous écoutant :\n  - Il y a certains éléments qui **viennent attirer mon attention**\n  - **Rien d'alarmant** en soi\n  - Mais ce sont des choses qui **méritent qu'on les regarde de près**\n  - Et toutes ces choses, mises ensemble, forment **un tableau que je connais bien**\n\n  - Et aujourd'hui, **mon rôle**, c'est de :\n    - **vous le partager**\n    - et de vous montrer **CE QUE ça raconte**" }
+                { type: "normal", text: "- Et je voudrais qu'**on s'arrête** une **seconde sur quelque chose**\n\n- [prénom_parent_1], vous m'avez **raconté plein de petites choses** sur [prénom_enfant]\n  des **choses que vous vivez**, au quotidien\n\n- Et moi, en vous écoutant :\n  - Il y a certains éléments qui **viennent attirer mon attention**\n  - **Rien d'alarmant** en soi\n  - Mais ce sont des choses qui **méritent qu'on les regarde de près**\n  - Et toutes ces choses, mises ensemble, forment **un tableau que je connais bien**\n\n  - Et aujourd'hui, **mon rôle**, c'est de :\n    - **vous le partager**\n    - et de vous montrer **CE QUE ça raconte**" }
               ]
             },
           ]
