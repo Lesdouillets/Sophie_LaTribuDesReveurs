@@ -7678,7 +7678,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=706"></script>
+<script src="script-data.js?v=707"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9483,8 +9483,6 @@ window.validateSiesteOrRedirect = validateSiesteOrRedirect;
 async function resumeConsultation() {
   // saveFicheOnly met à jour state.client avec les données du formulaire + sauvegarde
   try { await saveFicheOnly(); } catch(e) { console.warn('saveFicheOnly error:', e); }
-  // Validation sieste obligatoire (bloque la reprise si pas de sieste sélectionnée)
-  if (!validateSiesteOrRedirect()) return;
   state._returningFromConsult = false;
   document.getElementById('setup-screen').style.display = 'none';
   document.getElementById('app-screen').style.display = 'flex';
@@ -10019,10 +10017,8 @@ function startConsultation() {
   const prenomParent1 = document.getElementById('prenom-parent1').value.trim();
   const sexeEnfant = document.getElementById('sexe-enfant').value;
   const enseigneVal = document.getElementById('enseigne-select')?.value;
-  // Obligatoires : enseigne + prénom parent 1 + prénom enfant
+  // Seule l'enseigne est obligatoire — tout le reste peut être renseigné via I. Accueil
   if (!enseigneVal) { alert('Merci de sélectionner l\'enseigne (La Tribu ou Fée dodo).'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
-  if (!prenomParent1) { alert('Merci de renseigner le prénom du parent 1.'); showSetupTab('tab-parents', document.querySelector('.setup-tab[onclick*="tab-parents"]')); return; }
-  if (!prenomEnfant) { alert('Merci de renseigner le prénom de l\'enfant.'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
   const consultDate2 = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
   const dateNaiss = document.getElementById('date-naissance')?.value;
   const dateTerme = document.getElementById('date-terme')?.value;
@@ -19297,11 +19293,6 @@ function restoreActiveConsultation() {
     buildSections();
     adaptSectionsToClient();
     initUI();
-    // Validation sieste obligatoire pour reprendre une consultation existante
-    // (snapshots d'avant l'ajout du champ sieste arrivent ici sans valeur)
-    if (typeof validateSiesteOrRedirect === 'function' && !validateSiesteOrRedirect()) {
-      return false;
-    }
     document.getElementById('setup-screen').style.display = 'none';
     document.getElementById('app-screen').style.display = 'flex';
     return true;
