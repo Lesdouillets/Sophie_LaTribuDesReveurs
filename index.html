@@ -19095,9 +19095,51 @@ function _renderAccueilIntakeForm() {
   <div class="sieste-group-left">Autre</div>
   <div class="sieste-group-right">${row('pas-de-changement','Pas de changement')}</div>
 </div>`;
-  return `
-<div style="margin:0 0 10px 0">❓ Pour le moment, je sais JUSTE qu'<strong>une maman</strong> est <strong>face à moi</strong>… mais je ne connais <strong>ENCORE AUCUN prénom</strong> !</div>
-<ul style="margin:0;padding-left:20px;list-style:disc;line-height:1.55">
+  // ── Adaptation conditionnelle selon ce qui est déjà rempli ──
+  const p1Raw = (c.prenomParent1 || '').trim();
+  const p2Raw = (c.prenomParent2 || '').trim();
+  const childRaw = (c.prenomEnfant || '').trim();
+  const hasParent = !!p1Raw || !!p2Raw;
+  const hasChild = !!childRaw;
+  const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+  const p1Cap = cap(p1Raw);
+  const p2Cap = cap(p2Raw);
+  // Marker class pour update live du prénom enfant dans la question d'âge et le titre
+  const prenomColor = isFille ? '#E25098' : '#6495ED';
+  const prenomEnfantHtml = childRaw
+    ? `<strong class="var-prenom-enfant" data-sexe="${isFille?'fille':'garcon'}" style="color:${prenomColor};font-size:1.15em">${escVal(cap(childRaw))}</strong>`
+    : `<strong class="var-prenom-enfant var-empty" data-sexe="${isFille?'fille':'garcon'}" style="color:${prenomColor};font-size:1.15em">[prénom]</strong>`;
+  // Nom(s) du/des parents
+  let parentNamesHtml = '';
+  if (p1Raw && p2Raw) {
+    parentNamesHtml = `<strong>${escVal(p1Cap)}</strong> et <strong>${escVal(p2Cap)}</strong>`;
+  } else if (p1Raw) {
+    parentNamesHtml = `<strong>${escVal(p1Cap)}</strong>`;
+  } else if (p2Raw) {
+    parentNamesHtml = `<strong>${escVal(p2Cap)}</strong>`;
+  }
+  // Rôle des parents : "les parents" / "la maman" / "le papa"
+  let parentRoleHtml = '';
+  if (p1Raw && p2Raw) {
+    parentRoleHtml = 'les parents';
+  } else if (p1Raw) {
+    parentRoleHtml = p1Role === 'papa' ? 'le papa' : 'la maman';
+  } else if (p2Raw) {
+    parentRoleHtml = p2Role === 'papa' ? 'le papa' : 'la maman';
+  }
+  // Phrase d'intro selon état
+  let introHtml;
+  if (hasParent && hasChild) {
+    introHtml = `❓ Vous devez être ${parentNamesHtml}, ${parentRoleHtml} de ${prenomEnfantHtml} ?`;
+  } else if (hasParent && !hasChild) {
+    introHtml = `❓ Vous devez être ${parentNamesHtml} mais je ne connais <strong>ENCORE le prénom de VOTRE enfant</strong> !`;
+  } else if (!hasParent && hasChild) {
+    introHtml = `❓ Pour le moment, je sais JUSTE qu'<strong>une maman</strong> est <strong>face à moi</strong>… mais je ne connais <strong>ENCORE VOTRE prénom</strong> !`;
+  } else {
+    introHtml = `❓ Pour le moment, je sais JUSTE qu'<strong>une maman</strong> est <strong>face à moi</strong>… mais je ne connais <strong>ENCORE AUCUN prénom</strong> !`;
+  }
+  // Bloc question parent : caché si un prénom de parent est déjà renseigné
+  const parentBlock = hasParent ? '' : `
   <li style="margin-bottom:4px"><strong>Comment vous appelez-vous</strong> ?
     <div class="accueil-parent-stack">
       <div class="accueil-intake-row">
@@ -19114,15 +19156,23 @@ function _renderAccueilIntakeForm() {
         <input type="text" placeholder="Nom de famille" value="${escVal(c.nomFamille)}" oninput="onAccueilNomFamilleInput(this.value)" class="accueil-input" style="max-width:280px">
       </div>
     </div>
-  </li>
-  <li style="margin-bottom:8px"><strong>Et votre enfant</strong> ?
+  </li>`;
+  // Bloc question enfant : caché si prénom enfant rempli ; libellé adapté selon parent
+  const childQuestionLabel = (hasParent && !hasChild)
+    ? `<strong>Comment s'appelle-t-${ilelle}</strong> ?`
+    : `<strong>Et votre enfant</strong> ?`;
+  const childBlock = hasChild ? '' : `
+  <li style="margin-bottom:8px">${childQuestionLabel}
     <div class="accueil-intake-row" style="margin:4px 0 8px">
       <input type="text" placeholder="Prénom enfant" value="${escVal(c.prenomEnfant)}" oninput="onAccueilPrenomEnfantInput(this.value)" class="accueil-input">
       <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-enfant-btn${isFille?' selected':''}" data-sexe="Fille" onclick="onAccueilSexeEnfantBtn('Fille')">👧 Fille</button>
       <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-enfant-btn${isGarcon?' selected':''}" data-sexe="Garçon" onclick="onAccueilSexeEnfantBtn('Garçon')">👦 Garçon</button>
     </div>
-  </li>
-  <li style="margin-bottom:8px"><strong>Quel âge a-t-${ilelle}</strong> ? Quelle est sa <strong>date de naissance</strong> ?
+  </li>`;
+  return `
+<div style="margin:0 0 10px 0">${introHtml}</div>
+<ul style="margin:0;padding-left:20px;list-style:disc;line-height:1.55">${parentBlock}${childBlock}
+  <li style="margin-bottom:8px"><strong>Quel âge a</strong> ${prenomEnfantHtml} ? Quelle est sa <strong>date de naissance</strong> ?
     <div class="accueil-intake-row" style="margin:4px 0 8px">
       <input type="date" value="${escVal(c.dateNaissance)}" oninput="onAccueilDateNaissInput(this.value)" class="accueil-input" style="max-width:170px" title="Date de naissance" data-accueil="date-naissance">
       <input type="text" placeholder="Âge réel (ex. 6 mois 12 jours)" value="${escVal(c.ageEnfant)}" oninput="onAccueilAgeReelInput(this.value)" class="accueil-input" style="max-width:240px" title="Âge réel manuel" data-accueil="age-reel">
