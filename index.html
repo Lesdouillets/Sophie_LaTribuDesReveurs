@@ -136,10 +136,20 @@
       color: #475569;
     }
     /* Sieste cible compacte dans I. Accueil — override des styles fiche client */
+    .accueil-sieste-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .accueil-sieste-col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
     .accueil-sieste-grid .sieste-group {
-      grid-template-columns: 90px 1fr;
-      gap: 8px;
-      margin-bottom: 6px;
+      grid-template-columns: 80px 1fr;
+      gap: 6px;
+      margin-bottom: 0;
     }
     .accueil-sieste-grid .sieste-group-left {
       padding: 6px 4px;
@@ -149,16 +159,16 @@
     }
     .accueil-sieste-grid .sieste-group.var-tc .sieste-group-left { font-size: 13px; }
     .accueil-sieste-grid .sieste-group.var-other .sieste-group-left { font-size: 14px; }
-    .accueil-sieste-grid .sieste-group.var-illim .sieste-group-left { font-size: 12px; }
+    .accueil-sieste-grid .sieste-group.var-illim .sieste-group-left { font-size: 11px; }
     .accueil-sieste-grid .sieste-group-left .sieste-group-sub {
       font-size: 10px;
       margin-top: 2px;
       letter-spacing: 0.3px;
     }
     .accueil-sieste-grid .sieste-group-right {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
     }
     .accueil-sieste-grid .sieste-row {
       padding: 4px 8px;
@@ -7681,7 +7691,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=709"></script>
+<script src="script-data.js?v=710"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9370,7 +9380,13 @@ function autoSaveFiche() {
 async function saveFicheOnly() {
   const _cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
   const prenomEnfant = _cap(document.getElementById('prenom-enfant')?.value.trim());
-  if (!prenomEnfant) { alert('Merci de renseigner le prénom de l\'enfant.'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
+  const sexeEnfantVal = document.getElementById('sexe-enfant')?.value;
+  // Si le prénom de l'enfant est renseigné, le sexe devient obligatoire
+  if (prenomEnfant && !sexeEnfantVal) {
+    alert('Merci de sélectionner le sexe de l\'enfant (fille ou garçon).');
+    showSetupTab('tab-bebe', document.querySelector('.setup-tab'));
+    return;
+  }
   const consultDate2 = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
   const dateNaiss = document.getElementById('date-naissance')?.value;
   const dateTerme = document.getElementById('date-terme')?.value;
@@ -18932,6 +18948,7 @@ function onAccueilPrenomParent1Input(val) {
   state.client.prenomParent1 = val;
   const f = document.getElementById('prenom-parent1'); if (f) f.value = val;
   _updatePrenomParent1Dom();
+  if (typeof updateHeader === 'function') updateHeader();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.onAccueilPrenomParent1Input = onAccueilPrenomParent1Input;
@@ -18944,6 +18961,7 @@ function onAccueilSexeParent1Btn(role) {
   document.querySelectorAll('.accueil-sexe-parent1-btn').forEach(b => {
     b.classList.toggle('selected', b.dataset.role === role);
   });
+  if (typeof updateHeader === 'function') updateHeader();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.onAccueilSexeParent1Btn = onAccueilSexeParent1Btn;
@@ -18953,6 +18971,7 @@ function onAccueilPrenomParent2Input(val) {
   state.client.prenomParent2 = val;
   const f = document.getElementById('prenom-parent2'); if (f) f.value = val;
   _updatePrenomParent2Dom();
+  if (typeof updateHeader === 'function') updateHeader();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.onAccueilPrenomParent2Input = onAccueilPrenomParent2Input;
@@ -18965,6 +18984,7 @@ function onAccueilSexeParent2Btn(role) {
   document.querySelectorAll('.accueil-sexe-parent2-btn').forEach(b => {
     b.classList.toggle('selected', b.dataset.role === role);
   });
+  if (typeof updateHeader === 'function') updateHeader();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.onAccueilSexeParent2Btn = onAccueilSexeParent2Btn;
@@ -18973,6 +18993,7 @@ function onAccueilNomFamilleInput(val) {
   if (!state.client) state.client = {};
   state.client.nomFamille = val;
   const f = document.getElementById('nom-famille-enfant'); if (f) f.value = val;
+  if (typeof updateHeader === 'function') updateHeader();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.onAccueilNomFamilleInput = onAccueilNomFamilleInput;
@@ -19067,33 +19088,37 @@ function _renderAccueilIntakeForm() {
     return `<label class="sieste-row${sel}${glow}" onclick="onAccueilSiesteSelect('${val}')"><input type="radio" name="accueil-sieste" value="${val}"${sel?' checked':''}><span class="sieste-label">${label}</span></label>`;
   }
   const siesteHtml = `
-<div class="sieste-group var-illim">
-  <div class="sieste-group-left">Siestes<br>illimitées</div>
-  <div class="sieste-group-right">${row('0-2m','0-2 mois',0,2)}</div>
+<div class="accueil-sieste-col">
+  <div class="sieste-group var-illim">
+    <div class="sieste-group-left">Siestes<br>illimitées</div>
+    <div class="sieste-group-right">${row('0-2m','0-2 mois',0,2)}</div>
+  </div>
+  <div class="sieste-group var-4">
+    <div class="sieste-group-left">4<div class="sieste-group-sub">siestes</div></div>
+    <div class="sieste-group-right">${row('2-4m','2-4 mois',2,4)}</div>
+  </div>
+  <div class="sieste-group var-3">
+    <div class="sieste-group-left">3<div class="sieste-group-sub">siestes</div></div>
+    <div class="sieste-group-right">${row('4-6m','4-6 mois',4,6)}${row('6-8m','6-8 mois',6,8)}${row('8-10m','8-10 mois',8,10)}</div>
+  </div>
 </div>
-<div class="sieste-group var-4">
-  <div class="sieste-group-left">4<div class="sieste-group-sub">siestes</div></div>
-  <div class="sieste-group-right">${row('2-4m','2-4 mois',2,4)}</div>
-</div>
-<div class="sieste-group var-3">
-  <div class="sieste-group-left">3<div class="sieste-group-sub">siestes</div></div>
-  <div class="sieste-group-right">${row('4-6m','4-6 mois',4,6)}${row('6-8m','6-8 mois',6,8)}${row('8-10m','8-10 mois',8,10)}</div>
-</div>
-<div class="sieste-group var-2">
-  <div class="sieste-group-left">2<div class="sieste-group-sub">siestes</div></div>
-  <div class="sieste-group-right">${row('8-15m','8-15 mois',8,15)}${row('15-20m','15-20 mois',15,20)}</div>
-</div>
-<div class="sieste-group var-1">
-  <div class="sieste-group-left">1<div class="sieste-group-sub">sieste</div></div>
-  <div class="sieste-group-right">${row('15m-3a','15 mois - 3 ans (inclus)',15,36,true)}${row('4a-plus','4 ans +',48)}</div>
-</div>
-<div class="sieste-group var-tc">
-  <div class="sieste-group-left">Temps<br>calme</div>
-  <div class="sieste-group-right">${row('4a-plus-tc','4 ans + (Temps calme)',48)}</div>
-</div>
-<div class="sieste-group var-other">
-  <div class="sieste-group-left">Autre</div>
-  <div class="sieste-group-right">${row('pas-de-changement','Pas de changement')}</div>
+<div class="accueil-sieste-col">
+  <div class="sieste-group var-2">
+    <div class="sieste-group-left">2<div class="sieste-group-sub">siestes</div></div>
+    <div class="sieste-group-right">${row('8-15m','8-15 mois',8,15)}${row('15-20m','15-20 mois',15,20)}</div>
+  </div>
+  <div class="sieste-group var-1">
+    <div class="sieste-group-left">1<div class="sieste-group-sub">sieste</div></div>
+    <div class="sieste-group-right">${row('15m-3a','15 mois - 3 ans (inclus)',15,36,true)}${row('4a-plus','4 ans +',48)}</div>
+  </div>
+  <div class="sieste-group var-tc">
+    <div class="sieste-group-left">Temps<br>calme</div>
+    <div class="sieste-group-right">${row('4a-plus-tc','4 ans + (Temps calme)',48)}</div>
+  </div>
+  <div class="sieste-group var-other">
+    <div class="sieste-group-left">Autre</div>
+    <div class="sieste-group-right">${row('pas-de-changement','Pas de changement')}</div>
+  </div>
 </div>`;
   // ── Adaptation conditionnelle selon ce qui est déjà rempli ──
   const p1Raw = (c.prenomParent1 || '').trim();
@@ -19236,7 +19261,13 @@ function onAccueilAgeReelInput(val) {
   state.client.ageEnfant = val;
   state.client.ageReelStr = val;
   const f = document.getElementById('age-enfant'); if (f) f.value = val;
-  if (typeof computeClientFields === 'function') computeClientFields('age-enfant');
+  // Si l'utilisateur efface l'âge manuel, effacer aussi la date de naissance qui en avait été dérivée
+  if (!val || !val.trim()) {
+    const dn = document.getElementById('date-naissance'); if (dn) dn.value = '';
+    state.client.dateNaissance = '';
+  } else if (typeof computeClientFields === 'function') {
+    computeClientFields('age-enfant');
+  }
   _syncAccueilDatesFromFiche();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
@@ -19246,7 +19277,12 @@ function onAccueilAgeGestInput(val) {
   if (!state.client) state.client = {};
   state.client.ageGestationnel = val;
   const f = document.getElementById('age-gestationnel'); if (f) f.value = val;
-  if (typeof computeClientFields === 'function') computeClientFields('age-gestationnel');
+  if (!val || !val.trim()) {
+    const dt = document.getElementById('date-terme'); if (dt) dt.value = '';
+    state.client.dateTerme = '';
+  } else if (typeof computeClientFields === 'function') {
+    computeClientFields('age-gestationnel');
+  }
   _syncAccueilDatesFromFiche();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
@@ -19257,7 +19293,15 @@ function onAccueilAgeCorrigeInput(val) {
   state.client.ageCorrigeManuel = val;
   state.client.ageCorrigeStr = val;
   const f = document.getElementById('age-corrige-manuel'); if (f) f.value = val;
-  if (typeof computeClientFields === 'function') computeClientFields('age-corrige-manuel');
+  if (!val || !val.trim()) {
+    const dt = document.getElementById('date-terme'); if (dt) dt.value = '';
+    state.client.dateTerme = '';
+    state.client.ageCorrigeStr = '';
+    state.client.ageCorrigeMois = '';
+    state.client.ageCorrigeJours = '';
+  } else if (typeof computeClientFields === 'function') {
+    computeClientFields('age-corrige-manuel');
+  }
   _syncAccueilDatesFromFiche();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
