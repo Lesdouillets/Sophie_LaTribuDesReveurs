@@ -9546,6 +9546,24 @@ window.validateSiesteOrRedirect = validateSiesteOrRedirect;
 async function resumeConsultation() {
   // saveFicheOnly met à jour state.client avec les données du formulaire + sauvegarde
   try { await saveFicheOnly(); } catch(e) { console.warn('saveFicheOnly error:', e); }
+  // Même validation que startConsultation : si l'enfant a un âge réel ET un âge corrigé,
+  // l'objectif de sieste doit être choisi avant de reprendre la consultation
+  {
+    const _dnVal = (document.getElementById('date-naissance')?.value || '').trim();
+    const _dtVal = (document.getElementById('date-terme')?.value || '').trim();
+    const _aeVal = (document.getElementById('age-enfant')?.value || '').trim();
+    const _acmVal = (document.getElementById('age-corrige-manuel')?.value || '').trim();
+    const _agVal = (document.getElementById('age-gestationnel')?.value || '').trim();
+    const _hasReel = !!(_dnVal || _aeVal);
+    const _hasCorr = !!(_dtVal || _acmVal || _agVal);
+    const _siesteVal = document.querySelector('input[name="sieste"]:checked')?.value || '';
+    if (_hasReel && _hasCorr && !_siesteVal && typeof promptSiesteRequired === 'function') {
+      // Adapter promptSiesteRequired pour appeler resumeConsultation au lieu de startConsultation
+      state._postSiesteAction = 'resume';
+      promptSiesteRequired();
+      return;
+    }
+  }
   state._returningFromConsult = false;
   document.getElementById('setup-screen').style.display = 'none';
   document.getElementById('app-screen').style.display = 'flex';
@@ -10295,8 +10313,9 @@ function pulseValorisationHeart() {
 }
 function startValorisationReminder() {
   if (_valorisationInterval) clearInterval(_valorisationInterval);
-  // 1er glow après 5 min, puis toutes les 5 min
-  _valorisationInterval = setInterval(pulseValorisationHeart, 5 * 60 * 1000);
+  // 1er glow au bout de 3s (test rapide pour vérifier l'affichage), puis toutes les 1 min
+  setTimeout(pulseValorisationHeart, 3000);
+  _valorisationInterval = setInterval(pulseValorisationHeart, 60 * 1000);
 }
 function stopValorisationReminder() {
   if (_valorisationInterval) { clearInterval(_valorisationInterval); _valorisationInterval = null; }
@@ -11656,6 +11675,13 @@ function togglePb(value, checked) {
 // NAVIGATION
 // ═══════════════════════════════════════════════════
 function navigateTo(idx) {
+  // Si on quitte I. Accueil et qu'aucun prénom enfant/parent n'est renseigné → alerte
+  if (idx !== state.currentIdx) {
+    const _curSecAcc = state.sections && state.sections[state.currentIdx];
+    if (_curSecAcc && _curSecAcc.id === 'accueil') {
+      if (typeof checkAccueilMissingInfo === 'function' && !checkAccueilMissingInfo(() => navigateTo(idx))) return;
+    }
+  }
   // Fermer l'info-panel ouvert (ex. encadré jaune trailingInfoButton) quand on change de section
   if (idx !== state.currentIdx && typeof closeInfoPanel === 'function') closeInfoPanel();
   // Bloquer UNIQUEMENT si on quitte la section IV. Objectifs (currentIdx est sur "objectifs")
@@ -12237,6 +12263,12 @@ function prevSection() {
   if (state.currentIdx>0) navigateTo(state.currentIdx-1);
 }
 function nextSection() {
+  // Si on est sur I. Accueil et qu'aucun prénom enfant ET aucun prénom parent n'est renseigné,
+  // afficher l'alerte des infos manquantes (l'utilisateur peut compléter dans le modal)
+  const _curSecAcc = state.sections && state.sections[state.currentIdx];
+  if (_curSecAcc && _curSecAcc.id === 'accueil') {
+    if (typeof checkAccueilMissingInfo === 'function' && !checkAccueilMissingInfo(() => nextSection())) return;
+  }
   state.revealedLever = null;
   // Cas spécial IV. Objectifs : "Changer le lit" coché sans sous-type → modal de choix au lieu de l'alerte générique
   const _curSec = state.sections && state.sections[state.currentIdx];
@@ -19121,6 +19153,100 @@ window._updateAgeDom = _updateAgeDom;
 // Checkbox "Âge réel = âge corrigé" dans la fiche client : copie l'âge réel
 // dans le champ âge corrigé (manuel) et la date de terme = date de naissance.
 // Quand on décoche, on libère les champs sans les vider.
+// Vérifie qu'on a au moins un prénom (enfant OU parent) en quittant I. Accueil.
+// Retourne true si OK pour avancer, false si on doit attendre.
+// onContinue : callback à appeler quand l'utilisateur valide le modal (pour continuer la navigation).
+function checkAccueilMissingInfo(onContinue) {
+  const c = state.client || {};
+  const prenomEnfant = (c.prenomEnfant || '').trim();
+  const sexeEnfant = c.sexe || '';
+  const prenomParent1 = (c.prenomParent1 || '').trim();
+  const sexeParent1 = c.sexeParent1 || '';
+  const hasChild = !!prenomEnfant;
+  const hasParent = !!prenomParent1;
+  // Si on a déjà au moins un prénom (enfant OU parent), on peut continuer
+  if (hasChild || hasParent) return true;
+  // Sinon ouvrir le modal
+  promptAccueilInfoRequired({ needChild: !hasChild, needParent: !hasParent, onContinue });
+  return false;
+}
+window.checkAccueilMissingInfo = checkAccueilMissingInfo;
+
+// Modal qui demande les infos manquantes (prénom + sexe enfant et/ou parent + rôle).
+function promptAccueilInfoRequired(opts) {
+  if (document.getElementById('accueil-info-modal')) return;
+  const needChild = opts && opts.needChild;
+  const needParent = opts && opts.needParent;
+  const overlay = document.createElement('div');
+  overlay.id = 'accueil-info-modal';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:9999999;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;padding:20px;font-family:inherit';
+  const childBlock = needChild ? `
+    <div style="margin-bottom:14px">
+      <div style="font-weight:700;color:#475569;margin-bottom:6px">👶 Prénom et sexe de l'enfant</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input type="text" id="aim-prenom-enfant" placeholder="Prénom enfant" style="flex:1;min-width:140px;padding:8px 10px;border:1.5px solid #cbd5e0;border-radius:8px;font-size:14px">
+        <button type="button" id="aim-sexe-fille" class="sexe-btn sexe-btn-fille" data-sexe="Fille">👧 Fille</button>
+        <button type="button" id="aim-sexe-garcon" class="sexe-btn sexe-btn-garcon" data-sexe="Garçon">👦 Garçon</button>
+      </div>
+    </div>` : '';
+  const parentBlock = needParent ? `
+    <div style="margin-bottom:14px">
+      <div style="font-weight:700;color:#475569;margin-bottom:6px">👤 Prénom et rôle du parent</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input type="text" id="aim-prenom-parent" placeholder="Prénom parent" style="flex:1;min-width:140px;padding:8px 10px;border:1.5px solid #cbd5e0;border-radius:8px;font-size:14px">
+        <button type="button" id="aim-role-maman" class="sexe-btn sexe-btn-fille" data-role="maman">👩 Maman</button>
+        <button type="button" id="aim-role-papa" class="sexe-btn sexe-btn-garcon" data-role="papa">👨 Papa</button>
+      </div>
+    </div>` : '';
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:14px;padding:22px 26px;max-width:520px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,0.3)">
+      <div style="font-size:18px;font-weight:800;color:#dc2626;text-align:center;margin-bottom:8px">⚠️ Information manquante</div>
+      <div style="font-size:13.5px;color:#475569;text-align:center;margin-bottom:16px;line-height:1.4">Avant de quitter <strong>I. Accueil</strong>, merci de renseigner au moins&nbsp;:</div>
+      ${childBlock}
+      ${parentBlock}
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:14px;border-top:1px solid #e2e8f0;padding-top:12px">
+        <button type="button" id="aim-cancel" style="padding:8px 14px;border:1.5px solid #cbd5e0;background:#fff;color:#475569;border-radius:8px;font-weight:600;cursor:pointer">Annuler</button>
+        <button type="button" id="aim-confirm" style="padding:9px 18px;border:none;background:#16a34a;color:#fff;border-radius:8px;font-weight:700;cursor:pointer">Valider</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  // État sélection des boutons sexe/role dans le modal
+  let selChildSexe = '', selParentRole = '';
+  if (needChild) {
+    const fille = overlay.querySelector('#aim-sexe-fille');
+    const garcon = overlay.querySelector('#aim-sexe-garcon');
+    fille.onclick = () => { selChildSexe = 'Fille'; fille.classList.add('selected'); garcon.classList.remove('selected'); };
+    garcon.onclick = () => { selChildSexe = 'Garçon'; garcon.classList.add('selected'); fille.classList.remove('selected'); };
+  }
+  if (needParent) {
+    const maman = overlay.querySelector('#aim-role-maman');
+    const papa = overlay.querySelector('#aim-role-papa');
+    maman.onclick = () => { selParentRole = 'maman'; maman.classList.add('selected'); papa.classList.remove('selected'); };
+    papa.onclick = () => { selParentRole = 'papa'; papa.classList.add('selected'); maman.classList.remove('selected'); };
+  }
+  overlay.querySelector('#aim-cancel').onclick = () => overlay.remove();
+  overlay.querySelector('#aim-confirm').onclick = () => {
+    // Lire les valeurs et appliquer
+    if (needChild) {
+      const p = (overlay.querySelector('#aim-prenom-enfant').value || '').trim();
+      if (!p) { alert('Merci de renseigner le prénom de l\'enfant.'); return; }
+      if (!selChildSexe) { alert('Merci de sélectionner le sexe de l\'enfant.'); return; }
+      if (typeof onAccueilPrenomEnfantInput === 'function') onAccueilPrenomEnfantInput(p);
+      if (typeof onAccueilSexeEnfantBtn === 'function') onAccueilSexeEnfantBtn(selChildSexe);
+    }
+    if (needParent) {
+      const p = (overlay.querySelector('#aim-prenom-parent').value || '').trim();
+      if (!p) { alert('Merci de renseigner le prénom du parent.'); return; }
+      if (!selParentRole) { alert('Merci de sélectionner le rôle du parent (Maman ou Papa).'); return; }
+      if (typeof onAccueilPrenomParent1Input === 'function') onAccueilPrenomParent1Input(p);
+      if (typeof onAccueilSexeParent1Btn === 'function') onAccueilSexeParent1Btn(selParentRole);
+    }
+    overlay.remove();
+    if (typeof opts.onContinue === 'function') opts.onContinue();
+  };
+}
+window.promptAccueilInfoRequired = promptAccueilInfoRequired;
+
 // Affiche un modal bloquant qui exige de choisir un objectif de sieste.
 // Layout 2 colonnes pour tenir sans scroll, click direct sur une sieste démarre la consultation.
 function promptSiesteRequired() {
@@ -19191,11 +19317,14 @@ function promptSiesteRequired() {
       // Synchroniser le radio "vrai" dans la fiche client
       const realRadio = document.querySelector(`#tab-sieste input[name="sieste"][value="${radio.value}"]`);
       if (realRadio) { realRadio.checked = true; if (typeof onSiesteChange === 'function') onSiesteChange(); }
-      // Fermer le modal et démarrer la consultation après un court délai
+      // Fermer le modal et démarrer/reprendre la consultation après un court délai
       // (pour que l'utilisateur voie le feedback visuel "rond noir + cyan")
       setTimeout(() => {
         overlay.remove();
-        if (typeof startConsultation === 'function') startConsultation();
+        const action = state._postSiesteAction;
+        state._postSiesteAction = null;
+        if (action === 'resume' && typeof resumeConsultation === 'function') resumeConsultation();
+        else if (typeof startConsultation === 'function') startConsultation();
       }, 220);
     });
   });
@@ -19524,27 +19653,26 @@ function _renderAccueilIntakeForm() {
     introHtml = `❓ Pour le moment, je <strong>sais JUSTE</strong> qu'1 ${mamanFire} est <strong>face à moi</strong>… mais je <strong>NE</strong> connais <strong>ENCORE AUCUN prénom</strong> !`;
   }
   // Bloc question parent : caché si un prénom de parent est déjà renseigné
-  // Styles inline pour garantir 0 espacement entre les 3 rows (résiste aux conflits CSS)
-  const parentStackStyle = 'display:flex;flex-direction:column;gap:0;margin:4px 0 8px;line-height:0';
-  const parentRowStyle = 'display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0;padding:0;line-height:0';
-  const compactInputStyle = 'padding:4px 8px;font-size:13px;line-height:1.2;border:1.5px solid #cbd5e0;border-radius:6px';
-  const compactBtnStyle = 'padding:4px 10px;font-size:12.5px;line-height:1.2;border:1.5px solid;border-radius:6px;font-weight:700;cursor:pointer';
+  // Layout : 2 lignes [prénom + Maman + Papa] empilées, et nom famille à droite, centré verticalement
+  const parentBlockStyle = 'display:flex;align-items:center;gap:14px;margin:4px 0 8px';
+  const parentStackStyle = 'display:flex;flex-direction:column;gap:0;flex:0 0 auto';
+  const parentRowStyle = 'display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0;padding:0;line-height:1';
   const parentBlock = hasParent ? '' : `
   <li style="margin-bottom:4px"><strong>Comment vous appelez-vous</strong> ?
-    <div class="accueil-parent-stack" style="${parentStackStyle}">
-      <div class="accueil-intake-row" style="${parentRowStyle}">
-        <input type="text" placeholder="Prénom parent 1" value="${escVal(c.prenomParent1)}" oninput="onAccueilPrenomParent1Input(this.value)" class="accueil-input">
-        <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-parent1-btn${p1Role==='maman'?' selected':''}" data-role="maman" onclick="onAccueilSexeParent1Btn('maman')">👩 Maman</button>
-        <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-parent1-btn${p1Role==='papa'?' selected':''}" data-role="papa" onclick="onAccueilSexeParent1Btn('papa')">👨 Papa</button>
+    <div class="accueil-parent-block" style="${parentBlockStyle}">
+      <div class="accueil-parent-stack" style="${parentStackStyle}">
+        <div class="accueil-intake-row" style="${parentRowStyle}">
+          <input type="text" placeholder="Prénom parent 1" value="${escVal(c.prenomParent1)}" oninput="onAccueilPrenomParent1Input(this.value)" class="accueil-input">
+          <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-parent1-btn${p1Role==='maman'?' selected':''}" data-role="maman" onclick="onAccueilSexeParent1Btn('maman')">👩 Maman</button>
+          <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-parent1-btn${p1Role==='papa'?' selected':''}" data-role="papa" onclick="onAccueilSexeParent1Btn('papa')">👨 Papa</button>
+        </div>
+        <div class="accueil-intake-row" style="${parentRowStyle}">
+          <input type="text" placeholder="Prénom parent 2" value="${escVal(c.prenomParent2)}" oninput="onAccueilPrenomParent2Input(this.value)" class="accueil-input">
+          <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-parent2-btn${p2Role==='maman'?' selected':''}" data-role="maman" onclick="onAccueilSexeParent2Btn('maman')">👩 Maman</button>
+          <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-parent2-btn${p2Role==='papa'?' selected':''}" data-role="papa" onclick="onAccueilSexeParent2Btn('papa')">👨 Papa</button>
+        </div>
       </div>
-      <div class="accueil-intake-row" style="${parentRowStyle}">
-        <input type="text" placeholder="Prénom parent 2" value="${escVal(c.prenomParent2)}" oninput="onAccueilPrenomParent2Input(this.value)" class="accueil-input">
-        <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-parent2-btn${p2Role==='maman'?' selected':''}" data-role="maman" onclick="onAccueilSexeParent2Btn('maman')">👩 Maman</button>
-        <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-parent2-btn${p2Role==='papa'?' selected':''}" data-role="papa" onclick="onAccueilSexeParent2Btn('papa')">👨 Papa</button>
-      </div>
-      <div class="accueil-intake-row" style="${parentRowStyle}">
-        <input type="text" placeholder="Nom de famille" value="${escVal(c.nomFamille)}" oninput="onAccueilNomFamilleInput(this.value)" class="accueil-input" style="max-width:280px">
-      </div>
+      <input type="text" placeholder="Nom de famille" value="${escVal(c.nomFamille)}" oninput="onAccueilNomFamilleInput(this.value)" class="accueil-input" style="max-width:240px;flex:0 1 auto">
     </div>
   </li>`;
   // Bloc question enfant : caché si prénom enfant rempli ; libellé adapté selon parent
