@@ -560,6 +560,39 @@
     }
     .btn-icon:hover { background: rgba(255,255,255,0.22); }
 
+    /* Cœur de valorisation (rappel toutes les 5 min) — ~2cm = 75px */
+    #valorisation-heart {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 75px;
+      height: 75px;
+      font-size: 60px;
+      line-height: 75px;
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      filter: drop-shadow(0 0 0 rgba(236, 72, 153, 0));
+      z-index: 50;
+      user-select: none;
+    }
+    #valorisation-heart.glowing {
+      animation: valorisation-heart-glow 1s ease-in-out 3;
+    }
+    @keyframes valorisation-heart-glow {
+      0%, 100% {
+        opacity: 0.25;
+        transform: translateY(-50%) scale(0.95);
+        filter: drop-shadow(0 0 2px rgba(236, 72, 153, 0.5));
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(-50%) scale(1.08);
+        filter: drop-shadow(0 0 18px rgba(236, 72, 153, 1)) drop-shadow(0 0 32px rgba(236, 72, 153, 0.7));
+      }
+    }
+
     /* BANDEAU PROBLÉMATIQUE / OBJECTIF */
     .pb-objectif-bar {
       background: #d8f3dc;
@@ -6931,7 +6964,7 @@
   </div>
 
   <!-- BANDEAU PROBLÉMATIQUE + OBJECTIF (toujours visible) -->
-  <div class="pb-objectif-bar" id="pob-bar">
+  <div class="pb-objectif-bar" id="pob-bar" style="position:relative">
     <div class="pob-item">
       <span class="pob-label">🔥 Problématique :</span>
       <span class="pob-text" id="pob-problematique">–</span>
@@ -6940,6 +6973,8 @@
       <span class="pob-label">🎯 Objectif :</span>
       <span class="pob-text" id="pob-objectif">–</span>
     </div>
+    <!-- Cœur de valorisation : apparaît toutes les 5 min pendant 3s (3 glows) -->
+    <div id="valorisation-heart" title="Pense à valoriser la maman 💗">💗</div>
   </div>
 
   <!-- PROGRESS -->
@@ -9514,6 +9549,7 @@ async function resumeConsultation() {
   state._returningFromConsult = false;
   document.getElementById('setup-screen').style.display = 'none';
   document.getElementById('app-screen').style.display = 'flex';
+  if (typeof startValorisationReminder === 'function') startValorisationReminder();
   // Reconstruire les problématiques cochées
   state.selectedPbs = new Set([...document.querySelectorAll('input[name="pb"]:checked')].map(cb=>cb.value));
   // Re-construire les sections pour mettre à jour problématique/objectifs
@@ -10241,7 +10277,33 @@ function startConsultation() {
   initUI();
   document.getElementById('setup-screen').style.display = 'none';
   document.getElementById('app-screen').style.display = 'flex';
+  // Démarrer le rappel de valorisation (cœur rose toutes les 5 min, 3 glows de 1s)
+  if (typeof startValorisationReminder === 'function') startValorisationReminder();
 }
+
+// ═══════════════════════════════════════════════════
+// RAPPEL "VALORISER LA MAMAN" — cœur rose qui glow 3× (1 fois/s) toutes les 5 min
+// ═══════════════════════════════════════════════════
+let _valorisationInterval = null;
+function pulseValorisationHeart() {
+  const heart = document.getElementById('valorisation-heart');
+  if (!heart) return;
+  heart.classList.remove('glowing');
+  void heart.offsetWidth; // force reflow pour redéclencher l'animation
+  heart.classList.add('glowing');
+  setTimeout(() => { heart.classList.remove('glowing'); }, 3000);
+}
+function startValorisationReminder() {
+  if (_valorisationInterval) clearInterval(_valorisationInterval);
+  // 1er glow après 5 min, puis toutes les 5 min
+  _valorisationInterval = setInterval(pulseValorisationHeart, 5 * 60 * 1000);
+}
+function stopValorisationReminder() {
+  if (_valorisationInterval) { clearInterval(_valorisationInterval); _valorisationInterval = null; }
+}
+window.startValorisationReminder = startValorisationReminder;
+window.stopValorisationReminder = stopValorisationReminder;
+window.pulseValorisationHeart = pulseValorisationHeart;
 
 // ═══════════════════════════════════════════════════
 // REMINDER "FIN DES OBJECTIFS"
@@ -19060,47 +19122,84 @@ window._updateAgeDom = _updateAgeDom;
 // dans le champ âge corrigé (manuel) et la date de terme = date de naissance.
 // Quand on décoche, on libère les champs sans les vider.
 // Affiche un modal bloquant qui exige de choisir un objectif de sieste.
-// Réutilise EXACTEMENT le HTML de l'onglet Sieste de la fiche client (couleurs, glow, format).
+// Layout 2 colonnes pour tenir sans scroll, click direct sur une sieste démarre la consultation.
 function promptSiesteRequired() {
   if (document.getElementById('sieste-required-modal')) return;
-  // Cloner le HTML de l'onglet Sieste pour garder couleurs/format/glow identiques
   const ficheSieste = document.getElementById('sieste-options');
-  const siesteInnerHtml = ficheSieste ? ficheSieste.outerHTML : '<div>Section sieste indisponible</div>';
-  const overlay = document.createElement('div');
-  overlay.id = 'sieste-required-modal';
-  overlay.style.cssText = 'position:fixed;inset:0;z-index:9999999;background:rgba(0,0,0,0.55);display:flex;align-items:flex-start;justify-content:center;padding:40px 20px;overflow:auto;font-family:inherit';
-  overlay.innerHTML = `
-    <div style="background:#fff;border-radius:14px;padding:24px 28px;max-width:680px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,0.3)">
-      <div style="font-size:20px;font-weight:800;color:#dc2626;margin-bottom:6px;text-align:center">⚠️ Information manquante</div>
-      <div style="font-size:14px;color:#475569;margin-bottom:18px;text-align:center;line-height:1.5">L'<strong>objectif de sieste</strong> est obligatoire pour démarrer la consultation. Choisissez la case qui correspond à l'âge de l'enfant&nbsp;:</div>
-      <div id="sieste-modal-host">${siesteInnerHtml}</div>
-      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px;border-top:1px solid #e2e8f0;padding-top:14px">
-        <button type="button" id="sieste-modal-cancel" style="padding:10px 16px;border:1.5px solid #cbd5e0;background:#fff;color:#475569;border-radius:8px;font-weight:600;cursor:pointer">Annuler</button>
-        <button type="button" id="sieste-modal-confirm" style="padding:10px 18px;border:none;background:#16a34a;color:#fff;border-radius:8px;font-weight:700;cursor:pointer">Valider et démarrer</button>
-      </div>
-    </div>`;
-  document.body.appendChild(overlay);
-  // Rebrancher les onchange des radios clonés sur le set principal de la fiche client
-  // (l'ID #sieste-options existe en double — on cible le clone dans le modal via querySelectorAll)
-  const modalRadios = overlay.querySelectorAll('input[name="sieste"]');
-  modalRadios.forEach(r => {
-    r.addEventListener('change', () => {
-      // Synchroniser le radio "vrai" dans la fiche client
-      const real = document.querySelector(`#tab-sieste input[name="sieste"][value="${r.value}"]`);
-      if (real) { real.checked = true; if (typeof onSiesteChange === 'function') onSiesteChange(); }
+  if (!ficheSieste) { alert('Section sieste indisponible'); return; }
+  // Cloner le HTML, renommer les radios pour ne PAS partager le groupe avec la fiche client
+  const clone = ficheSieste.cloneNode(true);
+  clone.id = 'sieste-modal-options';
+  clone.removeAttribute('style');
+  const allGroups = Array.from(clone.querySelectorAll('.sieste-group'));
+  allGroups.forEach(g => {
+    g.querySelectorAll('input[name="sieste"]').forEach(input => {
+      input.name = 'sieste-modal';
+      input.removeAttribute('onchange');
     });
   });
-  // Refresh glow doré sur les cases clonées (la fonction updateSiesteHighlight utilise
-  // document.querySelectorAll('.sieste-row') donc les rows clonées sont aussi mises à jour)
+  // Regrouper en 2 colonnes : col 1 = illim/4/3, col 2 = 2/1/tc/other
+  const col1 = document.createElement('div');
+  col1.style.cssText = 'flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:8px';
+  const col2 = document.createElement('div');
+  col2.style.cssText = 'flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:8px';
+  allGroups.forEach((g, i) => {
+    // Compacter chaque .sieste-group (titre à gauche réduit + marges)
+    g.style.cssText = 'display:grid;grid-template-columns:90px 1fr;gap:8px;margin:0;align-items:stretch';
+    g.querySelectorAll('.sieste-row').forEach(row => {
+      row.style.cssText = 'padding:6px 10px;border-radius:8px';
+    });
+    if (i < 3) col1.appendChild(g);
+    else col2.appendChild(g);
+  });
+  clone.innerHTML = '';
+  clone.style.cssText = 'display:flex;flex-wrap:nowrap;gap:14px;max-width:100%';
+  clone.appendChild(col1);
+  clone.appendChild(col2);
+
+  const overlay = document.createElement('div');
+  overlay.id = 'sieste-required-modal';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:9999999;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;padding:20px;font-family:inherit';
+  const inner = document.createElement('div');
+  inner.style.cssText = 'background:#fff;border-radius:14px;padding:20px 22px;max-width:820px;width:100%;max-height:95vh;overflow:auto;box-shadow:0 12px 40px rgba(0,0,0,0.3)';
+  inner.innerHTML = `
+    <div style="font-size:18px;font-weight:800;color:#dc2626;margin-bottom:4px;text-align:center">⚠️ Information manquante</div>
+    <div style="font-size:13.5px;color:#475569;margin-bottom:12px;text-align:center;line-height:1.4">Cliquez sur l'<strong>objectif de sieste</strong> qui correspond à l'âge de l'enfant pour démarrer la consultation&nbsp;:</div>
+    <div id="sieste-modal-host"></div>
+    <div style="display:flex;justify-content:flex-end;margin-top:14px;border-top:1px solid #e2e8f0;padding-top:10px">
+      <button type="button" id="sieste-modal-cancel" style="padding:8px 14px;border:1.5px solid #cbd5e0;background:#fff;color:#475569;border-radius:8px;font-weight:600;cursor:pointer">Annuler</button>
+    </div>`;
+  inner.querySelector('#sieste-modal-host').appendChild(clone);
+  overlay.appendChild(inner);
+  document.body.appendChild(overlay);
+  // Rafraîchir le glow doré sur les cases clonées (querySelectorAll('.sieste-row') les inclut)
   if (typeof updateSiesteHighlight === 'function') updateSiesteHighlight();
+  // Clic sur une row : feedback visuel immédiat + sync fiche client + démarre la consultation
+  clone.querySelectorAll('.sieste-row').forEach(row => {
+    row.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const radio = row.querySelector('input[type="radio"]');
+      if (!radio) return;
+      // Désélectionner toutes les rows du modal puis marquer la row cliquée
+      clone.querySelectorAll('.sieste-row').forEach(r => {
+        r.classList.remove('sieste-selected');
+        const inp = r.querySelector('input[type="radio"]'); if (inp) inp.checked = false;
+      });
+      row.classList.add('sieste-selected');
+      radio.checked = true;
+      // Synchroniser le radio "vrai" dans la fiche client
+      const realRadio = document.querySelector(`#tab-sieste input[name="sieste"][value="${radio.value}"]`);
+      if (realRadio) { realRadio.checked = true; if (typeof onSiesteChange === 'function') onSiesteChange(); }
+      // Fermer le modal et démarrer la consultation après un court délai
+      // (pour que l'utilisateur voie le feedback visuel "rond noir + cyan")
+      setTimeout(() => {
+        overlay.remove();
+        if (typeof startConsultation === 'function') startConsultation();
+      }, 220);
+    });
+  });
   overlay.querySelector('#sieste-modal-cancel').onclick = () => overlay.remove();
-  overlay.querySelector('#sieste-modal-confirm').onclick = () => {
-    const selected = document.querySelector('#tab-sieste input[name="sieste"]:checked')?.value
-                  || overlay.querySelector('input[name="sieste"]:checked')?.value;
-    if (!selected) { alert('Merci de choisir une case avant de valider.'); return; }
-    overlay.remove();
-    if (typeof startConsultation === 'function') startConsultation();
-  };
 }
 window.promptSiesteRequired = promptSiesteRequired;
 
