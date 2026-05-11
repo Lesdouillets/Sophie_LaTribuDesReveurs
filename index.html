@@ -112,7 +112,13 @@
     .accueil-intake-row {
       display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
       margin: 6px 0;
+      line-height: 1.2;
     }
+    .accueil-parent-stack {
+      display: flex; flex-direction: column; gap: 4px;
+      margin: 4px 0 8px;
+    }
+    .accueil-parent-stack .accueil-intake-row { margin: 0; }
     .accueil-input {
       padding: 6px 10px;
       border: 1.5px solid #cbd5e0;
@@ -19093,18 +19099,20 @@ function _renderAccueilIntakeForm() {
 <div style="margin:0 0 10px 0">❓ Pour le moment, je sais JUSTE qu'<strong>une maman</strong> est <strong>face à moi</strong>… mais je ne connais <strong>ENCORE AUCUN prénom</strong> !</div>
 <ul style="margin:0;padding-left:20px;list-style:disc;line-height:1.55">
   <li style="margin-bottom:4px"><strong>Comment vous appelez-vous</strong> ?
-    <div class="accueil-intake-row" style="margin:4px 0 0;line-height:1.2">
-      <input type="text" placeholder="Prénom parent 1" value="${escVal(c.prenomParent1)}" oninput="onAccueilPrenomParent1Input(this.value)" class="accueil-input">
-      <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-parent1-btn${p1Role==='maman'?' selected':''}" data-role="maman" onclick="onAccueilSexeParent1Btn('maman')">👩 Maman</button>
-      <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-parent1-btn${p1Role==='papa'?' selected':''}" data-role="papa" onclick="onAccueilSexeParent1Btn('papa')">👨 Papa</button>
-    </div>
-    <div class="accueil-intake-row" style="margin:0;line-height:1.2">
-      <input type="text" placeholder="Prénom parent 2" value="${escVal(c.prenomParent2)}" oninput="onAccueilPrenomParent2Input(this.value)" class="accueil-input">
-      <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-parent2-btn${p2Role==='maman'?' selected':''}" data-role="maman" onclick="onAccueilSexeParent2Btn('maman')">👩 Maman</button>
-      <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-parent2-btn${p2Role==='papa'?' selected':''}" data-role="papa" onclick="onAccueilSexeParent2Btn('papa')">👨 Papa</button>
-    </div>
-    <div class="accueil-intake-row" style="margin:0 0 8px;line-height:1.2">
-      <input type="text" placeholder="Nom de famille" value="${escVal(c.nomFamille)}" oninput="onAccueilNomFamilleInput(this.value)" class="accueil-input" style="max-width:280px">
+    <div class="accueil-parent-stack">
+      <div class="accueil-intake-row">
+        <input type="text" placeholder="Prénom parent 1" value="${escVal(c.prenomParent1)}" oninput="onAccueilPrenomParent1Input(this.value)" class="accueil-input">
+        <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-parent1-btn${p1Role==='maman'?' selected':''}" data-role="maman" onclick="onAccueilSexeParent1Btn('maman')">👩 Maman</button>
+        <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-parent1-btn${p1Role==='papa'?' selected':''}" data-role="papa" onclick="onAccueilSexeParent1Btn('papa')">👨 Papa</button>
+      </div>
+      <div class="accueil-intake-row">
+        <input type="text" placeholder="Prénom parent 2" value="${escVal(c.prenomParent2)}" oninput="onAccueilPrenomParent2Input(this.value)" class="accueil-input">
+        <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-parent2-btn${p2Role==='maman'?' selected':''}" data-role="maman" onclick="onAccueilSexeParent2Btn('maman')">👩 Maman</button>
+        <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-parent2-btn${p2Role==='papa'?' selected':''}" data-role="papa" onclick="onAccueilSexeParent2Btn('papa')">👨 Papa</button>
+      </div>
+      <div class="accueil-intake-row">
+        <input type="text" placeholder="Nom de famille" value="${escVal(c.nomFamille)}" oninput="onAccueilNomFamilleInput(this.value)" class="accueil-input" style="max-width:280px">
+      </div>
     </div>
   </li>
   <li style="margin-bottom:8px"><strong>Et votre enfant</strong> ?
