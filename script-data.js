@@ -929,7 +929,7 @@ const SCRIPT_DATA = {
           blocks: [
             {
               type: "normal",
-              text: "- **AVANT** qu'on commence à parler \"sommeil\"\n  j'aimerais, si vous êtes d'accord, [prénom_parent_1],\n  qu'on prenne un petit moment, toutes les 2, pour revenir sur **CE QUE** vous m'avez partagé … sur son **REFLUX**\n\n- D'abord, je voudrais vous dire quelque chose\n- Ce que vous vivez, là, au quotidien, avec [prénom_enfant], c'est dur\n- Je ne dis **PAS ÇA pour le dire**\n  Je le dis parce que c'est vrai\n\n- Entre :"
+              text: "- **AVANT** qu'**on commence à parler** \"sommeil\"\n  j'aimerais, **si vous êtes d'accord**, [prénom_parent_1],\n  qu'on **prenne un petit moment**, toutes les 2, pour revenir sur **CE QUE vous m'avez partagé … sur son REFLUX**\n\n- D'abord, je voudrais **vous dire quelque chose**\n- Ce que **vous vivez**, là, au quotidien, avec [prénom_enfant], **c'est dur**\n- Je ne dis **PAS CA pour dire**\n  Je le dis parce que **c'est vrai**\n\n- Entre :"
             },
             {
               type: "grouped_checklist",
@@ -937,25 +937,25 @@ const SCRIPT_DATA = {
               groups: [
                 {
                   items: [
-                    "Le fait qu'[il_elle] régurgite beaucoup",
-                    "Qu'[il_elle] a du MAL à rester [allonge_allongee]",
-                    "Qu'[il_elle] a un sommeil très agité",
-                    "Que les repas sont parfois compliqués",
-                    "Qu'on sent qu'[il_elle] est souvent [gene_genee] ou inconfortable",
-                    "Qu'[il_elle] se cambre",
+                    "Le fait qu'[il_elle] <strong>régurgite beaucoup</strong>",
+                    "Qu'[il_elle] a du MAL à <strong>rester [allonge_allongee]</strong>",
+                    "Qu'[il_elle] a un <strong>sommeil très agité</strong>",
+                    "Que les <strong>repas</strong> sont parfois <strong>compliqués</strong>",
+                    "Qu'on sent qu'[il_elle] est <strong>souvent [gene_genee] ou inconfortable</strong>",
+                    "Qu'[il_elle] <strong>se cambre</strong>",
                   ]
                 }
               ]
             },
             {
               type: "normal",
-              text: "- ⇒ C'est **BEAUCOUP**\n- ⇒ Et c'est **NORMAL** que ce soit difficile pour vous\n- ⇒ À votre place, je le serais aussi<br><br>"
+              text: "- ⇒ C'est **BEAUCOUP**\n- ⇒ Et c'est **NORMAL** que ce soit difficile pour vous\n- ⇒ À votre place, **je le serais aussi**<br><br>"
             },
           ]
         },
         {
           type: "normal", _leftTitle: "Tout est lié",
-          text: "- Parce que chez les bébés, vous savez, tout est lié : *le sommeil, la digestion, la respiration, la peau…*\n- Et le reflux, [prénom_parent_1], même quand il peut être discret par moments\n  ⇒ Il **impacte énormément de choses** dans le quotidien de [prénom_enfant]\n  ⇒ Et notamment son sommeil"
+          text: "- Parce que **chez les bébés**, vous savez, **tout est lié** : *le sommeil, la digestion, la respiration, la peau…*\n- Et le **reflux**, [prénom_parent_1], même quand il **peut être discret** par moments\n  ⇒ Il **impacte énormément de choses** dans le quotidien de [prénom_enfant]\n  ⇒ Et notamment **son sommeil**"
         },
         {
           type: "normal", _leftTitle: "Reflux = impact le sommeil",
@@ -982,11 +982,11 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "Lien avec le sommeil",
-          text: "- Et vous savez quoi ?\n- Une fois qu'on aura **remis du confort** dans le quotidien de [prénom_enfant]\n  ⇒ [il_elle] va **se sentir mieux dans son corps**\n  ⇒ Et le sommeil va **suivre, naturellement**\n\n- Parce que **C'EST ÇA l'idée** :\n  - **PAS** un pansement qui tient quelques jours\n  - **MAIS** quelque chose de vraiment + **DURABLE** dans le temps"
+          text: "- Et **vous savez quoi ?**\n- **Une fois** qu'on aura **remis du confort** dans le quotidien de [prénom_enfant]\n  ⇒ [il_elle] va **se sentir mieux dans son corps**\n  ⇒ Et le **sommeil** va **suivre**, naturellement\n\n- Parce que **C'EST ÇA l'idée** :\n  - **PAS** un **pansement** qui **tient quelques jours**\n  - **MAIS quelque chose** de vraiment **+ DURABLE** dans le temps"
         },
         {
           type: "question", _leftTitle: "Des questions ?",
-          text: "Voilà, [prénom_parent_1]\n- Je vous ai dit **beaucoup de choses**, je sais\n\n- Comment vous vous sentez ?\n- Est-ce qu'il y a quelque chose qui n'est **PAS clair**, ou sur lequel vous voulez qu'on revienne ?"
+          text: "Voilà, [prénom_parent_1]\n- **Je vous ai dit beaucoup de choses**, je sais\n\n- **Comment vous vous sentez** ?\n- Est-ce qu'il y a **quelque chose** qui n'est **PAS clair**, ou sur lequel **vous voulez qu'on revienne** ?"
         },
       ]
     },
