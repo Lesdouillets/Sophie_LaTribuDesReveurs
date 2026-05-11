@@ -129,41 +129,38 @@
       font-weight: 700;
       color: #475569;
     }
-    .accueil-sieste-grid {
+    /* Sieste cible compacte dans I. Accueil — override des styles fiche client */
+    .accueil-sieste-grid .sieste-group {
+      grid-template-columns: 90px 1fr;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .accueil-sieste-grid .sieste-group-left {
+      padding: 6px 4px;
+      font-size: 18px;
+      line-height: 1;
+      border-radius: 8px;
+    }
+    .accueil-sieste-grid .sieste-group.var-tc .sieste-group-left { font-size: 13px; }
+    .accueil-sieste-grid .sieste-group.var-other .sieste-group-left { font-size: 14px; }
+    .accueil-sieste-grid .sieste-group.var-illim .sieste-group-left { font-size: 12px; }
+    .accueil-sieste-grid .sieste-group-left .sieste-group-sub {
+      font-size: 10px;
+      margin-top: 2px;
+      letter-spacing: 0.3px;
+    }
+    .accueil-sieste-grid .sieste-group-right {
       display: grid;
       grid-template-columns: 1fr 1fr;
+      gap: 4px;
+    }
+    .accueil-sieste-grid .sieste-row {
+      padding: 4px 8px;
+      border-radius: 6px;
       gap: 6px;
-      max-width: 560px;
-      margin-top: 6px;
     }
-    .accueil-sieste-btn {
-      padding: 6px 10px;
-      border-radius: 8px;
-      border: 1.5px solid #cbd5e0;
-      background: #f8fafc;
-      color: #475569;
-      font-family: inherit;
-      font-size: 12.5px;
-      font-weight: 600;
-      cursor: pointer;
-      text-align: left;
-      transition: all 0.15s;
-    }
-    .accueil-sieste-btn:hover:not(.selected) { background: #eef2f7; border-color: #94a3b8; }
-    .accueil-sieste-btn.glow:not(.selected) {
-      border-color: #f5d778;
-      background: #fef9e0;
-      box-shadow: 0 0 8px rgba(245,215,120,0.6);
-      animation: accueil-sieste-glow 2s ease-in-out infinite;
-    }
-    .accueil-sieste-btn.selected {
-      background: #2d3f5c; color: #fff; border-color: #2d3f5c;
-      animation: none; box-shadow: none;
-    }
-    @keyframes accueil-sieste-glow {
-      0%, 100% { box-shadow: 0 0 6px rgba(245,215,120,0.5); }
-      50% { box-shadow: 0 0 14px rgba(245,215,120,0.9); }
-    }
+    .accueil-sieste-grid .sieste-row .sieste-label { font-size: 12px; }
+    .accueil-sieste-grid .sieste-row.sieste-selected::before { font-size: 13px; margin-right: 4px; }
     /* Var-empty : style en italique gris pour placeholders [prénom] non remplis */
     .var-empty { font-style: italic; font-weight: 400 !important; opacity: 0.6; }
 
@@ -7678,7 +7675,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=707"></script>
+<script src="script-data.js?v=709"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -19029,9 +19026,13 @@ function onAccueilSiesteSelect(val) {
   // Synchroniser le radio dans la fiche client
   const fiche = document.querySelector(`input[name="sieste"][value="${val}"]`);
   if (fiche) fiche.checked = true;
-  // Update les boutons sieste dans l'intake form
-  document.querySelectorAll('.accueil-sieste-btn').forEach(b => {
-    b.classList.toggle('selected', b.dataset.sieste === val);
+  // Update visuel des rows dans l'intake form (.sieste-row + .sieste-glow doit disparaître si selected)
+  document.querySelectorAll('#accueil-sieste-options .sieste-row').forEach(b => {
+    const isThis = b.querySelector('input[type="radio"]')?.value === val;
+    b.classList.toggle('sieste-selected', isThis);
+    if (isThis) b.classList.remove('sieste-glow');
+    const radio = b.querySelector('input[type="radio"]');
+    if (radio) radio.checked = isThis;
   });
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
@@ -19089,20 +19090,20 @@ function _renderAccueilIntakeForm() {
   <div class="sieste-group-right">${row('pas-de-changement','Pas de changement')}</div>
 </div>`;
   return `
+<div style="margin:0 0 10px 0">❓ Pour le moment, je sais JUSTE qu'<strong>une maman</strong> est <strong>face à moi</strong>… mais je ne connais <strong>ENCORE AUCUN prénom</strong> !</div>
 <ul style="margin:0;padding-left:20px;list-style:disc;line-height:1.55">
-  <li style="margin-bottom:8px">Pour le moment, je sais juste qu'<strong>une maman</strong> est face à moi… mais je ne connais <strong>ENCORE aucun prénom</strong> !</li>
   <li style="margin-bottom:4px"><strong>Comment vous appelez-vous</strong> ?
-    <div class="accueil-intake-row" style="margin:4px 0 2px">
+    <div class="accueil-intake-row" style="margin:4px 0 0;line-height:1.2">
       <input type="text" placeholder="Prénom parent 1" value="${escVal(c.prenomParent1)}" oninput="onAccueilPrenomParent1Input(this.value)" class="accueil-input">
       <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-parent1-btn${p1Role==='maman'?' selected':''}" data-role="maman" onclick="onAccueilSexeParent1Btn('maman')">👩 Maman</button>
       <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-parent1-btn${p1Role==='papa'?' selected':''}" data-role="papa" onclick="onAccueilSexeParent1Btn('papa')">👨 Papa</button>
     </div>
-    <div class="accueil-intake-row" style="margin:2px 0">
+    <div class="accueil-intake-row" style="margin:0;line-height:1.2">
       <input type="text" placeholder="Prénom parent 2" value="${escVal(c.prenomParent2)}" oninput="onAccueilPrenomParent2Input(this.value)" class="accueil-input">
       <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-parent2-btn${p2Role==='maman'?' selected':''}" data-role="maman" onclick="onAccueilSexeParent2Btn('maman')">👩 Maman</button>
       <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-parent2-btn${p2Role==='papa'?' selected':''}" data-role="papa" onclick="onAccueilSexeParent2Btn('papa')">👨 Papa</button>
     </div>
-    <div class="accueil-intake-row" style="margin:2px 0 8px">
+    <div class="accueil-intake-row" style="margin:0 0 8px;line-height:1.2">
       <input type="text" placeholder="Nom de famille" value="${escVal(c.nomFamille)}" oninput="onAccueilNomFamilleInput(this.value)" class="accueil-input" style="max-width:280px">
     </div>
   </li>
@@ -19115,18 +19116,18 @@ function _renderAccueilIntakeForm() {
   </li>
   <li style="margin-bottom:8px"><strong>Quel âge a-t-${ilelle}</strong> ? Quelle est sa <strong>date de naissance</strong> ?
     <div class="accueil-intake-row" style="margin:4px 0 8px">
-      <input type="date" value="${escVal(c.dateNaissance)}" oninput="onAccueilDateNaissInput(this.value)" class="accueil-input" style="max-width:170px" title="Date de naissance">
-      <input type="text" placeholder="Âge réel (ex. 6 mois 12 jours)" value="${escVal(c.ageEnfant)}" oninput="onAccueilAgeReelInput(this.value)" class="accueil-input" style="max-width:240px" title="Âge réel manuel">
+      <input type="date" value="${escVal(c.dateNaissance)}" oninput="onAccueilDateNaissInput(this.value)" class="accueil-input" style="max-width:170px" title="Date de naissance" data-accueil="date-naissance">
+      <input type="text" placeholder="Âge réel (ex. 6 mois 12 jours)" value="${escVal(c.ageEnfant)}" oninput="onAccueilAgeReelInput(this.value)" class="accueil-input" style="max-width:240px" title="Âge réel manuel" data-accueil="age-reel">
     </div>
   </li>
   <li style="margin-bottom:8px"><strong>Est-${ilelle} ${nee}</strong> à terme ? Quelle est sa <strong>date de terme</strong> ?
     <div class="accueil-intake-row" style="margin:4px 0 8px;flex-wrap:wrap">
-      <input type="date" value="${escVal(c.dateTerme)}" oninput="onAccueilDateTermeInput(this.value)" class="accueil-input" style="max-width:170px" title="Date du terme">
-      <input type="text" placeholder="Âge gestationnel (ex. 39+2)" value="${escVal(c.ageGestationnel)}" oninput="onAccueilAgeGestInput(this.value)" class="accueil-input" style="max-width:200px" title="Âge gestationnel">
-      <input type="text" placeholder="Âge corrigé (ex. 6 mois 5 jours)" value="${escVal(c.ageCorrigeManuel)}" oninput="onAccueilAgeCorrigeInput(this.value)" class="accueil-input" style="max-width:240px" title="Âge corrigé manuel">
+      <input type="date" value="${escVal(c.dateTerme)}" oninput="onAccueilDateTermeInput(this.value)" class="accueil-input" style="max-width:170px" title="Date du terme" data-accueil="date-terme">
+      <input type="text" placeholder="Âge gestationnel (ex. 39+2)" value="${escVal(c.ageGestationnel)}" oninput="onAccueilAgeGestInput(this.value)" class="accueil-input" style="max-width:200px" title="Âge gestationnel" data-accueil="age-gest">
+      <input type="text" placeholder="Âge corrigé (ex. 6 mois 5 jours)" value="${escVal(c.ageCorrigeManuel)}" oninput="onAccueilAgeCorrigeInput(this.value)" class="accueil-input" style="max-width:240px" title="Âge corrigé manuel" data-accueil="age-corrige">
     </div>
     <div class="accueil-intake-sieste-label">💤 Sieste cible :</div>
-    <div id="accueil-sieste-options" style="max-width:560px;margin-top:6px">${siesteHtml}</div>
+    <div id="accueil-sieste-options" class="accueil-sieste-grid" style="max-width:560px;margin-top:6px">${siesteHtml}</div>
   </li>
   <li style="margin-top:8px"><strong>Merci</strong></li>
 </ul>`;
@@ -19134,13 +19135,51 @@ function _renderAccueilIntakeForm() {
 window._renderAccueilIntakeForm = _renderAccueilIntakeForm;
 
 // Handlers manuels pour âge réel / gestationnel / corrigé
+// Helper: après computeClientFields, recopier les nouvelles valeurs date/age vers
+// les inputs du formulaire Accueil + state.client + header + .var-age
+function _syncAccueilDatesFromFiche() {
+  const dn = document.getElementById('date-naissance')?.value || '';
+  const dt = document.getElementById('date-terme')?.value || '';
+  if (!state.client) state.client = {};
+  state.client.dateNaissance = dn;
+  state.client.dateTerme = dt;
+  // Recalculer les âges depuis les dates (priorité aux dates)
+  if (typeof calcAge === 'function') {
+    const consultDate = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
+    const ar = calcAge(dn, consultDate);
+    if (ar) {
+      state.client.ageReelStr = ar.str || '';
+      state.client.ageReelStrCourt = ar.strCourt || '';
+      state.client.ageReelMois = ar.totalMois ?? '';
+      state.client.ageReelJours = ar.totalJours ?? '';
+    }
+    const premature = dt && dn && new Date(dt) > new Date(dn);
+    if (premature) {
+      const ac = calcAge(dt, consultDate);
+      if (ac) {
+        state.client.ageCorrigeStr = ac.str || '';
+        state.client.ageCorrigeStrCourt = ac.strCourt || '';
+        state.client.ageCorrigeMois = ac.totalMois ?? '';
+        state.client.ageCorrigeJours = ac.totalJours ?? '';
+      }
+    }
+  }
+  // Mettre à jour les inputs date du formulaire Accueil (sans perturber le focus)
+  const inDn = document.querySelector('[data-accueil="date-naissance"]');
+  if (inDn && document.activeElement !== inDn && inDn.value !== dn) inDn.value = dn;
+  const inDt = document.querySelector('[data-accueil="date-terme"]');
+  if (inDt && document.activeElement !== inDt && inDt.value !== dt) inDt.value = dt;
+  _updateAgeDom();
+  if (typeof updateHeader === 'function') updateHeader();
+}
+
 function onAccueilAgeReelInput(val) {
   if (!state.client) state.client = {};
   state.client.ageEnfant = val;
   state.client.ageReelStr = val;
   const f = document.getElementById('age-enfant'); if (f) f.value = val;
-  _updateAgeDom();
-  if (typeof updateHeader === 'function') updateHeader();
+  if (typeof computeClientFields === 'function') computeClientFields('age-enfant');
+  _syncAccueilDatesFromFiche();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.onAccueilAgeReelInput = onAccueilAgeReelInput;
@@ -19149,6 +19188,8 @@ function onAccueilAgeGestInput(val) {
   if (!state.client) state.client = {};
   state.client.ageGestationnel = val;
   const f = document.getElementById('age-gestationnel'); if (f) f.value = val;
+  if (typeof computeClientFields === 'function') computeClientFields('age-gestationnel');
+  _syncAccueilDatesFromFiche();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.onAccueilAgeGestInput = onAccueilAgeGestInput;
@@ -19158,7 +19199,8 @@ function onAccueilAgeCorrigeInput(val) {
   state.client.ageCorrigeManuel = val;
   state.client.ageCorrigeStr = val;
   const f = document.getElementById('age-corrige-manuel'); if (f) f.value = val;
-  if (typeof updateHeader === 'function') updateHeader();
+  if (typeof computeClientFields === 'function') computeClientFields('age-corrige-manuel');
+  _syncAccueilDatesFromFiche();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.onAccueilAgeCorrigeInput = onAccueilAgeCorrigeInput;
