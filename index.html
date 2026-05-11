@@ -560,12 +560,15 @@
     }
     .btn-icon:hover { background: rgba(255,255,255,0.22); }
 
-    /* Cœur de valorisation (rappel toutes les 5 min) — ~2cm = 75px */
+    /* Cœur de valorisation (rappel toutes les 5 min, 5 glows de 1s = 5 sec)
+       Position : juste à gauche de "🎯 Objectif :" (à 50% de la bande verte),
+       centré verticalement. Reste dans la bande verte → n'empiète pas sur les pastilles bleues. */
     #valorisation-heart {
       position: absolute;
-      right: 20px;
+      right: 50%;
       top: 50%;
       transform: translateY(-50%);
+      margin-right: 6px;
       width: 75px;
       height: 75px;
       font-size: 60px;
@@ -578,7 +581,7 @@
       user-select: none;
     }
     #valorisation-heart.glowing {
-      animation: valorisation-heart-glow 1s ease-in-out 3;
+      animation: valorisation-heart-glow 1s ease-in-out 5;
     }
     @keyframes valorisation-heart-glow {
       0%, 100% {
@@ -10309,13 +10312,14 @@ function pulseValorisationHeart() {
   heart.classList.remove('glowing');
   void heart.offsetWidth; // force reflow pour redéclencher l'animation
   heart.classList.add('glowing');
-  setTimeout(() => { heart.classList.remove('glowing'); }, 3000);
+  // 5 glows × 1s = 5 sec de glow
+  setTimeout(() => { heart.classList.remove('glowing'); }, 5000);
 }
 function startValorisationReminder() {
   if (_valorisationInterval) clearInterval(_valorisationInterval);
-  // 1er glow au bout de 3s (test rapide pour vérifier l'affichage), puis toutes les 1 min
+  // 1er glow au bout de 3s (vérification rapide de l'affichage), puis toutes les 5 min
   setTimeout(pulseValorisationHeart, 3000);
-  _valorisationInterval = setInterval(pulseValorisationHeart, 60 * 1000);
+  _valorisationInterval = setInterval(pulseValorisationHeart, 5 * 60 * 1000);
 }
 function stopValorisationReminder() {
   if (_valorisationInterval) { clearInterval(_valorisationInterval); _valorisationInterval = null; }
@@ -12468,22 +12472,24 @@ function getEffectiveAgeMonths() {
   const domAgeCorrManuel = domGet('age-corrige-manuel');
   const consultDate = domGet('consult-date') || new Date().toISOString().slice(0,10);
 
-  // 1) Âge corrigé depuis DOM (via date de terme si prématuré, sinon date de naissance)
+  // PRIORITÉ : l'âge CORRIGÉ doit toujours primer sur l'âge réel pour le glow des siestes
+  // 1) Âge corrigé manuel saisi (prioritaire — même si une date de naissance existe)
+  if (domAgeCorrManuel) {
+    const n = parseAgeStringToMonths(domAgeCorrManuel);
+    if (!isNaN(n)) return Math.floor(n);
+  }
+  // 2) Âge corrigé calculé depuis date de terme (prématuré : terme > naissance)
   if (typeof calcAge === 'function') {
     if (domDateTerme && domDateNaiss && new Date(domDateTerme) > new Date(domDateNaiss)) {
       const a = calcAge(domDateTerme, consultDate);
       if (a && typeof a.totalMois === 'number') return Math.floor(a.totalMois);
     } else if (domDateNaiss) {
+      // Pas de prématurité connue : âge réel = âge corrigé
       const a = calcAge(domDateNaiss, consultDate);
       if (a && typeof a.totalMois === 'number') return Math.floor(a.totalMois);
     }
   }
-  // 2) Texte âge corrigé manuel depuis DOM
-  if (domAgeCorrManuel) {
-    const n = parseAgeStringToMonths(domAgeCorrManuel);
-    if (!isNaN(n)) return Math.floor(n);
-  }
-  // 3) Texte âge enfant manuel depuis DOM
+  // 3) Âge enfant manuel (fallback ultime si rien d'autre n'est disponible)
   if (domAgeManuel) {
     const n = parseAgeStringToMonths(domAgeManuel);
     if (!isNaN(n)) return Math.floor(n);
