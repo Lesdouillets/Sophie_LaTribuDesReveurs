@@ -7585,7 +7585,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=700"></script>
+<script src="script-data.js?v=703"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9925,25 +9925,9 @@ function startConsultation() {
   const prenomEnfant = document.getElementById('prenom-enfant').value.trim();
   const prenomParent1 = document.getElementById('prenom-parent1').value.trim();
   const sexeEnfant = document.getElementById('sexe-enfant').value;
-  const dateNaissVal = document.getElementById('date-naissance')?.value;
-  const ageManuelVal = document.getElementById('age-enfant')?.value.trim();
   const enseigneVal = document.getElementById('enseigne-select')?.value;
+  // Seule l'enseigne est obligatoire ; tout le reste peut être rempli en cours de consultation (via I. Accueil)
   if (!enseigneVal) { alert('Merci de sélectionner l\'enseigne (La Tribu ou Fée dodo).'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
-  if (!prenomEnfant) { alert('Merci de renseigner le prénom de l\'enfant.'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
-  if (!sexeEnfant) { alert('Merci de sélectionner le sexe de l\'enfant.'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
-  if (!dateNaissVal && !ageManuelVal) { alert('Merci d\'indiquer la date de naissance ou l\'âge de l\'enfant.'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
-  // Vérifier que le mode d'allaitement est renseigné si Allaitement maternel OU Allaitement mixte est coché
-  const hasAllaitementOrMixte = [...document.querySelectorAll('input[name="alim"]:checked')].some(cb => cb.value === 'Allaitement maternel' || cb.value === 'Allaitement mixte');
-  if (hasAllaitementOrMixte) {
-    const modeChecked = [...document.querySelectorAll('input[name="allaitement_mode"]:checked')].length > 0;
-    if (!modeChecked) {
-      alert("Merci de préciser le mode d'allaitement (au sein et/ou au biberon) dans l'onglet Santé.");
-      showSetupTab('tab-sante', document.querySelector('.setup-tab[onclick*="tab-sante"]'));
-      return;
-    }
-  }
-  // Vérifier que la sieste cible est sélectionnée (obligatoire) — partagé avec resume/restore
-  if (typeof validateSiesteOrRedirect === 'function' && !validateSiesteOrRedirect()) return;
   const consultDate2 = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
   const dateNaiss = document.getElementById('date-naissance')?.value;
   const dateTerme = document.getElementById('date-terme')?.value;
@@ -16129,19 +16113,21 @@ function substituteVars(text) {
   const accordEnfant = `Nous sommes **BIEN d'accord** que ${capitalize(c.prenomEnfant)||'[prénom]'} est ${unUne} ${petitePetit} ${filleGarcon} qui est :\n  - En **bonne santé** ?\n  - A été **vu récemment par un médecin** ?`;
 
   // Nom de l'enfant stylisé : gras + couleur selon sexe (bleu garçon, rose fille)
+  // Marker class .var-prenom-enfant + data-sexe pour update en place (depuis I. Accueil)
   const prenomRaw = capitalize(c.prenomEnfant) || '';
   const prenomColor = isFille ? '#E25098' : '#6495ED';
-  const prenomStyled = prenomRaw
-    ? `<strong style="color:${prenomColor};font-size:1.15em">${prenomRaw}</strong>`
-    : '[prénom]';
+  // Utilise &#91;...&#93; (entités HTML) pour le fallback "[prénom]" — sinon ligne 16284 .replace(/\[prénom\]/gi,...) re-match et double-wrap
+  const prenomStyled = `<strong class="var-prenom-enfant${prenomRaw?'':' var-empty'}" data-sexe="${isFille?'fille':'garcon'}" style="color:${prenomColor};font-size:1.15em">${prenomRaw || '&#91;prénom&#93;'}</strong>`;
+  // Age stylisé : marker class .var-age pour update en place
+  const ageStyled = `<span class="var-age">${age}</span>`;
   let t = text
     .replace(/\[enseigne_nom\]/g, enseigneNom)
     .replace(/\[verif_identite\]/g, verifIdentite)
     .replace(/\[accord_enfant\]/g, accordEnfant)
     .replace(/\[prénom_enfant\]/g, prenomStyled)
     .replace(/\[prénom_parents\]/g, parents||'[parents]')
-    .replace(/\[prénom_parent_1\]/g, p1 ? `<strong style="color:#16a34a;font-size:1.15em">${p1}</strong>` : '[prénom parent]')
-    .replace(/\[prénom_parent_2\]/g, p2 || '[prénom parent]')
+    .replace(/\[prénom_parent_1\]/g, `<strong class="var-prenom-parent-1${p1?'':' var-empty'}" style="color:#16a34a;font-size:1.15em">${p1 || '&#91;prénom parent&#93;'}</strong>`)
+    .replace(/\[prénom_parent_2\]/g, `<span class="var-prenom-parent-2${p2?'':' var-empty'}">${p2 || '&#91;prénom parent&#93;'}</span>`)
     .replace(/\[horaire_souhaite\]/g, (() => {
       // Horaire souhaité du réveil (III. Découverte → Fiche découverte). Format HH:MM.
       // Affichage : "6h du matin" si minutes=00, sinon "6h30 du matin".
@@ -16156,7 +16142,7 @@ function substituteVars(text) {
       const hStr = mNum === 0 ? hNum + 'h' : hNum + 'h' + (parts[1].length < 2 ? '0' + parts[1] : parts[1]);
       return hStr + ' du matin';
     })())
-    .replace(/\[age\]/g, age)
+    .replace(/\[age\]/g, ageStyled)
     .replace(/\[role_parents\]/g, roleLabel)
     .replace(/\[heure_fin\]/g, heureFin)
     .replace(/\[un_une\]/g, isFille ? 'une' : 'un')
