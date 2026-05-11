@@ -7678,7 +7678,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=705"></script>
+<script src="script-data.js?v=706"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -10019,8 +10019,10 @@ function startConsultation() {
   const prenomParent1 = document.getElementById('prenom-parent1').value.trim();
   const sexeEnfant = document.getElementById('sexe-enfant').value;
   const enseigneVal = document.getElementById('enseigne-select')?.value;
-  // Seule l'enseigne est obligatoire ; tout le reste peut être rempli en cours de consultation (via I. Accueil)
+  // Obligatoires : enseigne + prénom parent 1 + prénom enfant
   if (!enseigneVal) { alert('Merci de sélectionner l\'enseigne (La Tribu ou Fée dodo).'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
+  if (!prenomParent1) { alert('Merci de renseigner le prénom du parent 1.'); showSetupTab('tab-parents', document.querySelector('.setup-tab[onclick*="tab-parents"]')); return; }
+  if (!prenomEnfant) { alert('Merci de renseigner le prénom de l\'enfant.'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
   const consultDate2 = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
   const dateNaiss = document.getElementById('date-naissance')?.value;
   const dateTerme = document.getElementById('date-terme')?.value;
@@ -18909,6 +18911,7 @@ function onAccueilPrenomEnfantInput(val) {
   const f = document.getElementById('prenom-enfant'); if (f) f.value = val;
   _updatePrenomEnfantDom();
   if (typeof updatePobBar === 'function') updatePobBar();
+  if (typeof updateHeader === 'function') updateHeader();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.onAccueilPrenomEnfantInput = onAccueilPrenomEnfantInput;
@@ -18918,12 +18921,10 @@ function onAccueilSexeEnfantBtn(val) {
   state.client.sexe = val;
   const f = document.getElementById('sexe-enfant'); if (f) f.value = val;
   if (typeof _updateSexeEnfantButtons === 'function') _updateSexeEnfantButtons();
-  // Update aussi le bouton dans l'intake form Accueil
-  document.querySelectorAll('.accueil-sexe-enfant-btn').forEach(b => {
-    b.classList.toggle('selected', b.dataset.sexe === val);
-  });
-  _updatePrenomEnfantDom();
+  if (typeof updateHeader === 'function') updateHeader();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+  // Re-rendre la section courante pour propager [il_elle], [un_une], [petit_petite], [fille_garcon], couleur prénom
+  if (typeof renderCurrentSection === 'function') renderCurrentSection();
 }
 window.onAccueilSexeEnfantBtn = onAccueilSexeEnfantBtn;
 
@@ -18995,6 +18996,7 @@ function onAccueilDateNaissInput(val) {
     }
   }
   _updateAgeDom();
+  if (typeof updateHeader === 'function') updateHeader();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.onAccueilDateNaissInput = onAccueilDateNaissInput;
@@ -19047,78 +19049,123 @@ function _renderAccueilIntakeForm() {
   const p1Role = (c.sexeParent1 || 'maman').toLowerCase();
   const p2Role = (c.sexeParent2 || 'papa').toLowerCase();
   const escVal = s => String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;');
-  // Sieste options (compact 2 colonnes)
-  const siesteOpts = [
-    { val: '0-2m', label: 'Siestes illimitées (0-2m)', min: 0, max: 2 },
-    { val: '2-4m', label: '4 siestes (2-4m)', min: 2, max: 4 },
-    { val: '4-6m', label: '3 siestes (4-6m)', min: 4, max: 6 },
-    { val: '6-8m', label: '3 siestes (6-8m)', min: 6, max: 8 },
-    { val: '8-10m', label: '3 siestes (8-10m)', min: 8, max: 10 },
-    { val: '8-15m', label: '2 siestes (8-15m)', min: 8, max: 15 },
-    { val: '15-20m', label: '2 siestes (15-20m)', min: 15, max: 20 },
-    { val: '15m-3a', label: '1 sieste (15m-3a)', min: 15, max: 36, incl: true },
-    { val: '4a-plus', label: '1 sieste (4a+)', min: 48 },
-    { val: '4a-plus-tc', label: 'Temps calme (4a+)', min: 48 },
-    { val: 'pas-de-changement', label: 'Pas de changement' },
-  ];
+  const ilelle = isFille ? 'elle' : 'il';
+  const nee = isFille ? 'née' : 'né';
+  // Sieste groups (structure fiche client)
   const ageM = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
-  const siesteHtml = siesteOpts.map(o => {
-    const sel = c.sieste === o.val ? ' selected' : '';
+  function row(val, label, min, max, incl) {
+    const sel = c.sieste === val ? ' sieste-selected' : '';
     let glow = '';
-    if (ageM != null && o.min != null) {
-      const okMin = ageM >= o.min;
-      const okMax = o.max == null ? true : (o.incl ? ageM <= o.max : ageM < o.max);
-      if (okMin && okMax) glow = ' glow';
+    if (ageM != null && min != null) {
+      const okMin = ageM >= min;
+      const okMax = max == null ? true : (incl ? ageM <= max : ageM < max);
+      if (okMin && okMax && !sel) glow = ' sieste-glow';
     }
-    return `<button type="button" class="accueil-sieste-btn${sel}${glow}" data-sieste="${o.val}" onclick="onAccueilSiesteSelect('${o.val}')">${o.label}</button>`;
-  }).join('');
+    return `<label class="sieste-row${sel}${glow}" onclick="onAccueilSiesteSelect('${val}')"><input type="radio" name="accueil-sieste" value="${val}"${sel?' checked':''}><span class="sieste-label">${label}</span></label>`;
+  }
+  const siesteHtml = `
+<div class="sieste-group var-illim">
+  <div class="sieste-group-left">Siestes<br>illimitées</div>
+  <div class="sieste-group-right">${row('0-2m','0-2 mois',0,2)}</div>
+</div>
+<div class="sieste-group var-4">
+  <div class="sieste-group-left">4<div class="sieste-group-sub">siestes</div></div>
+  <div class="sieste-group-right">${row('2-4m','2-4 mois',2,4)}</div>
+</div>
+<div class="sieste-group var-3">
+  <div class="sieste-group-left">3<div class="sieste-group-sub">siestes</div></div>
+  <div class="sieste-group-right">${row('4-6m','4-6 mois',4,6)}${row('6-8m','6-8 mois',6,8)}${row('8-10m','8-10 mois',8,10)}</div>
+</div>
+<div class="sieste-group var-2">
+  <div class="sieste-group-left">2<div class="sieste-group-sub">siestes</div></div>
+  <div class="sieste-group-right">${row('8-15m','8-15 mois',8,15)}${row('15-20m','15-20 mois',15,20)}</div>
+</div>
+<div class="sieste-group var-1">
+  <div class="sieste-group-left">1<div class="sieste-group-sub">sieste</div></div>
+  <div class="sieste-group-right">${row('15m-3a','15 mois - 3 ans (inclus)',15,36,true)}${row('4a-plus','4 ans +',48)}</div>
+</div>
+<div class="sieste-group var-tc">
+  <div class="sieste-group-left">Temps<br>calme</div>
+  <div class="sieste-group-right">${row('4a-plus-tc','4 ans + (Temps calme)',48)}</div>
+</div>
+<div class="sieste-group var-other">
+  <div class="sieste-group-left">Autre</div>
+  <div class="sieste-group-right">${row('pas-de-changement','Pas de changement')}</div>
+</div>`;
   return `
-<ul style="margin:0;padding-left:20px;list-style:disc;line-height:1.7">
-  <li>Pour le moment, je sais juste qu'<strong>une maman</strong> est face à moi… mais je ne connais <strong>ENCORE aucun prénom</strong> !</li>
-  <li><strong>Comment vous appelez-vous</strong> ?
-    <div class="accueil-intake-row">
+<ul style="margin:0;padding-left:20px;list-style:disc;line-height:1.55">
+  <li style="margin-bottom:8px">Pour le moment, je sais juste qu'<strong>une maman</strong> est face à moi… mais je ne connais <strong>ENCORE aucun prénom</strong> !</li>
+  <li style="margin-bottom:4px"><strong>Comment vous appelez-vous</strong> ?
+    <div class="accueil-intake-row" style="margin:4px 0 2px">
       <input type="text" placeholder="Prénom parent 1" value="${escVal(c.prenomParent1)}" oninput="onAccueilPrenomParent1Input(this.value)" class="accueil-input">
       <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-parent1-btn${p1Role==='maman'?' selected':''}" data-role="maman" onclick="onAccueilSexeParent1Btn('maman')">👩 Maman</button>
       <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-parent1-btn${p1Role==='papa'?' selected':''}" data-role="papa" onclick="onAccueilSexeParent1Btn('papa')">👨 Papa</button>
     </div>
-    <div class="accueil-intake-row">
+    <div class="accueil-intake-row" style="margin:2px 0">
       <input type="text" placeholder="Prénom parent 2" value="${escVal(c.prenomParent2)}" oninput="onAccueilPrenomParent2Input(this.value)" class="accueil-input">
       <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-parent2-btn${p2Role==='maman'?' selected':''}" data-role="maman" onclick="onAccueilSexeParent2Btn('maman')">👩 Maman</button>
       <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-parent2-btn${p2Role==='papa'?' selected':''}" data-role="papa" onclick="onAccueilSexeParent2Btn('papa')">👨 Papa</button>
     </div>
-    <div class="accueil-intake-row">
+    <div class="accueil-intake-row" style="margin:2px 0 8px">
       <input type="text" placeholder="Nom de famille" value="${escVal(c.nomFamille)}" oninput="onAccueilNomFamilleInput(this.value)" class="accueil-input" style="max-width:280px">
     </div>
   </li>
-  <li><strong>Et votre enfant</strong> ?
-    <div class="accueil-intake-row">
+  <li style="margin-bottom:8px"><strong>Et votre enfant</strong> ?
+    <div class="accueil-intake-row" style="margin:4px 0 8px">
       <input type="text" placeholder="Prénom enfant" value="${escVal(c.prenomEnfant)}" oninput="onAccueilPrenomEnfantInput(this.value)" class="accueil-input">
       <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-enfant-btn${isFille?' selected':''}" data-sexe="Fille" onclick="onAccueilSexeEnfantBtn('Fille')">👧 Fille</button>
       <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-enfant-btn${isGarcon?' selected':''}" data-sexe="Garçon" onclick="onAccueilSexeEnfantBtn('Garçon')">👦 Garçon</button>
     </div>
   </li>
-  <li><strong>Quel âge a-t-[il_elle]</strong> ? Quelle est sa <strong>date de naissance</strong> ?
-    <div class="accueil-intake-row">
-      <label style="font-size:12px;color:#64748b">Date de naissance :</label>
-      <input type="date" value="${escVal(c.dateNaissance)}" oninput="onAccueilDateNaissInput(this.value)" class="accueil-input" style="max-width:170px">
-      <span style="font-size:12px;color:#64748b">Âge :</span>
-      <span class="var-age" style="font-weight:700">${c.ageReelStr || c.ageEnfant || '–'}</span>
+  <li style="margin-bottom:8px"><strong>Quel âge a-t-${ilelle}</strong> ? Quelle est sa <strong>date de naissance</strong> ?
+    <div class="accueil-intake-row" style="margin:4px 0 8px">
+      <input type="date" value="${escVal(c.dateNaissance)}" oninput="onAccueilDateNaissInput(this.value)" class="accueil-input" style="max-width:170px" title="Date de naissance">
+      <input type="text" placeholder="Âge réel (ex. 6 mois 12 jours)" value="${escVal(c.ageEnfant)}" oninput="onAccueilAgeReelInput(this.value)" class="accueil-input" style="max-width:240px" title="Âge réel manuel">
     </div>
   </li>
-  <li><strong>Est-[il_elle] né[e_e]</strong> à terme ? Quelle est sa <strong>date de terme</strong> ?
-    <div class="accueil-intake-row">
-      <label style="font-size:12px;color:#64748b">Date de terme :</label>
-      <input type="date" value="${escVal(c.dateTerme)}" oninput="onAccueilDateTermeInput(this.value)" class="accueil-input" style="max-width:170px">
-      <span style="font-size:12px;color:#64748b">Âge corrigé :</span>
-      <span style="font-weight:700">${c.ageCorrigeStr || '–'}</span>
+  <li style="margin-bottom:8px"><strong>Est-${ilelle} ${nee}</strong> à terme ? Quelle est sa <strong>date de terme</strong> ?
+    <div class="accueil-intake-row" style="margin:4px 0 8px;flex-wrap:wrap">
+      <input type="date" value="${escVal(c.dateTerme)}" oninput="onAccueilDateTermeInput(this.value)" class="accueil-input" style="max-width:170px" title="Date du terme">
+      <input type="text" placeholder="Âge gestationnel (ex. 39+2)" value="${escVal(c.ageGestationnel)}" oninput="onAccueilAgeGestInput(this.value)" class="accueil-input" style="max-width:200px" title="Âge gestationnel">
+      <input type="text" placeholder="Âge corrigé (ex. 6 mois 5 jours)" value="${escVal(c.ageCorrigeManuel)}" oninput="onAccueilAgeCorrigeInput(this.value)" class="accueil-input" style="max-width:240px" title="Âge corrigé manuel">
     </div>
     <div class="accueil-intake-sieste-label">💤 Sieste cible :</div>
-    <div class="accueil-sieste-grid">${siesteHtml}</div>
+    <div id="accueil-sieste-options" style="max-width:560px;margin-top:6px">${siesteHtml}</div>
   </li>
-  <li><strong>Merci</strong></li>
+  <li style="margin-top:8px"><strong>Merci</strong></li>
 </ul>`;
 }
 window._renderAccueilIntakeForm = _renderAccueilIntakeForm;
+
+// Handlers manuels pour âge réel / gestationnel / corrigé
+function onAccueilAgeReelInput(val) {
+  if (!state.client) state.client = {};
+  state.client.ageEnfant = val;
+  state.client.ageReelStr = val;
+  const f = document.getElementById('age-enfant'); if (f) f.value = val;
+  _updateAgeDom();
+  if (typeof updateHeader === 'function') updateHeader();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.onAccueilAgeReelInput = onAccueilAgeReelInput;
+
+function onAccueilAgeGestInput(val) {
+  if (!state.client) state.client = {};
+  state.client.ageGestationnel = val;
+  const f = document.getElementById('age-gestationnel'); if (f) f.value = val;
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.onAccueilAgeGestInput = onAccueilAgeGestInput;
+
+function onAccueilAgeCorrigeInput(val) {
+  if (!state.client) state.client = {};
+  state.client.ageCorrigeManuel = val;
+  state.client.ageCorrigeStr = val;
+  const f = document.getElementById('age-corrige-manuel'); if (f) f.value = val;
+  if (typeof updateHeader === 'function') updateHeader();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.onAccueilAgeCorrigeInput = onAccueilAgeCorrigeInput;
 
 // ═══════════════════════════════════════════════════
 // AUTO-SAVE de la consultation active
