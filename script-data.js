@@ -917,22 +917,42 @@ const SCRIPT_DATA = {
       title: "RGO",
       emoji: "🤮",
       blocks: [
-        { type: "normal", text: "- Avant de **commencer à parler \"sommeil\"**<br>j'aimerais, si vous êtes d'accord, qu'on **prenne un petit moment**<br>pour **revenir** sur CE QUE **vous m'avez partagé** ….sur son reflux\n\n- Parce que dans TOUT ce que **vous décrivez,** on sent :\n  - qu'il y a **beaucoup de choses à gérer**\n  - et que ça peut parfois être **un peu lourd au quotidien**\n  - parce que c'est **pas simple à vivre**\n\nEntre :" },
         {
-          type: "checklist", label: "Symptômes rapportés",
-          items: [
-            "Le fait qu'il <strong>régurgite beaucoup</strong>",
-            "Qu'il a du <strong>mal à rester allongé</strong>",
-            "Qu'il a un <strong>sommeil très agité</strong>",
-            "Que les <strong>repas sont parfois compliqués</strong>",
-            "Qu'on sent qu'il est souvent <strong>gêné ou inconfortable</strong>",
-            "Qu'il <strong>se cambre</strong>",
+          type: "grouped_block", _leftTitle: "RGO difficile",
+          blocks: [
+            {
+              type: "normal",
+              text: "- **AVANT** qu'on commence à parler \"sommeil\"\n  j'aimerais, si vous êtes d'accord, [prénom_parent_1],\n  qu'on prenne un petit moment, toutes les 2, pour revenir sur **CE QUE** vous m'avez partagé … sur son **REFLUX**\n\n- D'abord, je voudrais vous dire quelque chose\n- Ce que vous vivez, là, au quotidien, avec [prénom_enfant], c'est dur\n- Je ne dis **PAS ÇA pour le dire**\n  Je le dis parce que c'est vrai\n\n- Entre :"
+            },
+            {
+              type: "grouped_checklist",
+              _purpleText: true,
+              groups: [
+                {
+                  items: [
+                    "Le fait qu'[il_elle] régurgite beaucoup",
+                    "Qu'[il_elle] a du MAL à rester [allonge_allongee]",
+                    "Qu'[il_elle] a un sommeil très agité",
+                    "Que les repas sont parfois compliqués",
+                    "Qu'on sent qu'[il_elle] est souvent [gene_genee] ou inconfortable",
+                    "Qu'[il_elle] se cambre",
+                  ]
+                }
+              ]
+            },
+            {
+              type: "normal",
+              text: "- ⇒ C'est **BEAUCOUP**\n- ⇒ Et c'est **NORMAL** que ce soit difficile pour vous\n- ⇒ À votre place, je le serais aussi<br><br>"
+            },
           ]
         },
-        { type: "normal", text: "⇒ c'est **normal** que ce soit **difficile pour vous.**" },
         {
-          type: "normal",
-          text: "- Le **reflux,** même si des fois il **peut être discret**, **va impacter** sur énormément de **choses du quotidien**\n\n- Alors, on aura BEAU **tout mettre en œuvre** au niveau du **sommeil,**<br>⇒ si il y a **toujours :**\n  - **ce petit cailloux**\n  - cet inconfort\n  - malheureusement, le **sommeil** sera **toujours perturbé.**",
+          type: "normal", _leftTitle: "Tout est lié",
+          text: "- Parce que chez les bébés, vous savez, tout est lié : *le sommeil, la digestion, la respiration, la peau…*\n- Et le reflux, [prénom_parent_1], même quand il peut être discret par moments\n  ⇒ Il **impacte énormément de choses** dans le quotidien de [prénom_enfant]\n  ⇒ Et notamment son sommeil"
+        },
+        {
+          type: "normal", _leftTitle: "Reflux = impact le sommeil",
+          text: "- Parce que vous savez quoi ?\n- On aura **BEAU** tout mettre en œuvre au niveau du sommeil\n- S'il y a toujours :\n  - ce petit caillou\n  - cet inconfort\n  - cette gêne qui revient\n  ⇒ Malheureusement, le sommeil sera **toujours perturbé**",
           trailingInfoButton: {
             label: "Causes du RGO",
             title: "Causes du RGO",
@@ -941,8 +961,26 @@ const SCRIPT_DATA = {
             ]
           }
         },
-        { type: "normal", text: "- Donc, l'idée ici **n'est pas de se focaliser uniquement sur le reflux**, mais d'avoir une **lecture globale de la situation** :\n- Essayer de trouver la cause, avant de s'attaquer aux symptômes :\n  - *est-ce que les **apports sont** :*\n    - ***suffisants***\n    - *et **bien répartis** ?*\n  - *est-ce que le **rythme est adapté à son âge** ?*\n  - *y a-t-il des **signes d'inconfort digestif** au quotidien ?*\n\n- **Mon rôle**, ce n'est :\n  - **pas d'étiqueter**\n  - ou de **poser un diagnostic**\n  - MAIS de **NE PAS passer** à **côté de quelque chose** qui pourrait **expliquer ces troubles du sommeil**\n\n- Et une fois qu'on aura **remis du confort** dans son quotidien, **tout le reste** deviendra :\n  - **beaucoup + simple**,\n  - et surtout + **durable pour son sommeil**" },
-        { type: "question", text: "Est-ce que ça **vous irait** qu'on **parle de conseils concrets** pour **soulager son RGO** ?" },
+        {
+          type: "normal", _leftTitle: "Lecture globale",
+          text: "- Donc l'idée, ici, ce n'est **PAS** de se focaliser uniquement sur le reflux\n- C'est d'avoir une **lecture globale de la situation**\n- Et surtout, c'est d'aller voir **CE QUI se cache derrière**\n  - **PAS JUSTE** calmer le reflux\n  - Mais **comprendre pourquoi il est là**"
+        },
+        {
+          type: "normal", _leftTitle: "Avancer ensemble",
+          text: "- Et [prénom_parent_1], **VOUS**, vous connaissez [prénom_enfant] mieux que personne\n- Donc vos observations, vos ressentis, votre vécu, ils sont **essentiels**\n- C'est en **CROISANT votre regard de maman et le mien de consultante** qu'on va avancer"
+        },
+        {
+          type: "normal", _leftTitle: "Les bonnes questions à se poser",
+          text: "- Alors moi, ce que je vais regarder avec vous, ce sont **plusieurs choses** :\n  - Est-ce que les **apports** sont :\n    - **suffisants**\n    - et **bien répartis** ?\n  - Est-ce que le **rythme** est adapté à son âge ?\n  - Y a-t-il des **signes d'inconfort digestif** au quotidien ?"
+        },
+        {
+          type: "normal", _leftTitle: "Lien avec le sommeil",
+          text: "- Et vous savez quoi ?\n- Une fois qu'on aura **remis du confort** dans le quotidien de [prénom_enfant]\n  ⇒ [il_elle] va **se sentir mieux dans son corps**\n  ⇒ Et le sommeil va **suivre, naturellement**\n\n- Parce que **C'EST ÇA l'idée** :\n  - **PAS** un pansement qui tient quelques jours\n  - **MAIS** quelque chose de vraiment + **DURABLE** dans le temps"
+        },
+        {
+          type: "question", _leftTitle: "Des questions ?",
+          text: "Voilà, [prénom_parent_1]\n- Je vous ai dit **beaucoup de choses**, je sais\n\n- Comment vous vous sentez ?\n- Est-ce qu'il y a quelque chose qui n'est **PAS clair**, ou sur lequel vous voulez qu'on revienne ?"
+        },
       ]
     },
 
