@@ -7585,7 +7585,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=698"></script>
+<script src="script-data.js?v=699"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -18689,10 +18689,60 @@ function newConsultation() {
     state.recapAccompUntoggled = new Set();
     state.solActiveCat = null;
     state.solActiveChildByCat = {};
+    // Vider la fiche client (inputs, checkboxes, boutons) pour partir d'une fiche vierge
+    clearSetupForm();
     clearActiveConsultation();
     loadSavedClients();
   }
 }
+
+// Vider TOUS les champs du formulaire setup pour repartir d'une fiche vierge.
+// Utilisé par newConsultation() pour éviter que les anciennes valeurs persistent.
+function clearSetupForm() {
+  // 1. state.client → objet vide (défaut)
+  state.client = {
+    prenomEnfant: '', ageEnfant: '', rituel: '',
+    prenomParent1: '', prenomParent2: '',
+    nomFamille: '', roleParents: 'les deux parents',
+    problematique: '', objectifs: '',
+    pbExtraNote: '', objExtraNote: '',
+    scheduleWakeUp: ''
+  };
+  // 2. Vider tous les inputs text/number/email/tel/date/time/hidden + textareas
+  const setup = document.getElementById('setup-screen');
+  if (!setup) return;
+  setup.querySelectorAll('input[type="text"], input[type="number"], input[type="email"], input[type="tel"], input[type="date"], input[type="time"], input[type="hidden"], textarea').forEach(el => {
+    // Garder les hidden inputs avec valeur par défaut prévue (sexe-parent1, sexe-parent2)
+    if (el.id === 'sexe-parent1') { el.value = 'maman'; return; }
+    if (el.id === 'sexe-parent2') { el.value = 'papa'; return; }
+    el.value = '';
+  });
+  // 3. Décocher toutes les checkboxes
+  setup.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.checked = false;
+    const lbl = cb.closest('.pb-item');
+    if (lbl) lbl.classList.remove('checked');
+  });
+  // 4. Décocher tous les radios
+  setup.querySelectorAll('input[type="radio"]').forEach(r => { r.checked = false; });
+  // 5. Reset selects à leur première option (placeholder)
+  setup.querySelectorAll('select').forEach(s => { s.selectedIndex = 0; });
+  // 6. Reset visuel des boutons (sexe enfant, sexe parent, lait)
+  if (typeof _updateSexeEnfantButtons === 'function') _updateSexeEnfantButtons();
+  if (typeof _updateSexeParentButtons === 'function') _updateSexeParentButtons();
+  if (typeof _updateTypeLaitButtons === 'function') _updateTypeLaitButtons();
+  // 7. Cacher les groupes conditionnels (allaitement-mode, type-lait, autre-allergie)
+  ['allaitement-mode-group', 'type-lait-group', 'autre-allergie-row'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  // 8. Reset enseigne (au cas où) — par défaut tribu
+  if (typeof setEnseigne === 'function') setEnseigne('tribu');
+  // 9. Reset date consultation à aujourd'hui
+  const dateConsult = document.getElementById('consult-date');
+  if (dateConsult) dateConsult.value = new Date().toISOString().slice(0,10);
+}
+window.clearSetupForm = clearSetupForm;
 
 // ═══════════════════════════════════════════════════
 // AUTO-SAVE de la consultation active
