@@ -5903,6 +5903,10 @@
             </div>
             <div style="border:2px solid var(--border);border-radius:10px;padding:12px 14px;background:#fafbfc;display:flex;flex-direction:column;gap:10px">
               <div style="font-weight:800;font-size:12px;color:#2d3f5c;letter-spacing:0.6px;text-transform:uppercase;border-bottom:1.5px solid var(--border);padding-bottom:6px">✏️ Corrigé <span style="font-weight:400;text-transform:none;letter-spacing:0.3px;color:#aaa;font-size:11px">(si prématuré)</span></div>
+              <label class="form-group" style="margin:0;display:flex;align-items:center;gap:8px;cursor:pointer">
+                <input type="checkbox" id="age-corr-eq-reel" onchange="onAgeCorrEqReelToggle()">
+                <span style="font-weight:600;color:#475569">Âge réel = âge corrigé</span>
+              </label>
               <div class="form-group" style="margin:0">
                 <label>Date du terme</label>
                 <input type="date" id="date-terme" oninput="computeClientFields('date-terme')">
@@ -9799,10 +9803,22 @@ function computeClientFields(triggeredBy) {
   const taillePere = parseFloat(document.getElementById('taille-pere')?.value);
   const tailleMere = parseFloat(document.getElementById('taille-mere')?.value);
   const sexe = document.getElementById('sexe-enfant')?.value;
-  const ageManuel = document.getElementById('age-enfant')?.value.trim();
-  const ageCorrigeManuel = document.getElementById('age-corrige-manuel')?.value.trim();
-  const ageGestationnel = document.getElementById('age-gestationnel')?.value.trim();
+  let ageManuel = document.getElementById('age-enfant')?.value.trim();
+  let ageCorrigeManuel = document.getElementById('age-corrige-manuel')?.value.trim();
+  let ageGestationnel = document.getElementById('age-gestationnel')?.value.trim();
 
+  // ─── SI la case "Âge réel = âge corrigé" est cochée, recopier en permanence ─
+  if (state.client && state.client.ageCorrEqReel) {
+    const acm = document.getElementById('age-corrige-manuel');
+    const ag = document.getElementById('age-gestationnel');
+    const dt = document.getElementById('date-terme');
+    if (acm && acm.value !== ageManuel) acm.value = ageManuel;
+    if (dt && dt.value !== dateNaiss) dt.value = dateNaiss;
+    if (ag && ag.value) ag.value = '';
+    // Mettre à jour les vars locales pour que les blocs suivants utilisent les bonnes valeurs
+    ageCorrigeManuel = ageManuel || '';
+    dateTerme = dateNaiss || '';
+  }
   // ─── AUTO-CALCULS BIDIRECTIONNELS ────────────────────────────────────────
   // 0a. Si on vient de VIDER un champ d'âge manuel → vider aussi la date correspondante
   //     (NB : on met aussi à jour les variables locales pour empêcher les blocs suivants
@@ -9917,7 +9933,8 @@ function computeClientFields(triggeredBy) {
   //    (terme = consultation - âge corrigé)
   //    - Si déclenché par 'age-corrige-manuel' : force la mise à jour
   //    - Sinon : uniquement si dt vide
-  if (ageCorrigeManuelLive && dateNaiss && !ageGestationnelLive && consultDate) {
+  // Permettre le back-calc même sans dateNaiss : terme = consultation - âge corrigé
+  if (ageCorrigeManuelLive && !ageGestationnelLive && consultDate) {
     const dt = document.getElementById('date-terme');
     const forceUpdate = (triggeredBy === 'age-corrige-manuel');
     if (dt && (!dt.value || forceUpdate)) {
@@ -10092,6 +10109,9 @@ function computeClientFields(triggeredBy) {
   if (typeof updateSiesteHighlight === 'function') updateSiesteHighlight();
   // Auto-sauvegarde silencieuse (debounced 600ms) pour persister les champs fiche
   if (typeof autoSaveFiche === 'function') autoSaveFiche();
+  // Propager les changements vers I. Accueil (inputs date+age) + header + .var-age
+  if (typeof _syncAccueilDatesFromFiche === 'function') _syncAccueilDatesFromFiche();
+  else if (typeof updateHeader === 'function') updateHeader();
   } finally {
     _computeClientFieldsRunning = false;
   }
@@ -19017,6 +19037,35 @@ function _updateAgeDom() {
 window._updateAgeDom = _updateAgeDom;
 
 // Handlers Accueil — chaque input/bouton update state + fiche client + DOM
+// Checkbox "Âge réel = âge corrigé" dans la fiche client : copie l'âge réel
+// dans le champ âge corrigé (manuel) et la date de terme = date de naissance.
+// Quand on décoche, on libère les champs sans les vider.
+function onAgeCorrEqReelToggle() {
+  const cb = document.getElementById('age-corr-eq-reel');
+  if (!cb) return;
+  const ag = document.getElementById('age-gestationnel');
+  const acm = document.getElementById('age-corrige-manuel');
+  const dt = document.getElementById('date-terme');
+  if (cb.checked) {
+    // Recopier âge réel → âge corrigé, et date naissance → date terme
+    const ae = document.getElementById('age-enfant')?.value || '';
+    const dn = document.getElementById('date-naissance')?.value || '';
+    if (acm) { acm.value = ae; acm.readOnly = true; acm.style.background = '#f1f5f9'; }
+    if (dt) { dt.value = dn; dt.readOnly = true; dt.style.background = '#f1f5f9'; }
+    if (ag) { ag.value = ''; ag.readOnly = true; ag.style.background = '#f1f5f9'; }
+    if (!state.client) state.client = {};
+    state.client.ageCorrEqReel = true;
+  } else {
+    if (acm) { acm.readOnly = false; acm.style.background = ''; }
+    if (dt) { dt.readOnly = false; dt.style.background = ''; }
+    if (ag) { ag.readOnly = false; ag.style.background = ''; }
+    if (!state.client) state.client = {};
+    state.client.ageCorrEqReel = false;
+  }
+  if (typeof computeClientFields === 'function') computeClientFields();
+}
+window.onAgeCorrEqReelToggle = onAgeCorrEqReelToggle;
+
 function onAccueilPrenomEnfantInput(val) {
   if (!state.client) state.client = {};
   state.client.prenomEnfant = val;
@@ -19037,7 +19086,7 @@ function onAccueilPrenomEnfantInput(val) {
       if (stillNoSexe && stillHasPrenom && typeof promptSexeEnfantRequired === 'function') {
         promptSexeEnfantRequired();
       }
-    }, 10000);
+    }, 3000);
   }
 }
 window.onAccueilPrenomEnfantInput = onAccueilPrenomEnfantInput;
@@ -19298,7 +19347,8 @@ function _renderAccueilIntakeForm() {
   } else if (p2Raw) {
     parentRoleHtml = p2Role === 'papa' ? 'le papa' : 'la maman';
   }
-  // Phrase d'intro selon état
+  // Phrase d'intro selon état — "MAMAN" rouge gras majuscule entre 🔥
+  const mamanFire = `🔥<strong style="color:#dc2626">MAMAN</strong>🔥`;
   let introHtml;
   if (hasParent && hasChild) {
     // State D : ❓ + 2 bullets alignés (Vous devez être... / C'est bien ça ?)
@@ -19306,14 +19356,14 @@ function _renderAccueilIntakeForm() {
   } else if (hasParent && !hasChild) {
     introHtml = `❓ Vous devez être ${parentNamesHtml} mais je <strong>NE</strong> connais <strong>ENCORE le prénom de VOTRE enfant</strong> !`;
   } else if (!hasParent && hasChild) {
-    introHtml = `❓ Pour le moment, je sais JUSTE qu'<strong>une maman</strong> est <strong>face à moi</strong>… mais je <strong>NE</strong> connais <strong>ENCORE VOTRE prénom</strong> !`;
+    introHtml = `❓ Pour le moment, je sais JUSTE qu'une ${mamanFire} est <strong>face à moi</strong>… mais je <strong>NE</strong> connais <strong>ENCORE VOTRE prénom</strong> !`;
   } else {
-    introHtml = `❓ Pour le moment, je sais JUSTE qu'<strong>une maman</strong> est <strong>face à moi</strong>… mais je <strong>NE</strong> connais <strong>ENCORE AUCUN prénom</strong> !`;
+    introHtml = `❓ Pour le moment, je sais JUSTE qu'une ${mamanFire} est <strong>face à moi</strong>… mais je <strong>NE</strong> connais <strong>ENCORE AUCUN prénom</strong> !`;
   }
   // Bloc question parent : caché si un prénom de parent est déjà renseigné
   // Styles inline pour garantir 0 espacement entre les 3 rows (résiste aux conflits CSS)
-  const parentStackStyle = 'display:flex;flex-direction:column;gap:2px;margin:4px 0 8px;line-height:1';
-  const parentRowStyle = 'display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0;line-height:1';
+  const parentStackStyle = 'display:flex;flex-direction:column;gap:0;margin:4px 0 8px;line-height:1';
+  const parentRowStyle = 'display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0;line-height:1;padding:0';
   const parentBlock = hasParent ? '' : `
   <li style="margin-bottom:4px"><strong>Comment vous appelez-vous</strong> ?
     <div class="accueil-parent-stack" style="${parentStackStyle}">
@@ -19346,8 +19396,7 @@ function _renderAccueilIntakeForm() {
   </li>`;
   // ── Conditional display selon les âges déjà remplis ──
   const hasAgeReel = !!(c.dateNaissance || (c.ageEnfant && c.ageEnfant.trim()));
-  const hasAgeCorrige = !!(c.dateTerme || (c.ageCorrigeManuel && c.ageCorrigeManuel.trim()) || (c.ageGestationnel && c.ageGestationnel.trim()));
-  // Bloc question âge réel : caché si déjà renseigné
+  // Bloc question âge réel : caché si déjà renseigné (les sieste + corrigé sont supprimés de l'Accueil)
   const ageReelBlock = hasAgeReel ? '' : `
   <li style="margin-bottom:8px"><strong>Quel âge a</strong> ${prenomEnfantHtml} ? Quelle est sa <strong>date de naissance</strong> ?
     <div class="accueil-intake-row" style="margin:4px 0 8px">
@@ -19355,28 +19404,10 @@ function _renderAccueilIntakeForm() {
       <input type="text" placeholder="Âge réel (ex. 6 mois 12 jours)" value="${escVal(c.ageEnfant)}" oninput="onAccueilAgeReelInput(this.value)" class="accueil-input" style="max-width:240px" title="Âge réel manuel" data-accueil="age-reel">
     </div>
   </li>`;
-  // Bloc question âge corrigé + sieste : caché si déjà renseigné (âge réel ET corrigé)
-  // Sinon, libellé adapté quand âge réel déjà connu mais pas corrigé
-  let ageCorrigeBlock = '';
-  if (!(hasAgeReel && hasAgeCorrige)) {
-    const ageCorrigeQuestion = hasAgeReel
-      ? `<strong>Est-ce que</strong> ${prenomEnfantHtml} <strong>est ${nee} à terme</strong> ? Quelle est sa <strong>date de terme</strong> ?`
-      : `<strong>Est-${ilelle} ${nee} à terme</strong> ? Quelle est sa <strong>date de terme</strong> ?`;
-    ageCorrigeBlock = `
-  <li style="margin-bottom:8px">${ageCorrigeQuestion}
-    <div class="accueil-intake-row" style="margin:4px 0 8px;flex-wrap:wrap">
-      <input type="date" value="${escVal(c.dateTerme)}" oninput="onAccueilDateTermeInput(this.value)" class="accueil-input" style="max-width:170px" title="Date du terme" data-accueil="date-terme">
-      <input type="text" placeholder="Âge gestationnel (ex. 39+2)" value="${escVal(c.ageGestationnel)}" oninput="onAccueilAgeGestInput(this.value)" class="accueil-input" style="max-width:200px" title="Âge gestationnel" data-accueil="age-gest">
-      <input type="text" placeholder="Âge corrigé (ex. 6 mois 5 jours)" value="${escVal(c.ageCorrigeManuel)}" oninput="onAccueilAgeCorrigeInput(this.value)" class="accueil-input" style="max-width:240px" title="Âge corrigé manuel" data-accueil="age-corrige">
-    </div>
-    <div class="accueil-intake-sieste-label">💤 Sieste cible :</div>
-    <div id="accueil-sieste-options" class="accueil-sieste-grid" style="display:flex;flex-wrap:nowrap;gap:12px;max-width:760px;margin-top:6px">${siesteHtml}</div>
-  </li>`;
-  }
   return `
 <div style="margin:0 0 10px 0">${introHtml}</div>
-<ul style="margin:0;padding-left:20px;list-style:disc;line-height:1.55">${parentBlock}${childBlock}${ageReelBlock}${ageCorrigeBlock}
-  <li style="margin-top:8px"><strong>Merci</strong></li>
+<ul style="margin:0;padding-left:20px;list-style:disc;line-height:1.55">${parentBlock}${childBlock}${ageReelBlock}
+  <li style="margin-top:8px"><strong>Merci pour vos réponses&nbsp;!</strong></li>
 </ul>`;
 }
 window._renderAccueilIntakeForm = _renderAccueilIntakeForm;
