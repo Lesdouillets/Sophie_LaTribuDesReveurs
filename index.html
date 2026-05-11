@@ -7691,7 +7691,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=711"></script>
+<script src="script-data.js?v=712"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -8580,6 +8580,11 @@ function updateDiversifN1Visibility() {
 }
 
 function showSetupTab(tabId, btn) {
+  // Si le prénom enfant est rempli mais pas le sexe, bloquer le changement d'onglet
+  // (sauf si on est en train d'aller sur tab-bebe — autorisé pour permettre de revenir au sexe)
+  if (tabId !== 'tab-bebe' && typeof checkSexeEnfantRequired === 'function' && !checkSexeEnfantRequired()) {
+    return;
+  }
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.setup-tab').forEach(b => b.classList.remove('active'));
   document.getElementById(tabId)?.classList.add('active');
@@ -10102,6 +10107,11 @@ function startConsultation() {
   const enseigneVal = document.getElementById('enseigne-select')?.value;
   // Seule l'enseigne est obligatoire — tout le reste peut être renseigné via I. Accueil
   if (!enseigneVal) { alert('Merci de sélectionner l\'enseigne (La Tribu ou Fée dodo).'); showSetupTab('tab-bebe', document.querySelector('.setup-tab')); return; }
+  // Si prénom enfant rempli, le sexe est obligatoire — afficher le modal et bloquer
+  if (prenomEnfant && !sexeEnfant) {
+    if (typeof promptSexeEnfantRequired === 'function') promptSexeEnfantRequired();
+    return;
+  }
   const consultDate2 = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
   const dateNaiss = document.getElementById('date-naissance')?.value;
   const dateTerme = document.getElementById('date-terme')?.value;
@@ -19009,18 +19019,89 @@ function onAccueilPrenomEnfantInput(val) {
   if (typeof updatePobBar === 'function') updatePobBar();
   if (typeof updateHeader === 'function') updateHeader();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+  // Si le prénom est rempli et le sexe pas encore choisi, démarrer un timer de 10s
+  // qui affichera le prompt obligatoire sexe enfant (annulé si l'utilisateur clique entretemps)
+  if (window._accueilSexePromptTimer) { clearTimeout(window._accueilSexePromptTimer); window._accueilSexePromptTimer = null; }
+  const v = (val || '').trim();
+  const sexeVal = document.getElementById('sexe-enfant')?.value || '';
+  if (v && !sexeVal) {
+    window._accueilSexePromptTimer = setTimeout(() => {
+      const stillNoSexe = !(document.getElementById('sexe-enfant')?.value || '');
+      const stillHasPrenom = !!(state.client && state.client.prenomEnfant && state.client.prenomEnfant.trim());
+      if (stillNoSexe && stillHasPrenom && typeof promptSexeEnfantRequired === 'function') {
+        promptSexeEnfantRequired();
+      }
+    }, 10000);
+  }
 }
 window.onAccueilPrenomEnfantInput = onAccueilPrenomEnfantInput;
+
+// Affiche un modal bloquant qui exige de choisir le sexe de l'enfant (Fille / Garçon).
+// Met à jour la fiche client + state + I. Accueil. Retourne une promesse résolue avec le choix.
+function promptSexeEnfantRequired() {
+  return new Promise(resolve => {
+    if (document.getElementById('sexe-required-modal')) return; // déjà ouvert
+    const overlay = document.createElement('div');
+    overlay.id = 'sexe-required-modal';
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:9999999;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;font-family:inherit';
+    overlay.innerHTML = `
+      <div style="background:#fff;border-radius:14px;padding:24px 28px;max-width:420px;box-shadow:0 12px 40px rgba(0,0,0,0.3);text-align:center">
+        <div style="font-size:20px;font-weight:800;color:#dc2626;margin-bottom:8px">⚠️ Information manquante</div>
+        <div style="font-size:15px;color:#475569;margin-bottom:18px;line-height:1.5">Le <strong>sexe de l'enfant</strong> est obligatoire pour adapter les questions.<br>Merci de choisir :</div>
+        <div style="display:flex;gap:12px;justify-content:center">
+          <button type="button" id="sexe-modal-fille" style="flex:1;padding:14px 18px;border:2.5px solid #be185d;background:#ec4899;color:#fff;border-radius:10px;font-size:15px;font-weight:800;cursor:pointer">👧 Fille</button>
+          <button type="button" id="sexe-modal-garcon" style="flex:1;padding:14px 18px;border:2.5px solid #1d4ed8;background:#3b82f6;color:#fff;border-radius:10px;font-size:15px;font-weight:800;cursor:pointer">👦 Garçon</button>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+    const onChoose = (sexe) => {
+      if (!state.client) state.client = {};
+      state.client.sexe = sexe;
+      const f = document.getElementById('sexe-enfant'); if (f) f.value = sexe;
+      if (typeof _updateSexeEnfantButtons === 'function') _updateSexeEnfantButtons();
+      document.querySelectorAll('.accueil-sexe-enfant-btn').forEach(b => {
+        b.classList.toggle('selected', b.dataset.sexe === sexe);
+      });
+      if (typeof _updatePrenomEnfantDom === 'function') _updatePrenomEnfantDom();
+      if (typeof updateHeader === 'function') updateHeader();
+      if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+      overlay.remove();
+      resolve(sexe);
+    };
+    overlay.querySelector('#sexe-modal-fille').onclick = () => onChoose('Fille');
+    overlay.querySelector('#sexe-modal-garcon').onclick = () => onChoose('Garçon');
+  });
+}
+window.promptSexeEnfantRequired = promptSexeEnfantRequired;
+
+// Vérifie qu'on a sexe enfant si prénom rempli, affiche le modal sinon.
+// Retourne true si on peut continuer, false si on doit attendre l'utilisateur.
+function checkSexeEnfantRequired() {
+  const prenom = (document.getElementById('prenom-enfant')?.value || '').trim();
+  const sexe = document.getElementById('sexe-enfant')?.value || '';
+  if (prenom && !sexe) {
+    promptSexeEnfantRequired();
+    return false;
+  }
+  return true;
+}
+window.checkSexeEnfantRequired = checkSexeEnfantRequired;
 
 function onAccueilSexeEnfantBtn(val) {
   if (!state.client) state.client = {};
   state.client.sexe = val;
   const f = document.getElementById('sexe-enfant'); if (f) f.value = val;
   if (typeof _updateSexeEnfantButtons === 'function') _updateSexeEnfantButtons();
+  // Toggle visuel des boutons sexe dans l'intake form Accueil
+  document.querySelectorAll('.accueil-sexe-enfant-btn').forEach(b => {
+    b.classList.toggle('selected', b.dataset.sexe === val);
+  });
+  // Update en place de la couleur du prénom enfant (via marker class .var-prenom-enfant)
+  if (typeof _updatePrenomEnfantDom === 'function') _updatePrenomEnfantDom();
   if (typeof updateHeader === 'function') updateHeader();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
-  // Re-rendre la section courante pour propager [il_elle], [un_une], [petit_petite], [fille_garcon], couleur prénom
-  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+  // Annuler le timer de prompt sexe enfant (si actif)
+  if (window._accueilSexePromptTimer) { clearTimeout(window._accueilSexePromptTimer); window._accueilSexePromptTimer = null; }
 }
 window.onAccueilSexeEnfantBtn = onAccueilSexeEnfantBtn;
 
@@ -19216,11 +19297,11 @@ function _renderAccueilIntakeForm() {
   if (hasParent && hasChild) {
     introHtml = `❓ Vous devez être ${parentNamesHtml}, ${parentRoleHtml} de ${prenomEnfantHtml} ?`;
   } else if (hasParent && !hasChild) {
-    introHtml = `❓ Vous devez être ${parentNamesHtml} mais je ne connais <strong>ENCORE le prénom de VOTRE enfant</strong> !`;
+    introHtml = `❓ Vous devez être ${parentNamesHtml} mais je <strong>NE</strong> connais <strong>ENCORE le prénom de VOTRE enfant</strong> !`;
   } else if (!hasParent && hasChild) {
-    introHtml = `❓ Pour le moment, je sais JUSTE qu'<strong>une maman</strong> est <strong>face à moi</strong>… mais je ne connais <strong>ENCORE VOTRE prénom</strong> !`;
+    introHtml = `❓ Pour le moment, je sais JUSTE qu'<strong>une maman</strong> est <strong>face à moi</strong>… mais je <strong>NE</strong> connais <strong>ENCORE VOTRE prénom</strong> !`;
   } else {
-    introHtml = `❓ Pour le moment, je sais JUSTE qu'<strong>une maman</strong> est <strong>face à moi</strong>… mais je ne connais <strong>ENCORE AUCUN prénom</strong> !`;
+    introHtml = `❓ Pour le moment, je sais JUSTE qu'<strong>une maman</strong> est <strong>face à moi</strong>… mais je <strong>NE</strong> connais <strong>ENCORE AUCUN prénom</strong> !`;
   }
   // Bloc question parent : caché si un prénom de parent est déjà renseigné
   const parentBlock = hasParent ? '' : `
@@ -19253,16 +19334,26 @@ function _renderAccueilIntakeForm() {
       <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-enfant-btn${isGarcon?' selected':''}" data-sexe="Garçon" onclick="onAccueilSexeEnfantBtn('Garçon')">👦 Garçon</button>
     </div>
   </li>`;
-  return `
-<div style="margin:0 0 10px 0">${introHtml}</div>
-<ul style="margin:0;padding-left:20px;list-style:disc;line-height:1.55">${parentBlock}${childBlock}
+  // ── Conditional display selon les âges déjà remplis ──
+  const hasAgeReel = !!(c.dateNaissance || (c.ageEnfant && c.ageEnfant.trim()));
+  const hasAgeCorrige = !!(c.dateTerme || (c.ageCorrigeManuel && c.ageCorrigeManuel.trim()) || (c.ageGestationnel && c.ageGestationnel.trim()));
+  // Bloc question âge réel : caché si déjà renseigné
+  const ageReelBlock = hasAgeReel ? '' : `
   <li style="margin-bottom:8px"><strong>Quel âge a</strong> ${prenomEnfantHtml} ? Quelle est sa <strong>date de naissance</strong> ?
     <div class="accueil-intake-row" style="margin:4px 0 8px">
       <input type="date" value="${escVal(c.dateNaissance)}" oninput="onAccueilDateNaissInput(this.value)" class="accueil-input" style="max-width:170px" title="Date de naissance" data-accueil="date-naissance">
       <input type="text" placeholder="Âge réel (ex. 6 mois 12 jours)" value="${escVal(c.ageEnfant)}" oninput="onAccueilAgeReelInput(this.value)" class="accueil-input" style="max-width:240px" title="Âge réel manuel" data-accueil="age-reel">
     </div>
-  </li>
-  <li style="margin-bottom:8px"><strong>Est-${ilelle} ${nee}</strong> à terme ? Quelle est sa <strong>date de terme</strong> ?
+  </li>`;
+  // Bloc question âge corrigé + sieste : caché si déjà renseigné (âge réel ET corrigé)
+  // Sinon, libellé adapté quand âge réel déjà connu mais pas corrigé
+  let ageCorrigeBlock = '';
+  if (!(hasAgeReel && hasAgeCorrige)) {
+    const ageCorrigeQuestion = hasAgeReel
+      ? `<strong>Est-ce que</strong> ${prenomEnfantHtml} <strong>est ${nee} à terme</strong> ? Quelle est sa <strong>date de terme</strong> ?`
+      : `<strong>Est-${ilelle} ${nee} à terme</strong> ? Quelle est sa <strong>date de terme</strong> ?`;
+    ageCorrigeBlock = `
+  <li style="margin-bottom:8px">${ageCorrigeQuestion}
     <div class="accueil-intake-row" style="margin:4px 0 8px;flex-wrap:wrap">
       <input type="date" value="${escVal(c.dateTerme)}" oninput="onAccueilDateTermeInput(this.value)" class="accueil-input" style="max-width:170px" title="Date du terme" data-accueil="date-terme">
       <input type="text" placeholder="Âge gestationnel (ex. 39+2)" value="${escVal(c.ageGestationnel)}" oninput="onAccueilAgeGestInput(this.value)" class="accueil-input" style="max-width:200px" title="Âge gestationnel" data-accueil="age-gest">
@@ -19270,7 +19361,11 @@ function _renderAccueilIntakeForm() {
     </div>
     <div class="accueil-intake-sieste-label">💤 Sieste cible :</div>
     <div id="accueil-sieste-options" class="accueil-sieste-grid" style="display:flex;flex-wrap:nowrap;gap:12px;max-width:760px;margin-top:6px">${siesteHtml}</div>
-  </li>
+  </li>`;
+  }
+  return `
+<div style="margin:0 0 10px 0">${introHtml}</div>
+<ul style="margin:0;padding-left:20px;list-style:disc;line-height:1.55">${parentBlock}${childBlock}${ageReelBlock}${ageCorrigeBlock}
   <li style="margin-top:8px"><strong>Merci</strong></li>
 </ul>`;
 }
