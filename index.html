@@ -108,6 +108,65 @@
       padding: 28px 20px 20px;
       overflow: hidden;
     }
+    /* I. Accueil — Intake form intégré (inputs + boutons + sieste cible compacte) */
+    .accueil-intake-row {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+      margin: 6px 0;
+    }
+    .accueil-input {
+      padding: 6px 10px;
+      border: 1.5px solid #cbd5e0;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 13px;
+      max-width: 200px;
+      flex: 0 1 auto;
+    }
+    .accueil-input:focus { outline: none; border-color: #5e7194; }
+    .accueil-intake-sieste-label {
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #475569;
+    }
+    .accueil-sieste-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      max-width: 560px;
+      margin-top: 6px;
+    }
+    .accueil-sieste-btn {
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1.5px solid #cbd5e0;
+      background: #f8fafc;
+      color: #475569;
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s;
+    }
+    .accueil-sieste-btn:hover:not(.selected) { background: #eef2f7; border-color: #94a3b8; }
+    .accueil-sieste-btn.glow:not(.selected) {
+      border-color: #f5d778;
+      background: #fef9e0;
+      box-shadow: 0 0 8px rgba(245,215,120,0.6);
+      animation: accueil-sieste-glow 2s ease-in-out infinite;
+    }
+    .accueil-sieste-btn.selected {
+      background: #2d3f5c; color: #fff; border-color: #2d3f5c;
+      animation: none; box-shadow: none;
+    }
+    @keyframes accueil-sieste-glow {
+      0%, 100% { box-shadow: 0 0 6px rgba(245,215,120,0.5); }
+      50% { box-shadow: 0 0 14px rgba(245,215,120,0.9); }
+    }
+    /* Var-empty : style en italique gris pour placeholders [prénom] non remplis */
+    .var-empty { font-style: italic; font-weight: 400 !important; opacity: 0.6; }
+
     /* Bouton "Nouvelle consultation" en haut de la colonne gauche du setup
        Couleur Pantone 16-1526 TPX (Desert Sand / coral-pêche) avec glow pulsant */
     .setup-new-consult-btn {
@@ -7619,7 +7678,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=704"></script>
+<script src="script-data.js?v=705"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -16308,6 +16367,8 @@ function substituteVars(text) {
     .replace(/\[pb_text\]/g, pb)
     .replace(/\[agenda_btn:small\]/g, () => renderAgendaButtonHTML({ small: true }))
     .replace(/\[agenda_btn\]/g, () => renderAgendaButtonHTML())
+    .replace(/\[accueil_intake_form\]/g, () => (typeof _renderAccueilIntakeForm === 'function') ? _renderAccueilIntakeForm() : '')
+    .replace(/\[ne_e\]/g, isFille ? 'e' : '')
     .replace(/\[solutions_resume\]/g, () => {
       const tmp = renderBlockInner({ type: 'solutions_resume' }, 0, '', 0, '');
       return (tmp || '').replace(/\n\s*/g, '');
@@ -18774,6 +18835,290 @@ function setupNewConsultClick() {
   clearSetupForm();
 }
 window.setupNewConsultClick = setupNewConsultClick;
+
+// ═══════════════════════════════════════════════════════════════
+// I. ACCUEIL — Intake form intégré (live update vers fiche client + DOM)
+// Le but : permettre de remplir/modifier prénom enfant, sexe, dates, parents
+// directement depuis I. Accueil, et que tout le site se mette à jour live
+// (via les marker classes .var-prenom-enfant, .var-prenom-parent-1, .var-age).
+// ═══════════════════════════════════════════════════════════════
+
+// Helper : update DOM in-place pour tous les éléments [prénom_enfant] visibles
+function _updatePrenomEnfantDom() {
+  const c = state.client || {};
+  const raw = (c.prenomEnfant || '').replace(/^./, ch => ch.toUpperCase());
+  const isFille = (c.sexe || '').toLowerCase() === 'fille';
+  const color = isFille ? '#E25098' : '#6495ED';
+  document.querySelectorAll('.var-prenom-enfant').forEach(el => {
+    if (raw) {
+      el.classList.remove('var-empty');
+      el.textContent = raw;
+      el.style.color = color;
+      el.style.fontSize = '1.15em';
+      el.dataset.sexe = isFille ? 'fille' : 'garcon';
+    } else {
+      el.classList.add('var-empty');
+      el.textContent = '[prénom]';
+      el.style.color = color;
+    }
+  });
+}
+window._updatePrenomEnfantDom = _updatePrenomEnfantDom;
+
+function _updatePrenomParent1Dom() {
+  const c = state.client || {};
+  const p1 = (c.prenomParent1 || '').replace(/^./, ch => ch.toUpperCase());
+  document.querySelectorAll('.var-prenom-parent-1').forEach(el => {
+    if (p1) {
+      el.classList.remove('var-empty');
+      el.textContent = p1;
+    } else {
+      el.classList.add('var-empty');
+      el.textContent = '[prénom parent]';
+    }
+  });
+}
+window._updatePrenomParent1Dom = _updatePrenomParent1Dom;
+
+function _updatePrenomParent2Dom() {
+  const c = state.client || {};
+  const p2 = (c.prenomParent2 || '').replace(/^./, ch => ch.toUpperCase());
+  document.querySelectorAll('.var-prenom-parent-2').forEach(el => {
+    if (p2) {
+      el.classList.remove('var-empty');
+      el.textContent = p2;
+    } else {
+      el.classList.add('var-empty');
+      el.textContent = '[prénom parent]';
+    }
+  });
+}
+window._updatePrenomParent2Dom = _updatePrenomParent2Dom;
+
+function _updateAgeDom() {
+  const c = state.client || {};
+  const age = c.ageReelStr || c.ageEnfant || '[âge]';
+  document.querySelectorAll('.var-age').forEach(el => { el.textContent = age; });
+}
+window._updateAgeDom = _updateAgeDom;
+
+// Handlers Accueil — chaque input/bouton update state + fiche client + DOM
+function onAccueilPrenomEnfantInput(val) {
+  if (!state.client) state.client = {};
+  state.client.prenomEnfant = val;
+  const f = document.getElementById('prenom-enfant'); if (f) f.value = val;
+  _updatePrenomEnfantDom();
+  if (typeof updatePobBar === 'function') updatePobBar();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.onAccueilPrenomEnfantInput = onAccueilPrenomEnfantInput;
+
+function onAccueilSexeEnfantBtn(val) {
+  if (!state.client) state.client = {};
+  state.client.sexe = val;
+  const f = document.getElementById('sexe-enfant'); if (f) f.value = val;
+  if (typeof _updateSexeEnfantButtons === 'function') _updateSexeEnfantButtons();
+  // Update aussi le bouton dans l'intake form Accueil
+  document.querySelectorAll('.accueil-sexe-enfant-btn').forEach(b => {
+    b.classList.toggle('selected', b.dataset.sexe === val);
+  });
+  _updatePrenomEnfantDom();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.onAccueilSexeEnfantBtn = onAccueilSexeEnfantBtn;
+
+function onAccueilPrenomParent1Input(val) {
+  if (!state.client) state.client = {};
+  state.client.prenomParent1 = val;
+  const f = document.getElementById('prenom-parent1'); if (f) f.value = val;
+  _updatePrenomParent1Dom();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.onAccueilPrenomParent1Input = onAccueilPrenomParent1Input;
+
+function onAccueilSexeParent1Btn(role) {
+  if (!state.client) state.client = {};
+  state.client.sexeParent1 = role;
+  const f = document.getElementById('sexe-parent1'); if (f) f.value = role;
+  if (typeof _updateSexeParentButtons === 'function') _updateSexeParentButtons(1);
+  document.querySelectorAll('.accueil-sexe-parent1-btn').forEach(b => {
+    b.classList.toggle('selected', b.dataset.role === role);
+  });
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.onAccueilSexeParent1Btn = onAccueilSexeParent1Btn;
+
+function onAccueilPrenomParent2Input(val) {
+  if (!state.client) state.client = {};
+  state.client.prenomParent2 = val;
+  const f = document.getElementById('prenom-parent2'); if (f) f.value = val;
+  _updatePrenomParent2Dom();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.onAccueilPrenomParent2Input = onAccueilPrenomParent2Input;
+
+function onAccueilSexeParent2Btn(role) {
+  if (!state.client) state.client = {};
+  state.client.sexeParent2 = role;
+  const f = document.getElementById('sexe-parent2'); if (f) f.value = role;
+  if (typeof _updateSexeParentButtons === 'function') _updateSexeParentButtons(2);
+  document.querySelectorAll('.accueil-sexe-parent2-btn').forEach(b => {
+    b.classList.toggle('selected', b.dataset.role === role);
+  });
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.onAccueilSexeParent2Btn = onAccueilSexeParent2Btn;
+
+function onAccueilNomFamilleInput(val) {
+  if (!state.client) state.client = {};
+  state.client.nomFamille = val;
+  const f = document.getElementById('nom-famille-enfant'); if (f) f.value = val;
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.onAccueilNomFamilleInput = onAccueilNomFamilleInput;
+
+function onAccueilDateNaissInput(val) {
+  if (!state.client) state.client = {};
+  state.client.dateNaissance = val;
+  const f = document.getElementById('date-naissance'); if (f) f.value = val;
+  // Recalculer l'âge réel
+  if (typeof calcAge === 'function') {
+    const consultDate = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
+    const ageReel = calcAge(val, consultDate);
+    if (ageReel) {
+      state.client.ageReelStr = ageReel.str || '';
+      state.client.ageReelStrCourt = ageReel.strCourt || '';
+      state.client.ageReelMois = ageReel.totalMois ?? '';
+      state.client.ageReelJours = ageReel.totalJours ?? '';
+      state.client.ageEnfant = ageReel.str || '';
+      const fAge = document.getElementById('age-enfant'); if (fAge) fAge.value = ageReel.str || '';
+    }
+  }
+  _updateAgeDom();
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.onAccueilDateNaissInput = onAccueilDateNaissInput;
+
+function onAccueilDateTermeInput(val) {
+  if (!state.client) state.client = {};
+  state.client.dateTerme = val;
+  const f = document.getElementById('date-terme'); if (f) f.value = val;
+  // Recalculer l'âge corrigé si dateNaissance présente
+  const dateNaiss = state.client.dateNaissance || '';
+  if (val && dateNaiss && typeof calcAge === 'function') {
+    const consultDate = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
+    const premature = new Date(val) > new Date(dateNaiss);
+    if (premature) {
+      const ageCorr = calcAge(val, consultDate);
+      if (ageCorr) {
+        state.client.ageCorrigeStr = ageCorr.str || '';
+        state.client.ageCorrigeMois = ageCorr.totalMois ?? '';
+        state.client.ageCorrigeJours = ageCorr.totalJours ?? '';
+      }
+    }
+  } else if (!val) {
+    state.client.ageCorrigeStr = '';
+    state.client.ageCorrigeMois = '';
+    state.client.ageCorrigeJours = '';
+  }
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.onAccueilDateTermeInput = onAccueilDateTermeInput;
+
+function onAccueilSiesteSelect(val) {
+  if (!state.client) state.client = {};
+  state.client.sieste = val;
+  // Synchroniser le radio dans la fiche client
+  const fiche = document.querySelector(`input[name="sieste"][value="${val}"]`);
+  if (fiche) fiche.checked = true;
+  // Update les boutons sieste dans l'intake form
+  document.querySelectorAll('.accueil-sieste-btn').forEach(b => {
+    b.classList.toggle('selected', b.dataset.sieste === val);
+  });
+  if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+}
+window.onAccueilSiesteSelect = onAccueilSiesteSelect;
+
+// Rendu de l'intake form Accueil (HTML complet)
+function _renderAccueilIntakeForm() {
+  const c = state.client || {};
+  const isFille = (c.sexe || '').toLowerCase() === 'fille';
+  const isGarcon = (c.sexe || '').toLowerCase() === 'garçon';
+  const p1Role = (c.sexeParent1 || 'maman').toLowerCase();
+  const p2Role = (c.sexeParent2 || 'papa').toLowerCase();
+  const escVal = s => String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+  // Sieste options (compact 2 colonnes)
+  const siesteOpts = [
+    { val: '0-2m', label: 'Siestes illimitées (0-2m)', min: 0, max: 2 },
+    { val: '2-4m', label: '4 siestes (2-4m)', min: 2, max: 4 },
+    { val: '4-6m', label: '3 siestes (4-6m)', min: 4, max: 6 },
+    { val: '6-8m', label: '3 siestes (6-8m)', min: 6, max: 8 },
+    { val: '8-10m', label: '3 siestes (8-10m)', min: 8, max: 10 },
+    { val: '8-15m', label: '2 siestes (8-15m)', min: 8, max: 15 },
+    { val: '15-20m', label: '2 siestes (15-20m)', min: 15, max: 20 },
+    { val: '15m-3a', label: '1 sieste (15m-3a)', min: 15, max: 36, incl: true },
+    { val: '4a-plus', label: '1 sieste (4a+)', min: 48 },
+    { val: '4a-plus-tc', label: 'Temps calme (4a+)', min: 48 },
+    { val: 'pas-de-changement', label: 'Pas de changement' },
+  ];
+  const ageM = (typeof getEffectiveAgeMonths === 'function') ? getEffectiveAgeMonths() : null;
+  const siesteHtml = siesteOpts.map(o => {
+    const sel = c.sieste === o.val ? ' selected' : '';
+    let glow = '';
+    if (ageM != null && o.min != null) {
+      const okMin = ageM >= o.min;
+      const okMax = o.max == null ? true : (o.incl ? ageM <= o.max : ageM < o.max);
+      if (okMin && okMax) glow = ' glow';
+    }
+    return `<button type="button" class="accueil-sieste-btn${sel}${glow}" data-sieste="${o.val}" onclick="onAccueilSiesteSelect('${o.val}')">${o.label}</button>`;
+  }).join('');
+  return `
+<ul style="margin:0;padding-left:20px;list-style:disc;line-height:1.7">
+  <li>Pour le moment, je sais juste qu'<strong>une maman</strong> est face à moi… mais je ne connais <strong>ENCORE aucun prénom</strong> !</li>
+  <li><strong>Comment vous appelez-vous</strong> ?
+    <div class="accueil-intake-row">
+      <input type="text" placeholder="Prénom parent 1" value="${escVal(c.prenomParent1)}" oninput="onAccueilPrenomParent1Input(this.value)" class="accueil-input">
+      <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-parent1-btn${p1Role==='maman'?' selected':''}" data-role="maman" onclick="onAccueilSexeParent1Btn('maman')">👩 Maman</button>
+      <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-parent1-btn${p1Role==='papa'?' selected':''}" data-role="papa" onclick="onAccueilSexeParent1Btn('papa')">👨 Papa</button>
+    </div>
+    <div class="accueil-intake-row">
+      <input type="text" placeholder="Prénom parent 2" value="${escVal(c.prenomParent2)}" oninput="onAccueilPrenomParent2Input(this.value)" class="accueil-input">
+      <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-parent2-btn${p2Role==='maman'?' selected':''}" data-role="maman" onclick="onAccueilSexeParent2Btn('maman')">👩 Maman</button>
+      <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-parent2-btn${p2Role==='papa'?' selected':''}" data-role="papa" onclick="onAccueilSexeParent2Btn('papa')">👨 Papa</button>
+    </div>
+    <div class="accueil-intake-row">
+      <input type="text" placeholder="Nom de famille" value="${escVal(c.nomFamille)}" oninput="onAccueilNomFamilleInput(this.value)" class="accueil-input" style="max-width:280px">
+    </div>
+  </li>
+  <li><strong>Et votre enfant</strong> ?
+    <div class="accueil-intake-row">
+      <input type="text" placeholder="Prénom enfant" value="${escVal(c.prenomEnfant)}" oninput="onAccueilPrenomEnfantInput(this.value)" class="accueil-input">
+      <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-enfant-btn${isFille?' selected':''}" data-sexe="Fille" onclick="onAccueilSexeEnfantBtn('Fille')">👧 Fille</button>
+      <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-enfant-btn${isGarcon?' selected':''}" data-sexe="Garçon" onclick="onAccueilSexeEnfantBtn('Garçon')">👦 Garçon</button>
+    </div>
+  </li>
+  <li><strong>Quel âge a-t-[il_elle]</strong> ? Quelle est sa <strong>date de naissance</strong> ?
+    <div class="accueil-intake-row">
+      <label style="font-size:12px;color:#64748b">Date de naissance :</label>
+      <input type="date" value="${escVal(c.dateNaissance)}" oninput="onAccueilDateNaissInput(this.value)" class="accueil-input" style="max-width:170px">
+      <span style="font-size:12px;color:#64748b">Âge :</span>
+      <span class="var-age" style="font-weight:700">${c.ageReelStr || c.ageEnfant || '–'}</span>
+    </div>
+  </li>
+  <li><strong>Est-[il_elle] né[e_e]</strong> à terme ? Quelle est sa <strong>date de terme</strong> ?
+    <div class="accueil-intake-row">
+      <label style="font-size:12px;color:#64748b">Date de terme :</label>
+      <input type="date" value="${escVal(c.dateTerme)}" oninput="onAccueilDateTermeInput(this.value)" class="accueil-input" style="max-width:170px">
+      <span style="font-size:12px;color:#64748b">Âge corrigé :</span>
+      <span style="font-weight:700">${c.ageCorrigeStr || '–'}</span>
+    </div>
+    <div class="accueil-intake-sieste-label">💤 Sieste cible :</div>
+    <div class="accueil-sieste-grid">${siesteHtml}</div>
+  </li>
+  <li><strong>Merci</strong></li>
+</ul>`;
+}
+window._renderAccueilIntakeForm = _renderAccueilIntakeForm;
 
 // ═══════════════════════════════════════════════════
 // AUTO-SAVE de la consultation active
