@@ -652,12 +652,12 @@ const SCRIPT_DATA = {
               groups: [
                 {
                   items: [
-                    "Le fait qu'[il_elle] régurgite beaucoup",
-                    "Qu'[il_elle] a du mal à rester [allonge_allongee]",
-                    "Qu'[il_elle] a un sommeil très agité",
-                    "Que les repas sont parfois compliqués",
-                    "Qu'on sent qu'[il_elle] est souvent [gene_genee] ou inconfortable",
-                    "Qu'[il_elle] se cambre",
+                    "Le fait qu'[il_elle] <strong>régurgite beaucoup</strong>",
+                    "Qu'[il_elle] a du MAL à <strong>rester [allonge_allongee]</strong>",
+                    "Qu'[il_elle] a un <strong>sommeil très agité</strong>",
+                    "Que les <strong>repas</strong> sont parfois <strong>compliqués</strong>",
+                    "Qu'on sent qu'[il_elle] est <strong>souvent [gene_genee] ou inconfortable</strong>",
+                    "Qu'[il_elle] <strong>se cambre</strong>",
                   ]
                 }
               ]
