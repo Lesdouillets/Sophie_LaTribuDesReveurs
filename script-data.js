@@ -682,7 +682,7 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "Tout est lié",
-          text: "- Parce que **chez les bébés**, vous savez, **tout est lié** : *le sommeil, la digestion, la respiration, la peau…*\n- Et parfois, il faut **JUSTE mettre les pièces du puzzle CÔTE À CÔTE** pour que **l'image globale apparaisse**"
+          text: "- Parce que **chez les bébés**, vous savez, **tout est lié**"
         },
         {
           type: "grouped_checklist",
@@ -825,7 +825,7 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "Tout est lié",
-          text: "- Parce que **chez les bébés**, vous savez, **tout est lié** : *le sommeil, la digestion, la respiration, la peau…*\n- Et parfois, il faut **JUSTE mettre les pièces du puzzle CÔTE À CÔTE** pour que **l'image globale apparaisse**"
+          text: "- Parce que **chez les bébés**, vous savez, **tout est lié**"
         },
         {
           type: "grouped_checklist",
