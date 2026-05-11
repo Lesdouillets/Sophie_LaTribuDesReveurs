@@ -19139,11 +19139,12 @@ function _renderAccueilIntakeForm() {
     }
     return `<label class="sieste-row${sel}${glow}" onclick="onAccueilSiesteSelect('${val}')"><input type="radio" name="accueil-sieste" value="${val}"${sel?' checked':''}><span class="sieste-label">${label}</span></label>`;
   }
-  // Layout en inline-styles pour garantir 2 colonnes + titre à gauche (résiste aux conflits CSS)
-  const colStyle = 'display:flex;flex-direction:column;gap:6px';
-  const grpStyle = 'display:grid;grid-template-columns:72px 1fr;gap:6px;margin-bottom:0;align-items:stretch';
-  const leftStyle = 'display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;padding:6px 4px;font-weight:800;font-size:17px;line-height:1;text-align:center;background:var(--sieste-bg);color:var(--sieste-fg)';
-  const rightStyle = 'display:flex;flex-direction:column;gap:3px;justify-content:center';
+  // Layout en inline-styles + flexbox pour garantir 2 colonnes + titre à gauche
+  // (flexbox plus robuste que grid en cas de conflits CSS hérités)
+  const colStyle = 'flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px';
+  const grpStyle = 'display:flex;align-items:stretch;gap:6px;margin-bottom:0';
+  const leftStyle = 'flex:0 0 72px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;padding:6px 4px;font-weight:800;font-size:17px;line-height:1;text-align:center;background:var(--sieste-bg);color:var(--sieste-fg)';
+  const rightStyle = 'flex:1 1 auto;display:flex;flex-direction:column;gap:3px;justify-content:center;min-width:0';
   const subStyle = 'font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;margin-top:2px;opacity:0.85';
   const siesteHtml = `
 <div class="accueil-sieste-col" style="${colStyle}">
@@ -19268,7 +19269,7 @@ function _renderAccueilIntakeForm() {
       <input type="text" placeholder="Âge corrigé (ex. 6 mois 5 jours)" value="${escVal(c.ageCorrigeManuel)}" oninput="onAccueilAgeCorrigeInput(this.value)" class="accueil-input" style="max-width:240px" title="Âge corrigé manuel" data-accueil="age-corrige">
     </div>
     <div class="accueil-intake-sieste-label">💤 Sieste cible :</div>
-    <div id="accueil-sieste-options" class="accueil-sieste-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:760px;margin-top:6px">${siesteHtml}</div>
+    <div id="accueil-sieste-options" class="accueil-sieste-grid" style="display:flex;flex-wrap:nowrap;gap:12px;max-width:760px;margin-top:6px">${siesteHtml}</div>
   </li>
   <li style="margin-top:8px"><strong>Merci</strong></li>
 </ul>`;
