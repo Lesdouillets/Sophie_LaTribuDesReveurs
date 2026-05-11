@@ -12774,7 +12774,9 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     // La card affiche : emoji + nom catégorie + nom de la (ou des) sous-section active(s).
     // Clic → contenu s'affiche juste après la grille. Plus de banner parent séparé.
     const checkedSections = SCRIPT_DATA.conditional.filter(s => s.problematiqueId && isProblematiqueMatched(s.problematiqueId, state.selectedPbs));
-    if (checkedSections.length === 0) return '';
+    // Toujours rendre un wrapper (même vide) pour permettre la mise à jour in-place
+    // via _refreshDiagnosticConditionalInPlace quand l'utilisateur coche des PBs.
+    if (checkedSections.length === 0) return '<div class="diagnostic-sections-wrapper" data-empty="true"></div>';
     if (!state.cardPersonalTicks) state.cardPersonalTicks = new Set();
     if (!state.courbeCardsActiveByGrid) state.courbeCardsActiveByGrid = {};
     const gridPath = 'diagnostic_inline_sections';
@@ -15102,7 +15104,11 @@ function renderSolutionsCheckboxes(opts) {
   // Plan d'action via le bloc `solutions_parent_cards`, pour que le bloc-titre "Solutions
   // identifiées" ne s'étende pas verticalement jusqu'aux cartes parentes).
   if (opts && opts.cardsOnly) {
-    return parentCardsHtml ? `<div class="courbe-cards-grid-wrap sol-parent-cards-grid-wrap"><div class="courbe-cards-grid diag-categories-grid">${parentCardsHtml}</div></div>${activeContentHtml}` : '';
+    // Toujours rendre un wrapper (même vide) pour permettre la mise à jour in-place
+    // via _refreshSolutionsBlockInPlace quand l'utilisateur coche des PBs.
+    return parentCardsHtml
+      ? `<div class="courbe-cards-grid-wrap sol-parent-cards-grid-wrap"><div class="courbe-cards-grid diag-categories-grid">${parentCardsHtml}</div></div>${activeContentHtml}`
+      : `<div class="courbe-cards-grid-wrap sol-parent-cards-grid-wrap" data-empty="true"></div>`;
   }
   return `<div class="block block-solutions-identifiees">
     <div class="solutions-identifiees-body">${compactGroupsHtml}</div>
@@ -19295,7 +19301,8 @@ function _renderAccueilIntakeForm() {
   // Phrase d'intro selon état
   let introHtml;
   if (hasParent && hasChild) {
-    introHtml = `❓ Vous devez être ${parentNamesHtml}, ${parentRoleHtml} de ${prenomEnfantHtml} ?`;
+    // State D : ❓ + 2 bullets alignés (Vous devez être... / C'est bien ça ?)
+    introHtml = `<div style="display:flex;gap:8px;align-items:flex-start"><span style="flex:0 0 auto;line-height:1.55">❓</span><ul style="margin:0;padding-left:20px;list-style:disc;flex:1 1 auto;line-height:1.55"><li style="margin:0">Vous devez être ${parentNamesHtml}, ${parentRoleHtml} de ${prenomEnfantHtml} ?</li><li style="margin:0">C'est bien ça ?</li></ul></div>`;
   } else if (hasParent && !hasChild) {
     introHtml = `❓ Vous devez être ${parentNamesHtml} mais je <strong>NE</strong> connais <strong>ENCORE le prénom de VOTRE enfant</strong> !`;
   } else if (!hasParent && hasChild) {
@@ -19304,20 +19311,23 @@ function _renderAccueilIntakeForm() {
     introHtml = `❓ Pour le moment, je sais JUSTE qu'<strong>une maman</strong> est <strong>face à moi</strong>… mais je <strong>NE</strong> connais <strong>ENCORE AUCUN prénom</strong> !`;
   }
   // Bloc question parent : caché si un prénom de parent est déjà renseigné
+  // Styles inline pour garantir 0 espacement entre les 3 rows (résiste aux conflits CSS)
+  const parentStackStyle = 'display:flex;flex-direction:column;gap:2px;margin:4px 0 8px;line-height:1';
+  const parentRowStyle = 'display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0;line-height:1';
   const parentBlock = hasParent ? '' : `
   <li style="margin-bottom:4px"><strong>Comment vous appelez-vous</strong> ?
-    <div class="accueil-parent-stack">
-      <div class="accueil-intake-row">
+    <div class="accueil-parent-stack" style="${parentStackStyle}">
+      <div class="accueil-intake-row" style="${parentRowStyle}">
         <input type="text" placeholder="Prénom parent 1" value="${escVal(c.prenomParent1)}" oninput="onAccueilPrenomParent1Input(this.value)" class="accueil-input">
         <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-parent1-btn${p1Role==='maman'?' selected':''}" data-role="maman" onclick="onAccueilSexeParent1Btn('maman')">👩 Maman</button>
         <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-parent1-btn${p1Role==='papa'?' selected':''}" data-role="papa" onclick="onAccueilSexeParent1Btn('papa')">👨 Papa</button>
       </div>
-      <div class="accueil-intake-row">
+      <div class="accueil-intake-row" style="${parentRowStyle}">
         <input type="text" placeholder="Prénom parent 2" value="${escVal(c.prenomParent2)}" oninput="onAccueilPrenomParent2Input(this.value)" class="accueil-input">
         <button type="button" class="sexe-btn sexe-btn-fille accueil-sexe-parent2-btn${p2Role==='maman'?' selected':''}" data-role="maman" onclick="onAccueilSexeParent2Btn('maman')">👩 Maman</button>
         <button type="button" class="sexe-btn sexe-btn-garcon accueil-sexe-parent2-btn${p2Role==='papa'?' selected':''}" data-role="papa" onclick="onAccueilSexeParent2Btn('papa')">👨 Papa</button>
       </div>
-      <div class="accueil-intake-row">
+      <div class="accueil-intake-row" style="${parentRowStyle}">
         <input type="text" placeholder="Nom de famille" value="${escVal(c.nomFamille)}" oninput="onAccueilNomFamilleInput(this.value)" class="accueil-input" style="max-width:280px">
       </div>
     </div>
