@@ -5893,7 +5893,7 @@
               <div style="font-weight:800;font-size:12px;color:#2d3f5c;letter-spacing:0.6px;text-transform:uppercase;border-bottom:1.5px solid var(--border);padding-bottom:6px">🎂 Réel</div>
               <div class="form-group" style="margin:0">
                 <label>Date de naissance</label>
-                <input type="date" id="date-naissance" oninput="computeClientFields()">
+                <input type="date" id="date-naissance" oninput="computeClientFields('date-naissance')">
               </div>
               <div class="form-group" style="margin:0">
                 <label>Âge réel <span style="color:#aaa;font-size:11px">(au jour de la consultation)</span></label>
@@ -5905,7 +5905,7 @@
               <div style="font-weight:800;font-size:12px;color:#2d3f5c;letter-spacing:0.6px;text-transform:uppercase;border-bottom:1.5px solid var(--border);padding-bottom:6px">✏️ Corrigé <span style="font-weight:400;text-transform:none;letter-spacing:0.3px;color:#aaa;font-size:11px">(si prématuré)</span></div>
               <div class="form-group" style="margin:0">
                 <label>Date du terme</label>
-                <input type="date" id="date-terme" oninput="computeClientFields()">
+                <input type="date" id="date-terme" oninput="computeClientFields('date-terme')">
               </div>
               <div class="form-group" style="margin:0">
                 <label>Âge gestationnel à la naissance <span style="color:#aaa;font-size:11px">(ex: 39+2 = 39 SA + 2 jours, terme = 40+0)</span></label>
@@ -7691,7 +7691,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=710"></script>
+<script src="script-data.js?v=711"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -9799,6 +9799,70 @@ function computeClientFields(triggeredBy) {
   const ageGestationnel = document.getElementById('age-gestationnel')?.value.trim();
 
   // ─── AUTO-CALCULS BIDIRECTIONNELS ────────────────────────────────────────
+  // 0a. Si on vient de VIDER un champ d'âge manuel → vider aussi la date correspondante
+  //     (NB : on met aussi à jour les variables locales pour empêcher les blocs suivants
+  //     de "back-calc" depuis les autres champs résiduels)
+  let _clearedAgeGest = false, _clearedAgeCorr = false;
+  if (triggeredBy === 'age-enfant' && !ageManuel) {
+    const dn = document.getElementById('date-naissance');
+    if (dn) dn.value = '';
+    dateNaiss = '';
+  }
+  if (triggeredBy === 'age-corrige-manuel' && !ageCorrigeManuel) {
+    const dt = document.getElementById('date-terme');
+    if (dt) dt.value = '';
+    dateTerme = '';
+    const ag = document.getElementById('age-gestationnel');
+    if (ag) ag.value = '';
+    _clearedAgeGest = true;
+  }
+  if (triggeredBy === 'age-gestationnel' && !ageGestationnel) {
+    const dt = document.getElementById('date-terme');
+    if (dt) dt.value = '';
+    dateTerme = '';
+    const acm = document.getElementById('age-corrige-manuel');
+    if (acm) acm.value = '';
+    _clearedAgeCorr = true;
+  }
+  // Re-lire les variables locales utilisées plus bas si on vient de vider des champs
+  const ageGestationnelLive = _clearedAgeGest ? '' : ageGestationnel;
+  const ageCorrigeManuelLive = _clearedAgeCorr ? '' : ageCorrigeManuel;
+  // 0b. DATE → ÂGE manuel : remplir les champs manuels quand l'utilisateur saisit/efface une date
+  //     (n'écrase l'âge manuel que si le déclencheur est la date elle-même OR si l'âge est vide)
+  if (dateNaiss && typeof calcAge === 'function') {
+    const ageRC = calcAge(dateNaiss, consultDate);
+    const ae = document.getElementById('age-enfant');
+    if (ae && ageRC && (triggeredBy === 'date-naissance' || !ageManuel)) {
+      ae.value = ageRC.str || '';
+    }
+  } else if (triggeredBy === 'date-naissance' && !dateNaiss) {
+    const ae = document.getElementById('age-enfant');
+    if (ae) ae.value = '';
+  }
+  if (dateTerme && dateNaiss && new Date(dateTerme) > new Date(dateNaiss) && typeof calcAge === 'function') {
+    const ageCorrRC = calcAge(dateTerme, consultDate);
+    const acm = document.getElementById('age-corrige-manuel');
+    if (acm && ageCorrRC && (triggeredBy === 'date-terme' || !ageCorrigeManuel)) {
+      acm.value = ageCorrRC.str || '';
+    }
+    // Âge gestationnel = 40 SA - prématurité (en jours)
+    const prematureDays = Math.round((new Date(dateTerme) - new Date(dateNaiss)) / (24*3600*1000));
+    if (prematureDays > 0 && prematureDays < 280) {
+      const gestDays = 280 - prematureDays;
+      const sem = Math.floor(gestDays / 7);
+      const j = gestDays % 7;
+      const gestStr = j === 0 ? String(sem) : `${sem}+${j}`;
+      const ag = document.getElementById('age-gestationnel');
+      if (ag && (triggeredBy === 'date-terme' || !ageGestationnel)) {
+        ag.value = gestStr;
+      }
+    }
+  } else if (triggeredBy === 'date-terme' && !dateTerme) {
+    const acm = document.getElementById('age-corrige-manuel');
+    if (acm) acm.value = '';
+    const ag = document.getElementById('age-gestationnel');
+    if (ag) ag.value = '';
+  }
   // 1. Si âge réel manuel + consultation → calculer date naissance = consultation - âge
   //    - Si déclenché par 'age-enfant' : force la mise à jour (même si dateNaiss a déjà une valeur)
   //    - Sinon : uniquement si dateNaiss est vide
@@ -9822,8 +9886,8 @@ function computeClientFields(triggeredBy) {
   //      on FORCE la mise à jour de la date du terme (même si elle a déjà une valeur)
   //    - Sinon (autre champ modifié) : on remplit seulement si dt est VIDE
   //      (l'utilisateur peut effacer/modifier la date du terme sans qu'elle soit écrasée)
-  if (ageGestationnel && dateNaiss) {
-    const prematureDays = parseGestationnelToPrematureDays(ageGestationnel);
+  if (ageGestationnelLive && dateNaiss) {
+    const prematureDays = parseGestationnelToPrematureDays(ageGestationnelLive);
     if (prematureDays !== null && prematureDays > 0) {
       const dt = document.getElementById('date-terme');
       const forceUpdate = (triggeredBy === 'age-gestationnel');
@@ -9848,11 +9912,11 @@ function computeClientFields(triggeredBy) {
   //    (terme = consultation - âge corrigé)
   //    - Si déclenché par 'age-corrige-manuel' : force la mise à jour
   //    - Sinon : uniquement si dt vide
-  if (ageCorrigeManuel && dateNaiss && !ageGestationnel && consultDate) {
+  if (ageCorrigeManuelLive && dateNaiss && !ageGestationnelLive && consultDate) {
     const dt = document.getElementById('date-terme');
     const forceUpdate = (triggeredBy === 'age-corrige-manuel');
     if (dt && (!dt.value || forceUpdate)) {
-      const days = parseAgeStringToDays(ageCorrigeManuel);
+      const days = parseAgeStringToDays(ageCorrigeManuelLive);
       if (days !== null) {
         const consult = new Date(consultDate);
         const terme = new Date(consult);
@@ -18839,6 +18903,23 @@ function clearSetupForm() {
   // 9. Reset date consultation à aujourd'hui
   const dateConsult = document.getElementById('consult-date');
   if (dateConsult) dateConsult.value = new Date().toISOString().slice(0,10);
+  // 10. Cacher le panneau "Âges calculés" et reset ses textes
+  const agesDiv = document.getElementById('ages-calcules');
+  if (agesDiv) agesDiv.style.display = 'none';
+  ['age-reel-calc','age-reel-mois','age-corrige-calc','age-corrige-mois'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.textContent = '–';
+  });
+  const headerDateEl = document.getElementById('ages-calcules-date-header');
+  if (headerDateEl) headerDateEl.textContent = 'à la date de consultation';
+  // 11. Vider l'input horaire souhaité (rituel) si présent
+  document.querySelectorAll('input[data-horaire-souhaite]').forEach(el => { el.value = ''; });
+  // 12. Vider l'autosave consultation active (sinon le restore-flow remet les anciennes valeurs)
+  try { localStorage.removeItem('tdr_active_consultation'); } catch(_) {}
+  // 13. Reset header (pastilles bleu marine)
+  if (typeof updateHeader === 'function') updateHeader();
+  // 14. Reset taille cible affichage si existant
+  const tcDisplay = document.getElementById('taille-cible-display');
+  if (tcDisplay) tcDisplay.textContent = '';
 }
 window.clearSetupForm = clearSetupForm;
 
@@ -19002,21 +19083,8 @@ function onAccueilDateNaissInput(val) {
   if (!state.client) state.client = {};
   state.client.dateNaissance = val;
   const f = document.getElementById('date-naissance'); if (f) f.value = val;
-  // Recalculer l'âge réel
-  if (typeof calcAge === 'function') {
-    const consultDate = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
-    const ageReel = calcAge(val, consultDate);
-    if (ageReel) {
-      state.client.ageReelStr = ageReel.str || '';
-      state.client.ageReelStrCourt = ageReel.strCourt || '';
-      state.client.ageReelMois = ageReel.totalMois ?? '';
-      state.client.ageReelJours = ageReel.totalJours ?? '';
-      state.client.ageEnfant = ageReel.str || '';
-      const fAge = document.getElementById('age-enfant'); if (fAge) fAge.value = ageReel.str || '';
-    }
-  }
-  _updateAgeDom();
-  if (typeof updateHeader === 'function') updateHeader();
+  if (typeof computeClientFields === 'function') computeClientFields('date-naissance');
+  _syncAccueilDatesFromFiche();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.onAccueilDateNaissInput = onAccueilDateNaissInput;
@@ -19025,24 +19093,8 @@ function onAccueilDateTermeInput(val) {
   if (!state.client) state.client = {};
   state.client.dateTerme = val;
   const f = document.getElementById('date-terme'); if (f) f.value = val;
-  // Recalculer l'âge corrigé si dateNaissance présente
-  const dateNaiss = state.client.dateNaissance || '';
-  if (val && dateNaiss && typeof calcAge === 'function') {
-    const consultDate = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
-    const premature = new Date(val) > new Date(dateNaiss);
-    if (premature) {
-      const ageCorr = calcAge(val, consultDate);
-      if (ageCorr) {
-        state.client.ageCorrigeStr = ageCorr.str || '';
-        state.client.ageCorrigeMois = ageCorr.totalMois ?? '';
-        state.client.ageCorrigeJours = ageCorr.totalJours ?? '';
-      }
-    }
-  } else if (!val) {
-    state.client.ageCorrigeStr = '';
-    state.client.ageCorrigeMois = '';
-    state.client.ageCorrigeJours = '';
-  }
+  if (typeof computeClientFields === 'function') computeClientFields('date-terme');
+  _syncAccueilDatesFromFiche();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
 window.onAccueilDateTermeInput = onAccueilDateTermeInput;
@@ -19087,37 +19139,43 @@ function _renderAccueilIntakeForm() {
     }
     return `<label class="sieste-row${sel}${glow}" onclick="onAccueilSiesteSelect('${val}')"><input type="radio" name="accueil-sieste" value="${val}"${sel?' checked':''}><span class="sieste-label">${label}</span></label>`;
   }
+  // Layout en inline-styles pour garantir 2 colonnes + titre à gauche (résiste aux conflits CSS)
+  const colStyle = 'display:flex;flex-direction:column;gap:6px';
+  const grpStyle = 'display:grid;grid-template-columns:72px 1fr;gap:6px;margin-bottom:0;align-items:stretch';
+  const leftStyle = 'display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;padding:6px 4px;font-weight:800;font-size:17px;line-height:1;text-align:center;background:var(--sieste-bg);color:var(--sieste-fg)';
+  const rightStyle = 'display:flex;flex-direction:column;gap:3px;justify-content:center';
+  const subStyle = 'font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;margin-top:2px;opacity:0.85';
   const siesteHtml = `
-<div class="accueil-sieste-col">
-  <div class="sieste-group var-illim">
-    <div class="sieste-group-left">Siestes<br>illimitées</div>
-    <div class="sieste-group-right">${row('0-2m','0-2 mois',0,2)}</div>
+<div class="accueil-sieste-col" style="${colStyle}">
+  <div class="sieste-group var-illim" style="${grpStyle}">
+    <div class="sieste-group-left" style="${leftStyle};font-size:11px">Siestes<br>illimitées</div>
+    <div class="sieste-group-right" style="${rightStyle}">${row('0-2m','0-2 mois',0,2)}</div>
   </div>
-  <div class="sieste-group var-4">
-    <div class="sieste-group-left">4<div class="sieste-group-sub">siestes</div></div>
-    <div class="sieste-group-right">${row('2-4m','2-4 mois',2,4)}</div>
+  <div class="sieste-group var-4" style="${grpStyle}">
+    <div class="sieste-group-left" style="${leftStyle}">4<div class="sieste-group-sub" style="${subStyle}">siestes</div></div>
+    <div class="sieste-group-right" style="${rightStyle}">${row('2-4m','2-4 mois',2,4)}</div>
   </div>
-  <div class="sieste-group var-3">
-    <div class="sieste-group-left">3<div class="sieste-group-sub">siestes</div></div>
-    <div class="sieste-group-right">${row('4-6m','4-6 mois',4,6)}${row('6-8m','6-8 mois',6,8)}${row('8-10m','8-10 mois',8,10)}</div>
+  <div class="sieste-group var-3" style="${grpStyle}">
+    <div class="sieste-group-left" style="${leftStyle}">3<div class="sieste-group-sub" style="${subStyle}">siestes</div></div>
+    <div class="sieste-group-right" style="${rightStyle}">${row('4-6m','4-6 mois',4,6)}${row('6-8m','6-8 mois',6,8)}${row('8-10m','8-10 mois',8,10)}</div>
   </div>
 </div>
-<div class="accueil-sieste-col">
-  <div class="sieste-group var-2">
-    <div class="sieste-group-left">2<div class="sieste-group-sub">siestes</div></div>
-    <div class="sieste-group-right">${row('8-15m','8-15 mois',8,15)}${row('15-20m','15-20 mois',15,20)}</div>
+<div class="accueil-sieste-col" style="${colStyle}">
+  <div class="sieste-group var-2" style="${grpStyle}">
+    <div class="sieste-group-left" style="${leftStyle}">2<div class="sieste-group-sub" style="${subStyle}">siestes</div></div>
+    <div class="sieste-group-right" style="${rightStyle}">${row('8-15m','8-15 mois',8,15)}${row('15-20m','15-20 mois',15,20)}</div>
   </div>
-  <div class="sieste-group var-1">
-    <div class="sieste-group-left">1<div class="sieste-group-sub">sieste</div></div>
-    <div class="sieste-group-right">${row('15m-3a','15 mois - 3 ans (inclus)',15,36,true)}${row('4a-plus','4 ans +',48)}</div>
+  <div class="sieste-group var-1" style="${grpStyle}">
+    <div class="sieste-group-left" style="${leftStyle}">1<div class="sieste-group-sub" style="${subStyle}">sieste</div></div>
+    <div class="sieste-group-right" style="${rightStyle}">${row('15m-3a','15 mois - 3 ans (inclus)',15,36,true)}${row('4a-plus','4 ans +',48)}</div>
   </div>
-  <div class="sieste-group var-tc">
-    <div class="sieste-group-left">Temps<br>calme</div>
-    <div class="sieste-group-right">${row('4a-plus-tc','4 ans + (Temps calme)',48)}</div>
+  <div class="sieste-group var-tc" style="${grpStyle}">
+    <div class="sieste-group-left" style="${leftStyle};font-size:13px">Temps<br>calme</div>
+    <div class="sieste-group-right" style="${rightStyle}">${row('4a-plus-tc','4 ans + (Temps calme)',48)}</div>
   </div>
-  <div class="sieste-group var-other">
-    <div class="sieste-group-left">Autre</div>
-    <div class="sieste-group-right">${row('pas-de-changement','Pas de changement')}</div>
+  <div class="sieste-group var-other" style="${grpStyle}">
+    <div class="sieste-group-left" style="${leftStyle};font-size:14px">Autre</div>
+    <div class="sieste-group-right" style="${rightStyle}">${row('pas-de-changement','Pas de changement')}</div>
   </div>
 </div>`;
   // ── Adaptation conditionnelle selon ce qui est déjà rempli ──
@@ -19210,7 +19268,7 @@ function _renderAccueilIntakeForm() {
       <input type="text" placeholder="Âge corrigé (ex. 6 mois 5 jours)" value="${escVal(c.ageCorrigeManuel)}" oninput="onAccueilAgeCorrigeInput(this.value)" class="accueil-input" style="max-width:240px" title="Âge corrigé manuel" data-accueil="age-corrige">
     </div>
     <div class="accueil-intake-sieste-label">💤 Sieste cible :</div>
-    <div id="accueil-sieste-options" class="accueil-sieste-grid" style="max-width:560px;margin-top:6px">${siesteHtml}</div>
+    <div id="accueil-sieste-options" class="accueil-sieste-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:760px;margin-top:6px">${siesteHtml}</div>
   </li>
   <li style="margin-top:8px"><strong>Merci</strong></li>
 </ul>`;
@@ -19247,11 +19305,21 @@ function _syncAccueilDatesFromFiche() {
       }
     }
   }
-  // Mettre à jour les inputs date du formulaire Accueil (sans perturber le focus)
+  // Mettre à jour les inputs date + âge manuels du formulaire Accueil (sans perturber le focus)
   const inDn = document.querySelector('[data-accueil="date-naissance"]');
   if (inDn && document.activeElement !== inDn && inDn.value !== dn) inDn.value = dn;
   const inDt = document.querySelector('[data-accueil="date-terme"]');
   if (inDt && document.activeElement !== inDt && inDt.value !== dt) inDt.value = dt;
+  // Synchroniser les inputs âge manuel Accueil ← fiche client (qui ont été remplis par computeClientFields)
+  const fAr = document.getElementById('age-enfant');
+  const inAr = document.querySelector('[data-accueil="age-reel"]');
+  if (inAr && fAr && document.activeElement !== inAr && inAr.value !== fAr.value) inAr.value = fAr.value;
+  const fAg = document.getElementById('age-gestationnel');
+  const inAg = document.querySelector('[data-accueil="age-gest"]');
+  if (inAg && fAg && document.activeElement !== inAg && inAg.value !== fAg.value) inAg.value = fAg.value;
+  const fAc = document.getElementById('age-corrige-manuel');
+  const inAc = document.querySelector('[data-accueil="age-corrige"]');
+  if (inAc && fAc && document.activeElement !== inAc && inAc.value !== fAc.value) inAc.value = fAc.value;
   _updateAgeDom();
   if (typeof updateHeader === 'function') updateHeader();
 }
@@ -19261,13 +19329,7 @@ function onAccueilAgeReelInput(val) {
   state.client.ageEnfant = val;
   state.client.ageReelStr = val;
   const f = document.getElementById('age-enfant'); if (f) f.value = val;
-  // Si l'utilisateur efface l'âge manuel, effacer aussi la date de naissance qui en avait été dérivée
-  if (!val || !val.trim()) {
-    const dn = document.getElementById('date-naissance'); if (dn) dn.value = '';
-    state.client.dateNaissance = '';
-  } else if (typeof computeClientFields === 'function') {
-    computeClientFields('age-enfant');
-  }
+  if (typeof computeClientFields === 'function') computeClientFields('age-enfant');
   _syncAccueilDatesFromFiche();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
@@ -19277,12 +19339,7 @@ function onAccueilAgeGestInput(val) {
   if (!state.client) state.client = {};
   state.client.ageGestationnel = val;
   const f = document.getElementById('age-gestationnel'); if (f) f.value = val;
-  if (!val || !val.trim()) {
-    const dt = document.getElementById('date-terme'); if (dt) dt.value = '';
-    state.client.dateTerme = '';
-  } else if (typeof computeClientFields === 'function') {
-    computeClientFields('age-gestationnel');
-  }
+  if (typeof computeClientFields === 'function') computeClientFields('age-gestationnel');
   _syncAccueilDatesFromFiche();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
@@ -19293,15 +19350,7 @@ function onAccueilAgeCorrigeInput(val) {
   state.client.ageCorrigeManuel = val;
   state.client.ageCorrigeStr = val;
   const f = document.getElementById('age-corrige-manuel'); if (f) f.value = val;
-  if (!val || !val.trim()) {
-    const dt = document.getElementById('date-terme'); if (dt) dt.value = '';
-    state.client.dateTerme = '';
-    state.client.ageCorrigeStr = '';
-    state.client.ageCorrigeMois = '';
-    state.client.ageCorrigeJours = '';
-  } else if (typeof computeClientFields === 'function') {
-    computeClientFields('age-corrige-manuel');
-  }
+  if (typeof computeClientFields === 'function') computeClientFields('age-corrige-manuel');
   _syncAccueilDatesFromFiche();
   if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
 }
