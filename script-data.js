@@ -644,7 +644,7 @@ const SCRIPT_DATA = {
           blocks: [
             {
               type: "normal",
-              text: "- **AVANT** qu'**on commence à parler** \"sommeil\"\n  j'aimerais, **si vous êtes d'accord**, [prénom_parent_1]\n  qu'on **prenne un petit moment**, toutes les 2, pour **revenir** sur **CE QUE vous m'avez partagé**\n\n- D'abord, je voudrais **vous dire quelque chose**\n- Ce que **vous vivez**, là, au quotidien, avec [prénom_enfant], **c'est dur**\n- Je ne dis **PAS ÇA pour le dire**\n  Je le dis parce que **c'est vrai**\n\n- Entre :"
+              text: "- **AVANT** qu'**on commence à parler** \"sommeil\"\n  j'aimerais, **si vous êtes d'accord**, [prénom_parent_1]\n  qu'on **prenne un petit moment**, [toutes_tous_les_N], pour **revenir** sur **CE QUE vous m'avez partagé**\n\n- D'abord, je voudrais **vous dire quelque chose**\n- Ce que **vous vivez**, là, au quotidien, avec [prénom_enfant], **c'est dur**\n- Je ne dis **PAS ÇA pour le dire**\n  Je le dis parce que **c'est vrai**\n\n- Entre :"
             },
             {
               type: "grouped_checklist",
@@ -664,7 +664,7 @@ const SCRIPT_DATA = {
             },
             {
               type: "normal",
-              text: "- ⇒ C'est **BEAUCOUP**\n- ⇒ Et c'est **NORMAL** que vous **soyez fatiguée**, et parfois même **inquiète**\n- ⇒ À votre place, **je le serais aussi**<br><br>"
+              text: "- ⇒ C'est **BEAUCOUP**\n- ⇒ Et c'est **NORMAL** que vous **soyez [fatigue_acc]**, et parfois même **[inquiet_acc]**\n- ⇒ À votre place, **je le serais aussi**<br><br>"
             },
             {
               type: "option", label: "SI ELLE A DES SOUPÇONS", emoji: "🟢", style: "action-green", _pillStyle: true, _purpleContent: true, mutexGroup: "rgo-soupcons",
@@ -786,7 +786,7 @@ const SCRIPT_DATA = {
           blocks: [
             {
               type: "normal",
-              text: "- **AVANT** qu'**on commence à parler** \"sommeil\"\n  j'aimerais, **si vous êtes d'accord**, [prénom_parent_1]\n  qu'on **prenne un petit moment**, toutes les 2, pour **revenir** sur **CE QUE vous m'avez partagé**\n\n- D'abord, je voudrais **vous dire quelque chose**\n- Ce que **vous vivez**, là, au quotidien, avec [prénom_enfant], **c'est dur**\n- Je ne dis **PAS ÇA pour le dire**\n  Je le dis parce que **c'est vrai**\n\n- Entre :"
+              text: "- **AVANT** qu'**on commence à parler** \"sommeil\"\n  j'aimerais, **si vous êtes d'accord**, [prénom_parent_1]\n  qu'on **prenne un petit moment**, [toutes_tous_les_N], pour **revenir** sur **CE QUE vous m'avez partagé**\n\n- D'abord, je voudrais **vous dire quelque chose**\n- Ce que **vous vivez**, là, au quotidien, avec [prénom_enfant], **c'est dur**\n- Je ne dis **PAS ÇA pour le dire**\n  Je le dis parce que **c'est vrai**\n\n- Entre :"
             },
             {
               type: "grouped_checklist",
@@ -807,7 +807,7 @@ const SCRIPT_DATA = {
             },
             {
               type: "normal",
-              text: "- ⇒ C'est **BEAUCOUP**\n- ⇒ Et c'est **NORMAL** que vous **soyez fatiguée**, et parfois même **inquiète**\n- ⇒ À votre place, **je le serais aussi**<br><br>"
+              text: "- ⇒ C'est **BEAUCOUP**\n- ⇒ Et c'est **NORMAL** que vous **soyez [fatigue_acc]**, et parfois même **[inquiet_acc]**\n- ⇒ À votre place, **je le serais aussi**<br><br>"
             },
             {
               type: "option", label: "SI ELLE A DES SOUPÇONS", emoji: "🟢", style: "action-green", _pillStyle: true, _purpleContent: true, mutexGroup: "allergie-seule-soupcons",
@@ -929,7 +929,7 @@ const SCRIPT_DATA = {
           blocks: [
             {
               type: "normal",
-              text: "- **AVANT** qu'**on commence à parler** \"sommeil\"\n  j'aimerais, **si vous êtes d'accord**, [prénom_parent_1],\n  qu'on **prenne un petit moment**, toutes les 2, pour revenir sur **CE QUE vous m'avez partagé … sur SON REFLUX**\n\n- D'abord, je voudrais **vous dire quelque chose**\n- Ce que **vous vivez**, là, au quotidien, avec [prénom_enfant], **c'est dur**\n- Je ne dis **PAS CA pour dire**\n  Je le dis parce que **c'est vrai**\n\n- Entre :"
+              text: "- **AVANT** qu'**on commence à parler** \"sommeil\"\n  j'aimerais, **si vous êtes d'accord**, [prénom_parent_1],\n  qu'on **prenne un petit moment**, [toutes_tous_les_N], pour revenir sur **CE QUE vous m'avez partagé … sur SON REFLUX**\n\n- D'abord, je voudrais **vous dire quelque chose**\n- Ce que **vous vivez**, là, au quotidien, avec [prénom_enfant], **c'est dur**\n- Je ne dis **PAS CA pour dire**\n  Je le dis parce que **c'est vrai**\n\n- Entre :"
             },
             {
               type: "grouped_checklist",
