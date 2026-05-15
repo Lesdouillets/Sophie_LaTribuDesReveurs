@@ -2410,41 +2410,21 @@ const SCRIPT_DATA = {
     {
       id: "relationnel_general",
       problematiqueId: "relationnel_general",
-      title: "Enjeux relationnels",
+      title: "Enjeux relationnels (pour les enfants + grands)",
       emoji: "💬",
       blocks: [
-        {
-          type: "courbe_cards_grid",
-          theme: "pink",
-          items: [
-            {
-              id: "rel_lit", emoji: "🛏️", label: "Vient dans le lit parental",
-              pb: "relationnel_lit_parental",
-              blocks: [
-                { type: "normal", showIfPb: "relationnel_lit_parental", text: "- Aujourd'hui **[prénom_enfant]** :\n  - Vient souvent vous **rejoindre dans votre lit**\n    ⇒ Alors que **chez Papy et Mamie**, ça ne se **passe pas comme ça** !\n\n- À son âge, il n'y a **rien de plus excitant** que de **communiquer avec Papa et Maman.**\n- Et pour [lui_elle], **toute attention… EST** une **attention** :\nque ce soit **un câlin, un rire**… ou **même** un **petit conflit.**\n  ⇒ Parce que, **dans TOUS les cas,** C'EST un **moment de relation avec vous.**\n\n- Et au **moment du coucher…** c'est un **petit peu particulier** :\n  - c'est le **moment** où le **lien physique se coupe**\n  - où il y a une **VRAIE et LONGUE séparation avec vous**\n    ⇒ Et ça peut être un peu **difficile pour [lui_elle]**\n    parce qu'[il_elle] a simplement **envie de prolonger le moment** **…encore un peu plus longtemps**\n\n- Donc ce que je vois ici :\n  - c'est **PAS forcément** une **difficulté liée au sommeil**\n    - mais c'est surtout **un besoin de relation qui s'exprime**\n    - Un **moyen** pour [lui_elle] **de prolonger le lien** avec vous.\n    ⇒ Et c'est **quelque chose** qui **arrive très souvent** chez les enfants de cet âge\n    ⇒ et qui est **tout à fait normal !**" },
-              ]
-            },
-            {
-              id: "rel_conflit", emoji: "💬", label: "En conflit sur d'autres sujets",
-              pb: "relationnel_conflit_autres",
-              blocks: [
-                { type: "normal", showIfPb: "relationnel_conflit_autres", text: "- Aujourd'hui **[prénom_enfant]** :\n  - semble parfois **en « conflit »** avec vous sur **différents sujets** (qui ne sont **pas forcément liés au sommeil**)\n    ⇒ Alors qu'à la **crèche / chez Papy et Mamie**, ça ne se **passe pas comme ça** !\n\n- À son âge, il n'y a **rien de plus excitant** que de **communiquer avec Papa et Maman.**\n- Et pour [lui_elle], **toute attention… EST** une **attention** :\nque ce soit **un câlin, un rire**… ou **même** un **petit conflit.**\n  ⇒ Parce que, **dans TOUS les cas,** C'EST un **moment de relation avec vous.**\n\n- Et au **moment du coucher…** c'est un **petit peu particulier** :\n  - c'est le **moment** où le **lien physique se coupe**\n  - où il y a une **VRAIE et LONGUE séparation avec vous**\n    ⇒ Et ça peut être un peu **difficile pour [lui_elle]**\n    parce qu'[il_elle] a simplement **envie de prolonger le moment** **…encore un peu plus longtemps**\n\n- Donc ce que je vois ici :\n  - c'est **PAS forcément** une **difficulté liée au sommeil**\n    - mais c'est surtout **un besoin de relation qui s'exprime**\n    - Un **moyen** pour [lui_elle] **de prolonger le lien** avec vous.\n    ⇒ Et c'est **quelque chose** qui **arrive très souvent** chez les enfants de cet âge\n    ⇒ et qui est **tout à fait normal !**" },
-              ]
-            },
-            {
-              id: "rel_rappels", emoji: "📢", label: "Multiples rappels après coucher",
-              pb: "relationnel_rappels",
-              blocks: [
-                { type: "normal", showIfPb: "relationnel_rappels", text: "- Aujourd'hui **[prénom_enfant]** :" },
-                { type: "checklist", showIfPb: "relationnel_rappels", items: [
-                  "Fait de <strong>nombreux rappels …après l'avoir couché</strong>"
-                ]},
-                { type: "normal", showIfPb: "relationnel_rappels", text: "⇒ Alors qu'à la **crèche / chez Papy et Mamie**, ça ne se **passe pas comme ça** !\n\n- À son âge, il n'y a **rien de plus excitant** que de **communiquer avec Papa et Maman.**\n- Et pour [lui_elle], **toute attention EST** une **attention** :\nque ce soit **un câlin, un rire**… ou **même PLUSIEURS petits échanges**\n  ⇒ Parce que, **dans TOUS les cas,** C'EST un **moment de relation avec vous.**\n\n- Et au **moment du coucher…** c'est un **petit peu particulier** :\n  - c'est le **moment** où le **lien physique se coupe**\n  - où il y a une **VRAIE et LONGUE séparation avec vous**\n    ⇒ Et ça peut être un peu **difficile pour [lui_elle]**\n    parce qu'[il_elle] a simplement **envie de prolonger le moment** **…encore un peu plus longtemps**\n\n- Donc ce que je vois ici :\n  - c'est **PAS forcément** une **difficulté liée au sommeil**\n    - mais c'est surtout **un besoin de relation qui s'exprime**\n    - Un **moyen** pour [lui_elle] **de prolonger le lien** avec vous.\n    - et aussi une forme de **dépendance à votre présence pour :**\n      - **s'apaiser**\n      - **et s'endormir**\n    ⇒ Et c'est **quelque chose** qui **arrive très souvent** chez les enfants de cet âge\n    ⇒ et qui est **tout à fait normal !**" },
-              ]
-            },
-          ]
-        },
-        { type: "question", _parentLevel: true, showIfPb: ["relationnel_lit_parental","relationnel_conflit_autres","relationnel_rappels"], text: "CE QUE **je vous propose,** c'est qu'**on discute ensemble**\n  - de COMMENT **sortir doucement de ce petit « jeu relationnel »** qui s'est installé\n  - en vous proposant des **manières concrètes de réagir**\n  - pour que **le coucher** puisse **se passer beaucoup + sereinement…** pour tout le monde\n\n- ⇒ Est-ce que **vous reconnaissez** VOTRE **situation**… dans ce que je vous dis là ?" },
+        // BLOC COMMUN — DÉBUT
+        { type: "normal", _leftTitle: "Intro", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- [prénom_parent_1], il y a un **point** que je voudrais **partager avec vous**\n- C'est quelque chose d'**important** pour **comprendre ce qui se joue** avec **[prénom_enfant]**" },
+        { type: "normal", _leftTitle: "Ce qu'[il_elle] fait aujourd'hui", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Aujourd'hui, **[prénom_enfant]** :" },
+        // OPTION 1 — Vient dans le lit parental
+        { type: "normal", showIfPb: "relationnel_lit_parental", text: "  - [Il_Elle] vient souvent vous **rejoindre dans VOTRE lit**, la nuit" },
+        // OPTION 2 — En conflit sur d'autres sujets
+        { type: "normal", showIfPb: "relationnel_conflit_autres", text: "  - [Il_Elle] semble parfois :\n    - En **conflit** avec vous\n    - Sur des sujets qui ne sont **PAS FORCEMENT** liés au sommeil : 🔥<strong style=\"color:#dc2626\">XXX</strong>🔥" },
+        // BLOC COMMUN — SUITE
+        { type: "normal", _leftTitle: "Toute attention EST une attention", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- À son âge, il n'y a **RIEN** de + excitant **QUE DE communiquer avec Papa et Maman**\n- Et pour [il_elle], **TOUTE attention EST** une **attention** :\n  - Que ce soit un câlin\n  - Un rire\n  - Ou même… un petit conflit\n- ⇒ Parce que dans **TOUS les cas**, c'est un **moment de relation avec vous**" },
+        { type: "normal", _leftTitle: "Coucher = coupure", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Et le moment du coucher, c'est un moment un peu particulier :\n  - C'est le moment **OU TOUT S'ARRETE**\n    - Les jeux\n    - Les discussions\n    - …Et où il faut **ACCEPTER une séparation** …pour **TOOOUTE une nuit**\n- ⇒ Et **[prénom_enfant]**, [il_elle] va essayer de **PROLONGER ce moment-là** …encore un peu + longtemps\n\n- **PAS** parce qu'[il_elle] veut **VOUS embêter**\n- Mais parce qu'[il_elle] :\n  - **VOUS AIME**\n  - Et qu'[il_elle] **AIME CES moments passés AVEC VOUS**\n\n- Et ça, c'est quelque chose qu'on retrouve très souvent chez les enfants de cet âge\n- ⇒ Et c'est tout à fait **NORMAL**" },
+        // QUESTION FINALE
+        { type: "question", _leftTitle: "Ce qu'on va faire", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Est-ce que vous reconnaissez **VOTRE situation** dans **CE QUE** je viens de vous décrire ?\n\n- Du coup, **[prénom_parent_1]**, **CE QUE** je vous propose, c'est qu'on **discute ensemble** :\n  - De **COMMENT** sortir doucement de cette **« dynamique relationnelle »** qui s'est installée entre vous\n  - Je vais vous donner :\n    - Des **manières concrètes de réagir** dans ces cas-là\n    - Pour que le coucher puisse se passer **beaucoup + sereinement**…\n    - À la fois pour **[prénom_enfant]**\n    - Mais **AUSSI pour vous !**" },
       ]
     },
 
