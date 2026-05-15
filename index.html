@@ -1500,6 +1500,11 @@
     .inline-conditional-section[data-category="relationnel"] > .inline-conditional-header {
       background: #5e3a52;
     }
+    /* Blocs avec _leftTitle bg #5e3a52 (Enjeux relationnels — V. Diagnostic) :
+       liseré rose comme la section dans VIII. Plan d'action */
+    .block-with-left-title[style*="#5e3a52"] {
+      border: 1.5px solid #c98aa8;
+    }
     .inline-conditional-section[data-category="souhait"] {
       border-color: #8089a8; background: #ffffff;
     }
@@ -6871,7 +6876,7 @@
                 </div>
               </div>
               <div class="pb-category">
-                <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="relationnel" onclick="event.preventDefault()"> 💬 Enjeux relationnels <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(pour les enfants + grands)</span></label>
+                <label class="pb-category-title"><input type="checkbox" class="pb-cat-checkbox" data-cat="relationnel" onclick="event.preventDefault()"> 💬 Enjeux relationnels <span style="color:#fff;font-style:italic;font-weight:400;font-size:11px">(pour les enfants + grands)</span></label>
                 <div class="pb-items">
                   <label class="pb-item"><input type="checkbox" name="pb" value="relationnel_lit_parental"> <span>👫🛏 Vient dans le lit parental</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="relationnel_conflit_autres"> <span>⚔️ En « conflit » sur d'autres sujets que le sommeil</span></label>
@@ -7744,7 +7749,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=714"></script>
+<script src="script-data.js?v=715"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
