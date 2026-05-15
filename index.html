@@ -7791,6 +7791,8 @@ function showSetup() {
   if (currentUser) localStorage.setItem('tdr_offline_user', JSON.stringify(currentUser));
   loadSavedClients();
   loadSupabaseOverrides();
+  // Sync silencieux en arrière-plan : toutes les données locales → Supabase
+  if (currentUser) setTimeout(() => syncAllLocalToSupabase(), 1500);
 }
 
 async function doLogin() {
@@ -7900,6 +7902,36 @@ async function syncSessionToSupabase(session) {
     });
   } catch(e) {}
 }
+
+// Sync silencieux de TOUTES les données locales vers Supabase
+// Appelé automatiquement à la connexion pour ne rien perdre
+async function syncAllLocalToSupabase() {
+  if (!currentUser) return;
+  try {
+    // 1. Toutes les sessions locales
+    const sessions = JSON.parse(localStorage.getItem('tdr_sessions') || '[]');
+    for (const session of sessions) {
+      if (!session.id) continue;
+      await syncSessionToSupabase(session);
+    }
+    // 2. Tous les clients locaux (fiche sans session complète)
+    const clients = JSON.parse(localStorage.getItem('tdr_clients') || '[]');
+    for (const c of clients) {
+      if (!c._id || !c.prenomEnfant) continue;
+      // Upsert comme session "fiche seule" si pas déjà une session avec cet id
+      const fakeId = 'client_' + c._id;
+      await db.from('sessions').upsert({
+        id: fakeId,
+        user_id: currentUser.id,
+        client_name: `${c.prenomEnfant||''} ${c.nomFamille||''}`.trim(),
+        client_data: c,
+        session_data: { savedAt: c.savedAt || new Date().toISOString() },
+        updated_at: c.savedAt || new Date().toISOString()
+      }).catch(() => {});
+    }
+  } catch(e) { console.warn('syncAllLocalToSupabase:', e); }
+}
+window.syncAllLocalToSupabase = syncAllLocalToSupabase;
 
 async function loadSessionsFromSupabase() {
   if (!currentUser) return null;
