@@ -8981,31 +8981,42 @@ async function loadSavedClients() {
   updateEnseigneUI();
   let saved = JSON.parse(localStorage.getItem('tdr_clients') || '[]');
 
-  // Fetch from Supabase and merge
+  // Fetch from Supabase (table sessions) and merge
   if (currentUser) {
     try {
-      const { data } = await db.from('clients')
+      // On récupère TOUTES les sessions et on extrait le client_data
+      // (fiches seules = id commence par "client_", sessions complètes = toutes les autres)
+      const { data } = await db.from('sessions')
         .select('client_data, updated_at')
         .eq('user_id', currentUser.id)
         .order('updated_at', { ascending: false });
 
       if (data && data.length > 0) {
-        // Merge: Supabase wins on conflict (more recent)
-        const supaClients = data.map(r => r.client_data).filter(Boolean);
+        // Dédoublonner : pour un même enfant, garder la version la plus récente
+        const seen = new Map();
+        for (const r of data) {
+          const c = r.client_data;
+          if (!c || !c.prenomEnfant) continue;
+          const key = c._id || `${c.prenomEnfant}|${c.nomFamille||''}`;
+          if (!seen.has(key) || r.updated_at > seen.get(key).updated_at) {
+            seen.set(key, { client: c, updated_at: r.updated_at });
+          }
+        }
+        const supaClients = [...seen.values()].map(v => v.client);
+
+        // Merge avec données locales (Supabase gagne si plus récent)
         const merged = [...saved];
         for (const sc of supaClients) {
           const localIdx = merged.findIndex(l => l._id === sc._id ||
             (l.prenomEnfant === sc.prenomEnfant && l.nomFamille === sc.nomFamille));
           if (localIdx >= 0) {
-            // Keep most recent
-            if (!merged[localIdx].savedAt || sc.savedAt > merged[localIdx].savedAt) {
+            if (!merged[localIdx].savedAt || (sc.savedAt && sc.savedAt > merged[localIdx].savedAt)) {
               merged[localIdx] = sc;
             }
           } else {
             merged.push(sc);
           }
         }
-        // Sort by savedAt desc
         merged.sort((a, b) => (b.savedAt || '').localeCompare(a.savedAt || ''));
         saved = merged;
         localStorage.setItem('tdr_clients', JSON.stringify(saved));
@@ -9397,14 +9408,16 @@ async function saveClient() {
   if (idx >= 0) saved[idx] = c; else saved.push(c);
   localStorage.setItem('tdr_clients', JSON.stringify(saved));
 
-  // 2. Sync to Supabase
+  // 2. Sync to Supabase (via table sessions avec préfixe "client_")
   if (currentUser) {
     try {
-      await db.from('clients').upsert({
-        id,
+      await db.from('sessions').upsert({
+        id: 'client_' + id,
         user_id: currentUser.id,
+        client_name: `${c.prenomEnfant||''} ${c.nomFamille||''}`.trim(),
         client_data: c,
-        updated_at: c.savedAt
+        session_data: { _type: 'client_only', savedAt: c.savedAt },
+        updated_at: c.savedAt || new Date().toISOString()
       });
     } catch(e) { console.warn('Sync client Supabase:', e); }
   }
