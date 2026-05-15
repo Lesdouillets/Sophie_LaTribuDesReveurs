@@ -4303,6 +4303,17 @@
     .leviers-list { list-style: none; padding: 0; margin: 8px 0 0; }
     .levier-item { display: flex; align-items: center; gap: 8px; padding: 5px 0; font-size: 14px; color: var(--primary-dark); }
     .levier-item::before { content: "✅"; }
+    .apt-wrap { border:1.5px solid #e8a0a0;border-radius:10px;background:white;padding:8px 10px; }
+    .apt-table { border-collapse:collapse;width:100%; }
+    .apt-table td { padding:4px 6px;vertical-align:middle; }
+    .accueil-role-pill { display:inline-flex;align-items:center;gap:2px;padding:3px 8px;border-radius:20px;
+      border:1.5px solid var(--apt-pill-color,#999);color:var(--apt-pill-color,#999);
+      background:white;cursor:pointer;font-size:12px;font-weight:600;margin-right:2px;
+      transition:background .12s,color .12s; }
+    .accueil-role-pill.active { background:var(--apt-pill-color);color:white; }
+    .apt-name-input { border:1.5px solid #e8a0a0;border-radius:8px;padding:4px 8px;font-size:13px;width:108px;font-family:inherit;background:white; }
+    .apt-name-input:focus { outline:none;border-color:#c0392b; }
+    .apt-checkbox { width:17px;height:17px;cursor:pointer;accent-color:#2d3f5c;vertical-align:middle; }
 
     /* SIDEBAR SEARCH */
     .sidebar-search-wrap { padding: 10px 12px 6px; }
@@ -6328,14 +6339,14 @@
                         <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_declinante" data-subgroup-child="nutri_courbes" data-exclusive="nutri_top_child"> Courbe de poids diminue <span class="pb-cause-tag">⇒ Faim</span></label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3">
-                            <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_espacement" data-auto-only="true"> Espacement</label>
+                            <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_espacement" data-auto-parent="nutri_courbe_declinante"> Espacement</label>
                             <div class="pb-items">
                               <label class="pb-item"><input type="checkbox" name="pb" value="nutri_esp_long" data-exclusive="nutri_espacement" data-subgroup-child="nutri_espacement" data-auto-parent="nutri_courbe_declinante"> <span>Trop long</span></label>
                               <label class="pb-item"><input type="checkbox" name="pb" value="nutri_esp_court" data-exclusive="nutri_espacement" data-subgroup-child="nutri_espacement" data-auto-parent="nutri_courbe_declinante"> <span>Trop court</span></label>
                             </div>
                           </div>
                           <div class="pb-category pb-level-3" id="nutri-volume-group">
-                            <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_volume" data-auto-only="true"> Volume/durée des bib</label>
+                            <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_volume" data-auto-parent="nutri_courbe_declinante"> Volume/durée des bib</label>
                             <div class="pb-items">
                               <label class="pb-item"><input type="checkbox" name="pb" value="nutri_vol_petit" data-subgroup-child="nutri_volume" data-exclusive="nutri_vol_taille" data-auto-parent="nutri_courbe_declinante"> <span>Petit bib</span></label>
                               <label class="pb-item"><input type="checkbox" name="pb" value="nutri_vol_gros" data-subgroup-child="nutri_volume" data-exclusive="nutri_vol_taille" data-auto-parent="nutri_courbe_declinante"> <span>Gros bib</span></label>
@@ -6351,7 +6362,7 @@
                             </div>
                           </div>
                           <div class="pb-category pb-level-3">
-                            <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_inversion" data-auto-only="true"> Inversion</label>
+                            <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_inversion" data-auto-parent="nutri_courbe_declinante"> Inversion</label>
                             <div class="pb-items">
                               <label class="pb-item"><input type="checkbox" name="pb" value="nutri_inversion_jour_nuit" data-subgroup-child="nutri_inversion" data-auto-parent="nutri_courbe_declinante"> <span>Inversion Jour/Nuit</span></label>
                               <label class="pb-item nutri-diversif-only" style="display:none"><input type="checkbox" name="pb" value="nutri_inversion_lait_solide" data-subgroup-child="nutri_inversion" data-auto-parent="nutri_courbe_declinante"> <span>Inversion ordre lait/solide</span></label>
@@ -6873,7 +6884,7 @@
                   <label class="pb-item"><input type="checkbox" name="pb" value="souhait_tetine"> <span>🍭 Suppression de la tétine</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="souhait_position_dorsale"> <span>😴 Vers une position dorsale</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="souhait_partage_chambre"> <span>👧👦 Partage de chambre</span></label>
-                  <label class="pb-item"><input type="checkbox" class="pb-sub-parent" data-subgroup="souhait_changement"> <span>Changement chambre/lit <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span></span></label>
+                  <label class="pb-item" style="margin-top:8px"><input type="checkbox" class="pb-sub-parent" data-subgroup="souhait_changement"> <span>Changement chambre/lit <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span></span></label>
                   <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="souhait_changement_lit" data-exclusive="souhait_changement" data-subgroup-child="souhait_changement"> <span>🛏 Changement de lit</span></label>
                   <label class="pb-item" style="padding-left:48px;font-size:11.5px"><input type="checkbox" name="pb" value="souhait_chgmt_lit_cododo_barreau" data-exclusive="souhait_chgmt_lit_sub" data-auto-parent="souhait_changement_lit"> <span>🛏 Cododo ⇒ Lit à barreaux</span></label>
                   <label class="pb-item" style="padding-left:48px;font-size:11.5px"><input type="checkbox" name="pb" value="souhait_chgmt_lit_barreau_ouvert" data-exclusive="souhait_chgmt_lit_sub" data-auto-parent="souhait_changement_lit"> <span>🛌 Lit à barreaux ⇒ Lit ouvert</span></label>
@@ -11945,6 +11956,120 @@ window.renderDecouverteTailleParents = renderDecouverteTailleParents;
 window.onDecouverteTailleInput = onDecouverteTailleInput;
 window.updateDecouverteCible = updateDecouverteCible;
 
+// ═══════════════════════════════════════════════════
+// WIDGET PRÉSENCE PARENTS (I. Accueil)
+// ═══════════════════════════════════════════════════
+
+function _getParentsDisplay() {
+  const c = (state && state.client) || {};
+  const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+  const p1Present = c.parent1Present !== false;
+  const p2Present = c.parent2Present !== false;
+  const p1 = p1Present && c.prenomParent1 ? cap(c.prenomParent1) : '';
+  const p2 = p2Present && c.prenomParent2 ? cap(c.prenomParent2) : '';
+  if (!p1 && !p2) {
+    const fb = [cap(c.prenomParent1), cap(c.prenomParent2)].filter(Boolean).join(' & ');
+    return fb || '[parents]';
+  }
+  const p1IsMaman = (c.sexeParent1 || '').toLowerCase() === 'maman';
+  const p2IsMaman = (c.sexeParent2 || '').toLowerCase() === 'maman';
+  if (p1 && p2 && p2IsMaman && !p1IsMaman) return `${p2} & ${p1}`;
+  return [p1, p2].filter(Boolean).join(' & ');
+}
+window._getParentsDisplay = _getParentsDisplay;
+
+function renderAccueilParentsWidget() {
+  const el = document.getElementById('accueil-parents-widget-placeholder');
+  if (!el) return;
+  const c = (state && state.client) || {};
+  const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+  const p1Name = cap(c.prenomParent1) || '';
+  const p2Name = cap(c.prenomParent2) || '';
+  const p1Role = (c.sexeParent1 || '').toLowerCase();
+  const p2Role = (c.sexeParent2 || '').toLowerCase();
+  const p1Present = c.parent1Present !== false;
+  const p2Present = c.parent2Present !== false;
+
+  const pillHtml = (parentNum, role, label, color, isActive) =>
+    `<span class="accueil-role-pill${isActive?' active':''}" style="--apt-pill-color:${color}"
+      onclick="setAccueilParentRole(${parentNum},'${role}')">${label}</span>`;
+
+  const rowHtml = (parentNum, name, role, present) => {
+    const mamanActive = role === 'maman';
+    const papaActive = role === 'papa';
+    return `<tr>
+      <td>${pillHtml(parentNum,'maman','👩 Maman','#e879a0',mamanActive)}${pillHtml(parentNum,'papa','👨 Papa','#5b8ee6',papaActive)}</td>
+      <td><input class="apt-name-input" type="text" placeholder="Prénom…" value="${name}"
+        oninput="onAccueilParentName(${parentNum},this)"></td>
+      <td style="text-align:center"><input class="apt-checkbox" type="checkbox" title="Présent·e"
+        ${present?'checked':''} onchange="onAccueilParentPresent(${parentNum},this.checked)"></td>
+    </tr>`;
+  };
+
+  el.innerHTML = `<div class="apt-wrap">
+    <table class="apt-table">
+      <thead><tr>
+        <th style="font-size:11px;color:#888;font-weight:600;padding:2px 6px">Rôle</th>
+        <th style="font-size:11px;color:#888;font-weight:600;padding:2px 6px">Prénom</th>
+        <th style="font-size:11px;color:#888;font-weight:600;padding:2px 6px;text-align:center">Présent·e</th>
+      </tr></thead>
+      <tbody>
+        ${rowHtml(1, p1Name, p1Role, p1Present)}
+        ${rowHtml(2, p2Name, p2Role, p2Present)}
+      </tbody>
+    </table>
+  </div>`;
+}
+window.renderAccueilParentsWidget = renderAccueilParentsWidget;
+
+function onAccueilParentName(parentNum, inputEl) {
+  if (!state.client) state.client = {};
+  const val = inputEl.value;
+  if (parentNum === 1) {
+    state.client.prenomParent1 = val;
+    const fi = document.getElementById('prenom-parent1');
+    if (fi && fi.value !== val) fi.value = val;
+  } else {
+    state.client.prenomParent2 = val;
+    const fi = document.getElementById('prenom-parent2');
+    if (fi && fi.value !== val) fi.value = val;
+  }
+  if (typeof updateHeader === 'function') updateHeader();
+  _refreshParentsInDOM();
+}
+window.onAccueilParentName = onAccueilParentName;
+
+function onAccueilParentPresent(parentNum, checked) {
+  if (!state.client) state.client = {};
+  if (parentNum === 1) state.client.parent1Present = checked;
+  else state.client.parent2Present = checked;
+  _refreshParentsInDOM();
+}
+window.onAccueilParentPresent = onAccueilParentPresent;
+
+function setAccueilParentRole(parentNum, role) {
+  if (!state.client) state.client = {};
+  if (parentNum === 1) {
+    state.client.sexeParent1 = role;
+    const sel = document.getElementById('sexe-parent1');
+    if (sel) sel.value = role;
+  } else {
+    state.client.sexeParent2 = role;
+    const sel = document.getElementById('sexe-parent2');
+    if (sel) sel.value = role;
+  }
+  if (typeof updateHeader === 'function') updateHeader();
+  renderAccueilParentsWidget();
+  _refreshParentsInDOM();
+}
+window.setAccueilParentRole = setAccueilParentRole;
+
+function _refreshParentsInDOM() {
+  document.getElementById('content-area')?.querySelectorAll('span[data-var="prnts"]')
+    .forEach(span => { span.textContent = _getParentsDisplay(); });
+}
+window._refreshParentsInDOM = _refreshParentsInDOM;
+
 // Ouvre le panneau latéral "Infos" et y charge le contenu du bouton cliqué
 // Comportement toggle : re-cliquer sur le même bouton actif ferme le panneau
 function openInfoPanel(btnId) {
@@ -12403,6 +12528,10 @@ function renderCurrentSection() {
   // III. Découverte → Lecture des courbes : remplir le placeholder dynamique des tailles parents
   if (section.id === 'decouverte' && typeof renderDecouverteTailleParents === 'function') {
     renderDecouverteTailleParents();
+  }
+  // I. Accueil → widget présence parents
+  if (section.id === 'accueil' && typeof renderAccueilParentsWidget === 'function') {
+    renderAccueilParentsWidget();
   }
   // Remplir le diagnostic avec le clone des checkboxes si la section contient le container
   const diagContainer = document.getElementById('diag-pb-container');
@@ -16449,12 +16578,18 @@ function substituteVars(text) {
   const prenomStyled = `<strong class="var-prenom-enfant${prenomRaw?'':' var-empty'}" data-sexe="${isFille?'fille':'garcon'}" style="color:${prenomColor};font-size:1.15em">${prenomRaw || '&#91;prénom&#93;'}</strong>`;
   // Age stylisé : marker class .var-age pour update en place
   const ageStyled = `<span class="var-age">${age}</span>`;
+  // [if_client_data]...[/if_client_data] → visible si données parents+enfant+age présents
+  // [if_no_client_data]...[/if_no_client_data] → visible si données manquantes
+  const _hasClientData = !!(prenomRaw && (p1 || p2) && age && age !== '[âge]');
+  text = text
+    .replace(/\[if_client_data\]([\s\S]*?)\[\/if_client_data\]/g, _hasClientData ? '$1' : '')
+    .replace(/\[if_no_client_data\]([\s\S]*?)\[\/if_no_client_data\]/g, _hasClientData ? '' : '$1');
   let t = text
     .replace(/\[enseigne_nom\]/g, enseigneNom)
     .replace(/\[verif_identite\]/g, verifIdentite)
     .replace(/\[accord_enfant\]/g, accordEnfant)
     .replace(/\[prénom_enfant\]/g, prenomStyled)
-    .replace(/\[prénom_parents\]/g, parents||'[parents]')
+    .replace(/\[prénom_parents\]/g, () => `<span data-var="prnts">${typeof _getParentsDisplay==='function'?_getParentsDisplay():(parents||'[parents]')}</span>`)
     .replace(/\[prénom_parent_1\]/g, `<strong class="var-prenom-parent-1${p1?'':' var-empty'}" style="color:#16a34a;font-size:1.15em">${p1 || '&#91;prénom parent&#93;'}</strong>`)
     .replace(/\[prénom_parent_2\]/g, `<span class="var-prenom-parent-2${p2?'':' var-empty'}">${p2 || '&#91;prénom parent&#93;'}</span>`)
     .replace(/\[horaire_souhaite\]/g, (() => {
@@ -16616,7 +16751,7 @@ function substituteVars(text) {
     .replace(/\[prénom\]/gi, prenomStyled)
     .replace(/\[Prénom enfant\]/gi, prenomStyled)
     .replace(/\[prénom enfant\]/gi, prenomStyled)
-    .replace(/\[prénom parents\]/gi, parents||'[parents]')
+    .replace(/\[prénom parents\]/gi, () => `<span data-var="prnts">${typeof _getParentsDisplay==='function'?_getParentsDisplay():(parents||'[parents]')}</span>`)
     .replace(/XXXX/g, heureFin);
   // Pronoms selon sexe du bébé — remplacer il/le/son/lui → elle/la/sa/lui
   const sexeE = state.client.sexe;
