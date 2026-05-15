@@ -25,9 +25,10 @@ const PB_LABELS = {
   'rythme_reveil_dependance': 'Réveil matinal — Dépendance',
   'rythme_reveil_bruit': 'Réveil matinal — Bruit extérieur/lumière',
   // Stratégie de sommeil
-  'strategie_rendormissement': 'Rendormissement difficile',
-  'strategie_enjeu_relationnel': 'Enjeu relationnel',
-  'strategie_tetine': 'Dépendance tétine',
+  'strategie_rendormissement': 'Environnement différent',
+  'strategie_enjeu_relationnel': 'Dépendance à la présence',
+  'strategie_multiples_rappels': 'Multiples rappels',
+  'strategie_tetine': 'Dépendance à la tétine',
   // Environnement de sommeil
   'env_obscurite': 'Obscurité insuffisante',
   'env_temperature': 'Température trop élevée',
@@ -2212,96 +2213,63 @@ const SCRIPT_DATA = {
       title: "Stratégies de sommeil",
       emoji: "😴",
       blocks: [
-        { type: "normal", text: "- Aujourd'hui, **[prénom_enfant]** ne s'endort que :" },
-        {
-          type: "checklist", label: "Stratégies d'endormissement",
-          items: [
-            "Avec <strong>votre présence</strong>",
-            "Dans <strong>vos bras</strong>, en le berçant",
-            "Avec sa <strong>tétine</strong>, qu'il vous demande de remettre plusieurs fois 🍭",
-            "En <strong>portage ou en poussette</strong>",
-            "Au <strong>biberon ou au sein</strong> 🍼",
-            "En <strong>tenant votre main</strong> ou votre doigt",
-            "Sur <strong>VOTRE ventre</strong>",
-            "Dans <strong>VOTRE lit/chambre</strong> 🛌",
+        // BLOC COMMUN — DÉBUT
+        { type: "normal", _leftTitle: "Intro", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", text: "- Je voudrais **VOUS** expliquer **CE QUI se passe** pour **[prénom_enfant]**\n- Parce que **TOUT CE QUE** vous m'avez décrit :\n  - **C'est logique**" },
+        { type: "normal", _leftTitle: "[prénom_enfant] sait dormir", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", text: "- D'abord, **[prénom_parent_1]**, il y a une chose **essentielle à avoir en tête** :\n  - **[prénom_enfant]**, [il_elle] **SAIT dormir**\n  - [Il_Elle] sait dormir **DEPUIS 20 semaines de grossesse**\n  - Donc **DORMIR**, ce n'est **PAS** quelque chose qu'[il_elle] va **apprendre**" },
+        { type: "normal", _leftTitle: "Comment [il_elle] s'endort aujourd'hui", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", text: "- Aujourd'hui, **[prénom_enfant]** ne s'endort que dans **certaines conditions**\n- [Il_Elle] a **BESOIN** : <span style=\"color:#7c3aed;font-style:italic;font-size:13px\">(✏️ À COCHER AVEC LES PARENTS)</span>\n  - <label class=\"strat-mini-cb\"><input type=\"checkbox\" data-strat-mini-cb=\"strat_endort_presence\" onchange=\"onStratMiniCbChange('strat_endort_presence', this.checked, event)\"><span class=\"strat-mini-cb-label\">De votre présence</span></label>\n  - <label class=\"strat-mini-cb\"><input type=\"checkbox\" data-strat-mini-cb=\"strat_endort_doigt\" onchange=\"onStratMiniCbChange('strat_endort_doigt', this.checked, event)\"><span class=\"strat-mini-cb-label\">De votre petit doigt</span></label>\n  - <label class=\"strat-mini-cb\"><input type=\"checkbox\" data-strat-mini-cb=\"strat_endort_bercements\" onchange=\"onStratMiniCbChange('strat_endort_bercements', this.checked, event)\"><span class=\"strat-mini-cb-label\">Des bercements</span></label>\n  - <label class=\"strat-mini-cb\"><input type=\"checkbox\" data-strat-mini-cb=\"strat_endort_poussette\" onchange=\"onStratMiniCbChange('strat_endort_poussette', this.checked, event)\"><span class=\"strat-mini-cb-label\">De la poussette</span></label>\n  - <label class=\"strat-mini-cb\"><input type=\"checkbox\" data-strat-mini-cb=\"strat_endort_tetine\" onchange=\"onStratMiniCbChange('strat_endort_tetine', this.checked, event)\"><span class=\"strat-mini-cb-label\">De sa tétine</span></label>\n  - <label class=\"strat-mini-cb\"><input type=\"checkbox\" data-strat-mini-cb=\"strat_endort_sein\" onchange=\"onStratMiniCbChange('strat_endort_sein', this.checked, event)\"><span class=\"strat-mini-cb-label\">Du sein / du biberon</span></label>\n  - <label class=\"strat-mini-cb\"><input type=\"checkbox\" data-strat-mini-cb=\"strat_endort_bras\" onchange=\"onStratMiniCbChange('strat_endort_bras', this.checked, event)\"><span class=\"strat-mini-cb-label\">Des bras</span></label>" },
+        { type: "normal", _leftTitle: "Stratégie dépendante", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", text: "- Petit à petit, **CES CONDITIONS** qui **SE SONT MISES EN PLACE** pour s'endormir sont **devenues SES stratégies d'endormissement**\n- [Il_Elle] **EN A BESOIN** pour :\n  - **S'endormir**\n  - Et **se rendormir**\n\n- Et le problème, c'est qu'[il_elle] ne peut **PAS** les reproduire **[TOUT_SEUL]**\n  - [Il_Elle] a **besoin de vous**\n  - [Il_Elle] a **besoin d'un adulte**\n- ⇒ On appelle ça : une **stratégie d'endormissement DÉPENDANTE**\n- **DÉPENDANTE** car [il_elle] est **DÉPENDANTE d'une aide extérieure**" },
+        // OPTION 2 — DÉPENDANCE À LA PRÉSENCE (showIfPb: strategie_enjeu_relationnel)
+        { type: "normal", _leftTitle: "Dépendance à la présence", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", showIfPb: "strategie_enjeu_relationnel", text: "- Et pour **[prénom_enfant]**, votre **PRESENCE** est **AUSSI** devenue une **VRAIE stratégie d'endormissement**\n- C'est-à-dire qu'[il_elle] **A BESOIN** de :\n  - **Voir**\n  - Et de **sentir votre présence** pour s'endormir\n\n- Sauf que quand vous **quittez la chambre** :\n  - [Il_Elle] **ne vous voit plus**\n  - [Il_Elle] **ne vous sent plus**\n  - [Il_Elle] se retrouve **[seul_seule]**\n- ⇒ Et **SANS VOUS**, [il_elle] n'a **PLUS sa stratégie pour s'endormir**\n  - Et donc… [il_elle] **vous appelle**" },
+        // SOUS-OPTION : Multiples rappels (showIfPb: strategie_multiples_rappels)
+        { type: "normal", _leftTitle: "Rappels au coucher", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", showIfPb: "strategie_multiples_rappels", text: "- C'est aussi **CE QUI explique** ces **nombreux rappels** au moment du coucher :\n  - *« Maman j'ai soif »*\n  - *« Maman un câlin »*\n  - *« Maman j'ai oublié de te dire… »*\n\n- Parce que pour **[prénom_enfant]**, **chaque rappel**, c'est :\n  - Une **manière de VOUS faire revenir**\n  - Pour **pouvoir s'endormir**" },
+        { type: "normal", _leftTitle: "Et il y a aussi un enjeu relationnel", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", showIfPb: "strategie_multiples_rappels", text: "- Et il y a **autre chose** derrière ces rappels\n\n- **[prénom_enfant]** **aime les moments passés avec vous**\n- Et le fait de **vous quitter le soir**, c'est **ACCEPTER la séparation** avec vous\n\n- ⇒ Donc **en + de la stratégie d'endormissement**\n- **Ces rappels** sont aussi une manière :\n  - **De garder le contact**\n  - **De retarder le MOMENT de la séparation**" },
+        // BLOC COMMUN — SUITE
+        { type: "normal", _leftTitle: "Pas un caprice", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", text: "- Mais dans **tous les cas**\n- Je voudrais que **ce soit clair** :\n  - Ce n'est **PAS un refus de dormir**\n  - Ce n'est **PAS un caprice**\n  - Ce n'est **PAS une manipulation**\n- C'est simplement que **[prénom_enfant]** n'a **PAS ENCORE appris COMMENT s'endormir AUTREMENT**\n- Pour [lui_elle], c'est la **SEULE FACON** de faire\n- [Il_Elle] n'en connaît **PAS d'autres**… pour le moment" },
+        { type: "normal", _leftTitle: "Comment fonctionne le sommeil", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", text: "- Et pour **comprendre pourquoi** [il_elle] se réveille autant\n  il faut **comprendre comment fonctionne le sommeil** :\n  - Le sommeil, il est **composé de cycles**\n  - Entre chaque cycle, on fait tous des **micro-réveils**\n  - Ces micro-réveils sont **tout à fait normaux**\n  - Le cerveau fait :\n    - Un léger **retour à la surface**\n    - **\"Vérifie\" que tout va bien**\n    - Puis **se rendort de manière inconsciente**\n\n- Chez la **plupart des enfants**, ces micro-réveils **passent inaperçus**\n  - Parce qu'ils **arrivent à se rendormir seuls**" },
+        { type: "normal", _leftTitle: "Environnement différent", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", text: "- Pour **[prénom_enfant]**, c'est **différent**\n- Ça devient **+ compliqué**\n\n- À **CHAQUE micro-réveil** :\n  - [Il_Elle] va **se réveiller**\n  - [Il_Elle] va **vouloir se rendormir**\n  - **SAUF** qu'[il_elle] **ne PEUT PAS le faire toute seule**\n\n- ⇒ Donc [il_elle] va **VOUS appeler** :\n  - Pour **reproduire sa stratégie**\n- Et **CES micro-réveils**, qui devraient passer inaperçus\n  ⇒ Se transforment en **VRAIS RÉVEILS** …. pour [lui_elle] **comme pour vous !**" },
+        // OPTION 1 — ENVIRONNEMENT DIFFÉRENT (showIfPb: strategie_rendormissement)
+        { type: "normal", _leftTitle: "L'environnement a changé", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", showIfPb: "strategie_rendormissement", text: "- Et il y a **autre chose** qui se joue pour **[prénom_enfant]**\n- Quand [il_elle] se réveille, **l'environnement a changé** :\n  - <label class=\"strat-mini-cb\"><input type=\"checkbox\" data-strat-mini-cb=\"strat_env_seule\" onchange=\"onStratMiniCbChange('strat_env_seule', this.checked, event)\"><span class=\"strat-mini-cb-label\">[Il_Elle] est [seul_seule]</span></label>\n  - <label class=\"strat-mini-cb\"><input type=\"checkbox\" data-strat-mini-cb=\"strat_env_lit\" onchange=\"onStratMiniCbChange('strat_env_lit', this.checked, event)\"><span class=\"strat-mini-cb-label\">Dans son lit</span></label>\n  - <label class=\"strat-mini-cb\"><input type=\"checkbox\" data-strat-mini-cb=\"strat_env_tetine_disparu\" onchange=\"onStratMiniCbChange('strat_env_tetine_disparu', this.checked, event)\"><span class=\"strat-mini-cb-label\">Sa tétine a disparu</span></label>\n  - <label class=\"strat-mini-cb\"><input type=\"checkbox\" data-strat-mini-cb=\"strat_env_pas_la\" onchange=\"onStratMiniCbChange('strat_env_pas_la', this.checked, event)\"><span class=\"strat-mini-cb-label\">Vous n'êtes plus là</span></label>\n\n- ⇒ Donc :\n  - En **+ de chercher à reproduire sa stratégie d'endormissement**\n  - [Il_Elle] va **vous appeler pour se rassurer**\n  - Parce qu'[il_elle] **se réveille dans un endroit qui est différent de son coucher**" },
+        { type: "normal", _leftTitle: "Imaginez-vous", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", showIfPb: "strategie_rendormissement", text: "- 💭 Imaginez-vous, **[prénom_parent_1]**\n- Vous vous **endormez dans votre lit**\n- Et **au milieu de la nuit, VOUS VOUS réveillez…**\n- ⇒ Sur le **carrelage de la cuisine**\n- ⚠️ Vous allez :\n  - Vous **demander CE QUI se passe**\n  - Et vous **ne seriez pas très rassurée**, n'est-ce pas ?\n- Eh bien ! C'est **exactement ce que vit [prénom_enfant]** à **chaque micro-réveil** : **son environnement a changé !**" },
+        // BLOC COMMUN — SUITE
+        { type: "normal", _leftTitle: "Ça a fonctionné un temps", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", text: "- Ces **conditions**,\n- **Vous les avez mises en place**\n- Parce que c'était **CE DONT [prénom_enfant] avait besoin** :\n  - À un **moment donné**\n  - Pour **se sentir en sécurité** et **s'endormir**\n- Et **ça a fonctionné un temps**\n- ⇒ Donc **VOUS AVEZ BIEN FAIT**" },
+        { type: "normal", _leftTitle: "Besoin que ça change", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", text: "- **Maintenant**\n  **VOUS** arrivez **AUSSI** à un point où **vous AVEZ BESOIN QUE CA change**\n  ⇒ Et c'est **NORMAL**" },
+        // OPTION 3 — DÉPENDANCE À LA TÉTINE (showIfPb: strategie_tetine)
+        { type: "normal", _leftTitle: "Et la tétine ?", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", showIfPb: "strategie_tetine", text: "- Et **AVANT qu'on parle de COMMENT** on va l'accompagner\n- Il y a un **dernier point** que je voudrais **aborder avec vous**\n- C'est la **tétine**\n\n- Dans **VOTRE cas**, la **tétine va AUSSI jouer un rôle** dans ces réveils\n- Car **[prénom_enfant]** en a **BESOIN** pour s'endormir\n  ⇒ [Il_Elle] va vous **appeler à CHAQUE FOIS** qu'elle n'est **plus dans sa bouche**" },
+        { type: "normal", _leftTitle: "Pourquoi la tétine tombe", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", showIfPb: "strategie_tetine", text: "- Et **VOUS VOUS demandez** peut-être :\n  - *« Mais pourquoi [il_elle] perd sa tétine ?*\n  - *Ça veut dire qu'[il_elle] n'en veut plus ? »*\n\n- Et c'est une **excellente question**\n- Et la réponse est **NON**\n  - **[prénom_enfant]** **N'A PAS** décidé de la **lâcher**\n  - C'est **son corps** qui le fait, **malgré [lui_elle]**\n\n- Je vais vous **expliquer pourquoi**, simplement :\n  - Dans **chaque cycle de sommeil**, il y a **différentes phases**\n  - L'une d'elles s'appelle le **sommeil paradoxal** (c'est le **sommeil des rêves**)\n  - Pendant cette phase, le **corps est comme paralysé** :\n    - C'est un **mécanisme naturel** *(peut-être justement pour éviter qu'on mette nos rêves à exécution !)*\n    - Et la **bouche s'ouvre**, les **muscles se relâchent**\n  ⇒ Et c'est à ce **moment-là** que la **tétine tombe**\n  - Donc ce n'est **PAS un choix de [prénom_enfant]**\n  ⇒ C'est **JUSTE physiologique**" },
+        { type: "normal", _leftTitle: "Appels pour remettre la tétine", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", showIfPb: "strategie_tetine", text: "- Et à la **fin du cycle**, on retrouve ce **micro-réveil DONT je vous parlais**\n- Le **cerveau remonte à la surface**, vérifie que tout va bien…\n  ⇒ Sauf que là, **[prénom_enfant]** va se **rendre compte** que **sa tétine n'est PLUS LA**\n- Et comme la **tétine fait partie de SA stratégie pour s'endormir**\n  ⇒ [Il_Elle] va **vous appeler** pour que vous :\n  - **Veniez la lui remettre**\n  - Pour qu'[il_elle] **puisse se rendormir**\n- Et ça, c'est **très fréquent** chez les enfants avec une tétine" },
+        { type: "normal", _leftTitle: "2 chemins possibles", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", showIfPb: "strategie_tetine", text: "- Du coup, il y a **2 chemins possibles**\n- Et les **2 sont valables**" },
+        // Option 1 : Garder la tétine — avec boutons si âge < 12 mois, sinon texte direct
+        { type: "normal", _leftTitle: "Option 1 : Garder la tétine", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", showIfPb: "strategie_tetine", showIfAgeMaxMonths: 11, text: "- La **1ère option**, sera de **GARDER la tétine**", embeddedActions: [
+          {
+            label: "Peut remettre la tétine", emoji: "✅", style: "action-green", _pillStyle: true, mutexGroup: "tetine-remettre",
+            blocks: [
+              { type: "normal", text: "- Comme **[prénom_enfant]** est **assez [grand_grande] et [moteur_motrice]**\n- On peut progressivement lui apprendre à **retrouver et remettre sa tétine [seul_seule]**\n- L'**objectif**, c'est qu'[il_elle] **gère SEULE ses micro-réveils** avec sa tétine" }
+            ]
+          },
+          {
+            label: "Ne peut PAS remettre la tétine", emoji: "❌", style: "action", _pillStyle: true, mutexGroup: "tetine-remettre",
+            blocks: [
+              { type: "normal", text: "- Comme **[prénom_enfant]** est **encore [petit_petite]** et n'a **pas encore la capacité motrice pour la remettre [seul_seule]**\n- Dans ce cas, c'est **VOUS** qui viendrez la lui **remettre quand elle tombera** pendant son sommeil\n\n- Au **départ**, [il_elle] **dépendra encore de vous** pour ça ⛔\n  - En lui **remettant sa tétine** à **CHAQUE fois**\n  ⇒ Vous **gardez la cohérence** dans ses **stratégies d'endormissement** ET de **rendormissement**\n\n- Et **progressivement**, vers **6-7 mois**, [il_elle] aura la **capacité motrice** pour la **chercher et la remettre SEULE**\n  ⇒ Et à ce moment-là, [il_elle] pourra **gérer SEULE ses micro-réveils** avec sa tétine" }
+            ]
+          }
+        ]},
+        // Si âge >= 12 mois : texte direct "PEUT REMETTRE LA TÉTINE" sans bouton
+        { type: "normal", _leftTitle: "Option 1 : Garder la tétine", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", showIfPb: "strategie_tetine", showIfAgeMinMonths: 12, text: "- La **1ère option**, sera de **GARDER la tétine**\n\n- **PEUT REMETTRE LA TÉTINE** :\n- Comme **[prénom_enfant]** est **assez [grand_grande] et [moteur_motrice]**\n- On peut progressivement lui apprendre à **retrouver et remettre sa tétine [seul_seule]**\n- L'**objectif**, c'est qu'[il_elle] **gère SEULE ses micro-réveils** avec sa tétine" },
+        { type: "normal", _leftTitle: "Option 2 : SUPPRIMER la tétine", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", showIfPb: "strategie_tetine", text: "- La **2ème possibilité**, c'est de **supprimer la tétine** dès maintenant\n- L'**objectif** est de faire **disparaître les réveils liés à la tétine**\n\n- Quand on évoque cette idée, ça peut faire un peu peur aux parents\n- Parce que la **tétine** a souvent une **grande place** dans l'**apaisement d'un bébé**\n\n- Mais **MON expérience MONTRE** qu'en général :\n  - Les bébés s'**adaptent très vite**\n  - Et en quelques jours, la **tétine** devient souvent un **lointain souvenir** !" },
+        { type: "normal", _leftTitle: "Mon conseil", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", showIfPb: "strategie_tetine", text: "- Si je me base sur **ce qu'on a vu ensemble**\n- Mon **conseil** serait plutôt de **LA supprimer maintenant**, parce que ça permettrait de **réduire les réveils \"tétine\"**\n\n- Et bien sûr, si vous **choisissez cette option**, je serai là pour vous **accompagner**\n  Pour que ça se fasse le **+ en douceur possible**" },
+        { type: "normal", _leftTitle: "C'est VOUS qui décidez", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", showIfPb: "strategie_tetine", text: "- Mais dans **tous les cas**, **[prénom_parent_1]**, c'est **un choix parental**\n- C'est **VOUS qui décidez** **CE QUI vous semble le + juste** pour **[prénom_enfant]** et pour **votre famille**\n- Et ensuite, **on ajustera ensemble** en **fonction de VOTRE décision**" },
+        { type: "question", _leftTitle: "Qu'en pensez-vous ?", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", showIfPb: "strategie_tetine", text: "- Alors dites-moi, **[prénom_parent_1]**\n- ⇒ Qu'est-ce qui vous semble le **+ juste pour vous**, par **rapport à cette tétine** ?\n  - Souhaitez-vous **la GARDER**, encore un temps ?\n- Ou souhaitez-vous **la SUPPRIMER définitivement** ?\n- Après, on peut aussi faire **un hybride** :\n  - La **supprimer durant les temps de sommeil** ET pas la journée\n  - Ou juste **sur la sieste** ET pas la nuit\n  ⇒ Ça sera un peu **+ compliqué** pour **[prénom_enfant]**, mais c'est **une option envisageable**\n\n- Vers quoi **vous voudriez aller** ?", choice: {
+          id: "strategie_tetine_choice",
+          required: true,
+          options: [
+            { icon: "✅", label: "Garder", value: "garder", variant: "positive" },
+            { icon: "❌", label: "Supprimer", value: "supprimer", variant: "negative" },
+            { icon: "🔀", label: "Hybride", value: "hybride", variant: "warning" }
           ]
-        },
-        { type: "normal", text: "- **CES conditions** **pour s'endormir** sont **devenues** ⇒ SES **stratégies d'endormissement**\n- Et le **problème**, c'est que SES stratégies, [il_elle] ne peut **PAS les reproduire [TOUT_SEUL]**<br>⇒ On appelle ça une **stratégie d'endormissement DÉPENDANTE**, car elle **dépend d'une aide extérieure, c'est-à-dire de VOUS**" },
-        {
-          type: "courbe_cards_grid",
-          theme: "blue",
-          items: [
-            {
-              id: "strat_rend", emoji: "😴", label: "Rendormissement difficile",
-              pb: "strategie_rendormissement",
-              blocks: [
-                { type: "normal", text: "- Et quand il se réveille, **l'environnement a parfois changé** :", showIfPb: "strategie_rendormissement" },
-                {
-                  type: "checklist", label: "Changements à l'environnement", showIfPb: "strategie_rendormissement",
-                  items: [
-                    "Il est <strong>seul</strong>",
-                    "Dans <strong>son lit</strong>",
-                    "Vous <strong>n'êtes plus là</strong>",
-                    "Il n'a <strong>plus ses éléments rassurants</strong>",
-                  ]
-                },
-                { type: "normal", text: "- Pour **comprendre ce qui se passe** avec ses **rendormissements difficiles** ⇒ il faut **comprendre la structure du sommeil** :\n  - Son sommeil est **composé de cycles**\n  - et **entre chaque cycle,** on fait tous des **micro-réveils (tout à fait normaux)**\n  - le **cerveau va faire :**\n    - un léger **retour à la surface**\n    - **\"vérifier\"** que **tout va bien**\n    - **puis va se rendormir** de manière inconsciente\n\n- Chez la **plupart des enfants,** ces **micro-réveils** passent **inaperçus**, car ils **arrivent à se rendormir seuls.**\n- Mais pour **[prénom_enfant]**, ça **devient + compliqué** :\n  - A CHACUN de ses **micro-réveils NATURELS** :\n    - il va **se réveiller**\n    - il va **vouloir chercher à se rendormir**\n    - **SAUF** qu'il **NE trouvera PLUS les mêmes conditions**\n    - ⇒ Et donc **il VOUS appellera** pour :\n      - **se rassurer** car l'**environnement aura changé**\n      - et pour **reproduire les mêmes conditions** pour **pouvoir s'endormir**\n- Et **CES micro-réveils**, qui **normalement passent inaperçus**, se transforment en **véritables réveils**\n- Et c'est la **MÊME CHOSE** avec les **endormissements difficiles**<br>⇒ Il **cherche JUSTE** à **s'endormir AVEC** les **conditions qu'il connaît**\n\n- 💭 *Imaginez : vous vous endormez dans votre lit, et vous vous réveillez… dans la cuisine*<br>***⇒ Pas très rassurant, n'est-ce pas ?***", showIfPb: "strategie_rendormissement" },
-              ]
-            },
-            {
-              id: "strat_rel", emoji: "😴", label: "Enjeu relationnel",
-              pb: "strategie_enjeu_relationnel",
-              blocks: [
-                { type: "normal", text: "- Un **autre point important**\n- surtout pour **les + grands**\n- c'est que PARFOIS, la **séparation du coucher** peut **être difficile** pour [lui_elle] :\n  - [Il_Elle] n'a **pas envie** de **couper ce lien** avec vous,\n  - ⇒ donc [il_elle] essaye de le PROLONGER **comme [il_elle] peut** :", showIfPb: "strategie_enjeu_relationnel" },
-                {
-                  type: "checklist", label: "Signes de prolongation du lien", showIfPb: "strategie_enjeu_relationnel",
-                  items: [
-                    "en <strong>gardant</strong> un <strong>contact physique</strong> ☝️",
-                    "en vous <strong>appelant</strong> 💬💬",
-                    "en faisant <strong>durer le coucher</strong> 🕰️",
-                    "ou en se <strong>réveillant la nuit pour aller vous voir</strong> 🌛",
-                    "En se <strong>réveillant tôt</strong> le matin",
-                  ]
-                },
-                { type: "normal", text: "- [Il_Elle] est [dependant_dependante] à **VOTRE PRÉSENCE**", showIfPb: "strategie_enjeu_relationnel" },
-              ]
-            },
-            {
-              id: "strat_tet", emoji: "🍭", label: "Dépendance tétine",
-              pb: "strategie_tetine",
-              blocks: [
-                { type: "normal", text: "- Concernant la **tétine**, elle peut aussi **jouer un RÔLE dans ces réveils.**\n  - Aujourd'hui, **[prénom_enfant]** en a **BESOIN pour s'endormir,**<br>mais comme il est encore **trop jeune** pour la **remettre seul**\n  - **⇒** il va **vous appeler** à **CHAQUE FOIS** qu'elle n'est **plus dans sa bouche**\n\n  - Je vais vous **expliquer simplement pourquoi :**\n    - Le **sommeil** fonctionne **par cycles.**\n    - Et dans ces cycles, il y a **différentes phases de sommeil**\n    - **L'une d'elles** s'appelle le **sommeil paradoxal**, c'est le **sommeil des rêves**\n    - **Pendant** le **sommeil paradoxal**, le corps est **comme paralysé** *(peut-être justement pour éviter qu'on mette nos rêves à exécution !)*\n    - Et c'est souvent **à ce moment-là** que la **bouche s'ouvre**… et que la **tétine peut tomber**\n\n    - Et DONC à la **fin d'un cycle** de sommeil, il y a **CE fameux** « **micro-réveil** »\n    - Le **cerveau remonte** un peu **à la surface**, vérifie que **tout va bien** …….\n    - ⇒ Sauf que là…, **[prénom_enfant]** va se **rendre compte** que sa **tétine n'est plus là.**\n\n- Et comme, la **tétine** fait **partie de sa stratégie** pour s'endormir<br>⇒ Il va **vous appeler** pour que vous :\n  - **veniez la lui remettre**\n  - pour **pouvoir se rendormir**\n- Et ça, c'est **quelque chose de très fréquent**", showIfPb: "strategie_tetine" },
-                { type: "normal", showIfPb: "strategie_tetine", text: "- Du coup, il y a **2 chemins possibles**… et les 2 sont **tout à fait valables** :\n  - La **1ère option** : **GARDER** la tétine", embeddedActions: [
-                  {
-                    label: "Peut remettre la tétine", emoji: "✅", style: "action-green", _pillStyle: true, mutexGroup: "tetine-remettre",
-                    blocks: [
-                      { type: "normal", text: "- Et comme **[prénom_enfant]** [il_elle] est **assez [grand_grande] et [moteur_motrice]**\n- On peut **progressivement lui apprendre** à la **retrouver ET à la remettre [seul_seule]**\n- L'**objectif** est qu'[il_elle] **gère [SEUL] ses micro-réveils** avec sa tétine" }
-                    ]
-                  },
-                  {
-                    label: "Ne peut pas remettre la tétine", emoji: "❌", style: "action", _pillStyle: true, mutexGroup: "tetine-remettre",
-                    blocks: [
-                      { type: "normal", text: "- Comme **[prénom_enfant]** est **encore [petit_petite]** et n'a **pas encore la capacité motrice** pour la **remettre [seul_seule]**\n- **Dans ce cas,** ce sera **VOUS qui viendrez** la lui **remettre** lorsqu'**elle tombera** pendant son sommeil\n- Donc **au départ,** [il_elle] **dépend encore de vous** pour ça ⛔\n- En lui **remettant sa tétine A CHAQUE FOIS ⇒** Vous allez **garder** la **cohérence** dans ses **stratégies d'endormissement** ET de **rendormissement.**\n- Mais on peut progressivement **lui apprendre** comment [il_elle] **peut la remettre** dans la bouche\n- Mais c'est **VRAIMENT vers 6-7 mois**, qu'[il_elle] **aura la capacité motrice** pour la **chercher ET la remettre [SEUL]**\n- ⇒ Et comme ça, [il_elle] **pourra gérer [SEUL]** ses micro-réveils **avec sa tétine**" }
-                    ]
-                  }
-                ]},
-                { type: "normal", showIfPb: "strategie_tetine", text: "- La **2ème possibilité**, c'est de **supprimer la tétine** dès maintenant.\n\n- L'**objectif** est de **faire disparaître les réveils** **liés à la tétine**\n- Quand on **évoque cette idée**, ça peut **parfois faire un peu peur aux parents**, parce que la **tétine** a souvent une **grande place** dans l'**apaisement d'un bébé.**\n- Mais **MON expérience** montre qu'**en général**, les bébés **s'adaptent très vite**,\n- et en **quelques jours**, la tétine devient souvent un **lointain souvenir** !" },
-                { type: "normal", showIfPb: "strategie_tetine", text: "- Si je me base sur **ce qu'on a vu ensemble,**\n- **mon conseil** serait plutôt de la **supprimer maintenant**, car ça permettrait de **réduire les réveils \"tétine\"**.\n- Et bien sûr, **si vous choisissez cette option**, je serai là pour **vous accompagner** pour que ça se fasse le **+ en douceur possible.**\n- Mais dans tous les cas, ça **reste un choix parental.**\n- C'est **VOUS qui décidez**, ce qui **vous semble le + juste** pour votre enfant et pour votre famille,\n- et ensuite **on ajustera ensemble** en **fonction de VOTRE décision**" },
-                { type: "question", showIfPb: "strategie_tetine", text: "Alors dites-moi,\n\n⇒ qu'est-ce qui vous semble **le + juste pour vous**, par **rapport à cette tétine** :\n- souhaitez-vous **la garder** MAIS avec les **conséquences que ça implique**\n- ou souhaitez-vous **la supprimer définitivement** ?\n- Après on peut AUSSI faire « **un hybride** » :\n  - la **supprimer** durant les **temps de sommeil** et **PAS la journée**\n  - ou JUSTE **sur la sieste** et **PAS la nuit**…\n  ⇒ ça sera un peu **+ compliqué** pour **[prénom_enfant]**, c'est **une option envisageable**\n\n⇒ vers quoi **vous voudriez aller** ?", choice: {
-                  id: "strategie_tetine_choice",
-                  required: true,
-                  options: [
-                    { icon: "✅", label: "Garder", value: "garder", variant: "positive" },
-                    { icon: "❌", label: "Supprimer", value: "supprimer", variant: "negative" },
-                    { icon: "🔀", label: "Hybride", value: "hybride", variant: "warning" }
-                  ]
-                }},
-              ]
-            },
-          ]
-        },
-        { type: "normal", _parentLevel: true, text: "- Donc si **on résume tout ça** :<div style=\"padding-left:24px\"><ul style=\"margin:4px 0 0 18px;padding:0;list-style:disc;line-height:1.35\"><li>Ce n'est <strong>PAS</strong> que <strong>[prénom_enfant]</strong> <strong>refuse de dormir</strong></li><li>C'est tout simplement qu'il <strong>ne SAIT PAS encore COMMENT s'endormir autrement</strong>.</li><li>L'<strong>objectif</strong> va être de <strong>l'accompagner</strong> pour :<ul style=\"margin:2px 0 0 18px;padding:0;list-style:disc;line-height:1.35\"><li>qu'il <strong>découvre</strong> SES PROPRES <strong>stratégies d'endormissement autonomes</strong></li><li>⇒ pour qu'il puisse :<ul style=\"margin:2px 0 0 18px;padding:0;list-style:disc;line-height:1.35\"><li><strong>S'endormir seul</strong></li><li><strong>Enchaîner</strong> plusieurs <strong>cycles de sommeil</strong></li></ul></li></ul></li></ul></div>" },
-        { type: "question", _parentLevel: true, text: "• Est-ce que **ça vous parle** comme ça ?" },
+        }},
+        // BLOC COMMUN — FIN
+        { type: "normal", _leftTitle: "Objectif : l'accompagner", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", text: "- La **bonne nouvelle**, c'est que **[prénom_enfant]** a **DEJA les capacités** pour dormir\n\n- L'**objectif**, va **DONC** être de **l'accompagner**\n- Pour qu'[il_elle] **découvre SES PROPRES stratégies** : Des **stratégies autonomes**\n  ⇒ Pour qu'[il_elle] puisse :\n  - **S'endormir [seul_seule]**\n  - **Enchaîner ses cycles**\n  - **Sans avoir besoin de vous appeler à chaque réveil**" },
+        { type: "question", _leftTitle: "Quelque chose de PAS clair ?", _leftTitleStyle: "background:#b8c4d6;color:#2a4060", text: "- Voilà, **[prénom_parent_1]**\n- Je vous ai dit **beaucoup de choses**, je sais\n\n- Est-ce que **TOUT CE QUE** je vous ai dit là, **vous parait logique** ?\n- Est-ce qu'il y a quelque chose :\n  - **Qui n'est PAS clair**,\n  - Ou **SUR LEQUEL** vous voulez qu'on **revienne** ?" },
       ]
     },
 
