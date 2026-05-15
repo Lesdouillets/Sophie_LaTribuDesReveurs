@@ -12110,8 +12110,10 @@ function setAccueilParentRole(parentNum, role) {
 window.setAccueilParentRole = setAccueilParentRole;
 
 function _refreshParentsInDOM() {
-  document.getElementById('content-area')?.querySelectorAll('span[data-var="prnts"]')
-    .forEach(span => { span.textContent = _getParentsDisplay(); });
+  const display = _getParentsDisplay();
+  // Met à jour tous les éléments [prénom_parents] et [prénom_parent_1] dans la page
+  document.getElementById('content-area')?.querySelectorAll('[data-var="prnts"]')
+    .forEach(el => { el.textContent = display; });
 }
 window._refreshParentsInDOM = _refreshParentsInDOM;
 
@@ -16635,7 +16637,12 @@ function substituteVars(text) {
     .replace(/\[accord_enfant\]/g, accordEnfant)
     .replace(/\[prénom_enfant\]/g, prenomStyled)
     .replace(/\[prénom_parents\]/g, () => `<span data-var="prnts">${typeof _getParentsDisplay==='function'?_getParentsDisplay():(parents||'[parents]')}</span>`)
-    .replace(/\[prénom_parent_1\]/g, `<strong class="var-prenom-parent-1${p1?'':' var-empty'}" style="color:#16a34a;font-size:1.15em">${p1 || '&#91;prénom parent&#93;'}</strong>`)
+    .replace(/\[prénom_parent_1\]/g, () => {
+      // Affiche les parents PRÉSENTS (cochés dans le widget Accueil), Maman en 1er, majuscule
+      const display = typeof _getParentsDisplay === 'function' ? _getParentsDisplay() : (p1 || '&#91;prénom parent&#93;');
+      const isEmpty = !display || display === '[parents]';
+      return `<strong class="var-prenom-parent-1${isEmpty?' var-empty':''}" data-var="prnts" style="color:#16a34a;font-size:1.15em">${display || '&#91;prénom parent&#93;'}</strong>`;
+    })
     .replace(/\[prénom_parent_2\]/g, `<span class="var-prenom-parent-2${p2?'':' var-empty'}">${p2 || '&#91;prénom parent&#93;'}</span>`)
     .replace(/\[horaire_souhaite\]/g, (() => {
       // Horaire souhaité du réveil (III. Découverte → Fiche découverte). Format HH:MM.
