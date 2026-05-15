@@ -7745,7 +7745,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=712"></script>
+<script src="script-data.js?v=713"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -19878,17 +19878,18 @@ function _renderAccueilIntakeForm() {
   const hasAgeReel = !!(c.dateNaissance || (c.ageEnfant && c.ageEnfant.trim()));
   // Bloc question âge réel : caché si déjà renseigné (les sieste + corrigé sont supprimés de l'Accueil)
   const ageReelBlock = hasAgeReel ? '' : `
-  <li style="margin-bottom:8px"><strong>Quel âge a</strong> ${prenomEnfantHtml} ? Quelle est sa <strong>date de naissance</strong> ?
-    <div class="accueil-intake-row" style="margin:4px 0 8px">
+  <li style="margin-bottom:0"><strong>Quel âge a</strong> ${prenomEnfantHtml} ? Quelle est sa <strong>date de naissance</strong> ?
+    <div class="accueil-intake-row" style="margin:4px 0 0">
       <input type="date" value="${escVal(c.dateNaissance)}" oninput="onAccueilDateNaissInput(this.value)" class="accueil-input" style="max-width:170px" title="Date de naissance" data-accueil="date-naissance">
       <input type="text" placeholder="Âge réel (ex. 6 mois 12 jours)" value="${escVal(c.ageEnfant)}" oninput="onAccueilAgeReelInput(this.value)" class="accueil-input" style="max-width:240px" title="Âge réel manuel" data-accueil="age-reel">
     </div>
   </li>`;
+  // Masquer la ligne "Merci pour vos réponses !" quand prénom parent (au moins 1) + prénom enfant + âge réel sont tous renseignés
+  const allCoreFilled = hasParent && hasChild && hasAgeReel;
+  const mercibLock = allCoreFilled ? '' : `<li style="margin-top:0;margin-bottom:0"><strong>Merci pour vos réponses&nbsp;!</strong></li>`;
   return `
 <div style="margin:0 0 10px 0">${introHtml}</div>
-<ul style="margin:0;padding-left:20px;list-style:disc;line-height:1.55">${parentBlock}${childBlock}${ageReelBlock}
-  <li style="margin-top:8px"><strong>Merci pour vos réponses&nbsp;!</strong></li>
-</ul>`;
+<ul style="margin:0;padding-left:20px;list-style:disc;line-height:1.55">${parentBlock}${childBlock}${ageReelBlock}${mercibLock}</ul>`;
 }
 window._renderAccueilIntakeForm = _renderAccueilIntakeForm;
 
