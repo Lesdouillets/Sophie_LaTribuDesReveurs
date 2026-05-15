@@ -6336,7 +6336,7 @@
                     <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_courbes" data-exclusive="nutri_top_level" data-auto-only="true"> Courbes pas OK</label>
                     <div class="pb-items">
                       <div class="pb-category pb-level-2">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_declinante" data-subgroup-child="nutri_courbes" data-exclusive="nutri_top_child"> Courbe de poids diminue <span class="pb-cause-tag">⇒ Faim</span></label>
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_declinante" data-subgroup-child="nutri_courbes" data-exclusive="nutri_top_child" data-auto-only="true"> Courbe de poids diminue <span class="pb-cause-tag">⇒ Faim</span></label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_espacement" data-auto-parent="nutri_courbe_declinante"> Espacement</label>
@@ -6384,7 +6384,7 @@
                         </div>
                       </div>
                       <div class="pb-category pb-level-2">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_inferieur" data-subgroup-child="nutri_courbes" data-exclusive="nutri_top_child"> Courbe de poids sur percentile INFÉRIEUR (vs. PC/ou taille) <span class="pb-cause-tag">⇒ Faim</span></label>
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_courbe_inferieur" data-subgroup-child="nutri_courbes" data-exclusive="nutri_top_child" data-auto-only="true"> Courbe de poids sur percentile INFÉRIEUR (vs. PC/ou taille) <span class="pb-cause-tag">⇒ Faim</span></label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_inf_espacement" data-auto-only="true"> Espacement</label>
@@ -6431,7 +6431,7 @@
                         </div>
                       </div>
                       <div class="pb-category pb-level-2">
-                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_trop_apport" data-subgroup-child="nutri_courbes" data-exclusive="nutri_top_child"> Trop d'apport</label>
+                        <label class="pb-category-title"><input type="checkbox" name="pb" value="nutri_trop_apport" data-subgroup-child="nutri_courbes" data-exclusive="nutri_top_child" data-auto-only="true"> Trop d'apport</label>
                         <div class="pb-items">
                           <div class="pb-category pb-level-3">
                             <label class="pb-category-title"><input type="checkbox" class="pb-sub-parent" data-subgroup="nutri_ta_espacement" data-auto-only="true"> Espacement</label>
@@ -6884,7 +6884,8 @@
                   <label class="pb-item"><input type="checkbox" name="pb" value="souhait_tetine"> <span>🍭 Suppression de la tétine</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="souhait_position_dorsale"> <span>😴 Vers une position dorsale</span></label>
                   <label class="pb-item"><input type="checkbox" name="pb" value="souhait_partage_chambre"> <span>👧👦 Partage de chambre</span></label>
-                  <label class="pb-item" style="margin-top:8px"><input type="checkbox" class="pb-sub-parent" data-subgroup="souhait_changement"> <span>Changement chambre/lit <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span></span></label>
+                  <div aria-hidden="true" style="height:18px"></div>
+                  <label class="pb-item"><input type="checkbox" class="pb-sub-parent" data-subgroup="souhait_changement"> <span>Changement chambre/lit <span style="color:#999;font-style:italic;font-weight:400;font-size:11px">(1 option possible)</span></span></label>
                   <label class="pb-item" style="padding-left:24px;font-size:12px"><input type="checkbox" name="pb" value="souhait_changement_lit" data-exclusive="souhait_changement" data-subgroup-child="souhait_changement"> <span>🛏 Changement de lit</span></label>
                   <label class="pb-item" style="padding-left:48px;font-size:11.5px"><input type="checkbox" name="pb" value="souhait_chgmt_lit_cododo_barreau" data-exclusive="souhait_chgmt_lit_sub" data-auto-parent="souhait_changement_lit"> <span>🛏 Cododo ⇒ Lit à barreaux</span></label>
                   <label class="pb-item" style="padding-left:48px;font-size:11.5px"><input type="checkbox" name="pb" value="souhait_chgmt_lit_barreau_ouvert" data-exclusive="souhait_chgmt_lit_sub" data-auto-parent="souhait_changement_lit"> <span>🛌 Lit à barreaux ⇒ Lit ouvert</span></label>
