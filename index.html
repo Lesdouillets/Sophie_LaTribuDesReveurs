@@ -12025,8 +12025,16 @@ function _getParentsDisplay() {
 window._getParentsDisplay = _getParentsDisplay;
 
 function renderAccueilParentsWidget() {
-  const el = document.getElementById('accueil-parents-widget-placeholder');
-  if (!el) return;
+  // Rend le widget dans TOUS les points de montage (placeholder original Accueil
+  // + éventuels clones dans modals). Permet d'avoir le widget en 2 endroits sans
+  // déplacer l'élément original (qui sinon disparaîtrait du DOM Accueil).
+  const targets = [];
+  const original = document.getElementById('accueil-parents-widget-placeholder');
+  if (original) targets.push(original);
+  document.querySelectorAll('.accueil-parents-widget-mount').forEach(el => {
+    if (!targets.includes(el)) targets.push(el);
+  });
+  if (!targets.length) return;
   const c = (state && state.client) || {};
   const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
   const p1Name = cap(c.prenomParent1) || '';
@@ -12052,7 +12060,7 @@ function renderAccueilParentsWidget() {
     </tr>`;
   };
 
-  el.innerHTML = `<div class="apt-wrap">
+  const html = `<div class="apt-wrap">
     <table class="apt-table">
       <thead><tr>
         <th style="font-size:11px;color:#888;font-weight:600;padding:2px 6px">Rôle</th>
@@ -12065,6 +12073,7 @@ function renderAccueilParentsWidget() {
       </tbody>
     </table>
   </div>`;
+  targets.forEach(el => { el.innerHTML = html; });
 }
 window.renderAccueilParentsWidget = renderAccueilParentsWidget;
 
@@ -12090,6 +12099,8 @@ function onAccueilParentPresent(parentNum, checked) {
   if (parentNum === 1) state.client.parent1Present = checked;
   else state.client.parent2Present = checked;
   _refreshParentsInDOM();
+  // Re-rendre tous les widgets (Accueil + modal éventuel) pour que les cases reflètent l'état actuel partout
+  if (typeof renderAccueilParentsWidget === 'function') renderAccueilParentsWidget();
 }
 window.onAccueilParentPresent = onAccueilParentPresent;
 
@@ -16664,7 +16675,7 @@ function substituteVars(text) {
     .replace(/\[heure_fin\]/g, heureFin)
     .replace(/\[toutes_tous_les_N\]/g, (() => {
       // Sophie + parents présents → "toutes les N" (féminin) ou "tous les N" (mixte)
-      // Règles utilisateur : 2M=toutes les 3 / 1M+1P=tous les 3 / 1M=toutes les 2 / 2P=tous les 2
+      // Règles : N = parents présents + 1 (Sophie comptée). "toutes" si tous les parents sont mamans, sinon "tous".
       const p1NameFilled = !!(c.prenomParent1 || '').trim();
       const p2NameFilled = !!(c.prenomParent2 || '').trim();
       const p1Pres = p1NameFilled && (c.parent1Present !== false);
@@ -16675,9 +16686,8 @@ function substituteVars(text) {
       const numPapas = (p1Pres && !p1IsMaman ? 1 : 0) + (p2Pres && !p2IsMaman ? 1 : 0);
       const total = numMamans + numPapas;
       if (total === 0) return 'toutes les 2';
-      if (numPapas === 0) return 'toutes les ' + (total + 1); // Sophie + N mamans (toutes féminin)
-      if (numMamans === 0) return 'tous les ' + Math.max(total, 2); // papas seuls, Sophie non comptée
-      return 'tous les ' + (total + 1); // mixte (Sophie + parents)
+      const word = (numPapas === 0) ? 'toutes' : 'tous';
+      return word + ' les ' + (total + 1);
     })())
     .replace(/\[fatigue_acc\]/g, (() => {
       const p1NameFilled = !!(c.prenomParent1 || '').trim();
@@ -19422,7 +19432,10 @@ function checkAccueilMissingInfo(onContinue) {
 }
 window.checkAccueilMissingInfo = checkAccueilMissingInfo;
 
-// Modal qui demande de cocher au moins 1 parent comme présent avant de quitter Accueil
+// Modal qui demande de cocher au moins 1 parent comme présent avant de quitter Accueil.
+// IMPORTANT : on NE déplace PAS le placeholder original (sinon le widget disparaît
+// du DOM Accueil après fermeture). On crée un mount point dédié (.accueil-parents-widget-mount)
+// dans le modal, et renderAccueilParentsWidget() rend dans TOUS les mount points.
 function promptAccueilParentPresenceRequired(onContinue) {
   if (document.getElementById('accueil-parent-presence-modal')) return;
   const overlay = document.createElement('div');
@@ -19432,37 +19445,16 @@ function promptAccueilParentPresenceRequired(onContinue) {
     <div style="background:#fff;border-radius:14px;padding:22px 26px;max-width:560px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,0.3)">
       <div style="font-size:18px;font-weight:800;color:#dc2626;text-align:center;margin-bottom:8px">⚠️ Présence parent requise</div>
       <div style="font-size:13.5px;color:#475569;text-align:center;margin-bottom:16px;line-height:1.4">Avant de quitter <strong>I. Accueil</strong>, merci de cocher au moins <strong>1 parent présent</strong> durant la consultation&nbsp;:</div>
-      <div id="appm-widget-host" style="margin-bottom:14px"></div>
+      <div class="accueil-parents-widget-mount" style="margin-bottom:14px"></div>
       <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:14px;border-top:1px solid #e2e8f0;padding-top:12px">
         <button type="button" id="appm-cancel" style="padding:8px 14px;border:1.5px solid #cbd5e0;background:#fff;color:#475569;border-radius:8px;font-weight:600;cursor:pointer">Annuler</button>
         <button type="button" id="appm-confirm" style="padding:9px 18px;border:none;background:#16a34a;color:#fff;border-radius:8px;font-weight:700;cursor:pointer">Valider</button>
       </div>
     </div>`;
   document.body.appendChild(overlay);
-  // Insérer le widget parents dans le modal et le synchroniser
-  const host = overlay.querySelector('#appm-widget-host');
-  // Créer un placeholder avec le même id que celui que renderAccueilParentsWidget cherche,
-  // déplacer le placeholder original temporairement vers le modal pour rendre dedans
-  const originalEl = document.getElementById('accueil-parents-widget-placeholder');
-  if (originalEl) {
-    host.appendChild(originalEl);
-    if (typeof renderAccueilParentsWidget === 'function') renderAccueilParentsWidget();
-  } else {
-    // Fallback : créer un placeholder neuf
-    const ph = document.createElement('div');
-    ph.id = 'accueil-parents-widget-placeholder';
-    host.appendChild(ph);
-    if (typeof renderAccueilParentsWidget === 'function') renderAccueilParentsWidget();
-  }
-  const cleanup = () => {
-    // Replacer le placeholder original dans le DOM Accueil pour la prochaine ouverture
-    if (originalEl && originalEl.parentNode === host) {
-      // Le réinsérer dans le bloc Accueil (cherche le conteneur d'origine)
-      const flexParent = document.querySelector('div[style*="display:flex"][style*="gap:16px"][style*="align-items:flex-start"]');
-      if (flexParent) flexParent.appendChild(originalEl);
-    }
-    overlay.remove();
-  };
+  // Rendre dans tous les mount points (Accueil original + nouveau dans le modal)
+  if (typeof renderAccueilParentsWidget === 'function') renderAccueilParentsWidget();
+  const cleanup = () => overlay.remove();
   overlay.querySelector('#appm-cancel').onclick = cleanup;
   overlay.querySelector('#appm-confirm').onclick = () => {
     const c = state.client || {};
