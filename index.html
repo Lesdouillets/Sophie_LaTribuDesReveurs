@@ -14975,7 +14975,9 @@ function renderSolutionsCheckboxes(opts) {
       const c = (state && state.client) || {};
       const alim = Array.isArray(c.alimentation) ? c.alimentation : [];
       const allaitMode = Array.isArray(c.allaitementMode) ? c.allaitementMode : [];
-      if (!vals.some(v => alim.includes(v) || allaitMode.includes(v))) return true;
+      // Si aucune alim renseignée par le client, on N'APPLIQUE PAS le filtre (default : tout afficher)
+      // Sinon on cacherait toutes les options à un client qui n'a pas encore rempli sa fiche
+      if ((alim.length > 0 || allaitMode.length > 0) && !vals.some(v => alim.includes(v) || allaitMode.includes(v))) return true;
     }
     if (Array.isArray(ch.hideIfSieste) && ch.hideIfSieste.length) {
       const sieste = (state && state.client && state.client.sieste) || '';
@@ -15062,7 +15064,9 @@ function renderSolutionsCheckboxes(opts) {
             const c = (state && state.client) || {};
             const alim = Array.isArray(c.alimentation) ? c.alimentation : [];
             const allaitMode = Array.isArray(c.allaitementMode) ? c.allaitementMode : [];
-            if (!vals.some(v => alim.includes(v) || allaitMode.includes(v))) return true;
+            // Si aucune alim renseignée → ne PAS filtrer (sinon tous les sous-items disparaissent
+            // pour un client sans fiche remplie, ex. en test on ne voit que "Lait" sans ses 10+ sous-items)
+            if ((alim.length > 0 || allaitMode.length > 0) && !vals.some(v => alim.includes(v) || allaitMode.includes(v))) return true;
           }
           return false;
         };
@@ -15232,13 +15236,20 @@ function renderSolutionsCheckboxes(opts) {
     } else if (cat.alwaysOpen) {
       groupCollapsed = false;
     } else if (cat.id === 'confort_physique' || cat.id === 'nutrition' || cat.id === 'relationnel') {
-      // Chercher la cat-checkbox dans TOUS les emplacements possibles (fiche client, modal, diag clone)
-      // Sur VIII Plan d'action, seule la section Plan est mountée → aucun de ces selectors ne match → catCb = null
-      // Dans ce cas, défaut OUVERT pour permettre à l'utilisateur de voir/cocher les solutions de la catégorie.
+      // Pour ces 3 cats : suivre l'état de la cat-checkbox de V. Diagnostic (collapsed si NON cochée)
+      // Cherche dans diag (V. Diagnostic actif) puis fiche client (autres pages) puis modal
+      // Si AUCUNE n'est dans le DOM (ex. VIII Plan d'action) → on dérive de state.selectedPbs
+      // (si au moins une PB de cette cat est cochée, on suppose la cat "active" et on l'ouvre)
       const catCb = document.querySelector(
         `.pb-cat-checkbox[data-cat="${cat.id}"], .diag-pb-cat[data-cat="${cat.id}"], .modal-pb-cat[data-cat="${cat.id}"]`
       );
-      groupCollapsed = catCb ? !catCb.checked : false;
+      if (catCb) {
+        groupCollapsed = !catCb.checked;
+      } else {
+        // Dériver de l'état des solutions : si au moins une solution de cette cat est cochée → ouvrir
+        const anyChildChecked = (cat.children || []).some(ch => state.selectedSolutions && state.selectedSolutions.has(ch.id));
+        groupCollapsed = !anyChildChecked;
+      }
     } else if (cat.id === 'strategie' || cat.id === 'env') {
       const anyChildChecked = (cat.children || []).some(ch => state.selectedSolutions && state.selectedSolutions.has(ch.id));
       groupCollapsed = !anyChildChecked;
@@ -17473,40 +17484,42 @@ function renderNutritionChipsProto() {
   // ─── Listeners niveau 2 (toggle reveal — bloqué si enfants cochés + MUTEX exclusif entre les 3)
   // Les 3 chips niveau 2 sont exclusives (data-exclusive="nutri_top_child" dans la source)
   const L2_SIBLINGS = ['nutri_courbe_declinante', 'nutri_courbe_inferieur', 'nutri_trop_apport'];
+  // Helper : sync DOM + side effects après mutation de state.selectedPbs
+  const _ncpSyncSideEffects = () => {
+    document.querySelectorAll('input[name="pb"], .diag-pb, .modal-pb').forEach(cb => {
+      if (!cb.value || !state || !state.selectedPbs) return;
+      const checked = state.selectedPbs.has(cb.value);
+      cb.checked = checked;
+      cb.closest('.pb-item')?.classList.toggle('checked', checked);
+    });
+    try {
+      if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
+      if (typeof updateDiagLeviersCount === 'function') updateDiagLeviersCount();
+      if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
+      if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+    } catch (e) {}
+  };
   host.querySelectorAll('[data-ncp-l2-reveal]').forEach(el => {
     el.addEventListener('click', (ev) => {
       ev.preventDefault(); ev.stopPropagation();
       if (el.classList.contains('locked')) return;
       const val = el.dataset.ncpL2Reveal;
-      // Cas spécial : PB auto-only cochée + aucun enfant coché → permet de décocher la PB
-      // (sinon plus moyen de la décocher après uncheck manuel de tous les enfants)
+      const isOpen = _ncpL2Open.has(val);
       const pbChecked = state && state.selectedPbs && state.selectedPbs.has(val);
-      const childrenChecked = !![...document.querySelectorAll(`input[data-auto-parent="${val}"]`)]
-        .find(c => c.value && state && state.selectedPbs && state.selectedPbs.has(c.value));
-      if (pbChecked && !childrenChecked) {
-        state.selectedPbs.delete(val);
+      if (isOpen) {
+        // Chip déjà ouvert → fermer
         _ncpL2Open.delete(val);
-        // Sync DOM
-        document.querySelectorAll('input[name="pb"], .diag-pb, .modal-pb').forEach(cb => {
-          if (!cb.value) return;
-          const checked = state.selectedPbs.has(cb.value);
-          cb.checked = checked;
-          cb.closest('.pb-item')?.classList.toggle('checked', checked);
-        });
-        try {
-          if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
-          if (typeof updateDiagLeviersCount === 'function') updateDiagLeviersCount();
-          if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
-          if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
-        } catch (e) {}
-        renderNutritionChipsProto();
-        return;
-      }
-      if (_ncpL2Open.has(val)) {
-        // Fermer ce chip (si pas verrouillé)
-        _ncpL2Open.delete(val);
+        // Si la PB auto-only est aussi cochée (mais pas verrouillée car pas d'enfants),
+        // on la décoche aussi (= "fermeture complète")
+        if (pbChecked && state && state.selectedPbs) {
+          state.selectedPbs.delete(val);
+          document.querySelectorAll(`input[data-auto-parent="${val}"]`).forEach(leaf => {
+            if (leaf.value) state.selectedPbs.delete(leaf.value);
+          });
+          _ncpSyncSideEffects();
+        }
       } else {
-        // Ouvrir CELUI-CI + fermer les autres (mutex) + décocher leurs enfants (exclusivité PB)
+        // Chip fermé → ouvrir CELUI-CI + MUTEX (fermer les autres + décocher leurs enfants)
         L2_SIBLINGS.forEach(sib => {
           if (sib === val) return;
           _ncpL2Open.delete(sib);
@@ -17520,20 +17533,7 @@ function renderNutritionChipsProto() {
           }
         });
         _ncpL2Open.add(val);
-        // Sync DOM checkboxes après le décochage mutex
-        document.querySelectorAll('input[name="pb"], .diag-pb, .modal-pb').forEach(cb => {
-          if (!cb.value || !state || !state.selectedPbs) return;
-          const checked = state.selectedPbs.has(cb.value);
-          cb.checked = checked;
-          cb.closest('.pb-item')?.classList.toggle('checked', checked);
-        });
-        // Sync solutions / badges (cf. onNutriChipClick)
-        try {
-          if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
-          if (typeof updateDiagLeviersCount === 'function') updateDiagLeviersCount();
-          if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
-          if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
-        } catch (e) {}
+        _ncpSyncSideEffects();
       }
       renderNutritionChipsProto();
     });
