@@ -12780,6 +12780,12 @@ function renderBlocks(blocks, sectionId='', depth=0, parentPath='') {
       });
       if (!ok) return '';
     }
+    // Afficher seulement si N pbs ou plus parmi la liste sont cochées (utilisé pour les spacers
+    // qui ne doivent apparaître que quand plusieurs options sont actives)
+    if (b.showIfPbCountMin && Array.isArray(b.showIfPbCountMin.pbs) && b.showIfPbCountMin.count) {
+      const count = b.showIfPbCountMin.pbs.filter(p => state.selectedPbs && state.selectedPbs.has(p)).length;
+      if (count < b.showIfPbCountMin.count) return '';
+    }
     // Cacher le bloc si l'un des choix tickbox listés est défini (quelle que soit la valeur)
     if (Array.isArray(b.hideIfChoiceSet) && b.hideIfChoiceSet.length) {
       const choices = state.tickboxChoices || {};
