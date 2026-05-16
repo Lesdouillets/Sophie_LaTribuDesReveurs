@@ -952,12 +952,11 @@
     .ncp-l3-label {
       font-weight: 600;
       color: #334155;
-      font-size: 12.5px;
+      font-size: 14.5px;
+      line-height: 1.35;
       white-space: nowrap;
       grid-column: 1;
     }
-    .ncp-l3-label::after { content: " :"; }
-    .ncp-l3-label.orange { color: #a05a1c; font-weight: 700; }
     .ncp-l3-chips {
       grid-column: 2;
       display: flex;
@@ -967,14 +966,34 @@
     }
     /* Lignes vides dans la grille — span sur les 2 colonnes */
     .ncp-grid-blank { grid-column: 1 / -1; height: 10px; }
-    /* ── Chip sobre : toutes les chips même taille, pas de gras sauf si cochée ── */
+    /* Bandeau orange pour la ligne Conséquences — span sur les 2 colonnes + subgrid pour aligner */
+    .ncp-conseq-row {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: subgrid;
+      align-items: center;
+      background: #fdebd0;
+      border-radius: 8px;
+      padding: 8px 14px;
+      gap: 8px 14px;
+    }
+    .ncp-conseq-row .ncp-l3-label {
+      font-style: italic;
+      color: #999;
+    }
+    /* Chips Conséquences : texte gris, même quand cochée */
+    .ncp-conseq-row .ncp-chip,
+    .ncp-conseq-row .ncp-chip.checked { color: #999; }
+    /* ── Chip : même police/taille que les .pb-item (leviers identifiés) ── */
     .ncp-chip {
       display: inline-flex;
       align-items: center;
       padding: 5px 12px;
       border-radius: 8px;
-      font-size: 12.5px;
-      font-weight: 500;
+      font-family: inherit;
+      font-size: 14.5px;
+      line-height: 1.35;
+      font-weight: 400;
       cursor: pointer;
       border: 1.5px solid #0f172a;
       background: #ffffff;
@@ -985,7 +1004,7 @@
     }
     .ncp-chip:hover { background: #f1f5f9; }
     .ncp-chip:active { transform: translateY(1px); }
-    /* Checked : fond orange pastel (cat-light nutrition) + bordure orange medium + texte noir gras */
+    /* Checked : fond orange pastel + bordure orange + même couleur que .pb-item.checked (#0f172a gras) */
     .ncp-chip.checked {
       background: #e8c19a;
       color: #0f172a;
@@ -998,6 +1017,8 @@
       border-style: dashed;
       font-style: italic;
     }
+    /* Curseur not-allowed sur les chips parent verrouillées (enfants cochés) */
+    .ncp-chip.locked { cursor: not-allowed; }
     .ncp-blank { height: 10px; }
     /* ── Étape 1 : esthétique "Solutions identifiées" pour Problématiques (fiche client + modal) ──
        V. Diagnostic est déjà wrappé dans .block-leviers-identifies, donc exclu via le sélecteur :not(). */
@@ -17308,13 +17329,26 @@ function _ncpChip(value, label, opts) {
 // dans .ncp-l3-grid (pas de wrapper) pour que les colonnes restent alignées.
 function _ncpL3Group(label, items, opts) {
   opts = opts || {};
-  const labelCls = 'ncp-l3-label' + (opts.orange ? ' orange' : '');
-  let html = `<span class="${labelCls}">${label}</span>`;
+  let html = `<span class="ncp-l3-label">${label}</span>`;
   html += `<div class="ncp-l3-chips">`;
   items.forEach(it => {
     const v = it[0], l = it[1];
     html += _ncpChip(v, l, { parentDirect: opts.parentDirect === v });
   });
+  html += `</div>`;
+  return html;
+}
+// Ligne Conséquences : même structure mais wrappée dans un bandeau orange
+// (utilise display:grid + grid-template-columns:subgrid pour aligner avec la grille parente)
+function _ncpConseqRow(label, items) {
+  let html = `<div class="ncp-conseq-row">`;
+  html += `<span class="ncp-l3-label">${label}</span>`;
+  html += `<div class="ncp-l3-chips">`;
+  items.forEach(it => {
+    const v = it[0], l = it[1];
+    html += _ncpChip(v, l);
+  });
+  html += `</div>`;
   html += `</div>`;
   return html;
 }
@@ -17338,18 +17372,28 @@ function renderNutritionChipsProto() {
   let html = `<div class="nutri-chips-proto">`;
   html += `<div class="nutri-chips-proto-title"><span class="ncp-tag">PROTO</span> Chips Nutrition — Courbes pas OK uniquement (test)</div>`;
   // ─── Niveau 1 : "Courbes pas OK" — cliquable, orange dès qu'on l'ouvre
+  // Verrouillé (pas déclic possible) si des enfants sont cochés
   const l1Checked = _ncpForceOpen || courbesParentChecked;
-  const lvl1Cls = 'ncp-chip' + (l1Checked ? ' checked' : '');
+  const l1Locked = courbesParentChecked;
+  const lvl1Cls = 'ncp-chip' + (l1Checked ? ' checked' : '') + (l1Locked ? ' locked' : '');
+  const l1Title = l1Locked ? "Verrouillé : un enfant est coché. Décochez-le d'abord." : "Cliquer pour ouvrir/fermer";
   html += `<div class="ncp-row">`;
-  html += `<span class="${lvl1Cls}" data-ncp-l1="1" title="Cliquer pour ouvrir/fermer">Courbes pas OK</span>`;
+  html += `<span class="${lvl1Cls}" data-ncp-l1="1" title="${l1Title}">Courbes pas OK</span>`;
   html += `</div>`;
   if (showLevel2) {
     html += `<div class="ncp-separator"></div>`;
     // ─── Niveau 2 : reveal-only — chip orange si reveal-open OU PB auto-cochée
+    // Verrouillé (pas déclic possible) si un enfant de CE branch est coché via auto-parent
     const l2Chip = (val, label) => {
-      const open = _ncpL2Open.has(val) || _ncpIsChecked(val);
-      const cls = 'ncp-chip' + (open ? ' checked' : '');
-      return `<span class="${cls}" data-ncp-l2-reveal="${val}">${label}</span>`;
+      const autoChecked = _ncpIsChecked(val);
+      const open = _ncpL2Open.has(val) || autoChecked;
+      // Compte les enfants cochés qui ont CE val comme auto-parent
+      const childrenChecked = !![...document.querySelectorAll(`input[data-auto-parent="${val}"]`)]
+        .find(c => c.value && state && state.selectedPbs && state.selectedPbs.has(c.value));
+      const locked = childrenChecked;
+      const cls = 'ncp-chip' + (open ? ' checked' : '') + (locked ? ' locked' : '');
+      const title = locked ? "Verrouillé : un enfant est coché. Décochez-le d'abord." : "Cliquer pour ouvrir/fermer";
+      return `<span class="${cls}" data-ncp-l2-reveal="${val}" title="${title}">${label}</span>`;
     };
     html += `<div class="ncp-row indent-1">`;
     html += l2Chip('nutri_courbe_declinante', 'Courbe diminue');
@@ -17390,32 +17434,34 @@ function renderNutritionChipsProto() {
       ['nutri_autre_jus_vegetal', 'Jus végétal'],
       ['nutri_autre_lait_animal', 'Lait animal']
     ]);
-    // 2 lignes vides (au lieu d'une) avant Conséquences, label orange
+    // 1 ligne vide avant Conséquences (bandeau orange)
     html += `<div class="ncp-grid-blank"></div>`;
-    html += `<div class="ncp-grid-blank"></div>`;
-    html += _ncpL3Group('Conséquences', [
+    html += _ncpConseqRow('Conséquences', [
       ['nutri_conseq_inconfort', 'Inconfort'],
       ['nutri_conseq_mange_nuit', 'Mange la nuit']
-    ], { orange: true });
+    ]);
     html += `</div>`;
   }
   html += `</div>`;
   host.innerHTML = html;
-  // ─── Listener niveau 1 (toggle force-open)
+  // ─── Listener niveau 1 (toggle force-open — bloqué si enfants cochés)
   const lvl1El = host.querySelector('[data-ncp-l1]');
   if (lvl1El) {
     lvl1El.addEventListener('click', (ev) => {
       ev.preventDefault(); ev.stopPropagation();
+      // Si verrouillé (un enfant coché), ne rien faire
+      if (lvl1El.classList.contains('locked')) return;
       _ncpForceOpen = !_ncpForceOpen;
       // Si on referme niveau 1 → reset aussi les niveau 2 ouverts
       if (!_ncpForceOpen) _ncpL2Open.clear();
       renderNutritionChipsProto();
     });
   }
-  // ─── Listeners niveau 2 (toggle reveal — n'essaie PAS de cocher la PB auto-only)
+  // ─── Listeners niveau 2 (toggle reveal — bloqué si enfants cochés)
   host.querySelectorAll('[data-ncp-l2-reveal]').forEach(el => {
     el.addEventListener('click', (ev) => {
       ev.preventDefault(); ev.stopPropagation();
+      if (el.classList.contains('locked')) return;
       const val = el.dataset.ncpL2Reveal;
       if (_ncpL2Open.has(val)) _ncpL2Open.delete(val);
       else _ncpL2Open.add(val);
