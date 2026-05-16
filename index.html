@@ -2666,24 +2666,24 @@
       pointer-events: none; z-index: 9999;
     }
 
-    /* COUNTDOWN */
+    /* COUNTDOWN — texte clair vif + contour de la même couleur (lisible sur fond navy) */
     #countdown-badge { transition: all 0.3s; border-radius: 12px; }
     #countdown-badge.warning {
-      background: rgba(255,140,0,0.12); padding: 2px 10px;
-      box-shadow: 0 0 0 1.5px #ff8c00, 0 0 14px rgba(255,140,0,0.55);
+      background: rgba(255,184,77,0.15); padding: 2px 10px;
+      box-shadow: 0 0 0 1.5px #ffb84d, 0 0 14px rgba(255,184,77,0.55);
       animation: glow-orange 2s ease-in-out infinite;
     }
-    #countdown-badge.warning .info { color: #b35c00 !important; font-weight: 900; font-size: 14px !important; }
-    #countdown-badge.warning .sub { color: #b35c00 !important; font-weight: 700; }
+    #countdown-badge.warning .info { color: #ffb84d !important; font-weight: 900; font-size: 14px !important; }
+    #countdown-badge.warning .sub { color: #ffb84d !important; font-weight: 700; }
     #countdown-badge.urgent {
-      background: rgba(200,0,0,0.10); padding: 2px 10px;
-      box-shadow: 0 0 0 1.5px #cc1111, 0 0 14px rgba(200,0,0,0.6);
+      background: rgba(255,107,107,0.15); padding: 2px 10px;
+      box-shadow: 0 0 0 1.5px #ff6b6b, 0 0 14px rgba(255,107,107,0.6);
       animation: glow-red 0.8s ease-in-out infinite;
     }
-    #countdown-badge.urgent .info { color: #8b0000 !important; font-weight: 900; font-size: 14px !important; }
-    #countdown-badge.urgent .sub { color: #8b0000 !important; font-weight: 700; }
-    @keyframes glow-orange { 0%,100% { box-shadow: 0 0 0 1.5px #ff8c00, 0 0 10px rgba(255,140,0,0.4); } 50% { box-shadow: 0 0 0 2px #ff8c00, 0 0 22px rgba(255,140,0,0.85); } }
-    @keyframes glow-red { 0%,100% { box-shadow: 0 0 0 1.5px #cc1111, 0 0 10px rgba(200,0,0,0.5); } 50% { box-shadow: 0 0 0 2.5px #cc1111, 0 0 24px rgba(200,0,0,0.95); } }
+    #countdown-badge.urgent .info { color: #ff6b6b !important; font-weight: 900; font-size: 14px !important; }
+    #countdown-badge.urgent .sub { color: #ff6b6b !important; font-weight: 700; }
+    @keyframes glow-orange { 0%,100% { box-shadow: 0 0 0 1.5px #ffb84d, 0 0 10px rgba(255,184,77,0.4); } 50% { box-shadow: 0 0 0 2px #ffb84d, 0 0 22px rgba(255,184,77,0.85); } }
+    @keyframes glow-red { 0%,100% { box-shadow: 0 0 0 1.5px #ff6b6b, 0 0 10px rgba(255,107,107,0.5); } 50% { box-shadow: 0 0 0 2.5px #ff6b6b, 0 0 24px rgba(255,107,107,0.95); } }
 
     /* PAGE-WIDE iOS GLOW BORDER */
     #page-glow {
@@ -7781,7 +7781,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=730"></script>
+<script src="script-data.js?v=731"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE

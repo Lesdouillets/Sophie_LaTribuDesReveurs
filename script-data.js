@@ -2361,7 +2361,7 @@ const SCRIPT_DATA = {
         { type: "normal", _noBorder: true, showIfPbCountMin: { pbs: ["env_obscurite","env_temperature","env_lit_ouvert","env_rituel","env_cadre","env_stimulations","env_ecrans"], count: 2 }, text: "<div style=\"height:20px\"></div>" },
         // BLOC COMMUN — FIN
         { type: "normal", _leftTitle: "Les meilleures conditions possibles", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", text: "- L'**objectif**, dans tout ça, c'est de donner les **meilleures conditions de sommeil possibles** à **[prénom_enfant]**\n- Parce qu'aujourd'hui, on **ne connaît pas encore SES sensibilités** à l'environnement :\n  ⇒ Donc on **met en place** le **maximum**\n\n- Et **une fois** que les **nuits et les siestes** se seront **apaisées**, on pourra **ajuster** :\n  - On **garde ce qui marche**\n  - On pourra **tester si on peut assouplir**" },
-        { type: "question", _leftTitle: "Est-ce que ça vous parle ?", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", text: "<div style=\"display:flex;align-items:center;min-height:60px\">• Est-ce que <strong>ça vous parle tout ça</strong> ?</div>" },
+        { type: "question", _leftTitle: "Est-ce que ça vous parle ?", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", text: "<div style=\"display:flex;align-items:center;min-height:60px\"><span>• Est-ce que <strong>ça vous parle tout ça</strong> ?</span></div>" },
       ]
     },
 
