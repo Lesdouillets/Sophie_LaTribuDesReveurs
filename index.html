@@ -7781,7 +7781,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=729"></script>
+<script src="script-data.js?v=730"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -10495,6 +10495,10 @@ function hideObjectifsReminder() {
 
 function dismissObjectifsReminder() {
   state.reminderDismissed = true;
+  state.pageGlowSilenced = true;
+  // Stop le clignotement global de l'écran (page-glow) immédiatement
+  const pg = document.getElementById('page-glow');
+  if (pg) pg.classList.remove('warning', 'urgent');
   hideObjectifsReminder();
   if (state.reminderInterval) { clearInterval(state.reminderInterval); state.reminderInterval = null; }
 }
@@ -10590,6 +10594,10 @@ function hideSolutionsReminder() {
 
 function dismissSolutionsReminder() {
   state.solutionsReminderDismissed = true;
+  state.pageGlowSilenced = true;
+  // Stop le clignotement global de l'écran (page-glow) immédiatement
+  const pg = document.getElementById('page-glow');
+  if (pg) pg.classList.remove('warning', 'urgent');
   hideSolutionsReminder();
   if (state.solutionsReminderInterval) { clearInterval(state.solutionsReminderInterval); state.solutionsReminderInterval = null; }
 }
@@ -11044,14 +11052,14 @@ function startTimer() {
       if (diff <= 0) {
         document.getElementById('header-countdown').textContent = '⏰ Temps écoulé !';
         badge.className = badge.className.replace('warning','') + ' urgent';
-        if (pageGlow) { pageGlow.classList.remove('warning'); pageGlow.classList.add('urgent'); }
+        if (pageGlow && !state.pageGlowSilenced) { pageGlow.classList.remove('warning'); pageGlow.classList.add('urgent'); }
       } else {
         const mins = Math.floor(diff / 60000);
         const secs = Math.floor((diff % 60000) / 1000);
         document.getElementById('header-countdown').textContent = `${mins}min ${secs.toString().padStart(2,'0')}s restantes`;
         badge.classList.toggle('warning', mins >= 10 && mins < 20);
         badge.classList.toggle('urgent', mins < 10);
-        if (pageGlow) {
+        if (pageGlow && !state.pageGlowSilenced) {
           pageGlow.classList.toggle('warning', mins >= 10 && mins < 20);
           pageGlow.classList.toggle('urgent', mins < 10);
         }
