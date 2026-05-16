@@ -928,11 +928,11 @@
       font-size: 10px;
       letter-spacing: 0.6px;
     }
-    /* Séparateur horizontal entre niveaux (IDÉE A) */
+    /* Séparateur horizontal entre niveaux — orange épais (demande user) */
     .ncp-separator {
       height: 0;
-      border-top: 1px dashed #cbd5e1;
-      margin: 10px 0 10px;
+      border-top: 3px solid #d4845a;
+      margin: 14px 0 14px;
     }
     .ncp-row {
       display: flex;
@@ -941,15 +941,28 @@
       gap: 6px 8px;
       margin-bottom: 6px;
     }
-    .ncp-row.indent-1 { padding-left: 0; }
-    .ncp-row.indent-2 { padding-left: 0; }
-    .ncp-row.indent-3 { padding-left: 0; }
-    .ncp-group-label {
+    /* Grille niveau 3 : 2 colonnes (label fixe / chips), labels et chips alignés verticalement */
+    .ncp-l3-grid {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      gap: 8px 14px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .ncp-l3-label {
       font-weight: 700;
       color: #334155;
       font-size: 12.5px;
-      margin-right: 4px;
       white-space: nowrap;
+      grid-column: 1;
+    }
+    .ncp-l3-label::after { content: " :"; }
+    .ncp-l3-chips {
+      grid-column: 2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 8px;
+      align-items: center;
     }
     /* ── Chip sobre : bordure noire fine + texte sombre (style RGO SEUL) ── */
     .ncp-chip {
@@ -963,19 +976,20 @@
       border: 1.5px solid #0f172a;
       background: #ffffff;
       color: #334155;
-      transition: background 0.15s, color 0.15s, transform 0.1s;
+      transition: background 0.12s, color 0.12s, transform 0.08s;
       user-select: none;
       white-space: nowrap;
     }
     .ncp-chip:hover { background: #f1f5f9; }
     .ncp-chip:active { transform: translateY(1px); }
-    /* Checked : on garde l'orange catégorie nutrition pour le retour visuel */
+    /* Checked : fond orange foncé pour bonne lisibilité du texte blanc + contour orange (pas noir) */
     .ncp-chip.checked {
-      background: #d4845a;
+      background: #a05a1c;
       color: #ffffff;
-      border-color: #0f172a;
+      border-color: #a05a1c;
     }
-    .ncp-chip.checked:hover { background: #c2410c; }
+    /* Pas de hover plus foncé sur chip cochée (demande user) */
+    .ncp-chip.checked:hover { background: #a05a1c; }
     .ncp-chip.parent-direct {
       border-style: dashed;
       font-style: italic;
@@ -17310,104 +17324,130 @@ function _ncpChip(value, label, opts) {
   // Pas d'onclick attribute — on attache via addEventListener (cf. fin de renderNutritionChipsProto)
   return `<span class="${cls.join(' ')}" data-ncp-value="${value}">${label}</span>`;
 }
-function _ncpGroup(label, items, opts) {
+// Groupe niveau 3 : rendu en grille 2 colonnes (label aligné / chips alignées)
+function _ncpL3Group(label, items, opts) {
   opts = opts || {};
-  let html = `<div class="ncp-row indent-2">`;
-  html += `<span class="ncp-group-label">${label} :</span>`;
+  let html = `<div class="ncp-l3-grid-row" style="display:contents">`;
+  html += `<span class="ncp-l3-label">${label}</span>`;
+  html += `<div class="ncp-l3-chips">`;
   items.forEach(it => {
     const v = it[0], l = it[1];
     html += _ncpChip(v, l, { parentDirect: opts.parentDirect === v, level: 3 });
   });
   html += `</div>`;
+  html += `</div>`;
   return html;
 }
-// État local UI : "Courbes pas OK" forcé ouvert (révèle niveau 2 sans rien cocher)
+// État local UI :
+//   _ncpForceOpen  : niveau 1 "Courbes pas OK" ouvert (révèle niveau 2)
+//   _ncpL2Open     : Set des niveau 2 ouverts (révèle niveau 3 du branch)
 let _ncpForceOpen = false;
+let _ncpL2Open = new Set();
 function renderNutritionChipsProto() {
   const host = document.getElementById('nutri-chips-proto');
   if (!host) return;
-  // Niveau 1 : un seul chip "Courbes pas OK" (proto = uniquement cette branche)
-  // Niveau 2 : 3 enfants (Courbe diminue / Percentile INF / Trop d'apport)
-  // Niveau 3 : sous-groupes de Courbe diminue avec leurs chips
+  // État réel des PBs (lu depuis state.selectedPbs — peuplé via clic sur diag-pb)
   const courbeDecChecked = _ncpIsChecked('nutri_courbe_declinante');
   const courbeInfChecked = _ncpIsChecked('nutri_courbe_inferieur');
   const tropApportChecked = _ncpIsChecked('nutri_trop_apport');
-  // Le parent "Courbes pas OK" est coché auto si un enfant l'est
   const courbesParentChecked = courbeDecChecked || courbeInfChecked || tropApportChecked;
-  // Niveau 2 visible si : un enfant coché OU user a forcé ouvert via clic niveau 1
+  // Niveau 2 visible si : un PB coché OU user a forcé ouvert niveau 1
   const showLevel2 = courbesParentChecked || _ncpForceOpen;
+  // Niveau 3 (Courbe diminue) visible si : nutri_courbe_declinante coché auto OU user a ouvert L2
+  const showL3CourbeDec = courbeDecChecked || _ncpL2Open.has('nutri_courbe_declinante');
   let html = `<div class="nutri-chips-proto">`;
   html += `<div class="nutri-chips-proto-title"><span class="ncp-tag">PROTO</span> Chips Nutrition — Courbes pas OK uniquement (test)</div>`;
-  // Niveau 1 : Courbes pas OK (cliquable pour révéler/masquer niveau 2)
-  const lvl1Cls = 'ncp-chip level-1' + (courbesParentChecked ? ' checked' : '');
+  // ─── Niveau 1 : "Courbes pas OK" — cliquable, orange dès qu'on l'ouvre
+  const l1Checked = _ncpForceOpen || courbesParentChecked;
+  const lvl1Cls = 'ncp-chip level-1' + (l1Checked ? ' checked' : '');
   html += `<div class="ncp-row">`;
   html += `<span class="${lvl1Cls}" data-ncp-l1="1" title="Cliquer pour ouvrir/fermer">Courbes pas OK</span>`;
   html += `</div>`;
   if (showLevel2) {
-    // Séparateur entre niveau 1 et niveau 2
     html += `<div class="ncp-separator"></div>`;
+    // ─── Niveau 2 : reveal-only (les PBs sont data-auto-only, donc cliquer dessus en direct
+    // est annulé par le global change handler — on les utilise comme bouton de révélation)
+    // Chip orange si reveal-open OU si PB auto-cochée (via auto-parent depuis niveau 3)
+    const l2Chip = (val, label) => {
+      const open = _ncpL2Open.has(val) || _ncpIsChecked(val);
+      const cls = 'ncp-chip level-2' + (open ? ' checked' : '');
+      return `<span class="${cls}" data-ncp-l2-reveal="${val}">${label}</span>`;
+    };
     html += `<div class="ncp-row indent-1">`;
-    html += _ncpChip('nutri_courbe_declinante', 'Courbe diminue', { level: 2 });
-    html += _ncpChip('nutri_courbe_inferieur', 'Percentile INF', { level: 2 });
-    html += _ncpChip('nutri_trop_apport', "Trop d'apport", { level: 2 });
+    html += l2Chip('nutri_courbe_declinante', 'Courbe diminue');
+    html += l2Chip('nutri_courbe_inferieur', 'Percentile INF');
+    html += l2Chip('nutri_trop_apport', "Trop d'apport");
     html += `</div>`;
   }
-  // Niveau 3 : Sous-groupes de Courbe diminue (visibles uniquement si Courbe diminue coché)
-  if (courbeDecChecked) {
+  // ─── Niveau 3 : sous-groupes de "Courbe diminue"
+  if (showL3CourbeDec) {
     html += `<div class="ncp-separator"></div>`;
-    html += _ncpGroup('Espacement', [
+    html += `<div class="ncp-l3-grid">`;
+    html += _ncpL3Group('Espacement', [
       ['nutri_esp_long', 'Trop long'],
       ['nutri_esp_court', 'Trop court']
     ]);
-    html += _ncpGroup('Volume/durée des bib', [
+    html += _ncpL3Group('Volume/durée des bib', [
       ['nutri_vol_petit', 'Petit bib'],
       ['nutri_vol_gros', 'Gros bib'],
       ['nutri_vol_longtemps', 'Boit longtemps']
     ]);
-    // Tétée : peut être coché direct (parent) OU via un sous-enfant
-    html += _ncpGroup('Tétée baisse de lactation', [
+    html += _ncpL3Group('Tétée baisse de lactation', [
       ['nutri_tetee', '↗ Direct'],
       ['nutri_tetee_longue', 'Longue tétée'],
       ['nutri_tetee_greve', 'Grève'],
       ['nutri_tetee_mode_garde', 'Mode garde']
     ], { parentDirect: 'nutri_tetee' });
-    html += _ncpGroup('Inversion', [
+    html += _ncpL3Group('Inversion', [
       ['nutri_inversion_jour_nuit', 'Jour/Nuit'],
       ['nutri_inversion_lait_solide', 'Ordre lait/solide']
     ]);
-    html += _ncpGroup('Tétine = cache faim', [
+    html += _ncpL3Group('Tétine = cache faim', [
       ['nutri_tetine_coupe_faim', 'OUI']
     ]);
-    html += _ncpGroup('Autre', [
+    html += _ncpL3Group('Autre', [
       ['nutri_autre_feculents', 'Féculents'],
       ['nutri_autre_lait_solide_important', 'Lait/solides'],
       ['nutri_autre_jus_vegetal', 'Jus végétal'],
       ['nutri_autre_lait_animal', 'Lait animal']
     ]);
+    html += `</div>`;
     html += `<div class="ncp-blank"></div>`;
-    // Conséquence : un seul groupe, deux chips sur la même ligne
-    html += _ncpGroup('Conséquence', [
+    // Conséquence : un seul groupe, 2 chips sur la même ligne (même format que les autres)
+    html += `<div class="ncp-l3-grid">`;
+    html += _ncpL3Group('Conséquence', [
       ['nutri_conseq_inconfort', 'Inconfort'],
       ['nutri_conseq_mange_nuit', 'Mange la nuit']
     ]);
+    html += `</div>`;
   }
   html += `</div>`;
   host.innerHTML = html;
-  // Listener niveau 1 (toggle force-open)
+  // ─── Listener niveau 1 (toggle force-open)
   const lvl1El = host.querySelector('[data-ncp-l1]');
   if (lvl1El) {
     lvl1El.addEventListener('click', (ev) => {
-      ev.preventDefault();
-      ev.stopPropagation();
+      ev.preventDefault(); ev.stopPropagation();
       _ncpForceOpen = !_ncpForceOpen;
+      // Si on referme niveau 1 → reset aussi les niveau 2 ouverts
+      if (!_ncpForceOpen) _ncpL2Open.clear();
       renderNutritionChipsProto();
     });
   }
-  // Listeners niveau 2/3 (toggle PB)
+  // ─── Listeners niveau 2 (toggle reveal — n'essaie PAS de cocher la PB auto-only)
+  host.querySelectorAll('[data-ncp-l2-reveal]').forEach(el => {
+    el.addEventListener('click', (ev) => {
+      ev.preventDefault(); ev.stopPropagation();
+      const val = el.dataset.ncpL2Reveal;
+      if (_ncpL2Open.has(val)) _ncpL2Open.delete(val);
+      else _ncpL2Open.add(val);
+      renderNutritionChipsProto();
+    });
+  });
+  // ─── Listeners niveau 3 (vrai toggle via cb.click() sur .diag-pb → applique exclusivité globale)
   host.querySelectorAll('.ncp-chip[data-ncp-value]').forEach(el => {
     el.addEventListener('click', (ev) => {
-      ev.preventDefault();
-      ev.stopPropagation();
+      ev.preventDefault(); ev.stopPropagation();
       onNutriChipClick(el.dataset.ncpValue);
     });
   });
@@ -17418,24 +17458,30 @@ window.renderNutritionChipsProto = renderNutritionChipsProto;
 // (fiche client) → les règles d'exclusivité + auto-parent + sync se déclenchent.
 // Puis on re-render le proto pour refléter le nouvel état.
 function onNutriChipClick(value) {
-  if (!state) return;
-  if (!state.selectedPbs) state.selectedPbs = new Set();
-  // 1. Toggle direct dans le state (source de vérité)
-  const willCheck = !state.selectedPbs.has(value);
-  if (willCheck) state.selectedPbs.add(value);
-  else state.selectedPbs.delete(value);
-  // 2. Sync toutes les checkboxes correspondantes (fiche client, diag clone, modal)
-  document.querySelectorAll(
-    `input[name="pb"][value="${value}"], .diag-pb[value="${value}"], .modal-pb[value="${value}"]`
-  ).forEach(cb => {
-    cb.checked = willCheck;
-    cb.closest('.pb-item')?.classList.toggle('checked', willCheck);
-  });
-  // 3. Re-render le proto IMMÉDIATEMENT (pas de setTimeout, pas de rebuild)
-  renderNutritionChipsProto();
-  // 4. Auto-save (silencieux)
-  if (typeof autoSaveActiveConsultation === 'function') {
-    try { autoSaveActiveConsultation(); } catch (e) {}
+  // Trouve la VRAIE checkbox dans le DOM (priorité diag-pb sur V. Diagnostic, sinon fiche/modal)
+  const cb = document.querySelector(`.diag-pb[value="${value}"]`)
+         || document.querySelector(`input[name="pb"][value="${value}"]`)
+         || document.querySelector(`.modal-pb[value="${value}"]`);
+  if (cb) {
+    // cb.click() :
+    // 1. toggle cb.checked
+    // 2. fire 'change' event
+    // 3. Le global handler (document addEventListener 'change') applique :
+    //    - exclusivité (data-exclusive)
+    //    - auto-parent (data-auto-parent → coche le parent + cascade)
+    //    - sub-group sync (data-subgroup-child)
+    // 4. Le listener du clone appelle onDiagnosticPbChange (setTimeout 0)
+    //    → rebuild state.selectedPbs depuis .diag-pb:checked
+    //    → buildSections + renderCurrentSection
+    //    → renderNutritionChipsProto re-render avec le nouvel état
+    cb.click();
+    return;
+  }
+  // Fallback : aucune checkbox dans le DOM (cas pathologique)
+  if (state && state.selectedPbs) {
+    if (state.selectedPbs.has(value)) state.selectedPbs.delete(value);
+    else state.selectedPbs.add(value);
+    renderNutritionChipsProto();
   }
 }
 window.onNutriChipClick = onNutriChipClick;
