@@ -1510,6 +1510,21 @@
     .block-with-left-title[style*="#c9b6d6"] {
       border: 1.5px solid #9d83b0;
     }
+    /* Fond très très pâle pour les blocs d'option (séparation visuelle d'avec les blocs centraux).
+       data-option-cat est ajouté automatiquement aux blocs ayant un showIfPb commençant par env_/strategie_.
+       Couleurs choisies très subtiles, différentes des bg des bloc titres. */
+    .block-with-left-title[data-option-cat="env"] > .edit-block-wrap > .block.block-normal,
+    .block-with-left-title[data-option-cat="env"] > .edit-block-wrap > .block.block-question,
+    .block-with-left-title[data-option-cat="env"] > .block.block-normal,
+    .block-with-left-title[data-option-cat="env"] > .block.block-question {
+      background: #fbf8fd !important;
+    }
+    .block-with-left-title[data-option-cat="strategie"] > .edit-block-wrap > .block.block-normal,
+    .block-with-left-title[data-option-cat="strategie"] > .edit-block-wrap > .block.block-question,
+    .block-with-left-title[data-option-cat="strategie"] > .block.block-normal,
+    .block-with-left-title[data-option-cat="strategie"] > .block.block-question {
+      background: #f8fafd !important;
+    }
     /* Mini-checkboxes inline "purple" (Stratégies de sommeil) — case violette,
        texte qui passe en gras quand cochée. Auto-checked des items liés. */
     .strat-mini-cb { display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
@@ -7766,7 +7781,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=728"></script>
+<script src="script-data.js?v=729"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -12876,12 +12891,18 @@ function renderBlock(b, i, sectionId='', depth=0, path='') {
         if (catMainMatch) styleParts.push(`--cat-main:${catMainMatch[1].trim()}`);
       }
       if (styleParts.length) wrapStyle = ` style="${styleParts.join(';')}"`;
+      // Auto-détecter la catégorie d'option via le préfixe de showIfPb pour appliquer
+      // un fond très pâle qui sépare visuellement les blocs option des blocs centraux
+      let optCatAttr = '';
+      const _firstPb = b.showIfPb ? (Array.isArray(b.showIfPb) ? b.showIfPb[0] : b.showIfPb) : '';
+      const _catMatch = _firstPb && _firstPb.match(/^(env|strategie)_/);
+      if (_catMatch) optCatAttr = ` data-option-cat="${_catMatch[1]}"`;
       // Mode collapsible : section pliable via <details>/<summary>
       if (b._collapsible) {
         const anchorAttr = b._anchorId ? ` id="${b._anchorId}"` : '';
-        return `<details${anchorAttr} class="block-with-left-title block-collapsible"${wrapStyle}><summary class="block-left-title block-collapsible-summary"${ltStyle}>${substituteVars(b._leftTitle)}</summary>${wrapOnly}</details>${addBtn}`;
+        return `<details${anchorAttr} class="block-with-left-title block-collapsible"${wrapStyle}${optCatAttr}><summary class="block-left-title block-collapsible-summary"${ltStyle}>${substituteVars(b._leftTitle)}</summary>${wrapOnly}</details>${addBtn}`;
       }
-      return `<div class="block-with-left-title"${wrapStyle}><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div>${wrapOnly}</div>${addBtn}`;
+      return `<div class="block-with-left-title"${wrapStyle}${optCatAttr}><div class="block-left-title"${ltStyle}>${substituteVars(b._leftTitle)}</div>${wrapOnly}</div>${addBtn}`;
     }
     return wrapOnly + addBtn;
   }
