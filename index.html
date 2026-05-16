@@ -967,7 +967,8 @@
     /* Lignes vides dans la grille — span sur les 2 colonnes */
     .ncp-grid-blank { grid-column: 1 / -1; height: 10px; }
     /* Bandeau orange pour la ligne Conséquences — span sur les 2 colonnes + subgrid pour aligner
-       Pas de padding horizontal → label "Conséquences" aligné verticalement avec "Autres" */
+       Margin/padding -14/+14 : le bandeau s'étend 14px à gauche/droite tout en gardant
+       "Conséquences" aligné verticalement avec "Autres" (subgrid utilise les tracks du parent) */
     .ncp-conseq-row {
       grid-column: 1 / -1;
       display: grid;
@@ -975,7 +976,8 @@
       align-items: center;
       background: #fdebd0;
       border-radius: 8px;
-      padding: 8px 0;
+      padding: 8px 14px;
+      margin: 0 -14px;
       gap: 8px 14px;
     }
     .ncp-conseq-row .ncp-l3-label {
@@ -1000,7 +1002,7 @@
       line-height: 1.3;
       font-weight: 400;
       cursor: pointer;
-      border: 1.5px solid #0f172a;
+      border: 1px solid #94a3b8;
       background: #ffffff;
       color: #334155;
       transition: background 0.12s, color 0.12s, transform 0.08s;
@@ -15229,8 +15231,13 @@ function renderSolutionsCheckboxes(opts) {
     } else if (cat.alwaysOpen) {
       groupCollapsed = false;
     } else if (cat.id === 'confort_physique' || cat.id === 'nutrition' || cat.id === 'relationnel') {
-      const catCb = document.querySelector(`.pb-cat-checkbox[data-cat="${cat.id}"]`);
-      groupCollapsed = !catCb || !catCb.checked;
+      // Chercher la cat-checkbox dans TOUS les emplacements possibles (fiche client, modal, diag clone)
+      // Sur VIII Plan d'action, seule la section Plan est mountée → aucun de ces selectors ne match → catCb = null
+      // Dans ce cas, défaut OUVERT pour permettre à l'utilisateur de voir/cocher les solutions de la catégorie.
+      const catCb = document.querySelector(
+        `.pb-cat-checkbox[data-cat="${cat.id}"], .diag-pb-cat[data-cat="${cat.id}"], .modal-pb-cat[data-cat="${cat.id}"]`
+      );
+      groupCollapsed = catCb ? !catCb.checked : false;
     } else if (cat.id === 'strategie' || cat.id === 'env') {
       const anyChildChecked = (cat.children || []).some(ch => state.selectedSolutions && state.selectedSolutions.has(ch.id));
       groupCollapsed = !anyChildChecked;
