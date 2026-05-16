@@ -950,7 +950,8 @@
       align-items: center;
     }
     .ncp-l3-label {
-      font-weight: 600;
+      font-weight: 400;
+      text-decoration: underline;
       color: #334155;
       font-size: 13px;
       line-height: 1.3;
@@ -991,15 +992,15 @@
       border-color: #999;
       color: #999;
     }
-    /* ── Chip : police plus petite (match RGO seul perçu) ── */
+    /* ── Chip : police EXACTEMENT identique à .pb-item (RGO seul) : 14.5px / weight 400 / #334155 ── */
     .ncp-chip {
       display: inline-flex;
       align-items: center;
       padding: 4px 11px;
       border-radius: 8px;
       font-family: inherit;
-      font-size: 13px;
-      line-height: 1.3;
+      font-size: 14.5px;
+      line-height: 1.35;
       font-weight: 400;
       cursor: pointer;
       border: 1px solid #94a3b8;
@@ -17477,6 +17478,30 @@ function renderNutritionChipsProto() {
       ev.preventDefault(); ev.stopPropagation();
       if (el.classList.contains('locked')) return;
       const val = el.dataset.ncpL2Reveal;
+      // Cas spécial : PB auto-only cochée + aucun enfant coché → permet de décocher la PB
+      // (sinon plus moyen de la décocher après uncheck manuel de tous les enfants)
+      const pbChecked = state && state.selectedPbs && state.selectedPbs.has(val);
+      const childrenChecked = !![...document.querySelectorAll(`input[data-auto-parent="${val}"]`)]
+        .find(c => c.value && state && state.selectedPbs && state.selectedPbs.has(c.value));
+      if (pbChecked && !childrenChecked) {
+        state.selectedPbs.delete(val);
+        _ncpL2Open.delete(val);
+        // Sync DOM
+        document.querySelectorAll('input[name="pb"], .diag-pb, .modal-pb').forEach(cb => {
+          if (!cb.value) return;
+          const checked = state.selectedPbs.has(cb.value);
+          cb.checked = checked;
+          cb.closest('.pb-item')?.classList.toggle('checked', checked);
+        });
+        try {
+          if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
+          if (typeof updateDiagLeviersCount === 'function') updateDiagLeviersCount();
+          if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
+          if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+        } catch (e) {}
+        renderNutritionChipsProto();
+        return;
+      }
       if (_ncpL2Open.has(val)) {
         // Fermer ce chip (si pas verrouillé)
         _ncpL2Open.delete(val);
@@ -17572,13 +17597,13 @@ function onNutriChipClick(value) {
   } else {
     // Décocher
     state.selectedPbs.delete(value);
-    // Si le parent auto-only n'a plus aucun enfant coché, le décocher aussi
-    if (refCb && refCb.dataset.autoParent) {
-      const pv = refCb.dataset.autoParent;
-      const siblings = document.querySelectorAll(`input[data-auto-parent="${pv}"]`);
-      const anyStillChecked = [...siblings].some(s => s.value && s.value !== value && state.selectedPbs.has(s.value));
-      if (!anyStillChecked) state.selectedPbs.delete(pv);
-    }
+    // PAS de cascade vers le HAUT : le parent auto-only reste coché même si plus d'enfants
+    // (l'utilisateur doit le décocher explicitement — ex. "Direct" reste après uncheck de "Longue tétée")
+    // Cascade vers le BAS : décocher tous les enfants auto-parent (sinon ils sont orphelins
+    // — ex. décocher "Direct" décoche aussi Longue tétée/Grève/Mode garde)
+    document.querySelectorAll(`input[data-auto-parent="${value}"]`).forEach(child => {
+      if (child.value) state.selectedPbs.delete(child.value);
+    });
   }
   // Sync tout le DOM (fiche-client, diag clone, modal) depuis state.selectedPbs
   document.querySelectorAll('input[name="pb"], .diag-pb, .modal-pb').forEach(cb => {
