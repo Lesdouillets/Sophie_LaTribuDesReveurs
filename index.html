@@ -7766,7 +7766,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=727"></script>
+<script src="script-data.js?v=728"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -14183,7 +14183,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const extraBox = `<div class="pb-extra-box"><textarea class="pb-extra-textarea" data-base="${baseAttr}" placeholder="Tapez ici…" oninput="onPbExtraInput(this)" onkeydown="onPbExtraKeydown(event, this)">${taContent}</textarea></div>`;
     if (base && base.trim()) {
       const baseHtml = base.replace(/\n/g, '<br>');
-      return `<div class="block block-normal"><ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Maintenant, je vais <strong>reprendre votre problématique</strong><br>et APRÈS vous allez <strong>m'expliquer CE QUI se passe exactement</strong> pour le sommeil de ${prenom}.</li></ul><div class="pb-recap-intro" style="margin-top:14px">• <u>Donc, vous m'avez écrit :</u></div><div class="pb-recap-text"><em>${baseHtml}</em></div><div style="background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin-top:14px;font-weight:400;line-height:1.7">❓ Est-ce que c'est <strong>toujours d'actualité</strong> ?${extraBox}</div></div>`;
+      return `<div class="block block-normal"><ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Maintenant, je vais <strong>reprendre votre problématique</strong><br>et APRÈS vous allez <strong>m'expliquer CE QUI se passe exactement</strong> pour le sommeil de ${prenom}</li></ul><div class="pb-recap-intro" style="margin-top:14px">• <u>Donc, vous m'avez écrit :</u></div><div class="pb-recap-text"><em>${baseHtml}</em></div><div style="background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin-top:14px;font-weight:400;line-height:1.7">❓ Est-ce que c'est <strong>toujours d'actualité</strong> ?${extraBox}</div></div>`;
     } else {
       return `<div class="block block-question"><div class="q-text">❓ Maintenant, j'aimerais <strong>savoir quelle est votre problématique aujourd'hui</strong> pour ${prenom}</div>${extraBox}</div>`;
     }
@@ -14210,7 +14210,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const extraBox = `<div class="pb-extra-box"><textarea class="pb-extra-textarea" data-base="${baseAttr}" placeholder="Tapez ici…" oninput="onObjExtraInput(this)" onkeydown="onPbExtraKeydown(event, this)">${taContent}</textarea></div>`;
     if (base && base.trim()) {
       const baseHtml = base.replace(/\n/g, '<br>');
-      return `<div class="block block-normal"><ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Alors maintenant, j'aimerais <strong>savoir</strong> quels sont vos <strong>objectifs aujourd'hui</strong></li><li style="margin-bottom:3px;line-height:1.65">Je vais <strong>relire CE QUE vous m'avez marqué</strong>… pour être <strong>sûre qu'on est bien alignés</strong>.</li></ul><div class="pb-recap-intro" style="margin-top:14px">• <u>Vous m'avez écrit :</u></div><div class="pb-recap-text"><em>${baseHtml}</em></div><div style="background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin-top:14px;font-weight:400;line-height:1.7"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start"><span>❓</span><span>•</span><span>Est-ce que ça <strong>correspond toujours</strong> à ce que vous <strong>souhaitez aujourd'hui</strong> ?</span><span></span><span>•</span><span>Est-ce que vous avez <strong>quelque chose</strong> à <strong>ajouter</strong> ou <strong>ajuster</strong> ?</span></div>${extraBox}</div></div>`;
+      return `<div class="block block-normal"><ul style="margin:4px 0 4px 20px;padding:0;"><li style="margin-bottom:3px;line-height:1.65">Alors maintenant, j'aimerais <strong>savoir</strong> quels sont vos <strong>objectifs aujourd'hui</strong></li><li style="margin-bottom:3px;line-height:1.65">Je vais <strong>relire CE QUE vous m'avez marqué</strong>… pour être <strong>sûre qu'on est bien alignés</strong></li></ul><div class="pb-recap-intro" style="margin-top:14px">• <u>Vous m'avez écrit :</u></div><div class="pb-recap-text"><em>${baseHtml}</em></div><div style="background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin-top:14px;font-weight:400;line-height:1.7"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start"><span>❓</span><span>•</span><span>Est-ce que ça <strong>correspond toujours</strong> à ce que vous <strong>souhaitez aujourd'hui</strong> ?</span><span></span><span>•</span><span>Est-ce que vous avez <strong>quelque chose</strong> à <strong>ajouter</strong> ou <strong>ajuster</strong> ?</span></div>${extraBox}</div></div>`;
     } else {
       const prenom = substituteVars('[prénom_enfant]');
       return `<div class="block block-question"><div class="q-text"><div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px 8px;align-items:start"><span>❓</span><span>•</span><span>J'aimerais maintenant <strong>savoir quels sont vos objectifs</strong> aujourd'hui pour ${prenom}</span><span></span><span>•</span><span>Qu'est-ce que vous <strong>souhaitez idéalement mettre en place</strong> ?</span></div></div>${extraBox}</div>`;
@@ -14277,7 +14277,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     }
     // Objectifs renseignés
     const objHtml = obj.replace(/\n/g, '<br>');
-    return `<div class="block block-normal" contenteditable="true">Alors maintenant, j'aimerais <strong>qu'on parle de vos objectifs</strong><br>Je vais <strong>relire ce que vous m'avez noté</strong>… pour être <strong>sûre qu'on est bien alignés</strong>.</div>
+    return `<div class="block block-normal" contenteditable="true">Alors maintenant, j'aimerais <strong>qu'on parle de vos objectifs</strong><br>Je vais <strong>relire ce que vous m'avez noté</strong>… pour être <strong>sûre qu'on est bien alignés</strong></div>
     <div class="block block-pb-recap">
       <div class="pb-recap-intro"><u>Vous m'avez écrit :</u></div>
       <div class="pb-recap-text"><em>${objHtml}</em></div>
@@ -20333,11 +20333,11 @@ function openEditBlockModal(sectionId, path) {
   // Blocs dynamiques : toujours utiliser le texte généré (pas l'ancien override)
   const dynamicEditTexts = {
     'pb_intro': state.client.problematique?.trim()
-      ? `Maintenant, je vais **reprendre votre problématique**\net APRÈS vous allez **m'expliquer CE QUI se passe exactement** pour le sommeil de [prénom_enfant].`
+      ? `Maintenant, je vais **reprendre votre problématique**\net APRÈS vous allez **m'expliquer CE QUI se passe exactement** pour le sommeil de [prénom_enfant]`
       : `Maintenant, j'aimerais **savoir quelle est votre problématique aujourd'hui** pour [prénom_enfant]`,
     'pb_question': `Est-ce que c'est **toujours d'actualité** ?`,
     'obj_intro': state.client.objectifs?.trim()
-      ? `Alors maintenant, j'aimerais **savoir** quels sont vos **objectifs aujourd'hui**\nJe vais **relire CE QUE vous m'avez marqué**… pour être **sûre qu'on est bien alignés**.`
+      ? `Alors maintenant, j'aimerais **savoir** quels sont vos **objectifs aujourd'hui**\nJe vais **relire CE QUE vous m'avez marqué**… pour être **sûre qu'on est bien alignés**`
       : `J'aimerais maintenant **savoir quels sont vos objectifs** aujourd'hui pour [prénom_enfant]\nQu'est-ce que vous **souhaitez idéalement mettre en place** ?`,
     'obj_question': `Est-ce que ça **correspond toujours** à ce que vous **souhaitez aujourd'hui** ?\nEst-ce que vous avez **quelque chose** à **ajouter** ou **ajuster** ?`,
   };
