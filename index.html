@@ -985,12 +985,18 @@
       font-style: italic;
       color: #999;
     }
-    /* Chips Conséquences : italique, contour gris, texte gris (cochée ET pas cochée) */
-    .ncp-conseq-row .ncp-chip,
-    .ncp-conseq-row .ncp-chip.checked {
+    /* Chips Conséquences : italique tjs. Non-cochée = contour gris + texte gris.
+       Cochée = même style que les autres chips cochées (fond pastel + texte orange foncé) */
+    .ncp-conseq-row .ncp-chip {
       font-style: italic;
       border-color: #999;
       color: #999;
+    }
+    /* Cochée : reset l'override gris pour hériter de .ncp-chip.checked */
+    .ncp-conseq-row .ncp-chip.checked {
+      font-style: italic;
+      color: #a05a1c;
+      border-color: #d4845a;
     }
     /* ── Chip : police compacte pour fit sur 1 ligne même avec bloc-titre 'NUTRITION' (130px) à gauche ── */
     .ncp-chip {
