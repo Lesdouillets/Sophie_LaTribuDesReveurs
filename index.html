@@ -903,8 +903,8 @@
     }
     /* ═══ PROTO Chips Nutrition (V. Diagnostic > Levier identifié) ═══ */
     .nutri-chips-proto {
-      background: #fff7ed;
-      border: 1.5px solid #d4845a;
+      background: transparent;
+      border: 1.5px dashed #d4845a;
       border-radius: 12px;
       padding: 14px 18px;
       margin: 12px 20px 14px;
@@ -933,24 +933,23 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 6px 8px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
-    .ncp-row.indent-1 { padding-left: 24px; }
-    .ncp-row.indent-2 { padding-left: 48px; }
-    .ncp-row.indent-3 { padding-left: 72px; }
+    .ncp-row.indent-1 { padding-left: 0; }
+    .ncp-row.indent-2 { padding-left: 16px; }
+    .ncp-row.indent-3 { padding-left: 32px; }
     .ncp-group-label {
-      font-weight: 800;
-      text-decoration: underline;
+      font-weight: 700;
       color: #7c2d12;
-      font-size: 13px;
+      font-size: 12.5px;
       margin-right: 4px;
       white-space: nowrap;
     }
     .ncp-chip {
       display: inline-flex;
       align-items: center;
-      padding: 5px 14px;
-      border-radius: 999px;
+      padding: 5px 12px;
+      border-radius: 8px;
       font-size: 12.5px;
       font-weight: 600;
       cursor: pointer;
@@ -973,14 +972,36 @@
       border-style: dashed;
       font-style: italic;
     }
+    /* Niveau 1 — parent racine : gros, plein, distinctif */
     .ncp-chip.level-1 {
-      font-size: 13.5px;
-      padding: 6px 16px;
-      font-weight: 700;
+      font-size: 15px;
+      padding: 8px 18px;
+      font-weight: 800;
+      border-width: 2px;
+      border-radius: 10px;
+      letter-spacing: 0.2px;
     }
+    /* Niveau 2 — enfants : taille standard */
     .ncp-chip.level-2 {
       font-size: 13px;
-      padding: 5px 15px;
+      padding: 6px 14px;
+      font-weight: 700;
+      border-radius: 8px;
+    }
+    /* Niveau 3 — sous-enfants : plus petit, plus discret */
+    .ncp-chip.level-3 {
+      font-size: 11.5px;
+      padding: 3px 10px;
+      font-weight: 500;
+      border-width: 1px;
+      border-radius: 6px;
+      color: #9a3412;
+      border-color: #f5b78e;
+    }
+    .ncp-chip.level-3.checked {
+      background: #f5b78e;
+      color: #7c2d12;
+      border-color: #d4845a;
     }
     .ncp-blank { height: 10px; }
     /* ── Étape 1 : esthétique "Solutions identifiées" pour Problématiques (fiche client + modal) ──
@@ -17285,7 +17306,8 @@ function _ncpChip(value, label, opts) {
   if (checked) cls.push('checked');
   if (opts.parentDirect) cls.push('parent-direct');
   if (opts.level) cls.push('level-' + opts.level);
-  return `<span class="${cls.join(' ')}" onclick="onNutriChipClick('${value}')">${label}</span>`;
+  // Pas d'onclick attribute — on attache via addEventListener (cf. fin de renderNutritionChipsProto)
+  return `<span class="${cls.join(' ')}" data-ncp-value="${value}">${label}</span>`;
 }
 function _ncpGroup(label, items, opts) {
   opts = opts || {};
@@ -17293,7 +17315,7 @@ function _ncpGroup(label, items, opts) {
   html += `<span class="ncp-group-label">${label} :</span>`;
   items.forEach(it => {
     const v = it[0], l = it[1];
-    html += _ncpChip(v, l, { parentDirect: opts.parentDirect === v });
+    html += _ncpChip(v, l, { parentDirect: opts.parentDirect === v, level: 3 });
   });
   html += `</div>`;
   return html;
@@ -17373,6 +17395,14 @@ function renderNutritionChipsProto() {
   }
   html += `</div>`;
   host.innerHTML = html;
+  // Attache les listeners via addEventListener (plus robuste qu'onclick attribute)
+  host.querySelectorAll('.ncp-chip[data-ncp-value]').forEach(el => {
+    el.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      onNutriChipClick(el.dataset.ncpValue);
+    });
+  });
 }
 window.renderNutritionChipsProto = renderNutritionChipsProto;
 
@@ -17384,11 +17414,20 @@ function onNutriChipClick(value) {
   // car c'est celle qui déclenche toute la logique exclusivité/auto-parent.
   const sourceCb = document.querySelector(`input[name="pb"][value="${value}"]`);
   if (sourceCb) {
+    // .click() toggle l'état + déclenche 'change' (qui appelle onFicheClientPbChange via onchange="...")
     sourceCb.click();
   } else {
     // Fallback : checkbox dans le diag-pb-container (clone)
     const diagCb = document.querySelector(`.diag-pb[value="${value}"]`);
-    if (diagCb) diagCb.click();
+    if (diagCb) {
+      diagCb.click();
+    } else {
+      // Dernier recours : toggle direct dans state.selectedPbs + re-render
+      if (state && state.selectedPbs) {
+        if (state.selectedPbs.has(value)) state.selectedPbs.delete(value);
+        else state.selectedPbs.add(value);
+      }
+    }
   }
   // Re-render le proto (et tout le diag-container est rebuild via le change event)
   setTimeout(() => {
