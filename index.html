@@ -17469,14 +17469,47 @@ function renderNutritionChipsProto() {
       renderNutritionChipsProto();
     });
   }
-  // ─── Listeners niveau 2 (toggle reveal — bloqué si enfants cochés)
+  // ─── Listeners niveau 2 (toggle reveal — bloqué si enfants cochés + MUTEX exclusif entre les 3)
+  // Les 3 chips niveau 2 sont exclusives (data-exclusive="nutri_top_child" dans la source)
+  const L2_SIBLINGS = ['nutri_courbe_declinante', 'nutri_courbe_inferieur', 'nutri_trop_apport'];
   host.querySelectorAll('[data-ncp-l2-reveal]').forEach(el => {
     el.addEventListener('click', (ev) => {
       ev.preventDefault(); ev.stopPropagation();
       if (el.classList.contains('locked')) return;
       const val = el.dataset.ncpL2Reveal;
-      if (_ncpL2Open.has(val)) _ncpL2Open.delete(val);
-      else _ncpL2Open.add(val);
+      if (_ncpL2Open.has(val)) {
+        // Fermer ce chip (si pas verrouillé)
+        _ncpL2Open.delete(val);
+      } else {
+        // Ouvrir CELUI-CI + fermer les autres (mutex) + décocher leurs enfants (exclusivité PB)
+        L2_SIBLINGS.forEach(sib => {
+          if (sib === val) return;
+          _ncpL2Open.delete(sib);
+          if (state && state.selectedPbs) {
+            // Décocher tous les leaves dont l'auto-parent est le sibling
+            document.querySelectorAll(`input[data-auto-parent="${sib}"]`).forEach(leaf => {
+              if (leaf.value) state.selectedPbs.delete(leaf.value);
+            });
+            // Décocher le parent auto-only lui-même
+            state.selectedPbs.delete(sib);
+          }
+        });
+        _ncpL2Open.add(val);
+        // Sync DOM checkboxes après le décochage mutex
+        document.querySelectorAll('input[name="pb"], .diag-pb, .modal-pb').forEach(cb => {
+          if (!cb.value || !state || !state.selectedPbs) return;
+          const checked = state.selectedPbs.has(cb.value);
+          cb.checked = checked;
+          cb.closest('.pb-item')?.classList.toggle('checked', checked);
+        });
+        // Sync solutions / badges (cf. onNutriChipClick)
+        try {
+          if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
+          if (typeof updateDiagLeviersCount === 'function') updateDiagLeviersCount();
+          if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
+          if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+        } catch (e) {}
+      }
       renderNutritionChipsProto();
     });
   });
