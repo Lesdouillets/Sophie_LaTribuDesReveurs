@@ -17414,7 +17414,8 @@ function renderNutritionChipsProto() {
     html += `<div class="ncp-separator"></div>`;
     // ─── Niveau 2 : reveal-only — chip orange si reveal-open OU PB auto-cochée
     // Verrouillé (pas déclic possible) si un enfant de CE branch est coché via auto-parent
-    const l2Chip = (val, label) => {
+    // Le 3e param `tag` ajoute un .pb-cause-tag inline dans le chip (ex. "⇒ Faim")
+    const l2Chip = (val, label, tag) => {
       const autoChecked = _ncpIsChecked(val);
       const open = _ncpL2Open.has(val) || autoChecked;
       // Compte les enfants cochés qui ont CE val comme auto-parent
@@ -17423,11 +17424,12 @@ function renderNutritionChipsProto() {
       const locked = childrenChecked;
       const cls = 'ncp-chip' + (open ? ' checked' : '') + (locked ? ' locked' : '');
       const title = locked ? "Verrouillé : un enfant est coché. Décochez-le d'abord." : "Cliquer pour ouvrir/fermer";
-      return `<span class="${cls}" data-ncp-l2-reveal="${val}" title="${title}">${label}</span>`;
+      const tagHtml = tag ? ` <span class="pb-cause-tag">${tag}</span>` : '';
+      return `<span class="${cls}" data-ncp-l2-reveal="${val}" title="${title}">${label}${tagHtml}</span>`;
     };
     html += `<div class="ncp-row indent-1">`;
-    html += l2Chip('nutri_courbe_declinante', 'Courbe diminue');
-    html += l2Chip('nutri_courbe_inferieur', 'Percentile INF');
+    html += l2Chip('nutri_courbe_declinante', 'Courbe diminue', '⇒ Faim');
+    html += l2Chip('nutri_courbe_inferieur', 'Percentile INF', '⇒ Faim');
     html += l2Chip('nutri_trop_apport', "Trop d'apport");
     html += `</div>`;
   }
