@@ -901,6 +901,88 @@
     .block-leviers-identifies > #diag-pb-container {
       padding: 16px 20px;
     }
+    /* ═══ PROTO Chips Nutrition (V. Diagnostic > Levier identifié) ═══ */
+    .nutri-chips-proto {
+      background: #fff7ed;
+      border: 1.5px solid #d4845a;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin: 12px 20px 14px;
+      font-family: inherit;
+    }
+    .nutri-chips-proto-title {
+      font-weight: 800;
+      font-size: 13px;
+      color: #c2410c;
+      margin-bottom: 10px;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nutri-chips-proto-title .ncp-tag {
+      background: #c2410c;
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      letter-spacing: 0.6px;
+    }
+    .ncp-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px 8px;
+      margin-bottom: 6px;
+    }
+    .ncp-row.indent-1 { padding-left: 24px; }
+    .ncp-row.indent-2 { padding-left: 48px; }
+    .ncp-row.indent-3 { padding-left: 72px; }
+    .ncp-group-label {
+      font-weight: 800;
+      text-decoration: underline;
+      color: #7c2d12;
+      font-size: 13px;
+      margin-right: 4px;
+      white-space: nowrap;
+    }
+    .ncp-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid #d4845a;
+      background: #ffffff;
+      color: #c2410c;
+      transition: background 0.15s, color 0.15s, transform 0.1s;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .ncp-chip:hover { background: #fed7aa; }
+    .ncp-chip:active { transform: translateY(1px); }
+    .ncp-chip.checked {
+      background: #d4845a;
+      color: #ffffff;
+      border-color: #c2410c;
+    }
+    .ncp-chip.checked:hover { background: #c2410c; }
+    .ncp-chip.parent-direct {
+      border-style: dashed;
+      font-style: italic;
+    }
+    .ncp-chip.level-1 {
+      font-size: 13.5px;
+      padding: 6px 16px;
+      font-weight: 700;
+    }
+    .ncp-chip.level-2 {
+      font-size: 13px;
+      padding: 5px 15px;
+    }
+    .ncp-blank { height: 10px; }
     /* ── Étape 1 : esthétique "Solutions identifiées" pour Problématiques (fiche client + modal) ──
        V. Diagnostic est déjà wrappé dans .block-leviers-identifies, donc exclu via le sélecteur :not(). */
     .setup-section > .problematiques-grid,
@@ -12661,6 +12743,8 @@ function renderCurrentSection() {
     clonePbGridFor('diag-pb-container', 'diag-pb', 'onDiagnosticPbChange()');
     updateDiagLeviersCount();
   }
+  // PROTO : rendre les chips Nutrition (Courbes pas OK > Courbe diminue) si le container existe
+  if (typeof renderNutritionChipsProto === 'function') renderNutritionChipsProto();
   // Rendre tous les blocs et contenus d'options éditables (sauf le bloc diagnostic)
   const diagEl = document.getElementById('diag-pb-container');
   area.querySelectorAll('.block, .q-text').forEach(el => {
@@ -13159,7 +13243,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       'relationnel_rappels':'📢 Relation — Rappels multiples après le coucher',
     };
     // Afficher checkboxes synchronisées (identiques à la fiche client) via clone
-    return `<div class="block block-leviers-identifies"><div id="diag-pb-container"></div></div>`;
+    return `<div class="block block-leviers-identifies"><div id="nutri-chips-proto"></div><div id="diag-pb-container"></div></div>`;
   }
 
   if (b.type === 'leviers_count') {
@@ -17182,6 +17266,136 @@ function applyEnvLitOuvertVisibility() {
     if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
   }
 }
+
+// ═══════════════════════════════════════════════════════════════════════
+// PROTO Chips Nutrition (V. Diagnostic > Levier identifié)
+// Affiche uniquement la branche "Courbes pas OK > Courbe diminue + ses sous-enfants"
+// pour validation visuelle. Utilise les checkboxes source (fiche client) comme
+// source de vérité — les règles d'exclusivité et auto-parent existantes sont
+// préservées via .click() programmatique sur la checkbox source.
+// ═══════════════════════════════════════════════════════════════════════
+function _ncpIsChecked(value) {
+  // Lit l'état depuis state.selectedPbs (source de vérité globale)
+  return !!(state && state.selectedPbs && state.selectedPbs.has(value));
+}
+function _ncpChip(value, label, opts) {
+  opts = opts || {};
+  const checked = _ncpIsChecked(value);
+  const cls = ['ncp-chip'];
+  if (checked) cls.push('checked');
+  if (opts.parentDirect) cls.push('parent-direct');
+  if (opts.level) cls.push('level-' + opts.level);
+  return `<span class="${cls.join(' ')}" onclick="onNutriChipClick('${value}')">${label}</span>`;
+}
+function _ncpGroup(label, items, opts) {
+  opts = opts || {};
+  let html = `<div class="ncp-row indent-2">`;
+  html += `<span class="ncp-group-label">${label} :</span>`;
+  items.forEach(it => {
+    const v = it[0], l = it[1];
+    html += _ncpChip(v, l, { parentDirect: opts.parentDirect === v });
+  });
+  html += `</div>`;
+  return html;
+}
+function renderNutritionChipsProto() {
+  const host = document.getElementById('nutri-chips-proto');
+  if (!host) return;
+  // Niveau 1 : un seul chip "Courbes pas OK" (proto = uniquement cette branche)
+  // Niveau 2 : 3 enfants (Courbe diminue / Percentile INF / Trop d'apport)
+  // Niveau 3 : sous-groupes de Courbe diminue avec leurs chips
+  const courbeDecChecked = _ncpIsChecked('nutri_courbe_declinante');
+  const courbeInfChecked = _ncpIsChecked('nutri_courbe_inferieur');
+  const tropApportChecked = _ncpIsChecked('nutri_trop_apport');
+  // Le parent "Courbes pas OK" est implicite (coché si l'un des 3 enfants l'est)
+  const courbesParentChecked = courbeDecChecked || courbeInfChecked || tropApportChecked;
+  let html = `<div class="nutri-chips-proto">`;
+  html += `<div class="nutri-chips-proto-title"><span class="ncp-tag">PROTO</span> Chips Nutrition — Courbes pas OK uniquement (test)</div>`;
+  // Niveau 1 : Courbes pas OK (synthétique — coché = au moins 1 enfant coché)
+  // On le rend comme un chip non-interactif (visuel uniquement) car son état est dérivé
+  const lvl1Cls = 'ncp-chip level-1' + (courbesParentChecked ? ' checked' : '');
+  html += `<div class="ncp-row">`;
+  html += `<span class="${lvl1Cls}" style="cursor:default" title="Coché auto si un enfant l'est">Courbes pas OK</span>`;
+  html += `</div>`;
+  if (courbesParentChecked) {
+    // Niveau 2 : 3 enfants (cliquables)
+    html += `<div class="ncp-row indent-1">`;
+    html += _ncpChip('nutri_courbe_declinante', 'Courbe diminue', { level: 2 });
+    html += _ncpChip('nutri_courbe_inferieur', 'Percentile INF', { level: 2 });
+    html += _ncpChip('nutri_trop_apport', "Trop d'apport", { level: 2 });
+    html += `</div>`;
+  } else {
+    // Permettre de cocher Courbe diminue même sans rien de coché
+    html += `<div class="ncp-row indent-1">`;
+    html += _ncpChip('nutri_courbe_declinante', 'Courbe diminue', { level: 2 });
+    html += _ncpChip('nutri_courbe_inferieur', 'Percentile INF', { level: 2 });
+    html += _ncpChip('nutri_trop_apport', "Trop d'apport", { level: 2 });
+    html += `</div>`;
+  }
+  // Niveau 3 : Sous-groupes de Courbe diminue (visibles uniquement si Courbe diminue coché)
+  if (courbeDecChecked) {
+    html += _ncpGroup('Espacement', [
+      ['nutri_esp_long', 'Trop long'],
+      ['nutri_esp_court', 'Trop court']
+    ]);
+    html += _ncpGroup('Volume/durée des bib', [
+      ['nutri_vol_petit', 'Petit bib'],
+      ['nutri_vol_gros', 'Gros bib'],
+      ['nutri_vol_longtemps', 'Boit longtemps']
+    ]);
+    // Tétée : peut être coché direct (parent) OU via un sous-enfant
+    html += _ncpGroup('Tétée baisse de lactation', [
+      ['nutri_tetee', '↗ Direct'],
+      ['nutri_tetee_longue', 'Longue tétée'],
+      ['nutri_tetee_greve', 'Grève'],
+      ['nutri_tetee_mode_garde', 'Mode garde']
+    ], { parentDirect: 'nutri_tetee' });
+    html += _ncpGroup('Inversion', [
+      ['nutri_inversion_jour_nuit', 'Jour/Nuit'],
+      ['nutri_inversion_lait_solide', 'Ordre lait/solide']
+    ]);
+    html += _ncpGroup('Tétine = cache faim', [
+      ['nutri_tetine_coupe_faim', 'OUI']
+    ]);
+    html += _ncpGroup('Autre', [
+      ['nutri_autre_feculents', 'Féculents'],
+      ['nutri_autre_lait_solide_important', 'Lait/solides'],
+      ['nutri_autre_jus_vegetal', 'Jus végétal'],
+      ['nutri_autre_lait_animal', 'Lait animal']
+    ]);
+    html += `<div class="ncp-blank"></div>`;
+    html += _ncpGroup('Conséquence : Inconfort', [
+      ['nutri_conseq_inconfort', 'OUI']
+    ]);
+    html += _ncpGroup('Conséquence : Mange la nuit', [
+      ['nutri_conseq_mange_nuit', 'OUI']
+    ]);
+  }
+  html += `</div>`;
+  host.innerHTML = html;
+}
+window.renderNutritionChipsProto = renderNutritionChipsProto;
+
+// Click sur un chip : déclenche un click programmatique sur la checkbox source
+// (fiche client) → les règles d'exclusivité + auto-parent + sync se déclenchent.
+// Puis on re-render le proto pour refléter le nouvel état.
+function onNutriChipClick(value) {
+  // Préférence : utiliser la checkbox source de la fiche client (input[name="pb"])
+  // car c'est celle qui déclenche toute la logique exclusivité/auto-parent.
+  const sourceCb = document.querySelector(`input[name="pb"][value="${value}"]`);
+  if (sourceCb) {
+    sourceCb.click();
+  } else {
+    // Fallback : checkbox dans le diag-pb-container (clone)
+    const diagCb = document.querySelector(`.diag-pb[value="${value}"]`);
+    if (diagCb) diagCb.click();
+  }
+  // Re-render le proto (et tout le diag-container est rebuild via le change event)
+  setTimeout(() => {
+    if (typeof renderNutritionChipsProto === 'function') renderNutritionChipsProto();
+  }, 100);
+}
+window.onNutriChipClick = onNutriChipClick;
 
 function clonePbGridFor(targetId, cbClass, onchangeFunc) {
   const source = document.querySelector('.problematiques-grid[onchange="onFicheClientPbChange()"]');
