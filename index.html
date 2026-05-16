@@ -928,23 +928,30 @@
       font-size: 10px;
       letter-spacing: 0.6px;
     }
+    /* Séparateur horizontal entre niveaux (IDÉE A) */
+    .ncp-separator {
+      height: 0;
+      border-top: 1px dashed #cbd5e1;
+      margin: 10px 0 10px;
+    }
     .ncp-row {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: 6px 8px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .ncp-row.indent-1 { padding-left: 0; }
-    .ncp-row.indent-2 { padding-left: 16px; }
-    .ncp-row.indent-3 { padding-left: 32px; }
+    .ncp-row.indent-2 { padding-left: 0; }
+    .ncp-row.indent-3 { padding-left: 0; }
     .ncp-group-label {
       font-weight: 700;
-      color: #7c2d12;
+      color: #334155;
       font-size: 12.5px;
       margin-right: 4px;
       white-space: nowrap;
     }
+    /* ── Chip sobre : bordure noire fine + texte sombre (style RGO SEUL) ── */
     .ncp-chip {
       display: inline-flex;
       align-items: center;
@@ -953,19 +960,20 @@
       font-size: 12.5px;
       font-weight: 600;
       cursor: pointer;
-      border: 1.5px solid #d4845a;
+      border: 1.5px solid #0f172a;
       background: #ffffff;
-      color: #c2410c;
+      color: #334155;
       transition: background 0.15s, color 0.15s, transform 0.1s;
       user-select: none;
       white-space: nowrap;
     }
-    .ncp-chip:hover { background: #fed7aa; }
+    .ncp-chip:hover { background: #f1f5f9; }
     .ncp-chip:active { transform: translateY(1px); }
+    /* Checked : on garde l'orange catégorie nutrition pour le retour visuel */
     .ncp-chip.checked {
       background: #d4845a;
       color: #ffffff;
-      border-color: #c2410c;
+      border-color: #0f172a;
     }
     .ncp-chip.checked:hover { background: #c2410c; }
     .ncp-chip.parent-direct {
@@ -975,7 +983,7 @@
     /* Niveau 1 — parent racine : gros, plein, distinctif */
     .ncp-chip.level-1 {
       font-size: 15px;
-      padding: 8px 18px;
+      padding: 9px 20px;
       font-weight: 800;
       border-width: 2px;
       border-radius: 10px;
@@ -995,13 +1003,6 @@
       font-weight: 500;
       border-width: 1px;
       border-radius: 6px;
-      color: #9a3412;
-      border-color: #f5b78e;
-    }
-    .ncp-chip.level-3.checked {
-      background: #f5b78e;
-      color: #7c2d12;
-      border-color: #d4845a;
     }
     .ncp-blank { height: 10px; }
     /* ── Étape 1 : esthétique "Solutions identifiées" pour Problématiques (fiche client + modal) ──
@@ -17320,6 +17321,8 @@ function _ncpGroup(label, items, opts) {
   html += `</div>`;
   return html;
 }
+// État local UI : "Courbes pas OK" forcé ouvert (révèle niveau 2 sans rien cocher)
+let _ncpForceOpen = false;
 function renderNutritionChipsProto() {
   const host = document.getElementById('nutri-chips-proto');
   if (!host) return;
@@ -17329,25 +17332,20 @@ function renderNutritionChipsProto() {
   const courbeDecChecked = _ncpIsChecked('nutri_courbe_declinante');
   const courbeInfChecked = _ncpIsChecked('nutri_courbe_inferieur');
   const tropApportChecked = _ncpIsChecked('nutri_trop_apport');
-  // Le parent "Courbes pas OK" est implicite (coché si l'un des 3 enfants l'est)
+  // Le parent "Courbes pas OK" est coché auto si un enfant l'est
   const courbesParentChecked = courbeDecChecked || courbeInfChecked || tropApportChecked;
+  // Niveau 2 visible si : un enfant coché OU user a forcé ouvert via clic niveau 1
+  const showLevel2 = courbesParentChecked || _ncpForceOpen;
   let html = `<div class="nutri-chips-proto">`;
   html += `<div class="nutri-chips-proto-title"><span class="ncp-tag">PROTO</span> Chips Nutrition — Courbes pas OK uniquement (test)</div>`;
-  // Niveau 1 : Courbes pas OK (synthétique — coché = au moins 1 enfant coché)
-  // On le rend comme un chip non-interactif (visuel uniquement) car son état est dérivé
+  // Niveau 1 : Courbes pas OK (cliquable pour révéler/masquer niveau 2)
   const lvl1Cls = 'ncp-chip level-1' + (courbesParentChecked ? ' checked' : '');
   html += `<div class="ncp-row">`;
-  html += `<span class="${lvl1Cls}" style="cursor:default" title="Coché auto si un enfant l'est">Courbes pas OK</span>`;
+  html += `<span class="${lvl1Cls}" data-ncp-l1="1" title="Cliquer pour ouvrir/fermer">Courbes pas OK</span>`;
   html += `</div>`;
-  if (courbesParentChecked) {
-    // Niveau 2 : 3 enfants (cliquables)
-    html += `<div class="ncp-row indent-1">`;
-    html += _ncpChip('nutri_courbe_declinante', 'Courbe diminue', { level: 2 });
-    html += _ncpChip('nutri_courbe_inferieur', 'Percentile INF', { level: 2 });
-    html += _ncpChip('nutri_trop_apport', "Trop d'apport", { level: 2 });
-    html += `</div>`;
-  } else {
-    // Permettre de cocher Courbe diminue même sans rien de coché
+  if (showLevel2) {
+    // Séparateur entre niveau 1 et niveau 2
+    html += `<div class="ncp-separator"></div>`;
     html += `<div class="ncp-row indent-1">`;
     html += _ncpChip('nutri_courbe_declinante', 'Courbe diminue', { level: 2 });
     html += _ncpChip('nutri_courbe_inferieur', 'Percentile INF', { level: 2 });
@@ -17356,6 +17354,7 @@ function renderNutritionChipsProto() {
   }
   // Niveau 3 : Sous-groupes de Courbe diminue (visibles uniquement si Courbe diminue coché)
   if (courbeDecChecked) {
+    html += `<div class="ncp-separator"></div>`;
     html += _ncpGroup('Espacement', [
       ['nutri_esp_long', 'Trop long'],
       ['nutri_esp_court', 'Trop court']
@@ -17386,16 +17385,25 @@ function renderNutritionChipsProto() {
       ['nutri_autre_lait_animal', 'Lait animal']
     ]);
     html += `<div class="ncp-blank"></div>`;
-    html += _ncpGroup('Conséquence : Inconfort', [
-      ['nutri_conseq_inconfort', 'OUI']
-    ]);
-    html += _ncpGroup('Conséquence : Mange la nuit', [
-      ['nutri_conseq_mange_nuit', 'OUI']
+    // Conséquence : un seul groupe, deux chips sur la même ligne
+    html += _ncpGroup('Conséquence', [
+      ['nutri_conseq_inconfort', 'Inconfort'],
+      ['nutri_conseq_mange_nuit', 'Mange la nuit']
     ]);
   }
   html += `</div>`;
   host.innerHTML = html;
-  // Attache les listeners via addEventListener (plus robuste qu'onclick attribute)
+  // Listener niveau 1 (toggle force-open)
+  const lvl1El = host.querySelector('[data-ncp-l1]');
+  if (lvl1El) {
+    lvl1El.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      _ncpForceOpen = !_ncpForceOpen;
+      renderNutritionChipsProto();
+    });
+  }
+  // Listeners niveau 2/3 (toggle PB)
   host.querySelectorAll('.ncp-chip[data-ncp-value]').forEach(el => {
     el.addEventListener('click', (ev) => {
       ev.preventDefault();
@@ -17410,29 +17418,25 @@ window.renderNutritionChipsProto = renderNutritionChipsProto;
 // (fiche client) → les règles d'exclusivité + auto-parent + sync se déclenchent.
 // Puis on re-render le proto pour refléter le nouvel état.
 function onNutriChipClick(value) {
-  // Préférence : utiliser la checkbox source de la fiche client (input[name="pb"])
-  // car c'est celle qui déclenche toute la logique exclusivité/auto-parent.
-  const sourceCb = document.querySelector(`input[name="pb"][value="${value}"]`);
-  if (sourceCb) {
-    // .click() toggle l'état + déclenche 'change' (qui appelle onFicheClientPbChange via onchange="...")
-    sourceCb.click();
-  } else {
-    // Fallback : checkbox dans le diag-pb-container (clone)
-    const diagCb = document.querySelector(`.diag-pb[value="${value}"]`);
-    if (diagCb) {
-      diagCb.click();
-    } else {
-      // Dernier recours : toggle direct dans state.selectedPbs + re-render
-      if (state && state.selectedPbs) {
-        if (state.selectedPbs.has(value)) state.selectedPbs.delete(value);
-        else state.selectedPbs.add(value);
-      }
-    }
+  if (!state) return;
+  if (!state.selectedPbs) state.selectedPbs = new Set();
+  // 1. Toggle direct dans le state (source de vérité)
+  const willCheck = !state.selectedPbs.has(value);
+  if (willCheck) state.selectedPbs.add(value);
+  else state.selectedPbs.delete(value);
+  // 2. Sync toutes les checkboxes correspondantes (fiche client, diag clone, modal)
+  document.querySelectorAll(
+    `input[name="pb"][value="${value}"], .diag-pb[value="${value}"], .modal-pb[value="${value}"]`
+  ).forEach(cb => {
+    cb.checked = willCheck;
+    cb.closest('.pb-item')?.classList.toggle('checked', willCheck);
+  });
+  // 3. Re-render le proto IMMÉDIATEMENT (pas de setTimeout, pas de rebuild)
+  renderNutritionChipsProto();
+  // 4. Auto-save (silencieux)
+  if (typeof autoSaveActiveConsultation === 'function') {
+    try { autoSaveActiveConsultation(); } catch (e) {}
   }
-  // Re-render le proto (et tout le diag-container est rebuild via le change event)
-  setTimeout(() => {
-    if (typeof renderNutritionChipsProto === 'function') renderNutritionChipsProto();
-  }, 100);
 }
 window.onNutriChipClick = onNutriChipClick;
 
