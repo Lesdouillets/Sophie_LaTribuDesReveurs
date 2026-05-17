@@ -1051,12 +1051,27 @@
       border-width: 2px;
       font-style: italic;
     }
-    /* Niveau 1 ("Courbes pas OK") + Niveau 2 (Courbe diminue / Percentile INF / Trop d'apport)
-       à la même taille que les labels (Espacement, etc.) — plus visibles que les leaves */
-    .ncp-chip[data-ncp-l1],
-    .ncp-chip[data-ncp-l2-reveal] {
-      font-size: 14px;
-      padding: 4px 11px;
+    /* Niveau 1 (sections : Courbes pas OK / Lait / Diversification)
+       + Niveau 2 (branches) : police plus grosse + tag ⇒ Faim sur une ligne en dessous (dans la chip) */
+    .ncp-chip[data-ncp-l1-section],
+    .ncp-chip[data-ncp-l2] {
+      font-size: 15px;
+      padding: 6px 14px;
+      flex-direction: column;
+      align-items: center;
+    }
+    /* Tag inline sur la 2e ligne (dans la chip, centré sous le label) */
+    .ncp-chip[data-ncp-l1-section] .pb-cause-tag,
+    .ncp-chip[data-ncp-l2] .pb-cause-tag {
+      margin-left: 0;
+      margin-top: 3px;
+    }
+    /* Utilitaire pour forcer un break dans un flex-wrap row (insère un élément invisible 100% width) */
+    .ncp-flex-break {
+      flex-basis: 100%;
+      height: 0;
+      margin: 0;
+      padding: 0;
     }
     /* Curseur not-allowed sur les chips parent verrouillées (enfants cochés) */
     .ncp-chip.locked { cursor: not-allowed; }
@@ -17533,10 +17548,14 @@ const _NCP_SECTIONS = [
   { id: 'lait',
     label: 'Lait <span style="color:#999;font-style:italic;font-weight:400;font-size:10px;margin-left:4px">(courbes OK)</span>',
     branches: _NCP_LAIT_BRANCHES,
+    // 6 chips L2 forcés sur 3 lignes de 2 (break après chip 2 et 4)
+    l2ChipsPerLine: 2,
     treeFn: (b) => _ncpRenderLaitL3Tree(b), subgroup: 'nutri_lait_ok' },
   { id: 'diversif',
     label: 'Diversification <span style="color:#999;font-style:italic;font-weight:400;font-size:10px;margin-left:4px">(courbes OK)</span>',
     branches: _NCP_DIVERSIF_BRANCHES,
+    // 2 chips L2 : aucun break (ils tiennent naturellement sur une ligne)
+    l2ChipsPerLine: 2,
     treeFn: (b) => _ncpRenderLaitL3Tree(b), subgroup: 'nutri_diversif_ok' },
 ];
 // État local UI unifié :
@@ -17690,10 +17709,15 @@ function renderNutritionChipsProto() {
       });
       html += '</div>';
     } else {
-      // Layout PLAT : row de chips (style actuel pour Courbes pas OK)
+      // Layout PLAT : row de chips
+      // Si activeSec.l2ChipsPerLine défini, insère un .ncp-flex-break tous les N chips
       html += '<div class="ncp-row indent-1">';
-      activeSec.branches.forEach(b => {
+      const perLine = activeSec.l2ChipsPerLine || 0;
+      activeSec.branches.forEach((b, i) => {
         html += l2ChipHtml(b.val, b.label, b.tag);
+        if (perLine && (i + 1) % perLine === 0 && i < activeSec.branches.length - 1) {
+          html += '<div class="ncp-flex-break"></div>';
+        }
       });
       html += '</div>';
     }
