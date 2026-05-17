@@ -953,7 +953,7 @@
       font-weight: 700;
       text-decoration: underline;
       color: #334155;
-      font-size: 12px;
+      font-size: 14px;
       line-height: 1.3;
       white-space: nowrap;
       grid-column: 1;
@@ -983,14 +983,14 @@
     }
     .ncp-conseq-row .ncp-l3-label {
       font-style: italic;
-      color: #999;
+      color: #555;
     }
-    /* Chips Conséquences : italique tjs. Non-cochée = contour gris + texte gris.
+    /* Chips Conséquences : italique tjs. Non-cochée = contour gris foncé + texte gris foncé.
        Cochée = même style que les autres chips cochées (fond pastel + texte orange foncé) */
     .ncp-conseq-row .ncp-chip {
       font-style: italic;
-      border-color: #999;
-      color: #999;
+      border-color: #666;
+      color: #555;
     }
     /* Cochée : reset l'override gris pour hériter de .ncp-chip.checked */
     .ncp-conseq-row .ncp-chip.checked {
@@ -1027,8 +1027,16 @@
     }
     /* Pas de hover plus foncé sur chip cochée */
     .ncp-chip.checked:hover { background: #e8c19a; }
+    /* Tag "⇒ Faim" visible aussi sur chip cochée : fond brun foncé + texte blanc */
+    .ncp-chip.checked .pb-cause-tag {
+      background: #5a2d0d;
+      color: #ffffff;
+    }
+    /* Parent direct (↗ Direct sur Tétée) : pointillé bien espacé
+       (border-width plus épais → tirets plus visibles + plus écartés) */
     .ncp-chip.parent-direct {
       border-style: dashed;
+      border-width: 2px;
       font-style: italic;
     }
     /* Curseur not-allowed sur les chips parent verrouillées (enfants cochés) */
@@ -17413,17 +17421,17 @@ function renderNutritionChipsProto() {
   if (showLevel2) {
     html += `<div class="ncp-separator"></div>`;
     // ─── Niveau 2 : reveal-only — chip orange si reveal-open OU PB auto-cochée
-    // Verrouillé (pas déclic possible) si un enfant de CE branch est coché via auto-parent
+    // Cliquer quand enfants cochés → mass-uncheck (enfants + parent + ferme reveal)
     // Le 3e param `tag` ajoute un .pb-cause-tag inline dans le chip (ex. "⇒ Faim")
     const l2Chip = (val, label, tag) => {
       const autoChecked = _ncpIsChecked(val);
       const open = _ncpL2Open.has(val) || autoChecked;
-      // Compte les enfants cochés qui ont CE val comme auto-parent
       const childrenChecked = !![...document.querySelectorAll(`input[data-auto-parent="${val}"]`)]
         .find(c => c.value && state && state.selectedPbs && state.selectedPbs.has(c.value));
-      const locked = childrenChecked;
-      const cls = 'ncp-chip' + (open ? ' checked' : '') + (locked ? ' locked' : '');
-      const title = locked ? "Verrouillé : un enfant est coché. Décochez-le d'abord." : "Cliquer pour ouvrir/fermer";
+      const cls = 'ncp-chip' + (open ? ' checked' : '');
+      const title = childrenChecked
+        ? "Cliquer pour décocher toutes les cases de cette branche"
+        : (open ? "Cliquer pour fermer" : "Cliquer pour ouvrir");
       const tagHtml = tag ? ` <span class="pb-cause-tag">${tag}</span>` : '';
       return `<span class="${cls}" data-ncp-l2-reveal="${val}" title="${title}">${label}${tagHtml}</span>`;
     };
@@ -17510,20 +17518,24 @@ function renderNutritionChipsProto() {
   host.querySelectorAll('[data-ncp-l2-reveal]').forEach(el => {
     el.addEventListener('click', (ev) => {
       ev.preventDefault(); ev.stopPropagation();
-      if (el.classList.contains('locked')) return;
       const val = el.dataset.ncpL2Reveal;
       const isOpen = _ncpL2Open.has(val);
       const pbChecked = state && state.selectedPbs && state.selectedPbs.has(val);
-      if (isOpen) {
-        // Chip déjà ouvert → fermer
+      const childrenChecked = !![...document.querySelectorAll(`input[data-auto-parent="${val}"]`)]
+        .find(c => c.value && state && state.selectedPbs && state.selectedPbs.has(c.value));
+      if (childrenChecked) {
+        // Mass-uncheck : décocher tous les enfants + le parent auto-only + fermer reveal
+        document.querySelectorAll(`input[data-auto-parent="${val}"]`).forEach(leaf => {
+          if (leaf.value && state && state.selectedPbs) state.selectedPbs.delete(leaf.value);
+        });
+        if (state && state.selectedPbs) state.selectedPbs.delete(val);
         _ncpL2Open.delete(val);
-        // Si la PB auto-only est aussi cochée (mais pas verrouillée car pas d'enfants),
-        // on la décoche aussi (= "fermeture complète")
+        _ncpSyncSideEffects();
+      } else if (isOpen) {
+        // Reveal ouvert sans enfants → fermer (+ décocher PB si encore active seule)
+        _ncpL2Open.delete(val);
         if (pbChecked && state && state.selectedPbs) {
           state.selectedPbs.delete(val);
-          document.querySelectorAll(`input[data-auto-parent="${val}"]`).forEach(leaf => {
-            if (leaf.value) state.selectedPbs.delete(leaf.value);
-          });
           _ncpSyncSideEffects();
         }
       } else {
@@ -17532,11 +17544,9 @@ function renderNutritionChipsProto() {
           if (sib === val) return;
           _ncpL2Open.delete(sib);
           if (state && state.selectedPbs) {
-            // Décocher tous les leaves dont l'auto-parent est le sibling
             document.querySelectorAll(`input[data-auto-parent="${sib}"]`).forEach(leaf => {
               if (leaf.value) state.selectedPbs.delete(leaf.value);
             });
-            // Décocher le parent auto-only lui-même
             state.selectedPbs.delete(sib);
           }
         });
