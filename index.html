@@ -2809,6 +2809,20 @@
     body[data-meet-mode="top-left"] #content-area {
       padding-top: calc(100vh - var(--meet-h)) !important;
     }
+    /* Padding latéral systématique sur #content-area en mode Meet : garantit que TOUT le
+       contenu de la consultation reste à côté de la vidéo, sans dépendre de la détection
+       dynamique data-meet-overlap (qui peut rater certains blocs après re-renders fréquents).
+       box-sizing border-box pour que padding soit pris dans la largeur. */
+    body[data-meet-mode="bottom-right"] #content-area,
+    body[data-meet-mode="top-right"] #content-area {
+      padding-right: var(--meet-w) !important;
+      box-sizing: border-box;
+    }
+    body[data-meet-mode="bottom-left"] #content-area,
+    body[data-meet-mode="top-left"] #content-area {
+      padding-left: var(--meet-w) !important;
+      box-sizing: border-box;
+    }
     /* Permettre aussi à l'info-panel jaune (encadré latéral) de scroller son contenu
        au-dessus de la zone vidéo : padding-bottom équivalent à l'espace écran libre. */
     body[data-meet-mode="bottom-right"] .info-body,
@@ -2842,6 +2856,17 @@
     body[data-meet-mode="top-left"] [data-meet-overlap="1"] {
       margin-left: var(--meet-w) !important;
       transition: margin 0.18s ease;
+    }
+    /* Override : #content-area a déjà padding-right, donc on annule la margin-right
+       sur ses enfants (qui héritent de data-meet-overlap via la détection bbox) pour
+       éviter un double décalage (padding + margin = 480px de trop). */
+    body[data-meet-mode="bottom-right"] #content-area > [data-meet-overlap="1"],
+    body[data-meet-mode="top-right"] #content-area > [data-meet-overlap="1"] {
+      margin-right: 0 !important;
+    }
+    body[data-meet-mode="bottom-left"] #content-area > [data-meet-overlap="1"],
+    body[data-meet-mode="top-left"] #content-area > [data-meet-overlap="1"] {
+      margin-left: 0 !important;
     }
     /* Vignette pointillée — visible en permanence quand le mode visio est ON
        (aide à placer la PiP de Meet). Cliquable (✕) pour la masquer pour la session. */
@@ -8108,7 +8133,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=739"></script>
+<script src="script-data.js?v=740"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -11142,23 +11167,6 @@ function _meetUpdateOverlap() {
     }
     if (el.querySelector && el.querySelector('.emploi-temps-block, .emploi-temps-aside')) {
       if (el.dataset.meetOverlap) delete el.dataset.meetOverlap;
-      return;
-    }
-    // FORCE data-meet-overlap + margin direct (style inline) pour le bloc "Leviers identifiés"
-    // Les re-renders fréquents (renderRythmeChips, _refreshDiagnosticConditionalInPlace)
-    // cassent la détection bbox standard, donc on force ici en CSS direct.
-    const hasLeviers = el.querySelector && el.querySelector('.block-leviers-identifies');
-    if (hasLeviers) {
-      if (el.dataset.meetOverlap !== '1') el.dataset.meetOverlap = '1';
-      // Margin inline aussi (au cas où la règle CSS [data-meet-overlap] ne s'applique pas)
-      const meetW = getComputedStyle(document.body).getPropertyValue('--meet-w').trim() || '240px';
-      if (corner.endsWith('-right')) {
-        el.style.setProperty('margin-right', meetW, 'important');
-        el.style.removeProperty('margin-left');
-      } else if (corner.endsWith('-left')) {
-        el.style.setProperty('margin-left', meetW, 'important');
-        el.style.removeProperty('margin-right');
-      }
       return;
     }
     const rect = el.getBoundingClientRect();
