@@ -902,10 +902,8 @@
       padding: 16px 20px;
     }
     /* ═══ Chips Nutrition (V. Diagnostic > Levier identifié) ═══ */
-    /* Cache la catégorie Nutrition dans le diag-pb-container (remplacée par les chips ci-dessus) */
-    #diag-pb-container .pb-category:has(> .pb-category-title > [data-cat="nutrition"]) {
-      display: none !important;
-    }
+    /* Note : la cat Nutrition du diag-pb-container est cachée via JS (cf. renderNutritionChipsProto)
+       car `:has()` n'est pas toujours supporté */
     .nutri-chips-proto {
       background: transparent;
       padding: 14px 18px;
@@ -17466,14 +17464,16 @@ function _ncpRenderL3Tree(branch) {
 function renderNutritionChipsProto() {
   const host = document.getElementById('nutri-chips-proto');
   if (!host) return;
+  // Cache la cat Nutrition du diag-pb-container (les chips la remplacent)
+  // Approche JS plutôt que CSS :has() pour compatibilité plus large
+  const diagNutriCat = document.querySelector('#diag-pb-container input[data-cat="nutrition"]')?.closest('.pb-category');
+  if (diagNutriCat) diagNutriCat.style.display = 'none';
   // État réel des PBs (lu depuis state.selectedPbs)
   const anyBranchChecked = _NCP_BRANCHES.some(b => _ncpIsChecked(b.val));
   // Niveau 2 visible si : un PB de branche cochée OU user a forcé ouvert niveau 1
   const showLevel2 = anyBranchChecked || _ncpForceOpen;
-  // Wrap dans block-with-left-title "🍽️ Nutrition" (cat-light/main = nutrition)
-  let html = `<div class="block-with-left-title" style="background:#e8c19a">`;
-  html += `<div class="block-left-title" style="background:#d4845a;color:#fff">🍽️ Nutrition</div>`;
-  html += `<div class="nutri-chips-proto">`;
+  // Pas de wrap block-with-left-title (la cat Nutrition du diag fait déjà bloc-titre)
+  let html = `<div class="nutri-chips-proto">`;
   // ─── Niveau 1 : "Courbes pas OK" — cliquable, orange dès qu'on l'ouvre
   const l1Checked = _ncpForceOpen || anyBranchChecked;
   const lvl1Cls = 'ncp-chip' + (l1Checked ? ' checked' : '');
@@ -17512,7 +17512,6 @@ function renderNutritionChipsProto() {
     }
   });
   html += `</div>`;  // .nutri-chips-proto
-  html += `</div>`;  // .block-with-left-title
   host.innerHTML = html;
   // Liste des PBs niveau 2 (utilisée par mutex + mass-uncheck depuis niveau 1)
   const L2_SIBLINGS = _NCP_BRANCHES.map(b => b.val);
