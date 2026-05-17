@@ -8108,7 +8108,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=731"></script>
+<script src="script-data.js?v=732"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -18032,6 +18032,69 @@ const _NCP_RYTHME_BRANCHES = [
 // État local UI rythme : Set des sub-parent ids actuellement révélés (sub-trees visibles)
 // Set permet d'avoir plusieurs sub-trees ouverts simultanément (ex. TE + RM en même temps)
 let _ncpRythmeActiveL2 = new Set();
+// Timer de rappel : si l'utilisateur ouvre TE/RM sans cliquer d'enfant en 5s → message d'erreur
+// Map id sub-parent → timeoutId pour pouvoir annuler par branche
+let _ncpRythmeReminderTimers = {};
+function _clearNcpRythmeReminder(id) {
+  if (_ncpRythmeReminderTimers[id]) {
+    clearTimeout(_ncpRythmeReminderTimers[id]);
+    delete _ncpRythmeReminderTimers[id];
+  }
+  // Retirer le banner visuel s'il existe
+  const banner = document.querySelector(`.ncp-rythme-reminder[data-rem-id="${id}"]`);
+  if (banner) banner.remove();
+}
+function _showNcpRythmeReminder(branch) {
+  const id = branch.id;
+  // Si l'utilisateur a déjà sélectionné un enfant entretemps, ne pas afficher
+  const hasChild = branch.children?.some(c => state?.selectedPbs?.has(c.val)
+    || (c.consequences && c.consequences.some(cs => state?.selectedPbs?.has(cs[0]))));
+  if (hasChild) return;
+  // Trouver le container du sub-tree pour insérer le banner juste au-dessus
+  const subTree = document.querySelector(`.ncp-subtree-${id}`);
+  if (!subTree) return;
+  // Si un banner existe déjà pour cette branche, ne pas dupliquer
+  if (document.querySelector(`.ncp-rythme-reminder[data-rem-id="${id}"]`)) return;
+  const parentLabel = branch.label || branch.id;
+  const cleanLabel = String(parentLabel).replace(/<[^>]+>/g, '').trim();
+  const choices = branch.children.map(c => {
+    const lbl = String(c.label || c.val).replace(/<[^>]+>/g, '').trim();
+    return `<button type="button" class="ncp-rem-choice" data-rem-val="${c.val}">${lbl}</button>`;
+  }).join('');
+  const bannerHtml = `
+    <div class="ncp-rythme-reminder" data-rem-id="${id}" style="
+      background:#fff4e5;border:2px solid #f59e0b;border-radius:8px;
+      padding:10px 14px;margin:8px 0;display:flex;align-items:center;
+      flex-wrap:wrap;gap:10px;font-size:13px;animation:ncpRemFadeIn .3s ease;
+    ">
+      <span style="font-size:18px">⚠️</span>
+      <span style="flex:1;min-width:200px;color:#92400e;font-weight:600">
+        Tu as ouvert <em>${cleanLabel}</em> sans choisir. Sélectionne une option :
+      </span>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">${choices}</div>
+      <button type="button" class="ncp-rem-close" data-rem-id="${id}" style="
+        background:transparent;border:none;font-size:18px;cursor:pointer;
+        color:#92400e;padding:0 4px;line-height:1
+      ">×</button>
+    </div>`;
+  subTree.insertAdjacentHTML('beforebegin', bannerHtml);
+  const banner = document.querySelector(`.ncp-rythme-reminder[data-rem-id="${id}"]`);
+  if (!banner) return;
+  // Listeners : choix → coche la PB ; close → retire le banner
+  banner.querySelectorAll('.ncp-rem-choice').forEach(btn => {
+    btn.style.cssText = 'background:#f59e0b;color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer';
+    btn.addEventListener('click', (ev) => {
+      ev.preventDefault(); ev.stopPropagation();
+      const v = btn.dataset.remVal;
+      _clearNcpRythmeReminder(id);
+      onNutriChipClick(v);
+    });
+  });
+  banner.querySelector('.ncp-rem-close')?.addEventListener('click', (ev) => {
+    ev.preventDefault(); ev.stopPropagation();
+    _clearNcpRythmeReminder(id);
+  });
+}
 function renderRythmeChips() {
   const catInput = document.querySelector('#diag-pb-container input[data-cat="rythme"]');
   const cat = catInput?.closest('.pb-category');
@@ -18105,6 +18168,8 @@ function renderRythmeChips() {
       const branch = _NCP_RYTHME_BRANCHES.find(b => b.id === id);
       if (!branch) return;
       const hasChecked = subParentHasChecked(branch);
+      // Annuler tout timer de rappel pour cette branche (le user a interagi)
+      _clearNcpRythmeReminder(id);
       if (hasChecked) {
         // Mass-uncheck enfants + conséquences
         branch.children?.forEach(c => {
@@ -18155,6 +18220,10 @@ function renderRythmeChips() {
             }
           }
           _ncpRythmeActiveL2.add(id);
+          // Planifier le rappel 5s : si toujours sans enfant coché → afficher banner
+          _ncpRythmeReminderTimers[id] = setTimeout(() => {
+            _showNcpRythmeReminder(branch);
+          }, 5000);
         }
       }
       renderRythmeChips();
@@ -18166,6 +18235,13 @@ function renderRythmeChips() {
     el.addEventListener('click', (ev) => {
       ev.preventDefault(); ev.stopPropagation();
       const val = el.dataset.ncpValue;
+      // Annuler le timer de rappel du sub-parent contenant ce leaf (le user a interagi)
+      _NCP_RYTHME_BRANCHES.forEach(b => {
+        if (b.kind !== 'subparent') return;
+        const inBranch = b.children?.some(c => c.val === val
+          || (c.consequences && c.consequences.some(cs => cs[0] === val)));
+        if (inBranch) _clearNcpRythmeReminder(b.id);
+      });
       // Lit data-excludes depuis la checkbox source (.diag-pb)
       const cb = document.querySelector(`.diag-pb[value="${val}"]`);
       const excludesGroup = cb?.dataset.excludes;
@@ -18175,7 +18251,7 @@ function renderRythmeChips() {
         if (sp) _ncpRythmeActiveL2.delete(sp.id);
       }
       onNutriChipClick(val);
-      setTimeout(() => renderRythmeChips(), 50);
+      // renderRythmeChips() est appelé dans onNutriChipClick — pas besoin de doubler
     });
   });
 }
@@ -18297,13 +18373,52 @@ function onNutriChipClick(value) {
     cb.checked = checked;
     cb.closest('.pb-item')?.classList.toggle('checked', checked);
   });
+  // Sync cat checkboxes + sub-parent checkboxes pour les 3 containers
+  // (sinon Leviers identifiés ne montre pas que la catégorie/sub-parent est cochée)
+  // -- fiche client (.pb-cat-checkbox, .pb-sub-parent)
+  // -- diag clone   (.diag-pb-cat, .diag-pb-sub-parent)
+  // -- modal clone  (.modal-pb-cat, .modal-pb-sub-parent)
+  const syncContainerCats = (container, catClass, childClass, subParentClass) => {
+    container.querySelectorAll('.pb-category').forEach(cat => {
+      const catCb = cat.querySelector(catClass);
+      if (catCb) {
+        const isStrategie = catCb.dataset.cat === 'strategie';
+        const anyChecked = [...cat.querySelectorAll(childClass)].some(c => c.checked);
+        if (isStrategie) {
+          // Stratégie : ne jamais décocher automatiquement (toujours cochable même sans enfants)
+          if (anyChecked) catCb.checked = true;
+        } else {
+          catCb.checked = anyChecked;
+        }
+      }
+    });
+    // Sub-parents : cochés si au moins un enfant du sub-group est coché
+    container.querySelectorAll(subParentClass + '[data-subgroup]').forEach(sp => {
+      const group = sp.dataset.subgroup;
+      const anyChild = [...container.querySelectorAll(`input[data-subgroup-child="${group}"]`)].some(c => c.checked);
+      sp.checked = anyChild;
+      sp.closest('.pb-item')?.classList.toggle('checked', anyChild);
+    });
+  };
+  // Fiche client
+  document.querySelectorAll('.problematiques-grid[onchange="onFicheClientPbChange()"]').forEach(c =>
+    syncContainerCats(c, '.pb-cat-checkbox', 'input[name="pb"]', '.pb-sub-parent'));
+  // Diag clone (Leviers identifiés)
+  const diagC = document.getElementById('diag-pb-container');
+  if (diagC) syncContainerCats(diagC, '.diag-pb-cat', '.diag-pb', '.diag-pb-sub-parent');
+  // Modal clone
+  const modalC = document.getElementById('modal-pb-list');
+  if (modalC) syncContainerCats(modalC, '.modal-pb-cat', '.modal-pb', '.modal-pb-sub-parent');
   // Re-render le proto immédiatement (sans rebuild de la section)
   renderNutritionChipsProto();
+  if (typeof renderRythmeChips === 'function') renderRythmeChips();
   // Mise à jour des solutions / badges (sans rebuild complet)
   try {
     if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
     if (typeof updateDiagLeviersCount === 'function') updateDiagLeviersCount();
     if (typeof updateSolutionsBadge === 'function') updateSolutionsBadge();
+    // Refresh des cartes catégorie sous "Leviers identifiés" (subTitles, etc.)
+    if (typeof _refreshDiagnosticConditionalInPlace === 'function') _refreshDiagnosticConditionalInPlace();
     if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
   } catch (e) {}
 }
