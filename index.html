@@ -988,33 +988,21 @@
       justify-content: center !important;
       box-sizing: border-box !important;
     }
-    /* L1 + Courbes pas OK L2 (3 cols) : max-width 560 → chips ~180px chacune */
-    .ncp-row[data-ncp-cols="3"] {
-      max-width: 560px;
+    /* L1 row (3 cols, pas de .indent-1) : max-width 540 → chips ~175px (chips L1 plus visibles) */
+    .ncp-row[data-ncp-cols="3"]:not(.indent-1) {
+      max-width: 540px;
     }
-    /* Lait L2 (2 cols) : max-width 380 → chips ~186px chacune, font/padding réduits */
-    .ncp-row[data-ncp-section="lait"] {
-      max-width: 380px;
+    /* L2 Courbes pas OK (3 cols, avec .indent-1) : 3 chips × 146px → max-width 460 */
+    .ncp-row.indent-1[data-ncp-cols="3"][data-ncp-section="courbes"] {
+      max-width: 460px;
     }
-    .ncp-row[data-ncp-section="lait"] > .ncp-chip {
-      font-size: 13px !important;
-      padding: 4px 10px !important;
-    }
-    .ncp-row[data-ncp-section="lait"] > .ncp-chip .pb-cause-tag {
-      font-size: 11px;
-      white-space: normal;
-    }
-    /* Diversification L2 (2 cols) : max-width 300 → chips ~146px chacune (plus petites encore) */
-    .ncp-row[data-ncp-section="diversif"] {
+    /* L2 Lait (2 cols) : 2 chips × 146px → max-width 300 (= Diversif) */
+    .ncp-row.indent-1[data-ncp-section="lait"] {
       max-width: 300px;
     }
-    .ncp-row[data-ncp-section="diversif"] > .ncp-chip {
-      font-size: 12.5px !important;
-      padding: 3px 9px !important;
-    }
-    .ncp-row[data-ncp-section="diversif"] > .ncp-chip .pb-cause-tag {
-      font-size: 10.5px;
-      white-space: normal;
+    /* L2 Diversification (2 cols) : 2 chips × 146px → max-width 300 */
+    .ncp-row.indent-1[data-ncp-section="diversif"] {
+      max-width: 300px;
     }
     /* Lignes vides dans la grille — span sur les 2 colonnes */
     .ncp-grid-blank { grid-column: 1 / -1; height: 10px; }
@@ -1098,13 +1086,19 @@
       border-width: 2px;
       font-style: italic;
     }
-    /* Niveau 1 (sections : Courbes pas OK / Lait / Diversification)
-       + Niveau 2 (branches) : flex-direction column gérée par la règle .ncp-row[data-ncp-cols] > .ncp-chip
-       Ici on définit juste police/padding par défaut (la règle row override les détails layout) */
-    .ncp-chip[data-ncp-l1-section],
-    .ncp-chip[data-ncp-l2] {
+    /* Niveau 1 (sections) : police 14px, padding 6px 12px (plus visibles) */
+    .ncp-chip[data-ncp-l1-section] {
       font-size: 14px;
       padding: 6px 12px;
+    }
+    /* Niveau 2 (branches) : police 12.5px, padding 3px 9px (style Diversif unifié sur toutes sections) */
+    .ncp-chip[data-ncp-l2] {
+      font-size: 12.5px;
+      padding: 3px 9px;
+    }
+    .ncp-chip[data-ncp-l2] .pb-cause-tag {
+      font-size: 10.5px;
+      white-space: normal;
     }
     /* Tag inline sur la 2e ligne (dans la chip, centré sous le label) */
     .ncp-chip[data-ncp-l2] .pb-cause-tag {
