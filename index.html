@@ -8108,7 +8108,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=735"></script>
+<script src="script-data.js?v=736"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -18378,6 +18378,9 @@ function renderRythmeChips() {
         }
       }
       renderRythmeChips();
+      // Force la re-détection overlap vidéo Meet : ouvrir/fermer un sub-tree change la hauteur
+      // du bloc Leviers identifiés (peut entrer/sortir de la zone vidéo).
+      if (typeof _meetScheduleOverlapDelayed === 'function') _meetScheduleOverlapDelayed();
     });
   });
   // Leaf chip : toggle PB via cb.click() (onNutriChipClick gère le chain)
@@ -18583,6 +18586,10 @@ function onNutriChipClick(value) {
     // Refresh des cartes catégorie sous "Leviers identifiés" (subTitles, etc.)
     if (typeof _refreshDiagnosticConditionalInPlace === 'function') _refreshDiagnosticConditionalInPlace();
     if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+    // Force la re-détection de l'overlap zone vidéo Meet : nos modifications (renderRythmeChips,
+    // sync cats, sub-parents, _refresh...) ont fait varier la hauteur du bloc Leviers identifiés.
+    // Sans ce trigger, la vidéo recouvre le bloc qui devrait être décalé latéralement.
+    if (typeof _meetScheduleOverlapDelayed === 'function') _meetScheduleOverlapDelayed();
   } catch (e) {}
 }
 window.onNutriChipClick = onNutriChipClick;
@@ -19926,6 +19933,11 @@ function _refreshDiagnosticConditionalInPlace() {
   const editCtrls = editWrap.querySelector('.edit-block-controls');
   const editCtrlsHtml = editCtrls ? editCtrls.outerHTML : '';
   editWrap.innerHTML = editCtrlsHtml + newHtml;
+  // Re-trigger meet-zone overlap detection : le innerHTML replacement a peut-être effacé
+  // le data-meet-overlap sur ce editWrap (selon les frères impactés), et le layout des blocs
+  // au-dessus (ex. Leviers identifiés) a pu changer. Force la re-détection pour que le
+  // bloc soit décalé correctement à côté de la vidéo Meet.
+  if (typeof _meetScheduleOverlapDelayed === 'function') _meetScheduleOverlapDelayed();
 }
 window._refreshDiagnosticConditionalInPlace = _refreshDiagnosticConditionalInPlace;
 
