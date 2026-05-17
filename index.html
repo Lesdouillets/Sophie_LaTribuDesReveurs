@@ -965,25 +965,36 @@
       align-items: center;
       justify-content: flex-start;
     }
-    /* Niveau 2 row : layout GRID pour chips de MÊME TAILLE entre frères/soeurs
-       (data-ncp-cols dynamique : 3 pour Courbes pas OK, 2 pour Lait/Diversification) */
+    /* Layout GRID pour chips de MÊME TAILLE entre frères/soeurs
+       Appliqué via data-ncp-cols sur n'importe quelle row (niveau 1 OU niveau 2) */
     .ncp-row.indent-1 {
       justify-content: center;
     }
-    .ncp-row.indent-1[data-ncp-cols] {
+    .ncp-row[data-ncp-cols] {
       display: grid;
       gap: 8px;
       max-width: 640px;
       margin: 0 auto;
     }
-    .ncp-row.indent-1[data-ncp-cols="2"] { grid-template-columns: 1fr 1fr; }
-    .ncp-row.indent-1[data-ncp-cols="3"] { grid-template-columns: 1fr 1fr 1fr; }
-    /* Force les chips à remplir leur cellule de grille → même largeur entre siblings */
-    .ncp-row.indent-1[data-ncp-cols] > .ncp-chip {
+    .ncp-row[data-ncp-cols="2"] { grid-template-columns: 1fr 1fr; }
+    .ncp-row[data-ncp-cols="3"] { grid-template-columns: 1fr 1fr 1fr; }
+    /* Force les chips à remplir leur cellule → même largeur entre siblings */
+    .ncp-row[data-ncp-cols] > .ncp-chip {
       display: flex;
       width: 100%;
       justify-content: center;
       box-sizing: border-box;
+    }
+    /* Diversification : chips plus petites (police + padding) + row plus étroite */
+    .ncp-row[data-ncp-section="diversif"] {
+      max-width: 420px;
+    }
+    .ncp-row[data-ncp-section="diversif"] > .ncp-chip {
+      font-size: 12.5px;
+      padding: 4px 10px;
+    }
+    .ncp-row[data-ncp-section="diversif"] > .ncp-chip .pb-cause-tag {
+      font-size: 11px;
     }
     /* Lignes vides dans la grille — span sur les 2 colonnes */
     .ncp-grid-blank { grid-column: 1 / -1; height: 10px; }
@@ -17518,7 +17529,7 @@ const _NCP_LAIT_BRANCHES = [
   // Lait N°1 : "Bib = stratégie dépendante" (chip seul), Espacement, Volume, Tétée, Inversion, Tétine, Autres (TROP de féculents) + Conséquences (Mange nuit seul)
   { val: 'nutri_lok_lait_n1', label: 'Lait N°1', tag: '⇒ Faim',
     sections: [
-      ['En plus', [['nutri_lok_n1_bib_strat_dep','Bib = stratégie dépendante']]],
+      ['En plus', [['nutri_lok_n1_bib_strat_dep','Bib = stratégie dépendante']], { banner: true }],
       ['Espacement', [['nutri_lok_n1_esp_long','Trop long'],['nutri_lok_n1_esp_court','Trop court']]],
       ['Volume/durée des bib', [['nutri_lok_n1_vol_petit','Petit bib'],['nutri_lok_n1_vol_gros','Gros bib'],['nutri_lok_n1_vol_longtemps','Boit longtemps']]],
       ['Tétée baisse de lactation', [['nutri_lok_n1_tetee','↗ Direct'],['nutri_lok_n1_tetee_longue','Longue tétée'],['nutri_lok_n1_tetee_greve','Grève'],['nutri_lok_n1_tetee_mode_garde','Mode garde']], { parentDirect: 'nutri_lok_n1_tetee' }],
@@ -17534,7 +17545,7 @@ const _NCP_DIVERSIF_BRANCHES = [
   // Diversification N°1 : "Bib stratégie dépendante" + tree complet
   { val: 'nutri_div_n1', label: 'Diversif. N°1', tag: '⇒ Faim ou Dépendance',
     sections: [
-      ['En plus', [['nutri_div_n1_bib_strat_dep','Bib = stratégie dépendante']]],
+      ['En plus', [['nutri_div_n1_bib_strat_dep','Bib = stratégie dépendante']], { banner: true }],
       ['Espacement', [['nutri_div_n1_esp_long','Trop long'],['nutri_div_n1_esp_court','Trop court']]],
       ['Volume/durée des bib', [['nutri_div_n1_vol_petit','Petit bib'],['nutri_div_n1_vol_gros','Gros bib'],['nutri_div_n1_vol_longtemps','Boit longtemps']]],
       ['Inversion', [['nutri_div_n1_inversion_jour_nuit','Jour/Nuit'],['nutri_div_n1_inversion_lait_solide','Ordre lait/solide']]],
@@ -17585,8 +17596,11 @@ let _ncpActiveL2 = null;
 function _ncpRenderLaitL3Tree(branch) {
   const DIV = '<div class="ncp-l3-divider"></div>';
   let html = '<div class="ncp-l3-grid">';
+  // Sections : si opts.banner === true → render comme bandeau orange (style Conséquences)
+  // Sinon → render standard (label gras souligné + chips)
   const groups = branch.sections.map(s => {
     const [label, items, opts] = s;
+    if (opts && opts.banner) return _ncpConseqRow(label, items);
     return _ncpL3Group(label, items, opts || {});
   });
   html += groups.join(DIV);
@@ -17680,8 +17694,8 @@ function renderNutritionChipsProto() {
   const activeL1 = autoActiveId || _ncpActiveL1;
   // 4. Build HTML
   let html = '<div class="nutri-chips-proto">';
-  // ─── Ligne 1 : les 3 chips niveau 1 sibling (mêmes dimensions, mutex UI)
-  html += '<div class="ncp-row">';
+  // ─── Ligne 1 : les 3 chips niveau 1 sibling (grid 3 cols → mêmes dimensions, mutex UI)
+  html += '<div class="ncp-row" data-ncp-cols="3">';
   sectionState.forEach(sec => {
     const active = (activeL1 === sec.id);
     const cls = 'ncp-chip ncp-l1-chip' + (active ? ' checked' : '');
@@ -17727,8 +17741,9 @@ function renderNutritionChipsProto() {
     } else {
       // Layout PLAT : row de chips en GRID pour MÊME TAILLE entre frères/soeurs
       // data-ncp-cols = l2ChipsPerLine OU branches.length (Courbes pas OK = 3, Lait = 2, Diversif = 2)
+      // data-ncp-section = id de la section (pour styling spécifique ex. Diversif chips plus petites)
       const cols = activeSec.l2ChipsPerLine || activeSec.branches.length;
-      html += `<div class="ncp-row indent-1" data-ncp-cols="${cols}">`;
+      html += `<div class="ncp-row indent-1" data-ncp-cols="${cols}" data-ncp-section="${activeSec.id}">`;
       activeSec.branches.forEach(b => {
         html += l2ChipHtml(b.val, b.label, b.tag);
       });
