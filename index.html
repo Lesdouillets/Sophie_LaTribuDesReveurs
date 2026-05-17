@@ -988,25 +988,25 @@
       justify-content: center !important;
       box-sizing: border-box !important;
     }
-    /* L1 row (3 cols, pas de .indent-1) : max-width 540 → chips ~175px (chips L1 plus visibles) */
+    /* L1 row (3 cols, pas de .indent-1) : max 540 mais shrink si parent narrow (mode Meet) */
     .ncp-row[data-ncp-cols="3"]:not(.indent-1) {
       max-width: 540px !important;
-      width: 540px !important;
+      width: 100% !important;
     }
-    /* L2 Courbes pas OK (3 cols, avec .indent-1) : 3 chips × 146px → max-width 460 */
+    /* L2 Courbes pas OK (3 cols, avec .indent-1) : max 460 shrinkable */
     .ncp-row.indent-1[data-ncp-cols="3"][data-ncp-section="courbes"] {
       max-width: 460px !important;
-      width: 460px !important;
+      width: 100% !important;
     }
-    /* L2 Lait (2 cols) : 2 chips × 146px → max-width 300 (= Diversif) */
+    /* L2 Lait (2 cols) : max 300 shrinkable */
     .ncp-row.indent-1[data-ncp-section="lait"] {
       max-width: 300px !important;
-      width: 300px !important;
+      width: 100% !important;
     }
-    /* L2 Diversification (2 cols) : 2 chips × 146px → max-width 300 */
+    /* L2 Diversification (2 cols) : max 300 shrinkable */
     .ncp-row.indent-1[data-ncp-section="diversif"] {
       max-width: 300px !important;
-      width: 300px !important;
+      width: 100% !important;
     }
     /* ─── RYTHME : thème vert (override le défaut orange) ─── */
     [data-ncp-cat="rythme"] .ncp-chip.checked {
@@ -8108,7 +8108,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=743"></script>
+<script src="script-data.js?v=744"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
