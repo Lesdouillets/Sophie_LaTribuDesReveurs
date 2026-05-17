@@ -8108,7 +8108,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=734"></script>
+<script src="script-data.js?v=735"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -18014,7 +18014,7 @@ const _NCP_RYTHME_BRANCHES = [
   // Réveils matinaux — sub-parent avec 7 causes
   { id: 'rm', label: 'Réveils matinaux', kind: 'subparent', subgroup: 'rythme_reveil_mat',
     children: [
-      { val: 'rythme_reveil_decalage', label: 'Décalage horaire' },
+      { val: 'rythme_reveil_decalage', label: 'Décalage horaire<br><span style="color:#999;font-style:italic;font-weight:400;font-size:10px">(12h de sommeil OK)</span>' },
       { val: 'rythme_reveil_fatigue', label: 'Fatigue accumulée' },
       { val: 'rythme_reveil_relationnel', label: 'Enjeu relationnel' },
       { val: 'rythme_reveil_mange', label: 'Mange et ne peut pas se rendormir' },
@@ -18054,45 +18054,54 @@ function _showNcpRythmeReminder(branch) {
   if (document.querySelector(`.ncp-rythme-reminder-modal[data-rem-id="${id}"]`)) return;
   const parentLabel = branch.label || branch.id;
   const cleanLabel = String(parentLabel).replace(/<[^>]+>/g, '').trim();
-  // Helper : HTML d'un chip-bouton (style chip vert rythme, mêmes couleurs que V. Diagnostic)
-  // px = largeur en pixels (180 pour TE main, 110 pour conséquences) ou 'grid' pour RM (3 cols)
-  const chipBtn = (val, lbl, tag, sizeMode) => {
-    const tagHtml = tag ? `<div style="font-size:10px;font-weight:500;color:#6b7280;margin-top:3px">${tag}</div>` : '';
-    let sizeStyle = '';
-    if (sizeMode === 'wide') {
-      sizeStyle = 'width:180px;min-width:180px;max-width:180px;';
-    } else if (sizeMode === 'conseq') {
-      sizeStyle = 'width:110px;min-width:110px;max-width:110px;white-space:normal;text-align:center;line-height:1.2;';
-    } else if (sizeMode === 'grid') {
-      // RM : largeur auto, hauteur fixe 58px, gérée par grille parent
-      sizeStyle = 'width:auto;height:58px;white-space:normal;text-align:center;line-height:1.25;';
-    }
-    return `<button type="button" class="ncp-rem-choice" data-rem-val="${val}" style="
-      background:#fff;border:2px solid #7da589;color:#4a6b54;
-      padding:8px 12px;border-radius:10px;font-size:13px;font-weight:600;
-      cursor:pointer;transition:all .15s;display:flex;flex-direction:column;
-      align-items:center;justify-content:center;${sizeStyle}
-    ">${lbl}${tagHtml}</button>`;
-  };
   // ─── Build body selon le branch ───
   let bodyHtml = '';
   if (id === 'te') {
-    // TE : "Espacement" (2 chips 180px) + "Conséquences" (3 chips 110px)
-    const espacement = branch.children.map(c => chipBtn(c.val, c.label, c.tag, 'wide')).join('');
-    // Concat toutes les conséquences (Trop long + Trop court) en une seule rangée
-    const conseqList = [];
-    branch.children.forEach(c => {
-      c.consequences?.forEach(cs => conseqList.push([cs[0], cs[1]]));
-    });
-    const conseqs = conseqList.map(it => chipBtn(it[0], it[1], '', 'conseq')).join('');
+    // TE : "Espacement" (2 chips 180px MUTEX) + "Conséquences" (2 chips 110px multi-select)
+    // Multi-select : l'utilisateur peut cocher plusieurs chips, validation via bouton "Valider"
+    // Conséquences déduplications : "Siestes courtes" 1 seule fois (la value PB est résolue à
+    // la validation selon l'espacement choisi : TE long → rythme_te_long_siestes_courtes,
+    // TE court → rythme_te_court_siestes_courtes)
+    // "Réveils matinaux" : seulement valide pour TE long (ignoré sinon)
+    const espacementBtns = branch.children.map(c => {
+      const tagHtml = c.tag ? `<div style="font-size:10px;font-weight:500;color:#6b7280;margin-top:3px">${c.tag}</div>` : '';
+      return `<button type="button" class="ncp-rem-te-esp" data-rem-logical="${c.val}" style="
+        background:#fff;border:2px solid #7da589;color:#4a6b54;
+        padding:8px 12px;border-radius:10px;font-size:13px;font-weight:600;
+        cursor:pointer;transition:all .15s;display:flex;flex-direction:column;
+        align-items:center;justify-content:center;
+        width:180px;min-width:180px;max-width:180px;
+      ">${c.label}${tagHtml}</button>`;
+    }).join('');
+    // Conséquences : 2 chips uniquement (Siestes courtes + Réveils matinaux — doublon supprimé)
+    const conseqOptions = [
+      { logical: 'conseq_sc', label: 'Siestes courtes' },
+      { logical: 'conseq_rm', label: 'Réveils matinaux' },
+    ];
+    const conseqBtns = conseqOptions.map(c => `
+      <button type="button" class="ncp-rem-te-conseq" data-rem-logical="${c.logical}" style="
+        background:#fff;border:2px solid #7da589;color:#4a6b54;
+        padding:8px 12px;border-radius:10px;font-size:13px;font-weight:600;
+        cursor:pointer;transition:all .15s;display:flex;flex-direction:column;
+        align-items:center;justify-content:center;
+        width:110px;min-width:110px;max-width:110px;
+        white-space:normal;text-align:center;line-height:1.2;
+      ">${c.label}</button>`).join('');
     bodyHtml = `
       <div style="margin-bottom:18px">
         <div style="font-size:13px;font-weight:700;color:#4a6b54;text-decoration:underline;margin-bottom:8px">Espacement</div>
-        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">${espacement}</div>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">${espacementBtns}</div>
       </div>
-      <div>
+      <div style="margin-bottom:20px">
         <div style="font-size:13px;font-weight:700;color:#4a6b54;text-decoration:underline;margin-bottom:8px">Conséquences</div>
-        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">${conseqs}</div>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">${conseqBtns}</div>
+      </div>
+      <div style="text-align:center;border-top:1px solid #e5e7eb;padding-top:16px;margin-top:16px">
+        <button type="button" class="ncp-rem-te-validate" disabled style="
+          background:#4a6b54;color:#fff;border:none;
+          padding:12px 32px;border-radius:10px;font-size:15px;font-weight:700;
+          cursor:not-allowed;opacity:.45;transition:all .15s;
+        ">Valider</button>
       </div>`;
   } else if (id === 'rm') {
     // RM : "Causes" — 7 chips en grille 3 colonnes × 58px (identique au sub-tree leviers identifiés)
@@ -18145,10 +18154,22 @@ function _showNcpRythmeReminder(branch) {
   document.body.insertAdjacentHTML('beforeend', modalHtml);
   const modal = document.querySelector(`.ncp-rythme-reminder-modal[data-rem-id="${id}"]`);
   if (!modal) return;
-  // Listener : choix → coche la PB et retire la modal
+  // ─── Helpers : style chip checked/unchecked dans la modal ───
+  const setChipChecked = (btn, checked) => {
+    if (checked) {
+      btn.classList.add('rem-checked');
+      btn.style.background = '#4a6b54';
+      btn.style.color = '#fff';
+    } else {
+      btn.classList.remove('rem-checked');
+      btn.style.background = '#fff';
+      btn.style.color = '#4a6b54';
+    }
+  };
+  // ─── RM : 1 chip click = applique + ferme ───
   modal.querySelectorAll('.ncp-rem-choice').forEach(btn => {
-    btn.addEventListener('mouseenter', () => { btn.style.background = '#bdd1c4'; });
-    btn.addEventListener('mouseleave', () => { btn.style.background = '#fff'; });
+    btn.addEventListener('mouseenter', () => { if (!btn.classList.contains('rem-checked')) btn.style.background = '#bdd1c4'; });
+    btn.addEventListener('mouseleave', () => { if (!btn.classList.contains('rem-checked')) btn.style.background = '#fff'; });
     btn.addEventListener('click', (ev) => {
       ev.preventDefault(); ev.stopPropagation();
       const v = btn.dataset.remVal;
@@ -18156,6 +18177,72 @@ function _showNcpRythmeReminder(branch) {
       onNutriChipClick(v);
     });
   });
+  // ─── TE : multi-select avec bouton Valider ───
+  if (id === 'te') {
+    const validateBtn = modal.querySelector('.ncp-rem-te-validate');
+    const updateValidate = () => {
+      const espChecked = modal.querySelector('.ncp-rem-te-esp.rem-checked');
+      if (espChecked) {
+        validateBtn.disabled = false;
+        validateBtn.style.cursor = 'pointer';
+        validateBtn.style.opacity = '1';
+      } else {
+        validateBtn.disabled = true;
+        validateBtn.style.cursor = 'not-allowed';
+        validateBtn.style.opacity = '.45';
+      }
+    };
+    // Espacement chips : MUTEX (un seul actif à la fois)
+    modal.querySelectorAll('.ncp-rem-te-esp').forEach(btn => {
+      btn.addEventListener('mouseenter', () => { if (!btn.classList.contains('rem-checked')) btn.style.background = '#bdd1c4'; });
+      btn.addEventListener('mouseleave', () => { if (!btn.classList.contains('rem-checked')) btn.style.background = '#fff'; });
+      btn.addEventListener('click', (ev) => {
+        ev.preventDefault(); ev.stopPropagation();
+        const wasChecked = btn.classList.contains('rem-checked');
+        // Décocher tous les espacement
+        modal.querySelectorAll('.ncp-rem-te-esp').forEach(b => setChipChecked(b, false));
+        // Recocher celui-ci si pas déjà coché
+        if (!wasChecked) setChipChecked(btn, true);
+        updateValidate();
+      });
+    });
+    // Conséquences chips : multi-select indépendant
+    modal.querySelectorAll('.ncp-rem-te-conseq').forEach(btn => {
+      btn.addEventListener('mouseenter', () => { if (!btn.classList.contains('rem-checked')) btn.style.background = '#bdd1c4'; });
+      btn.addEventListener('mouseleave', () => { if (!btn.classList.contains('rem-checked')) btn.style.background = '#fff'; });
+      btn.addEventListener('click', (ev) => {
+        ev.preventDefault(); ev.stopPropagation();
+        setChipChecked(btn, !btn.classList.contains('rem-checked'));
+      });
+    });
+    // Valider : applique espacement + conséquences (résolues selon l'espacement)
+    validateBtn.addEventListener('click', (ev) => {
+      ev.preventDefault(); ev.stopPropagation();
+      if (validateBtn.disabled) return;
+      const espBtn = modal.querySelector('.ncp-rem-te-esp.rem-checked');
+      if (!espBtn) return;
+      const espVal = espBtn.dataset.remLogical; // 'rythme_te_trop_long' ou 'rythme_te_trop_court'
+      // Map conséquences logiques → vraies PB selon l'espacement
+      const isLong = espVal === 'rythme_te_trop_long';
+      const conseqMap = {
+        conseq_sc: isLong ? 'rythme_te_long_siestes_courtes' : 'rythme_te_court_siestes_courtes',
+        conseq_rm: isLong ? 'rythme_te_long_reveils_matinaux' : null, // Réveils matinaux only valid pour TE long
+      };
+      const conseqVals = [];
+      modal.querySelectorAll('.ncp-rem-te-conseq.rem-checked').forEach(b => {
+        const real = conseqMap[b.dataset.remLogical];
+        if (real) conseqVals.push(real);
+      });
+      _clearNcpRythmeReminder(id);
+      // Appliquer espacement d'abord (parent), puis conséquences (qui ont data-auto-parent)
+      onNutriChipClick(espVal);
+      conseqVals.forEach(v => {
+        // Ne re-cliquer que si pas déjà coché (onNutriChipClick toggle)
+        if (!state?.selectedPbs?.has(v)) onNutriChipClick(v);
+      });
+    });
+    updateValidate();
+  }
 }
 function renderRythmeChips() {
   const catInput = document.querySelector('#diag-pb-container input[data-cat="rythme"]');
@@ -18315,7 +18402,19 @@ function renderRythmeChips() {
         if (sp) _ncpRythmeActiveL2.delete(sp.id);
       }
       onNutriChipClick(val);
-      // renderRythmeChips() est appelé dans onNutriChipClick — pas besoin de doubler
+      // Auto-fermer le sub-parent si plus aucun enfant coché après la modif
+      // (ex. décocher la dernière cause RM → "Réveils matinaux" se décoche aussi)
+      let didAutoClose = false;
+      _NCP_RYTHME_BRANCHES.forEach(b => {
+        if (b.kind !== 'subparent') return;
+        const hasChild = b.children?.some(c => state?.selectedPbs?.has(c.val)
+          || (c.consequences && c.consequences.some(cs => state?.selectedPbs?.has(cs[0]))));
+        if (!hasChild && _ncpRythmeActiveL2.has(b.id)) {
+          _ncpRythmeActiveL2.delete(b.id);
+          didAutoClose = true;
+        }
+      });
+      if (didAutoClose) renderRythmeChips();
     });
   });
 }
