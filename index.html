@@ -965,9 +965,25 @@
       align-items: center;
       justify-content: flex-start;
     }
-    /* Niveau 2 row : chips centrées (ex. Trop d'apport sur 2e ligne centré sous les 2 du dessus) */
+    /* Niveau 2 row : layout GRID pour chips de MÊME TAILLE entre frères/soeurs
+       (data-ncp-cols dynamique : 3 pour Courbes pas OK, 2 pour Lait/Diversification) */
     .ncp-row.indent-1 {
       justify-content: center;
+    }
+    .ncp-row.indent-1[data-ncp-cols] {
+      display: grid;
+      gap: 8px;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .ncp-row.indent-1[data-ncp-cols="2"] { grid-template-columns: 1fr 1fr; }
+    .ncp-row.indent-1[data-ncp-cols="3"] { grid-template-columns: 1fr 1fr 1fr; }
+    /* Force les chips à remplir leur cellule de grille → même largeur entre siblings */
+    .ncp-row.indent-1[data-ncp-cols] > .ncp-chip {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      box-sizing: border-box;
     }
     /* Lignes vides dans la grille — span sur les 2 colonnes */
     .ncp-grid-blank { grid-column: 1 / -1; height: 10px; }
@@ -1055,8 +1071,8 @@
        + Niveau 2 (branches) : police plus grosse + tag ⇒ Faim sur une ligne en dessous (dans la chip) */
     .ncp-chip[data-ncp-l1-section],
     .ncp-chip[data-ncp-l2] {
-      font-size: 15px;
-      padding: 6px 14px;
+      font-size: 14px;
+      padding: 5px 12px;
       flex-direction: column;
       align-items: center;
     }
@@ -17709,15 +17725,12 @@ function renderNutritionChipsProto() {
       });
       html += '</div>';
     } else {
-      // Layout PLAT : row de chips
-      // Si activeSec.l2ChipsPerLine défini, insère un .ncp-flex-break tous les N chips
-      html += '<div class="ncp-row indent-1">';
-      const perLine = activeSec.l2ChipsPerLine || 0;
-      activeSec.branches.forEach((b, i) => {
+      // Layout PLAT : row de chips en GRID pour MÊME TAILLE entre frères/soeurs
+      // data-ncp-cols = l2ChipsPerLine OU branches.length (Courbes pas OK = 3, Lait = 2, Diversif = 2)
+      const cols = activeSec.l2ChipsPerLine || activeSec.branches.length;
+      html += `<div class="ncp-row indent-1" data-ncp-cols="${cols}">`;
+      activeSec.branches.forEach(b => {
         html += l2ChipHtml(b.val, b.label, b.tag);
-        if (perLine && (i + 1) % perLine === 0 && i < activeSec.branches.length - 1) {
-          html += '<div class="ncp-flex-break"></div>';
-        }
       });
       html += '</div>';
     }
