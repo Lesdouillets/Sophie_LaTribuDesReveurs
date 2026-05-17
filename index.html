@@ -990,19 +990,23 @@
     }
     /* L1 row (3 cols, pas de .indent-1) : max-width 540 → chips ~175px (chips L1 plus visibles) */
     .ncp-row[data-ncp-cols="3"]:not(.indent-1) {
-      max-width: 540px;
+      max-width: 540px !important;
+      width: 540px !important;
     }
     /* L2 Courbes pas OK (3 cols, avec .indent-1) : 3 chips × 146px → max-width 460 */
     .ncp-row.indent-1[data-ncp-cols="3"][data-ncp-section="courbes"] {
-      max-width: 460px;
+      max-width: 460px !important;
+      width: 460px !important;
     }
     /* L2 Lait (2 cols) : 2 chips × 146px → max-width 300 (= Diversif) */
     .ncp-row.indent-1[data-ncp-section="lait"] {
-      max-width: 300px;
+      max-width: 300px !important;
+      width: 300px !important;
     }
     /* L2 Diversification (2 cols) : 2 chips × 146px → max-width 300 */
     .ncp-row.indent-1[data-ncp-section="diversif"] {
-      max-width: 300px;
+      max-width: 300px !important;
+      width: 300px !important;
     }
     /* Lignes vides dans la grille — span sur les 2 colonnes */
     .ncp-grid-blank { grid-column: 1 / -1; height: 10px; }
@@ -8171,14 +8175,17 @@ async function syncAllLocalToSupabase() {
       if (!c._id || !c.prenomEnfant) continue;
       // Upsert comme session "fiche seule" si pas déjà une session avec cet id
       const fakeId = 'client_' + c._id;
-      await db.from('sessions').upsert({
-        id: fakeId,
-        user_id: currentUser.id,
-        client_name: `${c.prenomEnfant||''} ${c.nomFamille||''}`.trim(),
-        client_data: c,
-        session_data: { savedAt: c.savedAt || new Date().toISOString() },
-        updated_at: c.savedAt || new Date().toISOString()
-      }).catch(() => {});
+      // Note : .catch() ne marche pas sur le PostgrestBuilder (pas une Promise pure) → try/catch
+      try {
+        await db.from('sessions').upsert({
+          id: fakeId,
+          user_id: currentUser.id,
+          client_name: `${c.prenomEnfant||''} ${c.nomFamille||''}`.trim(),
+          client_data: c,
+          session_data: { savedAt: c.savedAt || new Date().toISOString() },
+          updated_at: c.savedAt || new Date().toISOString()
+        });
+      } catch (e) {}
     }
   } catch(e) { console.warn('syncAllLocalToSupabase:', e); }
 }
