@@ -17976,7 +17976,7 @@ window.renderNutritionChipsProto = renderNutritionChipsProto;
 // ═══════════════════════════════════════════════════════════════════════
 const _NCP_RYTHME_BRANCHES = [
   // Temps d'éveil — sub-parent avec 2 enfants (mutex), chacun avec conséquences
-  { id: 'te', label: "Temps d'éveil", kind: 'subparent',
+  { id: 'te', label: "Temps d'éveil", kind: 'subparent', subgroup: 'rythme_te',
     children: [
       { val: 'rythme_te_trop_long', label: 'Trop long', tag: '⇒ Sur-stimulation',
         consequences: [
@@ -17993,7 +17993,7 @@ const _NCP_RYTHME_BRANCHES = [
     label: 'Siestes courtes <span style="color:#999;font-style:italic;font-weight:400;font-size:10px;margin-left:3px">(TE OK)</span>',
     tag: '⇒ Pas de rallongement de sieste', kind: 'leaf' },
   // Réveils matinaux — sub-parent avec 7 causes
-  { id: 'rm', label: 'Réveils matinaux', kind: 'subparent',
+  { id: 'rm', label: 'Réveils matinaux', kind: 'subparent', subgroup: 'rythme_reveil_mat',
     children: [
       { val: 'rythme_reveil_decalage', label: 'Décalage horaire' },
       { val: 'rythme_reveil_fatigue', label: 'Fatigue accumulée' },
@@ -18116,10 +18116,20 @@ function renderRythmeChips() {
     });
   });
   // Leaf chip : toggle PB via cb.click() (onNutriChipClick gère le chain)
+  // + mutex UI : si la PB a data-excludes pointant sur un subgroup, fermer le sub-tree de ce sub-parent
   host.querySelectorAll('.ncp-chip[data-ncp-value]').forEach(el => {
     el.addEventListener('click', (ev) => {
       ev.preventDefault(); ev.stopPropagation();
-      onNutriChipClick(el.dataset.ncpValue);
+      const val = el.dataset.ncpValue;
+      // Lit data-excludes depuis la checkbox source (.diag-pb)
+      const cb = document.querySelector(`.diag-pb[value="${val}"]`);
+      const excludesGroup = cb?.dataset.excludes;
+      if (excludesGroup) {
+        // Trouve sub-parent correspondant et le retire de _ncpRythmeActiveL2
+        const sp = _NCP_RYTHME_BRANCHES.find(b => b.subgroup === excludesGroup);
+        if (sp) _ncpRythmeActiveL2.delete(sp.id);
+      }
+      onNutriChipClick(val);
       setTimeout(() => renderRythmeChips(), 50);
     });
   });
