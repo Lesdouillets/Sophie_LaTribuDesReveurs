@@ -965,8 +965,7 @@
       align-items: center;
       justify-content: flex-start;
     }
-    /* Layout FLEX avec LARGEURS FIXES par section pour garantir chips siblings identiques
-       (grid 1fr posait des problèmes de spécificité avec les chips inline-flex) */
+    /* Layout FLEX : chips horizontales, même taille entre frères via flex: 1 */
     .ncp-row.indent-1 {
       justify-content: center;
     }
@@ -975,47 +974,41 @@
       flex-wrap: wrap;
       align-items: stretch;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
       margin: 0 auto;
     }
-    /* Toutes les chips en flex column, taille fixe selon section (voir règles spécifiques ci-dessous) */
+    /* Toutes les chips dans grid-row : flex:1 → même largeur entre siblings, s'adaptent au container */
     .ncp-row[data-ncp-cols] > .ncp-chip {
       display: flex !important;
-      flex-direction: column !important;
+      flex: 1 1 0 !important;
       align-items: center !important;
       justify-content: center !important;
       box-sizing: border-box !important;
     }
-    /* Niveau 1 (Courbes pas OK / Lait / Diversification) : 3 chips de 210px chacune */
-    .ncp-row[data-ncp-cols="3"] > .ncp-chip[data-ncp-l1-section] {
-      width: 210px !important;
-      min-width: 210px !important;
-      max-width: 210px !important;
+    /* L1 chips : flex-direction ROW (label inline, ex. "Lait (courbes OK)" sur 1 ligne) */
+    .ncp-row[data-ncp-cols] > .ncp-chip[data-ncp-l1-section] {
+      flex-direction: row !important;
+      min-width: 110px !important;
     }
-    /* Niveau 2 Courbes pas OK (3 chips dont Trop d'apport) : 200px chacune → MÊME TAILLE */
-    .ncp-row[data-ncp-cols="3"][data-ncp-section="courbes"] > .ncp-chip {
-      width: 200px !important;
-      min-width: 200px !important;
-      max-width: 200px !important;
+    /* L2 chips : flex-direction COLUMN (tag ⇒ Faim sur 2e ligne en dessous du label) */
+    .ncp-row[data-ncp-cols] > .ncp-chip[data-ncp-l2] {
+      flex-direction: column !important;
+      min-width: 110px !important;
     }
-    /* Niveau 2 Lait (6 chips à 2 cols) : 180px chacune, plus petites */
-    .ncp-row[data-ncp-cols="2"][data-ncp-section="lait"] > .ncp-chip {
-      width: 180px !important;
-      min-width: 180px !important;
-      max-width: 180px !important;
+    /* Lait L2 : chips plus petites (font + padding réduits) */
+    .ncp-row[data-ncp-cols][data-ncp-section="lait"] > .ncp-chip {
       font-size: 13px !important;
       padding: 4px 10px !important;
+      min-width: 130px !important;
     }
     .ncp-row[data-ncp-section="lait"] > .ncp-chip .pb-cause-tag {
       font-size: 11px;
     }
-    /* Niveau 2 Diversification (2 chips) : 160px chacune, encore plus petites */
-    .ncp-row[data-ncp-cols="2"][data-ncp-section="diversif"] > .ncp-chip {
-      width: 160px !important;
-      min-width: 160px !important;
-      max-width: 160px !important;
+    /* Diversification L2 : chips encore plus petites */
+    .ncp-row[data-ncp-cols][data-ncp-section="diversif"] > .ncp-chip {
       font-size: 12.5px !important;
       padding: 3px 9px !important;
+      min-width: 110px !important;
     }
     .ncp-row[data-ncp-section="diversif"] > .ncp-chip .pb-cause-tag {
       font-size: 10.5px;
@@ -21362,6 +21355,8 @@ function addCatSelectButtons(container) {
   container.querySelectorAll('.pb-category').forEach(cat => {
     const title = cat.querySelector('.pb-category-title');
     if (!title || title.querySelector('.pb-cat-btns')) return;
+    // Skip Nutrition : remplacée par les chips → les boutons Tout ✓/✗ n'ont pas de sens
+    const isNutritionTopLevel = !!title.querySelector('input[data-cat="nutrition"]');
     // Wrapper emoji + label dans des spans séparés (uniquement pour top-level avec data-cat,
     // pour permettre le stacking vertical via CSS — purement visuel, ne touche aucune logique).
     const dataCatInput = title.querySelector('input[data-cat]');
@@ -21381,6 +21376,8 @@ function addCatSelectButtons(container) {
         }
       }
     }
+    // Skip Tout ✓/✗ pour Nutrition (remplacée par les chips → boutons inutiles)
+    if (isNutritionTopLevel) return;
     const wrap = document.createElement('span');
     wrap.className = 'pb-cat-btns';
     wrap.innerHTML = `
