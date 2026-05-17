@@ -1045,10 +1045,17 @@
       max-width: 146px !important;
       flex: 0 0 146px !important;
     }
-    /* Sub-tree "Espacement" (TE) : chips empilées verticalement (1 par ligne) */
-    [data-ncp-cat="rythme"] .ncp-l3-chips.ncp-vertical {
-      flex-direction: column !important;
-      align-items: stretch !important;
+    /* Sub-tree chips Rythme : MÊME TAILLE (146px) que les chips L2 */
+    [data-ncp-cat="rythme"] .ncp-l3-chips > .ncp-chip {
+      width: 146px !important;
+      min-width: 146px !important;
+      max-width: 146px !important;
+      flex: 0 0 146px !important;
+    }
+    /* Le label de Conséquences (bandeau) garde sa largeur normale */
+    [data-ncp-cat="rythme"] .ncp-conseq-row .ncp-chip {
+      width: auto !important;
+      flex: 0 0 auto !important;
     }
     /* Lignes vides dans la grille — span sur les 2 colonnes */
     .ncp-grid-blank { grid-column: 1 / -1; height: 10px; }
@@ -17961,8 +17968,9 @@ const _NCP_RYTHME_BRANCHES = [
   { id: 'pa', val: 'rythme_activite_physique', label: "Pas d'activité physique",
     tag: '⇒ Pas assez de pression de sommeil', kind: 'leaf' },
 ];
-// État local UI rythme : id de la sub-parent branch actuellement révélée (sub-tree visible)
-let _ncpRythmeActiveL2 = null;
+// État local UI rythme : Set des sub-parent ids actuellement révélés (sub-trees visibles)
+// Set permet d'avoir plusieurs sub-trees ouverts simultanément (ex. TE + RM en même temps)
+let _ncpRythmeActiveL2 = new Set();
 function renderRythmeChips() {
   const catInput = document.querySelector('#diag-pb-container input[data-cat="rythme"]');
   const cat = catInput?.closest('.pb-category');
@@ -17980,28 +17988,23 @@ function renderRythmeChips() {
     host.className = 'ncp-section';
     items.insertBefore(host, items.firstChild);
   }
-  // Determine active sub-parent (priorité auto-active si enfant coché)
-  let autoActive = null;
-  _NCP_RYTHME_BRANCHES.forEach(b => {
-    if (b.kind !== 'subparent') return;
-    const hasCheckedChild = b.children?.some(c =>
-      _ncpIsChecked(c.val) || (c.consequences && c.consequences.some(cs => _ncpIsChecked(cs[0])))
-    );
-    if (hasCheckedChild) autoActive = b.id;
-  });
-  const activeL2 = autoActive || _ncpRythmeActiveL2;
   // Helper : check si un sub-parent a au moins un enfant coché (ou un conséq coché)
   const subParentHasChecked = (b) => b.children?.some(c =>
     _ncpIsChecked(c.val) || (c.consequences && c.consequences.some(cs => _ncpIsChecked(cs[0])))
   );
+  // Auto-add sub-parents au Set si un enfant est coché (sync visuel avec data state)
+  _NCP_RYTHME_BRANCHES.forEach(b => {
+    if (b.kind === 'subparent' && subParentHasChecked(b)) _ncpRythmeActiveL2.add(b.id);
+  });
   // Helper : HTML d'une chip L2
+  // Sub-parent "checked" UNIQUEMENT si un enfant PB est coché (pas si juste sub-tree ouvert)
+  // → évite la confusion entre "ouvert" (visible) et "coché" (PB actif) + mutex Siestes courtes
   const chipHtml = (b) => {
     let isChecked = false;
     if (b.kind === 'leaf') {
       isChecked = _ncpIsChecked(b.val);
     } else {
-      // Sub-parent checked si : sub-tree ouvert OU au moins un enfant coché
-      isChecked = (b.id === activeL2) || subParentHasChecked(b);
+      isChecked = subParentHasChecked(b);
     }
     const cls = 'ncp-chip' + (isChecked ? ' checked' : '');
     const tagHtml = b.tag ? ` <span class="pb-cause-tag">${b.tag}</span>` : '';
@@ -18023,12 +18026,13 @@ function renderRythmeChips() {
   html += chipHtml(_NCP_RYTHME_BRANCHES.find(b => b.id === 'ha'));
   html += chipHtml(_NCP_RYTHME_BRANCHES.find(b => b.id === 'pa'));
   html += '</div>';
-  // Sub-tree de la branche active
-  const activeBranch = _NCP_RYTHME_BRANCHES.find(b => b.id === activeL2 && b.kind === 'subparent');
-  if (activeBranch) {
+  // Sub-trees de TOUTES les branches actives (ordre selon _NCP_RYTHME_BRANCHES : TE puis RM)
+  _NCP_RYTHME_BRANCHES.forEach(b => {
+    if (b.kind !== 'subparent') return;
+    if (!_ncpRythmeActiveL2.has(b.id)) return;
     html += '<div class="ncp-separator"></div>';
-    html += renderRythmeSubTree(activeBranch);
-  }
+    html += renderRythmeSubTree(b);
+  });
   html += '</div>';
   host.innerHTML = html;
   // ─── LISTENERS ───
@@ -18059,10 +18063,11 @@ function renderRythmeChips() {
           if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
           if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
         } catch (e) {}
-        _ncpRythmeActiveL2 = null;
+        _ncpRythmeActiveL2.delete(id);
       } else {
-        // Toggle reveal
-        _ncpRythmeActiveL2 = (_ncpRythmeActiveL2 === id) ? null : id;
+        // Toggle reveal (Set : permet plusieurs sub-trees ouverts en même temps)
+        if (_ncpRythmeActiveL2.has(id)) _ncpRythmeActiveL2.delete(id);
+        else _ncpRythmeActiveL2.add(id);
       }
       renderRythmeChips();
     });
@@ -18080,9 +18085,9 @@ function renderRythmeSubTree(branch) {
   const DIV = '<div class="ncp-l3-divider"></div>';
   let html = '<div class="ncp-l3-grid">';
   if (branch.id === 'te') {
-    // Temps d'éveil : "Espacement" (label) avec Trop long / Trop court (chips empilées verticalement)
+    // Temps d'éveil : "Espacement" (label) avec Trop long / Trop court (chips horizontales, même taille)
     html += `<span class="ncp-l3-label">Espacement</span>`;
-    html += '<div class="ncp-l3-chips ncp-vertical">';
+    html += '<div class="ncp-l3-chips">';
     branch.children.forEach(c => {
       const checked = _ncpIsChecked(c.val);
       const cls = 'ncp-chip' + (checked ? ' checked' : '');
@@ -18090,12 +18095,13 @@ function renderRythmeSubTree(branch) {
       html += `<span class="${cls}" data-ncp-value="${c.val}">${c.label}${tagHtml}</span>`;
     });
     html += '</div>';
-    // Conséquences (uniquement pour le parent coché)
-    branch.children.forEach(c => {
-      if (!c.consequences || !_ncpIsChecked(c.val)) return;
+    // Conséquences : toujours visibles quand sub-tree TE ouvert
+    // Si Trop court coché → ses 1 conséquence ; sinon → conséquences de Trop long (cas par défaut)
+    const activeChild = branch.children.find(c => _ncpIsChecked(c.val)) || branch.children[0];
+    if (activeChild.consequences && activeChild.consequences.length) {
       html += DIV;
-      html += _ncpConseqRow('Conséq. ' + c.label, c.consequences);
-    });
+      html += _ncpConseqRow('Conséquences', activeChild.consequences);
+    }
   } else if (branch.id === 'rm') {
     // Réveils matinaux : 7 causes en une seule liste
     html += `<span class="ncp-l3-label">Causes</span>`;
