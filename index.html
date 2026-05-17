@@ -17976,7 +17976,9 @@ window.renderNutritionChipsProto = renderNutritionChipsProto;
 // ═══════════════════════════════════════════════════════════════════════
 const _NCP_RYTHME_BRANCHES = [
   // Temps d'éveil — sub-parent avec 2 enfants (mutex), chacun avec conséquences
+  // excludesLeaves : leaves à décocher quand on OUVRE TE (mutex symétrique avec Siestes courtes)
   { id: 'te', label: "Temps d'éveil", kind: 'subparent', subgroup: 'rythme_te',
+    excludesLeaves: ['rythme_siestes_courtes'],
     children: [
       { val: 'rythme_te_trop_long', label: 'Trop long', tag: '⇒ Sur-stimulation',
         consequences: [
@@ -18109,8 +18111,35 @@ function renderRythmeChips() {
         _ncpRythmeActiveL2.delete(id);
       } else {
         // Toggle reveal (Set : permet plusieurs sub-trees ouverts en même temps)
-        if (_ncpRythmeActiveL2.has(id)) _ncpRythmeActiveL2.delete(id);
-        else _ncpRythmeActiveL2.add(id);
+        if (_ncpRythmeActiveL2.has(id)) {
+          _ncpRythmeActiveL2.delete(id);
+        } else {
+          // OUVERTURE : décocher les leaves exclusifs (mutex symétrique)
+          // ex. ouvrir TE → décoche Siestes courtes (puisque TE ↔ SC sont mutex)
+          if (branch.excludesLeaves && state && state.selectedPbs) {
+            let didUncheck = false;
+            branch.excludesLeaves.forEach(v => {
+              if (state.selectedPbs.has(v)) {
+                state.selectedPbs.delete(v);
+                didUncheck = true;
+              }
+            });
+            if (didUncheck) {
+              // Sync DOM checkboxes + side effects
+              document.querySelectorAll('input[name="pb"], .diag-pb, .modal-pb').forEach(cb => {
+                if (!cb.value || !state.selectedPbs) return;
+                const checked = state.selectedPbs.has(cb.value);
+                cb.checked = checked;
+                cb.closest('.pb-item')?.classList.toggle('checked', checked);
+              });
+              try {
+                if (typeof syncSolutionsFromPbs === 'function') syncSolutionsFromPbs();
+                if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
+              } catch (e) {}
+            }
+          }
+          _ncpRythmeActiveL2.add(id);
+        }
       }
       renderRythmeChips();
     });
