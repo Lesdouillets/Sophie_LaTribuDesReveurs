@@ -8108,7 +8108,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=733"></script>
+<script src="script-data.js?v=734"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -18054,15 +18054,71 @@ function _showNcpRythmeReminder(branch) {
   if (document.querySelector(`.ncp-rythme-reminder-modal[data-rem-id="${id}"]`)) return;
   const parentLabel = branch.label || branch.id;
   const cleanLabel = String(parentLabel).replace(/<[^>]+>/g, '').trim();
-  // Boutons-choix : style chip vert rythme (#7da589 / #4a6b54), pas de bouton de fermeture
-  const choices = branch.children.map(c => {
-    const lbl = String(c.label || c.val).replace(/<[^>]+>/g, '').trim();
-    return `<button type="button" class="ncp-rem-choice" data-rem-val="${c.val}" style="
+  // Helper : HTML d'un chip-bouton (style chip vert rythme, mêmes couleurs que V. Diagnostic)
+  // px = largeur en pixels (180 pour TE main, 110 pour conséquences) ou 'grid' pour RM (3 cols)
+  const chipBtn = (val, lbl, tag, sizeMode) => {
+    const tagHtml = tag ? `<div style="font-size:10px;font-weight:500;color:#6b7280;margin-top:3px">${tag}</div>` : '';
+    let sizeStyle = '';
+    if (sizeMode === 'wide') {
+      sizeStyle = 'width:180px;min-width:180px;max-width:180px;';
+    } else if (sizeMode === 'conseq') {
+      sizeStyle = 'width:110px;min-width:110px;max-width:110px;white-space:normal;text-align:center;line-height:1.2;';
+    } else if (sizeMode === 'grid') {
+      // RM : largeur auto, hauteur fixe 58px, gérée par grille parent
+      sizeStyle = 'width:auto;height:58px;white-space:normal;text-align:center;line-height:1.25;';
+    }
+    return `<button type="button" class="ncp-rem-choice" data-rem-val="${val}" style="
       background:#fff;border:2px solid #7da589;color:#4a6b54;
-      padding:10px 16px;border-radius:10px;font-size:14px;font-weight:600;
-      cursor:pointer;transition:all .15s;
-    ">${lbl}</button>`;
-  }).join('');
+      padding:8px 12px;border-radius:10px;font-size:13px;font-weight:600;
+      cursor:pointer;transition:all .15s;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;${sizeStyle}
+    ">${lbl}${tagHtml}</button>`;
+  };
+  // ─── Build body selon le branch ───
+  let bodyHtml = '';
+  if (id === 'te') {
+    // TE : "Espacement" (2 chips 180px) + "Conséquences" (3 chips 110px)
+    const espacement = branch.children.map(c => chipBtn(c.val, c.label, c.tag, 'wide')).join('');
+    // Concat toutes les conséquences (Trop long + Trop court) en une seule rangée
+    const conseqList = [];
+    branch.children.forEach(c => {
+      c.consequences?.forEach(cs => conseqList.push([cs[0], cs[1]]));
+    });
+    const conseqs = conseqList.map(it => chipBtn(it[0], it[1], '', 'conseq')).join('');
+    bodyHtml = `
+      <div style="margin-bottom:18px">
+        <div style="font-size:13px;font-weight:700;color:#4a6b54;text-decoration:underline;margin-bottom:8px">Espacement</div>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">${espacement}</div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#4a6b54;text-decoration:underline;margin-bottom:8px">Conséquences</div>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">${conseqs}</div>
+      </div>`;
+  } else if (id === 'rm') {
+    // RM : "Causes" — 7 chips en grille 3 colonnes × 58px (identique au sub-tree leviers identifiés)
+    // Dernière chip centrée (grid-column 2) pour le motif 3+3+1
+    const causes = branch.children.map((c, i) => {
+      const isLast = i === branch.children.length - 1;
+      const lastStyle = isLast ? 'grid-column:2;' : '';
+      const tagHtml = '';
+      return `<button type="button" class="ncp-rem-choice" data-rem-val="${c.val}" style="
+        background:#fff;border:2px solid #7da589;color:#4a6b54;
+        padding:8px 10px;border-radius:10px;font-size:13px;font-weight:600;
+        cursor:pointer;transition:all .15s;height:58px;
+        white-space:normal;text-align:center;line-height:1.25;
+        display:flex;align-items:center;justify-content:center;${lastStyle}
+      ">${c.label}${tagHtml}</button>`;
+    }).join('');
+    bodyHtml = `
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#4a6b54;text-decoration:underline;margin-bottom:8px">Causes</div>
+        <div style="
+          display:grid;grid-template-columns:repeat(3, 1fr);grid-auto-rows:58px;
+          gap:8px;max-width:560px;margin:0 auto;
+          align-items:stretch;justify-items:stretch;
+        ">${causes}</div>
+      </div>`;
+  }
   // Modal overlay style identique aux .modal-overlay du site (centré, fond noir 0.45)
   // Pas de bouton ✕ : réponse obligatoire
   const modalHtml = `
@@ -18072,7 +18128,7 @@ function _showNcpRythmeReminder(branch) {
     ">
       <div class="modal-box" style="
         background:#fff;border-radius:20px;padding:32px;
-        width:500px;max-width:92vw;max-height:82vh;overflow-y:auto;
+        width:620px;max-width:92vw;max-height:82vh;overflow-y:auto;
         box-shadow:0 20px 60px rgba(0,0,0,0.25);
         border-top:6px solid #4a6b54;
       ">
@@ -18083,9 +18139,7 @@ function _showNcpRythmeReminder(branch) {
           Tu as ouvert <strong>${cleanLabel}</strong> sans faire de choix.<br>
           Sélectionne une option pour continuer :
         </div>
-        <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
-          ${choices}
-        </div>
+        ${bodyHtml}
       </div>
     </div>`;
   document.body.insertAdjacentHTML('beforeend', modalHtml);
@@ -18228,10 +18282,12 @@ function renderRythmeChips() {
             }
           }
           _ncpRythmeActiveL2.add(id);
-          // Planifier le rappel 5s : si toujours sans enfant coché → afficher banner
+          // Planifier le rappel : TE = 3s, autres (RM) = 5s
+          // Si toujours sans enfant coché à l'expiration → afficher modal
+          const delayMs = (id === 'te') ? 3000 : 5000;
           _ncpRythmeReminderTimers[id] = setTimeout(() => {
             _showNcpRythmeReminder(branch);
-          }, 5000);
+          }, delayMs);
         }
       }
       renderRythmeChips();
