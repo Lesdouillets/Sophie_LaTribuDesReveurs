@@ -1036,22 +1036,23 @@
     }
     [data-ncp-cat="rythme"].ncp-row[data-ncp-cols="2"] {
       max-width: 380px !important;
-      width: 380px !important;
+      width: 100% !important;
     }
     [data-ncp-cat="rythme"].ncp-row[data-ncp-cols="3"] {
       max-width: 560px !important;
-      width: 560px !important;
+      width: 100% !important;
     }
     /* MARGIN entre rows consécutives (sinon chips se touchent verticalement) */
     [data-ncp-cat="rythme"].ncp-row + [data-ncp-cat="rythme"].ncp-row {
       margin-top: 10px !important;
     }
-    /* Force chip width = 180px fixe pour Rythme → toutes chips L2 de MÊME TAILLE */
+    /* Force chip width = 180px max pour Rythme → toutes chips L2 de MÊME TAILLE, mais
+       capable de shrink si parent narrow (ex. block leviers identifié en mode Meet) */
     [data-ncp-cat="rythme"].ncp-row > .ncp-chip {
-      width: 180px !important;
-      min-width: 180px !important;
+      width: 100% !important;
+      min-width: 0 !important;
       max-width: 180px !important;
-      flex: 0 0 180px !important;
+      flex: 1 1 0 !important;
     }
     /* Sub-tree labels : min-width identique pour aligner les chips verticalement (Espacement / Causes / Conséquences) */
     [data-ncp-cat="rythme"] .ncp-l3-label {
@@ -1069,13 +1070,12 @@
     [data-ncp-cat="rythme"] .ncp-l3-chips {
       align-items: stretch !important;
     }
-    /* TE sub-tree : Espacement chips à 180px (assez large pour tag long, wrap)
-       Spécificité TRÈS haute avec [data-ncp-value] pour battre tout autre rule */
+    /* TE sub-tree : Espacement chips à 180px max, mais capable de shrink si parent narrow */
     [data-ncp-cat="rythme"] .ncp-subtree-te .ncp-l3-chips > .ncp-chip[data-ncp-value] {
-      width: 180px !important;
-      min-width: 180px !important;
+      width: 100% !important;
+      min-width: 0 !important;
       max-width: 180px !important;
-      flex: 0 0 180px !important;
+      flex: 1 1 0 !important;
     }
     /* RM sub-tree (Causes) : layout GRID 3 colonnes × hauteur fixe → toutes chips MÊME taille (W+H) */
     [data-ncp-cat="rythme"] .ncp-subtree-rm .ncp-l3-chips {
@@ -2809,20 +2809,6 @@
     body[data-meet-mode="top-left"] #content-area {
       padding-top: calc(100vh - var(--meet-h)) !important;
     }
-    /* Padding latéral systématique sur #content-area en mode Meet : garantit que TOUT le
-       contenu de la consultation reste à côté de la vidéo, sans dépendre de la détection
-       dynamique data-meet-overlap (qui peut rater certains blocs après re-renders fréquents).
-       box-sizing border-box pour que padding soit pris dans la largeur. */
-    body[data-meet-mode="bottom-right"] #content-area,
-    body[data-meet-mode="top-right"] #content-area {
-      padding-right: var(--meet-w) !important;
-      box-sizing: border-box;
-    }
-    body[data-meet-mode="bottom-left"] #content-area,
-    body[data-meet-mode="top-left"] #content-area {
-      padding-left: var(--meet-w) !important;
-      box-sizing: border-box;
-    }
     /* Permettre aussi à l'info-panel jaune (encadré latéral) de scroller son contenu
        au-dessus de la zone vidéo : padding-bottom équivalent à l'espace écran libre. */
     body[data-meet-mode="bottom-right"] .info-body,
@@ -2856,17 +2842,6 @@
     body[data-meet-mode="top-left"] [data-meet-overlap="1"] {
       margin-left: var(--meet-w) !important;
       transition: margin 0.18s ease;
-    }
-    /* Override : #content-area a déjà padding-right, donc on annule la margin-right
-       sur ses enfants (qui héritent de data-meet-overlap via la détection bbox) pour
-       éviter un double décalage (padding + margin = 480px de trop). */
-    body[data-meet-mode="bottom-right"] #content-area > [data-meet-overlap="1"],
-    body[data-meet-mode="top-right"] #content-area > [data-meet-overlap="1"] {
-      margin-right: 0 !important;
-    }
-    body[data-meet-mode="bottom-left"] #content-area > [data-meet-overlap="1"],
-    body[data-meet-mode="top-left"] #content-area > [data-meet-overlap="1"] {
-      margin-left: 0 !important;
     }
     /* Vignette pointillée — visible en permanence quand le mode visio est ON
        (aide à placer la PiP de Meet). Cliquable (✕) pour la masquer pour la session. */
@@ -8133,7 +8108,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=740"></script>
+<script src="script-data.js?v=741"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -18305,8 +18280,10 @@ function renderRythmeChips() {
   _NCP_RYTHME_BRANCHES.forEach(b => {
     if (b.kind === 'subparent' && subParentHasChecked(b)) _ncpRythmeActiveL2.add(b.id);
   });
-  // Helper : HTML d'une chip L2 (style INLINE = override absolu de tout CSS)
-  const L2_STYLE = 'width:180px !important;min-width:180px !important;max-width:180px !important;flex:0 0 180px !important;';
+  // Helper : HTML d'une chip L2 — chips share space equally with flex 1, capped at 180px.
+  // Avant : width 180px fixe — provoquait overflow horizontal du bloc leviers identifié en
+  // mode Meet (chips trop larges pour la colonne narrowed). Maintenant adaptatif.
+  const L2_STYLE = 'width:100% !important;min-width:0 !important;max-width:180px !important;flex:1 1 0 !important;';
   const chipHtml = (b) => {
     let cls = 'ncp-chip';
     if (b.kind === 'leaf') {
@@ -18465,10 +18442,10 @@ function renderRythmeSubTree(branch) {
   const DIV = '<div class="ncp-l3-divider"></div>';
   // Class ncp-subtree-${branch.id} pour styling spécifique (TE = 180px chips, RM = 150px wrap)
   let html = `<div class="ncp-l3-grid ncp-subtree-${branch.id}">`;
-  // Style inline pour FORCER la taille des chips (override TOUTE règle CSS)
-  // Format : 4 props inline + !important pour battre n'importe quel CSS
+  // Style inline pour chips L3 — width adaptatif (flex shrink) avec max-width fixe.
+  // Avant : width fixe → overflow horizontal du bloc leviers identifié en mode Meet.
   const inlineStyle = (px, extra = '') =>
-    `width:${px}px !important;min-width:${px}px !important;max-width:${px}px !important;flex:0 0 ${px}px !important;${extra}`;
+    `width:100% !important;min-width:0 !important;max-width:${px}px !important;flex:1 1 0 !important;${extra}`;
   if (branch.id === 'te') {
     // Temps d'éveil : "Espacement" (label) + 2 chips à 180px chacune (même taille forcée)
     html += `<span class="ncp-l3-label">Espacement</span>`;
