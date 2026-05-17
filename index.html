@@ -2809,23 +2809,6 @@
     body[data-meet-mode="top-left"] #content-area {
       padding-top: calc(100vh - var(--meet-h)) !important;
     }
-    /* Padding latéral garantit que le contenu reste à côté de la vidéo, peu importe la
-       détection bbox dynamique. Le per-block (data-meet-overlap → margin-right) continue de
-       jouer pour les sous-éléments qui en ont besoin (overlay panels, etc.). */
-    body[data-meet-mode="bottom-right"] #content-area,
-    body[data-meet-mode="top-right"] #content-area {
-      padding-right: var(--meet-w) !important;
-      box-sizing: border-box !important;
-    }
-    body[data-meet-mode="bottom-left"] #content-area,
-    body[data-meet-mode="top-left"] #content-area {
-      padding-left: var(--meet-w) !important;
-      box-sizing: border-box !important;
-    }
-    /* Empêcher le scroll horizontal indésirable dans #content-area en mode Meet */
-    body[data-meet-mode] #content-area {
-      overflow-x: hidden !important;
-    }
     /* Permettre aussi à l'info-panel jaune (encadré latéral) de scroller son contenu
        au-dessus de la zone vidéo : padding-bottom équivalent à l'espace écran libre. */
     body[data-meet-mode="bottom-right"] .info-body,
@@ -2840,12 +2823,12 @@
        (.setup-right) du côté de la zone vidéo, pour ne pas que la PiP cache le texte.
        La sidebar (.setup-left) n'est pas affectée. */
     body[data-meet-mode$="-right"] #setup-screen .setup-right {
-      padding-right: var(--meet-w) !important;
-      box-sizing: border-box !important;
+      padding-right: var(--meet-w);
+      box-sizing: border-box;
     }
     body[data-meet-mode$="-left"] #setup-screen .setup-right {
-      padding-left: var(--meet-w) !important;
-      box-sizing: border-box !important;
+      padding-left: var(--meet-w);
+      box-sizing: border-box;
     }
     /* Wrapping dynamique : blocs visuellement dans la zone vidéo → marge côté vidéo.
        S'applique à tout élément marqué [data-meet-overlap="1"] (peu importe le conteneur,
@@ -2859,14 +2842,6 @@
     body[data-meet-mode="top-left"] [data-meet-overlap="1"] {
       margin-left: var(--meet-w) !important;
       transition: margin 0.18s ease;
-    }
-    /* Override : #content-area a déjà padding-right qui pousse tout son contenu,
-       donc on annule la margin-right sur ses enfants directs pour éviter double offset. */
-    body[data-meet-mode$="-right"] #content-area > [data-meet-overlap="1"] {
-      margin-right: 0 !important;
-    }
-    body[data-meet-mode$="-left"] #content-area > [data-meet-overlap="1"] {
-      margin-left: 0 !important;
     }
     /* Vignette pointillée — visible en permanence quand le mode visio est ON
        (aide à placer la PiP de Meet). Cliquable (✕) pour la masquer pour la session. */
@@ -8133,7 +8108,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=742"></script>
+<script src="script-data.js?v=743"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
