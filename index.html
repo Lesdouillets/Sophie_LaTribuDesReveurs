@@ -17405,15 +17405,48 @@ function _ncpConseqRow(label, items) {
   html += `</div>`;
   return html;
 }
-// État local UI :
-//   _ncpForceOpen     : niveau 1 "Courbes pas OK" ouvert (révèle niveau 2)
-//   _ncpL2Open        : Set des niveau 2 ouverts (révèle niveau 3 du branch)
-//   _ncpLaitForceOpen : niveau 1 "Lait (courbes OK)" ouvert
-//   _ncpLaitL2Open    : Set des niveau 2 ouverts pour Lait
-let _ncpForceOpen = false;
-let _ncpL2Open = new Set();
-let _ncpLaitForceOpen = false;
-let _ncpLaitL2Open = new Set();
+// Config des 2 branches niveau 2 de "Diversification (courbes OK)"
+const _NCP_DIVERSIF_BRANCHES = [
+  // Diversification N°1 : "Bib stratégie dépendante" + tree complet
+  { val: 'nutri_div_n1', label: 'Diversif. N°1', tag: '⇒ Faim ou Dépendance',
+    sections: [
+      ['En plus', [['nutri_div_n1_bib_strat_dep','Bib = stratégie dépendante']]],
+      ['Espacement', [['nutri_div_n1_esp_long','Trop long'],['nutri_div_n1_esp_court','Trop court']]],
+      ['Volume/durée des bib', [['nutri_div_n1_vol_petit','Petit bib'],['nutri_div_n1_vol_gros','Gros bib'],['nutri_div_n1_vol_longtemps','Boit longtemps']]],
+      ['Inversion', [['nutri_div_n1_inversion_jour_nuit','Jour/Nuit'],['nutri_div_n1_inversion_lait_solide','Ordre lait/solide']]],
+      ['Tétine = cache faim', [['nutri_div_n1_tetine_cache_faim','OUI']]],
+      ['Autres', [['nutri_div_n1_autre_feculents','Pas assez de féculents'],['nutri_div_n1_autre_jus_vegetal','Jus végétal'],['nutri_div_n1_autre_lait_animal','Lait animal']]],
+    ],
+    consequences: [['nutri_div_n1_conseq_mange_nuit','Mange la nuit']],
+  },
+  // Pas assez de féculents : Espacement, Volume, Inversion (J/N seule)
+  { val: 'nutri_div_feculents', label: 'Pas assez féculents', tag: '⇒ Faim',
+    sections: [
+      ['Espacement', [['nutri_div_fec_esp_long','Trop long'],['nutri_div_fec_esp_court','Trop court']]],
+      ['Volume/durée des bib', [['nutri_div_fec_vol_petit','Petit bib'],['nutri_div_fec_vol_gros','Gros bib'],['nutri_div_fec_vol_longtemps','Boit longtemps']]],
+      ['Inversion', [['nutri_div_fec_inversion_jour_nuit','Jour/Nuit']]],
+    ],
+  },
+];
+// Meta des 3 sections niveau 1. Chaque section a un id, un label HTML, ses branches L2,
+// la fonction de rendu de tree L3, et le data-subgroup de la cat sub-parent à cacher.
+const _NCP_SECTIONS = [
+  { id: 'courbes', label: 'Courbes pas OK', branches: _NCP_BRANCHES,
+    treeFn: (b) => _ncpRenderL3Tree(b), subgroup: 'nutri_courbes' },
+  { id: 'lait',
+    label: 'Lait <span style="color:#999;font-style:italic;font-weight:400;font-size:10px;margin-left:4px">(courbes OK)</span>',
+    branches: _NCP_LAIT_BRANCHES,
+    treeFn: (b) => _ncpRenderLaitL3Tree(b), subgroup: 'nutri_lait_ok' },
+  { id: 'diversif',
+    label: 'Diversification <span style="color:#999;font-style:italic;font-weight:400;font-size:10px;margin-left:4px">(courbes OK)</span>',
+    branches: _NCP_DIVERSIF_BRANCHES,
+    treeFn: (b) => _ncpRenderLaitL3Tree(b), subgroup: 'nutri_diversif_ok' },
+];
+// État local UI unifié :
+//   _ncpActiveL1 : id de la section L1 actuellement révélée ('courbes' | 'lait' | 'diversif' | null)
+//   _ncpActiveL2 : PB value de la branche L2 actuellement révélée (max 1 au total — mutex global)
+let _ncpActiveL1 = null;
+let _ncpActiveL2 = null;
 // Config des 3 branches niveau 2 de "Courbes pas OK". Chacune a une structure niveau 3
 // similaire (Espacement, Volume, Tétée, Inversion, Tétine, Autres, Conséquences) avec
 // un préfixe différent. Trop d'apport est plus pauvre (pas de Tétée, Tétine, Conséquences).
@@ -17573,113 +17606,77 @@ function _ncpRenderL3Tree(branch) {
   return html;
 }
 function renderNutritionChipsProto() {
-  // Injection directe dans le diag-pb-container :
-  //   1. Trouver les sub-cats "Courbes pas OK" et "Lait (courbes OK)"
-  //   2. Hide-les (préserve les checkboxes dans le DOM pour que cb.click() marche → règles préservées)
-  //   3. Ajouter un sibling .ncp-section AVANT Courbes pas OK, contenant les chips des 2 sections
-  const courbesParent = document.querySelector('#diag-pb-container input[data-subgroup="nutri_courbes"]');
-  const courbesCat = courbesParent?.closest('.pb-category');
-  if (!courbesCat) return;
-  courbesCat.style.display = 'none';
-  // Hide aussi Lait (courbes OK)
-  const laitParent = document.querySelector('#diag-pb-container input[data-subgroup="nutri_lait_ok"]');
-  const laitCat = laitParent?.closest('.pb-category');
-  if (laitCat) laitCat.style.display = 'none';
-  // Trouver ou créer le host des chips (sibling de courbesCat)
-  let host = courbesCat.parentNode.querySelector(':scope > .ncp-section');
+  // 1. Hide les 3 sub-cats nutrition (Courbes pas OK / Lait / Diversification) dans diag-pb-container
+  //    (préserve les checkboxes dans le DOM pour que cb.click() marche → règles préservées)
+  let firstHidden = null;
+  _NCP_SECTIONS.forEach(sec => {
+    const cb = document.querySelector(`#diag-pb-container input[data-subgroup="${sec.subgroup}"]`);
+    const cat = cb?.closest('.pb-category');
+    if (cat) {
+      cat.style.display = 'none';
+      if (!firstHidden) firstHidden = cat;
+    }
+  });
+  if (!firstHidden) return;
+  // 2. Find/create host (sibling de la 1ere cat cachée)
+  let host = firstHidden.parentNode.querySelector(':scope > .ncp-section');
   if (!host) {
     host = document.createElement('div');
     host.className = 'ncp-section';
-    courbesCat.parentNode.insertBefore(host, courbesCat);
+    firstHidden.parentNode.insertBefore(host, firstHidden);
   }
-  // État réel des PBs (lu depuis state.selectedPbs)
-  const anyBranchChecked = _NCP_BRANCHES.some(b => _ncpIsChecked(b.val));
-  const anyLaitChecked = _NCP_LAIT_BRANCHES.some(b => _ncpIsChecked(b.val));
-  // Niveau 2 visible si : un PB de branche cochée OU user a forcé ouvert niveau 1
-  const showLevel2 = anyBranchChecked || _ncpForceOpen;
-  const showLaitLevel2 = anyLaitChecked || _ncpLaitForceOpen;
-  let html = `<div class="nutri-chips-proto">`;
-  // ─── Niveau 1 : "Courbes pas OK" — cliquable, orange dès qu'on l'ouvre
-  const l1Checked = _ncpForceOpen || anyBranchChecked;
-  const lvl1Cls = 'ncp-chip' + (l1Checked ? ' checked' : '');
-  const l1Title = anyBranchChecked
-    ? "Cliquer pour décocher toutes les cases de Courbes pas OK"
-    : (_ncpForceOpen ? "Cliquer pour fermer" : "Cliquer pour ouvrir");
-  html += `<div class="ncp-row">`;
-  html += `<span class="${lvl1Cls}" data-ncp-l1="1" title="${l1Title}">Courbes pas OK</span>`;
-  html += `</div>`;
-  if (showLevel2) {
-    html += `<div class="ncp-separator"></div>`;
-    // ─── Niveau 2 : reveal-only — chip orange si reveal-open OU PB auto-cochée
-    // Cliquer quand enfants cochés → mass-uncheck (enfants + parent + ferme reveal)
-    const l2Chip = (val, label, tag) => {
-      const autoChecked = _ncpIsChecked(val);
-      const open = _ncpL2Open.has(val) || autoChecked;
-      const childrenChecked = !![...document.querySelectorAll(`input[data-auto-parent="${val}"]`)]
+  // 3. Compute checked state per section (via PB values + leaves auto-parent)
+  const sectionState = _NCP_SECTIONS.map(sec => {
+    const anyChecked = sec.branches.some(b => _ncpIsChecked(b.val))
+      || sec.branches.some(b => !![...document.querySelectorAll(`input[data-auto-parent="${b.val}"]`)]
+        .find(c => c.value && state && state.selectedPbs && state.selectedPbs.has(c.value)));
+    return Object.assign({}, sec, { anyChecked });
+  });
+  // Section "active" : priorité à celle qui a des PBs cochés, sinon _ncpActiveL1
+  const autoActiveId = sectionState.find(s => s.anyChecked)?.id || null;
+  const activeL1 = autoActiveId || _ncpActiveL1;
+  // 4. Build HTML
+  let html = '<div class="nutri-chips-proto">';
+  // ─── Ligne 1 : les 3 chips niveau 1 sibling (mêmes dimensions, mutex UI)
+  html += '<div class="ncp-row">';
+  sectionState.forEach(sec => {
+    const active = (activeL1 === sec.id);
+    const cls = 'ncp-chip ncp-l1-chip' + (active ? ' checked' : '');
+    const title = sec.anyChecked
+      ? "Cliquer pour décocher toutes les cases de cette section"
+      : (active ? "Cliquer pour fermer" : "Cliquer pour ouvrir");
+    html += `<span class="${cls}" data-ncp-l1-section="${sec.id}" title="${title}">${sec.label}</span>`;
+  });
+  html += '</div>';
+  // ─── Section active : render L2 + L3
+  const activeSec = sectionState.find(s => s.id === activeL1);
+  if (activeSec) {
+    html += '<div class="ncp-separator"></div>';
+    // Niveau 2 chips de la section active
+    html += '<div class="ncp-row indent-1">';
+    activeSec.branches.forEach(b => {
+      const autoChecked = _ncpIsChecked(b.val);
+      const open = (_ncpActiveL2 === b.val) || autoChecked;
+      const childrenChecked = !![...document.querySelectorAll(`input[data-auto-parent="${b.val}"]`)]
         .find(c => c.value && state && state.selectedPbs && state.selectedPbs.has(c.value));
       const cls = 'ncp-chip' + (open ? ' checked' : '');
       const title = childrenChecked
         ? "Cliquer pour décocher toutes les cases de cette branche"
         : (open ? "Cliquer pour fermer" : "Cliquer pour ouvrir");
-      const tagHtml = tag ? ` <span class="pb-cause-tag">${tag}</span>` : '';
-      return `<span class="${cls}" data-ncp-l2-reveal="${val}" title="${title}">${label}${tagHtml}</span>`;
-    };
-    html += `<div class="ncp-row indent-1">`;
-    _NCP_BRANCHES.forEach(b => { html += l2Chip(b.val, b.label, b.tag); });
-    html += `</div>`;
-  }
-  // ─── Niveau 3 : sous-groupes de la branche ouverte (max 1 à la fois via mutex L2)
-  _NCP_BRANCHES.forEach(b => {
-    const showL3 = _ncpIsChecked(b.val) || _ncpL2Open.has(b.val);
-    if (showL3) {
-      html += `<div class="ncp-separator"></div>`;
-      html += _ncpRenderL3Tree(b);
+      const tagHtml = b.tag ? ` <span class="pb-cause-tag">${b.tag}</span>` : '';
+      html += `<span class="${cls}" data-ncp-l2="${b.val}" title="${title}">${b.label}${tagHtml}</span>`;
+    });
+    html += '</div>';
+    // Niveau 3 tree de la branche active (max 1 — mutex global nutri_top_child)
+    const activeBranch = activeSec.branches.find(b => (_ncpActiveL2 === b.val) || _ncpIsChecked(b.val));
+    if (activeBranch) {
+      html += '<div class="ncp-separator"></div>';
+      html += activeSec.treeFn(activeBranch);
     }
-  });
-  // ═══ LAIT (courbes OK) ═══
-  // Espace visuel entre les 2 sections nutrition
-  html += `<div style="height:24px"></div>`;
-  // ─── Niveau 1 : "Lait (courbes OK)" — cliquable, orange dès qu'on l'ouvre
-  const laitL1Checked = _ncpLaitForceOpen || anyLaitChecked;
-  const laitLvl1Cls = 'ncp-chip' + (laitL1Checked ? ' checked' : '');
-  const laitL1Title = anyLaitChecked
-    ? "Cliquer pour décocher toutes les cases de Lait (courbes OK)"
-    : (_ncpLaitForceOpen ? "Cliquer pour fermer" : "Cliquer pour ouvrir");
-  html += `<div class="ncp-row">`;
-  html += `<span class="${laitLvl1Cls}" data-ncp-l1-lait="1" title="${laitL1Title}">Lait <span style="color:#999;font-style:italic;font-weight:400;font-size:10px;margin-left:4px">(courbes OK)</span></span>`;
-  html += `</div>`;
-  if (showLaitLevel2) {
-    html += `<div class="ncp-separator"></div>`;
-    // ─── Niveau 2 Lait : 6 chips avec mutex
-    const laitL2Chip = (val, label, tag) => {
-      const autoChecked = _ncpIsChecked(val);
-      const open = _ncpLaitL2Open.has(val) || autoChecked;
-      const childrenChecked = !![...document.querySelectorAll(`input[data-auto-parent="${val}"]`)]
-        .find(c => c.value && state && state.selectedPbs && state.selectedPbs.has(c.value));
-      const cls = 'ncp-chip' + (open ? ' checked' : '');
-      const title = childrenChecked
-        ? "Cliquer pour décocher toutes les cases de cette branche"
-        : (open ? "Cliquer pour fermer" : "Cliquer pour ouvrir");
-      const tagHtml = tag ? ` <span class="pb-cause-tag">${tag}</span>` : '';
-      return `<span class="${cls}" data-ncp-l2-reveal-lait="${val}" title="${title}">${label}${tagHtml}</span>`;
-    };
-    html += `<div class="ncp-row indent-1">`;
-    _NCP_LAIT_BRANCHES.forEach(b => { html += laitL2Chip(b.val, b.label, b.tag); });
-    html += `</div>`;
   }
-  // ─── Niveau 3 Lait : tree de la branche ouverte
-  _NCP_LAIT_BRANCHES.forEach(b => {
-    const showL3 = _ncpIsChecked(b.val) || _ncpLaitL2Open.has(b.val);
-    if (showL3) {
-      html += `<div class="ncp-separator"></div>`;
-      html += _ncpRenderLaitL3Tree(b);
-    }
-  });
-  html += `</div>`;  // .nutri-chips-proto
+  html += '</div>';  // .nutri-chips-proto
   host.innerHTML = html;
-  // Liste des PBs niveau 2 (utilisée par mutex + mass-uncheck depuis niveau 1)
-  const L2_SIBLINGS = _NCP_BRANCHES.map(b => b.val);
-  // Helper : sync DOM + side effects après mutation de state.selectedPbs
+  // ──────── HELPERS LISTENERS ────────
   const _ncpSyncSideEffects = () => {
     document.querySelectorAll('input[name="pb"], .diag-pb, .modal-pb').forEach(cb => {
       if (!cb.value || !state || !state.selectedPbs) return;
@@ -17694,7 +17691,6 @@ function renderNutritionChipsProto() {
       if (typeof autoSaveActiveConsultation === 'function') autoSaveActiveConsultation();
     } catch (e) {}
   };
-  // Helper : pour un parent niveau 2 donné, décoche ses leaves + le parent lui-même
   const _ncpUncheckBranch = (parentVal) => {
     if (!state || !state.selectedPbs) return;
     document.querySelectorAll(`input[data-auto-parent="${parentVal}"]`).forEach(leaf => {
@@ -17702,99 +17698,36 @@ function renderNutritionChipsProto() {
     });
     state.selectedPbs.delete(parentVal);
   };
-  // ─── Listener niveau 1 ("Courbes pas OK")
-  // Si enfants cochés → mass-uncheck TOUTES les branches (équivalent niveau 2 click)
-  // Sinon → toggle force-open
-  const lvl1El = host.querySelector('[data-ncp-l1]');
-  if (lvl1El) {
-    lvl1El.addEventListener('click', (ev) => {
-      ev.preventDefault(); ev.stopPropagation();
-      const anyChecked = L2_SIBLINGS.some(v => state && state.selectedPbs && state.selectedPbs.has(v));
-      if (anyChecked) {
-        // Mass-uncheck toutes les branches + ferme tous les niveau 2 reveals
-        L2_SIBLINGS.forEach(_ncpUncheckBranch);
-        _ncpL2Open.clear();
-        _ncpForceOpen = false;
-        _ncpSyncSideEffects();
-      } else {
-        _ncpForceOpen = !_ncpForceOpen;
-        if (!_ncpForceOpen) _ncpL2Open.clear();
-      }
-      renderNutritionChipsProto();
-    });
-  }
-  // ─── Listeners niveau 2 (MUTEX exclusif + mass-uncheck si clic avec enfants cochés)
-  // Les 3 chips niveau 2 sont exclusives (data-exclusive="nutri_top_child" dans la source)
-  host.querySelectorAll('[data-ncp-l2-reveal]').forEach(el => {
+  // ──────── LISTENERS NIVEAU 1 (3 chips, mutex UI) ────────
+  host.querySelectorAll('.ncp-l1-chip').forEach(el => {
     el.addEventListener('click', (ev) => {
       ev.preventDefault(); ev.stopPropagation();
-      const val = el.dataset.ncpL2Reveal;
-      const isOpen = _ncpL2Open.has(val);
-      const pbChecked = state && state.selectedPbs && state.selectedPbs.has(val);
-      const childrenChecked = !![...document.querySelectorAll(`input[data-auto-parent="${val}"]`)]
-        .find(c => c.value && state && state.selectedPbs && state.selectedPbs.has(c.value));
-      if (childrenChecked) {
-        // Mass-uncheck : décocher tous les enfants + le parent auto-only + fermer reveal
-        document.querySelectorAll(`input[data-auto-parent="${val}"]`).forEach(leaf => {
-          if (leaf.value && state && state.selectedPbs) state.selectedPbs.delete(leaf.value);
-        });
-        if (state && state.selectedPbs) state.selectedPbs.delete(val);
-        _ncpL2Open.delete(val);
+      const sectionId = el.dataset.ncpL1Section;
+      const sec = _NCP_SECTIONS.find(s => s.id === sectionId);
+      if (!sec) return;
+      const anyChecked = sec.branches.some(b => _ncpIsChecked(b.val))
+        || sec.branches.some(b => !![...document.querySelectorAll(`input[data-auto-parent="${b.val}"]`)]
+          .find(c => c.value && state && state.selectedPbs && state.selectedPbs.has(c.value)));
+      if (anyChecked) {
+        // Section a des PBs cochés → mass-uncheck cette section + reset
+        sec.branches.forEach(b => _ncpUncheckBranch(b.val));
+        if (_ncpActiveL1 === sectionId) _ncpActiveL1 = null;
+        _ncpActiveL2 = null;
         _ncpSyncSideEffects();
-      } else if (isOpen) {
-        // Reveal ouvert sans enfants → fermer (+ décocher PB si encore active seule)
-        _ncpL2Open.delete(val);
-        if (pbChecked && state && state.selectedPbs) {
-          state.selectedPbs.delete(val);
-          _ncpSyncSideEffects();
-        }
       } else {
-        // Chip fermé → ouvrir CELUI-CI + MUTEX (fermer les autres + décocher leurs enfants)
-        L2_SIBLINGS.forEach(sib => {
-          if (sib === val) return;
-          _ncpL2Open.delete(sib);
-          if (state && state.selectedPbs) {
-            document.querySelectorAll(`input[data-auto-parent="${sib}"]`).forEach(leaf => {
-              if (leaf.value) state.selectedPbs.delete(leaf.value);
-            });
-            state.selectedPbs.delete(sib);
-          }
-        });
-        _ncpL2Open.add(val);
-        _ncpSyncSideEffects();
+        // Toggle : ouvrir cette section (mutex implicite via _ncpActiveL1 unique) OU fermer si déjà active
+        _ncpActiveL1 = (_ncpActiveL1 === sectionId) ? null : sectionId;
+        _ncpActiveL2 = null;  // Reset niveau 2 quand on change de section
       }
       renderNutritionChipsProto();
     });
   });
-  // ═══════════════════════════════════════════════════════════════════
-  // ═══ LISTENERS LAIT (courbes OK) — Niveau 1 + Niveau 2 ═══
-  // ═══════════════════════════════════════════════════════════════════
-  const LAIT_SIBLINGS = _NCP_LAIT_BRANCHES.map(b => b.val);
-  // ─── Listener niveau 1 Lait ("Lait courbes OK")
-  const laitLvl1El = host.querySelector('[data-ncp-l1-lait]');
-  if (laitLvl1El) {
-    laitLvl1El.addEventListener('click', (ev) => {
-      ev.preventDefault(); ev.stopPropagation();
-      const anyChecked = LAIT_SIBLINGS.some(v => state && state.selectedPbs && state.selectedPbs.has(v));
-      if (anyChecked) {
-        // Mass-uncheck toutes les branches Lait + leurs leaves
-        LAIT_SIBLINGS.forEach(_ncpUncheckBranch);
-        _ncpLaitL2Open.clear();
-        _ncpLaitForceOpen = false;
-        _ncpSyncSideEffects();
-      } else {
-        _ncpLaitForceOpen = !_ncpLaitForceOpen;
-        if (!_ncpLaitForceOpen) _ncpLaitL2Open.clear();
-      }
-      renderNutritionChipsProto();
-    });
-  }
-  // ─── Listeners niveau 2 Lait (MUTEX exclusif + mass-uncheck si enfants cochés)
-  host.querySelectorAll('[data-ncp-l2-reveal-lait]').forEach(el => {
+  // ──────── LISTENERS NIVEAU 2 (mutex global via data-exclusive nutri_top_child) ────────
+  host.querySelectorAll('[data-ncp-l2]').forEach(el => {
     el.addEventListener('click', (ev) => {
       ev.preventDefault(); ev.stopPropagation();
-      const val = el.dataset.ncpL2RevealLait;
-      const isOpen = _ncpLaitL2Open.has(val);
+      const val = el.dataset.ncpL2;
+      const isOpen = (_ncpActiveL2 === val);
       const pbChecked = state && state.selectedPbs && state.selectedPbs.has(val);
       const childrenChecked = !![...document.querySelectorAll(`input[data-auto-parent="${val}"]`)]
         .find(c => c.value && state && state.selectedPbs && state.selectedPbs.has(c.value));
@@ -17804,34 +17737,36 @@ function renderNutritionChipsProto() {
           if (leaf.value && state && state.selectedPbs) state.selectedPbs.delete(leaf.value);
         });
         if (state && state.selectedPbs) state.selectedPbs.delete(val);
-        _ncpLaitL2Open.delete(val);
+        if (_ncpActiveL2 === val) _ncpActiveL2 = null;
         _ncpSyncSideEffects();
       } else if (isOpen) {
-        _ncpLaitL2Open.delete(val);
+        // Reveal ouvert sans enfants → fermer (+ décocher PB si seule)
+        _ncpActiveL2 = null;
         if (pbChecked && state && state.selectedPbs) {
           state.selectedPbs.delete(val);
           _ncpSyncSideEffects();
         }
       } else {
-        // MUTEX : fermer les autres + décocher leurs enfants
-        LAIT_SIBLINGS.forEach(sib => {
-          if (sib === val) return;
-          _ncpLaitL2Open.delete(sib);
-          if (state && state.selectedPbs) {
-            document.querySelectorAll(`input[data-auto-parent="${sib}"]`).forEach(leaf => {
-              if (leaf.value) state.selectedPbs.delete(leaf.value);
-            });
-            state.selectedPbs.delete(sib);
-          }
+        // Ouvrir CELUI-CI + MUTEX global : fermer TOUTES les autres branches L2 (toutes sections)
+        // car data-exclusive="nutri_top_child" est partagé entre toutes les niveau 2 nutrition
+        _NCP_SECTIONS.forEach(sec => {
+          sec.branches.forEach(b => {
+            if (b.val === val) return;
+            if (state && state.selectedPbs) {
+              document.querySelectorAll(`input[data-auto-parent="${b.val}"]`).forEach(leaf => {
+                if (leaf.value) state.selectedPbs.delete(leaf.value);
+              });
+              state.selectedPbs.delete(b.val);
+            }
+          });
         });
-        _ncpLaitL2Open.add(val);
+        _ncpActiveL2 = val;
         _ncpSyncSideEffects();
       }
       renderNutritionChipsProto();
     });
   });
-  // ─── Listeners niveau 3 (vrai toggle via cb.click() sur .diag-pb → applique exclusivité globale)
-  // Couvre AUSSI les chips Lait niveau 3 (même attribut data-ncp-value)
+  // ──────── LISTENERS NIVEAU 3 (leaves — cb.click() chain → exclusivité globale) ────────
   host.querySelectorAll('.ncp-chip[data-ncp-value]').forEach(el => {
     el.addEventListener('click', (ev) => {
       ev.preventDefault(); ev.stopPropagation();
