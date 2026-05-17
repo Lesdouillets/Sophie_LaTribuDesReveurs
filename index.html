@@ -1065,6 +1065,10 @@
       justify-content: center !important;
       box-sizing: border-box !important;
     }
+    /* Force MÊME HAUTEUR entre chips siblings (tallest wins) → align-items stretch sur le container */
+    [data-ncp-cat="rythme"] .ncp-l3-chips {
+      align-items: stretch !important;
+    }
     /* TE sub-tree : Espacement chips à 180px (assez large pour tag long, wrap)
        Spécificité TRÈS haute avec [data-ncp-value] pour battre tout autre rule */
     [data-ncp-cat="rythme"] .ncp-subtree-te .ncp-l3-chips > .ncp-chip[data-ncp-value] {
