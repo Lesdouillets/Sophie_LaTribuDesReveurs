@@ -963,7 +963,7 @@
       flex-wrap: wrap;
       gap: 6px 8px;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
     }
     /* Lignes vides dans la grille — span sur les 2 colonnes */
     .ncp-grid-blank { grid-column: 1 / -1; height: 10px; }
@@ -17406,10 +17406,14 @@ function _ncpConseqRow(label, items) {
   return html;
 }
 // État local UI :
-//   _ncpForceOpen  : niveau 1 "Courbes pas OK" ouvert (révèle niveau 2)
-//   _ncpL2Open     : Set des niveau 2 ouverts (révèle niveau 3 du branch)
+//   _ncpForceOpen     : niveau 1 "Courbes pas OK" ouvert (révèle niveau 2)
+//   _ncpL2Open        : Set des niveau 2 ouverts (révèle niveau 3 du branch)
+//   _ncpLaitForceOpen : niveau 1 "Lait (courbes OK)" ouvert
+//   _ncpLaitL2Open    : Set des niveau 2 ouverts pour Lait
 let _ncpForceOpen = false;
 let _ncpL2Open = new Set();
+let _ncpLaitForceOpen = false;
+let _ncpLaitL2Open = new Set();
 // Config des 3 branches niveau 2 de "Courbes pas OK". Chacune a une structure niveau 3
 // similaire (Espacement, Volume, Tétée, Inversion, Tétine, Autres, Conséquences) avec
 // un préfixe différent. Trop d'apport est plus pauvre (pas de Tétée, Tétine, Conséquences).
@@ -17422,8 +17426,101 @@ const _NCP_BRANCHES = [
     hasTetee: false, hasTetine: false, hasConsequences: false,
     feculentsLabel: 'Féculents&nbsp;<span style="color:#dc2626;font-weight:700;margin-left:3px">IMPORTANTS</span>' },
 ];
+// Config des 6 branches niveau 2 de "Lait (courbes OK)". Chaque branche a son propre arbre
+// (sections variables : pas toutes les mêmes sous-rubriques). Format explicite [label, items, opts?]
+// pour plus de flexibilité. `consequences` optionnel.
+const _NCP_LAIT_BRANCHES = [
+  // Esp trop long : Volume, Tétée, Inversion, Tétine, Autres + Conséquences
+  { val: 'nutri_lok_esp_long', label: 'Esp. trop long', tag: '⇒ Faim entre les prises',
+    sections: [
+      ['Volume/durée des bib', [['nutri_lok_long_vol_petit','Petit bib'],['nutri_lok_long_vol_gros','Gros bib'],['nutri_lok_long_vol_longtemps','Boit longtemps']]],
+      ['Tétée baisse de lactation', [['nutri_lok_long_tetee','↗ Direct'],['nutri_lok_long_tetee_longue','Longue tétée'],['nutri_lok_long_tetee_greve','Grève'],['nutri_lok_long_tetee_mode_garde','Mode garde']], { parentDirect: 'nutri_lok_long_tetee' }],
+      ['Inversion', [['nutri_lok_long_inversion_jour_nuit','Jour/Nuit'],['nutri_lok_long_inversion_lait_solide','Ordre lait/solide']]],
+      ['Tétine = cache faim', [['nutri_lok_long_tetine_cache_faim','OUI']]],
+      ['Autres', [['nutri_lok_long_autre_feculents','Féculents'],['nutri_lok_long_autre_lait_solide_important','Lait/solides'],['nutri_lok_long_autre_jus_vegetal','Jus végétal'],['nutri_lok_long_autre_lait_animal','Lait animal']]],
+    ],
+    consequences: [['nutri_lok_long_conseq_inconfort','Inconfort'],['nutri_lok_long_conseq_mange_nuit','Mange la nuit']],
+  },
+  // Esp trop court : Volume, Inconfort digestif, Inversion, Autres + Conséquences (pas de Tétée, pas de Tétine)
+  { val: 'nutri_lok_esp_court', label: 'Esp. trop court', tag: '⇒ Inconfort + pas de satiété',
+    sections: [
+      ['Volume/durée des bib', [['nutri_lok_court_vol_petit','Petit bib'],['nutri_lok_court_vol_gros','Gros bib']]],
+      ['Inconfort digestif', [['nutri_lok_court_inconfort_digestif','OUI']]],
+      ['Inversion', [['nutri_lok_court_inversion_jour_nuit','Jour/Nuit'],['nutri_lok_court_inversion_lait_solide','Ordre lait/solide']]],
+      ['Autres', [['nutri_lok_court_autre_feculents','Féculents'],['nutri_lok_court_autre_lait_solide_important','Lait/solides'],['nutri_lok_court_autre_jus_vegetal','Jus végétal'],['nutri_lok_court_autre_lait_animal','Lait animal']]],
+    ],
+    consequences: [['nutri_lok_court_conseq_inconfort','Inconfort'],['nutri_lok_court_conseq_mange_nuit','Mange la nuit']],
+  },
+  // Lait animal : Espacement, Volume, Inconfort digestif, Tétée, Inversion, Tétine, Autres (sans Jus végétal/Lait animal) + Conséquences
+  { val: 'nutri_lok_lait_animal', label: 'Lait animal', tag: '⇒ Faim',
+    sections: [
+      ['Espacement', [['nutri_lok_la_esp_long','Trop long'],['nutri_lok_la_esp_court','Trop court']]],
+      ['Volume/durée des bib', [['nutri_lok_la_vol_petit','Petit bib'],['nutri_lok_la_vol_gros','Gros bib'],['nutri_lok_la_vol_longtemps','Boit longtemps']]],
+      ['Inconfort digestif', [['nutri_lok_la_inconfort_digestif','OUI']]],
+      ['Tétée baisse de lactation', [['nutri_lok_la_tetee','↗ Direct'],['nutri_lok_la_tetee_longue','Longue tétée'],['nutri_lok_la_tetee_greve','Grève'],['nutri_lok_la_tetee_mode_garde','Mode garde']], { parentDirect: 'nutri_lok_la_tetee' }],
+      ['Inversion', [['nutri_lok_la_inversion_jour_nuit','Jour/Nuit'],['nutri_lok_la_inversion_lait_solide','Ordre lait/solide']]],
+      ['Tétine = cache faim', [['nutri_lok_la_tetine_cache_faim','OUI']]],
+      ['Autres', [['nutri_lok_la_autre_feculents','Féculents'],['nutri_lok_la_autre_lait_solide_important','Lait/solides']]],
+    ],
+    consequences: [['nutri_lok_la_conseq_inconfort','Inconfort'],['nutri_lok_la_conseq_mange_nuit','Mange la nuit']],
+  },
+  // Jus végétal : Espacement, Volume, Inconfort digestif, Tétée, Inversion, Tétine, Autres + Conséquences
+  { val: 'nutri_lok_jus_vegetal', label: 'Jus végétal', tag: '⇒ Faim',
+    sections: [
+      ['Espacement', [['nutri_lok_jv_esp_long','Trop long'],['nutri_lok_jv_esp_court','Trop court']]],
+      ['Volume/durée des bib', [['nutri_lok_jv_vol_petit','Petit bib'],['nutri_lok_jv_vol_gros','Gros bib'],['nutri_lok_jv_vol_longtemps','Boit longtemps']]],
+      ['Inconfort digestif', [['nutri_lok_jv_inconfort_digestif','OUI']]],
+      ['Tétée baisse de lactation', [['nutri_lok_jv_tetee','↗ Direct'],['nutri_lok_jv_tetee_longue','Longue tétée'],['nutri_lok_jv_tetee_greve','Grève'],['nutri_lok_jv_tetee_mode_garde','Mode garde']], { parentDirect: 'nutri_lok_jv_tetee' }],
+      ['Inversion', [['nutri_lok_jv_inversion_jour_nuit','Jour/Nuit'],['nutri_lok_jv_inversion_lait_solide','Ordre lait/solide']]],
+      ['Tétine = cache faim', [['nutri_lok_jv_tetine_cache_faim','OUI']]],
+      ['Autres', [['nutri_lok_jv_autre_feculents','Féculents'],['nutri_lok_jv_autre_lait_solide_important','Lait/solides']]],
+    ],
+    consequences: [['nutri_lok_jv_conseq_inconfort','Inconfort'],['nutri_lok_jv_conseq_mange_nuit','Mange la nuit']],
+  },
+  // Inversion Jour/Nuit : Espacement, Volume, Tétée, Inversion lait/solide (single), Tétine, Autres + Conséquences (Inconfort seul)
+  { val: 'nutri_lok_inv_jn', label: 'Inversion J/N', tag: '⇒ Pb à la crèche ?',
+    sections: [
+      ['Espacement', [['nutri_lok_ijn_esp_long','Trop long'],['nutri_lok_ijn_esp_court','Trop court']]],
+      ['Volume/durée des bib', [['nutri_lok_ijn_vol_petit','Petit bib'],['nutri_lok_ijn_vol_gros','Gros bib'],['nutri_lok_ijn_vol_longtemps','Boit longtemps']]],
+      ['Tétée baisse de lactation', [['nutri_lok_ijn_tetee','↗ Direct'],['nutri_lok_ijn_tetee_longue','Longue tétée'],['nutri_lok_ijn_tetee_greve','Grève'],['nutri_lok_ijn_tetee_mode_garde','Mode garde']], { parentDirect: 'nutri_lok_ijn_tetee' }],
+      ['Inversion ordre lait/solide', [['nutri_lok_ijn_inversion_lait_solide','OUI']]],
+      ['Tétine = cache faim', [['nutri_lok_ijn_tetine_cache_faim','OUI']]],
+      ['Autres', [['nutri_lok_ijn_autre_feculents','Féculents'],['nutri_lok_ijn_autre_lait_solide_important','Lait/solides'],['nutri_lok_ijn_autre_jus_vegetal','Jus végétal'],['nutri_lok_ijn_autre_lait_animal','Lait animal']]],
+    ],
+    consequences: [['nutri_lok_ijn_conseq_inconfort','Inconfort']],
+  },
+  // Lait N°1 : "Bib = stratégie dépendante" (chip seul), Espacement, Volume, Tétée, Inversion, Tétine, Autres (TROP de féculents) + Conséquences (Mange nuit seul)
+  { val: 'nutri_lok_lait_n1', label: 'Lait N°1', tag: '⇒ Faim',
+    sections: [
+      ['En plus', [['nutri_lok_n1_bib_strat_dep','Bib = stratégie dépendante']]],
+      ['Espacement', [['nutri_lok_n1_esp_long','Trop long'],['nutri_lok_n1_esp_court','Trop court']]],
+      ['Volume/durée des bib', [['nutri_lok_n1_vol_petit','Petit bib'],['nutri_lok_n1_vol_gros','Gros bib'],['nutri_lok_n1_vol_longtemps','Boit longtemps']]],
+      ['Tétée baisse de lactation', [['nutri_lok_n1_tetee','↗ Direct'],['nutri_lok_n1_tetee_longue','Longue tétée'],['nutri_lok_n1_tetee_greve','Grève'],['nutri_lok_n1_tetee_mode_garde','Mode garde']], { parentDirect: 'nutri_lok_n1_tetee' }],
+      ['Inversion', [['nutri_lok_n1_inversion_jour_nuit','Jour/Nuit'],['nutri_lok_n1_inversion_lait_solide','Ordre lait/solide']]],
+      ['Tétine = cache faim', [['nutri_lok_n1_tetine_cache_faim','OUI']]],
+      ['Autres', [['nutri_lok_n1_autre_feculents','<span style="color:#c0392b;font-weight:700">TROP</span>&nbsp;de féculents'],['nutri_lok_n1_autre_jus_vegetal','Jus végétal'],['nutri_lok_n1_autre_lait_animal','Lait animal']]],
+    ],
+    consequences: [['nutri_lok_n1_conseq_mange_nuit','Mange la nuit']],
+  },
+];
 // Rendu du niveau 3 (Espacement / Volume / Tétée / Inversion / Tétine / Autres / Conséquences)
 // pour une branche donnée. Utilise le préfixe pour construire les valeurs des PBs.
+// Rendu du niveau 3 pour une branche Lait (sections flexibles)
+function _ncpRenderLaitL3Tree(branch) {
+  const DIV = '<div class="ncp-l3-divider"></div>';
+  let html = '<div class="ncp-l3-grid">';
+  const groups = branch.sections.map(s => {
+    const [label, items, opts] = s;
+    return _ncpL3Group(label, items, opts || {});
+  });
+  html += groups.join(DIV);
+  if (branch.consequences && branch.consequences.length) {
+    html += DIV;
+    html += _ncpConseqRow('Conséquences', branch.consequences);
+  }
+  html += '</div>';
+  return html;
+}
 function _ncpRenderL3Tree(branch) {
   const p = branch.prefix;
   const DIV = '<div class="ncp-l3-divider"></div>';
@@ -17477,13 +17574,17 @@ function _ncpRenderL3Tree(branch) {
 }
 function renderNutritionChipsProto() {
   // Injection directe dans le diag-pb-container :
-  //   1. Trouver la sub-cat "Courbes pas OK" dans la nutrition du diag (data-subgroup="nutri_courbes")
-  //   2. Hide-la (préserve les checkboxes dans le DOM pour que cb.click() marche → règles préservées)
-  //   3. Ajouter un sibling .ncp-section AVANT, contenant les chips
+  //   1. Trouver les sub-cats "Courbes pas OK" et "Lait (courbes OK)"
+  //   2. Hide-les (préserve les checkboxes dans le DOM pour que cb.click() marche → règles préservées)
+  //   3. Ajouter un sibling .ncp-section AVANT Courbes pas OK, contenant les chips des 2 sections
   const courbesParent = document.querySelector('#diag-pb-container input[data-subgroup="nutri_courbes"]');
   const courbesCat = courbesParent?.closest('.pb-category');
   if (!courbesCat) return;
   courbesCat.style.display = 'none';
+  // Hide aussi Lait (courbes OK)
+  const laitParent = document.querySelector('#diag-pb-container input[data-subgroup="nutri_lait_ok"]');
+  const laitCat = laitParent?.closest('.pb-category');
+  if (laitCat) laitCat.style.display = 'none';
   // Trouver ou créer le host des chips (sibling de courbesCat)
   let host = courbesCat.parentNode.querySelector(':scope > .ncp-section');
   if (!host) {
@@ -17493,8 +17594,10 @@ function renderNutritionChipsProto() {
   }
   // État réel des PBs (lu depuis state.selectedPbs)
   const anyBranchChecked = _NCP_BRANCHES.some(b => _ncpIsChecked(b.val));
+  const anyLaitChecked = _NCP_LAIT_BRANCHES.some(b => _ncpIsChecked(b.val));
   // Niveau 2 visible si : un PB de branche cochée OU user a forcé ouvert niveau 1
   const showLevel2 = anyBranchChecked || _ncpForceOpen;
+  const showLaitLevel2 = anyLaitChecked || _ncpLaitForceOpen;
   let html = `<div class="nutri-chips-proto">`;
   // ─── Niveau 1 : "Courbes pas OK" — cliquable, orange dès qu'on l'ouvre
   const l1Checked = _ncpForceOpen || anyBranchChecked;
