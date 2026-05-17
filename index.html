@@ -963,7 +963,7 @@
       flex-wrap: wrap;
       gap: 6px 8px;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
     }
     /* Lignes vides dans la grille — span sur les 2 colonnes */
     .ncp-grid-blank { grid-column: 1 / -1; height: 10px; }
@@ -17420,7 +17420,7 @@ const _NCP_BRANCHES = [
     hasTetee: true, hasTetine: true, hasConsequences: true },
   { val: 'nutri_trop_apport', label: "Trop d'apport", prefix: 'nutri_ta_',
     hasTetee: false, hasTetine: false, hasConsequences: false,
-    feculentsLabel: 'Féculents <span style="color:#dc2626;font-weight:700">IMPORTANTS</span>' },
+    feculentsLabel: 'Féculents&nbsp;<span style="color:#dc2626;font-weight:700;margin-left:3px">IMPORTANTS</span>' },
 ];
 // Rendu du niveau 3 (Espacement / Volume / Tétée / Inversion / Tétine / Autres / Conséquences)
 // pour une branche donnée. Utilise le préfixe pour construire les valeurs des PBs.
@@ -17465,7 +17465,8 @@ function _ncpRenderL3Tree(branch) {
   ]));
   html += groups.join(DIV);
   if (branch.hasConsequences) {
-    html += '<div class="ncp-grid-blank"></div>';
+    // Trait fin orange au-dessus de Conséquences (même style que les autres dividers)
+    html += DIV;
     html += _ncpConseqRow('Conséquences', [
       [p + 'conseq_inconfort', 'Inconfort'],
       [p + 'conseq_mange_nuit', 'Mange la nuit']
