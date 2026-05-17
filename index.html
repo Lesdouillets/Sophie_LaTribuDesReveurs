@@ -979,12 +979,14 @@
     .ncp-row[data-ncp-cols="2"] { grid-template-columns: 1fr 1fr; }
     .ncp-row[data-ncp-cols="3"] { grid-template-columns: 1fr 1fr 1fr; }
     /* Force les chips à remplir leur cellule → même largeur entre siblings
-       !important pour gagner sur la specificity des règles .ncp-chip[data-ncp-l1-section] etc. */
+       !important pour gagner sur la specificity des règles .ncp-chip[data-ncp-l1-section] etc.
+       min-width: 0 permet à la chip de shrinker si le contenu intrinsèque > cellule */
     .ncp-row[data-ncp-cols] > .ncp-chip {
       display: flex !important;
       width: 100% !important;
+      min-width: 0 !important;
       justify-content: center !important;
-      box-sizing: border-box;
+      box-sizing: border-box !important;
     }
     /* Lait : chips plus petites (la police par défaut 14px est trop grosse pour 6 chips à 2 cols) */
     .ncp-row[data-ncp-section="lait"] {
@@ -1090,9 +1092,15 @@
       border-width: 2px;
       font-style: italic;
     }
-    /* Niveau 1 (sections : Courbes pas OK / Lait / Diversification)
-       + Niveau 2 (branches) : police plus grosse + tag ⇒ Faim sur une ligne en dessous (dans la chip) */
-    .ncp-chip[data-ncp-l1-section],
+    /* Niveau 1 (sections : Courbes pas OK / Lait / Diversification) : inline (1 ligne)
+       Pas de flex-direction column car pas de tag à empiler */
+    .ncp-chip[data-ncp-l1-section] {
+      font-size: 14px;
+      padding: 6px 12px;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Niveau 2 (branches) : column car tag ⇒ Faim sur une ligne en dessous (dans la chip) */
     .ncp-chip[data-ncp-l2] {
       font-size: 14px;
       padding: 5px 12px;
@@ -1100,7 +1108,6 @@
       align-items: center;
     }
     /* Tag inline sur la 2e ligne (dans la chip, centré sous le label) */
-    .ncp-chip[data-ncp-l1-section] .pb-cause-tag,
     .ncp-chip[data-ncp-l2] .pb-cause-tag {
       margin-left: 0;
       margin-top: 3px;
