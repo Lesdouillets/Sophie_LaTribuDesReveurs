@@ -18040,9 +18040,8 @@ function renderRythmeChips() {
   _NCP_RYTHME_BRANCHES.forEach(b => {
     if (b.kind === 'subparent' && subParentHasChecked(b)) _ncpRythmeActiveL2.add(b.id);
   });
-  // Helper : HTML d'une chip L2
-  // Leaf : checked = PB coché
-  // Sub-parent : full "checked" (fond vert) si enfant coché OU sub-tree ouvert (click feedback)
+  // Helper : HTML d'une chip L2 (style INLINE = override absolu de tout CSS)
+  const L2_STYLE = 'width:180px !important;min-width:180px !important;max-width:180px !important;flex:0 0 180px !important;';
   const chipHtml = (b) => {
     let cls = 'ncp-chip';
     if (b.kind === 'leaf') {
@@ -18056,7 +18055,7 @@ function renderRythmeChips() {
     const dataAttr = b.kind === 'leaf'
       ? `data-ncp-value="${b.val}"`
       : `data-ncp-rythme-subparent="${b.id}"`;
-    return `<span class="${cls}" data-ncp-l2="${b.val || b.id}" ${dataAttr}>${b.label}${tagHtml}</span>`;
+    return `<span class="${cls}" style="${L2_STYLE}" data-ncp-l2="${b.val || b.id}" ${dataAttr}>${b.label}${tagHtml}</span>`;
   };
   // Build HTML
   let html = '<div class="nutri-chips-proto" data-ncp-cat="rythme">';
@@ -18167,32 +18166,47 @@ function renderRythmeSubTree(branch) {
   const DIV = '<div class="ncp-l3-divider"></div>';
   // Class ncp-subtree-${branch.id} pour styling spécifique (TE = 180px chips, RM = 150px wrap)
   let html = `<div class="ncp-l3-grid ncp-subtree-${branch.id}">`;
+  // Style inline pour FORCER la taille des chips (override TOUTE règle CSS)
+  // Format : 4 props inline + !important pour battre n'importe quel CSS
+  const inlineStyle = (px, extra = '') =>
+    `width:${px}px !important;min-width:${px}px !important;max-width:${px}px !important;flex:0 0 ${px}px !important;${extra}`;
   if (branch.id === 'te') {
-    // Temps d'éveil : "Espacement" (label) avec Trop long / Trop court (chips horizontales, même taille)
+    // Temps d'éveil : "Espacement" (label) + 2 chips à 180px chacune (même taille forcée)
     html += `<span class="ncp-l3-label">Espacement</span>`;
     html += '<div class="ncp-l3-chips">';
     branch.children.forEach(c => {
       const checked = _ncpIsChecked(c.val);
       const cls = 'ncp-chip' + (checked ? ' checked' : '');
       const tagHtml = c.tag ? ` <span class="pb-cause-tag">${c.tag}</span>` : '';
-      html += `<span class="${cls}" data-ncp-value="${c.val}">${c.label}${tagHtml}</span>`;
+      html += `<span class="${cls}" style="${inlineStyle(180)}" data-ncp-value="${c.val}">${c.label}${tagHtml}</span>`;
     });
     html += '</div>';
-    // Conséquences : toujours visibles quand sub-tree TE ouvert
-    // Si Trop court coché → ses 1 conséquence ; sinon → conséquences de Trop long (cas par défaut)
+    // Conséquences : chips à 110px chacune avec label wrap centré
     const activeChild = branch.children.find(c => _ncpIsChecked(c.val)) || branch.children[0];
     if (activeChild.consequences && activeChild.consequences.length) {
       html += DIV;
-      html += _ncpConseqRow('Conséquences', activeChild.consequences);
+      html += `<div class="ncp-conseq-row">`;
+      html += `<span class="ncp-l3-label">Conséquences</span>`;
+      html += `<div class="ncp-l3-chips">`;
+      activeChild.consequences.forEach(it => {
+        const v = it[0], lbl = it[1];
+        const checked = _ncpIsChecked(v);
+        const cls = 'ncp-chip' + (checked ? ' checked' : '');
+        const conseqExtra = 'white-space:normal !important;text-align:center !important;padding:6px 8px !important;line-height:1.2 !important;';
+        html += `<span class="${cls}" style="${inlineStyle(110, conseqExtra)}" data-ncp-value="${v}">${lbl}</span>`;
+      });
+      html += `</div>`;
+      html += `</div>`;
     }
   } else if (branch.id === 'rm') {
-    // Réveils matinaux : 7 causes en une seule liste
+    // Réveils matinaux : 7 causes à 150px chacune avec label wrap centré
     html += `<span class="ncp-l3-label">Causes</span>`;
     html += '<div class="ncp-l3-chips">';
+    const rmExtra = 'white-space:normal !important;text-align:center !important;line-height:1.25 !important;';
     branch.children.forEach(c => {
       const checked = _ncpIsChecked(c.val);
       const cls = 'ncp-chip' + (checked ? ' checked' : '');
-      html += `<span class="${cls}" data-ncp-value="${c.val}">${c.label}</span>`;
+      html += `<span class="${cls}" style="${inlineStyle(150, rmExtra)}" data-ncp-value="${c.val}">${c.label}</span>`;
     });
     html += '</div>';
   }
