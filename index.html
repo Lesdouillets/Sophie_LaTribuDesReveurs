@@ -17523,6 +17523,8 @@ const _NCP_DIVERSIF_BRANCHES = [
 ];
 // Meta des 3 sections niveau 1. Chaque section a un id, un label HTML, ses branches L2,
 // la fonction de rendu de tree L3, et le data-subgroup de la cat sub-parent à cacher.
+// `l2Groups` optionnel : si présent → render L2 en groupes labelisés (style L3 grid de Courbes pas OK)
+//   Sinon → render L2 en row plat (style actuel Courbes pas OK)
 // IMPORTANT : doit être déclaré APRÈS _NCP_BRANCHES, _NCP_LAIT_BRANCHES, _NCP_DIVERSIF_BRANCHES
 // pour éviter une ReferenceError au load (TDZ).
 const _NCP_SECTIONS = [
@@ -17531,10 +17533,21 @@ const _NCP_SECTIONS = [
   { id: 'lait',
     label: 'Lait <span style="color:#999;font-style:italic;font-weight:400;font-size:10px;margin-left:4px">(courbes OK)</span>',
     branches: _NCP_LAIT_BRANCHES,
+    // Ordre suit Courbes pas OK L3 tree : Espacement → (Volume) → (Tétée) → Inversion → (Tétine) → Autres → (Conséquences) puis Lait N°1 spécifique
+    l2Groups: [
+      { label: 'Espacement', items: [['nutri_lok_esp_long', 'Trop long'], ['nutri_lok_esp_court', 'Trop court']] },
+      { label: 'Inversion', items: [['nutri_lok_inv_jn', 'Jour/Nuit']] },
+      { label: 'Autres', items: [['nutri_lok_jus_vegetal', 'Jus végétal'], ['nutri_lok_lait_animal', 'Lait animal']] },
+      { label: 'Lait N°1', items: [['nutri_lok_lait_n1', 'Lait N°1']] },
+    ],
     treeFn: (b) => _ncpRenderLaitL3Tree(b), subgroup: 'nutri_lait_ok' },
   { id: 'diversif',
     label: 'Diversification <span style="color:#999;font-style:italic;font-weight:400;font-size:10px;margin-left:4px">(courbes OK)</span>',
     branches: _NCP_DIVERSIF_BRANCHES,
+    l2Groups: [
+      { label: 'Diversif. N°1', items: [['nutri_div_n1', 'N°1']] },
+      { label: 'Féculents', items: [['nutri_div_feculents', 'Pas assez féculents']] },
+    ],
     treeFn: (b) => _ncpRenderLaitL3Tree(b), subgroup: 'nutri_diversif_ok' },
 ];
 // État local UI unifié :
@@ -17658,21 +17671,43 @@ function renderNutritionChipsProto() {
   const activeSec = sectionState.find(s => s.id === activeL1);
   if (activeSec) {
     html += '<div class="ncp-separator"></div>';
-    // Niveau 2 chips de la section active
-    html += '<div class="ncp-row indent-1">';
-    activeSec.branches.forEach(b => {
-      const autoChecked = _ncpIsChecked(b.val);
-      const open = (_ncpActiveL2 === b.val) || autoChecked;
-      const childrenChecked = !![...document.querySelectorAll(`input[data-auto-parent="${b.val}"]`)]
+    // Helper : construit le HTML d'une chip L2 (utilisé dans les 2 layouts)
+    const l2ChipHtml = (val, chipLabel, tag) => {
+      const autoChecked = _ncpIsChecked(val);
+      const open = (_ncpActiveL2 === val) || autoChecked;
+      const childrenChecked = !![...document.querySelectorAll(`input[data-auto-parent="${val}"]`)]
         .find(c => c.value && state && state.selectedPbs && state.selectedPbs.has(c.value));
       const cls = 'ncp-chip' + (open ? ' checked' : '');
       const title = childrenChecked
         ? "Cliquer pour décocher toutes les cases de cette branche"
         : (open ? "Cliquer pour fermer" : "Cliquer pour ouvrir");
-      const tagHtml = b.tag ? ` <span class="pb-cause-tag">${b.tag}</span>` : '';
-      html += `<span class="${cls}" data-ncp-l2="${b.val}" title="${title}">${b.label}${tagHtml}</span>`;
-    });
-    html += '</div>';
+      const tagHtml = tag ? ` <span class="pb-cause-tag">${tag}</span>` : '';
+      return `<span class="${cls}" data-ncp-l2="${val}" title="${title}">${chipLabel}${tagHtml}</span>`;
+    };
+    if (activeSec.l2Groups) {
+      // Layout GROUPÉ : style L3 grid (label gras souligné + chips à droite, dividers fins)
+      const DIV = '<div class="ncp-l3-divider"></div>';
+      html += '<div class="ncp-l3-grid">';
+      activeSec.l2Groups.forEach((g, i) => {
+        if (i > 0) html += DIV;
+        html += `<span class="ncp-l3-label">${g.label}</span>`;
+        html += '<div class="ncp-l3-chips">';
+        g.items.forEach(it => {
+          const val = it[0], chipLabel = it[1];
+          const branch = activeSec.branches.find(b => b.val === val);
+          html += l2ChipHtml(val, chipLabel, branch?.tag);
+        });
+        html += '</div>';
+      });
+      html += '</div>';
+    } else {
+      // Layout PLAT : row de chips (style actuel pour Courbes pas OK)
+      html += '<div class="ncp-row indent-1">';
+      activeSec.branches.forEach(b => {
+        html += l2ChipHtml(b.val, b.label, b.tag);
+      });
+      html += '</div>';
+    }
     // Niveau 3 tree de la branche active (max 1 — mutex global nutri_top_child)
     const activeBranch = activeSec.branches.find(b => (_ncpActiveL2 === b.val) || _ncpIsChecked(b.val));
     if (activeBranch) {
