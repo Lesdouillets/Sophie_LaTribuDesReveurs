@@ -1025,37 +1025,53 @@
     [data-ncp-cat="rythme"] .ncp-conseq-row {
       background: #d4e2d8;
     }
-    /* Rythme L2 rows : largeurs adaptées pour chips de 146px chacune (même taille partout) */
+    /* Rythme L2 rows : largeurs adaptées pour chips de 180px chacune (même taille partout) */
     [data-ncp-cat="rythme"].ncp-row[data-ncp-cols="2"] {
-      max-width: 300px !important;
-      width: 300px !important;
+      max-width: 380px !important;
+      width: 380px !important;
     }
     [data-ncp-cat="rythme"].ncp-row[data-ncp-cols="3"] {
-      max-width: 460px !important;
-      width: 460px !important;
+      max-width: 560px !important;
+      width: 560px !important;
     }
     /* MARGIN entre rows consécutives (sinon chips se touchent verticalement) */
     [data-ncp-cat="rythme"].ncp-row + [data-ncp-cat="rythme"].ncp-row {
       margin-top: 10px !important;
     }
-    /* Force chip width = 146px fixe pour Rythme → toutes chips L2 de MÊME TAILLE */
+    /* Force chip width = 180px fixe pour Rythme → toutes chips L2 de MÊME TAILLE */
     [data-ncp-cat="rythme"].ncp-row > .ncp-chip {
-      width: 146px !important;
-      min-width: 146px !important;
-      max-width: 146px !important;
-      flex: 0 0 146px !important;
+      width: 180px !important;
+      min-width: 180px !important;
+      max-width: 180px !important;
+      flex: 0 0 180px !important;
     }
-    /* Sub-tree chips Rythme : MÊME TAILLE (146px) que les chips L2 */
+    /* Sub-tree chips Rythme : MÊME TAILLE (180px) que les chips L2 — flex column pour stack label+tag */
     [data-ncp-cat="rythme"] .ncp-l3-chips > .ncp-chip {
-      width: 146px !important;
-      min-width: 146px !important;
-      max-width: 146px !important;
-      flex: 0 0 146px !important;
+      width: 180px !important;
+      min-width: 180px !important;
+      max-width: 180px !important;
+      flex: 0 0 180px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-sizing: border-box !important;
     }
-    /* Le label de Conséquences (bandeau) garde sa largeur normale */
+    /* Centrage du tag inline (texte sur 2+ lignes centré) pour TOUTES chips rythme */
+    [data-ncp-cat="rythme"] .ncp-chip .pb-cause-tag {
+      text-align: center !important;
+      white-space: normal !important;
+    }
+    /* Conséquences : chips compactes (110px), label wrap sur 2 lignes, côte à côte */
     [data-ncp-cat="rythme"] .ncp-conseq-row .ncp-chip {
-      width: auto !important;
-      flex: 0 0 auto !important;
+      width: 110px !important;
+      min-width: 110px !important;
+      max-width: 110px !important;
+      flex: 0 0 110px !important;
+      white-space: normal !important;
+      text-align: center !important;
+      padding: 6px 8px !important;
+      line-height: 1.2 !important;
     }
     /* Lignes vides dans la grille — span sur les 2 colonnes */
     .ncp-grid-blank { grid-column: 1 / -1; height: 10px; }
