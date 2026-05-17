@@ -17533,21 +17533,10 @@ const _NCP_SECTIONS = [
   { id: 'lait',
     label: 'Lait <span style="color:#999;font-style:italic;font-weight:400;font-size:10px;margin-left:4px">(courbes OK)</span>',
     branches: _NCP_LAIT_BRANCHES,
-    // Ordre suit Courbes pas OK L3 tree : Espacement → (Volume) → (Tétée) → Inversion → (Tétine) → Autres → (Conséquences) puis Lait N°1 spécifique
-    l2Groups: [
-      { label: 'Espacement', items: [['nutri_lok_esp_long', 'Trop long'], ['nutri_lok_esp_court', 'Trop court']] },
-      { label: 'Inversion', items: [['nutri_lok_inv_jn', 'Jour/Nuit']] },
-      { label: 'Autres', items: [['nutri_lok_jus_vegetal', 'Jus végétal'], ['nutri_lok_lait_animal', 'Lait animal']] },
-      { label: 'Lait N°1', items: [['nutri_lok_lait_n1', 'Lait N°1']] },
-    ],
     treeFn: (b) => _ncpRenderLaitL3Tree(b), subgroup: 'nutri_lait_ok' },
   { id: 'diversif',
     label: 'Diversification <span style="color:#999;font-style:italic;font-weight:400;font-size:10px;margin-left:4px">(courbes OK)</span>',
     branches: _NCP_DIVERSIF_BRANCHES,
-    l2Groups: [
-      { label: 'Diversif. N°1', items: [['nutri_div_n1', 'N°1']] },
-      { label: 'Féculents', items: [['nutri_div_feculents', 'Pas assez féculents']] },
-    ],
     treeFn: (b) => _ncpRenderLaitL3Tree(b), subgroup: 'nutri_diversif_ok' },
 ];
 // État local UI unifié :
