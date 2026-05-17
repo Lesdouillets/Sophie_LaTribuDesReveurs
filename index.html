@@ -2843,6 +2843,21 @@
       margin-left: var(--meet-w) !important;
       transition: margin 0.18s ease;
     }
+    /* Décalage forcé du bloc "Leviers identifiés" dans V. Diagnostic en mode Meet.
+       La détection bbox dynamique (_meetUpdateOverlap) peut rater ce bloc à cause des
+       re-renders fréquents (renderRythmeChips, _refreshDiagnosticConditionalInPlace) qui
+       modifient sa hauteur. On force ici le décalage : le bloc est TOUJOURS large et chevauche
+       potentiellement la zone vidéo, donc autant l'écarter de la vidéo en permanence. */
+    body[data-meet-mode="bottom-right"] #content-area .block-with-left-title:has(> .edit-block-wrap .block-leviers-identifies),
+    body[data-meet-mode="top-right"] #content-area .block-with-left-title:has(> .edit-block-wrap .block-leviers-identifies) {
+      margin-right: var(--meet-w) !important;
+      transition: margin 0.18s ease;
+    }
+    body[data-meet-mode="bottom-left"] #content-area .block-with-left-title:has(> .edit-block-wrap .block-leviers-identifies),
+    body[data-meet-mode="top-left"] #content-area .block-with-left-title:has(> .edit-block-wrap .block-leviers-identifies) {
+      margin-left: var(--meet-w) !important;
+      transition: margin 0.18s ease;
+    }
     /* Vignette pointillée — visible en permanence quand le mode visio est ON
        (aide à placer la PiP de Meet). Cliquable (✕) pour la masquer pour la session. */
     body[data-meet-mode] .meet-zone-hint {
@@ -8108,7 +8123,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=736"></script>
+<script src="script-data.js?v=737"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -18420,6 +18435,10 @@ function renderRythmeChips() {
       if (didAutoClose) renderRythmeChips();
     });
   });
+  // Force la re-détection overlap vidéo Meet à CHAQUE rendu rythme : la hauteur du bloc
+  // Leviers identifiés change (sub-trees ouverts ou fermés). Sans ce trigger, le bloc reste
+  // pleine largeur et la vidéo recouvre le texte.
+  if (typeof _meetScheduleOverlapDelayed === 'function') _meetScheduleOverlapDelayed();
 }
 function renderRythmeSubTree(branch) {
   const DIV = '<div class="ncp-l3-divider"></div>';
