@@ -978,23 +978,35 @@
     }
     .ncp-row[data-ncp-cols="2"] { grid-template-columns: 1fr 1fr; }
     .ncp-row[data-ncp-cols="3"] { grid-template-columns: 1fr 1fr 1fr; }
-    /* Force les chips à remplir leur cellule → même largeur entre siblings */
+    /* Force les chips à remplir leur cellule → même largeur entre siblings
+       !important pour gagner sur la specificity des règles .ncp-chip[data-ncp-l1-section] etc. */
     .ncp-row[data-ncp-cols] > .ncp-chip {
-      display: flex;
-      width: 100%;
-      justify-content: center;
+      display: flex !important;
+      width: 100% !important;
+      justify-content: center !important;
       box-sizing: border-box;
     }
-    /* Diversification : chips plus petites (police + padding) + row plus étroite */
+    /* Lait : chips plus petites (la police par défaut 14px est trop grosse pour 6 chips à 2 cols) */
+    .ncp-row[data-ncp-section="lait"] {
+      max-width: 520px;
+    }
+    .ncp-row[data-ncp-section="lait"] > .ncp-chip {
+      font-size: 13px !important;
+      padding: 4px 10px !important;
+    }
+    .ncp-row[data-ncp-section="lait"] > .ncp-chip .pb-cause-tag {
+      font-size: 11px;
+    }
+    /* Diversification : chips encore plus petites + row plus étroite */
     .ncp-row[data-ncp-section="diversif"] {
-      max-width: 420px;
+      max-width: 380px;
     }
     .ncp-row[data-ncp-section="diversif"] > .ncp-chip {
-      font-size: 12.5px;
-      padding: 4px 10px;
+      font-size: 12.5px !important;
+      padding: 3px 9px !important;
     }
     .ncp-row[data-ncp-section="diversif"] > .ncp-chip .pb-cause-tag {
-      font-size: 11px;
+      font-size: 10.5px;
     }
     /* Lignes vides dans la grille — span sur les 2 colonnes */
     .ncp-grid-blank { grid-column: 1 / -1; height: 10px; }
