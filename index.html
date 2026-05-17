@@ -1008,6 +1008,32 @@
       max-width: 300px !important;
       width: 300px !important;
     }
+    /* ─── RYTHME : thème vert (override le défaut orange) ─── */
+    [data-ncp-cat="rythme"] .ncp-chip.checked {
+      background: #bdd1c4 !important;
+      border-color: #7da589 !important;
+      color: #1a3322 !important;
+    }
+    [data-ncp-cat="rythme"] .ncp-chip.checked .pb-cause-tag {
+      background: #1a3322;
+      color: #fff;
+    }
+    [data-ncp-cat="rythme"] .ncp-separator,
+    [data-ncp-cat="rythme"] .ncp-l3-divider {
+      border-top-color: #7da589 !important;
+    }
+    [data-ncp-cat="rythme"] .ncp-conseq-row {
+      background: #d4e2d8;
+    }
+    /* Rythme L2 rows : 2 cols (300px) et 3 cols (460px) — comme Nutrition */
+    [data-ncp-cat="rythme"].ncp-row[data-ncp-cols="2"] {
+      max-width: 300px !important;
+      width: 300px !important;
+    }
+    [data-ncp-cat="rythme"].ncp-row[data-ncp-cols="3"] {
+      max-width: 460px !important;
+      width: 460px !important;
+    }
     /* Lignes vides dans la grille — span sur les 2 colonnes */
     .ncp-grid-blank { grid-column: 1 / -1; height: 10px; }
     /* Séparateur orange fin entre groupes niveau 3 (Espacement / Volume / Tétée / etc.) */
@@ -1103,6 +1129,7 @@
     .ncp-chip[data-ncp-l2] .pb-cause-tag {
       font-size: 10.5px;
       white-space: normal;
+      text-align: center;
     }
     /* Tag inline sur la 2e ligne (dans la chip, centré sous le label) */
     .ncp-chip[data-ncp-l2] .pb-cause-tag {
@@ -12884,6 +12911,7 @@ function renderCurrentSection() {
   }
   // PROTO : rendre les chips Nutrition (Courbes pas OK > Courbe diminue) si le container existe
   if (typeof renderNutritionChipsProto === 'function') renderNutritionChipsProto();
+  if (typeof renderRythmeChips === 'function') renderRythmeChips();
   // Rendre tous les blocs et contenus d'options éditables (sauf le bloc diagnostic)
   const diagEl = document.getElementById('diag-pb-container');
   area.querySelectorAll('.block, .q-text').forEach(el => {
@@ -17877,6 +17905,163 @@ function renderNutritionChipsProto() {
 }
 window.renderNutritionChipsProto = renderNutritionChipsProto;
 
+// ═══════════════════════════════════════════════════════════════════════
+// RYTHME CHIPS SYSTEM (Organisation de la journée) — vert au lieu d'orange
+// 5 chips L2 en custom layout (2 + 3), 2 sub-parents (TE / RM) avec sub-trees
+// ═══════════════════════════════════════════════════════════════════════
+const _NCP_RYTHME_BRANCHES = [
+  // Temps d'éveil — sub-parent avec 2 enfants (mutex), chacun avec conséquences
+  { id: 'te', label: "Temps d'éveil", kind: 'subparent',
+    children: [
+      { val: 'rythme_te_trop_long', label: 'Trop long', tag: '⇒ Sur-stimulation',
+        consequences: [
+          ['rythme_te_long_siestes_courtes', 'Siestes courtes'],
+          ['rythme_te_long_reveils_matinaux', 'Réveils matinaux'],
+        ] },
+      { val: 'rythme_te_trop_court', label: 'Trop court', tag: '⇒ Pas assez de pression de sommeil',
+        consequences: [
+          ['rythme_te_court_siestes_courtes', 'Siestes courtes'],
+        ] },
+    ] },
+  // Siestes courtes (TE OK) — leaf
+  { id: 'sc', val: 'rythme_siestes_courtes',
+    label: 'Siestes courtes <span style="color:#999;font-style:italic;font-weight:400;font-size:10px;margin-left:3px">(TE OK)</span>',
+    tag: '⇒ Pas de rallongement de sieste', kind: 'leaf' },
+  // Réveils matinaux — sub-parent avec 7 causes
+  { id: 'rm', label: 'Réveils matinaux', kind: 'subparent',
+    children: [
+      { val: 'rythme_reveil_decalage', label: 'Décalage horaire' },
+      { val: 'rythme_reveil_fatigue', label: 'Fatigue accumulée' },
+      { val: 'rythme_reveil_relationnel', label: 'Enjeu relationnel' },
+      { val: 'rythme_reveil_mange', label: 'Mange et ne peut pas se rendormir' },
+      { val: 'rythme_reveil_faim', label: "Faim et n'a pas le sein/bib" },
+      { val: 'rythme_reveil_dependance', label: 'Dépendance' },
+      { val: 'rythme_reveil_bruit', label: 'Bruit extérieur/lumière' },
+    ] },
+  // Horaires aléatoires — leaf
+  { id: 'ha', val: 'rythme_horaires_aleatoires', label: 'Horaires aléatoires',
+    tag: '⇒ rythme imprévisible', kind: 'leaf' },
+  // Pas d'activité physique — leaf
+  { id: 'pa', val: 'rythme_activite_physique', label: "Pas d'activité physique",
+    tag: '⇒ Pas assez de pression de sommeil', kind: 'leaf' },
+];
+// État local UI rythme : id de la sub-parent branch actuellement révélée (sub-tree visible)
+let _ncpRythmeActiveL2 = null;
+function renderRythmeChips() {
+  const catInput = document.querySelector('#diag-pb-container input[data-cat="rythme"]');
+  const cat = catInput?.closest('.pb-category');
+  if (!cat) return;
+  const items = cat.querySelector('.pb-items');
+  if (!items) return;
+  // Hide tous les enfants natifs (sauf notre section)
+  Array.from(items.children).forEach(child => {
+    if (!child.classList.contains('ncp-section')) child.style.display = 'none';
+  });
+  // Find/create host
+  let host = items.querySelector(':scope > .ncp-section');
+  if (!host) {
+    host = document.createElement('div');
+    host.className = 'ncp-section';
+    items.insertBefore(host, items.firstChild);
+  }
+  // Determine active sub-parent (priorité auto-active si enfant coché)
+  let autoActive = null;
+  _NCP_RYTHME_BRANCHES.forEach(b => {
+    if (b.kind !== 'subparent') return;
+    const hasCheckedChild = b.children?.some(c =>
+      _ncpIsChecked(c.val) || (c.consequences && c.consequences.some(cs => _ncpIsChecked(cs[0])))
+    );
+    if (hasCheckedChild) autoActive = b.id;
+  });
+  const activeL2 = autoActive || _ncpRythmeActiveL2;
+  // Helper : HTML d'une chip L2
+  const chipHtml = (b) => {
+    let isChecked = false;
+    if (b.kind === 'leaf') isChecked = _ncpIsChecked(b.val);
+    else isChecked = (b.id === activeL2);
+    const cls = 'ncp-chip' + (isChecked ? ' checked' : '');
+    const tagHtml = b.tag ? ` <span class="pb-cause-tag">${b.tag}</span>` : '';
+    const dataAttr = b.kind === 'leaf'
+      ? `data-ncp-value="${b.val}"`
+      : `data-ncp-rythme-subparent="${b.id}"`;
+    return `<span class="${cls}" data-ncp-l2="${b.val || b.id}" ${dataAttr}>${b.label}${tagHtml}</span>`;
+  };
+  // Build HTML
+  let html = '<div class="nutri-chips-proto" data-ncp-cat="rythme">';
+  // Row 1 : Temps d'éveil + Siestes courtes (2 chips)
+  html += '<div class="ncp-row indent-1" data-ncp-cols="2" data-ncp-cat="rythme">';
+  html += chipHtml(_NCP_RYTHME_BRANCHES.find(b => b.id === 'te'));
+  html += chipHtml(_NCP_RYTHME_BRANCHES.find(b => b.id === 'sc'));
+  html += '</div>';
+  // Row 2 : Réveils matinaux + Horaires aléatoires + Pas d'activité physique (3 chips)
+  html += '<div class="ncp-row indent-1" data-ncp-cols="3" data-ncp-cat="rythme">';
+  html += chipHtml(_NCP_RYTHME_BRANCHES.find(b => b.id === 'rm'));
+  html += chipHtml(_NCP_RYTHME_BRANCHES.find(b => b.id === 'ha'));
+  html += chipHtml(_NCP_RYTHME_BRANCHES.find(b => b.id === 'pa'));
+  html += '</div>';
+  // Sub-tree de la branche active
+  const activeBranch = _NCP_RYTHME_BRANCHES.find(b => b.id === activeL2 && b.kind === 'subparent');
+  if (activeBranch) {
+    html += '<div class="ncp-separator"></div>';
+    html += renderRythmeSubTree(activeBranch);
+  }
+  html += '</div>';
+  host.innerHTML = html;
+  // ─── LISTENERS ───
+  // Sub-parent chip : toggle reveal
+  host.querySelectorAll('[data-ncp-rythme-subparent]').forEach(el => {
+    el.addEventListener('click', (ev) => {
+      ev.preventDefault(); ev.stopPropagation();
+      const id = el.dataset.ncpRythmeSubparent;
+      _ncpRythmeActiveL2 = (_ncpRythmeActiveL2 === id) ? null : id;
+      renderRythmeChips();
+    });
+  });
+  // Leaf chip : toggle PB via cb.click() (onNutriChipClick gère le chain)
+  host.querySelectorAll('.ncp-chip[data-ncp-value]').forEach(el => {
+    el.addEventListener('click', (ev) => {
+      ev.preventDefault(); ev.stopPropagation();
+      onNutriChipClick(el.dataset.ncpValue);
+      setTimeout(() => renderRythmeChips(), 50);
+    });
+  });
+}
+function renderRythmeSubTree(branch) {
+  const DIV = '<div class="ncp-l3-divider"></div>';
+  let html = '<div class="ncp-l3-grid">';
+  if (branch.id === 'te') {
+    // Temps d'éveil : Choix (Trop long / Trop court avec mutex) + Conséquences conditionnelles
+    html += `<span class="ncp-l3-label">Choix</span>`;
+    html += '<div class="ncp-l3-chips">';
+    branch.children.forEach(c => {
+      const checked = _ncpIsChecked(c.val);
+      const cls = 'ncp-chip' + (checked ? ' checked' : '');
+      const tagHtml = c.tag ? ` <span class="pb-cause-tag">${c.tag}</span>` : '';
+      html += `<span class="${cls}" data-ncp-value="${c.val}">${c.label}${tagHtml}</span>`;
+    });
+    html += '</div>';
+    // Conséquences (uniquement pour le parent coché)
+    branch.children.forEach(c => {
+      if (!c.consequences || !_ncpIsChecked(c.val)) return;
+      html += DIV;
+      html += _ncpConseqRow('Conséq. ' + c.label, c.consequences);
+    });
+  } else if (branch.id === 'rm') {
+    // Réveils matinaux : 7 causes en une seule liste
+    html += `<span class="ncp-l3-label">Causes</span>`;
+    html += '<div class="ncp-l3-chips">';
+    branch.children.forEach(c => {
+      const checked = _ncpIsChecked(c.val);
+      const cls = 'ncp-chip' + (checked ? ' checked' : '');
+      html += `<span class="${cls}" data-ncp-value="${c.val}">${c.label}</span>`;
+    });
+    html += '</div>';
+  }
+  html += '</div>';
+  return html;
+}
+window.renderRythmeChips = renderRythmeChips;
+
 // Click sur un chip : déclenche un click programmatique sur la checkbox source
 // (fiche client) → les règles d'exclusivité + auto-parent + sync se déclenchent.
 // Puis on re-render le proto pour refléter le nouvel état.
@@ -21352,8 +21537,9 @@ function addCatSelectButtons(container) {
   container.querySelectorAll('.pb-category').forEach(cat => {
     const title = cat.querySelector('.pb-category-title');
     if (!title || title.querySelector('.pb-cat-btns')) return;
-    // Skip Nutrition : remplacée par les chips → les boutons Tout ✓/✗ n'ont pas de sens
+    // Skip Nutrition + Rythme : remplacées par les chips → les boutons Tout ✓/✗ n'ont pas de sens
     const isNutritionTopLevel = !!title.querySelector('input[data-cat="nutrition"]');
+    const isRythmeTopLevel = !!title.querySelector('input[data-cat="rythme"]');
     // Wrapper emoji + label dans des spans séparés (uniquement pour top-level avec data-cat,
     // pour permettre le stacking vertical via CSS — purement visuel, ne touche aucune logique).
     const dataCatInput = title.querySelector('input[data-cat]');
@@ -21373,8 +21559,8 @@ function addCatSelectButtons(container) {
         }
       }
     }
-    // Skip Tout ✓/✗ pour Nutrition (remplacée par les chips → boutons inutiles)
-    if (isNutritionTopLevel) return;
+    // Skip Tout ✓/✗ pour Nutrition + Rythme (remplacées par les chips → boutons inutiles)
+    if (isNutritionTopLevel || isRythmeTopLevel) return;
     const wrap = document.createElement('span');
     wrap.className = 'pb-cat-btns';
     wrap.innerHTML = `
