@@ -1025,7 +1025,15 @@
     [data-ncp-cat="rythme"] .ncp-conseq-row {
       background: #d4e2d8;
     }
-    /* Rythme L2 rows : largeurs adaptées pour chips de 180px chacune (même taille partout) */
+    /* Rythme L2 rows : flex avec align-items stretch → chips même hauteur */
+    [data-ncp-cat="rythme"].ncp-row[data-ncp-cols] {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      align-items: stretch !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      margin: 0 auto !important;
+    }
     [data-ncp-cat="rythme"].ncp-row[data-ncp-cols="2"] {
       max-width: 380px !important;
       width: 380px !important;
@@ -1045,17 +1053,34 @@
       max-width: 180px !important;
       flex: 0 0 180px !important;
     }
-    /* Sub-tree chips Rythme : MÊME TAILLE (180px) que les chips L2 — flex column pour stack label+tag */
+    /* Sub-tree labels : min-width identique pour aligner les chips verticalement (Espacement / Causes / Conséquences) */
+    [data-ncp-cat="rythme"] .ncp-l3-label {
+      min-width: 100px !important;
+    }
+    /* Default sub-tree chip : flex column + box-sizing */
     [data-ncp-cat="rythme"] .ncp-l3-chips > .ncp-chip {
-      width: 180px !important;
-      min-width: 180px !important;
-      max-width: 180px !important;
-      flex: 0 0 180px !important;
       display: flex !important;
       flex-direction: column !important;
       align-items: center !important;
       justify-content: center !important;
       box-sizing: border-box !important;
+    }
+    /* TE sub-tree : Espacement chips à 180px (assez large pour tag long) */
+    [data-ncp-cat="rythme"] .ncp-subtree-te .ncp-l3-chips > .ncp-chip {
+      width: 180px !important;
+      min-width: 180px !important;
+      max-width: 180px !important;
+      flex: 0 0 180px !important;
+    }
+    /* RM sub-tree (Causes) : chips 150px, 3 par ligne, label wrap sur 2 lignes */
+    [data-ncp-cat="rythme"] .ncp-subtree-rm .ncp-l3-chips > .ncp-chip {
+      width: 150px !important;
+      min-width: 150px !important;
+      max-width: 150px !important;
+      flex: 0 0 150px !important;
+      white-space: normal !important;
+      text-align: center !important;
+      line-height: 1.25 !important;
     }
     /* Centrage du tag inline (texte sur 2+ lignes centré) pour TOUTES chips rythme */
     [data-ncp-cat="rythme"] .ncp-chip .pb-cause-tag {
@@ -1072,6 +1097,13 @@
       text-align: center !important;
       padding: 6px 8px !important;
       line-height: 1.2 !important;
+    }
+    /* Sub-parent OPEN (sub-tree visible) : bordure verte 2px sans changer bg
+       → distingue "ouvert" (visuel seul) de "checked" (PB coché → full green) */
+    [data-ncp-cat="rythme"] .ncp-chip.subparent-open {
+      border-color: #7da589 !important;
+      border-width: 2px !important;
+      color: #1a3322 !important;
     }
     /* Lignes vides dans la grille — span sur les 2 colonnes */
     .ncp-grid-blank { grid-column: 1 / -1; height: 10px; }
@@ -18013,16 +18045,18 @@ function renderRythmeChips() {
     if (b.kind === 'subparent' && subParentHasChecked(b)) _ncpRythmeActiveL2.add(b.id);
   });
   // Helper : HTML d'une chip L2
-  // Sub-parent "checked" UNIQUEMENT si un enfant PB est coché (pas si juste sub-tree ouvert)
-  // → évite la confusion entre "ouvert" (visible) et "coché" (PB actif) + mutex Siestes courtes
+  // Leaf : checked = PB coché
+  // Sub-parent : full "checked" si enfant PB coché ; sinon "subparent-open" si user a cliqué (sub-tree visible)
   const chipHtml = (b) => {
-    let isChecked = false;
+    let cls = 'ncp-chip';
     if (b.kind === 'leaf') {
-      isChecked = _ncpIsChecked(b.val);
+      if (_ncpIsChecked(b.val)) cls += ' checked';
     } else {
-      isChecked = subParentHasChecked(b);
+      const hasChecked = subParentHasChecked(b);
+      const isOpen = _ncpRythmeActiveL2.has(b.id);
+      if (hasChecked) cls += ' checked';
+      else if (isOpen) cls += ' subparent-open';
     }
-    const cls = 'ncp-chip' + (isChecked ? ' checked' : '');
     const tagHtml = b.tag ? ` <span class="pb-cause-tag">${b.tag}</span>` : '';
     const dataAttr = b.kind === 'leaf'
       ? `data-ncp-value="${b.val}"`
@@ -18099,7 +18133,8 @@ function renderRythmeChips() {
 }
 function renderRythmeSubTree(branch) {
   const DIV = '<div class="ncp-l3-divider"></div>';
-  let html = '<div class="ncp-l3-grid">';
+  // Class ncp-subtree-${branch.id} pour styling spécifique (TE = 180px chips, RM = 150px wrap)
+  let html = `<div class="ncp-l3-grid ncp-subtree-${branch.id}">`;
   if (branch.id === 'te') {
     // Temps d'éveil : "Espacement" (label) avec Trop long / Trop court (chips horizontales, même taille)
     html += `<span class="ncp-l3-label">Espacement</span>`;
