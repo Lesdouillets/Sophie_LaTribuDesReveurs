@@ -965,53 +965,56 @@
       align-items: center;
       justify-content: flex-start;
     }
-    /* Layout FLEX : chips horizontales, même taille entre frères via flex: 1 */
+    /* Layout GRID : chips de MÊME TAILLE par row (1fr cells = équidistantes)
+       Chips horizontales (row direction), contenu interne en column (label + tag/sub stack) */
     .ncp-row.indent-1 {
       justify-content: center;
     }
     .ncp-row[data-ncp-cols] {
-      display: flex !important;
-      flex-wrap: wrap;
+      display: grid !important;
       align-items: stretch;
-      justify-content: center;
       gap: 8px;
       margin: 0 auto;
     }
-    /* Toutes les chips dans grid-row : flex:1 → même largeur entre siblings, s'adaptent au container */
+    .ncp-row[data-ncp-cols="2"] { grid-template-columns: 1fr 1fr; }
+    .ncp-row[data-ncp-cols="3"] { grid-template-columns: 1fr 1fr 1fr; }
+    /* Chips dans grid-row : remplissent leur cellule, contenu interne stacké (column) */
     .ncp-row[data-ncp-cols] > .ncp-chip {
       display: flex !important;
-      flex: 1 1 0 !important;
+      flex-direction: column !important;
+      width: 100% !important;
+      min-width: 0 !important;
       align-items: center !important;
       justify-content: center !important;
       box-sizing: border-box !important;
     }
-    /* L1 chips : flex-direction ROW (label inline, ex. "Lait (courbes OK)" sur 1 ligne) */
-    .ncp-row[data-ncp-cols] > .ncp-chip[data-ncp-l1-section] {
-      flex-direction: row !important;
-      min-width: 110px !important;
+    /* L1 + Courbes pas OK L2 (3 cols) : max-width 560 → chips ~180px chacune */
+    .ncp-row[data-ncp-cols="3"] {
+      max-width: 560px;
     }
-    /* L2 chips : flex-direction COLUMN (tag ⇒ Faim sur 2e ligne en dessous du label) */
-    .ncp-row[data-ncp-cols] > .ncp-chip[data-ncp-l2] {
-      flex-direction: column !important;
-      min-width: 110px !important;
+    /* Lait L2 (2 cols) : max-width 380 → chips ~186px chacune, font/padding réduits */
+    .ncp-row[data-ncp-section="lait"] {
+      max-width: 380px;
     }
-    /* Lait L2 : chips plus petites (font + padding réduits) */
-    .ncp-row[data-ncp-cols][data-ncp-section="lait"] > .ncp-chip {
+    .ncp-row[data-ncp-section="lait"] > .ncp-chip {
       font-size: 13px !important;
       padding: 4px 10px !important;
-      min-width: 130px !important;
     }
     .ncp-row[data-ncp-section="lait"] > .ncp-chip .pb-cause-tag {
       font-size: 11px;
+      white-space: normal;
     }
-    /* Diversification L2 : chips encore plus petites */
-    .ncp-row[data-ncp-cols][data-ncp-section="diversif"] > .ncp-chip {
+    /* Diversification L2 (2 cols) : max-width 300 → chips ~146px chacune (plus petites encore) */
+    .ncp-row[data-ncp-section="diversif"] {
+      max-width: 300px;
+    }
+    .ncp-row[data-ncp-section="diversif"] > .ncp-chip {
       font-size: 12.5px !important;
       padding: 3px 9px !important;
-      min-width: 110px !important;
     }
     .ncp-row[data-ncp-section="diversif"] > .ncp-chip .pb-cause-tag {
       font-size: 10.5px;
+      white-space: normal;
     }
     /* Lignes vides dans la grille — span sur les 2 colonnes */
     .ncp-grid-blank { grid-column: 1 / -1; height: 10px; }
@@ -1095,20 +1098,13 @@
       border-width: 2px;
       font-style: italic;
     }
-    /* Niveau 1 (sections : Courbes pas OK / Lait / Diversification) : inline (1 ligne)
-       Pas de flex-direction column car pas de tag à empiler */
-    .ncp-chip[data-ncp-l1-section] {
-      font-size: 14px;
-      padding: 6px 12px;
-      align-items: center;
-      justify-content: center;
-    }
-    /* Niveau 2 (branches) : column car tag ⇒ Faim sur une ligne en dessous (dans la chip) */
+    /* Niveau 1 (sections : Courbes pas OK / Lait / Diversification)
+       + Niveau 2 (branches) : flex-direction column gérée par la règle .ncp-row[data-ncp-cols] > .ncp-chip
+       Ici on définit juste police/padding par défaut (la règle row override les détails layout) */
+    .ncp-chip[data-ncp-l1-section],
     .ncp-chip[data-ncp-l2] {
       font-size: 14px;
-      padding: 5px 12px;
-      flex-direction: column;
-      align-items: center;
+      padding: 6px 12px;
     }
     /* Tag inline sur la 2e ligne (dans la chip, centré sous le label) */
     .ncp-chip[data-ncp-l2] .pb-cause-tag {
