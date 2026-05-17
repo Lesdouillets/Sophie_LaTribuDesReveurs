@@ -1077,12 +1077,19 @@
       max-width: 180px !important;
       flex: 0 0 180px !important;
     }
-    /* RM sub-tree (Causes) : chips 150px, label wrap sur 2 lignes, 3 par ligne */
+    /* RM sub-tree (Causes) : layout GRID 3 colonnes 1fr → chips remplissent leur cellule (même taille garantie) */
+    [data-ncp-cat="rythme"] .ncp-subtree-rm .ncp-l3-chips {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 8px !important;
+      max-width: 560px !important;
+      align-items: stretch !important;
+    }
     [data-ncp-cat="rythme"] .ncp-subtree-rm .ncp-l3-chips > .ncp-chip[data-ncp-value] {
-      width: 150px !important;
-      min-width: 150px !important;
-      max-width: 150px !important;
-      flex: 0 0 150px !important;
+      width: auto !important;
+      min-width: 0 !important;
+      max-width: none !important;
+      flex: initial !important;
       white-space: normal !important;
       text-align: center !important;
       line-height: 1.25 !important;
@@ -18203,14 +18210,15 @@ function renderRythmeSubTree(branch) {
       html += `</div>`;
     }
   } else if (branch.id === 'rm') {
-    // Réveils matinaux : 7 causes à 150px chacune avec label wrap centré
+    // Réveils matinaux : 7 causes en GRID 3 colonnes 1fr (chips remplissent leur cellule = même largeur)
+    // Pas d'inline width — la grille CSS gère via repeat(3, 1fr) et width: auto sur chip
     html += `<span class="ncp-l3-label">Causes</span>`;
     html += '<div class="ncp-l3-chips">';
-    const rmExtra = 'white-space:normal !important;text-align:center !important;line-height:1.25 !important;';
+    const rmExtra = 'white-space:normal;text-align:center;line-height:1.25;';
     branch.children.forEach(c => {
       const checked = _ncpIsChecked(c.val);
       const cls = 'ncp-chip' + (checked ? ' checked' : '');
-      html += `<span class="${cls}" style="${inlineStyle(150, rmExtra)}" data-ncp-value="${c.val}">${c.label}</span>`;
+      html += `<span class="${cls}" style="${rmExtra}" data-ncp-value="${c.val}">${c.label}</span>`;
     });
     html += '</div>';
   }
