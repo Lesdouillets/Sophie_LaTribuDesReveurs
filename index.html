@@ -17405,48 +17405,6 @@ function _ncpConseqRow(label, items) {
   html += `</div>`;
   return html;
 }
-// Config des 2 branches niveau 2 de "Diversification (courbes OK)"
-const _NCP_DIVERSIF_BRANCHES = [
-  // Diversification N°1 : "Bib stratégie dépendante" + tree complet
-  { val: 'nutri_div_n1', label: 'Diversif. N°1', tag: '⇒ Faim ou Dépendance',
-    sections: [
-      ['En plus', [['nutri_div_n1_bib_strat_dep','Bib = stratégie dépendante']]],
-      ['Espacement', [['nutri_div_n1_esp_long','Trop long'],['nutri_div_n1_esp_court','Trop court']]],
-      ['Volume/durée des bib', [['nutri_div_n1_vol_petit','Petit bib'],['nutri_div_n1_vol_gros','Gros bib'],['nutri_div_n1_vol_longtemps','Boit longtemps']]],
-      ['Inversion', [['nutri_div_n1_inversion_jour_nuit','Jour/Nuit'],['nutri_div_n1_inversion_lait_solide','Ordre lait/solide']]],
-      ['Tétine = cache faim', [['nutri_div_n1_tetine_cache_faim','OUI']]],
-      ['Autres', [['nutri_div_n1_autre_feculents','Pas assez de féculents'],['nutri_div_n1_autre_jus_vegetal','Jus végétal'],['nutri_div_n1_autre_lait_animal','Lait animal']]],
-    ],
-    consequences: [['nutri_div_n1_conseq_mange_nuit','Mange la nuit']],
-  },
-  // Pas assez de féculents : Espacement, Volume, Inversion (J/N seule)
-  { val: 'nutri_div_feculents', label: 'Pas assez féculents', tag: '⇒ Faim',
-    sections: [
-      ['Espacement', [['nutri_div_fec_esp_long','Trop long'],['nutri_div_fec_esp_court','Trop court']]],
-      ['Volume/durée des bib', [['nutri_div_fec_vol_petit','Petit bib'],['nutri_div_fec_vol_gros','Gros bib'],['nutri_div_fec_vol_longtemps','Boit longtemps']]],
-      ['Inversion', [['nutri_div_fec_inversion_jour_nuit','Jour/Nuit']]],
-    ],
-  },
-];
-// Meta des 3 sections niveau 1. Chaque section a un id, un label HTML, ses branches L2,
-// la fonction de rendu de tree L3, et le data-subgroup de la cat sub-parent à cacher.
-const _NCP_SECTIONS = [
-  { id: 'courbes', label: 'Courbes pas OK', branches: _NCP_BRANCHES,
-    treeFn: (b) => _ncpRenderL3Tree(b), subgroup: 'nutri_courbes' },
-  { id: 'lait',
-    label: 'Lait <span style="color:#999;font-style:italic;font-weight:400;font-size:10px;margin-left:4px">(courbes OK)</span>',
-    branches: _NCP_LAIT_BRANCHES,
-    treeFn: (b) => _ncpRenderLaitL3Tree(b), subgroup: 'nutri_lait_ok' },
-  { id: 'diversif',
-    label: 'Diversification <span style="color:#999;font-style:italic;font-weight:400;font-size:10px;margin-left:4px">(courbes OK)</span>',
-    branches: _NCP_DIVERSIF_BRANCHES,
-    treeFn: (b) => _ncpRenderLaitL3Tree(b), subgroup: 'nutri_diversif_ok' },
-];
-// État local UI unifié :
-//   _ncpActiveL1 : id de la section L1 actuellement révélée ('courbes' | 'lait' | 'diversif' | null)
-//   _ncpActiveL2 : PB value de la branche L2 actuellement révélée (max 1 au total — mutex global)
-let _ncpActiveL1 = null;
-let _ncpActiveL2 = null;
 // Config des 3 branches niveau 2 de "Courbes pas OK". Chacune a une structure niveau 3
 // similaire (Espacement, Volume, Tétée, Inversion, Tétine, Autres, Conséquences) avec
 // un préfixe différent. Trop d'apport est plus pauvre (pas de Tétée, Tétine, Conséquences).
@@ -17536,6 +17494,50 @@ const _NCP_LAIT_BRANCHES = [
     consequences: [['nutri_lok_n1_conseq_mange_nuit','Mange la nuit']],
   },
 ];
+// Config des 2 branches niveau 2 de "Diversification (courbes OK)"
+const _NCP_DIVERSIF_BRANCHES = [
+  // Diversification N°1 : "Bib stratégie dépendante" + tree complet
+  { val: 'nutri_div_n1', label: 'Diversif. N°1', tag: '⇒ Faim ou Dépendance',
+    sections: [
+      ['En plus', [['nutri_div_n1_bib_strat_dep','Bib = stratégie dépendante']]],
+      ['Espacement', [['nutri_div_n1_esp_long','Trop long'],['nutri_div_n1_esp_court','Trop court']]],
+      ['Volume/durée des bib', [['nutri_div_n1_vol_petit','Petit bib'],['nutri_div_n1_vol_gros','Gros bib'],['nutri_div_n1_vol_longtemps','Boit longtemps']]],
+      ['Inversion', [['nutri_div_n1_inversion_jour_nuit','Jour/Nuit'],['nutri_div_n1_inversion_lait_solide','Ordre lait/solide']]],
+      ['Tétine = cache faim', [['nutri_div_n1_tetine_cache_faim','OUI']]],
+      ['Autres', [['nutri_div_n1_autre_feculents','Pas assez de féculents'],['nutri_div_n1_autre_jus_vegetal','Jus végétal'],['nutri_div_n1_autre_lait_animal','Lait animal']]],
+    ],
+    consequences: [['nutri_div_n1_conseq_mange_nuit','Mange la nuit']],
+  },
+  // Pas assez de féculents : Espacement, Volume, Inversion (J/N seule)
+  { val: 'nutri_div_feculents', label: 'Pas assez féculents', tag: '⇒ Faim',
+    sections: [
+      ['Espacement', [['nutri_div_fec_esp_long','Trop long'],['nutri_div_fec_esp_court','Trop court']]],
+      ['Volume/durée des bib', [['nutri_div_fec_vol_petit','Petit bib'],['nutri_div_fec_vol_gros','Gros bib'],['nutri_div_fec_vol_longtemps','Boit longtemps']]],
+      ['Inversion', [['nutri_div_fec_inversion_jour_nuit','Jour/Nuit']]],
+    ],
+  },
+];
+// Meta des 3 sections niveau 1. Chaque section a un id, un label HTML, ses branches L2,
+// la fonction de rendu de tree L3, et le data-subgroup de la cat sub-parent à cacher.
+// IMPORTANT : doit être déclaré APRÈS _NCP_BRANCHES, _NCP_LAIT_BRANCHES, _NCP_DIVERSIF_BRANCHES
+// pour éviter une ReferenceError au load (TDZ).
+const _NCP_SECTIONS = [
+  { id: 'courbes', label: 'Courbes pas OK', branches: _NCP_BRANCHES,
+    treeFn: (b) => _ncpRenderL3Tree(b), subgroup: 'nutri_courbes' },
+  { id: 'lait',
+    label: 'Lait <span style="color:#999;font-style:italic;font-weight:400;font-size:10px;margin-left:4px">(courbes OK)</span>',
+    branches: _NCP_LAIT_BRANCHES,
+    treeFn: (b) => _ncpRenderLaitL3Tree(b), subgroup: 'nutri_lait_ok' },
+  { id: 'diversif',
+    label: 'Diversification <span style="color:#999;font-style:italic;font-weight:400;font-size:10px;margin-left:4px">(courbes OK)</span>',
+    branches: _NCP_DIVERSIF_BRANCHES,
+    treeFn: (b) => _ncpRenderLaitL3Tree(b), subgroup: 'nutri_diversif_ok' },
+];
+// État local UI unifié :
+//   _ncpActiveL1 : id de la section L1 actuellement révélée ('courbes' | 'lait' | 'diversif' | null)
+//   _ncpActiveL2 : PB value de la branche L2 actuellement révélée (max 1 au total — mutex global)
+let _ncpActiveL1 = null;
+let _ncpActiveL2 = null;
 // Rendu du niveau 3 (Espacement / Volume / Tétée / Inversion / Tétine / Autres / Conséquences)
 // pour une branche donnée. Utilise le préfixe pour construire les valeurs des PBs.
 // Rendu du niveau 3 pour une branche Lait (sections flexibles)
