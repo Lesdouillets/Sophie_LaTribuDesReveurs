@@ -13308,7 +13308,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
       'relationnel_rappels':'📢 Relation — Rappels multiples après le coucher',
     };
     // Afficher checkboxes synchronisées (identiques à la fiche client) via clone
-    return `<div class="block block-leviers-identifies"><div id="nutri-chips-proto"></div><div id="diag-pb-container"></div></div>`;
+    return `<div class="block block-leviers-identifies"><div id="diag-pb-container"></div></div>`;
   }
 
   if (b.type === 'leviers_count') {
@@ -17462,17 +17462,25 @@ function _ncpRenderL3Tree(branch) {
   return html;
 }
 function renderNutritionChipsProto() {
-  const host = document.getElementById('nutri-chips-proto');
-  if (!host) return;
-  // Cache la cat Nutrition du diag-pb-container (les chips la remplacent)
-  // Approche JS plutôt que CSS :has() pour compatibilité plus large
-  const diagNutriCat = document.querySelector('#diag-pb-container input[data-cat="nutrition"]')?.closest('.pb-category');
-  if (diagNutriCat) diagNutriCat.style.display = 'none';
+  // Injection directe dans le diag-pb-container :
+  //   1. Trouver la sub-cat "Courbes pas OK" dans la nutrition du diag (data-subgroup="nutri_courbes")
+  //   2. Hide-la (préserve les checkboxes dans le DOM pour que cb.click() marche → règles préservées)
+  //   3. Ajouter un sibling .ncp-section AVANT, contenant les chips
+  const courbesParent = document.querySelector('#diag-pb-container input[data-subgroup="nutri_courbes"]');
+  const courbesCat = courbesParent?.closest('.pb-category');
+  if (!courbesCat) return;
+  courbesCat.style.display = 'none';
+  // Trouver ou créer le host des chips (sibling de courbesCat)
+  let host = courbesCat.parentNode.querySelector(':scope > .ncp-section');
+  if (!host) {
+    host = document.createElement('div');
+    host.className = 'ncp-section';
+    courbesCat.parentNode.insertBefore(host, courbesCat);
+  }
   // État réel des PBs (lu depuis state.selectedPbs)
   const anyBranchChecked = _NCP_BRANCHES.some(b => _ncpIsChecked(b.val));
   // Niveau 2 visible si : un PB de branche cochée OU user a forcé ouvert niveau 1
   const showLevel2 = anyBranchChecked || _ncpForceOpen;
-  // Pas de wrap block-with-left-title (la cat Nutrition du diag fait déjà bloc-titre)
   let html = `<div class="nutri-chips-proto">`;
   // ─── Niveau 1 : "Courbes pas OK" — cliquable, orange dès qu'on l'ouvre
   const l1Checked = _ncpForceOpen || anyBranchChecked;
