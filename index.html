@@ -1039,6 +1039,13 @@
       border-width: 2px;
       font-style: italic;
     }
+    /* Niveau 1 ("Courbes pas OK") + Niveau 2 (Courbe diminue / Percentile INF / Trop d'apport)
+       à la même taille que les labels (Espacement, etc.) — plus visibles que les leaves */
+    .ncp-chip[data-ncp-l1],
+    .ncp-chip[data-ncp-l2-reveal] {
+      font-size: 14px;
+      padding: 4px 11px;
+    }
     /* Curseur not-allowed sur les chips parent verrouillées (enfants cochés) */
     .ncp-chip.locked { cursor: not-allowed; }
     .ncp-blank { height: 10px; }
