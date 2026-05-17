@@ -952,7 +952,7 @@
       font-weight: 700;
       text-decoration: underline;
       color: #334155;
-      font-size: 14px;
+      font-size: 13px;
       line-height: 1.3;
       white-space: nowrap;
       grid-column: 1;
@@ -963,9 +963,18 @@
       flex-wrap: wrap;
       gap: 6px 8px;
       align-items: center;
+      justify-content: center;
     }
     /* Lignes vides dans la grille — span sur les 2 colonnes */
     .ncp-grid-blank { grid-column: 1 / -1; height: 10px; }
+    /* Séparateur orange fin entre groupes niveau 3 (Espacement / Volume / Tétée / etc.) */
+    .ncp-l3-divider {
+      grid-column: 1 / -1;
+      height: 0;
+      border-top: 1px solid #d4845a;
+      opacity: 0.5;
+      margin: 4px 0;
+    }
     /* Bandeau orange pour la ligne Conséquences — span sur les 2 colonnes + subgrid pour aligner
        Margin/padding -14/+14 : le bandeau s'étend 14px à gauche/droite tout en gardant
        "Conséquences" aligné verticalement avec "Autres" (subgrid utilise les tracks du parent) */
@@ -17411,46 +17420,50 @@ const _NCP_BRANCHES = [
     hasTetee: true, hasTetine: true, hasConsequences: true },
   { val: 'nutri_trop_apport', label: "Trop d'apport", prefix: 'nutri_ta_',
     hasTetee: false, hasTetine: false, hasConsequences: false,
-    feculentsLabel: 'Féculents <span style="color:#dc2626;font-weight:700">IMPORTANT</span>' },
+    feculentsLabel: 'Féculents <span style="color:#dc2626;font-weight:700">IMPORTANTS</span>' },
 ];
 // Rendu du niveau 3 (Espacement / Volume / Tétée / Inversion / Tétine / Autres / Conséquences)
 // pour une branche donnée. Utilise le préfixe pour construire les valeurs des PBs.
 function _ncpRenderL3Tree(branch) {
   const p = branch.prefix;
+  const DIV = '<div class="ncp-l3-divider"></div>';
   let html = '<div class="ncp-l3-grid">';
-  html += _ncpL3Group('Espacement', [
+  // On collecte tous les groupes puis on les join avec un divider entre chacun
+  const groups = [];
+  groups.push(_ncpL3Group('Espacement', [
     [p + 'esp_long', 'Trop long'],
     [p + 'esp_court', 'Trop court']
-  ]);
-  html += _ncpL3Group('Volume/durée des bib', [
+  ]));
+  groups.push(_ncpL3Group('Volume/durée des bib', [
     [p + 'vol_petit', 'Petit bib'],
     [p + 'vol_gros', 'Gros bib'],
     [p + 'vol_longtemps', 'Boit longtemps']
-  ]);
+  ]));
   if (branch.hasTetee) {
     const teteeDirect = p + 'tetee';
-    html += _ncpL3Group('Tétée baisse de lactation', [
+    groups.push(_ncpL3Group('Tétée baisse de lactation', [
       [teteeDirect, '↗ Direct'],
       [p + 'tetee_longue', 'Longue tétée'],
       [p + 'tetee_greve', 'Grève'],
       [p + 'tetee_mode_garde', 'Mode garde']
-    ], { parentDirect: teteeDirect });
+    ], { parentDirect: teteeDirect }));
   }
-  html += _ncpL3Group('Inversion', [
+  groups.push(_ncpL3Group('Inversion', [
     [p + 'inversion_jour_nuit', 'Jour/Nuit'],
     [p + 'inversion_lait_solide', 'Ordre lait/solide']
-  ]);
+  ]));
   if (branch.hasTetine) {
-    html += _ncpL3Group('Tétine = cache faim', [
+    groups.push(_ncpL3Group('Tétine = cache faim', [
       [p + 'tetine_coupe_faim', 'OUI']
-    ]);
+    ]));
   }
-  html += _ncpL3Group('Autres', [
+  groups.push(_ncpL3Group('Autres', [
     [p + 'autre_feculents', branch.feculentsLabel || 'Féculents'],
     [p + 'autre_lait_solide_important', 'Lait/solides'],
     [p + 'autre_jus_vegetal', 'Jus végétal'],
     [p + 'autre_lait_animal', 'Lait animal']
-  ]);
+  ]));
+  html += groups.join(DIV);
   if (branch.hasConsequences) {
     html += '<div class="ncp-grid-blank"></div>';
     html += _ncpConseqRow('Conséquences', [
