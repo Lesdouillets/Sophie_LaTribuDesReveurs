@@ -22535,12 +22535,17 @@ if ('serviceWorker' in navigator) {
 // ═══════════════════════════════════════════════════
 window.addEventListener('storage', (e) => {
   if (e.key !== 'tdr_active_consultation' || !e.newValue) return;
+  console.log('[live-sync site] storage event reçu depuis la fiche découverte');
   try {
     const snap = JSON.parse(e.newValue);
-    if (!snap || !snap.client || !state || !state.client) return;
+    if (!snap || !snap.client || !state || !state.client) {
+      console.warn('[live-sync site] snap ou state.client absent — skip');
+      return;
+    }
     // Merger TOUT le client (pas juste quelques champs) pour qu'absolument tout ce que
     // la fiche découverte modifie se reflète dans state.client.
     let changed = false;
+    const changedFields = [];
     Object.keys(snap.client).forEach(k => {
       // Comparer JSON pour détecter les modifs sur objets/arrays imbriqués (pbs, alimentation...)
       const oldJson = JSON.stringify(state.client[k]);
@@ -22548,9 +22553,11 @@ window.addEventListener('storage', (e) => {
       if (oldJson !== newJson) {
         state.client[k] = snap.client[k];
         changed = true;
+        changedFields.push(k);
       }
     });
-    if (!changed) return;
+    if (!changed) { console.log('[live-sync site] rien à changer'); return; }
+    console.log('[live-sync site] champs modifiés:', changedFields);
     // 1) Repopuler TOUS les inputs visibles de la fiche client UI (modal d'édition)
     //    → l'utilisateur voit instantanément les valeurs mises à jour.
     if (typeof populateFormFromClient === 'function') {
