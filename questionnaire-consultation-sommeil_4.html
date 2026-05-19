@@ -291,13 +291,16 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
 
 <div class="app">
 
-  <!-- HEADER avec pastilles âge réel + âge corrigé (mises à jour automatiquement) -->
+  <!-- HEADER avec 3 pastilles bleu marine : enfant + âge réel + âge corrigé -->
   <header class="app-header">
     <span class="app-header-brand">🌙 Questionnaire Consultation Sommeil</span>
+    <span class="app-header-pill" id="header-enfant-pill">
+      👶 <strong id="header-enfant">–</strong>
+    </span>
     <span class="app-header-pill" id="header-age-pill">
       🎂 Âge réel : <strong id="header-age-reel">–</strong>
     </span>
-    <span class="app-header-pill" id="header-age-corrige-pill" style="background:rgba(196,122,58,0.25)">
+    <span class="app-header-pill" id="header-age-corrige-pill">
       ✏️ Âge corrigé : <strong id="header-age-corrige">–</strong>
     </span>
   </header>
@@ -2524,12 +2527,30 @@ function resetForm() {
 // - Écrit en retour les modifs d'âge dans le snapshot pour que le site reflète au rechargement
 // ═══════════════════════════════════════════════════
 function _loadActiveClient() {
+  // 1) Priorité : consultation active (la fiche en cours de consultation)
   try {
     const raw = localStorage.getItem('tdr_active_consultation');
-    if (!raw) return null;
-    const snap = JSON.parse(raw);
-    return (snap && snap.client) ? snap.client : null;
-  } catch(_) { return null; }
+    if (raw) {
+      const snap = JSON.parse(raw);
+      if (snap && snap.client && snap.client.prenomEnfant) return snap.client;
+    }
+  } catch(_) {}
+  // 2) Fallback : la fiche client la + récemment sauvegardée
+  try {
+    const list = JSON.parse(localStorage.getItem('tdr_clients') || '[]');
+    if (Array.isArray(list) && list.length) {
+      const filtered = list.filter(c => c && c.prenomEnfant);
+      if (filtered.length) {
+        filtered.sort((a,b) => {
+          const ta = new Date(a.savedAt || 0).getTime();
+          const tb = new Date(b.savedAt || 0).getTime();
+          return tb - ta;
+        });
+        return filtered[0];
+      }
+    }
+  } catch(_) {}
+  return null;
 }
 
 function _substituteVars(client) {
@@ -2537,6 +2558,13 @@ function _substituteVars(client) {
   const prenom = (client.prenomEnfant || '').trim();
   const sexe = (client.sexeEnfant || '').toLowerCase();
   const isFille = sexe === 'fille' || sexe === 'f';
+  // Pastille header "enfant" : afficher dès qu'on a un prénom
+  if (prenom) {
+    const enfantEl = document.getElementById('header-enfant');
+    const enfantPill = document.getElementById('header-enfant-pill');
+    if (enfantEl) enfantEl.textContent = prenom;
+    if (enfantPill) enfantPill.classList.add('show');
+  }
   const map = {
     'prénom': prenom || '[prénom]',
     'prenom': prenom || '[prénom]',
@@ -2578,14 +2606,16 @@ function _prefillAgesFromClient(client) {
   if (dt || ag || ac) {
     const trigger = ac ? 'age-corrige-manuel' : (dt ? 'date-terme' : 'age-gestationnel');
     try { computeAges(trigger); } catch(_) {}
-    // Si l'âge corrigé est déjà connu, on masque le bloc "Âge du terme"
-    // et on déplie automatiquement le bloc des 3 cases.
-    if (ac) {
-      const qInit = document.getElementById('q-init-terme');
-      if (qInit) qInit.style.display = 'none';
-      const qTrio = document.getElementById('q-trio-ages');
-      if (qTrio) qTrio.classList.add('show');
-    }
+    // Si l'un des 3 champs d'âge est connu, on masque le bloc "Âge du terme"
+    // (la question devient redondante) et on déplie le bloc des 3 cases.
+    const qInit = document.getElementById('q-init-terme');
+    if (qInit) qInit.style.display = 'none';
+    const qTrio = document.getElementById('q-trio-ages');
+    if (qTrio) qTrio.classList.add('show');
+  } else {
+    // Aucun âge → la question reste visible, le bloc des 3 cases reste replié
+    const qInit = document.getElementById('q-init-terme');
+    if (qInit) qInit.style.display = '';
   }
 }
 
