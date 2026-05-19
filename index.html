@@ -6350,11 +6350,6 @@
                 <div style="font-size:16px;font-weight:800;color:#2d3f5c" id="age-corrige-calc">–</div>
                 <div style="font-size:12px;color:#5e7194;margin-top:2px" id="age-corrige-mois">–</div>
               </div>
-              <div id="besoin-lait-wrap" style="grid-column:1/-1;background:#fff9e6;border-radius:10px;padding:10px 14px;border:1.5px solid #f0ad4e">
-                <div style="font-size:10px;font-weight:700;color:#7c5200;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px">🍼 Besoin en lait / 24h <span style="font-weight:400;font-style:italic;text-transform:none">(selon âge corrigé)</span></div>
-                <div style="font-size:13px;color:#9c6a00" id="besoin-lait-formule">–</div>
-                <div style="font-size:20px;font-weight:800;color:#7c5200;margin-top:4px" id="besoin-lait-volume"></div>
-              </div>
             </div>
           </div>
           <div style="font-size:11px;color:#e74c3c;margin-top:8px;display:none" id="age-required-msg">
@@ -6364,10 +6359,17 @@
 
         <div class="setup-section">
           <h3>⚖️ Croissance</h3>
-          <!-- Poids -->
-          <div class="form-group" style="margin-bottom:0">
-            <label>Poids actuel (kg)</label>
-            <input type="number" id="poids-enfant" placeholder="ex. 8.35" step="0.01" min="0" oninput="computeClientFields()" style="width:140px">
+          <!-- Poids + Besoin en lait (côte à côte) -->
+          <div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap">
+            <div class="form-group" style="margin-bottom:0">
+              <label>Poids actuel (kg)</label>
+              <input type="number" id="poids-enfant" placeholder="ex. 8.35" step="0.01" min="0" oninput="computeClientFields()" style="width:140px">
+            </div>
+            <div id="besoin-lait-wrap" style="flex:1;min-width:220px;background:#fff9e6;border-radius:10px;padding:10px 14px;border:1.5px solid #f0ad4e">
+              <div style="font-size:10px;font-weight:700;color:#7c5200;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px">🍼 Besoin en lait / 24h <span style="font-weight:400;font-style:italic;text-transform:none">(selon âge corrigé)</span></div>
+              <div style="font-size:13px;color:#9c6a00" id="besoin-lait-formule">–</div>
+              <div style="font-size:20px;font-weight:800;color:#7c5200;margin-top:4px" id="besoin-lait-volume"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -9424,7 +9426,7 @@ function _renderClientsList(filtered, allSaved) {
     div.innerHTML = `
       <div onclick="loadClient(${realIdx})" style="flex:1;cursor:pointer">
         <div class="saved-client-name">👶 ${c.prenomEnfant || ''} ${c.nomFamille || ''}</div>
-        <div class="saved-client-info">${ageDisplay} — ${c.prenomParent1 || ''}${c.prenomParent2 ? ' & '+c.prenomParent2 : ''} — ${new Date(c.savedAt).toLocaleDateString('fr-FR')}</div>
+        <div class="saved-client-info">${ageDisplay} — ${c.prenomParent1 || ''}${c.prenomParent2 ? ' & '+c.prenomParent2 : ''} — ${c.dateNaissance ? '🎂 ' + new Date(c.dateNaissance).toLocaleDateString('fr-FR') : '–'}</div>
       </div>
       <button class="btn-delete-client" onclick="deleteClient(event,${realIdx})">🗑</button>`;
     list.appendChild(div);
