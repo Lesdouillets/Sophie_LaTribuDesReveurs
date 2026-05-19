@@ -68,6 +68,12 @@ body {
 }
 .app-header-pill.show { display: inline-flex; }
 .app-header-pill strong { color: white; font-weight: 700; }
+/* États countdown : warning (10-20 min) et urgent (<10 min) — réplique du site principal */
+.app-header-pill.warning { background: rgba(255,184,77,0.15); box-shadow: 0 0 0 1.5px #ffb84d, 0 0 14px rgba(255,184,77,0.55); color: #ffb84d; }
+.app-header-pill.warning strong { color: #ffb84d; font-weight: 900; }
+.app-header-pill.urgent { background: rgba(255,107,107,0.15); box-shadow: 0 0 0 1.5px #ff6b6b, 0 0 14px rgba(255,107,107,0.6); color: #ff6b6b; animation: pill-glow-red 0.8s ease-in-out infinite; }
+.app-header-pill.urgent strong { color: #ff6b6b; font-weight: 900; }
+@keyframes pill-glow-red { 0%,100% { box-shadow: 0 0 0 1.5px #ff6b6b, 0 0 10px rgba(255,107,107,0.5); } 50% { box-shadow: 0 0 0 2.5px #ff6b6b, 0 0 24px rgba(255,107,107,0.95); } }
 
 .app { display: flex; flex-direction: column; height: 100vh; }
 .app-body { display: flex; flex: 1; overflow: hidden; }
@@ -2566,24 +2572,29 @@ function _loadActiveClient() {
 }
 
 function _substituteVars(client) {
-  if (!client) { console.warn('[questionnaire] Aucune fiche client trouvée dans localStorage (tdr_active_consultation / tdr_clients).'); return; }
+  if (!client) { console.warn('[questionnaire] Aucune fiche client trouvée dans localStorage (tdr_active_consultation / tdr_sessions / tdr_clients).'); return; }
   const prenom = (client.prenomEnfant || '').trim();
-  const sexe = (client.sexeEnfant || '').toLowerCase();
+  // Le site stocke le sexe sous client.sexe (valeurs "Fille"/"Garçon"), pas client.sexeEnfant
+  const sexeRaw = client.sexe || client.sexeEnfant || '';
+  const sexe = sexeRaw.toLowerCase();
   const isFille = sexe === 'fille' || sexe === 'f';
-  console.log('[questionnaire] Fiche client chargée:', { prenom, sexe, dateTerme: client.dateTerme, ageGestationnel: client.ageGestationnel, ageCorrigeManuel: client.ageCorrigeManuel });
-  // Pastille header "enfant" : afficher dès qu'on a un prénom
+  const prenomColor = isFille ? '#E25098' : '#6495ED';
+  console.log('[questionnaire] Fiche client chargée:', { prenom, sexe: sexeRaw, isFille, dateTerme: client.dateTerme, ageGestationnel: client.ageGestationnel, ageCorrigeManuel: client.ageCorrigeManuel, ageReelMois: client.ageReelMois });
+
+  // Pastille header "enfant" : <strong> coloré selon sexe (rose fille / bleu garçon)
   if (prenom) {
     const enfantEl = document.getElementById('header-enfant');
     const enfantPill = document.getElementById('header-enfant-pill');
-    if (enfantEl) enfantEl.textContent = prenom;
+    if (enfantEl) {
+      enfantEl.textContent = prenom;
+      enfantEl.style.color = prenomColor;
+    }
     if (enfantPill) enfantPill.classList.add('show');
   }
-  // Patterns à remplacer dans le texte du DOM
+
+  // 1) Substitutions PURE TEXT (il/elle, le/la, etc.) — modifient les nœuds texte sans HTML
   const patterns = [];
-  // 1) Placeholders entre crochets [xxx]
   const bracketMap = {
-    'prénom': prenom || '[prénom]',
-    'prenom': prenom || '[prénom]',
     'il_elle': isFille ? 'elle' : 'il',
     'Il_Elle': isFille ? 'Elle' : 'Il',
     'lui_elle': isFille ? 'elle' : 'lui',
@@ -2597,17 +2608,16 @@ function _substituteVars(client) {
   Object.keys(bracketMap).forEach(k => {
     patterns.push({ re: new RegExp('\\[' + k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\]', 'g'), val: bracketMap[k] });
   });
-  // 2) Formes littérales "il/elle", "lui/elle", "(e)", etc. — seulement si le sexe est connu
   if (sexe) {
-    patterns.push({ re: /-t-il\/elle\b/g,  val: isFille ? '-t-elle' : '-t-il' });
-    patterns.push({ re: /\bil\/elle\b/g,   val: isFille ? 'elle' : 'il' });
-    patterns.push({ re: /\bIl\/Elle\b/g,   val: isFille ? 'Elle' : 'Il' });
-    patterns.push({ re: /\blui\/elle\b/g,  val: isFille ? 'elle' : 'lui' });
-    patterns.push({ re: /\bLui\/Elle\b/g,  val: isFille ? 'Elle' : 'Lui' });
-    patterns.push({ re: /\ble\/la\b/g,     val: isFille ? 'la' : 'le' });
-    patterns.push({ re: /\bLe\/La\b/g,     val: isFille ? 'La' : 'Le' });
-    patterns.push({ re: /\bson\/sa\b/g,    val: isFille ? 'sa' : 'son' });
-    patterns.push({ re: /\(e\)/g,          val: isFille ? 'e'  : '' });
+    patterns.push({ re: /-t-il\/elle\b/g, val: isFille ? '-t-elle' : '-t-il' });
+    patterns.push({ re: /\bil\/elle\b/g,  val: isFille ? 'elle' : 'il' });
+    patterns.push({ re: /\bIl\/Elle\b/g,  val: isFille ? 'Elle' : 'Il' });
+    patterns.push({ re: /\blui\/elle\b/g, val: isFille ? 'elle' : 'lui' });
+    patterns.push({ re: /\bLui\/Elle\b/g, val: isFille ? 'Elle' : 'Lui' });
+    patterns.push({ re: /\ble\/la\b/g,    val: isFille ? 'la' : 'le' });
+    patterns.push({ re: /\bLe\/La\b/g,    val: isFille ? 'La' : 'Le' });
+    patterns.push({ re: /\bson\/sa\b/g,   val: isFille ? 'sa' : 'son' });
+    patterns.push({ re: /\(e\)/g,         val: isFille ? 'e'  : '' });
   }
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   let n;
@@ -2616,6 +2626,35 @@ function _substituteVars(client) {
     let v = orig;
     patterns.forEach(p => { v = v.replace(p.re, p.val); });
     if (v !== orig) n.nodeValue = v;
+  }
+
+  // 2) Substitution AVEC HTML pour [prénom] : injecte un <strong> coloré (rose/bleu, font-size 1.05em)
+  if (prenom) {
+    const prenomRe = /\[prénom\]/g;
+    const w2 = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode: n => (n.nodeValue.indexOf('[prénom]') !== -1) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
+    });
+    const toReplace = [];
+    let tn;
+    while ((tn = w2.nextNode())) toReplace.push(tn);
+    toReplace.forEach(textNode => {
+      const parent = textNode.parentNode;
+      if (!parent) return;
+      const parts = textNode.nodeValue.split(prenomRe);
+      const frag = document.createDocumentFragment();
+      parts.forEach((part, i) => {
+        if (part) frag.appendChild(document.createTextNode(part));
+        if (i < parts.length - 1) {
+          const s = document.createElement('strong');
+          s.style.color = prenomColor;
+          s.style.fontWeight = '800';
+          s.style.fontSize = '1.05em';
+          s.textContent = prenom;
+          frag.appendChild(s);
+        }
+      });
+      parent.replaceChild(frag, textNode);
+    });
   }
 }
 
@@ -2630,6 +2669,25 @@ function _prefillAgesFromClient(client) {
   if (dtEl && dt) dtEl.value = dt;
   if (agEl && ag) agEl.value = ag;
   if (acEl && ac) acEl.value = ac;
+  // Override : si le site a déjà calculé ageReelMois / ageCorrigeMois, on utilise CES valeurs
+  // (sinon computeAges() les recalculera plus bas — mais ses formules peuvent diverger
+  // légèrement de celles du site, donc on privilégie les valeurs stockées par le site).
+  const reelEl = document.getElementById('age-reel-display');
+  const corrEl = document.getElementById('age-corrige-display');
+  const headerReelEl = document.getElementById('header-age-reel');
+  const headerReelPill = document.getElementById('header-age-pill');
+  if (typeof client.ageReelMois === 'number' && !isNaN(client.ageReelMois)) {
+    const days = Math.round(client.ageReelMois * 30.4375);
+    const f = formatAge(days);
+    if (reelEl) reelEl.textContent = f;
+    if (headerReelEl) headerReelEl.textContent = f;
+    if (headerReelPill) headerReelPill.classList.add('show');
+  }
+  if (typeof client.ageCorrigeMois === 'number' && !isNaN(client.ageCorrigeMois)) {
+    const days = Math.round(client.ageCorrigeMois * 30.4375);
+    const f = formatAge(days);
+    if (corrEl) corrEl.textContent = f;
+  }
   if (dt || ag || ac) {
     const trigger = ac ? 'age-corrige-manuel' : (dt ? 'date-terme' : 'age-gestationnel');
     try { computeAges(trigger); } catch(_) {}
@@ -2666,16 +2724,41 @@ function _writeBackAgesToClient() {
   if (el) el.addEventListener('input', _writeBackAgesToClient);
 });
 
-// Pastille horloge : met à jour HH:MM dans le header, refresh toutes les 30 s
+// Pastille countdown : si tdr_active_consultation a heureFin, affiche "Fin à HH:MM · Xmin Ys restantes"
+// (réplique de la pastille countdown-badge du site principal). Sinon → heure courante.
 function _updateClockPill() {
-  const now = new Date();
-  const hh = String(now.getHours()).padStart(2, '0');
-  const mm = String(now.getMinutes()).padStart(2, '0');
   const el = document.getElementById('header-clock');
-  if (el) el.textContent = hh + ':' + mm;
+  const pill = document.getElementById('header-clock-pill');
+  if (!el) return;
+  try {
+    const raw = localStorage.getItem('tdr_active_consultation');
+    if (raw) {
+      const snap = JSON.parse(raw);
+      if (snap && snap.heureFin) {
+        const diff = Number(snap.heureFin) - Date.now();
+        const heureFinStr = snap.heureFinStr || '';
+        if (pill) {
+          pill.classList.toggle('warning', diff > 0 && diff < 20*60000 && diff >= 10*60000);
+          pill.classList.toggle('urgent',  diff > 0 && diff < 10*60000);
+        }
+        if (diff <= 0) {
+          el.textContent = (heureFinStr ? 'Fin à ' + heureFinStr + ' · ' : '') + '⏰ Temps écoulé';
+        } else {
+          const mins = Math.floor(diff / 60000);
+          const secs = Math.floor((diff % 60000) / 1000);
+          el.textContent = (heureFinStr ? 'Fin à ' + heureFinStr + ' · ' : '') + mins + 'min ' + String(secs).padStart(2,'0') + 's restantes';
+        }
+        return;
+      }
+    }
+  } catch(_) {}
+  // Fallback : heure courante (pas de consultation active)
+  if (pill) pill.classList.remove('warning','urgent');
+  const now = new Date();
+  el.textContent = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
 }
 _updateClockPill();
-setInterval(_updateClockPill, 30000);
+setInterval(_updateClockPill, 1000);
 
 // ─── Sync heure de réveil avec le site (state.client.scheduleWakeUp) ──────
 // - Si l'utilisateur clique "Oui" sur "horaire qui convient" → on prend heure_reveil
@@ -2683,24 +2766,43 @@ setInterval(_updateClockPill, 30000);
 // L'écriture va dans tdr_active_consultation pour que VIII. Plan d'action → Emploi du temps
 // reprenne la valeur au prochain rendu du site principal.
 function _writeScheduleWakeUp() {
+  const ouiSel = document.querySelector('[data-q="reveil_convient"] .chip.selected');
+  const heureReveil  = (document.querySelector('[data-q="heure_reveil"]') || {}).value || '';
+  const heureSouhait = (document.querySelector('[data-q="reveil_souhait_heure"]') || {}).value || '';
+  let scheduled = '';
+  if (ouiSel) {
+    scheduled = ouiSel.textContent.includes('Oui') ? heureReveil : heureSouhait;
+  } else {
+    scheduled = heureReveil;
+  }
+  if (!scheduled) return;
+  // Écrire dans toutes les sources possibles pour que VIII. Plan d'action récupère
+  // l'heure quel que soit le contexte (consultation active OU juste fiche client sauvegardée).
+  // 1) tdr_active_consultation
   try {
     const raw = localStorage.getItem('tdr_active_consultation');
-    if (!raw) return; // Pas de consultation active → pas de cible côté site
-    const snap = JSON.parse(raw);
-    if (!snap || !snap.client) return;
-    const ouiSel = document.querySelector('[data-q="reveil_convient"] .chip.selected');
-    const heureReveil  = (document.querySelector('[data-q="heure_reveil"]') || {}).value || '';
-    const heureSouhait = (document.querySelector('[data-q="reveil_souhait_heure"]') || {}).value || '';
-    let scheduled = '';
-    if (ouiSel) {
-      scheduled = ouiSel.textContent.includes('Oui') ? heureReveil : heureSouhait;
-    } else {
-      scheduled = heureReveil; // fallback : tant que pas de choix, on prend l'heure observée
+    if (raw) {
+      const snap = JSON.parse(raw);
+      if (snap && snap.client) {
+        snap.client.scheduleWakeUp = scheduled;
+        snap.savedAt = Date.now();
+        localStorage.setItem('tdr_active_consultation', JSON.stringify(snap));
+      }
     }
-    snap.client.scheduleWakeUp = scheduled;
-    snap.savedAt = Date.now();
-    localStorage.setItem('tdr_active_consultation', JSON.stringify(snap));
   } catch(_) {}
+  // 2) tdr_clients (la fiche la + récente, pour qu'au prochain démarrage le state.client soit déjà OK)
+  try {
+    const list = JSON.parse(localStorage.getItem('tdr_clients') || '[]');
+    if (Array.isArray(list) && list.length) {
+      list.sort((a,b) => new Date(b.savedAt || 0).getTime() - new Date(a.savedAt || 0).getTime());
+      if (list[0] && list[0].prenomEnfant) {
+        list[0].scheduleWakeUp = scheduled;
+        list[0].savedAt = new Date().toISOString();
+        localStorage.setItem('tdr_clients', JSON.stringify(list));
+      }
+    }
+  } catch(_) {}
+  console.log('[questionnaire] scheduleWakeUp écrit:', scheduled);
 }
 ['heure_reveil','reveil_souhait_heure'].forEach(q => {
   const el = document.querySelector('[data-q="' + q + '"]');
