@@ -66,9 +66,10 @@ body {
 }
 .app-header-pill.show { display: inline-flex; }
 .app-header-pill .pill-icon { font-size: 16px; }
-.app-header-pill .pill-info { font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; line-height: 1.2; }
+.app-header-pill .pill-info { font-size: 13px; color: rgba(255,255,255,0.95) !important; font-weight: 600; line-height: 1.2; }
+.app-header-pill .pill-info strong { color: white !important; font-weight: 700; }
 .app-header-pill .pill-sub { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 1px; line-height: 1.2; }
-.app-header-pill strong { color: white; font-weight: 700; }
+.app-header-pill strong { color: white !important; font-weight: 700; }
 /* États countdown : warning (10-20 min) et urgent (<10 min) — réplique du site principal */
 .app-header-pill.warning { background: rgba(255,184,77,0.15); box-shadow: 0 0 0 1.5px #ffb84d, 0 0 14px rgba(255,184,77,0.55); color: #ffb84d; }
 .app-header-pill.warning strong { color: #ffb84d; font-weight: 900; }
@@ -392,7 +393,7 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
             </div>
 
             <!-- Les 3 cases liées (identique à la fiche client du site) -->
-            <div class="q-block cat-bleu conditional" id="q-trio-ages">
+            <div class="q-block cat-bleu" id="q-trio-ages">
               <div class="q-left">Âge corrigé</div>
               <div class="q-right">
                 <div class="q-row">
@@ -2306,9 +2307,10 @@ function toggleRegurg(cb) {
   });
 }
 
-// Question initiale terme → afficher les 3 cases
+// Question initiale terme → afficher les 3 cases (display direct, plus de classe conditional)
 function onTermeAnswer(chip) {
-  show('q-trio-ages', chip.textContent.includes('Non'));
+  const qTrio = document.getElementById('q-trio-ages');
+  if (qTrio) qTrio.style.display = chip.textContent.includes('Non') ? '' : 'none';
 }
 // Question heure de réveil
 function onReveilConvient(chip) {
@@ -2719,17 +2721,19 @@ function _prefillAgesFromClient(client) {
   if (dt || ag || ac) {
     const trigger = ac ? 'age-corrige-manuel' : (dt ? 'date-terme' : 'age-gestationnel');
     try { computeAges(trigger); } catch(_) {}
-    // Données déjà connues dans la fiche client → on masque LES DEUX blocs
-    // (la question "Âge du terme" ET le bloc des 3 cases) pour éviter la redondance.
+    // Données déjà connues dans la fiche client → on masque le bloc "Âge du terme" (question redondante)
+    // mais on garde le bloc des 3 cases visible (pré-rempli) pour que l'utilisateur puisse vérifier/éditer.
     const qInit = document.getElementById('q-init-terme');
     if (qInit) qInit.style.display = 'none';
     const qTrio = document.getElementById('q-trio-ages');
-    if (qTrio) { qTrio.style.display = 'none'; qTrio.classList.remove('show'); }
+    if (qTrio) qTrio.style.display = '';
   } else {
     // Aucun âge connu → la question "Âge du terme" reste visible,
-    // le bloc des 3 cases reste caché (s'ouvrira si l'utilisateur répond "Non, prématuré")
+    // le bloc des 3 cases est masqué jusqu'à ce qu'on réponde "Non, prématuré"
     const qInit = document.getElementById('q-init-terme');
     if (qInit) qInit.style.display = '';
+    const qTrio = document.getElementById('q-trio-ages');
+    if (qTrio) qTrio.style.display = 'none';
   }
 }
 
