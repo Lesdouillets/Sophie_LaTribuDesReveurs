@@ -296,7 +296,76 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
 @media (max-width: 600px) {
   .q-block { grid-template-columns: 1fr; }
 }
+/* ═══ MODE VISIO (PiP Google Meet) — réplique du site principal ═══ */
+.meet-btn {
+  background: rgba(255,255,255,0.1); color: white; border: none;
+  border-radius: 30px; padding: 5px 10px; font-size: 17px; cursor: pointer;
+  position: relative; display: inline-flex; align-items: center;
+  transition: background 0.15s;
+}
+.meet-btn:hover { background: rgba(255,255,255,0.22); }
+.meet-btn-corner {
+  display: none; position: absolute; top: -2px; right: -2px;
+  background: #5e7194; color: #fff; font-size: 9px; font-weight: 700;
+  border-radius: 8px; padding: 0 4px; line-height: 13px; min-width: 14px;
+  text-align: center;
+}
+.meet-btn.active .meet-btn-corner { display: inline-block; }
+.meet-btn.active { background: rgba(255,255,255,0.25); }
+
+.meet-corner-menu {
+  position: absolute; top: 100%; right: 0; margin-top: 4px;
+  background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;
+  padding: 6px; display: none; flex-direction: column; gap: 4px;
+  min-width: 180px; z-index: 200;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+.meet-corner-menu.open { display: flex; }
+.meet-corner-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 10px; border: none; background: none;
+  font-size: 13px; color: #2d3f5c; cursor: pointer;
+  border-radius: 6px; text-align: left; font-family: inherit;
+}
+.meet-corner-btn:hover { background: #f3f4f6; }
+.meet-corner-btn.active { background: #dbeafe; color: #0284c7; font-weight: 700; }
+.meet-corner-btn-disable { color: #ef4444; }
+
+/* Variables zone Meet */
+body[data-meet-mode] { --meet-w: 240px; --meet-h: 380px; }
+
+/* Réservation : pousse le contenu pour éviter la PiP */
+body[data-meet-mode="bottom-right"] .main,
+body[data-meet-mode="bottom-left"]  .main { padding-bottom: calc(var(--meet-h) + 30px) !important; }
+body[data-meet-mode="top-right"]    .main,
+body[data-meet-mode="top-left"]     .main { padding-top: calc(var(--meet-h) + 30px) !important; }
+
+/* Zone hint (cadre pointillé "Posez Meet ici") */
+body[data-meet-mode] .meet-zone-hint {
+  position: fixed; width: var(--meet-w); height: var(--meet-h);
+  border: 2px dotted #5e7194; border-radius: 8px;
+  background: rgba(255,255,255,0.5);
+  display: flex; flex-direction: column; gap: 8px;
+  align-items: center; justify-content: center;
+  color: #5e7194; z-index: 90;
+  box-shadow: 0 0 0 4px rgba(94,113,148,0.06);
+}
+body[data-meet-mode] .meet-zone-hint .meet-zone-hint-close {
+  position: absolute; top: 6px; right: 6px;
+  width: 24px; height: 24px;
+  background: rgba(94,113,148,0.1); color: #5e7194; border: none;
+  cursor: pointer; border-radius: 4px; font-size: 14px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0; line-height: 1;
+}
+body[data-meet-mode] .meet-zone-hint .meet-zone-hint-close:hover { background: #fff; }
+body[data-meet-mode="bottom-right"] .meet-zone-hint { right: 10px; bottom: 10px; }
+body[data-meet-mode="bottom-left"]  .meet-zone-hint { left: 10px;  bottom: 10px; }
+body[data-meet-mode="top-right"]    .meet-zone-hint { right: 10px; top: 60px; }
+body[data-meet-mode="top-left"]     .meet-zone-hint { left: 10px;  top: 60px; }
+
 @media print {
+  body[data-meet-mode] .meet-zone-hint { display: none; }
   .sidebar, .app-header { display: none; }
   .main { padding: 12px; overflow: visible; }
   .section { break-inside: avoid; box-shadow: none; }
@@ -335,6 +404,17 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
         </div>
       </div>
     </div>
+    <!-- Bouton Mode visio (PiP Google Meet) avec menu de coin -->
+    <span style="position:relative;display:inline-flex;flex-shrink:0">
+      <button class="meet-btn" id="btn-meet-mode" title="Mode visio (réserve un coin pour la PiP de Google Meet)" onclick="toggleMeetMode(event)">📹<span id="btn-meet-mode-corner" class="meet-btn-corner">↘</span></button>
+      <div id="meet-corner-menu" class="meet-corner-menu" onclick="event.stopPropagation()">
+        <button type="button" class="meet-corner-btn" data-corner="bottom-right" onclick="setMeetCorner('bottom-right')">↘ Bas-droite</button>
+        <button type="button" class="meet-corner-btn" data-corner="bottom-left" onclick="setMeetCorner('bottom-left')">↙ Bas-gauche</button>
+        <button type="button" class="meet-corner-btn" data-corner="top-right" onclick="setMeetCorner('top-right')">↗ Haut-droite</button>
+        <button type="button" class="meet-corner-btn" data-corner="top-left" onclick="setMeetCorner('top-left')">↖ Haut-gauche</button>
+        <button type="button" class="meet-corner-btn meet-corner-btn-disable" onclick="setMeetCorner(null)">✕ Désactiver</button>
+      </div>
+    </span>
   </header>
 
   <div class="app-body">
@@ -3041,6 +3121,85 @@ window.addEventListener('storage', (e) => {
 (function _initFromActiveClient() {
   const c = _loadActiveClient();
   if (c) { _substituteVars(c); _prefillAgesFromClient(c); }
+})();
+
+// ═══ MODE VISIO (PiP Google Meet) — réplique du site principal ═══
+const MEET_CORNER_ARROW = { 'bottom-right':'↘', 'bottom-left':'↙', 'top-right':'↗', 'top-left':'↖' };
+
+function _meetUpdateUI(corner) {
+  const body = document.body;
+  const btn = document.getElementById('btn-meet-mode');
+  const badge = document.getElementById('btn-meet-mode-corner');
+  const menu = document.getElementById('meet-corner-menu');
+  if (corner) {
+    body.setAttribute('data-meet-mode', corner);
+    if (btn) btn.classList.add('active');
+    if (badge) badge.textContent = MEET_CORNER_ARROW[corner] || '↘';
+    // Zone hint "Posez la vidéo Meet ici"
+    let hint = document.getElementById('meet-zone-hint');
+    if (!hint) {
+      hint = document.createElement('div');
+      hint.id = 'meet-zone-hint';
+      hint.className = 'meet-zone-hint';
+      hint.innerHTML = '<button type="button" class="meet-zone-hint-close" title="Masquer" onclick="document.getElementById(\'meet-zone-hint\').remove()">✕</button><div style="font-size:30px">📹</div><div style="line-height:1.3;text-align:center">Posez la vidéo<br>Meet ici</div>';
+      body.appendChild(hint);
+    } else {
+      hint.style.visibility = '';
+    }
+    if (menu) {
+      menu.querySelectorAll('.meet-corner-btn[data-corner]').forEach(b => {
+        b.classList.toggle('active', b.dataset.corner === corner);
+      });
+    }
+  } else {
+    body.removeAttribute('data-meet-mode');
+    if (btn) btn.classList.remove('active');
+    const hint = document.getElementById('meet-zone-hint');
+    if (hint) hint.remove();
+    if (menu) menu.querySelectorAll('.meet-corner-btn[data-corner]').forEach(b => b.classList.remove('active'));
+  }
+}
+
+function toggleMeetMode(e) {
+  if (e) e.stopPropagation();
+  const menu = document.getElementById('meet-corner-menu');
+  if (!menu) return;
+  const isOpen = menu.classList.contains('open');
+  if (isOpen) {
+    menu.classList.remove('open');
+    document.removeEventListener('mousedown', _meetMenuOutsideClick, true);
+  } else {
+    menu.classList.add('open');
+    setTimeout(() => document.addEventListener('mousedown', _meetMenuOutsideClick, true), 0);
+  }
+}
+function _meetMenuOutsideClick(e) {
+  const menu = document.getElementById('meet-corner-menu');
+  const btn = document.getElementById('btn-meet-mode');
+  if (!menu) return;
+  if (menu.contains(e.target) || (btn && btn.contains(e.target))) return;
+  menu.classList.remove('open');
+  document.removeEventListener('mousedown', _meetMenuOutsideClick, true);
+}
+function setMeetCorner(corner) {
+  if (corner) {
+    try { localStorage.setItem('tdr_meet_corner', corner); } catch(_){}
+  } else {
+    try { localStorage.removeItem('tdr_meet_corner'); } catch(_){}
+  }
+  _meetUpdateUI(corner);
+  const menu = document.getElementById('meet-corner-menu');
+  if (menu) menu.classList.remove('open');
+  document.removeEventListener('mousedown', _meetMenuOutsideClick, true);
+}
+window.toggleMeetMode = toggleMeetMode;
+window.setMeetCorner = setMeetCorner;
+// Restaurer le coin Meet préféré au démarrage (partagé avec le site via tdr_meet_corner)
+(function _meetInit() {
+  try {
+    const saved = localStorage.getItem('tdr_meet_corner');
+    if (saved && MEET_CORNER_ARROW[saved]) _meetUpdateUI(saved);
+  } catch(_){}
 })();
 
 // INIT
