@@ -2130,9 +2130,8 @@
     .fd-content .fd-chips[data-q="type_alim"] .fd-chip {
       min-width: 220px; justify-content: center; text-align: center;
     }
-    /* Bandeau biberon 24h — sticky en haut, 2 lignes, texte normal SAUF total + besoin théorique */
+    /* Bandeau biberon 24h — en haut de la fiche découverte, 2 lignes, texte normal SAUF total + besoin théorique */
     .fd-content .fd-bib-banner {
-      position: sticky; top: 0; z-index: 5;
       background: linear-gradient(135deg, #fff9e6, #fef3c7);
       border: 1px solid #f0ad4e; border-radius: 8px;
       padding: 8px 14px; margin: 0 0 14px;
@@ -2171,13 +2170,13 @@
       border-radius: 0 8px 8px 0; font-size: 12.5px; line-height: 1.55;
       color: var(--primary-dark); font-weight: 400;
     }
-    /* Question : encadré rectangulaire bleu marine (contour fin) + intérieur blanc + coins arrondis */
+    /* Question : encadré rectangulaire bleu CLAIR (contour fin) + intérieur blanc + coins arrondis */
     .fd-content .fd-q-row-simple {
       display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
       margin-bottom: 12px;
       padding: 12px 14px;
       background: white;
-      border: 1px solid var(--primary-dark);
+      border: 1px solid var(--primary-light);
       border-radius: 10px;
     }
     /* Variante multi-lignes : plusieurs questions empilées DANS le MÊME encadré, séparées par un trait fin */
@@ -2275,7 +2274,7 @@
     .fd-nav-item .fd-nav-emoji { font-size: 15px; flex-shrink: 0; }
     .fd-content {
       background: white;
-      border: 1px solid var(--border);
+      border: 3px solid var(--primary-dark);
       border-radius: 10px;
       padding: 14px 18px;
       min-height: 340px;
@@ -8345,7 +8344,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=763"></script>
+<script src="script-data.js?v=764"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
@@ -8564,10 +8563,12 @@ function fdSyncToBebe(targetId, value) {
 }
 window.fdSyncToBebe = fdSyncToBebe;
 // Réponse à "Est-ce un horaire qui convient ?" → si "Non, trop tôt" révèle le champ "heure souhaitée"
+// + déclenche fdSyncHoraire pour propager la BONNE heure (observée si "Oui", souhaitée si "Non") à l'Emploi du temps
 function fdOnReveilConvient(chip) {
   const wrap = document.getElementById('fd-reveil-souhait');
-  if (!wrap) return;
-  wrap.style.display = chip.textContent.includes('Non') ? '' : 'none';
+  if (wrap) wrap.style.display = chip.textContent.includes('Non') ? '' : 'none';
+  // Propager immédiatement la nouvelle source d'heure (sinon le clic seul ne change pas le scheduleWakeUp)
+  if (typeof fdSyncHoraire === 'function') fdSyncHoraire('reveil_convient', '');
 }
 window.fdOnReveilConvient = fdOnReveilConvient;
 // Sync horaire de réveil (heure observée OU souhaitée) vers state.client.scheduleWakeUp.
