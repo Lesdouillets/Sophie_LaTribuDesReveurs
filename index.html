@@ -2159,13 +2159,19 @@
       color: #831843; background: white;
     }
     .fd-tetee-banner .fd-tetee-vol:focus { outline: none; border-color: #d946ef; box-shadow: 0 0 0 2px rgba(232,121,249,0.2); }
+    /* Boutons +1 et -1 tétée : vert pour +1, rouge pour -1 */
     .fd-tetee-banner .fd-tetee-plus {
-      background: #e879f9; color: white; border: none;
+      background: #16a34a; color: white; border: none;
       padding: 4px 10px; border-radius: 6px;
-      font-size: 12px; font-weight: 600; cursor: pointer;
+      font-size: 13px; font-weight: 700; cursor: pointer;
       transition: background 0.15s;
+      min-width: 36px;
     }
-    .fd-tetee-banner .fd-tetee-plus:hover { background: #d946ef; }
+    .fd-tetee-banner .fd-tetee-plus:hover { background: #15803d; }
+    .fd-tetee-banner .fd-tetee-minus {
+      background: #dc2626; color: white;
+    }
+    .fd-tetee-banner .fd-tetee-minus:hover { background: #b91c1c; }
     .fd-content .fd-bib-banner .fd-bib-line {
       display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
     }
@@ -2222,29 +2228,24 @@
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line + .fd-q-line {
       border-top: 1px dashed var(--primary-light);
     }
-    /* Idem pour la séparation entre le dernier fd-q-line (question "Quel type de lait") et la grille lait — tirets bleu ciel */
-    .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line + .fd-lait-grid {
-      border-top: 1px dashed var(--primary-light);
-      padding-top: 10px;
-    }
-    /* Question "Quel type de lait prend-il ?" — header au-dessus des 8 chips, plein largeur, dashed bleu ciel au-dessus */
+    /* Question "Quel type de lait prend-il ?" — header au-dessus des 8 chips, plein largeur, dashed bleu ciel au-dessus, bullet conservé */
     .fd-content #fd-q-lait {
       display: block !important;
       width: 100%;
       padding: 10px 0 6px !important;
       margin-top: 4px;
       border-top: 1px dashed var(--primary-light) !important;
-      font-weight: 700;
-      font-size: 13.5px;
-      color: var(--primary-dark);
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--text);
     }
-    .fd-content #fd-q-lait .fd-q-text { font-weight: 700; color: var(--primary-dark); }
-    .fd-content #fd-q-lait .fd-q-text::before { content: ''; margin: 0; }
-    /* Bouton -1 tétée (rose pâle, distinct du +1) */
-    .fd-tetee-banner .fd-tetee-minus {
-      background: #fbcfe8; color: #831843;
+    /* Grille des 8 chips lait : pas de fond, pas de bordure (juste les chips alignés en 2 colonnes), pas de marge top pour coller à la question */
+    .fd-content .fd-lait-grid {
+      background: transparent;
+      border: none;
+      margin-top: 0;
+      padding: 6px 0 0;
     }
-    .fd-tetee-banner .fd-tetee-minus:hover { background: #f9a8d4; }
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line:first-child { padding-top: 0; }
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line:last-child { padding-bottom: 0; }
     .fd-content .fd-q-text {
@@ -8399,7 +8400,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=767"></script>
+<script src="script-data.js?v=768"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
@@ -8725,8 +8726,10 @@ window.fdOnReveilConvient = fdOnReveilConvient;
 // La règle suit celle de l'ancien questionnaire : si l'utilisateur a répondu "Non" → on prend
 // la valeur du champ "heure souhaitée" ; sinon → la valeur du champ "heure observée".
 function fdSyncHoraire(fieldKey, value) {
-  const heureObservee = (document.querySelector('[data-q="heure_reveil"]') || {}).value || '';
-  const heureSouhait  = (document.querySelector('[data-q="reveil_souhait_heure"]') || {}).value || '';
+  // Scope vers .fd-content pour éviter de matcher un autre élément avec le même data-q ailleurs
+  const heureObservee = (document.querySelector('.fd-content [data-q="heure_reveil"]') || {}).value || '';
+  const heureSouhait  = (document.querySelector('.fd-content [data-q="reveil_souhait_heure"]') || {}).value || '';
+  console.log('[fdSyncHoraire] entry', { fieldKey, value, heureObservee, heureSouhait, flag: state && state.client && state.client.fdAnswers && state.client.fdAnswers._reveil_convient_choice });
   let scheduled = '';
   // Si fieldKey === 'reveil_convient' et value est 'oui'/'non' → utiliser directement (override DOM)
   if (fieldKey === 'reveil_convient' && (value === 'oui' || value === 'non')) {
