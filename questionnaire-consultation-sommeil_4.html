@@ -2538,6 +2538,35 @@ function resetForm() {
 // - Masque le bloc "Âge du terme" si l'âge corrigé est déjà connu
 // - Écrit en retour les modifs d'âge dans le snapshot pour que le site reflète au rechargement
 // ═══════════════════════════════════════════════════
+// Mémorise la date de naissance lue dans la fiche client — utilisée par le wrapper
+// computeAges pour recalculer date-terme dès que l'utilisateur change l'âge gestationnel.
+let _currentDateNaissance = null;
+
+// Wrapper de computeAges : si l'utilisateur change ageGestationnel et qu'on connaît dateNaissance,
+// on calcule dateTerme = dateNaissance + prématurité AVANT de laisser tourner computeAges,
+// ce qui débloque tous les autres calculs (age corrigé, age réel, pastille).
+const _origComputeAges = (typeof computeAges === 'function') ? computeAges : null;
+if (_origComputeAges) {
+  computeAges = function(triggeredBy) {
+    if (triggeredBy === 'age-gestationnel' && _currentDateNaissance) {
+      const agEl = document.getElementById('age-gestationnel');
+      if (agEl && agEl.value.trim()) {
+        const pd = parseGestationnelToPrematureDays(agEl.value.trim());
+        if (pd !== null) {
+          const dn = new Date(_currentDateNaissance);
+          if (!isNaN(dn.getTime())) {
+            const dt = new Date(dn);
+            dt.setDate(dt.getDate() + pd);
+            const dtEl = document.getElementById('date-terme');
+            if (dtEl) dtEl.value = dt.toISOString().slice(0,10);
+          }
+        }
+      }
+    }
+    return _origComputeAges.apply(this, arguments);
+  };
+}
+
 function _loadActiveClient() {
   // 1) Priorité : consultation active (en cours)
   try {
@@ -2680,15 +2709,34 @@ function _substituteVars(client) {
 
 function _prefillAgesFromClient(client) {
   if (!client) return;
-  const dt = client.dateTerme || '';
-  const ag = client.ageGestationnel || '';
+  let dt = client.dateTerme || '';
+  let ag = client.ageGestationnel || '';
   const ac = client.ageCorrigeManuel || '';
   const dtEl = document.getElementById('date-terme');
   const agEl = document.getElementById('age-gestationnel');
   const acEl = document.getElementById('age-corrige-manuel');
-  if (dtEl && dt) dtEl.value = dt;
-  if (agEl && ag) agEl.value = ag;
-  if (acEl && ac) acEl.value = ac;
+  // Si la fiche client a `dateNaissance` mais pas `dateTerme`, on calcule date-terme
+  // = dateNaissance + prématurité (en jours). Si pas d'ageGestationnel, on assume né à terme.
+  if (!dt && client.dateNaissance) {
+    const dn = new Date(client.dateNaissance);
+    if (!isNaN(dn.getTime())) {
+      let prematureDays = 0;
+      if (ag) {
+        const pd = parseGestationnelToPrematureDays(ag);
+        if (pd !== null) prematureDays = pd;
+      }
+      const computedTerme = new Date(dn);
+      computedTerme.setDate(computedTerme.getDate() + prematureDays);
+      dt = computedTerme.toISOString().slice(0,10);
+    }
+  }
+  // Mémoriser dateNaissance pour le wrapper computeAges (recalcul date-terme à la volée)
+  _currentDateNaissance = client.dateNaissance || null;
+  // Ne pas écraser un champ déjà saisi par l'utilisateur (le storage listener relance cette
+  // fonction quand le site auto-sauvegarde → on garderait sinon les valeurs initiales)
+  if (dtEl && dt && !dtEl.value) dtEl.value = dt;
+  if (agEl && ag && !agEl.value) agEl.value = ag;
+  if (acEl && ac && !acEl.value) acEl.value = ac;
   // Override : si le site a déjà calculé ageReelMois / ageCorrigeMois, on utilise CES valeurs
   // (sinon computeAges() les recalculera plus bas — mais ses formules peuvent diverger
   // légèrement de celles du site, donc on privilégie les valeurs stockées par le site).
@@ -2763,16 +2811,20 @@ function _writeBackAgesToClient() {
 // 2) Sinon → on stocke un signal dans localStorage et on navigue vers index.html ;
 //    le site lit la clé au chargement et ouvre le bon onglet (handler ajouté côté index.html).
 function _openMainSiteTab(tabId) {
+  console.log('[questionnaire] Click pastille → ouvrir onglet:', tabId);
   try {
     if (window.opener && !window.opener.closed && typeof window.opener.editClientInConsultation === 'function') {
+      console.log('[questionnaire] window.opener trouvé → appel direct');
       window.opener.editClientInConsultation(tabId);
       window.opener.focus();
       return;
     }
-  } catch(_){}
+  } catch(e) { console.warn('[questionnaire] window.opener inaccessible:', e); }
   try { localStorage.setItem('tdr_pending_open_tab', tabId); } catch(_){}
+  console.log('[questionnaire] Navigation vers index.html avec signal tdr_pending_open_tab =', tabId);
   window.location.href = 'index.html';
 }
+window._openMainSiteTab = _openMainSiteTab; // s'assurer que l'inline onclick le trouve
 
 // Pastille countdown : 2 lignes (info = "Fin à HH:MM", sub = "Xmin Ys restantes")
 // Réplique de #countdown-badge du site principal. Lecture depuis tdr_active_consultation.
