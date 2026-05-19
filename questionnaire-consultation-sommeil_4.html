@@ -2442,14 +2442,10 @@ function computeAges(triggeredBy) {
     const _acd = document.getElementById('age-corrige-display');
     if (_acd) _acd.textContent = ageCorrStr;
 
-    // === Mise à jour pastille header "enfant" (sous-ligne = 🎂 âge réel + ✏️ âge corrigé)
-    const enfantSub = document.getElementById('header-enfant-sub');
-    if (enfantSub && ageReelDays !== null) {
-      let html = '🎂 ' + ageReelStr;
-      if (ageCorrDays !== null && ageCorrStr !== ageReelStr) {
-        html += '<br>✏️ ' + ageCorrStr;
-      }
-      enfantSub.innerHTML = html;
+    // === Mise à jour pastille header via la fonction centralisée
+    // (utilise _siteAgeReelText pour la string fixe + age-corrige-manuel input pour le live)
+    if (typeof _updatePastillePiste === 'function') {
+      try { _updatePastillePiste(); } catch(_) {}
     }
   } finally {
     _computingAges = false;
@@ -2544,10 +2540,31 @@ function resetForm() {
 // Mémorise la date de naissance lue dans la fiche client — utilisée par le wrapper
 // computeAges pour recalculer date-terme dès que l'utilisateur change l'âge gestationnel.
 let _currentDateNaissance = null;
+// Mémorise le texte "âge réel" formaté par le site — il ne dépend que de dateNaissance,
+// donc il reste fixe pendant que l'utilisateur édite. On évite ainsi le flicker entre
+// "âge site" et "âge recalculé par formatAge" (qui peuvent diverger de quelques jours).
+let _siteAgeReelText = '';
 // Flag : la décision d'afficher/cacher les blocs "Âge du terme" / "3 cases" n'est prise
 // qu'au premier prefill. Les re-syncs ultérieurs (depuis le storage listener) ne touchent
 // plus à la visibilité, pour éviter que le bloc se rétracte pendant que l'utilisateur tape.
 let _prefillDone = false;
+
+// Met à jour la pastille header "enfant" (2 lignes) en utilisant :
+// - âge réel = string fixe du site (mémorisée dans _siteAgeReelText)
+// - âge corrigé = valeur LIVE du champ age-corrige-manuel (= ce qui est affiché à droite,
+//   recalculé par computeAges à chaque saisie)
+function _updatePastillePiste() {
+  const enfantSub = document.getElementById('header-enfant-sub');
+  if (!enfantSub) return;
+  const acVal = (document.getElementById('age-corrige-manuel') || {}).value || '';
+  let html = '';
+  if (_siteAgeReelText) html += '🎂 ' + _siteAgeReelText;
+  if (acVal && acVal !== _siteAgeReelText) {
+    if (html) html += '<br>';
+    html += '✏️ ' + acVal;
+  }
+  if (html) enfantSub.innerHTML = html;
+}
 
 // Wrapper de computeAges : si l'utilisateur change ageGestationnel et qu'on connaît dateNaissance,
 // on calcule dateTerme = dateNaissance + prématurité AVANT de laisser tourner computeAges,
@@ -2775,15 +2792,10 @@ function _prefillAgesFromClient(client) {
   }
   if (reelEl && ageReelText) reelEl.textContent = ageReelText;
   if (corrEl && ageCorrigeText) corrEl.textContent = ageCorrigeText;
-  // Pastille enfant : sous-ligne 2 infos (🎂 réel + ✏️ corrigé si dispo et différent)
-  const enfantSub = document.getElementById('header-enfant-sub');
-  if (enfantSub && ageReelText) {
-    let html = '🎂 ' + ageReelText;
-    if (ageCorrigeText && ageCorrigeText !== ageReelText) {
-      html += '<br>✏️ ' + ageCorrigeText;
-    }
-    enfantSub.innerHTML = html;
-  }
+  // Mémoriser l'âge réel du site (fixe, ne dépend que de dateNaissance) → la pastille
+  // utilisera CETTE string, jamais formatAge(jours) qui peut diverger de 1-2 j.
+  if (ageReelText) _siteAgeReelText = ageReelText;
+  _updatePastillePiste();
   // Nettoyer toute classe résiduelle "conditional"/"show" qui pourrait surcharger display
   const qInit = document.getElementById('q-init-terme');
   const qTrio = document.getElementById('q-trio-ages');
@@ -2824,7 +2836,11 @@ function _writeBackAgesToClient() {
 
 ['date-terme','age-gestationnel','age-corrige-manuel'].forEach(id => {
   const el = document.getElementById(id);
-  if (el) el.addEventListener('input', _writeBackAgesToClient);
+  if (el) {
+    el.addEventListener('input', _writeBackAgesToClient);
+    // Rafraîchir la pastille header en live à chaque saisie (✏️ corrigé bouge avec l'input)
+    el.addEventListener('input', _updatePastillePiste);
+  }
 });
 
 // Pastilles enfant/parents cliquables : ouvre l'onglet correspondant sur le site principal.
