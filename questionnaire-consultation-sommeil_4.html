@@ -532,7 +532,7 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
 
       <!-- III. MATINÉE -->
       <section class="section" data-section="matin" data-subs='[
-        {"id":"matin-type-alim","emoji":"🍽","label":"Type d''alimentation"},
+        {"id":"matin-type-alim","emoji":"🍽","label":"Type d&#39;alimentation"},
         {"id":"matin-allaitement","emoji":"🤱","label":"Allaitement"},
         {"id":"matin-biberon","emoji":"🍼","label":"Biberon"},
         {"id":"matin-diversification","emoji":"🥄","label":"Diversification"},
@@ -2515,25 +2515,37 @@ function resetForm() {
 // - Écrit en retour les modifs d'âge dans le snapshot pour que le site reflète au rechargement
 // ═══════════════════════════════════════════════════
 function _loadActiveClient() {
-  // 1) Priorité : consultation active (la fiche en cours de consultation)
+  // 1) Priorité : consultation active (en cours)
   try {
     const raw = localStorage.getItem('tdr_active_consultation');
     if (raw) {
       const snap = JSON.parse(raw);
-      if (snap && snap.client && snap.client.prenomEnfant) return snap.client;
+      if (snap && snap.client && snap.client.prenomEnfant) {
+        console.log('[questionnaire] Source = tdr_active_consultation');
+        return snap.client;
+      }
     }
   } catch(_) {}
-  // 2) Fallback : la fiche client la + récemment sauvegardée
+  // 2) Fallback : la session la plus récente (tdr_sessions[].client)
+  try {
+    const sessions = JSON.parse(localStorage.getItem('tdr_sessions') || '[]');
+    if (Array.isArray(sessions) && sessions.length) {
+      const valid = sessions.filter(s => s && s.client && s.client.prenomEnfant);
+      if (valid.length) {
+        valid.sort((a,b) => new Date(b.savedAt || 0).getTime() - new Date(a.savedAt || 0).getTime());
+        console.log('[questionnaire] Source = tdr_sessions (la plus récente)');
+        return valid[0].client;
+      }
+    }
+  } catch(_) {}
+  // 3) Fallback : la fiche client la + récemment sauvegardée (tdr_clients)
   try {
     const list = JSON.parse(localStorage.getItem('tdr_clients') || '[]');
     if (Array.isArray(list) && list.length) {
       const filtered = list.filter(c => c && c.prenomEnfant);
       if (filtered.length) {
-        filtered.sort((a,b) => {
-          const ta = new Date(a.savedAt || 0).getTime();
-          const tb = new Date(b.savedAt || 0).getTime();
-          return tb - ta;
-        });
+        filtered.sort((a,b) => new Date(b.savedAt || 0).getTime() - new Date(a.savedAt || 0).getTime());
+        console.log('[questionnaire] Source = tdr_clients (la plus récente)');
         return filtered[0];
       }
     }
