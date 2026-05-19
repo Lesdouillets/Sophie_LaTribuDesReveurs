@@ -8108,7 +8108,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=744"></script>
+<script src="script-data.js?v=745"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
@@ -16002,6 +16002,10 @@ function applyParentTickCascade() {
     state.courbeCardsTickedManuallyEdited.add('nutri_lait_biberon_inversion_jn');
   }
   // Helper : item caché par filtre âge/alim
+  // ⚠️ N'utilise QUE showIfAlim (= filtre de masquage explicite), PAS it.alim
+  // (it.alim = liste pour auto-check, pas pour cacher — sinon la cascade pense que
+  //  nutri_lait_allaitement est caché et ne propage pas vers nutri_lait quand l'utilisateur
+  //  clique manuellement un enfant de Allaitement alors que sa fiche ne contient pas "Allaitement").
   const c = (state && state.client) || {};
   const alimSet = new Set([...(Array.isArray(c.alimentation) ? c.alimentation : []), ...(Array.isArray(c.allaitementMode) ? c.allaitementMode : [])]);
   const isItemHidden = (it) => {
@@ -16011,10 +16015,11 @@ function applyParentTickCascade() {
       if (it.showIfAgeMinMonths != null && age < it.showIfAgeMinMonths) return true;
       if (it.showIfAgeMaxMonths != null && age > it.showIfAgeMaxMonths) return true;
     }
-    const alimConds = it.showIfAlim || it.alim;
-    if (alimConds) {
-      const vals = Array.isArray(alimConds) ? alimConds : [alimConds];
-      if (!vals.some(v => alimSet.has(v))) return true;
+    if (it.showIfAlim) {
+      const vals = Array.isArray(it.showIfAlim) ? it.showIfAlim : [it.showIfAlim];
+      // Si fiche client n'a pas encore d'alim → ne pas appliquer le filtre (default : tout afficher)
+      // (sinon on cacherait tout à un utilisateur qui n'a pas encore rempli sa fiche)
+      if (alimSet.size > 0 && !vals.some(v => alimSet.has(v))) return true;
     }
     return false;
   };
