@@ -59,14 +59,15 @@ body {
   background: rgba(255,255,255,0.1);
   padding: 5px 14px;
   border-radius: 30px;
-  font-size: 13px;
-  font-weight: 600;
   display: none;
   align-items: center;
   gap: 8px;
   white-space: nowrap;
 }
 .app-header-pill.show { display: inline-flex; }
+.app-header-pill .pill-icon { font-size: 16px; }
+.app-header-pill .pill-info { font-size: 13px; color: rgba(255,255,255,0.95); font-weight: 600; line-height: 1.2; }
+.app-header-pill .pill-sub { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 1px; line-height: 1.2; }
 .app-header-pill strong { color: white; font-weight: 700; }
 /* États countdown : warning (10-20 min) et urgent (<10 min) — réplique du site principal */
 .app-header-pill.warning { background: rgba(255,184,77,0.15); box-shadow: 0 0 0 1.5px #ffb84d, 0 0 14px rgba(255,184,77,0.55); color: #ffb84d; }
@@ -219,7 +220,7 @@ body {
   min-width: 0;
   font-size: 14px;
   line-height: 1.55;
-  font-weight: 700;
+  font-weight: 400;
   color: var(--text);
 }
 .q-row-label::before {
@@ -2590,7 +2591,7 @@ function _substituteVars(client) {
   const prenomColor = isFille ? '#E25098' : '#6495ED';
   console.log('[questionnaire] Fiche client chargée:', { prenom, sexe: sexeRaw, isFille, dateTerme: client.dateTerme, ageGestationnel: client.ageGestationnel, ageCorrigeManuel: client.ageCorrigeManuel, ageReelMois: client.ageReelMois });
 
-  // Pastille header "enfant" : <strong> coloré selon sexe (rose fille / bleu garçon)
+  // Pastille header "enfant" : <strong> coloré + sous-ligne avec l'âge réel
   if (prenom) {
     const enfantEl = document.getElementById('header-enfant');
     const enfantPill = document.getElementById('header-enfant-pill');
@@ -2599,6 +2600,19 @@ function _substituteVars(client) {
       enfantEl.style.color = prenomColor;
     }
     if (enfantPill) enfantPill.classList.add('show');
+  }
+  // Pastille parents : noms parents (info) + nom de famille (sub)
+  const p1 = (client.prenomParent1 || '').trim();
+  const p2 = (client.prenomParent2 || '').trim();
+  const parentsLabel = [p1, p2].filter(Boolean).join(' & ');
+  const famille = (client.nomFamille || '').trim();
+  const parentsEl = document.getElementById('header-parents');
+  const familleEl = document.getElementById('header-famille');
+  const parentsPill = document.getElementById('header-parents-pill');
+  if (parentsLabel || famille) {
+    if (parentsEl) parentsEl.textContent = parentsLabel || '–';
+    if (familleEl) familleEl.textContent = famille || '–';
+    if (parentsPill) parentsPill.classList.add('show');
   }
 
   // 1) Substitutions PURE TEXT (il/elle, le/la, etc.) — modifient les nœuds texte sans HTML
