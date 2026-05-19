@@ -65,6 +65,8 @@ body {
   white-space: nowrap;
 }
 .app-header-pill.show { display: inline-flex; }
+.app-header-pill.clickable { cursor: pointer; transition: background 0.15s; }
+.app-header-pill.clickable:hover { background: rgba(255,255,255,0.22); }
 .app-header-pill .pill-icon { font-size: 16px; }
 .app-header-pill .pill-info { font-size: 13px; color: rgba(255,255,255,0.95) !important; font-weight: 600; line-height: 1.2; }
 .app-header-pill .pill-info strong { color: white !important; font-weight: 700; }
@@ -310,14 +312,14 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
   <header class="app-header">
     <span class="app-header-brand">🌙 Fiche découverte</span>
     <div class="app-header-pills">
-      <div class="app-header-pill" id="header-enfant-pill">
+      <div class="app-header-pill clickable" id="header-enfant-pill" onclick="_openMainSiteTab('tab-bebe')" title="Modifier la fiche bébé sur le site">
         <span class="pill-icon">👶</span>
         <div>
           <div class="pill-info"><strong id="header-enfant">–</strong></div>
           <div class="pill-sub" id="header-enfant-sub">🎂 –</div>
         </div>
       </div>
-      <div class="app-header-pill" id="header-parents-pill">
+      <div class="app-header-pill clickable" id="header-parents-pill" onclick="_openMainSiteTab('tab-parents')" title="Modifier la fiche parents sur le site">
         <span class="pill-icon">👨‍👩‍👧</span>
         <div>
           <div class="pill-info" id="header-parents">–</div>
@@ -2718,21 +2720,21 @@ function _prefillAgesFromClient(client) {
     const f = formatAge(days);
     if (corrEl) corrEl.textContent = f;
   }
+  // Nettoyer toute classe résiduelle "conditional"/"show" qui pourrait surcharger display
+  const qInit = document.getElementById('q-init-terme');
+  const qTrio = document.getElementById('q-trio-ages');
+  if (qTrio) { qTrio.classList.remove('conditional', 'show'); }
   if (dt || ag || ac) {
     const trigger = ac ? 'age-corrige-manuel' : (dt ? 'date-terme' : 'age-gestationnel');
     try { computeAges(trigger); } catch(_) {}
-    // Données déjà connues dans la fiche client → on masque le bloc "Âge du terme" (question redondante)
-    // mais on garde le bloc des 3 cases visible (pré-rempli) pour que l'utilisateur puisse vérifier/éditer.
-    const qInit = document.getElementById('q-init-terme');
+    // Données déjà connues dans la fiche client → on masque la question "Âge du terme"
+    // mais on garde le bloc 3 cases visible (pré-rempli, éditable)
     if (qInit) qInit.style.display = 'none';
-    const qTrio = document.getElementById('q-trio-ages');
-    if (qTrio) qTrio.style.display = '';
+    if (qTrio) qTrio.style.display = 'grid';
   } else {
     // Aucun âge connu → la question "Âge du terme" reste visible,
-    // le bloc des 3 cases est masqué jusqu'à ce qu'on réponde "Non, prématuré"
-    const qInit = document.getElementById('q-init-terme');
-    if (qInit) qInit.style.display = '';
-    const qTrio = document.getElementById('q-trio-ages');
+    // le bloc 3 cases est masqué jusqu'à ce qu'on réponde "Non, prématuré"
+    if (qInit) qInit.style.display = 'grid';
     if (qTrio) qTrio.style.display = 'none';
   }
 }
@@ -2755,6 +2757,22 @@ function _writeBackAgesToClient() {
   const el = document.getElementById(id);
   if (el) el.addEventListener('input', _writeBackAgesToClient);
 });
+
+// Pastilles enfant/parents cliquables : ouvre l'onglet correspondant sur le site principal.
+// 1) Si l'onglet du site est encore ouvert (window.opener) → appel direct + focus.
+// 2) Sinon → on stocke un signal dans localStorage et on navigue vers index.html ;
+//    le site lit la clé au chargement et ouvre le bon onglet (handler ajouté côté index.html).
+function _openMainSiteTab(tabId) {
+  try {
+    if (window.opener && !window.opener.closed && typeof window.opener.editClientInConsultation === 'function') {
+      window.opener.editClientInConsultation(tabId);
+      window.opener.focus();
+      return;
+    }
+  } catch(_){}
+  try { localStorage.setItem('tdr_pending_open_tab', tabId); } catch(_){}
+  window.location.href = 'index.html';
+}
 
 // Pastille countdown : 2 lignes (info = "Fin à HH:MM", sub = "Xmin Ys restantes")
 // Réplique de #countdown-badge du site principal. Lecture depuis tdr_active_consultation.

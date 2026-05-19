@@ -22505,6 +22505,29 @@ if ('serviceWorker' in navigator) {
 })();
 
 // ═══════════════════════════════════════════════════
+// SIGNAL "ouvrir un onglet de la fiche client" depuis la Fiche découverte
+// Si l'utilisateur clique une pastille du questionnaire alors que ce site n'est
+// pas ouvert dans un autre onglet, le questionnaire navigue ici en posant un signal
+// dans localStorage. On lit + on consomme + on ouvre l'onglet.
+// ═══════════════════════════════════════════════════
+(function _handlePendingOpenTab() {
+  try {
+    const tabId = localStorage.getItem('tdr_pending_open_tab');
+    if (!tabId) return;
+    localStorage.removeItem('tdr_pending_open_tab');
+    // Attendre que les fonctions de l'app soient chargées avant d'ouvrir l'onglet
+    const tryOpen = () => {
+      if (typeof editClientInConsultation === 'function') {
+        try { editClientInConsultation(tabId); } catch(_){}
+      } else {
+        setTimeout(tryOpen, 200);
+      }
+    };
+    setTimeout(tryOpen, 500);
+  } catch(_){}
+})();
+
+// ═══════════════════════════════════════════════════
 // LIVE SYNC depuis la Fiche découverte (questionnaire-consultation-sommeil_4.html)
 // Quand la fiche découverte écrit dans tdr_active_consultation (autre onglet),
 // on resync state.client + on re-déclenche onHoraireSouhaiteChange pour propager
