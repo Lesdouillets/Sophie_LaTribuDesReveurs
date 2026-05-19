@@ -2882,13 +2882,15 @@ function _writeBackAgesToClient() {
     snap.client.dateTerme = dt;
     snap.client.ageGestationnel = ag;
     snap.client.ageCorrigeManuel = ac;
-    // Si les 3 cases sont VIDES → on vide aussi les champs dérivés (sinon le site
+    // Si les 3 cases sont VIDES → on neutralise aussi les champs dérivés (sinon le site
     // ré-utilise ageCorrigeMois/ageCorrigeStr/etc. pour reconstruire les dates en boucle).
+    // On les met à null/'' au lieu de delete pour que le merge côté site détecte la diff
+    // (Object.keys n'itère pas les clés supprimées).
     if (!dt && !ag && !ac) {
-      delete snap.client.ageCorrigeMois;
-      delete snap.client.ageCorrigeStr;
-      delete snap.client.ageCorrigeStrCourt;
-      delete snap.client.ageCorrEqReel;
+      snap.client.ageCorrigeMois = null;
+      snap.client.ageCorrigeStr = '';
+      snap.client.ageCorrigeStrCourt = '';
+      snap.client.ageCorrEqReel = false;
     }
     snap.savedAt = Date.now();
     localStorage.setItem('tdr_active_consultation', JSON.stringify(snap));

@@ -10344,7 +10344,9 @@ function computeClientFields(triggeredBy) {
   if (dateTerme && dateNaiss && new Date(dateTerme) > new Date(dateNaiss) && typeof calcAge === 'function') {
     const ageCorrRC = calcAge(dateTerme, consultDate);
     const acm = document.getElementById('age-corrige-manuel');
-    if (acm && ageCorrRC && (triggeredBy === 'date-terme' || !ageCorrigeManuel)) {
+    // On force la mise à jour aussi quand l'utilisateur change l'âge gestationnel
+    // (le terme vient d'être recalculé en section 2 → l'âge corrigé manuel doit suivre).
+    if (acm && ageCorrRC && (triggeredBy === 'date-terme' || triggeredBy === 'age-gestationnel' || !ageCorrigeManuel)) {
       acm.value = ageCorrRC.str || '';
     }
     // Âge gestationnel = 40 SA - prématurité (en jours)
@@ -22558,9 +22560,21 @@ window.addEventListener('storage', (e) => {
     });
     if (!changed) { console.log('[live-sync site] rien à changer'); return; }
     console.log('[live-sync site] champs modifiés:', changedFields);
-    // 1) Repopuler TOUS les inputs visibles de la fiche client UI (modal d'édition)
-    //    → l'utilisateur voit instantanément les valeurs mises à jour.
-    if (typeof populateFormFromClient === 'function') {
+    // Garde : si l'utilisateur est en train d'éditer un input/textarea/select (sur le site),
+    // on NE TOUCHE PAS à populateFormFromClient (qui écraserait ce qu'il est en train de taper).
+    // Les modifs sont quand même appliquées à state.client → seront visibles à la prochaine
+    // ouverture/changement de focus.
+    const _activeEl = document.activeElement;
+    const _userEditing = _activeEl && (
+      _activeEl.tagName === 'INPUT' ||
+      _activeEl.tagName === 'TEXTAREA' ||
+      _activeEl.tagName === 'SELECT' ||
+      _activeEl.isContentEditable
+    );
+    if (_userEditing) {
+      console.log('[live-sync site] utilisateur en train de taper sur', _activeEl.id || _activeEl.tagName, '→ skip populateFormFromClient');
+    } else if (typeof populateFormFromClient === 'function') {
+      // 1) Repopuler TOUS les inputs visibles de la fiche client UI
       try { populateFormFromClient(state.client); } catch(err) { console.warn('[live-sync] populateFormFromClient:', err); }
     }
     // 2) Propager scheduleWakeUp aux inputs Emploi du temps + déclencher le handler en cascade.
