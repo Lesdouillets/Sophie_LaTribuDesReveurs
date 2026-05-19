@@ -157,16 +157,17 @@ body {
 .subsection-title { font-size: 13px; font-weight: 800; color: var(--primary-dark); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.6px; padding-bottom: 8px; border-bottom: 1.5px dashed var(--border); }
 .subsection-title-emoji { font-size: 17px; }
 
-/* BLOC TITRE GAUCHE — PAS DE LISERÉ COLORÉ */
+/* BLOC TITRE GAUCHE — Style identique à I. Accueil (bleu marine + liseré gris + contour bleu marine) */
 .q-block {
   display: grid;
   grid-template-columns: 140px 1fr;
   gap: 0;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   border-radius: 8px;
   align-items: stretch;
   overflow: hidden;
-  border: 1px solid var(--border);
+  background: #e2e8f0;
+  border: 2px solid var(--primary-dark);
 }
 .q-left {
   font-size: 13px;
@@ -179,6 +180,9 @@ body {
   align-items: center;
   justify-content: center;
   letter-spacing: 0.2px;
+  background: var(--primary-dark);
+  color: white;
+  border-radius: 6px 0 0 6px;
 }
 .q-right {
   background: white;
@@ -188,25 +192,31 @@ body {
   gap: 12px;
 }
 
-.q-block.cat-bleu   .q-left { background: var(--cat-light-bleu);   color: var(--cat-dark-bleu); }
-.q-block.cat-vert   .q-left { background: var(--cat-light-vert);   color: var(--cat-dark-vert); }
-.q-block.cat-orange .q-left { background: var(--cat-light-orange); color: var(--cat-dark-orange); }
-.q-block.cat-violet .q-left { background: var(--cat-light-violet); color: var(--cat-dark-violet); }
-.q-block.cat-rose   .q-left { background: var(--cat-light-rose);   color: var(--cat-dark-rose); }
-.q-block.cat-marine .q-left { background: var(--cat-light-marine); color: var(--cat-dark-marine); }
+/* Catégories aplaties : tous les blocs ont la même apparence (bleu marine) */
+.q-block.cat-bleu   .q-left,
+.q-block.cat-vert   .q-left,
+.q-block.cat-orange .q-left,
+.q-block.cat-violet .q-left,
+.q-block.cat-rose   .q-left,
+.q-block.cat-marine .q-left { background: var(--primary-dark); color: white; }
 
-/* QUESTIONS — TOUTES EN GRAS */
-.q-row { display: flex; align-items: flex-start; gap: 14px; flex-wrap: wrap; }
+/* QUESTIONS — TOUTES EN GRAS, chips inline à côté du texte, bullet en tête */
+.q-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .q-row-label {
-  flex: 1 1 280px;
+  flex: 0 1 auto;
   min-width: 0;
   font-size: 14px;
   line-height: 1.55;
-  align-self: center;
   font-weight: 700;
   color: var(--text);
 }
-.q-row-input { flex: 1 1 auto; min-width: 200px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; align-items: center; }
+.q-row-label::before {
+  content: '•';
+  margin-right: 8px;
+  color: var(--primary-dark);
+  font-weight: 900;
+}
+.q-row-input { flex: 0 1 auto; min-width: 0; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start; align-items: center; }
 
 .q-input { padding: 7px 11px; border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; background: white; color: var(--text); transition: border-color 0.15s; font-weight: 500; }
 .q-input:focus { outline: none; border-color: var(--primary); }
@@ -335,9 +345,9 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
           <div class="subsection" id="contexte-naissance">
             <div class="subsection-title"><span class="subsection-title-emoji">👶</span>Naissance & terme</div>
 
-            <!-- Question initiale conditionnelle : seulement si âge corrigé pas déjà dans fiche client -->
+            <!-- Âge du terme : masqué automatiquement si âge corrigé déjà connu dans la fiche client -->
             <div class="q-block cat-bleu" id="q-init-terme">
-              <div class="q-left">Question initiale</div>
+              <div class="q-left">Âge du terme</div>
               <div class="q-right">
                 <div class="q-row">
                   <div class="q-row-label">Avant de commencer, pourriez-vous me dire si [prénom] est né(e) à terme ?</div>
@@ -348,18 +358,15 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
                     </div>
                   </div>
                 </div>
-                <div class="info-box">
-                  💡 Cette question n'apparaît que si l'<strong>âge corrigé</strong> n'est pas déjà renseigné dans la fiche client. Sinon, les 3 cases ci-dessous sont préremplies depuis la fiche client.
-                </div>
               </div>
             </div>
 
             <!-- Les 3 cases liées (identique à la fiche client du site) -->
             <div class="q-block cat-bleu conditional" id="q-trio-ages">
-              <div class="q-left">Âges</div>
+              <div class="q-left">Âge corrigé</div>
               <div class="q-right">
                 <div class="q-row">
-                  <div class="q-row-label">Renseignez l'une des 3 cases ci-dessous (les autres se calculent automatiquement) :</div>
+                  <div class="q-row-label">Renseignez l'une des 3 cases ci-dessous :</div>
                 </div>
                 <div class="age-trio">
                   <div class="age-cell">
@@ -391,12 +398,6 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
                   </div>
                 </div>
 
-                <div class="nav-bubble show">
-                  <span class="nav-bubble-icon">🧭</span>
-                  <div>
-                    <strong>Sur le site :</strong> ces 3 champs sont liés en bidirectionnel à la fiche client (<code>date-terme</code> / <code>age-gestationnel</code> / <code>age-corrige-manuel</code>), via la fonction <code>computeClientFields()</code>. L'<strong>âge corrigé</strong> met à jour la pastille bleue en haut (<code>#header-age-corrige</code>) et alimente les besoins de sommeil dans <code>V. Diagnostic</code>.
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -2513,6 +2514,112 @@ function resetForm() {
   document.getElementById('header-age-pill').classList.remove('show');
   document.getElementById('header-age-corrige-pill').classList.remove('show');
 }
+
+// ═══════════════════════════════════════════════════
+// SYNCHRONISATION AVEC LA FICHE CLIENT DU SITE (tdr_active_consultation)
+// - Lit l'état de la fiche client au démarrage
+// - Substitue [prénom] et les variables genre ([il_elle], [le_la]...) dans le texte
+// - Pré-remplit les 3 inputs d'âge depuis la fiche client + déclenche computeAges
+// - Masque le bloc "Âge du terme" si l'âge corrigé est déjà connu
+// - Écrit en retour les modifs d'âge dans le snapshot pour que le site reflète au rechargement
+// ═══════════════════════════════════════════════════
+function _loadActiveClient() {
+  try {
+    const raw = localStorage.getItem('tdr_active_consultation');
+    if (!raw) return null;
+    const snap = JSON.parse(raw);
+    return (snap && snap.client) ? snap.client : null;
+  } catch(_) { return null; }
+}
+
+function _substituteVars(client) {
+  if (!client) return;
+  const prenom = (client.prenomEnfant || '').trim();
+  const sexe = (client.sexeEnfant || '').toLowerCase();
+  const isFille = sexe === 'fille' || sexe === 'f';
+  const map = {
+    'prénom': prenom || '[prénom]',
+    'prenom': prenom || '[prénom]',
+    'il_elle': isFille ? 'elle' : 'il',
+    'Il_Elle': isFille ? 'Elle' : 'Il',
+    'lui_elle': isFille ? 'elle' : 'lui',
+    'le_la': isFille ? 'la' : 'le',
+    'Le_La': isFille ? 'La' : 'Le',
+    'né_née': isFille ? 'née' : 'né',
+    'né(e)': isFille ? 'née' : 'né',
+    'un_une': isFille ? 'une' : 'un',
+    'petit_petite': isFille ? 'petite' : 'petit',
+    'fille_garcon': isFille ? 'fille' : 'garçon'
+  };
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  let n;
+  while ((n = walker.nextNode())) {
+    let v = n.nodeValue;
+    let changed = false;
+    Object.keys(map).forEach(k => {
+      const re = new RegExp('\\[' + k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\]', 'g');
+      if (re.test(v)) { v = v.replace(re, map[k]); changed = true; }
+    });
+    if (changed) n.nodeValue = v;
+  }
+}
+
+function _prefillAgesFromClient(client) {
+  if (!client) return;
+  const dt = client.dateTerme || '';
+  const ag = client.ageGestationnel || '';
+  const ac = client.ageCorrigeManuel || '';
+  const dtEl = document.getElementById('date-terme');
+  const agEl = document.getElementById('age-gestationnel');
+  const acEl = document.getElementById('age-corrige-manuel');
+  if (dtEl && dt) dtEl.value = dt;
+  if (agEl && ag) agEl.value = ag;
+  if (acEl && ac) acEl.value = ac;
+  if (dt || ag || ac) {
+    const trigger = ac ? 'age-corrige-manuel' : (dt ? 'date-terme' : 'age-gestationnel');
+    try { computeAges(trigger); } catch(_) {}
+    // Si l'âge corrigé est déjà connu, on masque le bloc "Âge du terme"
+    // et on déplie automatiquement le bloc des 3 cases.
+    if (ac) {
+      const qInit = document.getElementById('q-init-terme');
+      if (qInit) qInit.style.display = 'none';
+      const qTrio = document.getElementById('q-trio-ages');
+      if (qTrio) qTrio.classList.add('show');
+    }
+  }
+}
+
+function _writeBackAgesToClient() {
+  try {
+    const raw = localStorage.getItem('tdr_active_consultation');
+    if (!raw) return;
+    const snap = JSON.parse(raw);
+    if (!snap || !snap.client) return;
+    snap.client.dateTerme = document.getElementById('date-terme').value || '';
+    snap.client.ageGestationnel = document.getElementById('age-gestationnel').value.trim() || '';
+    snap.client.ageCorrigeManuel = document.getElementById('age-corrige-manuel').value.trim() || '';
+    snap.savedAt = Date.now();
+    localStorage.setItem('tdr_active_consultation', JSON.stringify(snap));
+  } catch(_) {}
+}
+
+['date-terme','age-gestationnel','age-corrige-manuel'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', _writeBackAgesToClient);
+});
+
+// Si le site principal modifie l'état (autre onglet), on resync
+window.addEventListener('storage', (e) => {
+  if (e.key !== 'tdr_active_consultation') return;
+  const c = _loadActiveClient();
+  if (c) { _substituteVars(c); _prefillAgesFromClient(c); }
+});
+
+// Charge l'état initial depuis la fiche client
+(function _initFromActiveClient() {
+  const c = _loadActiveClient();
+  if (c) { _substituteVars(c); _prefillAgesFromClient(c); }
+})();
 
 // INIT
 updateProgress();
