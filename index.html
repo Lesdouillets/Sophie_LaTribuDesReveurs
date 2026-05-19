@@ -8400,7 +8400,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=768"></script>
+<script src="script-data.js?v=769"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
@@ -8814,6 +8814,9 @@ setInterval(() => {
   if (typeof fdUpdateBibBesoin === 'function') fdUpdateBibBesoin();
   if (typeof fdUpdateLaitGridVisibility === 'function') fdUpdateLaitGridVisibility();
   if (typeof fdUpdateBannersVisibility === 'function') fdUpdateBannersVisibility();
+  // Indicateur visuel sur la page : heure réellement utilisée par l'emploi du temps
+  const dbgWake = document.getElementById('fd-debug-wake');
+  if (dbgWake) dbgWake.textContent = (state && state.client && state.client.scheduleWakeUp) || '–';
 }, 1000);
 </script>
 <script>
