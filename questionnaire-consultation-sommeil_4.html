@@ -2826,15 +2826,13 @@ function _prefillAgesFromClient(client) {
   const qInit = document.getElementById('q-init-terme');
   const qTrio = document.getElementById('q-trio-ages');
   if (qTrio) { qTrio.classList.remove('conditional', 'show'); }
-  // Détection ÉLARGIE : si n'importe quelle indication d'âge / prématurité est dans la fiche
-  // client, on considère qu'on a les infos (on évite de redemander la question "né à terme ?").
+  // Détection STRICTE : on regarde UNIQUEMENT les 3 inputs originaux saisis par l'utilisateur.
+  // Les champs dérivés (ageCorrigeMois/Str) peuvent rester en cache de tests précédents
+  // et masqueraient la question à tort même quand l'utilisateur n'a rien saisi.
   const hasOriginalAgeData = !!(
     (client.dateTerme && String(client.dateTerme).length > 0) ||
     (client.ageGestationnel && String(client.ageGestationnel).length > 0) ||
-    (client.ageCorrigeManuel && String(client.ageCorrigeManuel).length > 0) ||
-    (typeof client.ageCorrigeMois === 'number' && client.ageCorrigeMois > 0) ||
-    (client.ageCorrigeStr && String(client.ageCorrigeStr).length > 0) ||
-    (client.ageCorrigeStrCourt && String(client.ageCorrigeStrCourt).length > 0)
+    (client.ageCorrigeManuel && String(client.ageCorrigeManuel).length > 0)
   );
   if (dt || ag || ac) {
     const trigger = ac ? 'age-corrige-manuel' : (dt ? 'date-terme' : 'age-gestationnel');
