@@ -2442,11 +2442,14 @@ function computeAges(triggeredBy) {
     const _acd = document.getElementById('age-corrige-display');
     if (_acd) _acd.textContent = ageCorrStr;
 
-    // === Mise à jour pastille header "enfant" (sous-ligne = 🎂 âge réel)
-    // La pastille Âge corrigé séparée a été retirée (l'info est dans la sous-ligne).
+    // === Mise à jour pastille header "enfant" (sous-ligne = 🎂 âge réel + ✏️ âge corrigé)
     const enfantSub = document.getElementById('header-enfant-sub');
     if (enfantSub && ageReelDays !== null) {
-      enfantSub.textContent = '🎂 ' + ageReelStr;
+      let html = '🎂 ' + ageReelStr;
+      if (ageCorrDays !== null && ageCorrStr !== ageReelStr) {
+        html += '<br>✏️ ' + ageCorrStr;
+      }
+      enfantSub.innerHTML = html;
     }
   } finally {
     _computingAges = false;
@@ -2715,21 +2718,11 @@ function _prefillAgesFromClient(client) {
   const dtEl = document.getElementById('date-terme');
   const agEl = document.getElementById('age-gestationnel');
   const acEl = document.getElementById('age-corrige-manuel');
-  // Si la fiche client a `dateNaissance` mais pas `dateTerme`, on calcule date-terme
-  // = dateNaissance + prématurité (en jours). Si pas d'ageGestationnel, on assume né à terme.
-  if (!dt && client.dateNaissance) {
-    const dn = new Date(client.dateNaissance);
-    if (!isNaN(dn.getTime())) {
-      let prematureDays = 0;
-      if (ag) {
-        const pd = parseGestationnelToPrematureDays(ag);
-        if (pd !== null) prematureDays = pd;
-      }
-      const computedTerme = new Date(dn);
-      computedTerme.setDate(computedTerme.getDate() + prematureDays);
-      dt = computedTerme.toISOString().slice(0,10);
-    }
-  }
+  // NB : on NE pré-remplit PAS date-terme depuis dateNaissance.
+  // Sinon, quand l'utilisateur clique "Non prématuré" et ouvre les 3 cases, il verrait
+  // la date de naissance à la place du terme (faux). dateNaissance est conservée dans
+  // _currentDateNaissance et utilisée par le wrapper computeAges pour calculer date-terme
+  // À LA VOLÉE quand l'utilisateur saisit l'âge gestationnel.
   // Mémoriser dateNaissance pour le wrapper computeAges (recalcul date-terme à la volée)
   _currentDateNaissance = client.dateNaissance || null;
   // Ne pas écraser un champ déjà saisi par l'utilisateur (le storage listener relance cette
