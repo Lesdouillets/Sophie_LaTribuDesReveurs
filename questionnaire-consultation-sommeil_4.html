@@ -2757,12 +2757,13 @@ function _writeBackAgesToClient() {
   if (el) el.addEventListener('input', _writeBackAgesToClient);
 });
 
-// Pastille countdown : si tdr_active_consultation a heureFin, affiche "Fin à HH:MM · Xmin Ys restantes"
-// (réplique de la pastille countdown-badge du site principal). Sinon → heure courante.
+// Pastille countdown : 2 lignes (info = "Fin à HH:MM", sub = "Xmin Ys restantes")
+// Réplique de #countdown-badge du site principal. Lecture depuis tdr_active_consultation.
 function _updateClockPill() {
-  const el = document.getElementById('header-clock');
-  const pill = document.getElementById('header-clock-pill');
-  if (!el) return;
+  const infoEl = document.getElementById('header-heure-fin');
+  const subEl  = document.getElementById('header-countdown');
+  const pill   = document.getElementById('header-clock-pill');
+  if (!infoEl || !subEl) return;
   try {
     const raw = localStorage.getItem('tdr_active_consultation');
     if (raw) {
@@ -2774,21 +2775,23 @@ function _updateClockPill() {
           pill.classList.toggle('warning', diff > 0 && diff < 20*60000 && diff >= 10*60000);
           pill.classList.toggle('urgent',  diff > 0 && diff < 10*60000);
         }
+        infoEl.textContent = heureFinStr ? 'Fin à ' + heureFinStr : '–';
         if (diff <= 0) {
-          el.textContent = (heureFinStr ? 'Fin à ' + heureFinStr + ' · ' : '') + '⏰ Temps écoulé';
+          subEl.textContent = '⏰ Temps écoulé';
         } else {
           const mins = Math.floor(diff / 60000);
           const secs = Math.floor((diff % 60000) / 1000);
-          el.textContent = (heureFinStr ? 'Fin à ' + heureFinStr + ' · ' : '') + mins + 'min ' + String(secs).padStart(2,'0') + 's restantes';
+          subEl.textContent = mins + 'min ' + String(secs).padStart(2,'0') + 's restantes';
         }
         return;
       }
     }
   } catch(_) {}
-  // Fallback : heure courante (pas de consultation active)
+  // Fallback : pas de consultation active → heure courante en gros, rien en sub
   if (pill) pill.classList.remove('warning','urgent');
   const now = new Date();
-  el.textContent = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  infoEl.textContent = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  subEl.textContent = '';
 }
 _updateClockPill();
 setInterval(_updateClockPill, 1000);

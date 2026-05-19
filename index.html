@@ -22503,6 +22503,44 @@ if ('serviceWorker' in navigator) {
     if (!toolbar.contains(e.target)) toolbar.style.display = 'none';
   });
 })();
+
+// ═══════════════════════════════════════════════════
+// LIVE SYNC depuis la Fiche découverte (questionnaire-consultation-sommeil_4.html)
+// Quand la fiche découverte écrit dans tdr_active_consultation (autre onglet),
+// on resync state.client + on re-déclenche onHoraireSouhaiteChange pour propager
+// à VIII. Plan d'action → Emploi du temps. Aucun rechargement nécessaire.
+// ═══════════════════════════════════════════════════
+window.addEventListener('storage', (e) => {
+  if (e.key !== 'tdr_active_consultation' || !e.newValue) return;
+  try {
+    const snap = JSON.parse(e.newValue);
+    if (!snap || !snap.client || !state || !state.client) return;
+    const fields = ['scheduleWakeUp','dateTerme','ageGestationnel','ageCorrigeManuel'];
+    let changed = false;
+    fields.forEach(f => {
+      if (snap.client[f] !== undefined && snap.client[f] !== state.client[f]) {
+        state.client[f] = snap.client[f];
+        changed = true;
+      }
+    });
+    if (!changed) return;
+    // Propager l'heure de réveil à tous les inputs visibles + déclencher le handler
+    // pour que Emploi du temps se recalcule (cascade des heures).
+    document.querySelectorAll('input[data-horaire-souhaite]').forEach(inp => {
+      const newVal = state.client.scheduleWakeUp || '';
+      if (inp.value !== newVal) {
+        inp.value = newVal;
+        if (typeof onHoraireSouhaiteChange === 'function') {
+          try { onHoraireSouhaiteChange(inp); } catch(_) {}
+        }
+      }
+    });
+    // Recalculer la pastille âge corrigé du header si les âges ont changé
+    if (typeof computeClientFields === 'function') {
+      try { computeClientFields(); } catch(_) {}
+    }
+  } catch(_) {}
+});
 </script>
 </body>
 </html>
