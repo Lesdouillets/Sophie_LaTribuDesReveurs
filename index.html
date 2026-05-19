@@ -2130,14 +2130,42 @@
     .fd-content .fd-chips[data-q="type_alim"] .fd-chip {
       min-width: 220px; justify-content: center; text-align: center;
     }
-    /* Bandeau biberon 24h — en haut de la fiche découverte, 2 lignes, texte normal SAUF total + besoin théorique */
-    .fd-content .fd-bib-banner {
+    /* Container des bandeaux (biberon + tétée) — OUTSIDE de la bordure épaisse de fd-content */
+    .fd-banners {
+      display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px;
+    }
+    .fd-banners > * { flex: 1 1 340px; }
+    /* Bandeau biberon 24h — 2 lignes, texte normal SAUF total + besoin théorique */
+    .fd-bib-banner {
       background: linear-gradient(135deg, #fff9e6, #fef3c7);
       border: 1px solid #f0ad4e; border-radius: 8px;
-      padding: 8px 14px; margin: 0 0 14px;
+      padding: 8px 14px;
       font-size: 13px; font-weight: 400;
       color: #7c5200;
     }
+    /* Bandeau tétée 24h — style rosé pour distinguer du bib */
+    .fd-tetee-banner {
+      background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+      border: 1px solid #e879f9; border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 13px; font-weight: 400;
+      color: #831843;
+    }
+    .fd-tetee-banner strong { color: #831843; font-weight: 800; }
+    .fd-tetee-banner .fd-tetee-vol {
+      width: 60px; padding: 4px 8px;
+      border: 1.5px solid #e879f9; border-radius: 6px;
+      font-size: 13px; font-weight: 600; font-family: inherit;
+      color: #831843; background: white;
+    }
+    .fd-tetee-banner .fd-tetee-vol:focus { outline: none; border-color: #d946ef; box-shadow: 0 0 0 2px rgba(232,121,249,0.2); }
+    .fd-tetee-banner .fd-tetee-plus {
+      background: #e879f9; color: white; border: none;
+      padding: 4px 10px; border-radius: 6px;
+      font-size: 12px; font-weight: 600; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .fd-tetee-banner .fd-tetee-plus:hover { background: #d946ef; }
     .fd-content .fd-bib-banner .fd-bib-line {
       display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
     }
@@ -8355,22 +8383,25 @@ function fdNav(cat, el) {
 }
 window.fdNav = fdNav;
 // Toggle chip de la fiche découverte. single=true → mutex (un seul sélectionné par groupe).
+// On utilise .closest('.fd-chips') car certains groupes ont des sous-wrappers (.fd-chip-row)
+// qui sinon casseraient la lookup parent.
 function fdToggleChip(el, single) {
-  if (single) {
-    const parent = el.parentElement;
-    parent.querySelectorAll('.fd-chip').forEach(c => c.classList.remove('selected'));
+  const chips = el.closest('.fd-chips');
+  if (single && chips) {
+    chips.querySelectorAll('.fd-chip').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
   } else {
     el.classList.toggle('selected');
   }
   // Persister la sélection dans state.client.fdAnswers[qKey] (tableau de textes sélectionnés)
-  const chips = el.parentElement;
-  const qKey = chips && chips.dataset ? chips.dataset.q : null;
-  if (qKey && typeof state !== 'undefined' && state && state.client) {
-    if (!state.client.fdAnswers) state.client.fdAnswers = {};
-    const selected = Array.from(chips.querySelectorAll('.fd-chip.selected')).map(c => c.textContent.trim());
-    state.client.fdAnswers[qKey] = selected;
-    if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
+  if (chips) {
+    const qKey = chips.dataset.q;
+    if (qKey && typeof state !== 'undefined' && state && state.client) {
+      if (!state.client.fdAnswers) state.client.fdAnswers = {};
+      const selected = Array.from(chips.querySelectorAll('.fd-chip.selected')).map(c => c.textContent.trim());
+      state.client.fdAnswers[qKey] = selected;
+      if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
+    }
   }
 }
 window.fdToggleChip = fdToggleChip;
@@ -8502,10 +8533,12 @@ window.fdSetTypeLait = fdSetTypeLait;
 // Affiche/cache la grille 8 types de lait selon que biberon de lait infantile ou allaitement mixte est sélectionné dans type_alim
 function fdUpdateLaitGridVisibility() {
   const grid = document.getElementById('fd-lait-grid');
+  const qLait = document.getElementById('fd-q-lait');
   if (!grid) return;
   const selectedAlim = Array.from(document.querySelectorAll('.fd-content .fd-chips[data-q="type_alim"] .fd-chip.selected')).map(c => c.textContent);
   const needsLait = selectedAlim.some(t => t.includes('Biberon de lait infantile') || t.includes('Allaitement mixte'));
   grid.style.display = needsLait ? 'grid' : 'none';
+  if (qLait) qLait.style.display = needsLait ? '' : 'none';
   // Si la grille devient visible et state.client.typeLait existe, restaurer le chip sélectionné
   if (needsLait) {
     const c = (typeof state !== 'undefined' && state && state.client) ? state.client : {};
@@ -8521,6 +8554,57 @@ function fdUpdateLaitGridVisibility() {
   }
 }
 window.fdUpdateLaitGridVisibility = fdUpdateLaitGridVisibility;
+// Bandeau tétée : incrémenter le nombre de tétées
+function fdIncrementTetee() {
+  if (typeof state === 'undefined' || !state || !state.client) return;
+  if (!state.client.fdAnswers) state.client.fdAnswers = {};
+  state.client.fdAnswers.tetee_count = (state.client.fdAnswers.tetee_count || 0) + 1;
+  const el = document.getElementById('fd-tetee-count');
+  if (el) el.textContent = state.client.fdAnswers.tetee_count;
+  fdComputeTeteeTotal();
+  if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
+}
+window.fdIncrementTetee = fdIncrementTetee;
+function fdComputeTeteeTotal() {
+  const countEl = document.getElementById('fd-tetee-count');
+  const volEl = document.getElementById('fd-tetee-vol');
+  const totalEl = document.getElementById('fd-tetee-total');
+  if (!countEl || !volEl || !totalEl) return;
+  const count = parseInt(countEl.textContent || '0', 10) || 0;
+  const vol = parseFloat((volEl.value || '0').replace(',', '.')) || 0;
+  const total = count * vol;
+  totalEl.textContent = total ? total.toFixed(0) : 0;
+  if (typeof state !== 'undefined' && state && state.client) {
+    if (!state.client.fdAnswers) state.client.fdAnswers = {};
+    state.client.fdAnswers.tetee_volume_per = volEl.value || '';
+    if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
+  }
+}
+window.fdComputeTeteeTotal = fdComputeTeteeTotal;
+// Visibilité des 2 bandeaux selon type_alim sélectionné
+// - Biberon (lait infantile / au biberon / mixte) → bandeau biberon
+// - Sein / mixte → bandeau tétée
+function fdUpdateBannersVisibility() {
+  const selected = Array.from(document.querySelectorAll('.fd-content .fd-chips[data-q="type_alim"] .fd-chip.selected')).map(c => c.textContent);
+  const hasBib  = selected.some(t => t.includes('Biberon') || t.includes('Allaitement au biberon') || t.includes('Allaitement mixte'));
+  const hasSein = selected.some(t => t.includes('Allaitement au sein') || t.includes('Allaitement mixte'));
+  const bibBanner   = document.querySelector('.fd-bib-banner');
+  const teteeBanner = document.getElementById('fd-tetee-banner');
+  if (bibBanner)   bibBanner.style.display   = hasBib  ? '' : 'none';
+  if (teteeBanner) teteeBanner.style.display = hasSein ? '' : 'none';
+}
+window.fdUpdateBannersVisibility = fdUpdateBannersVisibility;
+// Restaurer le compteur tétées depuis state.client.fdAnswers
+function fdRestoreTetee() {
+  if (typeof state === 'undefined' || !state || !state.client || !state.client.fdAnswers) return;
+  const a = state.client.fdAnswers;
+  const countEl = document.getElementById('fd-tetee-count');
+  const volEl = document.getElementById('fd-tetee-vol');
+  if (countEl && typeof a.tetee_count === 'number') countEl.textContent = a.tetee_count;
+  if (volEl && !volEl.value && a.tetee_volume_per) volEl.value = a.tetee_volume_per;
+  fdComputeTeteeTotal();
+}
+window.fdRestoreTetee = fdRestoreTetee;
 // Met à jour le "besoin théorique" du bandeau biberon (formule du site)
 function fdUpdateBibBesoin() {
   const besoinEl = document.getElementById('fd-bib-besoin');
@@ -8635,9 +8719,11 @@ setInterval(() => {
   fdUpdateVisibility();
   if (typeof fdRestoreAnswers === 'function') fdRestoreAnswers();
   if (typeof fdRestoreBibCases === 'function') fdRestoreBibCases();
+  if (typeof fdRestoreTetee === 'function') fdRestoreTetee();
   if (typeof fdComputeBibTotal === 'function') fdComputeBibTotal();
   if (typeof fdUpdateBibBesoin === 'function') fdUpdateBibBesoin();
   if (typeof fdUpdateLaitGridVisibility === 'function') fdUpdateLaitGridVisibility();
+  if (typeof fdUpdateBannersVisibility === 'function') fdUpdateBannersVisibility();
 }, 1000);
 </script>
 <script>
