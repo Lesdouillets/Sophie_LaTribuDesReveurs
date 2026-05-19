@@ -8173,7 +8173,18 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=753"></script>
+<script src="script-data.js?v=754"></script>
+<script>
+// Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
+// Au clic sur un item de la sidebar : on switch l'item actif + on affiche la section correspondante.
+function fdNav(cat, el) {
+  const container = el ? el.closest('.fd-container') : document.getElementById('fd-questionnaire');
+  if (!container) return;
+  container.querySelectorAll('.fd-nav-item').forEach(n => n.classList.toggle('active', n.dataset.cat === cat));
+  container.querySelectorAll('.fd-section').forEach(s => s.classList.toggle('active', s.dataset.cat === cat));
+}
+window.fdNav = fdNav;
+</script>
 <script>
 // ═══════════════════════════════════════════════════
 // SUPABASE
