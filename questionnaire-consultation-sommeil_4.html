@@ -2744,44 +2744,52 @@ function _prefillAgesFromClient(client) {
   const corrEl = document.getElementById('age-corrige-display');
   const headerReelEl = document.getElementById('header-age-reel');
   const headerReelPill = document.getElementById('header-age-pill');
-  // Âge réel : priorité 1 = dateNaissance (précision au jour, comme le site) ;
-  // priorité 2 = ageReelMois (arrondi mensuel, fallback si pas de dateNaissance).
+  // Âge réel : priorité ageReelMois (matche EXACTEMENT le site, évite écart de 2j) ;
+  // fallback dateNaissance si pas de ageReelMois stocké.
   let ageReelFormatted = null;
-  if (client.dateNaissance) {
+  if (typeof client.ageReelMois === 'number' && !isNaN(client.ageReelMois)) {
+    ageReelFormatted = formatAge(Math.round(client.ageReelMois * 30.4375));
+  } else if (client.dateNaissance) {
     const dn = new Date(client.dateNaissance);
     if (!isNaN(dn.getTime())) {
       const days = Math.floor((Date.now() - dn.getTime()) / (24*3600*1000));
       if (days >= 0) ageReelFormatted = formatAge(days);
     }
   }
-  if (!ageReelFormatted && typeof client.ageReelMois === 'number' && !isNaN(client.ageReelMois)) {
-    ageReelFormatted = formatAge(Math.round(client.ageReelMois * 30.4375));
-  }
-  if (ageReelFormatted) {
-    if (reelEl) reelEl.textContent = ageReelFormatted;
-    // Pastille enfant : sous-ligne "🎂 X mois Y j" (style identique au site)
-    const enfantSub = document.getElementById('header-enfant-sub');
-    if (enfantSub) enfantSub.textContent = '🎂 ' + ageReelFormatted;
-  }
+  let ageCorrigeFormatted = null;
   if (typeof client.ageCorrigeMois === 'number' && !isNaN(client.ageCorrigeMois)) {
-    const days = Math.round(client.ageCorrigeMois * 30.4375);
-    const f = formatAge(days);
-    if (corrEl) corrEl.textContent = f;
+    ageCorrigeFormatted = formatAge(Math.round(client.ageCorrigeMois * 30.4375));
+  }
+  if (reelEl && ageReelFormatted) reelEl.textContent = ageReelFormatted;
+  if (corrEl && ageCorrigeFormatted) corrEl.textContent = ageCorrigeFormatted;
+  // Pastille enfant : sous-ligne 2 infos (🎂 réel + ✏️ corrigé si dispo et différent)
+  const enfantSub = document.getElementById('header-enfant-sub');
+  if (enfantSub && ageReelFormatted) {
+    let html = '🎂 ' + ageReelFormatted;
+    if (ageCorrigeFormatted && ageCorrigeFormatted !== ageReelFormatted) {
+      html += '<br>✏️ ' + ageCorrigeFormatted;
+    }
+    enfantSub.innerHTML = html;
   }
   // Nettoyer toute classe résiduelle "conditional"/"show" qui pourrait surcharger display
   const qInit = document.getElementById('q-init-terme');
   const qTrio = document.getElementById('q-trio-ages');
   if (qTrio) { qTrio.classList.remove('conditional', 'show'); }
+  // Décision basée sur les CHAMPS ORIGINAUX du client (pas sur dt qu'on a peut-être
+  // calculé depuis dateNaissance). Sinon, dès qu'on a dateNaissance on cacherait à tort
+  // la question "né à terme ?".
+  const hasOriginalAgeData = !!(client.dateTerme || client.ageGestationnel || client.ageCorrigeManuel);
   if (dt || ag || ac) {
+    // Lance le calcul si on a au moins une valeur (réelle ou dérivée de dateNaissance)
     const trigger = ac ? 'age-corrige-manuel' : (dt ? 'date-terme' : 'age-gestationnel');
     try { computeAges(trigger); } catch(_) {}
-    // Données déjà connues dans la fiche client → on masque la question "Âge du terme"
-    // mais on garde le bloc 3 cases visible (pré-rempli, éditable)
+  }
+  if (hasOriginalAgeData) {
     if (qInit) qInit.style.display = 'none';
     if (qTrio) qTrio.style.display = 'grid';
   } else {
-    // Aucun âge connu → la question "Âge du terme" reste visible,
-    // le bloc 3 cases est masqué jusqu'à ce qu'on réponde "Non, prématuré"
+    // Pas d'info d'âge dans la fiche client → on garde la question "né à terme ?"
+    // visible, le bloc 3 cases reste caché jusqu'à clic "Non".
     if (qInit) qInit.style.display = 'grid';
     if (qTrio) qTrio.style.display = 'none';
   }
@@ -2824,7 +2832,21 @@ function _openMainSiteTab(tabId) {
   console.log('[questionnaire] Navigation vers index.html avec signal tdr_pending_open_tab =', tabId);
   window.location.href = 'index.html';
 }
-window._openMainSiteTab = _openMainSiteTab; // s'assurer que l'inline onclick le trouve
+window._openMainSiteTab = _openMainSiteTab;
+
+// Brancher les clics via addEventListener (plus fiable que l'inline onclick)
+(function _bindPillClicks() {
+  const enfantPill = document.getElementById('header-enfant-pill');
+  const parentsPill = document.getElementById('header-parents-pill');
+  if (enfantPill) {
+    enfantPill.style.cursor = 'pointer';
+    enfantPill.addEventListener('click', () => _openMainSiteTab('tab-bebe'));
+  }
+  if (parentsPill) {
+    parentsPill.style.cursor = 'pointer';
+    parentsPill.addEventListener('click', () => _openMainSiteTab('tab-parents'));
+  }
+})();
 
 // Pastille countdown : 2 lignes (info = "Fin à HH:MM", sub = "Xmin Ys restantes")
 // Réplique de #countdown-badge du site principal. Lecture depuis tdr_active_consultation.
