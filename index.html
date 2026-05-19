@@ -2121,6 +2121,53 @@
       border-radius: 0 8px 8px 0; font-size: 12.5px; line-height: 1.55;
       color: var(--primary-dark); font-weight: 400;
     }
+    /* Ligne question simple (pas de bloc-titre, juste question + chips inline) */
+    .fd-content .fd-q-row-simple {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .fd-content .fd-q-text {
+      font-size: 14px; font-weight: 400; color: var(--text); line-height: 1.55;
+    }
+    .fd-content .fd-q-text::before {
+      content: '•'; margin-right: 8px; color: var(--primary-dark); font-weight: 900;
+    }
+    .fd-content .fd-q-text-small {
+      font-size: 13px; color: var(--text); margin-bottom: 8px; font-style: italic;
+    }
+    /* Bloc 3 cases d'âge (révélé au clic sur "Non, prématuré") */
+    .fd-content .fd-trio-ages {
+      margin: 4px 0 16px;
+      padding: 12px 14px;
+      background: #f5f7fc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      animation: fdFadeIn 0.22s ease-out;
+    }
+    .fd-content .fd-age-trio {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+    }
+    .fd-content .fd-age-cell {
+      background: white; border: 1.5px solid var(--border);
+      border-radius: 10px; padding: 10px 12px;
+    }
+    .fd-content .fd-age-cell-label {
+      font-size: 10px; font-weight: 700; color: var(--primary-dark);
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;
+    }
+    .fd-content .fd-age-cell-hint {
+      font-size: 10.5px; color: var(--text-light); font-style: italic;
+      margin-top: 3px; font-weight: 400;
+    }
+    .fd-content .fd-age-cell input {
+      width: 100%; padding: 6px 10px; border: 1.5px solid var(--border);
+      border-radius: 8px; font-size: 13px; font-weight: 600;
+      font-family: inherit; color: var(--primary-dark); background: white;
+    }
+    .fd-content .fd-age-cell input:focus { outline: none; border-color: var(--primary); }
+    @media (max-width: 900px) {
+      .fd-content .fd-age-trio { grid-template-columns: 1fr; }
+    }
 
     /* ═══ Fiche découverte intégrée — mini-sidebar à gauche + contenu à droite ═══ */
     .fd-container {
@@ -8252,6 +8299,21 @@ function fdToggleChip(el, single) {
   }
 }
 window.fdToggleChip = fdToggleChip;
+// Réponse à la question "né à terme ?" → si "Non, prématuré" on révèle les 3 cases d'âge
+function fdOnTermeAnswer(chip) {
+  const trio = document.getElementById('fd-trio-ages');
+  if (trio) trio.style.display = chip.textContent.includes('Non') ? 'block' : 'none';
+}
+window.fdOnTermeAnswer = fdOnTermeAnswer;
+// Sync une valeur de la fiche découverte vers l'input correspondant de la fiche bébé
+// (déclenche computeClientFields via l'événement input) → state.client mis à jour automatiquement
+function fdSyncToBebe(targetId, value) {
+  const target = document.getElementById(targetId);
+  if (!target) return;
+  target.value = value;
+  target.dispatchEvent(new Event('input', { bubbles: true }));
+}
+window.fdSyncToBebe = fdSyncToBebe;
 </script>
 <script>
 // ═══════════════════════════════════════════════════
