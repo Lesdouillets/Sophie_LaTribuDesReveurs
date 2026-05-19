@@ -2925,25 +2925,28 @@ function _prefillAgesFromClient(client) {
   const _activeEl = document.activeElement;
   const _isUserTyping = _activeEl && ['date-terme','age-gestationnel','age-corrige-manuel'].indexOf(_activeEl.id) !== -1;
   if (!_isUserTyping) {
-    if (hasOriginalAgeData) {
-      // Fiche client a déjà l'âge corrigé → on cache TOUT (question + 3 cases).
+    // Lire le flag : a-t-on déjà répondu à "né à terme ?" dans le questionnaire ?
+    let termeChoice = null;
+    try { termeChoice = localStorage.getItem('tdr_questionnaire_terme'); } catch(_){}
+    const hasUserAnswered = (termeChoice === 'non' || termeChoice === 'oui');
+    if (hasUserAnswered) {
+      // L'utilisateur s'est exprimé dans la fiche découverte → on garde la question visible
+      // (même si la fiche client a aussi l'âge corrigé), et on restaure son chip.
+      if (qInit) qInit.style.display = 'grid';
+      if (qTrio) qTrio.style.display = termeChoice === 'non' ? 'grid' : 'none';
+      document.querySelectorAll('[data-q="terme"] .chip').forEach(c => {
+        const matches = termeChoice === 'non' ? c.textContent.includes('Non') : c.textContent.includes('Oui');
+        c.classList.toggle('selected', matches);
+      });
+    } else if (hasOriginalAgeData) {
+      // Données présentes dans la fiche client, et l'utilisateur n'a JAMAIS répondu
+      // dans la fiche découverte → on cache la question + les 3 cases (info redondante).
       if (qInit) qInit.style.display = 'none';
       if (qTrio) qTrio.style.display = 'none';
     } else {
-      // Pas de données d'âge → on vérifie si l'utilisateur a répondu précédemment
-      let termeChoice = null;
-      try { termeChoice = localStorage.getItem('tdr_questionnaire_terme'); } catch(_){}
-      if (termeChoice === 'non' || termeChoice === 'oui') {
-        if (qInit) qInit.style.display = 'grid';
-        if (qTrio) qTrio.style.display = termeChoice === 'non' ? 'grid' : 'none';
-        document.querySelectorAll('[data-q="terme"] .chip').forEach(c => {
-          const matches = termeChoice === 'non' ? c.textContent.includes('Non') : c.textContent.includes('Oui');
-          c.classList.toggle('selected', matches);
-        });
-      } else {
-        if (qInit) qInit.style.display = 'grid';
-        if (qTrio) qTrio.style.display = 'none';
-      }
+      // Pas de données + pas de réponse → on affiche la question (état initial)
+      if (qInit) qInit.style.display = 'grid';
+      if (qTrio) qTrio.style.display = 'none';
     }
   }
   _prefillDone = true;
