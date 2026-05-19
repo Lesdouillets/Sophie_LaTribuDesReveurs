@@ -578,7 +578,7 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
                   </div>
                 </div>
                 <div class="q-row">
-                  <div class="q-row-label">Combien de temps après le réveil prend-il/elle son premier repas ?</div>
+                  <div class="q-row-label">Combien de temps après le réveil prend-il/elle son 1er repas ?</div>
                   <div class="q-row-input">
                     <div class="chips" data-q="delai_1er_repas">
                       <span class="chip" onclick="toggleChip(this, true)">⚡ Immédiatement</span>
@@ -2835,25 +2835,29 @@ function _prefillAgesFromClient(client) {
   // (storage listener) ne touchent plus aux blocs → évite que le bloc se rétracte
   // pendant que l'utilisateur tape, suite à un auto-save du site qui fire l'événement.
   if (!_prefillDone) {
-    // Vérifier si l'utilisateur a déjà répondu à la question "né à terme ?" précédemment.
-    // Si oui, la question reste visible (avec le bon chip sélectionné), et le bloc 3 cases
-    // est affiché uniquement si la réponse était "Non, prématuré".
-    let termeChoice = null;
-    try { termeChoice = localStorage.getItem('tdr_questionnaire_terme'); } catch(_){}
-    if (termeChoice === 'non' || termeChoice === 'oui') {
-      if (qInit) qInit.style.display = 'grid';
-      if (qTrio) qTrio.style.display = termeChoice === 'non' ? 'grid' : 'none';
-      // Restaurer le chip sélectionné dans qInit
-      document.querySelectorAll('[data-q="terme"] .chip').forEach(c => {
-        const matches = termeChoice === 'non' ? c.textContent.includes('Non') : c.textContent.includes('Oui');
-        c.classList.toggle('selected', matches);
-      });
-    } else if (hasOriginalAgeData) {
+    if (hasOriginalAgeData) {
+      // Fiche client a déjà l'âge corrigé → on cache TOUT (question + 3 cases).
+      // Le flag de réponse précédente est ignoré ici (les données client priment).
       if (qInit) qInit.style.display = 'none';
-      if (qTrio) qTrio.style.display = 'grid';
-    } else {
-      if (qInit) qInit.style.display = 'grid';
       if (qTrio) qTrio.style.display = 'none';
+    } else {
+      // Pas de données d'âge dans la fiche client → on vérifie si l'utilisateur
+      // a répondu à la question dans une session précédente.
+      let termeChoice = null;
+      try { termeChoice = localStorage.getItem('tdr_questionnaire_terme'); } catch(_){}
+      if (termeChoice === 'non' || termeChoice === 'oui') {
+        if (qInit) qInit.style.display = 'grid';
+        if (qTrio) qTrio.style.display = termeChoice === 'non' ? 'grid' : 'none';
+        // Restaurer le chip sélectionné
+        document.querySelectorAll('[data-q="terme"] .chip').forEach(c => {
+          const matches = termeChoice === 'non' ? c.textContent.includes('Non') : c.textContent.includes('Oui');
+          c.classList.toggle('selected', matches);
+        });
+      } else {
+        // Aucune donnée + aucune réponse → on affiche la question (par défaut)
+        if (qInit) qInit.style.display = 'grid';
+        if (qTrio) qTrio.style.display = 'none';
+      }
     }
     _prefillDone = true;
   }
