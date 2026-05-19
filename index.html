@@ -2172,15 +2172,19 @@
     .fd-content .fd-bib-banner .fd-bib-line + .fd-bib-line { margin-top: 4px; }
     .fd-content .fd-bib-banner strong { color: #7c5200; font-weight: 800; }
     .fd-content .fd-bib-banner .fd-bib-sep { color: #d4a85a; margin: 0 2px; }
-    /* Conteneur des cases volume biberon dans le bandeau (dynamique) */
-    .fd-content .fd-bib-cases { display: inline-flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-    .fd-content .fd-bib-vol {
-      width: 70px; padding: 4px 8px;
+    /* Conteneur des cases volume biberon dans le bandeau (dynamique) — global, car le bandeau est OUTSIDE de .fd-content */
+    .fd-bib-cases { display: inline-flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+    .fd-bib-vol {
+      width: 55px; padding: 3px 6px;
       border: 1.5px solid #f0ad4e; border-radius: 6px;
-      font-size: 13px; font-weight: 600; font-family: inherit;
+      font-size: 12px; font-weight: 600; font-family: inherit;
       color: #7c5200; background: white;
     }
-    .fd-content .fd-bib-vol:focus { outline: none; border-color: #c47a3a; box-shadow: 0 0 0 2px rgba(196,122,58,0.2); }
+    .fd-bib-vol:focus { outline: none; border-color: #c47a3a; box-shadow: 0 0 0 2px rgba(196,122,58,0.2); }
+    .fd-bib-banner .fd-bib-line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .fd-bib-banner .fd-bib-line + .fd-bib-line { margin-top: 4px; }
+    .fd-bib-banner strong { color: #7c5200; font-weight: 800; }
+    .fd-bib-banner .fd-bib-sep { color: #d4a85a; margin: 0 2px; }
     /* Grille 8 types de lait (2 colonnes : Sans anti-reflux / Avec anti-reflux) */
     .fd-content .fd-lait-grid {
       display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
@@ -2216,7 +2220,12 @@
       padding: 8px 0;
     }
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line + .fd-q-line {
-      border-top: 1px dashed var(--border);
+      border-top: 1px dashed var(--primary-light);
+    }
+    /* Idem pour la séparation entre le dernier fd-q-line (question "Quel type de lait") et la grille lait — tirets bleu ciel */
+    .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line + .fd-lait-grid {
+      border-top: 1px dashed var(--primary-light);
+      padding-top: 10px;
     }
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line:first-child { padding-top: 0; }
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line:last-child { padding-bottom: 0; }
@@ -8372,7 +8381,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=765"></script>
+<script src="script-data.js?v=766"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
@@ -8605,18 +8614,23 @@ function fdRestoreTetee() {
   fdComputeTeteeTotal();
 }
 window.fdRestoreTetee = fdRestoreTetee;
-// Met à jour le "besoin théorique" du bandeau biberon (formule du site)
+// Met à jour le "besoin théorique" des 2 bandeaux (biberon + tétée — c'est le MÊME besoin total 24h)
 function fdUpdateBibBesoin() {
   const besoinEl = document.getElementById('fd-bib-besoin');
-  if (!besoinEl || typeof besoinLait !== 'function') return;
+  const teteeBesoinEl = document.getElementById('fd-tetee-besoin');
+  if (typeof besoinLait !== 'function') return;
   const c = (typeof state !== 'undefined' && state && state.client) ? state.client : {};
   const mois = (typeof c.ageCorrigeMois === 'number') ? c.ageCorrigeMois : (typeof c.ageReelMois === 'number' ? c.ageReelMois : null);
   const poids = (document.getElementById('poids-enfant') || {}).value || c.poids || '';
-  if (mois == null) { besoinEl.textContent = '–'; return; }
-  try {
-    const bl = besoinLait(mois, poids);
-    besoinEl.textContent = bl.volume || bl.formula || '–';
-  } catch(_) { besoinEl.textContent = '–'; }
+  let text = '–';
+  if (mois != null) {
+    try {
+      const bl = besoinLait(mois, poids);
+      text = bl.volume || bl.formula || '–';
+    } catch(_) {}
+  }
+  if (besoinEl) besoinEl.textContent = text;
+  if (teteeBesoinEl) teteeBesoinEl.textContent = text;
 }
 window.fdUpdateBibBesoin = fdUpdateBibBesoin;
 // Réponse à la question "né à terme ?" → si "Non, prématuré" on révèle les 3 cases d'âge
@@ -8650,21 +8664,29 @@ window.fdSyncToBebe = fdSyncToBebe;
 // + déclenche fdSyncHoraire pour propager la BONNE heure (observée si "Oui", souhaitée si "Non") à l'Emploi du temps
 function fdOnReveilConvient(chip) {
   const wrap = document.getElementById('fd-reveil-souhait');
-  if (wrap) wrap.style.display = chip.textContent.includes('Non') ? '' : 'none';
-  // Propager immédiatement la nouvelle source d'heure (sinon le clic seul ne change pas le scheduleWakeUp)
-  if (typeof fdSyncHoraire === 'function') fdSyncHoraire('reveil_convient', '');
+  const isOui = chip.textContent.includes('Oui');
+  if (wrap) wrap.style.display = isOui ? 'none' : '';
+  // Propager immédiatement la nouvelle source d'heure — on passe le chip explicite pour
+  // éviter de relire le DOM avant que la classe .selected soit garantie installée.
+  if (typeof fdSyncHoraire === 'function') fdSyncHoraire('reveil_convient', isOui ? 'oui' : 'non');
 }
 window.fdOnReveilConvient = fdOnReveilConvient;
 // Sync horaire de réveil (heure observée OU souhaitée) vers state.client.scheduleWakeUp.
 // La règle suit celle de l'ancien questionnaire : si l'utilisateur a répondu "Non" → on prend
 // la valeur du champ "heure souhaitée" ; sinon → la valeur du champ "heure observée".
 function fdSyncHoraire(fieldKey, value) {
-  const ouiSel = document.querySelector('.fd-chips[data-q="reveil_convient"] .fd-chip.selected');
   const heureObservee = (document.querySelector('[data-q="heure_reveil"]') || {}).value || '';
   const heureSouhait  = (document.querySelector('[data-q="reveil_souhait_heure"]') || {}).value || '';
   let scheduled = '';
-  if (ouiSel) scheduled = ouiSel.textContent.includes('Oui') ? heureObservee : heureSouhait;
-  else        scheduled = heureObservee;
+  // Si fieldKey === 'reveil_convient' et value est 'oui'/'non' → utiliser directement (override DOM)
+  if (fieldKey === 'reveil_convient' && (value === 'oui' || value === 'non')) {
+    scheduled = (value === 'oui') ? heureObservee : heureSouhait;
+  } else {
+    // Sinon, déduire du chip actuellement sélectionné dans le DOM
+    const ouiSel = document.querySelector('.fd-chips[data-q="reveil_convient"] .fd-chip.selected');
+    if (ouiSel) scheduled = ouiSel.textContent.includes('Oui') ? heureObservee : heureSouhait;
+    else        scheduled = heureObservee;
+  }
   if (typeof state !== 'undefined' && state && state.client) {
     state.client.scheduleWakeUp = scheduled;
     // Persister les 2 valeurs brutes dans fdAnswers pour qu'elles soient restaurées
