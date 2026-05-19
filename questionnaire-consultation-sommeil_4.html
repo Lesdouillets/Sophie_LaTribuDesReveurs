@@ -2737,30 +2737,41 @@ function _prefillAgesFromClient(client) {
   const corrEl = document.getElementById('age-corrige-display');
   const headerReelEl = document.getElementById('header-age-reel');
   const headerReelPill = document.getElementById('header-age-pill');
-  // Âge réel : priorité ageReelMois (matche EXACTEMENT le site, évite écart de 2j) ;
-  // fallback dateNaissance si pas de ageReelMois stocké.
-  let ageReelFormatted = null;
-  if (typeof client.ageReelMois === 'number' && !isNaN(client.ageReelMois)) {
-    ageReelFormatted = formatAge(Math.round(client.ageReelMois * 30.4375));
-  } else if (client.dateNaissance) {
-    const dn = new Date(client.dateNaissance);
-    if (!isNaN(dn.getTime())) {
-      const days = Math.floor((Date.now() - dn.getTime()) / (24*3600*1000));
-      if (days >= 0) ageReelFormatted = formatAge(days);
+  // PRIORITÉ ABSOLUE : utiliser les STRINGS formatées par le site
+  // (c.ageReelStrCourt / c.ageReelStr / c.ageCorrigeStrCourt / c.ageCorrigeStr).
+  // C'est exactement ce que la pastille du site affiche → match parfait, pas d'écart de jours.
+  let ageReelText = client.ageReelStrCourt || client.ageReelStr || '';
+  let ageCorrigeText = '';
+  if (client.ageCorrEqReel) {
+    ageCorrigeText = ageReelText;
+  } else if (client.ageCorrigeStrCourt || client.ageCorrigeStr) {
+    ageCorrigeText = client.ageCorrigeStrCourt || client.ageCorrigeStr;
+  } else if (client.ageCorrigeManuel) {
+    ageCorrigeText = client.ageCorrigeManuel;
+  }
+  // Fallbacks si le site n'a pas encore stocké les strings (rare)
+  if (!ageReelText) {
+    if (typeof client.ageReelMois === 'number' && !isNaN(client.ageReelMois)) {
+      ageReelText = formatAge(Math.round(client.ageReelMois * 30.4375));
+    } else if (client.dateNaissance) {
+      const dn = new Date(client.dateNaissance);
+      if (!isNaN(dn.getTime())) {
+        const days = Math.floor((Date.now() - dn.getTime()) / (24*3600*1000));
+        if (days >= 0) ageReelText = formatAge(days);
+      }
     }
   }
-  let ageCorrigeFormatted = null;
-  if (typeof client.ageCorrigeMois === 'number' && !isNaN(client.ageCorrigeMois)) {
-    ageCorrigeFormatted = formatAge(Math.round(client.ageCorrigeMois * 30.4375));
+  if (!ageCorrigeText && typeof client.ageCorrigeMois === 'number' && !isNaN(client.ageCorrigeMois)) {
+    ageCorrigeText = formatAge(Math.round(client.ageCorrigeMois * 30.4375));
   }
-  if (reelEl && ageReelFormatted) reelEl.textContent = ageReelFormatted;
-  if (corrEl && ageCorrigeFormatted) corrEl.textContent = ageCorrigeFormatted;
+  if (reelEl && ageReelText) reelEl.textContent = ageReelText;
+  if (corrEl && ageCorrigeText) corrEl.textContent = ageCorrigeText;
   // Pastille enfant : sous-ligne 2 infos (🎂 réel + ✏️ corrigé si dispo et différent)
   const enfantSub = document.getElementById('header-enfant-sub');
-  if (enfantSub && ageReelFormatted) {
-    let html = '🎂 ' + ageReelFormatted;
-    if (ageCorrigeFormatted && ageCorrigeFormatted !== ageReelFormatted) {
-      html += '<br>✏️ ' + ageCorrigeFormatted;
+  if (enfantSub && ageReelText) {
+    let html = '🎂 ' + ageReelText;
+    if (ageCorrigeText && ageCorrigeText !== ageReelText) {
+      html += '<br>✏️ ' + ageCorrigeText;
     }
     enfantSub.innerHTML = html;
   }
