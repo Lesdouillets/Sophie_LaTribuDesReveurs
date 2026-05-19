@@ -284,10 +284,13 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
 @media (max-width: 900px) {
   .sidebar { width: 230px; }
   .main { padding: 22px 22px 60px; }
-  .q-block { grid-template-columns: 1fr; }
-  .q-left { padding: 8px; }
+  .q-block { grid-template-columns: 105px 1fr; }
+  .q-left { padding: 8px; font-size: 12px; }
   .age-trio { grid-template-columns: 1fr; }
-  .age-display-grid { grid-template-columns: 1fr; }
+}
+/* Vraie collapse en mobile uniquement (≤ 600 px) — sinon on garde le titre à gauche */
+@media (max-width: 600px) {
+  .q-block { grid-template-columns: 1fr; }
 }
 @media print {
   .sidebar, .app-header { display: none; }
@@ -2435,22 +2438,11 @@ function computeAges(triggeredBy) {
     const _acd = document.getElementById('age-corrige-display');
     if (_acd) _acd.textContent = ageCorrStr;
 
-    // === Mise à jour pastilles header (défensif : la pastille Âge corrigé a été retirée)
-    const pillReel = document.getElementById('header-age-pill');
-    const pillCorr = document.getElementById('header-age-corrige-pill');
-    if (ageReelDays !== null) {
-      const elr = document.getElementById('header-age-reel');
-      if (elr) elr.textContent = ageReelStr;
-      if (pillReel) pillReel.classList.add('show');
-    } else {
-      if (pillReel) pillReel.classList.remove('show');
-    }
-    if (ageCorrDays !== null && ageGest) {
-      const elc = document.getElementById('header-age-corrige');
-      if (elc) elc.textContent = ageCorrStr;
-      if (pillCorr) pillCorr.classList.add('show');
-    } else {
-      if (pillCorr) pillCorr.classList.remove('show');
+    // === Mise à jour pastille header "enfant" (sous-ligne = 🎂 âge réel)
+    // La pastille Âge corrigé séparée a été retirée (l'info est dans la sous-ligne).
+    const enfantSub = document.getElementById('header-enfant-sub');
+    if (enfantSub && ageReelDays !== null) {
+      enfantSub.textContent = '🎂 ' + ageReelStr;
     }
   } finally {
     _computingAges = false;
@@ -2591,13 +2583,14 @@ function _substituteVars(client) {
   const prenomColor = isFille ? '#E25098' : '#6495ED';
   console.log('[questionnaire] Fiche client chargée:', { prenom, sexe: sexeRaw, isFille, dateTerme: client.dateTerme, ageGestationnel: client.ageGestationnel, ageCorrigeManuel: client.ageCorrigeManuel, ageReelMois: client.ageReelMois });
 
-  // Pastille header "enfant" : <strong> coloré + sous-ligne avec l'âge réel
+  // Pastille header "enfant" : texte blanc (comme la pastille du site, pas coloré)
+  // Le coloriage rose/bleu reste appliqué aux [prénom] inline dans le texte des questions.
   if (prenom) {
     const enfantEl = document.getElementById('header-enfant');
     const enfantPill = document.getElementById('header-enfant-pill');
     if (enfantEl) {
       enfantEl.textContent = prenom;
-      enfantEl.style.color = prenomColor;
+      enfantEl.style.color = ''; // reset → hérite du blanc de la pastille
     }
     if (enfantPill) enfantPill.classList.add('show');
   }
@@ -2699,16 +2692,18 @@ function _prefillAgesFromClient(client) {
   const corrEl = document.getElementById('age-corrige-display');
   const headerReelEl = document.getElementById('header-age-reel');
   const headerReelPill = document.getElementById('header-age-pill');
-  // Âge réel : priorité 1 = ageReelMois (stocké), priorité 2 = recalcul depuis dateNaissance
+  // Âge réel : priorité 1 = dateNaissance (précision au jour, comme le site) ;
+  // priorité 2 = ageReelMois (arrondi mensuel, fallback si pas de dateNaissance).
   let ageReelFormatted = null;
-  if (typeof client.ageReelMois === 'number' && !isNaN(client.ageReelMois)) {
-    ageReelFormatted = formatAge(Math.round(client.ageReelMois * 30.4375));
-  } else if (client.dateNaissance) {
+  if (client.dateNaissance) {
     const dn = new Date(client.dateNaissance);
     if (!isNaN(dn.getTime())) {
       const days = Math.floor((Date.now() - dn.getTime()) / (24*3600*1000));
       if (days >= 0) ageReelFormatted = formatAge(days);
     }
+  }
+  if (!ageReelFormatted && typeof client.ageReelMois === 'number' && !isNaN(client.ageReelMois)) {
+    ageReelFormatted = formatAge(Math.round(client.ageReelMois * 30.4375));
   }
   if (ageReelFormatted) {
     if (reelEl) reelEl.textContent = ageReelFormatted;
