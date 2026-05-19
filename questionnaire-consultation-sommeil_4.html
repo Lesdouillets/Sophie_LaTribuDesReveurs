@@ -2544,6 +2544,10 @@ function resetForm() {
 // Mémorise la date de naissance lue dans la fiche client — utilisée par le wrapper
 // computeAges pour recalculer date-terme dès que l'utilisateur change l'âge gestationnel.
 let _currentDateNaissance = null;
+// Flag : la décision d'afficher/cacher les blocs "Âge du terme" / "3 cases" n'est prise
+// qu'au premier prefill. Les re-syncs ultérieurs (depuis le storage listener) ne touchent
+// plus à la visibilité, pour éviter que le bloc se rétracte pendant que l'utilisateur tape.
+let _prefillDone = false;
 
 // Wrapper de computeAges : si l'utilisateur change ageGestationnel et qu'on connaît dateNaissance,
 // on calcule dateTerme = dateNaissance + prématurité AVANT de laisser tourner computeAges,
@@ -2562,6 +2566,10 @@ if (_origComputeAges) {
             dt.setDate(dt.getDate() + pd);
             const dtEl = document.getElementById('date-terme');
             if (dtEl) dtEl.value = dt.toISOString().slice(0,10);
+            // Forward avec trigger 'date-terme' → Case 1 du computeAges original
+            // fait corrJours = today - dateTerme et REMPLIT le champ age-corrige-manuel,
+            // ce que le trigger 'age-gestationnel' ne ferait pas seul.
+            return _origComputeAges('date-terme');
           }
         }
       }
@@ -2780,23 +2788,23 @@ function _prefillAgesFromClient(client) {
   const qInit = document.getElementById('q-init-terme');
   const qTrio = document.getElementById('q-trio-ages');
   if (qTrio) { qTrio.classList.remove('conditional', 'show'); }
-  // Décision basée sur les CHAMPS ORIGINAUX du client (pas sur dt qu'on a peut-être
-  // calculé depuis dateNaissance). Sinon, dès qu'on a dateNaissance on cacherait à tort
-  // la question "né à terme ?".
   const hasOriginalAgeData = !!(client.dateTerme || client.ageGestationnel || client.ageCorrigeManuel);
   if (dt || ag || ac) {
-    // Lance le calcul si on a au moins une valeur (réelle ou dérivée de dateNaissance)
     const trigger = ac ? 'age-corrige-manuel' : (dt ? 'date-terme' : 'age-gestationnel');
     try { computeAges(trigger); } catch(_) {}
   }
-  if (hasOriginalAgeData) {
-    if (qInit) qInit.style.display = 'none';
-    if (qTrio) qTrio.style.display = 'grid';
-  } else {
-    // Pas d'info d'âge dans la fiche client → on garde la question "né à terme ?"
-    // visible, le bloc 3 cases reste caché jusqu'à clic "Non".
-    if (qInit) qInit.style.display = 'grid';
-    if (qTrio) qTrio.style.display = 'none';
+  // La visibilité n'est décidée QU'À LA PREMIÈRE prefill. Les re-syncs ultérieurs
+  // (storage listener) ne touchent plus aux blocs → évite que le bloc se rétracte
+  // pendant que l'utilisateur tape, suite à un auto-save du site qui fire l'événement.
+  if (!_prefillDone) {
+    if (hasOriginalAgeData) {
+      if (qInit) qInit.style.display = 'none';
+      if (qTrio) qTrio.style.display = 'grid';
+    } else {
+      if (qInit) qInit.style.display = 'grid';
+      if (qTrio) qTrio.style.display = 'none';
+    }
+    _prefillDone = true;
   }
 }
 
