@@ -1,0 +1,2526 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questionnaire Consultation Sommeil — La Tribu des Rêveurs</title>
+<style>
+:root {
+  --primary: #5e7194;
+  --primary-light: #7a95b5;
+  --primary-dark: #2d3f5c;
+  --accent: #c47a3a;
+  --accent-light: #dfa06a;
+  --bg: #f5f7fc;
+  --sidebar-bg: #2d3f5c;
+  --sidebar-hover: #3d5073;
+  --card-bg: #ffffff;
+  --border: #c8d3e5;
+  --text: #2d3f5c;
+  --text-light: #6b7fa0;
+  --important-bg: #fdf3e8;
+  --important-border: #c47a3a;
+  --nav-bubble-bg: #fffbeb;
+  --nav-bubble-border: #fcd34d;
+  --nav-bubble-text: #7c2d12;
+  --radius: 12px;
+  --shadow: 0 4px 20px rgba(45,63,92,0.1);
+
+  --cat-light-bleu: #e2e8f0; --cat-dark-bleu: #2d3f5c;
+  --cat-light-vert: #d9e8d6; --cat-dark-vert: #3d5e44;
+  --cat-light-orange: #fef3e8; --cat-dark-orange: #8b4513;
+  --cat-light-violet: #ddd0ea; --cat-dark-violet: #4f3d62;
+  --cat-light-rose: #f8d5d0; --cat-dark-rose: #a85858;
+  --cat-light-marine: #b8c4d6; --cat-dark-marine: #2a4060;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Calibri, 'Segoe UI', Candara, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+/* HEADER avec pastille bleue "âge corrigé" comme sur le site */
+.app-header {
+  background: var(--primary-dark);
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+.app-header-brand { font-weight: 800; font-size: 14px; letter-spacing: 0.4px; }
+.app-header-pill {
+  background: rgba(255,255,255,0.12);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+.app-header-pill.show { display: inline-flex; }
+.app-header-pill strong { color: #ffd8a8; font-weight: 800; }
+
+.app { display: flex; flex-direction: column; height: 100vh; }
+.app-body { display: flex; flex: 1; overflow: hidden; }
+
+/* SIDEBAR */
+.sidebar {
+  width: 290px;
+  background: var(--sidebar-bg);
+  color: white;
+  overflow-y: auto;
+  flex-shrink: 0;
+  padding: 14px 0 30px;
+}
+.sidebar::-webkit-scrollbar { width: 5px; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+
+.sidebar-progress {
+  margin: 4px 18px 14px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.8);
+}
+.sidebar-progress-bar { height: 5px; background: rgba(255,255,255,0.12); border-radius: 3px; margin-top: 7px; overflow: hidden; }
+.sidebar-progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-light)); width: 0%; transition: width 0.3s; }
+.sidebar-section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.4); padding: 12px 18px 5px; }
+
+.nav-group { user-select: none; }
+.nav-group-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 18px; cursor: pointer;
+  font-size: 13.5px; font-weight: 700;
+  border-left: 3px solid transparent;
+  transition: background 0.15s;
+}
+.nav-group-header:hover { background: var(--sidebar-hover); }
+.nav-group-header.active { background: rgba(196,122,58,0.18); border-left-color: var(--accent); }
+.nav-group-arrow { font-size: 10px; transition: transform 0.2s; width: 12px; opacity: 0.6; }
+.nav-group.collapsed .nav-group-arrow { transform: rotate(-90deg); }
+.nav-group.collapsed .nav-group-children { display: none; }
+.nav-group-emoji { font-size: 16px; }
+.nav-group-title { flex: 1; line-height: 1.3; }
+.nav-group-count { font-size: 10px; background: rgba(255,255,255,0.15); padding: 2px 7px; border-radius: 10px; font-weight: 700; }
+.nav-group-count.has { background: var(--accent); }
+
+.nav-group-children { background: rgba(0,0,0,0.18); }
+.nav-child {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 18px 7px 48px;
+  font-size: 12.5px; cursor: pointer;
+  color: rgba(255,255,255,0.78);
+  transition: background 0.15s;
+  border-left: 3px solid transparent;
+}
+.nav-child:hover { background: var(--sidebar-hover); color: white; }
+.nav-child.active { background: rgba(196,122,58,0.2); color: white; border-left-color: var(--accent); }
+
+.sidebar-action { margin: 16px 18px 0; display: flex; flex-direction: column; gap: 8px; }
+.sidebar-btn { padding: 10px 14px; border-radius: 999px; border: none; font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; transition: transform 0.15s, background 0.15s; letter-spacing: 0.3px; }
+.sidebar-btn-primary { background: #DC8C7E; color: white; }
+.sidebar-btn-primary:hover { transform: translateY(-1px); background: #d17e6e; }
+.sidebar-btn-secondary { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.18); }
+.sidebar-btn-secondary:hover { background: rgba(255,255,255,0.18); }
+
+/* MAIN */
+.main { flex: 1; overflow-y: auto; padding: 28px 44px 60px; background: var(--bg); }
+.main::-webkit-scrollbar { width: 8px; }
+.main::-webkit-scrollbar-thumb { background: rgba(45,63,92,0.2); border-radius: 4px; }
+
+.page-header { margin-bottom: 22px; padding-bottom: 16px; border-bottom: 2px solid var(--border); }
+.page-title { font-size: 24px; font-weight: 800; color: var(--primary-dark); }
+.page-subtitle { font-size: 13px; color: var(--text-light); margin-top: 4px; font-style: italic; }
+
+/* SECTIONS */
+.section { background: var(--card-bg); border-radius: var(--radius); margin-bottom: 18px; box-shadow: var(--shadow); overflow: hidden; border: 1px solid var(--border); scroll-margin-top: 20px; }
+.section-header { background: var(--primary-dark); color: white; padding: 14px 22px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; transition: background 0.15s; }
+.section-header:hover { background: #364c70; }
+.section-header-emoji { font-size: 20px; }
+.section-header-title { flex: 1; font-size: 16px; font-weight: 700; letter-spacing: 0.3px; }
+.section-header-toggle { font-size: 14px; transition: transform 0.25s; }
+.section.collapsed .section-header-toggle { transform: rotate(-90deg); }
+.section.collapsed .section-body { display: none; }
+.section-body { padding: 20px 24px 26px; }
+
+/* SOUS-SECTIONS */
+.subsection { margin: 22px 0 0; scroll-margin-top: 16px; }
+.subsection:first-child { margin-top: 0; }
+.subsection-title { font-size: 13px; font-weight: 800; color: var(--primary-dark); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.6px; padding-bottom: 8px; border-bottom: 1.5px dashed var(--border); }
+.subsection-title-emoji { font-size: 17px; }
+
+/* BLOC TITRE GAUCHE — PAS DE LISERÉ COLORÉ */
+.q-block {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 0;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  align-items: stretch;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.q-left {
+  font-size: 13px;
+  font-weight: 800;
+  padding: 14px 10px;
+  line-height: 1.3;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.2px;
+}
+.q-right {
+  background: white;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.q-block.cat-bleu   .q-left { background: var(--cat-light-bleu);   color: var(--cat-dark-bleu); }
+.q-block.cat-vert   .q-left { background: var(--cat-light-vert);   color: var(--cat-dark-vert); }
+.q-block.cat-orange .q-left { background: var(--cat-light-orange); color: var(--cat-dark-orange); }
+.q-block.cat-violet .q-left { background: var(--cat-light-violet); color: var(--cat-dark-violet); }
+.q-block.cat-rose   .q-left { background: var(--cat-light-rose);   color: var(--cat-dark-rose); }
+.q-block.cat-marine .q-left { background: var(--cat-light-marine); color: var(--cat-dark-marine); }
+
+/* QUESTIONS — TOUTES EN GRAS */
+.q-row { display: flex; align-items: flex-start; gap: 14px; flex-wrap: wrap; }
+.q-row-label {
+  flex: 1 1 280px;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  align-self: center;
+  font-weight: 700;
+  color: var(--text);
+}
+.q-row-input { flex: 1 1 auto; min-width: 200px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; align-items: center; }
+
+.q-input { padding: 7px 11px; border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; background: white; color: var(--text); transition: border-color 0.15s; font-weight: 500; }
+.q-input:focus { outline: none; border-color: var(--primary); }
+.q-input.short { max-width: 200px; }
+.q-input.tiny { width: 100px; }
+textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; width: 100%; }
+
+/* CHIPS */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { padding: 6px 13px; border-radius: 999px; background: white; border: 1.5px solid var(--border); font-size: 12.5px; font-weight: 600; color: var(--text); cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; gap: 5px; user-select: none; line-height: 1.2; }
+.chip:hover { border-color: var(--primary-light); background: #f0f4fa; transform: translateY(-1px); }
+.chip.selected { background: var(--primary); color: white; border-color: var(--primary-dark); }
+
+/* CHECKLIST */
+.checklist { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 4px 18px; margin: 4px 0; }
+.checklist-item { display: flex; align-items: flex-start; gap: 9px; padding: 5px 0; cursor: pointer; font-size: 13px; line-height: 1.4; font-weight: 700; }
+.checklist-item input[type=checkbox] { margin-top: 2px; width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; flex-shrink: 0; }
+.checklist-item.sub { padding-left: 26px; font-size: 12.5px; color: var(--text-light); font-weight: 600; }
+.checklist-item.sub::before { content: '↳'; color: var(--text-light); margin-right: 4px; font-size: 11px; }
+
+/* CONDITIONNEL */
+.conditional { display: none; animation: slideIn 0.22s ease-out; width: 100%; }
+.conditional.show { display: flex; flex-direction: column; gap: 10px; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* INFO / ALERT / NAV BUBBLE */
+.info-box { padding: 10px 14px; background: #f0f4fa; border-left: 3px solid var(--primary); border-radius: 0 8px 8px 0; font-size: 12.5px; line-height: 1.55; color: var(--primary-dark); font-weight: 400; }
+.alert-box { padding: 10px 14px; background: var(--important-bg); border-left: 3px solid var(--important-border); border-radius: 0 8px 8px 0; font-size: 13px; line-height: 1.55; font-weight: 400; }
+.alert-box-title { font-weight: 800; color: var(--accent); margin-bottom: 4px; }
+.nav-bubble { display: none; padding: 11px 15px; background: var(--nav-bubble-bg); border: 2px dashed var(--nav-bubble-border); border-radius: 10px; font-size: 12.5px; line-height: 1.55; color: var(--nav-bubble-text); align-items: flex-start; gap: 10px; font-weight: 400; }
+.nav-bubble.show { display: flex; }
+.nav-bubble-icon { font-size: 16px; flex-shrink: 0; }
+.nav-bubble strong { font-weight: 800; }
+.nav-bubble code { background: rgba(124,45,18,0.1); padding: 1px 6px; border-radius: 4px; font-size: 11.5px; font-family: 'Courier New', monospace; }
+
+/* 3 CASES "âge" identiques à la fiche client */
+.age-trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; margin-top: 6px; }
+.age-cell { background: #f5f7fc; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 12px; }
+.age-cell-label { font-size: 10px; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.age-cell-hint { font-size: 10.5px; color: var(--text-light); font-style: italic; margin-top: 3px; font-weight: 400; }
+.age-cell input { width: 100%; padding: 6px 10px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; font-weight: 600; font-family: inherit; color: var(--primary-dark); background: white; }
+.age-cell input:focus { outline: none; border-color: var(--primary); }
+
+/* SYNTHÈSE AGE RÉEL + CORRIGÉ */
+.age-display-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-top: 8px; }
+.age-display-cell { background: linear-gradient(135deg, #eaeff8, #d8e1ee); border: 1.5px solid var(--primary-light); border-radius: 10px; padding: 10px 14px; }
+.age-display-cell.corrige { background: linear-gradient(135deg, #fdf3e8, #f8e3cf); border-color: var(--accent); }
+.age-display-label { font-size: 10px; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.5px; }
+.age-display-value { font-size: 18px; font-weight: 800; color: var(--primary-dark); margin-top: 4px; }
+.age-display-cell.corrige .age-display-value { color: var(--accent); }
+
+/* RESPONSIVE */
+@media (max-width: 1100px) { .q-block { grid-template-columns: 120px 1fr; } }
+@media (max-width: 900px) {
+  .sidebar { width: 230px; }
+  .main { padding: 22px 22px 60px; }
+  .q-block { grid-template-columns: 1fr; }
+  .q-left { padding: 8px; }
+  .age-trio { grid-template-columns: 1fr; }
+  .age-display-grid { grid-template-columns: 1fr; }
+}
+@media print {
+  .sidebar, .app-header { display: none; }
+  .main { padding: 12px; overflow: visible; }
+  .section { break-inside: avoid; box-shadow: none; }
+  .section.collapsed .section-body { display: block !important; }
+  body, .app, .app-body { overflow: visible; height: auto; }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- HEADER avec pastilles âge réel + âge corrigé (mises à jour automatiquement) -->
+  <header class="app-header">
+    <span class="app-header-brand">🌙 Questionnaire Consultation Sommeil</span>
+    <span class="app-header-pill" id="header-age-pill">
+      🎂 Âge réel : <strong id="header-age-reel">–</strong>
+    </span>
+    <span class="app-header-pill" id="header-age-corrige-pill" style="background:rgba(196,122,58,0.25)">
+      ✏️ Âge corrigé : <strong id="header-age-corrige">–</strong>
+    </span>
+  </header>
+
+  <div class="app-body">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-progress">
+        <div>Progression : <span id="progress-count">0</span> question(s)</div>
+        <div class="sidebar-progress-bar"><div class="sidebar-progress-fill" id="progress-fill"></div></div>
+      </div>
+
+      <div class="sidebar-section-label">Étapes</div>
+      <nav id="nav-list"></nav>
+
+      <div class="sidebar-action">
+        <button class="sidebar-btn sidebar-btn-primary" onclick="expandAll()">📖 Tout déplier</button>
+        <button class="sidebar-btn sidebar-btn-secondary" onclick="collapseAll()">📕 Tout replier</button>
+        <button class="sidebar-btn sidebar-btn-secondary" onclick="resetForm()">🔄 Réinitialiser</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main" id="main-content">
+
+      <div class="page-header">
+        <div class="page-title">Questionnaire de consultation sommeil</div>
+        <div class="page-subtitle">Sophie Douesneau · La Tribu des Rêveurs — Trame chronologique de la journée type</div>
+      </div>
+
+      <!-- I. CONTEXTE GÉNÉRAL -->
+      <section class="section" data-section="contexte" data-subs='[
+        {"id":"contexte-naissance","emoji":"👶","label":"Naissance / terme"},
+        {"id":"contexte-grossesse","emoji":"🤰","label":"Grossesse"},
+        {"id":"contexte-famille","emoji":"🏠","label":"Famille & mode de garde"}
+      ]'>
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-header-emoji">📋</span>
+          <span class="section-header-title">I. Contexte général</span>
+          <span class="section-header-toggle">▾</span>
+        </div>
+        <div class="section-body">
+
+          <div class="subsection" id="contexte-naissance">
+            <div class="subsection-title"><span class="subsection-title-emoji">👶</span>Naissance & terme</div>
+
+            <!-- Question initiale conditionnelle : seulement si âge corrigé pas déjà dans fiche client -->
+            <div class="q-block cat-bleu" id="q-init-terme">
+              <div class="q-left">Question initiale</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Avant de commencer, pourriez-vous me dire si [prénom] est né(e) à terme ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="terme">
+                      <span class="chip" onclick="toggleChip(this, true); onTermeAnswer(this)">✅ Oui, à terme</span>
+                      <span class="chip" onclick="toggleChip(this, true); onTermeAnswer(this)">❌ Non, prématuré</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="info-box">
+                  💡 Cette question n'apparaît que si l'<strong>âge corrigé</strong> n'est pas déjà renseigné dans la fiche client. Sinon, les 3 cases ci-dessous sont préremplies depuis la fiche client.
+                </div>
+              </div>
+            </div>
+
+            <!-- Les 3 cases liées (identique à la fiche client du site) -->
+            <div class="q-block cat-bleu conditional" id="q-trio-ages">
+              <div class="q-left">Âges</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Renseignez l'une des 3 cases ci-dessous (les autres se calculent automatiquement) :</div>
+                </div>
+                <div class="age-trio">
+                  <div class="age-cell">
+                    <div class="age-cell-label">📅 Date du terme</div>
+                    <input type="date" id="date-terme" oninput="computeAges('date-terme')">
+                    <div class="age-cell-hint">DPA (date prévue d'accouchement)</div>
+                  </div>
+                  <div class="age-cell">
+                    <div class="age-cell-label">🤰 Âge gestationnel</div>
+                    <input type="text" id="age-gestationnel" placeholder="ex. 36+2" oninput="computeAges('age-gestationnel')" autocomplete="off">
+                    <div class="age-cell-hint">Format XX+Y (36+2 = 36 SA + 2 j). Terme = 40+0.</div>
+                  </div>
+                  <div class="age-cell">
+                    <div class="age-cell-label">✏️ Âge corrigé</div>
+                    <input type="text" id="age-corrige-manuel" placeholder="ex. 4 mois 12 j" oninput="computeAges('age-corrige-manuel')" autocomplete="off">
+                    <div class="age-cell-hint">Au jour de la consultation.</div>
+                  </div>
+                </div>
+
+                <!-- Affichage synthèse : âge réel + corrigé -->
+                <div class="age-display-grid">
+                  <div class="age-display-cell">
+                    <div class="age-display-label">🎂 Âge réel</div>
+                    <div class="age-display-value" id="age-reel-display">–</div>
+                  </div>
+                  <div class="age-display-cell corrige">
+                    <div class="age-display-label">✏️ Âge corrigé</div>
+                    <div class="age-display-value" id="age-corrige-display">–</div>
+                  </div>
+                </div>
+
+                <div class="nav-bubble show">
+                  <span class="nav-bubble-icon">🧭</span>
+                  <div>
+                    <strong>Sur le site :</strong> ces 3 champs sont liés en bidirectionnel à la fiche client (<code>date-terme</code> / <code>age-gestationnel</code> / <code>age-corrige-manuel</code>), via la fonction <code>computeClientFields()</code>. L'<strong>âge corrigé</strong> met à jour la pastille bleue en haut (<code>#header-age-corrige</code>) et alimente les besoins de sommeil dans <code>V. Diagnostic</code>.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="subsection" id="contexte-grossesse">
+            <div class="subsection-title"><span class="subsection-title-emoji">🤰</span>Grossesse</div>
+
+            <div class="q-block cat-bleu">
+              <div class="q-left">Anémie</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">La maman était-elle anémiée pendant la grossesse (carence en fer) ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="anemie_grossesse">
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Oui</span>
+                      <span class="chip" onclick="toggleChip(this, true)">❌ Non</span>
+                      <span class="chip" onclick="toggleChip(this, true)">❔ Ne sait pas</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="contexte-famille">
+            <div class="subsection-title"><span class="subsection-title-emoji">🏠</span>Famille & mode de garde</div>
+
+            <div class="q-block cat-bleu">
+              <div class="q-left">Mode de garde</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Quel est le mode de garde habituel de [prénom] ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="mode_garde">
+                      <span class="chip" onclick="toggleChip(this)">🏠 Parents à la maison</span>
+                      <span class="chip" onclick="toggleChip(this)">👵 Grands-parents</span>
+                      <span class="chip" onclick="toggleChip(this)">👩‍🍼 Assistante maternelle</span>
+                      <span class="chip" onclick="toggleChip(this)">🏫 Crèche</span>
+                      <span class="chip" onclick="toggleChip(this)">🎒 École</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- II. RÉVEIL DU MATIN -->
+      <section class="section" data-section="reveil" data-subs='[
+        {"id":"reveil-horaires","emoji":"⏰","label":"Heure de réveil"},
+        {"id":"reveil-comportement","emoji":"😊","label":"Comment se réveille"}
+      ]'>
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-header-emoji">🌅</span>
+          <span class="section-header-title">II. Réveil du matin</span>
+          <span class="section-header-toggle">▾</span>
+        </div>
+        <div class="section-body">
+
+          <div class="subsection" id="reveil-horaires">
+            <div class="subsection-title"><span class="subsection-title-emoji">⏰</span>Heure de réveil</div>
+
+            <div class="q-block cat-orange">
+              <div class="q-left">Horaire</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">À quelle heure [prénom] se réveille-t-il/elle habituellement le matin ?</div>
+                  <div class="q-row-input">
+                    <input class="q-input tiny" type="time" data-q="heure_reveil" oninput="onInput(this)">
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Est-ce un horaire qui vous convient ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="reveil_convient">
+                      <span class="chip" onclick="toggleChip(this, true); onReveilConvient(this)">✅ Oui</span>
+                      <span class="chip" onclick="toggleChip(this, true); onReveilConvient(this)">❌ Non, trop tôt</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="conditional" id="q-reveil-souhait">
+                  <div class="q-row">
+                    <div class="q-row-label">À quelle heure aimeriez-vous qu'il/elle se réveille ?</div>
+                    <div class="q-row-input">
+                      <input class="q-input tiny" type="time" data-q="reveil_souhait_heure" oninput="onInput(this)">
+                    </div>
+                  </div>
+                </div>
+                <div class="nav-bubble show">
+                  <span class="nav-bubble-icon">🧭</span>
+                  <div>
+                    <strong>Confirmé :</strong> sur le site, l'heure de réveil renseignée déclenche la fonction <code>onHoraireSouhaiteChange()</code> qui met à jour <code>state.client.scheduleWakeUp</code> et propage automatiquement à <strong>tous les tableaux Emploi du temps</strong> dans <code>VIII. Plan d'action</code> (via <code>renderEmploiDuTempsInner()</code>).
+                    <ul style="margin:6px 0 0 18px">
+                      <li>Si <strong>l'heure convient</strong> → l'heure actuelle alimente Plan d'action → Emploi du temps</li>
+                      <li>Si <strong>elle ne convient pas</strong> → c'est l'heure souhaitée qui alimente Plan d'action → Emploi du temps</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="reveil-comportement">
+            <div class="subsection-title"><span class="subsection-title-emoji">😊</span>Comment se réveille</div>
+
+            <div class="q-block cat-orange">
+              <div class="q-left">Humeur</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Comment [prénom] est-il/elle au réveil ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="humeur_reveil">
+                      <span class="chip" onclick="toggleChip(this)">😄 Souriant(e), reposé(e)</span>
+                      <span class="chip" onclick="toggleChip(this)">😴 Encore fatigué(e)</span>
+                      <span class="chip" onclick="toggleChip(this)">😢 Pleure</span>
+                      <span class="chip" onclick="toggleChip(this)">🥺 Réclame immédiatement à manger</span>
+                      <span class="chip" onclick="toggleChip(this)">🎮 Joue tout seul un moment</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Combien de temps après le réveil prend-il/elle son premier repas ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="delai_1er_repas">
+                      <span class="chip" onclick="toggleChip(this, true)">⚡ Immédiatement</span>
+                      <span class="chip" onclick="toggleChip(this, true)">⏱ Dans les 15 min</span>
+                      <span class="chip" onclick="toggleChip(this, true)">⏰ 30-60 min après</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🕰 &gt; 1h après</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- III. MATINÉE -->
+      <section class="section" data-section="matin" data-subs='[
+        {"id":"matin-type-alim","emoji":"🍽","label":"Type d''alimentation"},
+        {"id":"matin-allaitement","emoji":"🤱","label":"Allaitement"},
+        {"id":"matin-biberon","emoji":"🍼","label":"Biberon"},
+        {"id":"matin-diversification","emoji":"🥄","label":"Diversification"},
+        {"id":"matin-confort-alim","emoji":"👶","label":"Confort à la prise"},
+        {"id":"matin-activites","emoji":"🧸","label":"Activités matinée"}
+      ]'>
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-header-emoji">🌞</span>
+          <span class="section-header-title">III. Matinée — alimentation & éveil</span>
+          <span class="section-header-toggle">▾</span>
+        </div>
+        <div class="section-body">
+
+          <div class="subsection" id="matin-type-alim">
+            <div class="subsection-title"><span class="subsection-title-emoji">🍽</span>Type d'alimentation</div>
+
+            <div class="q-block cat-vert">
+              <div class="q-left">Alimentation</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Comment [prénom] est-il/elle nourri(e) actuellement ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="type_alim">
+                      <span class="chip" onclick="toggleChip(this); updateAlimSections()">🤱 Allaitement exclusif</span>
+                      <span class="chip" onclick="toggleChip(this); updateAlimSections()">🍼 Biberon de lait infantile</span>
+                      <span class="chip" onclick="toggleChip(this); updateAlimSections()">🔀 Allaitement mixte</span>
+                      <span class="chip" onclick="toggleChip(this); updateAlimSections()">🥄 Diversification (avec lait)</span>
+                      <span class="chip" onclick="toggleChip(this); updateAlimSections()">🍽 Diversification complète</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection conditional-section" id="matin-allaitement" style="display:none">
+            <div class="subsection-title"><span class="subsection-title-emoji">🤱</span>Allaitement</div>
+
+            <div class="q-block cat-vert">
+              <div class="q-left">Maternité</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">A-t-il/elle eu un biberon de lait infantile à la maternité ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="bib_maternite">
+                      <span class="chip" onclick="toggleChip(this, true); show('q-bib-mater-suite', this.textContent.includes('Oui') && this.classList.contains('selected'))">✅ Oui</span>
+                      <span class="chip" onclick="toggleChip(this, true); show('q-bib-mater-suite', this.textContent.includes('Oui') && this.classList.contains('selected'))">❌ Non</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="conditional" id="q-bib-mater-suite">
+                  <div class="q-row">
+                    <div class="q-row-label">Quelle marque de lait infantile (PLV entières ? hydrolysat ?) ?</div>
+                    <div class="q-row-input">
+                      <input class="q-input short" type="text" data-q="lait_maternite" oninput="onInput(this)">
+                    </div>
+                  </div>
+                  <div class="q-row">
+                    <div class="q-row-label">Continuez-vous à donner un biberon de lait infantile chaque semaine pour entretenir le contact PLV ?</div>
+                    <div class="q-row-input">
+                      <div class="chips" data-q="lait_continuite">
+                        <span class="chip" onclick="toggleChip(this, true)">✅ Oui</span>
+                        <span class="chip" onclick="toggleChip(this, true)">❌ Non, plus de contact PLV</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nav-bubble show">
+                    <span class="nav-bubble-icon">🧭</span>
+                    <div>Si <strong>PLV à la maternité puis arrêt</strong> → cocher <code>complements_plv</code> dans <code>V. Diagnostic > RGO + Allergie</code> ou <code>Allergie seule</code>.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="q-block cat-vert">
+              <div class="q-left">Tétée</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Donnez-vous les 2 seins à chaque tétée ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="deux_seins">
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Oui</span>
+                      <span class="chip" onclick="toggleChip(this, true)">❌ Non, un seul</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🔄 Alterne</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Est-il/elle aussi à l'aise à droite qu'à gauche ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="lateralite_tetee">
+                      <span class="chip" onclick="toggleChip(this, true); show('q-lat-non', this.textContent.includes('Non') && this.classList.contains('selected'))">✅ Oui</span>
+                      <span class="chip" onclick="toggleChip(this, true); show('q-lat-non', this.textContent.includes('Non') && this.classList.contains('selected'))">❌ Non, préfère un côté</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="conditional" id="q-lat-non">
+                  <div class="alert-box">
+                    <div class="alert-box-title">⚠️ Piste freins de bouche / torticolis</div>
+                    Une préférence latérale marquée peut signaler un frein de langue restrictif ou un torticolis congénital. Vérifier <strong>freins (langue/lèvres/joues)</strong>, <strong>succion</strong>, et orienter vers un ostéopathe pédiatrique.
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Combien de temps dure une tétée habituellement ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="duree_tetee">
+                      <span class="chip" onclick="toggleChip(this, true)">⚡ &lt; 10 min</span>
+                      <span class="chip" onclick="toggleChip(this, true)">⏱ 10-20 min</span>
+                      <span class="chip" onclick="toggleChip(this, true)">⏰ 20-30 min</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🐢 &gt; 30 min</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Quel est l'espacement habituel entre deux tétées ?</div>
+                  <div class="q-row-input">
+                    <input class="q-input short" type="text" placeholder="ex: 2h30 - 3h" data-q="espacement_tetees" oninput="onInput(this)">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="q-block cat-vert">
+              <div class="q-left">Lactation</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Avez-vous déjà tiré votre lait pour connaître votre capacité de stockage ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="tire_lait">
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Oui</span>
+                      <span class="chip" onclick="toggleChip(this, true)">❌ Non</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Avez-vous déjà vu une consultante en lactation (IBCLC) ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="ibclc_vu">
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Oui</span>
+                      <span class="chip" onclick="toggleChip(this, true)">❌ Non</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Avez-vous eu des difficultés lors de la mise en route de la lactation ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="mise_en_route">
+                      <span class="chip" onclick="toggleChip(this)">🩹 Crevasses</span>
+                      <span class="chip" onclick="toggleChip(this)">😖 Douleurs persistantes</span>
+                      <span class="chip" onclick="toggleChip(this)">🔥 Engorgements / lymphangites</span>
+                      <span class="chip" onclick="toggleChip(this)">⏳ Montée de lait tardive</span>
+                      <span class="chip" onclick="toggleChip(this)">⛔ Mauvaise prise du sein</span>
+                      <span class="chip" onclick="toggleChip(this)">✅ RAS</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Observez-vous actuellement :</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="tetees_difficulte">
+                      <span class="chip" onclick="toggleChip(this)">⏰ Tétées longues (&gt; 30 min)</span>
+                      <span class="chip" onclick="toggleChip(this)">🚫 Grève des tétées</span>
+                      <span class="chip" onclick="toggleChip(this)">📉 Baisse de lactation</span>
+                      <span class="chip" onclick="toggleChip(this)">🏠 Baisse au moment du mode de garde</span>
+                      <span class="chip" onclick="toggleChip(this)">✅ RAS</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Maman : consommez-vous des produits laitiers (PLV) actuellement ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="maman_plv">
+                      <span class="chip" onclick="toggleChip(this, true)">🥛 Oui, normalement</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🤏 Réduit</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🚫 Éviction totale</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="info-box">
+                  💡 Si suspicion APLV chez l'enfant allaité, une <strong>éviction PLV maternelle</strong> peut être nécessaire (résultats sous 2-4 semaines).
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection conditional-section" id="matin-biberon" style="display:none">
+            <div class="subsection-title"><span class="subsection-title-emoji">🍼</span>Biberon</div>
+
+            <div class="q-block cat-vert">
+              <div class="q-left">Type de lait</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Quel type de lait infantile donnez-vous ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="type_lait">
+                      <span class="chip" onclick="toggleChip(this, true)">1️⃣ Standard</span>
+                      <span class="chip" onclick="toggleChip(this, true)">📉 Anti-Reflux (AR)</span>
+                      <span class="chip" onclick="toggleChip(this, true)">💧 Épaissi</span>
+                      <span class="chip" onclick="toggleChip(this, true); show('q-lait-hydro', /HA|hydroly|amin/.test(this.textContent) && this.classList.contains('selected'))">🧪 HA</span>
+                      <span class="chip" onclick="toggleChip(this, true); show('q-lait-hydro', /HA|hydroly|amin/.test(this.textContent) && this.classList.contains('selected'))">🔬 Hydrolysat (eHF)</span>
+                      <span class="chip" onclick="toggleChip(this, true); show('q-lait-hydro', /HA|hydroly|amin/.test(this.textContent) && this.classList.contains('selected'))">🧬 Acides aminés (AAF)</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🌾 Riz / végétal</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="conditional" id="q-lait-hydro">
+                  <div class="alert-box">
+                    <div class="alert-box-title">⚠️ Lait spécifique</div>
+                    Préciser <strong>qui a prescrit</strong> ce lait (pédiatre, allergologue) et la <strong>raison clinique</strong>.
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Quelle est la marque exacte du lait ?</div>
+                  <div class="q-row-input">
+                    <input class="q-input short" type="text" placeholder="ex: Gallia Calisma 1..." data-q="marque_lait" oninput="onInput(this)">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="q-block cat-vert">
+              <div class="q-left">Quantités</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Combien de biberons [prénom] prend-il/elle sur 24h ?</div>
+                  <div class="q-row-input">
+                    <input class="q-input tiny" type="number" min="0" max="15" data-q="nb_bib_24h" oninput="onInput(this)">
+                    <span style="font-size:13px;font-weight:700">dont la nuit :</span>
+                    <input class="q-input tiny" type="number" min="0" max="10" data-q="nb_bib_nuit" oninput="onInput(this)">
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Quelle est la quantité par biberon ?</div>
+                  <div class="q-row-input">
+                    <input class="q-input short" type="text" placeholder="ex: 120 ml × 5 bib" data-q="qte_bib" oninput="onInput(this)">
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">À quels moments sont-ils donnés ?</div>
+                  <div class="q-row-input">
+                    <textarea class="q-input" data-q="horaires_bib" placeholder="ex: 7h / 11h / 15h / 19h / 23h" oninput="onInput(this)"></textarea>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Termine-t-il/elle ses biberons ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="termine_bib">
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Toujours</span>
+                      <span class="chip" onclick="toggleChip(this, true)">~ Souvent</span>
+                      <span class="chip" onclick="toggleChip(this, true)">⚠️ Refuse / laisse beaucoup</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🍴 Réclame plus</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Combien de temps dure un biberon ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="duree_bib">
+                      <span class="chip" onclick="toggleChip(this, true)">⚡ &lt; 10 min</span>
+                      <span class="chip" onclick="toggleChip(this, true)">⏱ 10-20 min</span>
+                      <span class="chip" onclick="toggleChip(this, true)">⏰ 20-30 min</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🐢 &gt; 30 min</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="info-box">
+                  💡 Un biberon &gt; 30 min peut indiquer une <strong>tétine inadaptée</strong>, une <strong>succion inefficace</strong>, un <strong>RGO</strong> ou un <strong>frein restrictif</strong>.
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Quel est le débit de la tétine ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="tetine_debit">
+                      <span class="chip" onclick="toggleChip(this, true)">🐌 Lent (T1)</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🚶 Moyen (T2)</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🏃 Rapide (T3)</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🚀 Variable / X</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection conditional-section" id="matin-diversification" style="display:none">
+            <div class="subsection-title"><span class="subsection-title-emoji">🥄</span>Diversification</div>
+
+            <div class="q-block cat-vert">
+              <div class="q-left">Démarrage</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">À quel âge la diversification a-t-elle commencé ?</div>
+                  <div class="q-row-input">
+                    <input class="q-input tiny" type="number" min="3" max="12" data-q="age_diversification" oninput="onInput(this)">
+                    <span style="font-size:13px;font-weight:700">mois</span>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Quels aliments consomme-t-il/elle ? Y a-t-il des refus ?</div>
+                  <div class="q-row-input">
+                    <textarea class="q-input" data-q="aliments" placeholder="ex: refuse les morceaux, ok purées..." oninput="onInput(this)"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="q-block cat-vert">
+              <div class="q-left">Composition</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Quelle est la proportion de féculents aux repas ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="pct_feculents">
+                      <span class="chip" onclick="toggleChip(this, true)">📉 Très peu (&lt;20%)</span>
+                      <span class="chip" onclick="toggleChip(this, true)">⚖️ Modéré (20-40%)</span>
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Adapté (40-50%)</span>
+                      <span class="chip" onclick="toggleChip(this, true)">📈 Important (&gt;50%)</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="info-box">
+                  💡 Féculents en quantité suffisante au dîner = <strong>pression de sommeil</strong> + apport énergétique pour la nuit.
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Quelle quantité de matières grasses ajoutées aux repas ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="gras">
+                      <span class="chip" onclick="toggleChip(this, true)">🚫 Aucune</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🤏 Peu (&lt; 1 c.à.c)</span>
+                      <span class="chip" onclick="toggleChip(this, true)">✅ 1 c.à.c / repas</span>
+                      <span class="chip" onclick="toggleChip(this, true)">➕ Plus</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Consomme-t-il/elle d'autres laits ou jus végétaux ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="hors_lait_infantile">
+                      <span class="chip" onclick="toggleChip(this)">🥛 Lait animal (vache, chèvre...)</span>
+                      <span class="chip" onclick="toggleChip(this)">🌱 Jus végétal (amande, avoine...)</span>
+                      <span class="chip" onclick="toggleChip(this)">🧀 Yaourts / fromages PLV</span>
+                      <span class="chip" onclick="toggleChip(this)">🚫 Aucun</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="nav-bubble show">
+                  <span class="nav-bubble-icon">🧭</span>
+                  <div>Si <strong>jus végétal</strong> ou <strong>lait animal</strong> coché → activer les leviers correspondants dans <code>V. Diagnostic > Nutrition</code>.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="matin-confort-alim">
+            <div class="subsection-title"><span class="subsection-title-emoji">👶</span>Confort à la prise</div>
+
+            <div class="q-block cat-rose">
+              <div class="q-left">Inconfort</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Présente-t-il/elle des signes d'inconfort pendant ou après la prise ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="signes_inconfort">
+                      <span class="chip" onclick="toggleChip(this)">😤 Se cambre</span>
+                      <span class="chip" onclick="toggleChip(this)">😖 Pleurs / grimaces</span>
+                      <span class="chip" onclick="toggleChip(this)">🤢 Vomissements</span>
+                      <span class="chip" onclick="toggleChip(this)">💨 Ballonnements / gaz</span>
+                      <span class="chip" onclick="toggleChip(this)">🚫 Refuse de s'alimenter</span>
+                      <span class="chip" onclick="toggleChip(this)">😴 S'endort très vite</span>
+                      <span class="chip" onclick="toggleChip(this)">✅ RAS</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Comment savez-vous qu'il/elle n'a plus faim ?</div>
+                  <div class="q-row-input">
+                    <textarea class="q-input" data-q="signes_satiete" placeholder="ex: tourne la tête, ferme la bouche..." oninput="onInput(this)"></textarea>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Y a-t-il du lait qui coule à la commissure des lèvres ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="lait_coule">
+                      <span class="chip" onclick="toggleChip(this, true); show('q-lait-coule', this.textContent.includes('Oui') && this.classList.contains('selected'))">✅ Oui</span>
+                      <span class="chip" onclick="toggleChip(this, true); show('q-lait-coule', this.textContent.includes('Oui') && this.classList.contains('selected'))">❌ Non</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="conditional" id="q-lait-coule">
+                  <div class="alert-box">
+                    <div class="alert-box-title">⚠️ Piste succion / freins</div>
+                    Du lait qui coule = mauvaise étanchéité → vérifier <strong>frein de lèvre supérieure</strong>, <strong>succion</strong>, position de prise.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="matin-activites">
+            <div class="subsection-title"><span class="subsection-title-emoji">🧸</span>Activités de la matinée</div>
+
+            <div class="q-block cat-orange">
+              <div class="q-left">Activités</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Que fait [prénom] entre le réveil et la 1ère sieste ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="activite_matin">
+                      <span class="chip" onclick="toggleChip(this)">🧸 Jeux libres</span>
+                      <span class="chip" onclick="toggleChip(this)">🌳 Sortie / promenade</span>
+                      <span class="chip" onclick="toggleChip(this)">🚗 Trajet voiture</span>
+                      <span class="chip" onclick="toggleChip(this)">📺 Écrans</span>
+                      <span class="chip" onclick="toggleChip(this)">🤱 Portage</span>
+                      <span class="chip" onclick="toggleChip(this)">🪑 Parc / tapis d'éveil</span>
+                      <span class="chip" onclick="toggleChip(this)">🏊 Activité extérieure (piscine, baby-gym...)</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Quel est le niveau d'activité physique du matin ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="activite_phys_matin">
+                      <span class="chip" onclick="toggleChip(this, true)">🏃 Beaucoup (très actif)</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🚶 Modéré</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🪑 Peu (portage / passif)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- IV. 1ère SIESTE -->
+      <section class="section" data-section="sieste1" data-subs='[
+        {"id":"sieste1-horaires","emoji":"⏰","label":"Heure & durée"},
+        {"id":"sieste1-endormissement","emoji":"😴","label":"Endormissement"},
+        {"id":"sieste1-lieu","emoji":"🛏","label":"Où dort-il/elle"}
+      ]'>
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-header-emoji">😴</span>
+          <span class="section-header-title">IV. 1<sup>ère</sup> sieste</span>
+          <span class="section-header-toggle">▾</span>
+        </div>
+        <div class="section-body">
+
+          <div class="subsection" id="sieste1-horaires">
+            <div class="subsection-title"><span class="subsection-title-emoji">⏰</span>Heure & durée</div>
+
+            <div class="q-block cat-violet">
+              <div class="q-left">Horaires</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">À quelle heure démarre la 1ère sieste ?</div>
+                  <div class="q-row-input">
+                    <input class="q-input tiny" type="time" data-q="s1_debut" oninput="onInput(this)">
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Combien de temps après le réveil du matin ?</div>
+                  <div class="q-row-input">
+                    <input class="q-input short" type="text" placeholder="ex: 1h30" data-q="s1_te" oninput="onInput(this)">
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Combien de temps dure-t-elle ?</div>
+                  <div class="q-row-input">
+                    <input class="q-input short" type="text" placeholder="ex: 45 min" data-q="s1_duree" oninput="onInput(this)">
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Cette sieste vous semble :</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="s1_qualif">
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Adaptée</span>
+                      <span class="chip" onclick="toggleChip(this, true)">📉 Trop courte (1 cycle)</span>
+                      <span class="chip" onclick="toggleChip(this, true)">📈 Trop longue</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="sieste1-endormissement">
+            <div class="subsection-title"><span class="subsection-title-emoji">😴</span>Endormissement</div>
+
+            <div class="q-block cat-violet">
+              <div class="q-left">Stratégie</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">De quoi [prénom] a-t-il/elle besoin pour s'endormir ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="s1_strat">
+                      <span class="chip" onclick="toggleChip(this)">👤 Présence adulte</span>
+                      <span class="chip" onclick="toggleChip(this)">☝️ Petit doigt</span>
+                      <span class="chip" onclick="toggleChip(this)">🤝 Bercement / portage</span>
+                      <span class="chip" onclick="toggleChip(this)">🍭 Tétine</span>
+                      <span class="chip" onclick="toggleChip(this)">🤱 Sein / 🍼 biberon</span>
+                      <span class="chip" onclick="toggleChip(this)">💪 Bras</span>
+                      <span class="chip" onclick="toggleChip(this)">🚗 Poussette / voiture</span>
+                      <span class="chip" onclick="toggleChip(this)">🎵 Bruit blanc</span>
+                      <span class="chip" onclick="toggleChip(this)">🧸 Doudou</span>
+                      <span class="chip" onclick="toggleChip(this)">⭐ Tout seul</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Combien de temps met-il/elle pour s'endormir ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="s1_duree_endo">
+                      <span class="chip" onclick="toggleChip(this, true)">⚡ &lt; 10 min</span>
+                      <span class="chip" onclick="toggleChip(this, true)">⏱ 10-20 min</span>
+                      <span class="chip" onclick="toggleChip(this, true)">⏰ 20-45 min</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🐢 &gt; 45 min</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="sieste1-lieu">
+            <div class="subsection-title"><span class="subsection-title-emoji">🛏</span>Où dort-il/elle pour cette sieste</div>
+
+            <div class="q-block cat-violet">
+              <div class="q-left">Lieu</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Où [prénom] fait-il/elle cette sieste ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="s1_lieu">
+                      <span class="chip" onclick="toggleChip(this, true)">🛏 Son lit / berceau</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🛌 Lit parental</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🚗 Poussette / voiture</span>
+                      <span class="chip" onclick="toggleChip(this, true)">💪 Bras / portage</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🪑 Canapé / parc</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- V. MIDI & APRÈS-MIDI -->
+      <section class="section" data-section="midi" data-subs='[
+        {"id":"midi-repas","emoji":"🍽","label":"Repas du midi"},
+        {"id":"midi-siestes-suite","emoji":"😴","label":"Sieste(s) après-midi"},
+        {"id":"midi-activites","emoji":"🌳","label":"Activités après-midi"}
+      ]'>
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-header-emoji">🕛</span>
+          <span class="section-header-title">V. Midi & après-midi</span>
+          <span class="section-header-toggle">▾</span>
+        </div>
+        <div class="section-body">
+
+          <div class="subsection" id="midi-repas">
+            <div class="subsection-title"><span class="subsection-title-emoji">🍽</span>Repas du midi</div>
+            <div class="q-block cat-vert">
+              <div class="q-left">Déjeuner</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">À quelle heure est pris le repas de midi ?</div>
+                  <div class="q-row-input">
+                    <input class="q-input tiny" type="time" data-q="midi_heure" oninput="onInput(this)">
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Que mange-t-il/elle au déjeuner ?</div>
+                  <div class="q-row-input">
+                    <textarea class="q-input" data-q="midi_contenu" placeholder="ex: 200g légumes + 30g viande + 1 c.à.c huile + biberon" oninput="onInput(this)"></textarea>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Y a-t-il un biberon ou une tétée associé(e) ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="midi_lait">
+                      <span class="chip" onclick="toggleChip(this, true)">🤱 Tétée avant</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🤱 Tétée après</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🍼 Biberon avant</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🍼 Biberon après</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🚫 Pas de lait</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="info-box">
+                  💡 L'<strong>ordre lait/solide</strong> est un levier de <code>V. Diagnostic > Nutrition</code> (<code>nutri_inversion_lait_solide</code>).
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="midi-siestes-suite">
+            <div class="subsection-title"><span class="subsection-title-emoji">😴</span>Sieste(s) après-midi</div>
+
+            <div class="q-block cat-violet">
+              <div class="q-left">Sieste 2</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Y a-t-il une 2ème sieste ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="s2_oui">
+                      <span class="chip" onclick="toggleChip(this, true); show('q-s2-details', this.textContent.includes('Oui') && this.classList.contains('selected'))">✅ Oui</span>
+                      <span class="chip" onclick="toggleChip(this, true); show('q-s2-details', this.textContent.includes('Oui') && this.classList.contains('selected'))">❌ Non</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="conditional" id="q-s2-details">
+                  <div class="q-row">
+                    <div class="q-row-label">À quelle heure démarre-t-elle et combien de temps dure-t-elle ?</div>
+                    <div class="q-row-input">
+                      <input class="q-input tiny" type="time" data-q="s2_debut" oninput="onInput(this)">
+                      <input class="q-input short" type="text" placeholder="durée (ex: 1h30)" data-q="s2_duree" oninput="onInput(this)">
+                    </div>
+                  </div>
+                  <div class="q-row">
+                    <div class="q-row-label">Où dort-il/elle ?</div>
+                    <div class="q-row-input">
+                      <div class="chips" data-q="s2_lieu">
+                        <span class="chip" onclick="toggleChip(this, true)">🛏 Son lit</span>
+                        <span class="chip" onclick="toggleChip(this, true)">🚗 Poussette / voiture</span>
+                        <span class="chip" onclick="toggleChip(this, true)">💪 Bras</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="q-block cat-violet">
+              <div class="q-left">Sieste 3 (+)</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Y a-t-il une 3ème sieste (ou plus) ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="s3_oui">
+                      <span class="chip" onclick="toggleChip(this, true); show('q-s3-details', this.textContent.includes('Oui') && this.classList.contains('selected'))">✅ Oui</span>
+                      <span class="chip" onclick="toggleChip(this, true); show('q-s3-details', this.textContent.includes('Oui') && this.classList.contains('selected'))">❌ Non</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="conditional" id="q-s3-details">
+                  <div class="q-row">
+                    <div class="q-row-label">Décrivez ces siestes :</div>
+                    <div class="q-row-input">
+                      <textarea class="q-input" data-q="s3_detail" placeholder="ex: 3ème sieste vers 16h30 de 20 min en poussette" oninput="onInput(this)"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="q-block cat-violet">
+              <div class="q-left">Vue d'ensemble</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Le temps d'éveil (TE) entre les siestes vous semble :</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="te_qualif">
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Adapté</span>
+                      <span class="chip" onclick="toggleChip(this, true)">📈 Trop long</span>
+                      <span class="chip" onclick="toggleChip(this, true)">📉 Trop court</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🎲 Très variable</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Les horaires sont-ils globalement :</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="regularite">
+                      <span class="chip" onclick="toggleChip(this, true)">📐 Réguliers</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🎲 Aléatoires d'un jour à l'autre</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="midi-activites">
+            <div class="subsection-title"><span class="subsection-title-emoji">🌳</span>Activités après-midi</div>
+
+            <div class="q-block cat-orange">
+              <div class="q-left">Activités</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Quel type d'activité l'après-midi ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="activite_aprem">
+                      <span class="chip" onclick="toggleChip(this)">🌳 Sortie / parc</span>
+                      <span class="chip" onclick="toggleChip(this)">🏊 Activité physique (piscine...)</span>
+                      <span class="chip" onclick="toggleChip(this)">🧸 Jeux libres</span>
+                      <span class="chip" onclick="toggleChip(this)">📺 Écrans</span>
+                      <span class="chip" onclick="toggleChip(this)">🤱 Portage</span>
+                      <span class="chip" onclick="toggleChip(this)">🏠 À la maison calme</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Y a-t-il un goûter ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="gouter">
+                      <span class="chip" onclick="toggleChip(this, true); show('q-gouter-details', this.textContent.includes('Oui') && this.classList.contains('selected'))">✅ Oui</span>
+                      <span class="chip" onclick="toggleChip(this, true); show('q-gouter-details', this.textContent.includes('Oui') && this.classList.contains('selected'))">❌ Non</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="conditional" id="q-gouter-details">
+                  <div class="q-row">
+                    <div class="q-row-label">Que contient le goûter ?</div>
+                    <div class="q-row-input">
+                      <input class="q-input short" type="text" placeholder="ex: biberon 150ml + compote" data-q="gouter_contenu" oninput="onInput(this)">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- VI. SOIRÉE -->
+      <section class="section" data-section="soir" data-subs='[
+        {"id":"soir-diner","emoji":"🍽","label":"Dîner"},
+        {"id":"soir-rituel","emoji":"📖","label":"Rituel du coucher"},
+        {"id":"soir-coucher","emoji":"🛏","label":"Mise au lit"}
+      ]'>
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-header-emoji">🌆</span>
+          <span class="section-header-title">VI. Soirée — dîner & rituel</span>
+          <span class="section-header-toggle">▾</span>
+        </div>
+        <div class="section-body">
+
+          <div class="subsection" id="soir-diner">
+            <div class="subsection-title"><span class="subsection-title-emoji">🍽</span>Dîner</div>
+            <div class="q-block cat-vert">
+              <div class="q-left">Repas du soir</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">À quelle heure est pris le dîner ?</div>
+                  <div class="q-row-input">
+                    <input class="q-input tiny" type="time" data-q="diner_heure" oninput="onInput(this)">
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Que mange-t-il/elle au dîner ?</div>
+                  <div class="q-row-input">
+                    <textarea class="q-input" data-q="diner_contenu" placeholder="ex: purée légumes + féculents + 1 c.à.c huile + biberon" oninput="onInput(this)"></textarea>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Y a-t-il un biberon ou une tétée au coucher ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="bib_coucher">
+                      <span class="chip" onclick="toggleChip(this, true)">🤱 Tétée</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🍼 Biberon</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🚫 Aucun</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="soir-rituel">
+            <div class="subsection-title"><span class="subsection-title-emoji">📖</span>Rituel du coucher</div>
+            <div class="q-block cat-marine">
+              <div class="q-left">Rituel</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Y a-t-il un rituel du coucher ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="rituel">
+                      <span class="chip" onclick="toggleChip(this, true); show('q-rituel-details', !this.textContent.includes('Aucun') && this.classList.contains('selected'))">✅ Oui, structuré</span>
+                      <span class="chip" onclick="toggleChip(this, true); show('q-rituel-details', !this.textContent.includes('Aucun') && this.classList.contains('selected'))">~ Approximatif</span>
+                      <span class="chip" onclick="toggleChip(this, true); show('q-rituel-details', !this.textContent.includes('Aucun') && this.classList.contains('selected'))">❌ Aucun</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="conditional" id="q-rituel-details">
+                  <div class="q-row">
+                    <div class="q-row-label">Quelles étapes et quelle durée ?</div>
+                    <div class="q-row-input">
+                      <textarea class="q-input" data-q="rituel_detail" placeholder="ex: bain → pyjama → histoire → câlin → mise au lit (≈30 min)" oninput="onInput(this)"></textarea>
+                    </div>
+                  </div>
+                  <div class="q-row">
+                    <div class="q-row-label">Les étapes sont-elles toujours les mêmes (cadre clair) ?</div>
+                    <div class="q-row-input">
+                      <div class="chips" data-q="cadre_clair">
+                        <span class="chip" onclick="toggleChip(this, true)">✅ Oui</span>
+                        <span class="chip" onclick="toggleChip(this, true)">❌ Non, varie</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="q-row">
+                    <div class="q-row-label">Y a-t-il des écrans avant le coucher ?</div>
+                    <div class="q-row-input">
+                      <div class="chips" data-q="ecrans_coucher">
+                        <span class="chip" onclick="toggleChip(this, true)">🚫 Jamais</span>
+                        <span class="chip" onclick="toggleChip(this, true)">📺 Oui, intégré au rituel</span>
+                        <span class="chip" onclick="toggleChip(this, true)">⚠️ Très utilisés en journée</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="soir-coucher">
+            <div class="subsection-title"><span class="subsection-title-emoji">🛏</span>Mise au lit</div>
+            <div class="q-block cat-marine">
+              <div class="q-left">Coucher</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">À quelle heure [prénom] est-il/elle mis(e) au lit ?</div>
+                  <div class="q-row-input">
+                    <input class="q-input tiny" type="time" data-q="heure_coucher" oninput="onInput(this)">
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">À quelle heure s'endort-il/elle réellement ?</div>
+                  <div class="q-row-input">
+                    <input class="q-input tiny" type="time" data-q="heure_endormi" oninput="onInput(this)">
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Combien de temps met-il/elle pour s'endormir ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="duree_endormissement">
+                      <span class="chip" onclick="toggleChip(this, true)">⚡ &lt; 10 min</span>
+                      <span class="chip" onclick="toggleChip(this, true)">⏱ 10-20 min</span>
+                      <span class="chip" onclick="toggleChip(this, true)">⏰ 20-45 min</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🐢 &gt; 45 min</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">De quoi a-t-il/elle besoin pour s'endormir au coucher ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="strat_endormissement">
+                      <span class="chip" onclick="toggleChip(this)">👤 Présence adulte</span>
+                      <span class="chip" onclick="toggleChip(this)">☝️ Petit doigt</span>
+                      <span class="chip" onclick="toggleChip(this)">🤝 Bercement / portage</span>
+                      <span class="chip" onclick="toggleChip(this)">🍭 Tétine</span>
+                      <span class="chip" onclick="toggleChip(this)">🤱 Sein / 🍼 biberon</span>
+                      <span class="chip" onclick="toggleChip(this)">💪 Bras</span>
+                      <span class="chip" onclick="toggleChip(this)">🚗 Poussette / voiture</span>
+                      <span class="chip" onclick="toggleChip(this)">🎵 Bruit blanc</span>
+                      <span class="chip" onclick="toggleChip(this)">🧸 Doudou</span>
+                      <span class="chip" onclick="toggleChip(this)">⭐ Tout seul (autonome)</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="nav-bubble show">
+                  <span class="nav-bubble-icon">🧭</span>
+                  <div>Cocher dans <code>V. Diagnostic > Stratégies de sommeil</code> : <code>strategie_rendormissement</code> · <code>strategie_enjeu_relationnel</code> · <code>strategie_tetine</code>.</div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Y a-t-il des rappels multiples après le coucher ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="rappels_coucher">
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Oui, fréquents</span>
+                      <span class="chip" onclick="toggleChip(this, true)">~ Parfois</span>
+                      <span class="chip" onclick="toggleChip(this, true)">❌ Non</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Dans quelle position [prénom] s'endort-il/elle ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="position_sommeil">
+                      <span class="chip" onclick="toggleChip(this, true)">🟢 Dos</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🙂‍↕️ Ventre</span>
+                      <span class="chip" onclick="toggleChip(this, true)">↔️ Côté</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🔄 Se retourne</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- VII. NUIT -->
+      <section class="section" data-section="nuit" data-subs='[
+        {"id":"nuit-lieu","emoji":"🛏","label":"Lieu de couchage"},
+        {"id":"nuit-environnement","emoji":"🌑","label":"Environnement chambre"},
+        {"id":"nuit-reveils","emoji":"⏰","label":"Réveils nocturnes"},
+        {"id":"nuit-reveil-matinal","emoji":"🌅","label":"Réveil matinal précoce"}
+      ]'>
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-header-emoji">🌙</span>
+          <span class="section-header-title">VII. Nuit</span>
+          <span class="section-header-toggle">▾</span>
+        </div>
+        <div class="section-body">
+
+          <div class="subsection" id="nuit-lieu">
+            <div class="subsection-title"><span class="subsection-title-emoji">🛏</span>Lieu de couchage</div>
+            <div class="q-block cat-marine">
+              <div class="q-left">Où dort-il/elle</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Où [prénom] dort-il/elle la nuit ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="lieu_sommeil">
+                      <span class="chip" onclick="toggleChip(this, true)">🛌 Lit parental (bed-sharing)</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🛏 Cododo (lit accolé)</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🏠 Sa chambre, lit à barreaux</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🛌 Sa chambre, lit ouvert / au sol</span>
+                      <span class="chip" onclick="toggleChip(this, true)">👶 Berceau / nacelle</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="info-box">
+                  💡 OMS : <strong>partage de chambre</strong> recommandé jusqu'à 6 mois. <strong>Bed-sharing</strong> déconseillé (×3 risque MIN).
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Souhaitez-vous changer ce lieu de couchage ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="souhait_changement">
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Non, ça nous convient</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🛏 Changer de lit</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🚪 Changer de chambre</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🛏🚪 Lit + chambre</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Partage-t-il/elle la chambre avec un frère/sœur ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="chambre_partagee">
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Oui</span>
+                      <span class="chip" onclick="toggleChip(this, true)">❌ Non</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="nuit-environnement">
+            <div class="subsection-title"><span class="subsection-title-emoji">🌑</span>Environnement de la chambre</div>
+
+            <div class="q-block cat-marine">
+              <div class="q-left">Obscurité</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Quelle est l'obscurité dans la chambre (nuit et siestes) ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="obscurite">
+                      <span class="chip" onclick="toggleChip(this, true)">🌑 Noir complet</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🌒 Pénombre</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🌕 Veilleuse allumée</span>
+                      <span class="chip" onclick="toggleChip(this, true)">☀️ Trop clair</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="info-box">
+                  💡 La <strong>peur du noir</strong> n'apparaît pas avant 2-2.5 ans. Avant cet âge, obscurité complète OK.
+                </div>
+              </div>
+            </div>
+
+            <div class="q-block cat-marine">
+              <div class="q-left">Température</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Quelle est la température de la chambre ?</div>
+                  <div class="q-row-input">
+                    <input class="q-input tiny" type="number" min="14" max="28" data-q="temperature" oninput="onInput(this); checkTemp()">
+                    <span style="font-size:13px;font-weight:700">°C</span>
+                  </div>
+                </div>
+                <div class="info-box">
+                  💡 <strong>Idéal : 18-19°C</strong>. Au-delà → sommeil moins profond, réveils.
+                </div>
+                <div class="alert-box" id="alert-temp" style="display:none">
+                  <div class="alert-box-title">⚠️ Température élevée</div>
+                  Au-dessus de 20°C, baisser la température aide à la qualité du sommeil.
+                </div>
+              </div>
+            </div>
+
+            <div class="q-block cat-marine">
+              <div class="q-left">Bruit</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Y a-t-il un bruit ambiant ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="bruit">
+                      <span class="chip" onclick="toggleChip(this)">🤫 Silence</span>
+                      <span class="chip" onclick="toggleChip(this)">🌊 Bruit blanc en continu</span>
+                      <span class="chip" onclick="toggleChip(this)">🎵 Musique douce</span>
+                      <span class="chip" onclick="toggleChip(this)">🚗 Bruits extérieurs</span>
+                      <span class="chip" onclick="toggleChip(this)">🏠 Bruits maison</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="q-block cat-marine">
+              <div class="q-left">Couchage</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Quelle tenue de nuit / gigoteuse (TOG) ?</div>
+                  <div class="q-row-input">
+                    <input class="q-input short" type="text" placeholder="ex: gigoteuse 1.0 TOG + body" data-q="tenue_nuit" oninput="onInput(this)">
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Y a-t-il des stimulations dans le lit ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="stimulations">
+                      <span class="chip" onclick="toggleChip(this, true)">🚫 Lit nu / juste un doudou</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🧸 Plusieurs peluches</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🎠 Mobile au-dessus</span>
+                      <span class="chip" onclick="toggleChip(this, true)">📚 Livres / jouets</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="nuit-reveils">
+            <div class="subsection-title"><span class="subsection-title-emoji">⏰</span>Réveils nocturnes</div>
+
+            <div class="q-block cat-marine">
+              <div class="q-left">Fréquence</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Combien de réveils nocturnes en moyenne ?</div>
+                  <div class="q-row-input">
+                    <input class="q-input tiny" type="number" min="0" max="20" data-q="nb_reveils_nuit" oninput="onInput(this)">
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">À quelles heures sont les réveils typiques ?</div>
+                  <div class="q-row-input">
+                    <textarea class="q-input" data-q="heures_reveils" placeholder="ex: 23h, 2h, 4h, 5h30" oninput="onInput(this)"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="q-block cat-marine">
+              <div class="q-left">Réponse parentale</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Que faites-vous lors des réveils ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="reveils_type">
+                      <span class="chip" onclick="toggleChip(this)">🍼 Tétée / biberon</span>
+                      <span class="chip" onclick="toggleChip(this)">🍭 Remettre tétine</span>
+                      <span class="chip" onclick="toggleChip(this)">🤗 Câlin / bercement</span>
+                      <span class="chip" onclick="toggleChip(this)">🛏 Mise au lit parental</span>
+                      <span class="chip" onclick="toggleChip(this)">😢 Doit pleurer longtemps</span>
+                      <span class="chip" onclick="toggleChip(this)">🗣 Appel calme</span>
+                      <span class="chip" onclick="toggleChip(this)">⏱ Se rendort seul rapidement</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Qui se lève la nuit en général ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="qui_reveils">
+                      <span class="chip" onclick="toggleChip(this)">👩 Maman</span>
+                      <span class="chip" onclick="toggleChip(this)">👨 Papa</span>
+                      <span class="chip" onclick="toggleChip(this)">🔁 Alternance</span>
+                      <span class="chip" onclick="toggleChip(this)">⚖️ Selon qui est dispo</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Vient-il/elle dans le lit parental la nuit ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="lit_parental_nuit">
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Oui, systématiquement</span>
+                      <span class="chip" onclick="toggleChip(this, true)">~ Parfois en fin de nuit</span>
+                      <span class="chip" onclick="toggleChip(this, true)">❌ Non</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="nuit-reveil-matinal">
+            <div class="subsection-title"><span class="subsection-title-emoji">🌅</span>Réveil matinal précoce</div>
+            <div class="q-block cat-marine">
+              <div class="q-left">Cause</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Si réveil matinal précoce, quelle cause supposée ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="rev_matin_cause">
+                      <span class="chip" onclick="toggleChip(this)">⏳ Décalage horaire</span>
+                      <span class="chip" onclick="toggleChip(this)">😵 Fatigue accumulée</span>
+                      <span class="chip" onclick="toggleChip(this)">💬 Enjeu relationnel</span>
+                      <span class="chip" onclick="toggleChip(this)">🍼 Mange la nuit</span>
+                      <span class="chip" onclick="toggleChip(this)">🥺 Faim</span>
+                      <span class="chip" onclick="toggleChip(this)">🪑 Dépendance</span>
+                      <span class="chip" onclick="toggleChip(this)">🔊 Bruit / lumière</span>
+                      <span class="chip" onclick="toggleChip(this)">N/A</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- VIII. SANTÉ -->
+      <section class="section" data-section="sante" data-subs='[
+        {"id":"sante-aplv","emoji":"🥛","label":"APLV / Allergie"},
+        {"id":"sante-rgo","emoji":"🔥","label":"RGO"},
+        {"id":"sante-selles","emoji":"💩","label":"Selles & transit"},
+        {"id":"sante-orl-respi","emoji":"👃","label":"ORL & respiration"},
+        {"id":"sante-freins","emoji":"👅","label":"Freins & succion"},
+        {"id":"sante-pros","emoji":"👩‍⚕️","label":"Pros consultés"},
+        {"id":"sante-divers","emoji":"💊","label":"Vit. D & autres"}
+      ]'>
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-header-emoji">🩺</span>
+          <span class="section-header-title">VIII. Santé & symptômes</span>
+          <span class="section-header-toggle">▾</span>
+        </div>
+        <div class="section-body">
+
+          <div class="subsection" id="sante-aplv">
+            <div class="subsection-title"><span class="subsection-title-emoji">🥛</span>Suspicion APLV / Allergie aux PLV</div>
+            <div class="info-box" style="margin-bottom:14px">
+              💡 Cocher tout ce qui s'applique. Plusieurs catégories cochées (digestif + cutané + ORL/respi) renforcent la suspicion.
+            </div>
+
+            <div class="q-block cat-rose">
+              <div class="q-left">Symptômes</div>
+              <div class="q-right">
+                <div style="font-weight:800;color:#c0392b;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;margin-top:4px">Digestif & alimentaire</div>
+                <div class="checklist" data-q="aplv_digestif">
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Refus de s'alimenter (+ se cambre)</label>
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Douleurs (pleurs après les repas)</label>
+                  <label class="checklist-item"><input type="checkbox" id="cb-regurg" onchange="onCheck(this); checkAplvCount(); toggleRegurg(this)">Régurgitations</label>
+                  <label class="checklist-item sub" id="reg-jet-wrap" style="display:none"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">en jet</label>
+                  <label class="checklist-item sub" id="reg-eveil-wrap" style="display:none"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">sur tout le temps d'éveil</label>
+                  <label class="checklist-item sub" id="reg-caille-wrap" style="display:none"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">lait caillé</label>
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Selles diarrhéiques</label>
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Selles glaireuses</label>
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Selles avec traces de sang</label>
+                </div>
+
+                <div style="font-weight:800;color:#92400e;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;margin-top:8px">Cutané</div>
+                <div class="checklist" data-q="aplv_cutane">
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Eczéma / peau atopique</label>
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Psoriasis</label>
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Croûtes de lait persistantes</label>
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Urticaire / plaques</label>
+                </div>
+
+                <div style="font-weight:800;color:#0369a1;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;margin-top:8px">Respiratoire</div>
+                <div class="checklist" data-q="aplv_respi">
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Respiration sifflante / bruits de dinosaure</label>
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Ronflements (amygdales enflammées)</label>
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Dort la bouche ouverte</label>
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Apnées du sommeil suspectes</label>
+                </div>
+
+                <div style="font-weight:800;color:#475569;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;margin-top:8px">Sphère ORL</div>
+                <div class="checklist" data-q="aplv_orl">
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Otites à répétition</label>
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Toux chronique</label>
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Bronchites à répétition</label>
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Enrhumé très souvent</label>
+                </div>
+
+                <div style="font-weight:800;color:#6b21a8;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;margin-top:8px">Terrain & exposition</div>
+                <div class="checklist" data-q="aplv_terrain">
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Terrain allergique familial (asthme, rhinite, eczéma)</label>
+                  <label class="checklist-item"><input type="checkbox" onchange="onCheck(this); checkAplvCount()">Compléments PLV à la maternité puis plus de contact direct</label>
+                </div>
+
+                <div class="nav-bubble" id="aplv-nav-bubble" style="margin-top:12px">
+                  <span class="nav-bubble-icon">🧭</span>
+                  <div>
+                    <strong>Suspicion APLV élevée</strong> (3+ signes ou 2+ catégories) :
+                    <ul style="margin:6px 0 0 18px">
+                      <li>Cocher <code>rgo_allergie</code> OU <code>allergie_seule</code> dans <code>V. Diagnostic</code></li>
+                      <li><code>VIII. Plan d'action > Confort</code> pour l'éviction PLV</li>
+                      <li>Allaitement → éviction PLV maman (2-4 sem.) · Biberon → eHF sur prescription</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="sante-rgo">
+            <div class="subsection-title"><span class="subsection-title-emoji">🔥</span>RGO</div>
+            <div class="q-block cat-rose">
+              <div class="q-left">Diagnostic</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">A-t-il/elle été diagnostiqué(e) RGO par un médecin ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="rgo_diag">
+                      <span class="chip" onclick="toggleChip(this, true); show('q-rgo-details', !this.textContent.includes('Non') && this.classList.contains('selected'))">✅ Oui</span>
+                      <span class="chip" onclick="toggleChip(this, true); show('q-rgo-details', !this.textContent.includes('Non') && this.classList.contains('selected'))">❓ Suspicion sans diag</span>
+                      <span class="chip" onclick="toggleChip(this, true); show('q-rgo-details', !this.textContent.includes('Non') && this.classList.contains('selected'))">❌ Non</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="conditional" id="q-rgo-details">
+                  <div class="q-row">
+                    <div class="q-row-label">Comment a-t-il/elle été diagnostiqué(e) ?</div>
+                    <div class="q-row-input">
+                      <textarea class="q-input" data-q="rgo_mode_diag" placeholder="clinique, pHmétrie, fibroscopie..." oninput="onInput(this)"></textarea>
+                    </div>
+                  </div>
+                  <div class="q-row">
+                    <div class="q-row-label">Quel traitement est en cours ?</div>
+                    <div class="q-row-input">
+                      <div class="chips" data-q="rgo_traitement">
+                        <span class="chip" onclick="toggleChip(this)">💊 Gaviscon</span>
+                        <span class="chip" onclick="toggleChip(this)">💉 IPP (Inexium / Mopral)</span>
+                        <span class="chip" onclick="toggleChip(this)">💧 Lait AR</span>
+                        <span class="chip" onclick="toggleChip(this)">🧪 Lait hydrolysat</span>
+                        <span class="chip" onclick="toggleChip(this)">🌿 Homéopathie / phyto</span>
+                        <span class="chip" onclick="toggleChip(this)">🚫 Aucun</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="q-row">
+                    <div class="q-row-label">Si Gaviscon : donné AVANT ou APRÈS le bib/la tétée ?</div>
+                    <div class="q-row-input">
+                      <div class="chips" data-q="gaviscon_timing">
+                        <span class="chip" onclick="toggleChip(this, true)">⏪ Avant</span>
+                        <span class="chip" onclick="toggleChip(this, true)">⏩ Après</span>
+                        <span class="chip" onclick="toggleChip(this, true)">🚫 N/A</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="alert-box">
+                    <div class="alert-box-title">⚠️ Rappel pratique</div>
+                    Gaviscon → <strong>APRÈS</strong> la prise. IPP → 30 min <strong>AVANT</strong> le repas, ventre vide.
+                  </div>
+                  <div class="nav-bubble show">
+                    <span class="nav-bubble-icon">🧭</span>
+                    <div>Cocher <code>rgo_seul</code> (ou <code>rgo_allergie</code>) dans <code>V. Diagnostic</code>, puis <code>VIII. Plan d'action > Confort</code>.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="sante-selles">
+            <div class="subsection-title"><span class="subsection-title-emoji">💩</span>Selles & transit</div>
+            <div class="q-block cat-rose">
+              <div class="q-left">Selles</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Combien de selles par 24h ?</div>
+                  <div class="q-row-input">
+                    <input class="q-input tiny" type="number" min="0" max="15" data-q="nb_selles" oninput="onInput(this)">
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Quelle couleur / consistance ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="selles_aspect">
+                      <span class="chip" onclick="toggleChip(this); checkSellesSang()">💛 Jaune doré (allaité)</span>
+                      <span class="chip" onclick="toggleChip(this); checkSellesSang()">🟤 Marron formé</span>
+                      <span class="chip" onclick="toggleChip(this); checkSellesSang()">💧 Liquides / diarrhéiques</span>
+                      <span class="chip" onclick="toggleChip(this); checkSellesSang()">🟢 Verdâtres</span>
+                      <span class="chip" onclick="toggleChip(this); checkSellesSang()">🧶 Glaireuses</span>
+                      <span class="chip" onclick="toggleChip(this); checkSellesSang()">🩸 Sang visible</span>
+                      <span class="chip" onclick="toggleChip(this); checkSellesSang()">🧱 Constipées / dures</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="alert-box" style="display:none" id="alert-selles-sang">
+                  <div class="alert-box-title">⚠️ Avis médical impératif</div>
+                  Du <strong>sang dans les selles</strong> nécessite un avis pédiatrique rapide.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="sante-orl-respi">
+            <div class="subsection-title"><span class="subsection-title-emoji">👃</span>ORL & respiration</div>
+            <div class="q-block cat-rose">
+              <div class="q-left">Respiration</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Dort-il/elle la bouche ouverte ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="bouche_ouverte">
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Oui</span>
+                      <span class="chip" onclick="toggleChip(this, true)">⚠️ Parfois</span>
+                      <span class="chip" onclick="toggleChip(this, true)">❌ Non</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="sante-freins">
+            <div class="subsection-title"><span class="subsection-title-emoji">👅</span>Freins & succion</div>
+            <div class="q-block cat-rose">
+              <div class="q-left">Freins</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">A-t-on déjà vérifié les freins de bouche (langue / lèvres / joues) ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="freins_check">
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Oui, RAS</span>
+                      <span class="chip" onclick="toggleChip(this, true)">⚠️ Oui, frein restrictif</span>
+                      <span class="chip" onclick="toggleChip(this, true)">✂️ Frénectomie faite</span>
+                      <span class="chip" onclick="toggleChip(this, true)">❌ Non</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">A-t-on déjà vérifié sa succion ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="succion_check">
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Oui, efficace</span>
+                      <span class="chip" onclick="toggleChip(this, true)">⚠️ Oui, dysfonction</span>
+                      <span class="chip" onclick="toggleChip(this, true)">❌ Non</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="sante-pros">
+            <div class="subsection-title"><span class="subsection-title-emoji">👩‍⚕️</span>Professionnels consultés</div>
+            <div class="q-block cat-bleu">
+              <div class="q-left">Suivi</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">A-t-il/elle déjà été vu(e) par :</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="pros_consultes">
+                      <span class="chip" onclick="toggleChip(this)">🤱 Consultante lactation</span>
+                      <span class="chip" onclick="toggleChip(this)">🌿 Ostéopathe</span>
+                      <span class="chip" onclick="toggleChip(this)">👶 Pédiatre</span>
+                      <span class="chip" onclick="toggleChip(this)">👃 ORL</span>
+                      <span class="chip" onclick="toggleChip(this)">👅 Orthophoniste</span>
+                      <span class="chip" onclick="toggleChip(this)">🦷 Dentiste pédiatrique</span>
+                      <span class="chip" onclick="toggleChip(this)">⚗️ Allergologue</span>
+                      <span class="chip" onclick="toggleChip(this)">🦴 Kiné</span>
+                      <span class="chip" onclick="toggleChip(this)">🧠 Psychomotricien</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="sante-divers">
+            <div class="subsection-title"><span class="subsection-title-emoji">💊</span>Vitamine D & antécédents</div>
+
+            <div class="q-block cat-bleu">
+              <div class="q-left">Vitamine D</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">La vitamine D est-elle donnée ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="vit_d">
+                      <span class="chip" onclick="toggleChip(this, true); show('q-vitd-marque', this.textContent.includes('Oui') && this.classList.contains('selected'))">✅ Oui</span>
+                      <span class="chip" onclick="toggleChip(this, true); show('q-vitd-marque', this.textContent.includes('Oui') && this.classList.contains('selected'))">❌ Non</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="conditional" id="q-vitd-marque">
+                  <div class="q-row">
+                    <div class="q-row-label">Quelle marque et quel dosage ?</div>
+                    <div class="q-row-input">
+                      <input class="q-input short" type="text" placeholder="ex: ZymaD, 4 gouttes/j" data-q="vit_d_marque" oninput="onInput(this)">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="q-block cat-bleu">
+              <div class="q-left">Antécédents</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Y a-t-il d'autres pathologies ou antécédents à signaler ?</div>
+                  <div class="q-row-input">
+                    <textarea class="q-input" data-q="autres_antecedents" placeholder="ex: bronchiolite, hospitalisations, traitements..." oninput="onInput(this)"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- IX. CONTEXTE FAMILIAL -->
+      <section class="section" data-section="famille-emo" data-subs='[
+        {"id":"famemo-parent","emoji":"💞","label":"État du parent"},
+        {"id":"famemo-cadre","emoji":"💬","label":"Cadre relationnel"},
+        {"id":"famemo-evenements","emoji":"📅","label":"Événements récents"}
+      ]'>
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-header-emoji">👨‍👩‍👧‍👦</span>
+          <span class="section-header-title">IX. Contexte familial & émotionnel</span>
+          <span class="section-header-toggle">▾</span>
+        </div>
+        <div class="section-body">
+
+          <div class="subsection" id="famemo-parent">
+            <div class="subsection-title"><span class="subsection-title-emoji">💞</span>État du parent référent</div>
+            <div class="q-block cat-rose">
+              <div class="q-left">Vécu</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Comment vous sentez-vous globalement aujourd'hui ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="etat_parent">
+                      <span class="chip" onclick="toggleChip(this)">😄 Globalement bien</span>
+                      <span class="chip" onclick="toggleChip(this)">😴 Très fatigué(e)</span>
+                      <span class="chip" onclick="toggleChip(this)">😢 À bout</span>
+                      <span class="chip" onclick="toggleChip(this)">😔 Suspicion dépression PP</span>
+                      <span class="chip" onclick="toggleChip(this)">😰 Anxiété</span>
+                      <span class="chip" onclick="toggleChip(this)">💔 Culpabilité</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="nav-bubble show">
+                  <span class="nav-bubble-icon">🧭</span>
+                  <div>Si <strong>dépression PP / état dégradé</strong> → bloc empathique <code>III. Découverte > "Si Maman en dépression/très fatiguée"</code>.</div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Êtes-vous accompagné(e) par un professionnel (psy, sage-femme...) ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="accompagnement">
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Oui</span>
+                      <span class="chip" onclick="toggleChip(this, true)">❌ Non</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🤔 En démarche</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Comment vivez-vous les pleurs de votre enfant ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="vecu_pleurs">
+                      <span class="chip" onclick="toggleChip(this)">💔 Très difficile à entendre</span>
+                      <span class="chip" onclick="toggleChip(this)">⚖️ Gérable</span>
+                      <span class="chip" onclick="toggleChip(this)">🛡 Capable de poser cadre</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="famemo-cadre">
+            <div class="subsection-title"><span class="subsection-title-emoji">💬</span>Cadre relationnel</div>
+            <div class="q-block cat-bleu">
+              <div class="q-left">Cohérence</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Y a-t-il des conflits sur d'autres sujets que le sommeil ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="conflits_autres">
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Oui, fréquents</span>
+                      <span class="chip" onclick="toggleChip(this, true)">~ Parfois</span>
+                      <span class="chip" onclick="toggleChip(this, true)">❌ Non</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Les deux parents sont-ils alignés sur la gestion du sommeil ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="coherence_parents">
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Alignés</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🤔 Pas tout à fait</span>
+                      <span class="chip" onclick="toggleChip(this, true)">❌ Désaccords forts</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🧍 Parent seul</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Y a-t-il une angoisse de séparation marquée ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="angoisse_sep">
+                      <span class="chip" onclick="toggleChip(this, true)">✅ Oui, marquée</span>
+                      <span class="chip" onclick="toggleChip(this, true)">~ Légère</span>
+                      <span class="chip" onclick="toggleChip(this, true)">❌ Non</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="info-box">
+                  💡 Pics typiques entre <strong>8-18 mois</strong>, puis vers <strong>2-3 ans</strong>.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="famemo-evenements">
+            <div class="subsection-title"><span class="subsection-title-emoji">📅</span>Événements récents</div>
+            <div class="q-block cat-bleu">
+              <div class="q-left">Vie de famille</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Y a-t-il eu des événements récents susceptibles d'impacter le sommeil ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="evenements">
+                      <span class="chip" onclick="toggleChip(this)">🚚 Déménagement</span>
+                      <span class="chip" onclick="toggleChip(this)">👶 Nouvel enfant</span>
+                      <span class="chip" onclick="toggleChip(this)">🏫 Entrée en crèche/garde</span>
+                      <span class="chip" onclick="toggleChip(this)">💼 Reprise du travail</span>
+                      <span class="chip" onclick="toggleChip(this)">✈️ Voyage / décalage horaire</span>
+                      <span class="chip" onclick="toggleChip(this)">🦷 Poussée dentaire</span>
+                      <span class="chip" onclick="toggleChip(this)">🤒 Maladie récente</span>
+                      <span class="chip" onclick="toggleChip(this)">😢 Séparation parentale</span>
+                      <span class="chip" onclick="toggleChip(this)">⚰️ Deuil</span>
+                      <span class="chip" onclick="toggleChip(this)">✅ RAS</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- X. SYNTHÈSE -->
+      <section class="section" data-section="synthese" data-subs='[
+        {"id":"synth-pb","emoji":"❓","label":"Problématique"},
+        {"id":"synth-objectifs","emoji":"🎯","label":"Objectifs parents"},
+        {"id":"synth-notes","emoji":"📝","label":"Notes Sophie"}
+      ]'>
+        <div class="section-header" onclick="toggleSection(this)">
+          <span class="section-header-emoji">🎯</span>
+          <span class="section-header-title">X. Synthèse & souhaits parents</span>
+          <span class="section-header-toggle">▾</span>
+        </div>
+        <div class="section-body">
+
+          <div class="subsection" id="synth-pb">
+            <div class="subsection-title"><span class="subsection-title-emoji">❓</span>Problématique principale</div>
+            <div class="q-block cat-orange">
+              <div class="q-left">Demande</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Quelle est la problématique principale exprimée par les parents ?</div>
+                  <div class="q-row-input">
+                    <textarea class="q-input" data-q="pb_principale" placeholder="ex: réveils nocturnes multiples..." style="min-height:80px" oninput="onInput(this)"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="synth-objectifs">
+            <div class="subsection-title"><span class="subsection-title-emoji">🎯</span>Objectifs souhaités</div>
+            <div class="q-block cat-orange">
+              <div class="q-left">Souhaits</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Quels sont les objectifs prioritaires ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="objectifs">
+                      <span class="chip" onclick="toggleChip(this)">🌙 Faire ses nuits</span>
+                      <span class="chip" onclick="toggleChip(this)">⏰ Réduire les réveils</span>
+                      <span class="chip" onclick="toggleChip(this)">😴 Endormissement autonome</span>
+                      <span class="chip" onclick="toggleChip(this)">🛏 Changer de lit</span>
+                      <span class="chip" onclick="toggleChip(this)">🚪 Changer de chambre</span>
+                      <span class="chip" onclick="toggleChip(this)">🍭 Supprimer tétine</span>
+                      <span class="chip" onclick="toggleChip(this)">🤱 Sevrage nocturne</span>
+                      <span class="chip" onclick="toggleChip(this)">🟢 Passage dorsale</span>
+                      <span class="chip" onclick="toggleChip(this)">⏱ Allonger les siestes</span>
+                      <span class="chip" onclick="toggleChip(this)">📐 Régulariser horaires</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Y a-t-il des choses que les parents ne veulent PAS faire ?</div>
+                  <div class="q-row-input">
+                    <textarea class="q-input" data-q="non_souhaits" placeholder="ex: refus de laisser pleurer..." style="min-height:60px" oninput="onInput(this)"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection" id="synth-notes">
+            <div class="subsection-title"><span class="subsection-title-emoji">📝</span>Notes & observations</div>
+            <div class="q-block cat-orange">
+              <div class="q-left">Notes Sophie</div>
+              <div class="q-right">
+                <div class="q-row">
+                  <div class="q-row-label">Observations cliniques, intuitions, points à creuser :</div>
+                  <div class="q-row-input">
+                    <textarea class="q-input" data-q="notes_libres" placeholder="éléments observés, intuitions, points à creuser..." style="min-height:100px" oninput="onInput(this)"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="nav-bubble show" style="background:#eef9f1; border-color:#84cc16; color:#365314; margin-top:12px">
+              <span class="nav-bubble-icon">✅</span>
+              <div>
+                <strong>Étapes suivantes sur le site :</strong>
+                <ol style="margin:6px 0 0 18px">
+                  <li>Reporter les leviers dans <code>V. Diagnostic > Leviers identifiés</code></li>
+                  <li>Cocher les <strong>souhaits parentaux</strong> dans <code>IV. Objectifs</code></li>
+                  <li>Aller dans <code>VIII. Plan d'action</code> pour générer les conseils personnalisés</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script>
+// SIDEBAR NAV
+const sections = document.querySelectorAll('.section');
+const navList = document.getElementById('nav-list');
+sections.forEach((section) => {
+  const emoji = section.querySelector('.section-header-emoji').textContent;
+  const title = section.querySelector('.section-header-title').textContent;
+  const subs = JSON.parse(section.dataset.subs || '[]');
+  const group = document.createElement('div');
+  group.className = 'nav-group collapsed';
+  group.dataset.target = section.dataset.section;
+  const header = document.createElement('div');
+  header.className = 'nav-group-header';
+  header.innerHTML = `
+    <span class="nav-group-arrow">▾</span>
+    <span class="nav-group-emoji">${emoji}</span>
+    <span class="nav-group-title">${title}</span>
+    <span class="nav-group-count" data-count="0">0</span>
+  `;
+  header.onclick = (e) => {
+    if (e.target.closest('.nav-group-arrow')) {
+      group.classList.toggle('collapsed');
+    } else {
+      group.classList.remove('collapsed');
+      scrollToSection(section);
+    }
+  };
+  group.appendChild(header);
+  if (subs.length) {
+    const children = document.createElement('div');
+    children.className = 'nav-group-children';
+    subs.forEach(sub => {
+      const child = document.createElement('div');
+      child.className = 'nav-child';
+      child.dataset.target = sub.id;
+      child.innerHTML = `<span>${sub.emoji}</span><span>${sub.label}</span>`;
+      child.onclick = () => scrollToSubsection(section, sub.id);
+      children.appendChild(child);
+    });
+    group.appendChild(children);
+  }
+  navList.appendChild(group);
+});
+
+function scrollToSection(section) {
+  section.classList.remove('collapsed');
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setActiveGroup(section.dataset.section);
+}
+function scrollToSubsection(section, subId) {
+  section.classList.remove('collapsed');
+  const target = document.getElementById(subId);
+  if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  setActiveGroup(section.dataset.section);
+  document.querySelectorAll('.nav-child').forEach(c => c.classList.remove('active'));
+  const navChild = document.querySelector(`.nav-child[data-target="${subId}"]`);
+  if (navChild) navChild.classList.add('active');
+}
+function setActiveGroup(target) {
+  document.querySelectorAll('.nav-group-header').forEach(h => h.classList.remove('active'));
+  const grp = document.querySelector(`.nav-group[data-target="${target}"] .nav-group-header`);
+  if (grp) grp.classList.add('active');
+}
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) setActiveGroup(e.target.dataset.section); });
+}, { threshold: 0.2, rootMargin: '-100px 0px -50% 0px' });
+sections.forEach(s => observer.observe(s));
+
+// COLLAPSE
+function toggleSection(header) { header.parentNode.classList.toggle('collapsed'); }
+function expandAll() {
+  sections.forEach(s => s.classList.remove('collapsed'));
+  document.querySelectorAll('.nav-group').forEach(g => g.classList.remove('collapsed'));
+}
+function collapseAll() {
+  sections.forEach(s => s.classList.add('collapsed'));
+  document.querySelectorAll('.nav-group').forEach(g => g.classList.add('collapsed'));
+}
+
+// CHIPS
+function toggleChip(chip, single = false) {
+  if (single) {
+    chip.parentNode.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+    chip.classList.add('selected');
+  } else {
+    chip.classList.toggle('selected');
+  }
+  updateProgress();
+  updateSidebarCounts();
+}
+function show(id, visible) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.toggle('show', !!visible);
+}
+function onCheck(cb) { updateProgress(); updateSidebarCounts(); }
+function onInput(el) { updateProgress(); updateSidebarCounts(); }
+function toggleRegurg(cb) {
+  ['reg-jet-wrap','reg-eveil-wrap','reg-caille-wrap'].forEach(id => {
+    document.getElementById(id).style.display = cb.checked ? 'flex' : 'none';
+  });
+}
+
+// Question initiale terme → afficher les 3 cases
+function onTermeAnswer(chip) {
+  show('q-trio-ages', chip.textContent.includes('Non'));
+}
+// Question heure de réveil
+function onReveilConvient(chip) {
+  show('q-reveil-souhait', chip.textContent.includes('Non') && chip.classList.contains('selected'));
+}
+
+// ═══════════════════════════════════════════════════
+// CALCUL DES ÂGES (3 cases bidirectionnelles + pastille header)
+// Reproduit la logique computeClientFields + parseGestationnelToPrematureDays du site
+// ═══════════════════════════════════════════════════
+let _computingAges = false;
+
+// Parse "36+2" → jours de prématurité par rapport à 280 jours (40 SA)
+function parseGestationnelToPrematureDays(s) {
+  if (!s || typeof s !== 'string') return null;
+  let sem, jours;
+  const m1 = s.match(/^\s*(\d+)\s*\+\s*(\d+)\s*$/);
+  if (m1) {
+    sem = parseInt(m1[1], 10);
+    jours = parseInt(m1[2], 10);
+    if (jours >= 7) return null;
+  } else {
+    const m2 = s.match(/^\s*(\d+)\s*$/);
+    if (!m2) return null;
+    sem = parseInt(m2[1], 10);
+    jours = 0;
+  }
+  const totalDaysGest = sem * 7 + jours;
+  const prematureDays = 280 - totalDaysGest;
+  return prematureDays > 0 ? prematureDays : 0;
+}
+
+function parseAgeStringToDays(s) {
+  if (!s || typeof s !== 'string') return null;
+  let totalDays = 0;
+  let matched = false;
+  const ym = s.match(/(\d+)\s*an/i); if (ym) { totalDays += parseInt(ym[1]) * 365.25; matched = true; }
+  const mm = s.match(/([\d]+[.,]?\d*)\s*mois/i); if (mm) { totalDays += parseFloat(mm[1].replace(',', '.')) * 30.4375; matched = true; }
+  const wm = s.match(/(\d+)\s*sem/i); if (wm) { totalDays += parseInt(wm[1]) * 7; matched = true; }
+  const dm = s.match(/(\d+)\s*(?:jour|j\b)/i); if (dm) { totalDays += parseInt(dm[1]); matched = true; }
+  if (!matched) return null;
+  return Math.round(totalDays);
+}
+
+function formatAge(totalDays) {
+  if (totalDays == null) return null;
+  if (totalDays < 0) return Math.abs(totalDays) + ' j (terme non atteint)';
+  const y = Math.floor(totalDays / 365.25);
+  const remainder = totalDays - y * 365.25;
+  const m = Math.floor(remainder / 30.4375);
+  const j = Math.round(remainder - m * 30.4375);
+  let str = '';
+  if (y > 0) str += y + ' an' + (y > 1 ? 's' : '') + ' ';
+  if (m > 0 || y > 0) str += m + ' mois';
+  if (y === 0 && m < 6) str += (str ? ' ' : '') + j + ' j';
+  return str.trim() || '0 j';
+}
+
+function computeAges(triggeredBy) {
+  if (_computingAges) return;
+  _computingAges = true;
+  try {
+    const consultDate = new Date().toISOString().slice(0,10);
+    const now = new Date(consultDate);
+
+    let dateTerme = document.getElementById('date-terme').value;
+    let ageGest = document.getElementById('age-gestationnel').value.trim();
+    let ageCorr = document.getElementById('age-corrige-manuel').value.trim();
+
+    // === Cas 1 : date du terme saisie → calculer âge corrigé
+    if (triggeredBy === 'date-terme' && dateTerme) {
+      const termeDate = new Date(dateTerme);
+      const corrJours = Math.floor((now - termeDate) / (24*3600*1000));
+      const ageCorrStr = formatAge(corrJours);
+      document.getElementById('age-corrige-manuel').value = ageCorrStr;
+      ageCorr = ageCorrStr;
+    }
+
+    // === Cas 2 : âge gestationnel saisi (ex: 36+2) → calculer date du terme si âge corrigé connu
+    if (triggeredBy === 'age-gestationnel' && ageGest) {
+      const prematureDays = parseGestationnelToPrematureDays(ageGest);
+      if (prematureDays !== null && ageCorr) {
+        const corrDays = parseAgeStringToDays(ageCorr);
+        if (corrDays !== null) {
+          // date du terme = aujourd'hui - âge corrigé
+          const termeD = new Date(now);
+          termeD.setDate(termeD.getDate() - corrDays);
+          document.getElementById('date-terme').value = termeD.toISOString().slice(0,10);
+          dateTerme = termeD.toISOString().slice(0,10);
+        }
+      }
+    }
+
+    // === Cas 3 : âge corrigé saisi → calculer date du terme
+    if (triggeredBy === 'age-corrige-manuel' && ageCorr) {
+      const corrDays = parseAgeStringToDays(ageCorr);
+      if (corrDays !== null) {
+        const termeD = new Date(now);
+        termeD.setDate(termeD.getDate() - corrDays);
+        document.getElementById('date-terme').value = termeD.toISOString().slice(0,10);
+        dateTerme = termeD.toISOString().slice(0,10);
+      }
+    }
+
+    // === Calcul affichage
+    let ageCorrDays = null;
+    if (ageCorr) {
+      ageCorrDays = parseAgeStringToDays(ageCorr);
+    } else if (dateTerme) {
+      const termeDate = new Date(dateTerme);
+      ageCorrDays = Math.floor((now - termeDate) / (24*3600*1000));
+    }
+
+    let ageReelDays = ageCorrDays;
+    if (ageGest) {
+      const prematureDays = parseGestationnelToPrematureDays(ageGest);
+      if (prematureDays !== null && ageCorrDays !== null) {
+        ageReelDays = ageCorrDays + prematureDays;
+      }
+    }
+
+    const ageCorrStr = ageCorrDays !== null ? formatAge(ageCorrDays) : '–';
+    const ageReelStr = ageReelDays !== null ? formatAge(ageReelDays) : '–';
+
+    document.getElementById('age-reel-display').textContent = ageReelStr;
+    document.getElementById('age-corrige-display').textContent = ageCorrStr;
+
+    // === Mise à jour pastilles header
+    const pillReel = document.getElementById('header-age-pill');
+    const pillCorr = document.getElementById('header-age-corrige-pill');
+    if (ageReelDays !== null) {
+      document.getElementById('header-age-reel').textContent = ageReelStr;
+      pillReel.classList.add('show');
+    } else {
+      pillReel.classList.remove('show');
+    }
+    if (ageCorrDays !== null && ageGest) {
+      document.getElementById('header-age-corrige').textContent = ageCorrStr;
+      pillCorr.classList.add('show');
+    } else {
+      pillCorr.classList.remove('show');
+    }
+  } finally {
+    _computingAges = false;
+  }
+}
+
+function updateAlimSections() {
+  const selected = Array.from(document.querySelectorAll('[data-q="type_alim"] .chip.selected')).map(c => c.textContent);
+  const hasAllait = selected.some(s => s.includes('Allaitement') || s.includes('mixte'));
+  const hasBib = selected.some(s => s.includes('Biberon') || s.includes('mixte') || s.includes('Diversification (avec lait)'));
+  const hasDiv = selected.some(s => s.includes('Diversification'));
+  document.getElementById('matin-allaitement').style.display = hasAllait ? 'block' : 'none';
+  document.getElementById('matin-biberon').style.display = hasBib ? 'block' : 'none';
+  document.getElementById('matin-diversification').style.display = hasDiv ? 'block' : 'none';
+}
+
+function checkAplvCount() {
+  const groups = ['aplv_digestif','aplv_cutane','aplv_respi','aplv_orl','aplv_terrain'];
+  let count = 0, categories = 0;
+  groups.forEach(g => {
+    const checked = document.querySelectorAll(`[data-q="${g}"] input[type=checkbox]:checked`);
+    count += checked.length;
+    if (checked.length > 0) categories++;
+  });
+  document.getElementById('aplv-nav-bubble').classList.toggle('show', count >= 3 || categories >= 2);
+}
+function checkSellesSang() {
+  const sang = Array.from(document.querySelectorAll('[data-q="selles_aspect"] .chip.selected')).some(c => c.textContent.includes('Sang'));
+  const alert = document.getElementById('alert-selles-sang');
+  if (alert) alert.style.display = sang ? 'block' : 'none';
+}
+function checkTemp() {
+  const t = parseFloat(document.querySelector('[data-q="temperature"]').value);
+  document.getElementById('alert-temp').style.display = (!isNaN(t) && t > 20) ? 'block' : 'none';
+}
+
+function updateProgress() {
+  let answered = 0, total = 0;
+  document.querySelectorAll('[data-q]').forEach(g => {
+    total++;
+    if (g.querySelector && g.querySelector('.chip.selected')) answered++;
+    else if (g.value && g.value.trim()) answered++;
+    else if (g.querySelector && g.querySelector('input[type=checkbox]:checked')) answered++;
+  });
+  document.getElementById('progress-count').textContent = answered;
+  document.getElementById('progress-fill').style.width = (total > 0 ? (answered/total)*100 : 0) + '%';
+}
+function updateSidebarCounts() {
+  sections.forEach(s => {
+    const q = s.querySelectorAll('[data-q]');
+    let n = 0;
+    q.forEach(g => {
+      if (g.querySelector && g.querySelector('.chip.selected')) n++;
+      else if (g.value && g.value.trim()) n++;
+      else if (g.querySelector && g.querySelector('input[type=checkbox]:checked')) n++;
+    });
+    const nav = document.querySelector(`.nav-group[data-target="${s.dataset.section}"] .nav-group-count`);
+    if (nav) {
+      nav.textContent = n;
+      nav.classList.toggle('has', n > 0);
+    }
+  });
+}
+
+function resetForm() {
+  if (!confirm('Réinitialiser le questionnaire ?')) return;
+  document.querySelectorAll('.chip.selected').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('input[type=text], input[type=date], input[type=time], input[type=number], textarea').forEach(i => i.value = '');
+  document.querySelectorAll('input[type=checkbox]').forEach(c => c.checked = false);
+  document.querySelectorAll('.conditional').forEach(c => c.classList.remove('show'));
+  updateAlimSections();
+  updateProgress();
+  updateSidebarCounts();
+  document.getElementById('alert-temp').style.display = 'none';
+  document.getElementById('alert-selles-sang').style.display = 'none';
+  document.getElementById('aplv-nav-bubble').classList.remove('show');
+  ['reg-jet-wrap','reg-eveil-wrap','reg-caille-wrap'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById('age-reel-display').textContent = '–';
+  document.getElementById('age-corrige-display').textContent = '–';
+  document.getElementById('header-age-pill').classList.remove('show');
+  document.getElementById('header-age-corrige-pill').classList.remove('show');
+}
+
+// INIT
+updateProgress();
+updateSidebarCounts();
+collapseAll();
+sections[0].classList.remove('collapsed');
+document.querySelector('.nav-group').classList.remove('collapsed');
+</script>
+
+</body>
+</html>
