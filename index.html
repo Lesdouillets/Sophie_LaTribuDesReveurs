@@ -22538,17 +22538,25 @@ window.addEventListener('storage', (e) => {
   try {
     const snap = JSON.parse(e.newValue);
     if (!snap || !snap.client || !state || !state.client) return;
-    const fields = ['scheduleWakeUp','dateTerme','ageGestationnel','ageCorrigeManuel'];
+    // Merger TOUT le client (pas juste quelques champs) pour qu'absolument tout ce que
+    // la fiche découverte modifie se reflète dans state.client.
     let changed = false;
-    fields.forEach(f => {
-      if (snap.client[f] !== undefined && snap.client[f] !== state.client[f]) {
-        state.client[f] = snap.client[f];
+    Object.keys(snap.client).forEach(k => {
+      // Comparer JSON pour détecter les modifs sur objets/arrays imbriqués (pbs, alimentation...)
+      const oldJson = JSON.stringify(state.client[k]);
+      const newJson = JSON.stringify(snap.client[k]);
+      if (oldJson !== newJson) {
+        state.client[k] = snap.client[k];
         changed = true;
       }
     });
     if (!changed) return;
-    // Propager l'heure de réveil à tous les inputs visibles + déclencher le handler
-    // pour que Emploi du temps se recalcule (cascade des heures).
+    // 1) Repopuler TOUS les inputs visibles de la fiche client UI (modal d'édition)
+    //    → l'utilisateur voit instantanément les valeurs mises à jour.
+    if (typeof populateFormFromClient === 'function') {
+      try { populateFormFromClient(state.client); } catch(err) { console.warn('[live-sync] populateFormFromClient:', err); }
+    }
+    // 2) Propager scheduleWakeUp aux inputs Emploi du temps + déclencher le handler en cascade.
     document.querySelectorAll('input[data-horaire-souhaite]').forEach(inp => {
       const newVal = state.client.scheduleWakeUp || '';
       if (inp.value !== newVal) {
@@ -22558,11 +22566,16 @@ window.addEventListener('storage', (e) => {
         }
       }
     });
-    // Recalculer la pastille âge corrigé du header si les âges ont changé
+    // 3) Recalculer la pastille âge corrigé du header (déjà appelée dans populateFormFromClient,
+    //    mais on l'appelle aussi pour les cas où populate n'est pas dispo).
     if (typeof computeClientFields === 'function') {
       try { computeClientFields(); } catch(_) {}
     }
-  } catch(_) {}
+    // 4) Mettre à jour le header (badge enfant, parents, etc.)
+    if (typeof updateHeader === 'function') {
+      try { updateHeader(); } catch(_) {}
+    }
+  } catch(err) { console.warn('[live-sync] storage listener:', err); }
 });
 </script>
 </body>
