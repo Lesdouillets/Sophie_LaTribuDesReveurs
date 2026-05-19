@@ -8474,8 +8474,9 @@ function fdRestoreAnswers() {
 }
 window.fdRestoreAnswers = fdRestoreAnswers;
 // Calcul total biberons 24h : somme des volumes saisis dans toutes les .fd-bib-vol
+// (sélecteur GLOBAL car le bandeau est hors de .fd-content)
 function fdComputeBibTotal() {
-  const inputs = document.querySelectorAll('.fd-content .fd-bib-vol');
+  const inputs = document.querySelectorAll('.fd-bib-vol');
   let total = 0, count = 0;
   const values = [];
   inputs.forEach(inp => {
@@ -8486,7 +8487,6 @@ function fdComputeBibTotal() {
   const countEl = document.getElementById('fd-bib-count');
   if (totalEl) totalEl.textContent = total;
   if (countEl) countEl.textContent = count;
-  // Persister la liste des valeurs (utilisée pour restaurer après navigation)
   if (typeof state !== 'undefined' && state && state.client) {
     if (!state.client.fdAnswers) state.client.fdAnswers = {};
     state.client.fdAnswers.bib_volumes = values;
@@ -8494,7 +8494,27 @@ function fdComputeBibTotal() {
   }
 }
 window.fdComputeBibTotal = fdComputeBibTotal;
-// Handler input sur une case volume biberon : si la dernière case se remplit, on en ajoute une nouvelle vide
+// Cleanup : supprime les cases vides/à 0 (sauf celle actuellement focusée) et garantit 1 seule case vide à la fin
+function fdCleanupBibCases() {
+  const container = document.getElementById('fd-bib-cases');
+  if (!container) return;
+  const activeEl = document.activeElement;
+  const inputs = Array.from(container.querySelectorAll('input.fd-bib-vol'));
+  inputs.forEach(inp => {
+    const v = (inp.value || '').trim();
+    if ((!v || v === '0') && inp !== activeEl) inp.remove();
+  });
+  // Garantir qu'il y a TOUJOURS exactement une case vide à la fin (pour permettre d'ajouter)
+  const remaining = container.querySelectorAll('input.fd-bib-vol');
+  if (remaining.length === 0) {
+    fdAddEmptyBibCase();
+  } else {
+    const last = remaining[remaining.length - 1];
+    if ((last.value || '').trim()) fdAddEmptyBibCase();
+  }
+}
+window.fdCleanupBibCases = fdCleanupBibCases;
+// Handler input sur une case volume biberon
 function fdBibCaseInput(el) {
   const container = el.parentElement;
   if (container && el.value && el.value.trim()) {
@@ -8502,6 +8522,7 @@ function fdBibCaseInput(el) {
     const last = inputs[inputs.length - 1];
     if (el === last) fdAddEmptyBibCase();
   }
+  fdCleanupBibCases();
   fdComputeBibTotal();
 }
 window.fdBibCaseInput = fdBibCaseInput;
