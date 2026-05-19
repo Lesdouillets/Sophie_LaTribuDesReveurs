@@ -22560,12 +22560,12 @@ window.addEventListener('storage', (e) => {
     });
     if (!changed) { console.log('[live-sync site] rien à changer'); return; }
     console.log('[live-sync site] champs modifiés:', changedFields);
-    // Garde : si l'utilisateur est en train d'éditer un input/textarea/select (sur le site),
-    // on NE TOUCHE PAS à populateFormFromClient (qui écraserait ce qu'il est en train de taper).
-    // Les modifs sont quand même appliquées à state.client → seront visibles à la prochaine
-    // ouverture/changement de focus.
+    // Garde : on saute populateFormFromClient UNIQUEMENT si la fenêtre du site est
+    // au premier plan ET que l'utilisateur est en train d'éditer un input. Sinon (fenêtre
+    // en arrière-plan, ou pas dans un input), on repopule normalement.
     const _activeEl = document.activeElement;
-    const _userEditing = _activeEl && (
+    const _hasFocus = (typeof document.hasFocus === 'function') ? document.hasFocus() : true;
+    const _userEditing = _hasFocus && _activeEl && (
       _activeEl.tagName === 'INPUT' ||
       _activeEl.tagName === 'TEXTAREA' ||
       _activeEl.tagName === 'SELECT' ||
