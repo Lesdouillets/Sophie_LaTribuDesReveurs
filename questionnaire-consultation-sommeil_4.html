@@ -419,14 +419,8 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
                   </div>
                 </div>
 
-                <!-- Affichage synthèse : âge réel uniquement (l'âge corrigé est déjà le titre du bloc à gauche) -->
-                <div class="age-display-grid">
-                  <div class="age-display-cell">
-                    <div class="age-display-label">🎂 Âge réel</div>
-                    <div class="age-display-value" id="age-reel-display">–</div>
-                  </div>
-                </div>
-                <!-- Élément caché conservé pour ne pas casser computeAges() qui écrit dedans -->
+                <!-- Éléments cachés conservés pour ne pas casser computeAges() qui écrit dedans -->
+                <span id="age-reel-display" style="display:none">–</span>
                 <span id="age-corrige-display" style="display:none">–</span>
 
               </div>
@@ -2310,9 +2304,13 @@ function toggleRegurg(cb) {
 }
 
 // Question initiale terme → afficher les 3 cases (display direct, plus de classe conditional)
+// + persister le choix dans localStorage pour que la question reste visible aux prochains chargements
+// (même quand l'âge corrigé sera renseigné — sinon mon prefill cacherait la question).
 function onTermeAnswer(chip) {
   const qTrio = document.getElementById('q-trio-ages');
-  if (qTrio) qTrio.style.display = chip.textContent.includes('Non') ? '' : 'none';
+  const isNon = chip.textContent.includes('Non');
+  try { localStorage.setItem('tdr_questionnaire_terme', isNon ? 'non' : 'oui'); } catch(_){}
+  if (qTrio) qTrio.style.display = isNon ? 'grid' : 'none';
 }
 // Question heure de réveil
 function onReveilConvient(chip) {
@@ -2809,7 +2807,20 @@ function _prefillAgesFromClient(client) {
   // (storage listener) ne touchent plus aux blocs → évite que le bloc se rétracte
   // pendant que l'utilisateur tape, suite à un auto-save du site qui fire l'événement.
   if (!_prefillDone) {
-    if (hasOriginalAgeData) {
+    // Vérifier si l'utilisateur a déjà répondu à la question "né à terme ?" précédemment.
+    // Si oui, la question reste visible (avec le bon chip sélectionné), et le bloc 3 cases
+    // est affiché uniquement si la réponse était "Non, prématuré".
+    let termeChoice = null;
+    try { termeChoice = localStorage.getItem('tdr_questionnaire_terme'); } catch(_){}
+    if (termeChoice === 'non' || termeChoice === 'oui') {
+      if (qInit) qInit.style.display = 'grid';
+      if (qTrio) qTrio.style.display = termeChoice === 'non' ? 'grid' : 'none';
+      // Restaurer le chip sélectionné dans qInit
+      document.querySelectorAll('[data-q="terme"] .chip').forEach(c => {
+        const matches = termeChoice === 'non' ? c.textContent.includes('Non') : c.textContent.includes('Oui');
+        c.classList.toggle('selected', matches);
+      });
+    } else if (hasOriginalAgeData) {
       if (qInit) qInit.style.display = 'none';
       if (qTrio) qTrio.style.display = 'grid';
     } else {
