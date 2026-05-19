@@ -8302,7 +8302,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=759"></script>
+<script src="script-data.js?v=760"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
@@ -8375,8 +8375,10 @@ function fdRestoreAnswers() {
 window.fdRestoreAnswers = fdRestoreAnswers;
 // Réponse à la question "né à terme ?" → si "Non, prématuré" on révèle les 3 cases d'âge
 function fdOnTermeAnswer(chip) {
+  const isNon = chip.textContent.includes('Non');
+  _fdTrioVisible = isNon; // flag explicite : user a choisi
   const trio = document.getElementById('fd-trio-ages');
-  if (trio) trio.style.display = chip.textContent.includes('Non') ? 'block' : 'none';
+  if (trio) trio.style.display = isNon ? 'block' : 'none';
 }
 window.fdOnTermeAnswer = fdOnTermeAnswer;
 // Sync une valeur de la fiche découverte vers l'input correspondant de la fiche bébé.
@@ -8437,26 +8439,29 @@ window.fdSyncHoraire = fdSyncHoraire;
 // Cache la question "né à terme ?" si la fiche client AVAIT DÉJÀ l'âge AU PREMIER CHARGEMENT.
 // "Sticky" : si la question est visible une fois (parce qu'aucune donnée d'âge au début),
 // elle reste visible même quand l'utilisateur remplit les 3 cases ensuite.
-let _fdTermeQVisible = null; // null = pas encore décidé ; true = mode visible sticky ; false = caché
+let _fdTermeQVisible = null; // null = pas encore décidé ; true = sticky visible ; false = caché
+let _fdTrioVisible   = null; // null = laisser l'auto-logique décider ; true/false = user a explicitement choisi
 function fdUpdateVisibility() {
   const q = document.getElementById('fd-q-terme');
   const trio = document.getElementById('fd-trio-ages');
-  if (!q) return; // section pas encore rendue
+  if (!q) return;
   const c = (typeof state !== 'undefined' && state && state.client) ? state.client : {};
   const hasAgeData = !!((c.dateTerme && String(c.dateTerme).length) || (c.ageGestationnel && String(c.ageGestationnel).length) || (c.ageCorrigeManuel && String(c.ageCorrigeManuel).length));
-  if (_fdTermeQVisible === null) {
-    // Premier appel : décider selon la présence de données
-    _fdTermeQVisible = !hasAgeData;
-  } else if (!_fdTermeQVisible && !hasAgeData) {
-    // L'utilisateur a vidé les âges → on bascule en mode visible (et on y reste)
-    _fdTermeQVisible = true;
-  }
-  if (_fdTermeQVisible) {
-    q.style.display = '';
-    // Le trio garde son état (chip click "Non" le révèle)
-  } else {
-    q.style.display = 'none';
-    if (trio) trio.style.display = 'none';
+  // ─── QUESTION "né à terme ?" (sticky)
+  if (_fdTermeQVisible === null) _fdTermeQVisible = !hasAgeData;
+  else if (!_fdTermeQVisible && !hasAgeData) _fdTermeQVisible = true;
+  q.style.display = _fdTermeQVisible ? '' : 'none';
+  // ─── TRIO 3 cases d'âge : caché si la fiche client a déjà l'âge ET l'utilisateur n'a pas
+  //     explicitement cliqué "Non, prématuré" pour le rouvrir.
+  if (trio) {
+    if (_fdTrioVisible === true) {
+      trio.style.display = 'block';      // user a cliqué "Non" → laisser visible
+    } else if (_fdTrioVisible === false) {
+      trio.style.display = 'none';       // user a cliqué "Oui" → laisser caché
+    } else if (hasAgeData) {
+      trio.style.display = 'none';       // données présentes & pas de choix user → cacher
+    }
+    // Sinon (null + pas de data) : ne rien faire, état initial = none (CSS inline)
   }
 }
 window.fdUpdateVisibility = fdUpdateVisibility;
