@@ -2128,13 +2128,13 @@
       border-radius: 0 8px 8px 0; font-size: 12.5px; line-height: 1.55;
       color: var(--primary-dark); font-weight: 400;
     }
-    /* Question : encadré rectangulaire bleu marine (contour) + intérieur blanc + coins arrondis */
+    /* Question : encadré rectangulaire bleu marine (contour fin) + intérieur blanc + coins arrondis */
     .fd-content .fd-q-row-simple {
       display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
       margin-bottom: 12px;
-      padding: 14px 16px;
+      padding: 12px 14px;
       background: white;
-      border: 2px solid var(--primary-dark);
+      border: 1px solid var(--primary-dark);
       border-radius: 10px;
     }
     .fd-content .fd-q-text {
@@ -8289,7 +8289,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=757"></script>
+<script src="script-data.js?v=758"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
@@ -8365,6 +8365,26 @@ function fdSyncHoraire(fieldKey, value) {
   if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
 }
 window.fdSyncHoraire = fdSyncHoraire;
+// Cacher la question "né à terme ?" + le bloc 3 cases si la fiche client a déjà les infos d'âge
+// (dateTerme OU ageGestationnel OU ageCorrigeManuel). Re-évaluation à chaque modif d'état.
+function fdUpdateVisibility() {
+  const q = document.getElementById('fd-q-terme');
+  const trio = document.getElementById('fd-trio-ages');
+  if (!q) return; // section pas encore rendue
+  const c = (typeof state !== 'undefined' && state && state.client) ? state.client : {};
+  const hasAgeData = !!((c.dateTerme && String(c.dateTerme).length) || (c.ageGestationnel && String(c.ageGestationnel).length) || (c.ageCorrigeManuel && String(c.ageCorrigeManuel).length));
+  if (hasAgeData) {
+    q.style.display = 'none';
+    if (trio) trio.style.display = 'none';
+  } else {
+    q.style.display = '';
+    // Le trio reste sur son état actuel (caché par défaut, révélé par clic "Non, prématuré")
+  }
+}
+window.fdUpdateVisibility = fdUpdateVisibility;
+// Re-évaluer à intervalle (lightweight) — couvre tous les cas (chargement initial, modifs venant
+// du modal fiche bébé, etc.) sans avoir à hooker tous les flux d'écriture state.client.
+setInterval(fdUpdateVisibility, 1000);
 </script>
 <script>
 // ═══════════════════════════════════════════════════
@@ -10659,6 +10679,17 @@ function computeClientFields(triggeredBy) {
         const newStr = terme.toISOString().slice(0, 10);
         dt.value = newStr;
         dateTerme = newStr;
+        // ★ Recomputer age-corrige-manuel depuis la NOUVELLE dateTerme.
+        //   Sinon la section B (line ~10344) a déjà tourné avec l'ANCIENNE dateTerme
+        //   et l'âge manuel reste bloqué sur l'ancienne valeur quand on change ageGest.
+        if (typeof calcAge === 'function') {
+          const ageCorrRC = calcAge(newStr, consultDate);
+          const acm = document.getElementById('age-corrige-manuel');
+          if (acm && ageCorrRC && (forceUpdate || !ageCorrigeManuel)) {
+            acm.value = ageCorrRC.str || '';
+            ageCorrigeManuel = ageCorrRC.str || '';
+          }
+        }
       }
     } else if (prematureDays === 0 && triggeredBy === 'age-gestationnel') {
       // À terme (40+0) ET déclenché par l'âge gestationnel → vider date-terme
