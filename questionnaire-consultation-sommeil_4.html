@@ -2738,9 +2738,10 @@ function _prefillAgesFromClient(client) {
   const headerReelEl = document.getElementById('header-age-reel');
   const headerReelPill = document.getElementById('header-age-pill');
   // PRIORITÉ ABSOLUE : utiliser les STRINGS formatées par le site
-  // (c.ageReelStrCourt / c.ageReelStr / c.ageCorrigeStrCourt / c.ageCorrigeStr).
+  // (c.ageReelStrCourt / c.ageReelStr / c.ageEnfant / c.ageCorrigeStrCourt / c.ageCorrigeStr).
   // C'est exactement ce que la pastille du site affiche → match parfait, pas d'écart de jours.
-  let ageReelText = client.ageReelStrCourt || client.ageReelStr || '';
+  // ageEnfant est le format historique du site (ex. "3 mois 5 j") — utilisé en priorité.
+  let ageReelText = client.ageReelStrCourt || client.ageReelStr || client.ageEnfant || '';
   let ageCorrigeText = '';
   if (client.ageCorrEqReel) {
     ageCorrigeText = ageReelText;
