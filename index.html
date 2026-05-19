@@ -2123,34 +2123,49 @@
       color: var(--primary-dark); background: white;
     }
     .fd-content .fd-input-tiny:focus { outline: none; border-color: var(--primary); }
-    /* Chips arrangés en lignes explicites (pour Matinée : sein/biberon, lait infantile/mixte/sevrage indenté, diversifications) */
+    /* Chips arrangés en lignes explicites (pour Matinée alimentation : sein/biberon, lait infantile/mixte/sevrage indenté, diversifications) */
     .fd-content .fd-chip-row { display: flex; gap: 6px; flex-wrap: wrap; width: 100%; align-items: center; }
     .fd-content .fd-chip.indent { margin-left: 28px; }
-    /* Bandeau biberon 24h — sticky en haut de la fiche découverte */
+    /* Chips type_alim : taille uniforme (les 7 chips ont la même largeur) */
+    .fd-content .fd-chips[data-q="type_alim"] .fd-chip {
+      min-width: 220px; justify-content: center; text-align: center;
+    }
+    /* Bandeau biberon 24h — sticky en haut, 2 lignes, texte normal SAUF total + besoin théorique */
     .fd-content .fd-bib-banner {
       position: sticky; top: 0; z-index: 5;
       background: linear-gradient(135deg, #fff9e6, #fef3c7);
-      border: 1px solid #f0ad4e;
-      border-radius: 8px;
+      border: 1px solid #f0ad4e; border-radius: 8px;
       padding: 8px 14px; margin: 0 0 14px;
-      font-size: 13px; font-weight: 600;
+      font-size: 13px; font-weight: 400;
       color: #7c5200;
-      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
     }
+    .fd-content .fd-bib-banner .fd-bib-line {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .fd-content .fd-bib-banner .fd-bib-line + .fd-bib-line { margin-top: 4px; }
     .fd-content .fd-bib-banner strong { color: #7c5200; font-weight: 800; }
-    .fd-content .fd-bib-banner .fd-bib-sep { color: #d4a85a; }
-    /* Cases volumes biberons (4 cases par section temporelle) */
-    .fd-content .fd-bib-vol-block { margin-top: 8px; }
-    .fd-content .fd-bib-vol-label { font-size: 12px; color: var(--text-light); font-style: italic; margin-bottom: 4px; }
-    .fd-content .fd-bib-vol-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .fd-content .fd-bib-banner .fd-bib-sep { color: #d4a85a; margin: 0 2px; }
+    /* Conteneur des cases volume biberon dans le bandeau (dynamique) */
+    .fd-content .fd-bib-cases { display: inline-flex; gap: 6px; flex-wrap: wrap; align-items: center; }
     .fd-content .fd-bib-vol {
-      width: 80px; padding: 6px 10px;
-      border: 1.5px solid var(--border); border-radius: 8px;
+      width: 70px; padding: 4px 8px;
+      border: 1.5px solid #f0ad4e; border-radius: 6px;
       font-size: 13px; font-weight: 600; font-family: inherit;
-      color: var(--primary-dark); background: white;
+      color: #7c5200; background: white;
     }
-    .fd-content .fd-bib-vol:focus { outline: none; border-color: var(--primary); }
-    .fd-content .fd-bib-vol-unit { font-size: 12px; color: var(--text-light); }
+    .fd-content .fd-bib-vol:focus { outline: none; border-color: #c47a3a; box-shadow: 0 0 0 2px rgba(196,122,58,0.2); }
+    /* Grille 8 types de lait (2 colonnes : Sans anti-reflux / Avec anti-reflux) */
+    .fd-content .fd-lait-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+      margin-top: 12px; padding: 12px;
+      background: #f5f7fc; border: 1px solid var(--border); border-radius: 8px;
+    }
+    .fd-content .fd-lait-col-title {
+      font-size: 11px; font-weight: 800; color: var(--primary-dark);
+      text-transform: uppercase; letter-spacing: 0.5px; text-align: center;
+      padding-bottom: 4px; border-bottom: 1px dashed var(--border);
+    }
+    .fd-content .fd-lait-grid .fd-chip { min-width: 0; text-align: center; justify-content: center; font-size: 12px; }
     .fd-content .fd-info-box {
       padding: 10px 14px; background: #f0f4fa; border-left: 3px solid var(--primary);
       border-radius: 0 8px 8px 0; font-size: 12.5px; line-height: 1.55;
@@ -8330,7 +8345,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=762"></script>
+<script src="script-data.js?v=763"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
@@ -8405,25 +8420,108 @@ window.fdRestoreAnswers = fdRestoreAnswers;
 function fdComputeBibTotal() {
   const inputs = document.querySelectorAll('.fd-content .fd-bib-vol');
   let total = 0, count = 0;
+  const values = [];
   inputs.forEach(inp => {
     const v = parseFloat((inp.value || '').replace(',', '.'));
-    if (!isNaN(v) && v > 0) { total += v; count++; }
+    if (!isNaN(v) && v > 0) { total += v; count++; values.push(inp.value); }
   });
   const totalEl = document.getElementById('fd-bib-total');
   const countEl = document.getElementById('fd-bib-count');
   if (totalEl) totalEl.textContent = total;
   if (countEl) countEl.textContent = count;
-  // Persister chaque valeur dans fdAnswers (par data-q)
+  // Persister la liste des valeurs (utilisée pour restaurer après navigation)
   if (typeof state !== 'undefined' && state && state.client) {
     if (!state.client.fdAnswers) state.client.fdAnswers = {};
-    inputs.forEach(inp => {
-      const q = inp.dataset.q;
-      if (q) state.client.fdAnswers[q] = inp.value || '';
-    });
+    state.client.fdAnswers.bib_volumes = values;
     if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
   }
 }
 window.fdComputeBibTotal = fdComputeBibTotal;
+// Handler input sur une case volume biberon : si la dernière case se remplit, on en ajoute une nouvelle vide
+function fdBibCaseInput(el) {
+  const container = el.parentElement;
+  if (container && el.value && el.value.trim()) {
+    const inputs = container.querySelectorAll('input.fd-bib-vol');
+    const last = inputs[inputs.length - 1];
+    if (el === last) fdAddEmptyBibCase();
+  }
+  fdComputeBibTotal();
+}
+window.fdBibCaseInput = fdBibCaseInput;
+function fdAddEmptyBibCase() {
+  const container = document.getElementById('fd-bib-cases');
+  if (!container) return;
+  const inp = document.createElement('input');
+  inp.type = 'number';
+  inp.className = 'fd-bib-vol';
+  inp.placeholder = 'mL';
+  inp.setAttribute('oninput', 'fdBibCaseInput(this)');
+  container.appendChild(inp);
+}
+window.fdAddEmptyBibCase = fdAddEmptyBibCase;
+// Restaure les cases volumes biberons depuis state.client.fdAnswers.bib_volumes
+let _fdBibRestored = false;
+function fdRestoreBibCases() {
+  const container = document.getElementById('fd-bib-cases');
+  if (!container || _fdBibRestored) return;
+  _fdBibRestored = true;
+  const values = (state && state.client && state.client.fdAnswers && Array.isArray(state.client.fdAnswers.bib_volumes)) ? state.client.fdAnswers.bib_volumes : [];
+  // Garder la première case vide initiale, puis ajouter une case par valeur sauvegardée
+  values.forEach(v => {
+    const inp = document.createElement('input');
+    inp.type = 'number'; inp.className = 'fd-bib-vol'; inp.placeholder = 'mL';
+    inp.value = v;
+    inp.setAttribute('oninput', 'fdBibCaseInput(this)');
+    // Insérer AVANT la dernière case (qui doit rester vide pour permettre la saisie)
+    const last = container.querySelector('input.fd-bib-vol:last-child');
+    if (last) container.insertBefore(inp, last);
+    else container.appendChild(inp);
+  });
+}
+window.fdRestoreBibCases = fdRestoreBibCases;
+// Type de lait infantile : sélection mutex dans la grille 2 colonnes (Sans/Avec anti-reflux)
+function fdSetTypeLait(value, el) {
+  const grid = el ? el.closest('.fd-lait-grid') : document.getElementById('fd-lait-grid');
+  if (grid) grid.querySelectorAll('.fd-chip').forEach(c => c.classList.remove('selected'));
+  if (el) el.classList.add('selected');
+  // Sync vers state.client + fiche bébé (input hidden #type-lait + bouton .lait-btn correspondant)
+  if (typeof state !== 'undefined' && state && state.client) {
+    state.client.typeLait = value;
+    if (!state.client.fdAnswers) state.client.fdAnswers = {};
+    state.client.fdAnswers.type_lait = value;
+  }
+  if (typeof setTypeLait === 'function' && value !== state?.client?.typeLait) {
+    try { setTypeLait(value); } catch(_){}
+  } else {
+    // Sync direct au hidden input + lait-btn highlight côté fiche bébé
+    const hid = document.getElementById('type-lait'); if (hid) hid.value = value;
+    document.querySelectorAll('.lait-btn').forEach(b => b.classList.toggle('selected', b.dataset.lait === value));
+  }
+  if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
+}
+window.fdSetTypeLait = fdSetTypeLait;
+// Affiche/cache la grille 8 types de lait selon que biberon de lait infantile ou allaitement mixte est sélectionné dans type_alim
+function fdUpdateLaitGridVisibility() {
+  const grid = document.getElementById('fd-lait-grid');
+  if (!grid) return;
+  const selectedAlim = Array.from(document.querySelectorAll('.fd-content .fd-chips[data-q="type_alim"] .fd-chip.selected')).map(c => c.textContent);
+  const needsLait = selectedAlim.some(t => t.includes('Biberon de lait infantile') || t.includes('Allaitement mixte'));
+  grid.style.display = needsLait ? 'grid' : 'none';
+  // Si la grille devient visible et state.client.typeLait existe, restaurer le chip sélectionné
+  if (needsLait) {
+    const c = (typeof state !== 'undefined' && state && state.client) ? state.client : {};
+    const tl = c.typeLait || (c.fdAnswers && c.fdAnswers.type_lait) || '';
+    if (tl) {
+      const currentSelected = grid.querySelector('.fd-chip.selected');
+      if (!currentSelected) {
+        grid.querySelectorAll('.fd-chip').forEach(chip => {
+          chip.classList.toggle('selected', chip.dataset.lait === tl);
+        });
+      }
+    }
+  }
+}
+window.fdUpdateLaitGridVisibility = fdUpdateLaitGridVisibility;
 // Met à jour le "besoin théorique" du bandeau biberon (formule du site)
 function fdUpdateBibBesoin() {
   const besoinEl = document.getElementById('fd-bib-besoin');
@@ -8535,8 +8633,10 @@ window.fdUpdateVisibility = fdUpdateVisibility;
 setInterval(() => {
   fdUpdateVisibility();
   if (typeof fdRestoreAnswers === 'function') fdRestoreAnswers();
+  if (typeof fdRestoreBibCases === 'function') fdRestoreBibCases();
   if (typeof fdComputeBibTotal === 'function') fdComputeBibTotal();
   if (typeof fdUpdateBibBesoin === 'function') fdUpdateBibBesoin();
+  if (typeof fdUpdateLaitGridVisibility === 'function') fdUpdateLaitGridVisibility();
 }, 1000);
 </script>
 <script>
