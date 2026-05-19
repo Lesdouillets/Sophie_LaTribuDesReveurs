@@ -2137,6 +2137,19 @@
       border: 1px solid var(--primary-dark);
       border-radius: 10px;
     }
+    /* Variante multi-lignes : plusieurs questions empilées DANS le MÊME encadré, séparées par un trait fin */
+    .fd-content .fd-q-row-simple.fd-q-multi {
+      flex-direction: column; align-items: stretch; gap: 0;
+    }
+    .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      padding: 8px 0;
+    }
+    .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line + .fd-q-line {
+      border-top: 1px dashed var(--border);
+    }
+    .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line:first-child { padding-top: 0; }
+    .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line:last-child { padding-bottom: 0; }
     .fd-content .fd-q-text {
       font-size: 14px; font-weight: 400; color: var(--text); line-height: 1.55;
     }
@@ -8289,7 +8302,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=758"></script>
+<script src="script-data.js?v=759"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
@@ -8308,8 +8321,58 @@ function fdToggleChip(el, single) {
   } else {
     el.classList.toggle('selected');
   }
+  // Persister la sélection dans state.client.fdAnswers[qKey] (tableau de textes sélectionnés)
+  const chips = el.parentElement;
+  const qKey = chips && chips.dataset ? chips.dataset.q : null;
+  if (qKey && typeof state !== 'undefined' && state && state.client) {
+    if (!state.client.fdAnswers) state.client.fdAnswers = {};
+    const selected = Array.from(chips.querySelectorAll('.fd-chip.selected')).map(c => c.textContent.trim());
+    state.client.fdAnswers[qKey] = selected;
+    if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
+  }
 }
 window.fdToggleChip = fdToggleChip;
+// Restaure chips + inputs de la fiche découverte depuis state.client.fdAnswers et state.client (ages)
+function fdRestoreAnswers() {
+  if (typeof state === 'undefined' || !state || !state.client) return;
+  const c = state.client;
+  // Restaurer les 3 inputs d'âge depuis state.client (ces champs sont liés à la fiche bébé)
+  const dtEl = document.getElementById('fd-date-terme');
+  const agEl = document.getElementById('fd-age-gestationnel');
+  const acEl = document.getElementById('fd-age-corrige-manuel');
+  if (dtEl && c.dateTerme && !dtEl.value)         dtEl.value = c.dateTerme;
+  if (agEl && c.ageGestationnel && !agEl.value)   agEl.value = c.ageGestationnel;
+  if (acEl && c.ageCorrigeManuel && !acEl.value)  acEl.value = c.ageCorrigeManuel;
+  // Si une des 3 cases est remplie, on révèle le trio (au cas où la réponse "Non" a été sélectionnée précédemment)
+  const trio = document.getElementById('fd-trio-ages');
+  const ans = c.fdAnswers || {};
+  if (trio && (c.dateTerme || c.ageGestationnel || c.ageCorrigeManuel || (Array.isArray(ans.terme) && ans.terme.some(t => t.includes('Non'))))) {
+    trio.style.display = 'block';
+  }
+  // Restaurer le champ "heure souhaitée" si la réponse "Non, trop tôt" a été sélectionnée
+  const reveilSouhait = document.getElementById('fd-reveil-souhait');
+  if (reveilSouhait && Array.isArray(ans.reveil_convient) && ans.reveil_convient.some(t => t.includes('Non'))) {
+    reveilSouhait.style.display = '';
+  }
+  // Restaurer chips + inputs avec data-q
+  Object.keys(ans).forEach(qKey => {
+    const val = ans[qKey];
+    if (Array.isArray(val)) {
+      // Sélection de chips
+      const chipsContainer = document.querySelector('.fd-chips[data-q="' + qKey + '"]');
+      if (chipsContainer) {
+        chipsContainer.querySelectorAll('.fd-chip').forEach(c => {
+          c.classList.toggle('selected', val.includes(c.textContent.trim()));
+        });
+      }
+    } else if (typeof val === 'string' && val) {
+      // Valeur d'input (heure, texte, etc.)
+      const inp = document.querySelector('input[data-q="' + qKey + '"], textarea[data-q="' + qKey + '"]');
+      if (inp && !inp.value) inp.value = val;
+    }
+  });
+}
+window.fdRestoreAnswers = fdRestoreAnswers;
 // Réponse à la question "né à terme ?" → si "Non, prématuré" on révèle les 3 cases d'âge
 function fdOnTermeAnswer(chip) {
   const trio = document.getElementById('fd-trio-ages');
@@ -8352,7 +8415,13 @@ function fdSyncHoraire(fieldKey, value) {
   let scheduled = '';
   if (ouiSel) scheduled = ouiSel.textContent.includes('Oui') ? heureObservee : heureSouhait;
   else        scheduled = heureObservee;
-  if (typeof state !== 'undefined' && state && state.client) state.client.scheduleWakeUp = scheduled;
+  if (typeof state !== 'undefined' && state && state.client) {
+    state.client.scheduleWakeUp = scheduled;
+    // Persister les 2 valeurs brutes dans fdAnswers pour qu'elles soient restaurées
+    if (!state.client.fdAnswers) state.client.fdAnswers = {};
+    state.client.fdAnswers.heure_reveil = heureObservee;
+    state.client.fdAnswers.reveil_souhait_heure = heureSouhait;
+  }
   // Propager aux inputs Emploi du temps de VIII. Plan d'action (qui ont data-horaire-souhaite)
   document.querySelectorAll('input[data-horaire-souhaite]').forEach(inp => {
     if (inp.value !== scheduled) {
@@ -8365,26 +8434,38 @@ function fdSyncHoraire(fieldKey, value) {
   if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
 }
 window.fdSyncHoraire = fdSyncHoraire;
-// Cacher la question "né à terme ?" + le bloc 3 cases si la fiche client a déjà les infos d'âge
-// (dateTerme OU ageGestationnel OU ageCorrigeManuel). Re-évaluation à chaque modif d'état.
+// Cache la question "né à terme ?" si la fiche client AVAIT DÉJÀ l'âge AU PREMIER CHARGEMENT.
+// "Sticky" : si la question est visible une fois (parce qu'aucune donnée d'âge au début),
+// elle reste visible même quand l'utilisateur remplit les 3 cases ensuite.
+let _fdTermeQVisible = null; // null = pas encore décidé ; true = mode visible sticky ; false = caché
 function fdUpdateVisibility() {
   const q = document.getElementById('fd-q-terme');
   const trio = document.getElementById('fd-trio-ages');
   if (!q) return; // section pas encore rendue
   const c = (typeof state !== 'undefined' && state && state.client) ? state.client : {};
   const hasAgeData = !!((c.dateTerme && String(c.dateTerme).length) || (c.ageGestationnel && String(c.ageGestationnel).length) || (c.ageCorrigeManuel && String(c.ageCorrigeManuel).length));
-  if (hasAgeData) {
+  if (_fdTermeQVisible === null) {
+    // Premier appel : décider selon la présence de données
+    _fdTermeQVisible = !hasAgeData;
+  } else if (!_fdTermeQVisible && !hasAgeData) {
+    // L'utilisateur a vidé les âges → on bascule en mode visible (et on y reste)
+    _fdTermeQVisible = true;
+  }
+  if (_fdTermeQVisible) {
+    q.style.display = '';
+    // Le trio garde son état (chip click "Non" le révèle)
+  } else {
     q.style.display = 'none';
     if (trio) trio.style.display = 'none';
-  } else {
-    q.style.display = '';
-    // Le trio reste sur son état actuel (caché par défaut, révélé par clic "Non, prématuré")
   }
 }
 window.fdUpdateVisibility = fdUpdateVisibility;
 // Re-évaluer à intervalle (lightweight) — couvre tous les cas (chargement initial, modifs venant
-// du modal fiche bébé, etc.) sans avoir à hooker tous les flux d'écriture state.client.
-setInterval(fdUpdateVisibility, 1000);
+// du modal fiche bébé, navigation entre sections, etc.).
+setInterval(() => {
+  fdUpdateVisibility();
+  if (typeof fdRestoreAnswers === 'function') fdRestoreAnswers();
+}, 1000);
 </script>
 <script>
 // ═══════════════════════════════════════════════════
@@ -10312,7 +10393,13 @@ function calcAge(dateStr, referenceStr) {
   let y = r.getFullYear() - d.getFullYear();
   let m = r.getMonth() - d.getMonth();
   let j = r.getDate() - d.getDate();
-  if (j < 0) { m--; j += 30; }
+  if (j < 0) {
+    m--;
+    // Utiliser les VRAIS jours du mois précédent (28-31 selon le mois)
+    // Sinon "1 an 1 mois" peut s'afficher "1 an 0 mois" à cause de l'arrondi à 30 jours.
+    const prevMonth = new Date(r.getFullYear(), r.getMonth(), 0);
+    j += prevMonth.getDate();
+  }
   if (m < 0) { y--; m += 12; }
   const totalMois = y * 12 + m;
   const totalJours = Math.floor((r - d) / (1000 * 60 * 60 * 24));
