@@ -2227,6 +2227,24 @@
       border-top: 1px dashed var(--primary-light);
       padding-top: 10px;
     }
+    /* Question "Quel type de lait prend-il ?" — header au-dessus des 8 chips, plein largeur, dashed bleu ciel au-dessus */
+    .fd-content #fd-q-lait {
+      display: block !important;
+      width: 100%;
+      padding: 10px 0 6px !important;
+      margin-top: 4px;
+      border-top: 1px dashed var(--primary-light) !important;
+      font-weight: 700;
+      font-size: 13.5px;
+      color: var(--primary-dark);
+    }
+    .fd-content #fd-q-lait .fd-q-text { font-weight: 700; color: var(--primary-dark); }
+    .fd-content #fd-q-lait .fd-q-text::before { content: ''; margin: 0; }
+    /* Bouton -1 tétée (rose pâle, distinct du +1) */
+    .fd-tetee-banner .fd-tetee-minus {
+      background: #fbcfe8; color: #831843;
+    }
+    .fd-tetee-banner .fd-tetee-minus:hover { background: #f9a8d4; }
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line:first-child { padding-top: 0; }
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line:last-child { padding-bottom: 0; }
     .fd-content .fd-q-text {
@@ -8381,7 +8399,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=766"></script>
+<script src="script-data.js?v=767"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
@@ -8574,6 +8592,17 @@ function fdIncrementTetee() {
   if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
 }
 window.fdIncrementTetee = fdIncrementTetee;
+// Décrémenter le nombre de tétées (jamais en dessous de 0)
+function fdDecrementTetee() {
+  if (typeof state === 'undefined' || !state || !state.client) return;
+  if (!state.client.fdAnswers) state.client.fdAnswers = {};
+  state.client.fdAnswers.tetee_count = Math.max(0, (state.client.fdAnswers.tetee_count || 0) - 1);
+  const el = document.getElementById('fd-tetee-count');
+  if (el) el.textContent = state.client.fdAnswers.tetee_count;
+  fdComputeTeteeTotal();
+  if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
+}
+window.fdDecrementTetee = fdDecrementTetee;
 function fdComputeTeteeTotal() {
   const countEl = document.getElementById('fd-tetee-count');
   const volEl = document.getElementById('fd-tetee-vol');
@@ -8681,11 +8710,26 @@ function fdSyncHoraire(fieldKey, value) {
   // Si fieldKey === 'reveil_convient' et value est 'oui'/'non' → utiliser directement (override DOM)
   if (fieldKey === 'reveil_convient' && (value === 'oui' || value === 'non')) {
     scheduled = (value === 'oui') ? heureObservee : heureSouhait;
+    // Persister le choix pour qu'un re-sync depuis l'interval (qui ne reçoit pas l'override)
+    // ne reparte pas sur le mauvais chip
+    if (typeof state !== 'undefined' && state && state.client) {
+      if (!state.client.fdAnswers) state.client.fdAnswers = {};
+      state.client.fdAnswers._reveil_convient_choice = value;
+    }
   } else {
-    // Sinon, déduire du chip actuellement sélectionné dans le DOM
-    const ouiSel = document.querySelector('.fd-chips[data-q="reveil_convient"] .fd-chip.selected');
-    if (ouiSel) scheduled = ouiSel.textContent.includes('Oui') ? heureObservee : heureSouhait;
-    else        scheduled = heureObservee;
+    // Sinon, regarder d'abord le flag persisté (résiste aux décalages DOM ↔ state)
+    let choice = null;
+    try {
+      choice = (state && state.client && state.client.fdAnswers && state.client.fdAnswers._reveil_convient_choice) || null;
+    } catch(_){}
+    if (choice === 'oui' || choice === 'non') {
+      scheduled = (choice === 'oui') ? heureObservee : heureSouhait;
+    } else {
+      // Fallback : déduire du chip actuellement sélectionné dans le DOM
+      const ouiSel = document.querySelector('.fd-chips[data-q="reveil_convient"] .fd-chip.selected');
+      if (ouiSel) scheduled = ouiSel.textContent.includes('Oui') ? heureObservee : heureSouhait;
+      else        scheduled = heureObservee;
+    }
   }
   if (typeof state !== 'undefined' && state && state.client) {
     state.client.scheduleWakeUp = scheduled;
