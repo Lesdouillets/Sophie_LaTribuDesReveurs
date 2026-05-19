@@ -160,11 +160,12 @@ body {
 /* BLOC TITRE GAUCHE — Style identique à I. Accueil */
 .q-block {
   display: grid;
-  grid-template-columns: 140px 1fr;
+  grid-template-columns: 130px 1fr;
   gap: 0;
   margin-bottom: 14px;
   border-radius: 8px;
   align-items: stretch;
+  overflow: hidden;
   background: #e2e8f0;
 }
 .q-left {
@@ -184,9 +185,6 @@ body {
 }
 .q-right {
   background: white;
-  margin: 4px 4px 4px 0;
-  border-radius: 6px;
-  border: 1px solid var(--border);
   padding: 14px 18px;
   display: flex;
   flex-direction: column;
@@ -2409,20 +2407,22 @@ function computeAges(triggeredBy) {
     document.getElementById('age-reel-display').textContent = ageReelStr;
     document.getElementById('age-corrige-display').textContent = ageCorrStr;
 
-    // === Mise à jour pastilles header
+    // === Mise à jour pastilles header (défensif : la pastille Âge corrigé a été retirée)
     const pillReel = document.getElementById('header-age-pill');
     const pillCorr = document.getElementById('header-age-corrige-pill');
     if (ageReelDays !== null) {
-      document.getElementById('header-age-reel').textContent = ageReelStr;
-      pillReel.classList.add('show');
+      const elr = document.getElementById('header-age-reel');
+      if (elr) elr.textContent = ageReelStr;
+      if (pillReel) pillReel.classList.add('show');
     } else {
-      pillReel.classList.remove('show');
+      if (pillReel) pillReel.classList.remove('show');
     }
     if (ageCorrDays !== null && ageGest) {
-      document.getElementById('header-age-corrige').textContent = ageCorrStr;
-      pillCorr.classList.add('show');
+      const elc = document.getElementById('header-age-corrige');
+      if (elc) elc.textContent = ageCorrStr;
+      if (pillCorr) pillCorr.classList.add('show');
     } else {
-      pillCorr.classList.remove('show');
+      if (pillCorr) pillCorr.classList.remove('show');
     }
   } finally {
     _computingAges = false;
