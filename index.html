@@ -2064,6 +2064,69 @@
     .block ul, .block ol { padding-left: 24px; margin: 6px 0; }
     .block li { margin-bottom: 4px; }
     /* Wrapper pour bloc avec titre latéral gauche */
+    /* ═══ Fiche découverte intégrée — mini-sidebar à gauche + contenu à droite ═══ */
+    .fd-container {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 12px;
+      margin: 12px 0;
+      min-height: 340px;
+    }
+    .fd-sidebar {
+      background: #f5f7fc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      align-self: start;
+      position: sticky;
+      top: 8px;
+    }
+    .fd-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #2d3f5c;
+      transition: background 0.15s;
+      user-select: none;
+      line-height: 1.25;
+    }
+    .fd-nav-item:hover { background: rgba(45,63,92,0.08); }
+    .fd-nav-item.active { background: #2d3f5c; color: white; box-shadow: 0 2px 6px rgba(45,63,92,0.25); }
+    .fd-nav-item .fd-nav-emoji { font-size: 15px; flex-shrink: 0; }
+    .fd-content {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      min-height: 340px;
+    }
+    .fd-section { display: none; }
+    .fd-section.active { display: block; animation: fdFadeIn 0.18s ease-out; }
+    @keyframes fdFadeIn { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: translateY(0); } }
+    .fd-section-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      border-bottom: 1.5px dashed var(--border);
+    }
+    @media (max-width: 900px) {
+      .fd-container { grid-template-columns: 1fr; }
+      .fd-sidebar { position: static; flex-direction: row; flex-wrap: wrap; }
+      .fd-nav-item { flex: 1 1 auto; min-width: 130px; }
+    }
+
     .block-with-left-title {
       display: grid;
       grid-template-columns: 130px 1fr;
