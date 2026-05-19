@@ -2123,6 +2123,34 @@
       color: var(--primary-dark); background: white;
     }
     .fd-content .fd-input-tiny:focus { outline: none; border-color: var(--primary); }
+    /* Chips arrangés en lignes explicites (pour Matinée : sein/biberon, lait infantile/mixte/sevrage indenté, diversifications) */
+    .fd-content .fd-chip-row { display: flex; gap: 6px; flex-wrap: wrap; width: 100%; align-items: center; }
+    .fd-content .fd-chip.indent { margin-left: 28px; }
+    /* Bandeau biberon 24h — sticky en haut de la fiche découverte */
+    .fd-content .fd-bib-banner {
+      position: sticky; top: 0; z-index: 5;
+      background: linear-gradient(135deg, #fff9e6, #fef3c7);
+      border: 1px solid #f0ad4e;
+      border-radius: 8px;
+      padding: 8px 14px; margin: 0 0 14px;
+      font-size: 13px; font-weight: 600;
+      color: #7c5200;
+      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    }
+    .fd-content .fd-bib-banner strong { color: #7c5200; font-weight: 800; }
+    .fd-content .fd-bib-banner .fd-bib-sep { color: #d4a85a; }
+    /* Cases volumes biberons (4 cases par section temporelle) */
+    .fd-content .fd-bib-vol-block { margin-top: 8px; }
+    .fd-content .fd-bib-vol-label { font-size: 12px; color: var(--text-light); font-style: italic; margin-bottom: 4px; }
+    .fd-content .fd-bib-vol-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .fd-content .fd-bib-vol {
+      width: 80px; padding: 6px 10px;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-size: 13px; font-weight: 600; font-family: inherit;
+      color: var(--primary-dark); background: white;
+    }
+    .fd-content .fd-bib-vol:focus { outline: none; border-color: var(--primary); }
+    .fd-content .fd-bib-vol-unit { font-size: 12px; color: var(--text-light); }
     .fd-content .fd-info-box {
       padding: 10px 14px; background: #f0f4fa; border-left: 3px solid var(--primary);
       border-radius: 0 8px 8px 0; font-size: 12.5px; line-height: 1.55;
@@ -8302,7 +8330,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=761"></script>
+<script src="script-data.js?v=762"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
@@ -8373,6 +8401,43 @@ function fdRestoreAnswers() {
   });
 }
 window.fdRestoreAnswers = fdRestoreAnswers;
+// Calcul total biberons 24h : somme des volumes saisis dans toutes les .fd-bib-vol
+function fdComputeBibTotal() {
+  const inputs = document.querySelectorAll('.fd-content .fd-bib-vol');
+  let total = 0, count = 0;
+  inputs.forEach(inp => {
+    const v = parseFloat((inp.value || '').replace(',', '.'));
+    if (!isNaN(v) && v > 0) { total += v; count++; }
+  });
+  const totalEl = document.getElementById('fd-bib-total');
+  const countEl = document.getElementById('fd-bib-count');
+  if (totalEl) totalEl.textContent = total;
+  if (countEl) countEl.textContent = count;
+  // Persister chaque valeur dans fdAnswers (par data-q)
+  if (typeof state !== 'undefined' && state && state.client) {
+    if (!state.client.fdAnswers) state.client.fdAnswers = {};
+    inputs.forEach(inp => {
+      const q = inp.dataset.q;
+      if (q) state.client.fdAnswers[q] = inp.value || '';
+    });
+    if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
+  }
+}
+window.fdComputeBibTotal = fdComputeBibTotal;
+// Met à jour le "besoin théorique" du bandeau biberon (formule du site)
+function fdUpdateBibBesoin() {
+  const besoinEl = document.getElementById('fd-bib-besoin');
+  if (!besoinEl || typeof besoinLait !== 'function') return;
+  const c = (typeof state !== 'undefined' && state && state.client) ? state.client : {};
+  const mois = (typeof c.ageCorrigeMois === 'number') ? c.ageCorrigeMois : (typeof c.ageReelMois === 'number' ? c.ageReelMois : null);
+  const poids = (document.getElementById('poids-enfant') || {}).value || c.poids || '';
+  if (mois == null) { besoinEl.textContent = '–'; return; }
+  try {
+    const bl = besoinLait(mois, poids);
+    besoinEl.textContent = bl.volume || bl.formula || '–';
+  } catch(_) { besoinEl.textContent = '–'; }
+}
+window.fdUpdateBibBesoin = fdUpdateBibBesoin;
 // Réponse à la question "né à terme ?" → si "Non, prématuré" on révèle les 3 cases d'âge
 function fdOnTermeAnswer(chip) {
   const isNon = chip.textContent.includes('Non');
@@ -8470,6 +8535,8 @@ window.fdUpdateVisibility = fdUpdateVisibility;
 setInterval(() => {
   fdUpdateVisibility();
   if (typeof fdRestoreAnswers === 'function') fdRestoreAnswers();
+  if (typeof fdComputeBibTotal === 'function') fdComputeBibTotal();
+  if (typeof fdUpdateBibBesoin === 'function') fdUpdateBibBesoin();
 }, 1000);
 </script>
 <script>
