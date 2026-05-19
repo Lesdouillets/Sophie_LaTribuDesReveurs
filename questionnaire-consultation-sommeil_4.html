@@ -2712,8 +2712,9 @@ function _prefillAgesFromClient(client) {
   }
   if (ageReelFormatted) {
     if (reelEl) reelEl.textContent = ageReelFormatted;
-    if (headerReelEl) headerReelEl.textContent = ageReelFormatted;
-    if (headerReelPill) headerReelPill.classList.add('show');
+    // Pastille enfant : sous-ligne "🎂 X mois Y j" (style identique au site)
+    const enfantSub = document.getElementById('header-enfant-sub');
+    if (enfantSub) enfantSub.textContent = '🎂 ' + ageReelFormatted;
   }
   if (typeof client.ageCorrigeMois === 'number' && !isNaN(client.ageCorrigeMois)) {
     const days = Math.round(client.ageCorrigeMois * 30.4375);
