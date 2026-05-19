@@ -301,19 +301,31 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
 
 <div class="app">
 
-  <!-- HEADER avec 3 pastilles bleu marine centrées : enfant + âge réel + horloge -->
+  <!-- HEADER avec 3 pastilles bleu marine centrées (style identique aux .client-badge du site) -->
   <header class="app-header">
-    <span class="app-header-brand">🌙 Questionnaire Consultation Sommeil</span>
+    <span class="app-header-brand">🌙 Fiche découverte</span>
     <div class="app-header-pills">
-      <span class="app-header-pill" id="header-enfant-pill">
-        👶 <strong id="header-enfant">–</strong>
-      </span>
-      <span class="app-header-pill" id="header-age-pill">
-        🎂 Âge réel : <strong id="header-age-reel">–</strong>
-      </span>
-      <span class="app-header-pill show" id="header-clock-pill">
-        ⏱ <strong id="header-clock">--:--</strong>
-      </span>
+      <div class="app-header-pill" id="header-enfant-pill">
+        <span class="pill-icon">👶</span>
+        <div>
+          <div class="pill-info"><strong id="header-enfant">–</strong></div>
+          <div class="pill-sub" id="header-enfant-sub">🎂 –</div>
+        </div>
+      </div>
+      <div class="app-header-pill" id="header-parents-pill">
+        <span class="pill-icon">👨‍👩‍👧</span>
+        <div>
+          <div class="pill-info" id="header-parents">–</div>
+          <div class="pill-sub" id="header-famille">–</div>
+        </div>
+      </div>
+      <div class="app-header-pill show" id="header-clock-pill">
+        <span class="pill-icon">⏱</span>
+        <div>
+          <div class="pill-info" id="header-heure-fin">–</div>
+          <div class="pill-sub" id="header-countdown">–</div>
+        </div>
+      </div>
     </div>
   </header>
 
