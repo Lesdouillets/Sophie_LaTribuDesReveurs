@@ -476,7 +476,7 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
       <!-- II. RÉVEIL DU MATIN -->
       <section class="section" data-section="reveil" data-subs='[
         {"id":"reveil-horaires","emoji":"⏰","label":"Heure de réveil"},
-        {"id":"reveil-comportement","emoji":"😊","label":"Comment se réveille"}
+        {"id":"reveil-comportement","emoji":"😊","label":"Humeur au réveil"}
       ]'>
         <div class="section-header" onclick="toggleSection(this)">
           <span class="section-header-emoji">🌅</span>
@@ -519,7 +519,7 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
           </div>
 
           <div class="subsection" id="reveil-comportement">
-            <div class="subsection-title"><span class="subsection-title-emoji">😊</span>Comment se réveille</div>
+            <div class="subsection-title"><span class="subsection-title-emoji">😊</span>Humeur au réveil</div>
 
             <div class="q-block cat-orange">
               <div class="q-left">Humeur</div>
@@ -533,17 +533,6 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
                       <span class="chip" onclick="toggleChip(this)">😢 Pleure</span>
                       <span class="chip" onclick="toggleChip(this)">🥺 Réclame immédiatement à manger</span>
                       <span class="chip" onclick="toggleChip(this)">🎮 Joue tout seul un moment</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="q-row">
-                  <div class="q-row-label">Combien de temps après le réveil prend-il/elle son premier repas ?</div>
-                  <div class="q-row-input">
-                    <div class="chips" data-q="delai_1er_repas">
-                      <span class="chip" onclick="toggleChip(this, true)">⚡ Immédiatement</span>
-                      <span class="chip" onclick="toggleChip(this, true)">⏱ Dans les 15 min</span>
-                      <span class="chip" onclick="toggleChip(this, true)">⏰ 30-60 min après</span>
-                      <span class="chip" onclick="toggleChip(this, true)">🕰 &gt; 1h après</span>
                     </div>
                   </div>
                 </div>
@@ -585,6 +574,17 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
                       <span class="chip" onclick="toggleChip(this); updateAlimSections()">🔀 Allaitement mixte</span>
                       <span class="chip" onclick="toggleChip(this); updateAlimSections()">🥄 Diversification (avec lait)</span>
                       <span class="chip" onclick="toggleChip(this); updateAlimSections()">🍽 Diversification complète</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="q-row">
+                  <div class="q-row-label">Combien de temps après le réveil prend-il/elle son premier repas ?</div>
+                  <div class="q-row-input">
+                    <div class="chips" data-q="delai_1er_repas">
+                      <span class="chip" onclick="toggleChip(this, true)">⚡ Immédiatement</span>
+                      <span class="chip" onclick="toggleChip(this, true)">⏱ Dans les 15 min</span>
+                      <span class="chip" onclick="toggleChip(this, true)">⏰ 30-60 min après</span>
+                      <span class="chip" onclick="toggleChip(this, true)">🕰 &gt; 1h après</span>
                     </div>
                   </div>
                 </div>
@@ -2570,6 +2570,24 @@ function _updatePastillePiste() {
 const _origComputeAges = (typeof computeAges === 'function') ? computeAges : null;
 if (_origComputeAges) {
   computeAges = function(triggeredBy) {
+    // Réplique du computeClientFields du site (index.html ligne 10307+) : quand l'utilisateur
+    // vide une case d'âge, on vide aussi les cases liées. Sinon le site recompute la case
+    // vide depuis les autres (ex. age-corrige-manuel depuis dateTerme) → boucle infernale.
+    const _dtEl = document.getElementById('date-terme');
+    const _agEl = document.getElementById('age-gestationnel');
+    const _acEl = document.getElementById('age-corrige-manuel');
+    if (triggeredBy === 'age-corrige-manuel' && _acEl && !_acEl.value.trim()) {
+      if (_dtEl) _dtEl.value = '';
+      if (_agEl) _agEl.value = '';
+    }
+    if (triggeredBy === 'age-gestationnel' && _agEl && !_agEl.value.trim()) {
+      if (_dtEl) _dtEl.value = '';
+      if (_acEl) _acEl.value = '';
+    }
+    if (triggeredBy === 'date-terme' && _dtEl && !_dtEl.value) {
+      if (_agEl) _agEl.value = '';
+      if (_acEl) _acEl.value = '';
+    }
     if (triggeredBy === 'age-gestationnel' && _currentDateNaissance) {
       const agEl = document.getElementById('age-gestationnel');
       if (agEl && agEl.value.trim()) {
@@ -2653,7 +2671,7 @@ function _substituteVars(client) {
     }
     if (enfantPill) enfantPill.classList.add('show');
   }
-  // Pastille parents : noms parents (info) + nom de famille (sub)
+  // Pastille parents : noms parents (info) + nom de famille (sub) + icône dynamique (réplique du site)
   const p1 = (client.prenomParent1 || '').trim();
   const p2 = (client.prenomParent2 || '').trim();
   const parentsLabel = [p1, p2].filter(Boolean).join(' & ');
@@ -2661,6 +2679,16 @@ function _substituteVars(client) {
   const parentsEl = document.getElementById('header-parents');
   const familleEl = document.getElementById('header-famille');
   const parentsPill = document.getElementById('header-parents-pill');
+  // Icône parents : même règle que le site (index.html ~ ligne 11477)
+  const parentsPillIcon = parentsPill ? parentsPill.querySelector('.pill-icon') : null;
+  if (parentsPillIcon) {
+    const p1Icon = client.sexeParent1 === 'papa' ? '👨' : '👩';
+    const p2Icon = client.sexeParent2 === 'maman' ? '👩' : '👨';
+    if (p1 && p2)      parentsPillIcon.textContent = p1Icon + p2Icon;
+    else if (p1)       parentsPillIcon.textContent = p1Icon;
+    else if (p2)       parentsPillIcon.textContent = p2Icon;
+    else               parentsPillIcon.textContent = '👨‍👩‍👧';
+  }
   if (parentsLabel || famille) {
     if (parentsEl) parentsEl.textContent = parentsLabel || '–';
     if (familleEl) familleEl.textContent = famille || '–';
