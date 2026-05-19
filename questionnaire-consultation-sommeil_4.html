@@ -272,13 +272,11 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
 .age-cell input { width: 100%; padding: 6px 10px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; font-weight: 600; font-family: inherit; color: var(--primary-dark); background: white; }
 .age-cell input:focus { outline: none; border-color: var(--primary); }
 
-/* SYNTHÈSE AGE RÉEL + CORRIGÉ */
-.age-display-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-top: 8px; }
+/* SYNTHÈSE AGE RÉEL (l'âge corrigé est déjà le titre du bloc à gauche) */
+.age-display-grid { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; margin-top: 8px; }
 .age-display-cell { background: linear-gradient(135deg, #eaeff8, #d8e1ee); border: 1.5px solid var(--primary-light); border-radius: 10px; padding: 10px 14px; }
-.age-display-cell.corrige { background: linear-gradient(135deg, #fdf3e8, #f8e3cf); border-color: var(--accent); }
 .age-display-label { font-size: 10px; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.5px; }
 .age-display-value { font-size: 18px; font-weight: 800; color: var(--primary-dark); margin-top: 4px; }
-.age-display-cell.corrige .age-display-value { color: var(--accent); }
 
 /* RESPONSIVE */
 @media (max-width: 1100px) { .q-block { grid-template-columns: 120px 1fr; } }
@@ -403,17 +401,15 @@ textarea.q-input { resize: vertical; min-height: 60px; font-family: inherit; wid
                   </div>
                 </div>
 
-                <!-- Affichage synthèse : âge réel + corrigé -->
+                <!-- Affichage synthèse : âge réel uniquement (l'âge corrigé est déjà le titre du bloc à gauche) -->
                 <div class="age-display-grid">
                   <div class="age-display-cell">
                     <div class="age-display-label">🎂 Âge réel</div>
                     <div class="age-display-value" id="age-reel-display">–</div>
                   </div>
-                  <div class="age-display-cell corrige">
-                    <div class="age-display-label">✏️ Âge corrigé</div>
-                    <div class="age-display-value" id="age-corrige-display">–</div>
-                  </div>
                 </div>
+                <!-- Élément caché conservé pour ne pas casser computeAges() qui écrit dedans -->
+                <span id="age-corrige-display" style="display:none">–</span>
 
               </div>
             </div>
@@ -2422,8 +2418,10 @@ function computeAges(triggeredBy) {
     const ageCorrStr = ageCorrDays !== null ? formatAge(ageCorrDays) : '–';
     const ageReelStr = ageReelDays !== null ? formatAge(ageReelDays) : '–';
 
-    document.getElementById('age-reel-display').textContent = ageReelStr;
-    document.getElementById('age-corrige-display').textContent = ageCorrStr;
+    const _ard = document.getElementById('age-reel-display');
+    if (_ard) _ard.textContent = ageReelStr;
+    const _acd = document.getElementById('age-corrige-display');
+    if (_acd) _acd.textContent = ageCorrStr;
 
     // === Mise à jour pastilles header (défensif : la pastille Âge corrigé a été retirée)
     const pillReel = document.getElementById('header-age-pill');
@@ -2676,11 +2674,20 @@ function _prefillAgesFromClient(client) {
   const corrEl = document.getElementById('age-corrige-display');
   const headerReelEl = document.getElementById('header-age-reel');
   const headerReelPill = document.getElementById('header-age-pill');
+  // Âge réel : priorité 1 = ageReelMois (stocké), priorité 2 = recalcul depuis dateNaissance
+  let ageReelFormatted = null;
   if (typeof client.ageReelMois === 'number' && !isNaN(client.ageReelMois)) {
-    const days = Math.round(client.ageReelMois * 30.4375);
-    const f = formatAge(days);
-    if (reelEl) reelEl.textContent = f;
-    if (headerReelEl) headerReelEl.textContent = f;
+    ageReelFormatted = formatAge(Math.round(client.ageReelMois * 30.4375));
+  } else if (client.dateNaissance) {
+    const dn = new Date(client.dateNaissance);
+    if (!isNaN(dn.getTime())) {
+      const days = Math.floor((Date.now() - dn.getTime()) / (24*3600*1000));
+      if (days >= 0) ageReelFormatted = formatAge(days);
+    }
+  }
+  if (ageReelFormatted) {
+    if (reelEl) reelEl.textContent = ageReelFormatted;
+    if (headerReelEl) headerReelEl.textContent = ageReelFormatted;
     if (headerReelPill) headerReelPill.classList.add('show');
   }
   if (typeof client.ageCorrigeMois === 'number' && !isNaN(client.ageCorrigeMois)) {
