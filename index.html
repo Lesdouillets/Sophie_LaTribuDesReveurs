@@ -2230,7 +2230,6 @@
     }
     /* Question "Quel type de lait prend-il ?" — header au-dessus des 8 chips, plein largeur, dashed bleu ciel au-dessus, bullet conservé */
     .fd-content #fd-q-lait {
-      display: block !important;
       width: 100%;
       padding: 10px 0 6px !important;
       margin-top: 4px;
@@ -8587,7 +8586,7 @@ function fdUpdateLaitGridVisibility() {
   const selectedAlim = Array.from(document.querySelectorAll('.fd-content .fd-chips[data-q="type_alim"] .fd-chip.selected')).map(c => c.textContent);
   const needsLait = selectedAlim.some(t => t.includes('Biberon de lait infantile') || t.includes('Allaitement mixte'));
   grid.style.display = needsLait ? 'grid' : 'none';
-  if (qLait) qLait.style.display = needsLait ? '' : 'none';
+  if (qLait) qLait.style.display = needsLait ? 'block' : 'none';
   // Si la grille devient visible et state.client.typeLait existe, restaurer le chip sélectionné
   if (needsLait) {
     const c = (typeof state !== 'undefined' && state && state.client) ? state.client : {};
