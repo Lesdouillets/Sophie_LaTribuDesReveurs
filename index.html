@@ -2116,15 +2116,26 @@
     }
     .fd-content .fd-chip:hover { border-color: var(--primary-light); background: #f0f4fa; transform: translateY(-1px); }
     .fd-content .fd-chip.selected { background: var(--primary); color: white; border-color: var(--primary-dark); }
+    .fd-content .fd-input-tiny {
+      width: 110px; padding: 6px 10px;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-size: 13px; font-weight: 600; font-family: inherit;
+      color: var(--primary-dark); background: white;
+    }
+    .fd-content .fd-input-tiny:focus { outline: none; border-color: var(--primary); }
     .fd-content .fd-info-box {
       padding: 10px 14px; background: #f0f4fa; border-left: 3px solid var(--primary);
       border-radius: 0 8px 8px 0; font-size: 12.5px; line-height: 1.55;
       color: var(--primary-dark); font-weight: 400;
     }
-    /* Ligne question simple (pas de bloc-titre, juste question + chips inline) */
+    /* Question : encadré rectangulaire bleu marine (contour) + intérieur blanc + coins arrondis */
     .fd-content .fd-q-row-simple {
       display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
       margin-bottom: 12px;
+      padding: 14px 16px;
+      background: white;
+      border: 2px solid var(--primary-dark);
+      border-radius: 10px;
     }
     .fd-content .fd-q-text {
       font-size: 14px; font-weight: 400; color: var(--text); line-height: 1.55;
@@ -8278,7 +8289,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=756"></script>
+<script src="script-data.js?v=757"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
@@ -8305,15 +8316,55 @@ function fdOnTermeAnswer(chip) {
   if (trio) trio.style.display = chip.textContent.includes('Non') ? 'block' : 'none';
 }
 window.fdOnTermeAnswer = fdOnTermeAnswer;
-// Sync une valeur de la fiche découverte vers l'input correspondant de la fiche bébé
-// (déclenche computeClientFields via l'événement input) → state.client mis à jour automatiquement
+// Sync une valeur de la fiche découverte vers l'input correspondant de la fiche bébé.
+// Met à jour state.client + déclenche computeClientFields + force updateHeader + autoSave.
+// Indispensable au "clear" (sinon suppression de date-terme ne propage pas à la pastille / fiche bébé).
 function fdSyncToBebe(targetId, value) {
   const target = document.getElementById(targetId);
   if (!target) return;
   target.value = value;
+  if (typeof state !== 'undefined' && state && state.client) {
+    if      (targetId === 'date-terme')          state.client.dateTerme = value;
+    else if (targetId === 'age-gestationnel')    state.client.ageGestationnel = value;
+    else if (targetId === 'age-corrige-manuel')  state.client.ageCorrigeManuel = value;
+  }
+  // Déclenche le pipeline du site (oninput → computeClientFields → derived fields)
   target.dispatchEvent(new Event('input', { bubbles: true }));
+  // Force la mise à jour des pastilles header (sinon "supprimer date-terme" ne propage pas)
+  if (typeof updateHeader === 'function') { try { updateHeader(); } catch(_){} }
+  if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
 }
 window.fdSyncToBebe = fdSyncToBebe;
+// Réponse à "Est-ce un horaire qui convient ?" → si "Non, trop tôt" révèle le champ "heure souhaitée"
+function fdOnReveilConvient(chip) {
+  const wrap = document.getElementById('fd-reveil-souhait');
+  if (!wrap) return;
+  wrap.style.display = chip.textContent.includes('Non') ? '' : 'none';
+}
+window.fdOnReveilConvient = fdOnReveilConvient;
+// Sync horaire de réveil (heure observée OU souhaitée) vers state.client.scheduleWakeUp.
+// La règle suit celle de l'ancien questionnaire : si l'utilisateur a répondu "Non" → on prend
+// la valeur du champ "heure souhaitée" ; sinon → la valeur du champ "heure observée".
+function fdSyncHoraire(fieldKey, value) {
+  const ouiSel = document.querySelector('.fd-chips[data-q="reveil_convient"] .fd-chip.selected');
+  const heureObservee = (document.querySelector('[data-q="heure_reveil"]') || {}).value || '';
+  const heureSouhait  = (document.querySelector('[data-q="reveil_souhait_heure"]') || {}).value || '';
+  let scheduled = '';
+  if (ouiSel) scheduled = ouiSel.textContent.includes('Oui') ? heureObservee : heureSouhait;
+  else        scheduled = heureObservee;
+  if (typeof state !== 'undefined' && state && state.client) state.client.scheduleWakeUp = scheduled;
+  // Propager aux inputs Emploi du temps de VIII. Plan d'action (qui ont data-horaire-souhaite)
+  document.querySelectorAll('input[data-horaire-souhaite]').forEach(inp => {
+    if (inp.value !== scheduled) {
+      inp.value = scheduled;
+      if (typeof onHoraireSouhaiteChange === 'function') {
+        try { onHoraireSouhaiteChange(inp); } catch(_) {}
+      }
+    }
+  });
+  if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
+}
+window.fdSyncHoraire = fdSyncHoraire;
 </script>
 <script>
 // ═══════════════════════════════════════════════════
