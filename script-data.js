@@ -2279,28 +2279,36 @@ const SCRIPT_DATA = {
 
     // ─── ENVIRONNEMENT DE SOMMEIL ────────────────────────
     {
-      id: "env_general",
-      problematiqueId: "env_general",
-      title: "Environnement de sommeil",
-      emoji: "🏠",
+      id: "env_obscurite",
+      problematiqueId: "env_obscurite",
+      leverId: "env_obscurite",
+      title: "Obscurité insuffisante",
+      emoji: "🌑",
       blocks: [
-        // BLOC COMMUN — DÉBUT
-        { type: "normal", _leftTitle: "Intro", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", text: "- **[prénom_parent_1]**, j'aimerais maintenant qu'on regarde **l'environnement de sommeil** de **[prénom_enfant]**\n- C'est **quelque chose** :\n  - Sur lequel on peut **agir assez facilement**\n  - Mais qu'on a **SOUVENT tendance à sous-estimer**\n  - ALORS QUE **ça peut faire** une **VRAIE différence** dans la **qualité du sommeil** !\n\n- Voilà **plusieurs** **petites choses** qu'on pourrait **ajuster** pour **[prénom_enfant]** :" },
-        // Pastille "Obscurité" (si 2+ options env cochées + Obscurité cochée)
-        { type: "normal", _noBorder: true, showIfPb: "env_obscurite", showIfPbCountMin: { pbs: ["env_obscurite","env_temperature","env_lit_ouvert","env_rituel","env_cadre","env_stimulations","env_ecrans"], count: 2 }, text: "<div style=\"padding:10px 0 4px;text-align:left\"><div style=\"display:inline-block;padding:9px 22px;background:#9d83b0;color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)\">🌑 Obscurité</div></div>" },
-        // OPTION 1 — OBSCURITÉ INSUFFISANTE
         { type: "normal", _leftTitle: "L'obscurité", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_obscurite", text: "- Aujourd'hui, la **chambre** de **[prénom_enfant]** n'est **PAS COMPLETEMENT** dans **le noir**\n- Et **quelque chose** que je vois **assez fréquemment**" },
         { type: "normal", _leftTitle: "Importance de l'obscurité", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_obscurite", text: "- Pourtant l'**obscurité**, va jouer **2 rôles** :\n  - En **journée** : ça **coupe les stimulations visuelles**\n    - Quand il n'y a **rien à voir**, il n'y a **rien à faire**… à **part dormir**\n  - Le **soir** : ça va **aider** à la **sécrétion** de la **mélatonine**, l'hormone du sommeil" },
         { type: "normal", _leftTitle: "Imaginez-vous", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_obscurite", text: "- Tenez, un exemple :\n  - VOUS allez **vous coucher** ce soir dans votre lit,\n  - Et **AVANT** **d'éteindre la lumière**\n  - Et vous voyez une **tache au plafond**\n  ⇒ Vous allez commencer à :\n    - **Cogiter**\n    - **Imaginer une fuite**\n    - Et vous allez **mettre** **+ de temps à vous endormir**\n    - C'est **NORMAL**, je ferais pareil 🤣\n\n- Pour **[prénom_enfant]**, c'est **pareil** :\n  - Si [il_elle] **VOIT TOUT** ce qu'il y a autour → son **cerveau restera en éveil**\n  - Tandis que **s'il fait noir** → [il_elle] pourra **lâcher prise + facilement**" },
         { type: "normal", _leftTitle: "Et la peur du noir ?", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_obscurite", showIfAgeMaxMonths: 28, text: "- Et vous allez me dire :\n  - *« Mais **si je mets le noir complet**…*\n  - *… **[il_elle] ne va pas AVOIR peur du noir** ? »*\n- Et c'est une **bonne question**\n- Mais, en fait, la **réponse** est **NON**\n\n- En réalité, à cet âge, la **peur du noir n'existe pas encore**\n- Elle apparaît **plus tard**, **vers 2 / 2,5 ans**, voire **jamais** chez certains enfants\n- Donc vous **pouvez y aller** **sereinement**" },
-        // Pastille "Température" (si 2+ options + température cochée)
-        { type: "normal", _noBorder: true, showIfPb: "env_temperature", showIfPbCountMin: { pbs: ["env_obscurite","env_temperature","env_lit_ouvert","env_rituel","env_cadre","env_stimulations","env_ecrans"], count: 2 }, text: "<div style=\"padding:10px 0 4px;text-align:left\"><div style=\"display:inline-block;padding:9px 22px;background:#9d83b0;color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)\">🌡 Température</div></div>" },
-        // OPTION 2 — TEMPÉRATURE TROP ÉLEVÉE
+      ]
+    },
+    {
+      id: "env_temperature",
+      problematiqueId: "env_temperature",
+      leverId: "env_temperature",
+      title: "Température trop élevée",
+      emoji: "🌡",
+      blocks: [
         { type: "normal", _leftTitle: "La température de la chambre", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_temperature", text: "- Aujourd'hui, la **chambre** de **[prénom_enfant]** est un peu **AU-DESSUS des 19 degrés**\n\n- On a **tous peur** que notre enfant **prenne froid**\n- Mais en réalité, pour **bien dormir**, le **corps a besoin** de **baisser légèrement** sa **température corporelle**\n- Et la **température** de la **chambre** **VA nous aider** à faire ça" },
         { type: "normal", _leftTitle: "Imaginez-vous", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_temperature", text: "- Vous savez,\n- Quand il fait **très chaud l'été** → on **dort beaucoup moins bien**\n\n- C'est exactement **la même chose** pour **[prénom_enfant]** :\n  - Si la chambre est **un peu trop chaude**\n    1. Ça sera **+ difficile** pour [lui_elle] de **s'endormir**\n    2. Le sommeil sera **moins profond**\n    3. … et ça peut **contribuer aux réveils multiples**\n\n- ⇒ Donc, on va **POUVOIR JOUER** là-dessus" },
-        // Pastille "Lit ouvert" (si 2+ options + lit ouvert coché)
-        { type: "normal", _noBorder: true, showIfPb: "env_lit_ouvert", showIfPbCountMin: { pbs: ["env_obscurite","env_temperature","env_lit_ouvert","env_rituel","env_cadre","env_stimulations","env_ecrans"], count: 2 }, text: "<div style=\"padding:10px 0 4px;text-align:left\"><div style=\"display:inline-block;padding:9px 22px;background:#9d83b0;color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)\">🛏 Lit ouvert</div></div>" },
-        // OPTION 3 — LIT OUVERT TROP TÔT — intro commune
+      ]
+    },
+    {
+      id: "env_lit_ouvert",
+      problematiqueId: "env_lit_ouvert",
+      leverId: "env_lit_ouvert",
+      title: "Lit ouvert trop tôt",
+      emoji: "🛏",
+      blocks: [
         { type: "normal", _leftTitle: "Le lit ouvert", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_lit_ouvert", text: "- J'aimerais **AUSSI** **revenir** sur le **lit ouvert** de **[prénom_enfant]**\n\n- Aujourd'hui, **[prénom_enfant]** est **dans** un **lit ouvert**\n- Passer vers un **lit ouvert**, c'est une **étape importante** de l'**autonomie d'un enfant**\n- Mais avoir un **lit ouvert**, ça implique d'avoir **quelques éléments en tête**" },
         // LIT OUVERT — Si âge ≤ 14 mois : 2 boutons Enfant mobile / Enfant NON mobile
         { type: "normal", _leftTitle: "Mobile ou non mobile ?", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_lit_ouvert", showIfAgeMaxMonths: 14, text: "- À ce stade, deux profils possibles selon **[prénom_enfant]** :", embeddedActions: [
@@ -2335,33 +2343,52 @@ const SCRIPT_DATA = {
         { type: "normal", _leftTitle: "OPTION 1 : GARDER le lit ouvert", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_lit_ouvert", showIfAgeMinMonths: 15, text: "- La **1ère option** ⇒ c'est de **garder le lit ouvert**\n\n- Dans ce cas, votre enfant **garde cette liberté** de **pouvoir se lever**\n- Mais cela veut dire que vous serez **parfois amenés à** :\n  - **Intervenir**\n  - Pour **le ramener dans son lit**\n  - Y compris **la nuit**\n  ⇒ C'est-à-dire que ces **allers-retours feront donc ENCORE partie du fonctionnement** pour le moment\n\n- Si vous **choisissez cette option** :\n  - On **travaillera ensemble** dans ce cadre-là\n  - Pour que ça se **passe le + sereinement possible**" },
         { type: "normal", _leftTitle: "OPTION 2 : REVENIR à un lit fermé", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_lit_ouvert", showIfAgeMinMonths: 15, text: "- La **2nde option** ⇒ c'est de **REVENIR à un lit fermé** (à barreaux ou lit parapluie)\n\n- On **REMET** un **cadre physique** autour du sommeil\n- Les **barreaux** vont faire **office de « limite naturelle »** :\n  - **En restant** dans son lit\n  - [Il_Elle] peut **se nicher**, se **sentir protégé[ne_e]**\n  - Et vous **n'avez plus ces allers-retours**\n\n- Comme je vous l'ai dit, ce n'est **PAS une régression**.\n  ⇒ C'est **simplement** un **outil TEMPORAIRE** !" },
         { type: "normal", _leftTitle: "Mon conseil", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_lit_ouvert", showIfAgeMinMonths: 15, text: "- Si je **me base SUR CE QU'ON a vu ensemble**,\n  mon **conseil** serait plutôt d'**envisager de REVENIR à un lit fermé** : à barreaux ou lit parapluie\n\n- Mais dans **tous les cas**, ça **reste un choix parental**\n- C'est **VOUS qui décidez** ce qui vous **semble** le **+ juste** pour **[prénom_enfant]** et pour **votre famille**\n  et ensuite on **ajustera ensemble** en **fonction** de **votre décision**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0 0;font-weight:400;line-height:1.7\"><span style=\"color:#dc2626;font-weight:800\">❓</span> Alors <strong>dites-moi</strong>,<br>qu'est-ce qui vous <strong>semble le + juste pour vous</strong>, aujourd'hui :<ul style=\"margin:6px 0 10px 20px;padding:0;list-style:disc\"><li><strong>Garder</strong> le <strong>lit ouvert</strong></li><li><strong>Retourner</strong> vers un <strong>lit à barreaux / parapluie</strong> ?</li></ul><div class=\"block-tickbox-choice tbc-inline\" data-choice-id=\"env_lit_ouvert_apres_1an\" data-required=\"true\"><div class=\"tbc-options\"><div class=\"tbc-opt\" data-variant=\"positive\" data-value=\"garder\" onclick=\"selectTickboxChoice(this)\"><span class=\"tbc-icon\">✅</span><span>Garder le lit ouvert</span></div><div class=\"tbc-opt\" data-variant=\"negative\" data-value=\"supprimer\" onclick=\"selectTickboxChoice(this)\"><span class=\"tbc-icon\">❌</span><span>Retour vers un lit à barreaux</span></div></div></div></div>" },
-        // Pastille "Rituel" (si 2+ options + rituel coché)
-        { type: "normal", _noBorder: true, showIfPb: "env_rituel", showIfPbCountMin: { pbs: ["env_obscurite","env_temperature","env_lit_ouvert","env_rituel","env_cadre","env_stimulations","env_ecrans"], count: 2 }, text: "<div style=\"padding:10px 0 4px;text-align:left\"><div style=\"display:inline-block;padding:9px 22px;background:#9d83b0;color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)\">🌙 Rituel</div></div>" },
-        // OPTION 4 — RITUEL ABSENT OU COURT
+      ]
+    },
+    {
+      id: "env_rituel",
+      problematiqueId: "env_rituel",
+      leverId: "env_rituel",
+      title: "Rituel absent ou trop court",
+      emoji: "🌙",
+      blocks: [
         { type: "normal", _leftTitle: "Le rituel du soir", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_rituel", text: "- Aujourd'hui, **POUR [prénom_enfant]** :\n- Il n'y a **pas vraiment** de **rituel**, ou il est **assez court**\n\n- En fait, les **enfants** ont **BESOIN** d'un **moment** :\n  - **Rassurant**\n  - Et **prévisible**\n  - … surtout avant cette **longue séparation de la nuit**" },
         { type: "normal", _leftTitle: "Objectif du rituel", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_rituel", text: "- L'**idée du rituel**, c'est de :\n  - **Toujours** faire les **mêmes petites étapes**\n  - Dans le **même ordre**\n- Petit à petit, **[prénom_enfant]** va comprendre : *« Ah, si y a CA et CA… c'est bientôt l'heure du dodo. »*\n  - Et là, son cerveau peut **+ facilement passer en « mode dodo »**" },
         { type: "normal", _leftTitle: "Imaginez-vous", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_rituel", text: "- Pour vous **donner une** **image** :\n- C'est un peu **COMME l'atterrissage d'un avion**\n  - L'avion **ne** **pique pas du nez D'UN COUP**\n  - Il **descend progressivement**… **étape par étape**\n  ⇒ Le **rituel**, c'est un peu comme **cette descente**, petit à petit, le **cerveau** de **[prénom_enfant]** **va se préparer** :\n    - à **se poser**\n    - pour **aller dormir**" },
-        // Pastille "Cadre" (si 2+ options + cadre coché)
-        { type: "normal", _noBorder: true, showIfPb: "env_cadre", showIfPbCountMin: { pbs: ["env_obscurite","env_temperature","env_lit_ouvert","env_rituel","env_cadre","env_stimulations","env_ecrans"], count: 2 }, text: "<div style=\"padding:10px 0 4px;text-align:left\"><div style=\"display:inline-block;padding:9px 22px;background:#9d83b0;color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)\">🗺 Cadre</div></div>" },
-        // OPTION 5 — CADRE PAS CLAIR
+      ]
+    },
+    {
+      id: "env_cadre",
+      problematiqueId: "env_cadre",
+      leverId: "env_cadre",
+      title: "Cadre non clair",
+      emoji: "🗺",
+      blocks: [
         { type: "normal", _leftTitle: "Le cadre du coucher", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_cadre", text: "- Aujourd'hui, pour **[prénom_enfant]** :\n  - Les **réponses ne sont pas toujours les MEMES** d'un coucher à l'autre\n\n- Cependant, les enfants ont **besoin** :\n  - **De savoir A QUOI s'attendre**\n  - Pour **se sentir en sécurité**\n  - Et **s'endormir + sereinement**" },
         { type: "normal", _leftTitle: "1 seul chemin VS plusieurs chemins", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_cadre", text: "- **Quand** il y a **plusieurs règles possibles** dans la maison :\n- **[prénom_enfant]**, [il_elle] le sent : [il_elle] voit qu'il y a **possibilité de négociation**\n- ⇒ Donc [il_elle] va :\n  - **Tester**\n  - **Chercher les limites**\n  - C'est **NORMAL**, ça fait **partie de** l'**apprentissage** !\n\n- A l'inverse, quand il y a **1 seul chemin**, et que vous **savez que c'est** **LE BON** :\n- Pour **[prénom_enfant]** : ça va être **clair**, **simple**, **prévisible** ⇒ [il_elle] va **se sentir en sécurité** CAR il n'y a **PAS d'autre option possible**\n- Pour vous, **[prénom_parent_1]** :\n  ⇒ Si vous **suivez la** **règle** que vous avez mis en place\n  ⇒ **PAS BESOIN** de vous **poser de questions**\n  ⇒ Et ça va être :\n    - **+ limpide dans votre tête**\n    - et donc **+ simple à gérer** !" },
         { type: "normal", _leftTitle: "Imaginez-vous", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_cadre", text: "- C'est un peu comme un **feu de circulation** :\n  - **Rouge** = on **s'arrête**\n  - **Vert** = on **avance**\n  - C'est **toujours la même règle**\n\n  - Mais si demain le **rouge** voulait dire :\n    - Des fois *« **vous pouvez passer** »*\n    - Des fois *« vous **devez vous arrêter** »*\n  ⇒ **CHACUN** interpréterait **SON code de la route**, et ça serait le **chaos** !" },
-        // Pastille "Stimulations" (si 2+ options + stimulations coché)
-        { type: "normal", _noBorder: true, showIfPb: "env_stimulations", showIfPbCountMin: { pbs: ["env_obscurite","env_temperature","env_lit_ouvert","env_rituel","env_cadre","env_stimulations","env_ecrans"], count: 2 }, text: "<div style=\"padding:10px 0 4px;text-align:left\"><div style=\"display:inline-block;padding:9px 22px;background:#9d83b0;color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)\">👀 Stimulations</div></div>" },
-        // OPTION 6 — STIMULATIONS VISUELLES
+      ]
+    },
+    {
+      id: "env_stimulations",
+      problematiqueId: "env_stimulations",
+      leverId: "env_stimulations",
+      title: "Stimulations visuelles",
+      emoji: "👀",
+      blocks: [
         { type: "normal", _leftTitle: "Les stimulations visuelles", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_stimulations", text: "- Aujourd'hui, **[prénom_enfant]** **s'endort** dans **une chambre** où il y a **beaucoup d'éléments** qui peuvent **attirer son regard**\n- Et c'est **NORMAL** : on cherche à faire une chambre **mignonne**, **jolie**, **accueillante** pour son enfant\n\n- Sauf qu'un enfant, [il_elle] ne va pas **percevoir le beau** :\n  - [Il_Elle] ne va **PAS se dire** : *« c'est joli ici »*\n  - Mais [il_elle] **VA SE DEMANDER** : *« est-ce que je me sens en sécurité dans cette chambre ? »*\n\n- Et pour **se sentir en sécurité** dans une chambre :\n  - Il faut un **environnement apaisant**\n  - **Pas trop d'éléments visuels** :\n    - Qui vont **attirer l'attention**\n    - Et **Maintenir le cerveau en « éveil »**" },
         { type: "normal", _leftTitle: "Imaginez-vous", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_stimulations", text: "- C'est un peu comme quand vous **allez au** **cinéma** :\n  - Si la **salle** est **pleine de lumières et de bruits** ⇒ on aura **du mal à rentrer dans le film**\n  - Mais si la **salle** est **calme et sombre** ⇒ on rentre **tout de suite** dans l'**ambiance du film**\n\n- Pour le **sommeil**, c'est **pareil**\n- L'**environnement** peut :\n  - Soit **faciliter**\n  - Ou soit **compliquer l'endormissement**\n\n- Du coup, si on **réduit un peu les distractions**\n  ⇒ son cerveau pourra **+ facilement se concentrer** sur **1 seule chose : dormir** !" },
-        // Pastille "Écrans" (si 2+ options + écrans coché)
-        { type: "normal", _noBorder: true, showIfPb: "env_ecrans", showIfPbCountMin: { pbs: ["env_obscurite","env_temperature","env_lit_ouvert","env_rituel","env_cadre","env_stimulations","env_ecrans"], count: 2 }, text: "<div style=\"padding:10px 0 4px;text-align:left\"><div style=\"display:inline-block;padding:9px 22px;background:#9d83b0;color:#fff;border-radius:999px;font-weight:700;font-size:14.5px;letter-spacing:0.4px;box-shadow:0 2px 6px rgba(0,0,0,0.18)\">📺 Écrans</div></div>" },
-        // OPTION 7 — ÉCRANS
+      ]
+    },
+    {
+      id: "env_ecrans",
+      problematiqueId: "env_ecrans",
+      leverId: "env_ecrans",
+      title: "Écrans",
+      emoji: "📺",
+      blocks: [
         { type: "normal", _leftTitle: "Les écrans", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_ecrans", text: "- Aujourd'hui, **[prénom_enfant]** est en **contact avec des écrans**, **directement ou indirectement**\n- Et c'est **fréquent** : les écrans sont **partout** aujourd'hui, **difficile à éviter complètement**\n- Mais en réalité, ça peut **jouer sur le sommeil**" },
         { type: "normal", _leftTitle: "La lumière bleue", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_ecrans", text: "- Les **écrans diffusent** une lumière qu'on appelle **« lumière bleue »**\n- Une **lumière proche** de celle **du soleil**\n- Du coup, le **cerveau** peut être **confus** :\n  - Il pense que c'est **encore le « jour »**\n  - Et il a **du mal à passer en mode « dodo »**\n- ⇒ **Résultat** :\n  - La **production de mélatonine** est **retardée**\n  - Et le **train du sommeil** passe **+ tard** que prévu" },
-        // Spacer avant "Les meilleures conditions possibles" (si 2+ options env cochées)
-        { type: "normal", _noBorder: true, showIfPbCountMin: { pbs: ["env_obscurite","env_temperature","env_lit_ouvert","env_rituel","env_cadre","env_stimulations","env_ecrans"], count: 2 }, text: "<div style=\"height:20px\"></div>" },
-        // BLOC COMMUN — FIN
-        { type: "normal", _leftTitle: "Les meilleures conditions possibles", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", text: "- L'**objectif**, dans tout ça, c'est de donner les **meilleures conditions de sommeil possibles** à **[prénom_enfant]**\n- Parce qu'aujourd'hui, on **ne connaît pas encore SES sensibilités** à l'environnement :\n  ⇒ Donc on **met en place** le **maximum**\n\n- Et **une fois** que les **nuits et les siestes** se seront **apaisées**, on pourra **ajuster** :\n  - On **garde ce qui marche**\n  - On pourra **tester si on peut assouplir**" },
-        { type: "question", _leftTitle: "Est-ce que ça vous parle ?", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", text: "<div style=\"display:flex;align-items:center;min-height:60px\"><span>• Est-ce que <strong>ça vous parle tout ça</strong> ?</span></div>" },
       ]
     },
 

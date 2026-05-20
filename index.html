@@ -8399,7 +8399,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=770"></script>
+<script src="script-data.js?v=771"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
@@ -11734,14 +11734,9 @@ function isProblematiqueMatched(problematiqueId, selectedPbs) {
     const stratCat = document.querySelector('.pb-cat-checkbox[data-cat="strategie"]:checked, .modal-pb-cat[data-cat="strategie"]:checked, .diag-pb-cat[data-cat="strategie"]:checked');
     return !!stratCat;
   }
-  // Cas particulier : la section "Environnement de sommeil" est active
-  // si la case parente "Environnement de sommeil" est cochée OU l'une des sous-cases env_*.
-  if (problematiqueId === 'env_general') {
-    const envPbs = ['env_obscurite','env_temperature','env_lit_ouvert','env_rituel','env_cadre','env_stimulations','env_ecrans','souhait_lit_ouvert_jeune'];
-    if (envPbs.some(id => selectedPbs.has(id))) return true;
-    const envCat = document.querySelector('.pb-cat-checkbox[data-cat="env"]:checked, .modal-pb-cat[data-cat="env"]:checked, .diag-pb-cat[data-cat="env"]:checked');
-    return !!envCat;
-  }
+  // (Cas particulier env_general supprimé : env_general a été splittée en 7 sections
+  // individuelles — env_obscurite, env_temperature, env_lit_ouvert, env_rituel, env_cadre,
+  // env_stimulations, env_ecrans — chacune avec son propre problematiqueId.)
   // Cas particulier : la section "Enjeux relationnels" est active
   // si la case parente est cochée OU l'une des sous-cases relationnel_*.
   if (problematiqueId === 'relationnel_general') {
