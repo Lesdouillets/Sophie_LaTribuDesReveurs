@@ -2282,7 +2282,7 @@ const SCRIPT_DATA = {
       id: "env_obscurite",
       problematiqueId: "env_obscurite",
       leverId: "env_obscurite",
-      title: "Obscurité insuffisante",
+      title: "Obscurité",
       emoji: "🌑",
       blocks: [
         { type: "normal", _leftTitle: "L'obscurité", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_obscurite", text: "- Aujourd'hui, la **chambre** de **[prénom_enfant]** n'est **PAS COMPLETEMENT** dans **le noir**\n- Et **quelque chose** que je vois **assez fréquemment**" },
@@ -2295,7 +2295,7 @@ const SCRIPT_DATA = {
       id: "env_temperature",
       problematiqueId: "env_temperature",
       leverId: "env_temperature",
-      title: "Température trop élevée",
+      title: "Température",
       emoji: "🌡",
       blocks: [
         { type: "normal", _leftTitle: "La température de la chambre", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_temperature", text: "- Aujourd'hui, la **chambre** de **[prénom_enfant]** est un peu **AU-DESSUS des 19 degrés**\n\n- On a **tous peur** que notre enfant **prenne froid**\n- Mais en réalité, pour **bien dormir**, le **corps a besoin** de **baisser légèrement** sa **température corporelle**\n- Et la **température** de la **chambre** **VA nous aider** à faire ça" },
@@ -2306,7 +2306,7 @@ const SCRIPT_DATA = {
       id: "env_lit_ouvert",
       problematiqueId: "env_lit_ouvert",
       leverId: "env_lit_ouvert",
-      title: "Lit ouvert trop tôt",
+      title: "Lit ouvert",
       emoji: "🛏",
       blocks: [
         { type: "normal", _leftTitle: "Le lit ouvert", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_lit_ouvert", text: "- J'aimerais **AUSSI** **revenir** sur le **lit ouvert** de **[prénom_enfant]**\n\n- Aujourd'hui, **[prénom_enfant]** est **dans** un **lit ouvert**\n- Passer vers un **lit ouvert**, c'est une **étape importante** de l'**autonomie d'un enfant**\n- Mais avoir un **lit ouvert**, ça implique d'avoir **quelques éléments en tête**" },
@@ -2349,7 +2349,7 @@ const SCRIPT_DATA = {
       id: "env_rituel",
       problematiqueId: "env_rituel",
       leverId: "env_rituel",
-      title: "Rituel absent ou trop court",
+      title: "Rituel",
       emoji: "🌙",
       blocks: [
         { type: "normal", _leftTitle: "Le rituel du soir", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_rituel", text: "- Aujourd'hui, **POUR [prénom_enfant]** :\n- Il n'y a **pas vraiment** de **rituel**, ou il est **assez court**\n\n- En fait, les **enfants** ont **BESOIN** d'un **moment** :\n  - **Rassurant**\n  - Et **prévisible**\n  - … surtout avant cette **longue séparation de la nuit**" },
@@ -2361,7 +2361,7 @@ const SCRIPT_DATA = {
       id: "env_cadre",
       problematiqueId: "env_cadre",
       leverId: "env_cadre",
-      title: "Cadre non clair",
+      title: "Cadre",
       emoji: "🗺",
       blocks: [
         { type: "normal", _leftTitle: "Le cadre du coucher", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_cadre", text: "- Aujourd'hui, pour **[prénom_enfant]** :\n  - Les **réponses ne sont pas toujours les MEMES** d'un coucher à l'autre\n\n- Cependant, les enfants ont **besoin** :\n  - **De savoir A QUOI s'attendre**\n  - Pour **se sentir en sécurité**\n  - Et **s'endormir + sereinement**" },
@@ -2373,7 +2373,7 @@ const SCRIPT_DATA = {
       id: "env_stimulations",
       problematiqueId: "env_stimulations",
       leverId: "env_stimulations",
-      title: "Stimulations visuelles",
+      title: "Stimulations",
       emoji: "👀",
       blocks: [
         { type: "normal", _leftTitle: "Les stimulations visuelles", _leftTitleStyle: "background:#c9b6d6;color:#4f3d62", showIfPb: "env_stimulations", text: "- Aujourd'hui, **[prénom_enfant]** **s'endort** dans **une chambre** où il y a **beaucoup d'éléments** qui peuvent **attirer son regard**\n- Et c'est **NORMAL** : on cherche à faire une chambre **mignonne**, **jolie**, **accueillante** pour son enfant\n\n- Sauf qu'un enfant, [il_elle] ne va pas **percevoir le beau** :\n  - [Il_Elle] ne va **PAS se dire** : *« c'est joli ici »*\n  - Mais [il_elle] **VA SE DEMANDER** : *« est-ce que je me sens en sécurité dans cette chambre ? »*\n\n- Et pour **se sentir en sécurité** dans une chambre :\n  - Il faut un **environnement apaisant**\n  - **Pas trop d'éléments visuels** :\n    - Qui vont **attirer l'attention**\n    - Et **Maintenir le cerveau en « éveil »**" },
