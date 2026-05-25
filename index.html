@@ -2130,6 +2130,40 @@
     .fd-content .fd-chips[data-q="type_alim"] .fd-chip {
       min-width: 220px; justify-content: center; text-align: center;
     }
+    /* ─── Bloc Alimentation (checkboxes mirroir de la fiche client) ─── */
+    .fd-content .fd-alim-block {
+      display: flex; flex-direction: column; gap: 8px; width: 100%;
+    }
+    .fd-content .fd-alim-label {
+      font-size: 13px; font-weight: 600; color: var(--text);
+      text-decoration: underline; text-underline-offset: 3px;
+      margin-bottom: 2px;
+    }
+    .fd-content .fd-alim-hint {
+      color: #aaa; font-size: 11px; font-weight: 400; text-decoration: none;
+    }
+    .fd-content .fd-alim-row {
+      display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    }
+    .fd-content .fd-alim-cb {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 14px; border: 1.5px solid var(--border); border-radius: 8px;
+      background: white; cursor: pointer; font-size: 13px; font-weight: 500;
+      color: var(--text); transition: all 0.15s;
+    }
+    .fd-content .fd-alim-cb:hover { border-color: var(--primary-light); background: #f0f4fa; }
+    .fd-content .fd-alim-cb:has(input:checked) {
+      background: #dcfce7; border-color: #16a34a; color: #14532d;
+    }
+    .fd-content .fd-alim-cb input[type="checkbox"] {
+      width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer;
+    }
+    .fd-content .fd-alim-cb-dashed { border-style: dashed; border-color: #b0b0b0; }
+    .fd-content .fd-allait-mode-group {
+      border: 1.5px solid #fda4af; border-radius: 8px;
+      padding: 10px 12px; background: #fff5f6; margin-top: 4px;
+    }
+    .fd-content .fd-alim-autres { margin-top: 12px; }
     /* Container des bandeaux (biberon + tétée) — OUTSIDE de la bordure épaisse de fd-content */
     .fd-banners {
       display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px;
@@ -8397,7 +8431,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=774"></script>
+<script src="script-data.js?v=775"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
@@ -8581,8 +8615,9 @@ function fdUpdateLaitGridVisibility() {
   const grid = document.getElementById('fd-lait-grid');
   const qLait = document.getElementById('fd-q-lait');
   if (!grid) return;
-  const selectedAlim = Array.from(document.querySelectorAll('.fd-content .fd-chips[data-q="type_alim"] .fd-chip.selected')).map(c => c.textContent);
-  const needsLait = selectedAlim.some(t => t.includes('Biberon de lait infantile') || t.includes('Allaitement mixte'));
+  // Lecture depuis les NOUVELLES checkboxes data-fd-alim (mirroir de la fiche client)
+  const checkedAlim = Array.from(document.querySelectorAll('.fd-content input[data-fd-alim]:checked')).map(cb => cb.dataset.fdAlim);
+  const needsLait = checkedAlim.includes('Biberon lait infantile') || checkedAlim.includes('Allaitement mixte');
   grid.style.display = needsLait ? 'grid' : 'none';
   if (qLait) qLait.style.display = needsLait ? 'block' : 'none';
   // Si la grille devient visible et state.client.typeLait existe, restaurer le chip sélectionné
@@ -8642,15 +8677,100 @@ window.fdComputeTeteeTotal = fdComputeTeteeTotal;
 // - Biberon (lait infantile / au biberon / mixte) → bandeau biberon
 // - Sein / mixte → bandeau tétée
 function fdUpdateBannersVisibility() {
-  const selected = Array.from(document.querySelectorAll('.fd-content .fd-chips[data-q="type_alim"] .fd-chip.selected')).map(c => c.textContent);
-  const hasBib  = selected.some(t => t.includes('Biberon') || t.includes('Allaitement au biberon') || t.includes('Allaitement mixte'));
-  const hasSein = selected.some(t => t.includes('Allaitement au sein') || t.includes('Allaitement mixte'));
+  const checkedAlim  = Array.from(document.querySelectorAll('.fd-content input[data-fd-alim]:checked')).map(cb => cb.dataset.fdAlim);
+  const checkedMode  = Array.from(document.querySelectorAll('.fd-content input[data-fd-allait-mode]:checked')).map(cb => cb.dataset.fdAllaitMode);
+  // Biberon visible si : Biberon lait infantile, ou Allaitement mixte, ou (Allaitement maternel + Mode au biberon)
+  const hasBib  = checkedAlim.includes('Biberon lait infantile')
+               || checkedAlim.includes('Allaitement mixte')
+               || checkedMode.includes('Allaitement au biberon');
+  // Tétée visible si : Allaitement maternel/mixte avec mode au sein (ou maternel/mixte sans mode précisé encore)
+  const hasMaternelOrMixte = checkedAlim.includes('Allaitement maternel') || checkedAlim.includes('Allaitement mixte');
+  const hasSein = hasMaternelOrMixte && (checkedMode.length === 0 || checkedMode.includes('Allaitement au sein'));
   const bibBanner   = document.querySelector('.fd-bib-banner');
   const teteeBanner = document.getElementById('fd-tetee-banner');
   if (bibBanner)   bibBanner.style.display   = hasBib  ? '' : 'none';
   if (teteeBanner) teteeBanner.style.display = hasSein ? '' : 'none';
 }
 window.fdUpdateBannersVisibility = fdUpdateBannersVisibility;
+// ─────────────────────────────────────────────────────────────────────────────
+// SYNC ALIM : fiche découverte ↔ fiche client (onglet Santé > Alimentation)
+// Les checkboxes data-fd-alim et data-fd-allait-mode mirorent les name="alim"
+// et name="allaitement_mode" de la fiche client. On clique programmatiquement
+// la case fiche client pour déclencher TOUS ses onchange (toggleTypeLait,
+// syncMedicalToConfort, enforceAllaitementMode, etc.) — ainsi tous les effets
+// de bord du site (cacher allaitement si biberon seul, etc.) se déclenchent.
+// ─────────────────────────────────────────────────────────────────────────────
+function fdOnAlimChange(cb) {
+  if (!cb || !cb.dataset || !cb.dataset.fdAlim) return;
+  const val = cb.dataset.fdAlim;
+  // Mutex "alim_principal" : un seul des 3 (maternel/biberon/mixte) à la fois
+  if (cb.checked && cb.dataset.exclusive === 'alim_principal') {
+    document.querySelectorAll('.fd-content input[data-fd-alim][data-exclusive="alim_principal"]').forEach(other => {
+      if (other !== cb) other.checked = false;
+    });
+  }
+  // Synchroniser la case fiche client correspondante
+  const ficheCb = document.querySelector(`input[name="alim"][value="${val}"]`);
+  if (ficheCb && ficheCb.checked !== cb.checked) {
+    ficheCb.checked = cb.checked;
+    ficheCb.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  // Visibilité du groupe "Mode d'allaitement" (uniquement si maternel ou mixte)
+  fdUpdateAllaitModeVisibility();
+  // Visibilité grille lait + bandeaux (déjà gérée par setInterval mais on force ici aussi)
+  if (typeof fdUpdateLaitGridVisibility === 'function') fdUpdateLaitGridVisibility();
+  if (typeof fdUpdateBannersVisibility === 'function') fdUpdateBannersVisibility();
+  // Persister dans fdAnswers
+  if (typeof state !== 'undefined' && state && state.client) {
+    if (!state.client.fdAnswers) state.client.fdAnswers = {};
+    state.client.fdAnswers.type_alim = Array.from(document.querySelectorAll('.fd-content input[data-fd-alim]:checked')).map(c => c.dataset.fdAlim);
+    if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
+  }
+}
+window.fdOnAlimChange = fdOnAlimChange;
+function fdOnAllaitModeChange(cb) {
+  if (!cb || !cb.dataset || !cb.dataset.fdAllaitMode) return;
+  const val = cb.dataset.fdAllaitMode;
+  const ficheCb = document.querySelector(`input[name="allaitement_mode"][value="${val}"]`);
+  if (ficheCb && ficheCb.checked !== cb.checked) {
+    ficheCb.checked = cb.checked;
+    ficheCb.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  if (typeof fdUpdateBannersVisibility === 'function') fdUpdateBannersVisibility();
+  if (typeof state !== 'undefined' && state && state.client) {
+    if (!state.client.fdAnswers) state.client.fdAnswers = {};
+    state.client.fdAnswers.allaitement_mode = Array.from(document.querySelectorAll('.fd-content input[data-fd-allait-mode]:checked')).map(c => c.dataset.fdAllaitMode);
+    if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
+  }
+}
+window.fdOnAllaitModeChange = fdOnAllaitModeChange;
+function fdUpdateAllaitModeVisibility() {
+  const group = document.getElementById('fd-allait-mode-group');
+  if (!group) return;
+  const checkedAlim = Array.from(document.querySelectorAll('.fd-content input[data-fd-alim]:checked')).map(cb => cb.dataset.fdAlim);
+  const shouldShow = checkedAlim.includes('Allaitement maternel') || checkedAlim.includes('Allaitement mixte');
+  group.style.display = shouldShow ? '' : 'none';
+}
+window.fdUpdateAllaitModeVisibility = fdUpdateAllaitModeVisibility;
+// Sens inverse : quand la fiche client change → mettre à jour la fiche découverte
+function fdSyncFromFicheClient() {
+  // Sync data-fd-alim ← name="alim"
+  document.querySelectorAll('.fd-content input[data-fd-alim]').forEach(fdCb => {
+    const val = fdCb.dataset.fdAlim;
+    const ficheCb = document.querySelector(`input[name="alim"][value="${val}"]`);
+    if (ficheCb && fdCb.checked !== ficheCb.checked) fdCb.checked = ficheCb.checked;
+  });
+  // Sync data-fd-allait-mode ← name="allaitement_mode"
+  document.querySelectorAll('.fd-content input[data-fd-allait-mode]').forEach(fdCb => {
+    const val = fdCb.dataset.fdAllaitMode;
+    const ficheCb = document.querySelector(`input[name="allaitement_mode"][value="${val}"]`);
+    if (ficheCb && fdCb.checked !== ficheCb.checked) fdCb.checked = ficheCb.checked;
+  });
+  fdUpdateAllaitModeVisibility();
+  if (typeof fdUpdateLaitGridVisibility === 'function') fdUpdateLaitGridVisibility();
+  if (typeof fdUpdateBannersVisibility === 'function') fdUpdateBannersVisibility();
+}
+window.fdSyncFromFicheClient = fdSyncFromFicheClient;
 // Restaurer le compteur tétées depuis state.client.fdAnswers
 function fdRestoreTetee() {
   if (typeof state === 'undefined' || !state || !state.client || !state.client.fdAnswers) return;
@@ -8811,6 +8931,7 @@ setInterval(() => {
   if (typeof fdUpdateBibBesoin === 'function') fdUpdateBibBesoin();
   if (typeof fdUpdateLaitGridVisibility === 'function') fdUpdateLaitGridVisibility();
   if (typeof fdUpdateBannersVisibility === 'function') fdUpdateBannersVisibility();
+  if (typeof fdSyncFromFicheClient === 'function') fdSyncFromFicheClient();
 }, 1000);
 </script>
 <script>
