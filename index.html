@@ -2307,8 +2307,6 @@
       flex-direction: column;
       gap: 2px;
       align-self: start;
-      position: sticky;
-      top: 8px;
     }
     .fd-nav-item {
       display: flex;
@@ -8399,7 +8397,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=772"></script>
+<script src="script-data.js?v=773"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
@@ -8813,24 +8811,6 @@ setInterval(() => {
   if (typeof fdUpdateBibBesoin === 'function') fdUpdateBibBesoin();
   if (typeof fdUpdateLaitGridVisibility === 'function') fdUpdateLaitGridVisibility();
   if (typeof fdUpdateBannersVisibility === 'function') fdUpdateBannersVisibility();
-  // Indicateur visuel sur la page : heure réellement utilisée par l'emploi du temps
-  const dbgWake = document.getElementById('fd-debug-wake');
-  if (dbgWake) dbgWake.textContent = (state && state.client && state.client.scheduleWakeUp) || '–';
-  // Diagnostics complets : valeurs des 2 inputs + le choix persisté
-  const _dbgObs = document.getElementById('fd-dbg-obs');
-  const _dbgSouh = document.getElementById('fd-dbg-souh');
-  const _dbgChoice = document.getElementById('fd-dbg-choice');
-  if (_dbgObs) {
-    const inp = document.querySelector('.fd-content [data-q="heure_reveil"]');
-    _dbgObs.textContent = (inp && inp.value) || '–';
-  }
-  if (_dbgSouh) {
-    const inp = document.querySelector('.fd-content [data-q="reveil_souhait_heure"]');
-    _dbgSouh.textContent = (inp && inp.value) || '–';
-  }
-  if (_dbgChoice) {
-    _dbgChoice.textContent = (state && state.client && state.client.fdAnswers && state.client.fdAnswers._reveil_convient_choice) || '–';
-  }
 }, 1000);
 </script>
 <script>
