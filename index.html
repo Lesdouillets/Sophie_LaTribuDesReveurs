@@ -11159,6 +11159,26 @@ function computeClientFields(triggeredBy) {
     if (acm) acm.value = '';
     _clearedAgeCorr = true;
   }
+  // Symétrique : si l'user supprime date-terme, vider AUSSI age-gestationnel + age-corrige-manuel
+  // (ils étaient dérivés de dateTerme → restent incohérents si on les laisse).
+  // Sans ça, la fiche découverte continue de croire qu'on a de l'âge (hasAgeData=true)
+  // et cache la question "né à terme ?" même quand dateTerme a été supprimé.
+  if (triggeredBy === 'date-terme' && !dateTerme) {
+    const ag = document.getElementById('age-gestationnel');
+    if (ag) ag.value = '';
+    ageGestationnel = '';
+    _clearedAgeGest = true;
+    const acm = document.getElementById('age-corrige-manuel');
+    if (acm) acm.value = '';
+    ageCorrigeManuel = '';
+    _clearedAgeCorr = true;
+    // Forcer state.client à refléter le clear (sinon fdUpdateVisibility lit l'ancienne valeur)
+    if (state && state.client) {
+      state.client.dateTerme = '';
+      state.client.ageGestationnel = '';
+      state.client.ageCorrigeManuel = '';
+    }
+  }
   // Re-lire les variables locales utilisées plus bas si on vient de vider des champs
   const ageGestationnelLive = _clearedAgeGest ? '' : ageGestationnel;
   const ageCorrigeManuelLive = _clearedAgeCorr ? '' : ageCorrigeManuel;
