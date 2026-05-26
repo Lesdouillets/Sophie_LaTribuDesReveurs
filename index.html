@@ -2127,7 +2127,20 @@
     .fd-content .fd-chip-row { display: flex; gap: 6px; flex-wrap: wrap; width: 100%; align-items: center; }
     .fd-content .fd-chip.indent { margin-left: 28px; }
     /* Chips en mode wrap (utilisé pour Inconfort qui a beaucoup de chips) */
-    .fd-content .fd-chips.fd-chips-wrap { width: 100%; }
+    .fd-content .fd-chips.fd-chips-wrap {
+      width: 100%;
+      display: flex; flex-direction: column;   /* COLONNE */
+      align-items: center;                      /* centré horizontalement */
+      gap: 6px;
+    }
+    .fd-content .fd-chips.fd-chips-wrap .fd-chip {
+      min-width: 280px;          /* largeur uniforme pour alignement vertical */
+      justify-content: flex-start;
+    }
+    .fd-content .fd-chips.fd-chips-wrap .fd-chip.indent {
+      margin-left: 0;            /* annule le margin-left horizontal */
+      padding-left: 36px;        /* indentation visuelle via padding pour les sub-items */
+    }
     /* Chip POSITIF (vert) — pour "Aucun signe" qui se distingue de la liste des symptômes */
     .fd-content .fd-chip.fd-chip-positive {
       border-color: #16a34a; color: #14532d; background: #f0fdf4;
@@ -2192,6 +2205,13 @@
       border-left: 3px solid #fda4af;
     }
     .fd-content .fd-alim-autres { margin-top: 0; }
+    /* Extras sous "Mode d'alimentation" : 3 cases centrées horizontalement, sans label "Autres" */
+    .fd-content .fd-alim-extras {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      justify-content: center;   /* centré horizontalement */
+      padding: 0 4px;
+      margin-top: -8px;          /* coller au row 4-cases au-dessus */
+    }
     /* Quand un encadré FD contient un fd-alim-block, le texte de la question = TITRE du bloc */
     .fd-content .fd-q-row-simple:has(.fd-alim-block) > .fd-q-text {
       width: 100%;
@@ -2283,7 +2303,7 @@
     }
     /* Question : encadré rectangulaire bleu CLAIR (contour fin) + intérieur blanc + coins arrondis */
     .fd-content .fd-q-row-simple {
-      display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap;
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
       margin-bottom: 22px;   /* ↑ espacement entre encadrés (était 12px) */
       padding: 14px 16px;
       background: white;
@@ -8475,7 +8495,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=779"></script>
+<script src="script-data.js?v=780"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
@@ -8483,8 +8503,28 @@ function fdNav(cat, el) {
   if (!container) return;
   container.querySelectorAll('.fd-nav-item').forEach(n => n.classList.toggle('active', n.dataset.cat === cat));
   container.querySelectorAll('.fd-section').forEach(s => s.classList.toggle('active', s.dataset.cat === cat));
+  // Mémoriser l'onglet actif pour le restaurer si le bloc re-render (autoSave, navigation, etc.)
+  if (typeof state !== 'undefined' && state && state.client) {
+    state.client.fdActiveTab = cat;
+    if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
+  }
 }
 window.fdNav = fdNav;
+// Restaure l'onglet actif depuis state.client.fdActiveTab — appelé dans le setInterval.
+// Si le bloc fiche découverte vient d'être re-render (autoSave, sync, etc.), l'onglet actif
+// retombait sur "contexte" (active dans le HTML par défaut). On force la restauration.
+function fdRestoreActiveTab() {
+  if (typeof state === 'undefined' || !state || !state.client) return;
+  const wanted = state.client.fdActiveTab;
+  if (!wanted) return;
+  const container = document.getElementById('fd-questionnaire');
+  if (!container) return;
+  const current = container.querySelector('.fd-section.active');
+  if (current && current.dataset.cat === wanted) return; // déjà ok
+  // Désynchronisation détectée → re-appliquer
+  fdNav(wanted, null);
+}
+window.fdRestoreActiveTab = fdRestoreActiveTab;
 // Toggle chip de la fiche découverte. single=true → mutex (un seul sélectionné par groupe).
 // On utilise .closest('.fd-chips') car certains groupes ont des sous-wrappers (.fd-chip-row)
 // qui sinon casseraient la lookup parent.
@@ -8959,25 +8999,13 @@ let _fdTermeQVisible = null; // null = pas encore décidé ; true = sticky visib
 let _fdTrioVisible   = null; // null = laisser l'auto-logique décider ; true/false = user a explicitement choisi
 function fdUpdateVisibility() {
   const q = document.getElementById('fd-q-terme');
-  const trio = document.getElementById('fd-trio-ages');
   if (!q) return;
   const c = (typeof state !== 'undefined' && state && state.client) ? state.client : {};
   const hasAgeData = !!((c.dateTerme && String(c.dateTerme).length) || (c.ageGestationnel && String(c.ageGestationnel).length) || (c.ageCorrigeManuel && String(c.ageCorrigeManuel).length));
-  // ─── QUESTION "né à terme ?" : logique simple = visible si pas d'âge.
-  //     (Plus de sticky : ça empêchait la question de réapparaître après suppression de dateTerme.)
-  //     _fdTermeQVisible reste maintenu pour compatibilité avec d'autres lectures.
+  // ─── Bloc "né à terme ?" (question + chips Oui/Non + 3 cases) : tout DANS le même encadré.
+  //     Visible si pas d'âge. Caché si âge déjà rempli côté fiche client.
   _fdTermeQVisible = !hasAgeData;
   q.style.display = _fdTermeQVisible ? '' : 'none';
-  // ─── TRIO 3 cases d'âge : choix EXPLICITE "Non, prématuré" EN PRIORITÉ (sticky).
-  //     Une fois que l'user a cliqué "Non", le trio reste visible même quand [il_elle]
-  //     remplit les cases — sinon le trio disparaît avant que l'user ait fini de saisir.
-  if (trio) {
-    if (_fdTrioVisible === true) {
-      trio.style.display = 'block';                  // sticky : user a cliqué "Non, prématuré"
-    } else {
-      trio.style.display = 'none';
-    }
-  }
 }
 window.fdUpdateVisibility = fdUpdateVisibility;
 // Re-évaluer à intervalle (lightweight) — couvre tous les cas (chargement initial, modifs venant
@@ -8992,6 +9020,7 @@ setInterval(() => {
   if (typeof fdUpdateLaitGridVisibility === 'function') fdUpdateLaitGridVisibility();
   if (typeof fdUpdateBannersVisibility === 'function') fdUpdateBannersVisibility();
   if (typeof fdSyncFromFicheClient === 'function') fdSyncFromFicheClient();
+  if (typeof fdRestoreActiveTab === 'function') fdRestoreActiveTab();
 }, 1000);
 </script>
 <script>
