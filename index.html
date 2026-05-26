@@ -2126,21 +2126,48 @@
     /* Chips arrangés en lignes explicites (pour Matinée alimentation : sein/biberon, lait infantile/mixte/sevrage indenté, diversifications) */
     .fd-content .fd-chip-row { display: flex; gap: 6px; flex-wrap: wrap; width: 100%; align-items: center; }
     .fd-content .fd-chip.indent { margin-left: 28px; }
+    /* Chips en mode wrap (utilisé pour Inconfort qui a beaucoup de chips) */
+    .fd-content .fd-chips.fd-chips-wrap { width: 100%; }
+    /* Chip POSITIF (vert) — pour "Aucun signe" qui se distingue de la liste des symptômes */
+    .fd-content .fd-chip.fd-chip-positive {
+      border-color: #16a34a; color: #14532d; background: #f0fdf4;
+      font-weight: 600;
+    }
+    .fd-content .fd-chip.fd-chip-positive:hover {
+      background: #dcfce7; border-color: #15803d;
+    }
+    .fd-content .fd-chip.fd-chip-positive.selected {
+      background: #16a34a; color: white; border-color: #15803d;
+    }
     /* Chips type_alim : taille uniforme (les 7 chips ont la même largeur) */
     .fd-content .fd-chips[data-q="type_alim"] .fd-chip {
       min-width: 220px; justify-content: center; text-align: center;
     }
     /* ─── Bloc Alimentation (checkboxes mirroir de la fiche client) ─── */
     .fd-content .fd-alim-block {
-      display: flex; flex-direction: column; gap: 8px; width: 100%;
+      display: flex; flex-direction: column; gap: 16px; width: 100%;
+      margin-top: 6px;
     }
+    /* Sous-section interne (Mode d'alim / Mode d'allait / Autres / type lait) — visuellement distincte */
+    .fd-content .fd-alim-block > .fd-alim-section,
+    .fd-content .fd-alim-autres,
+    .fd-content .fd-allait-mode-group {
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #f8fafc;
+      border-left: 3px solid var(--primary-light);
+    }
+    /* Header = label de sous-section (Mode d'alimentation, Mode d'allaitement, Autres) */
     .fd-content .fd-alim-label {
-      font-size: 13px; font-weight: 600; color: var(--text);
-      text-decoration: underline; text-underline-offset: 3px;
-      margin-bottom: 2px;
+      font-size: 13.5px; font-weight: 700; color: var(--primary-dark);
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      display: block;
+      text-decoration: none;
     }
     .fd-content .fd-alim-hint {
-      color: #aaa; font-size: 11px; font-weight: 400; text-decoration: none;
+      color: #94a3b8; font-size: 11px; font-weight: 400;
+      text-transform: none; letter-spacing: 0;
     }
     .fd-content .fd-alim-row {
       display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
@@ -2159,11 +2186,23 @@
       width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer;
     }
     .fd-content .fd-alim-cb-dashed { border-style: dashed; border-color: #b0b0b0; }
+    /* Override : Mode d'allaitement — fond rosé pour signaler que c'est conditionnel */
     .fd-content .fd-allait-mode-group {
-      border: 1.5px solid #fda4af; border-radius: 8px;
-      padding: 10px 12px; background: #fff5f6; margin-top: 4px;
+      background: #fff5f6;
+      border-left: 3px solid #fda4af;
     }
-    .fd-content .fd-alim-autres { margin-top: 12px; }
+    .fd-content .fd-alim-autres { margin-top: 0; }
+    /* Quand un encadré FD contient un fd-alim-block, le texte de la question = TITRE du bloc */
+    .fd-content .fd-q-row-simple:has(.fd-alim-block) > .fd-q-text {
+      width: 100%;
+      font-size: 15px; font-weight: 700; color: var(--primary-dark);
+      padding-bottom: 6px;
+      border-bottom: 1.5px dashed var(--primary-light);
+      margin-bottom: 4px;
+    }
+    .fd-content .fd-q-row-simple:has(.fd-alim-block) > .fd-q-text::before {
+      content: none;   /* pas de bullet quand c'est un titre */
+    }
     /* Container des bandeaux (biberon + tétée) — OUTSIDE de la bordure épaisse de fd-content */
     .fd-banners {
       display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px;
@@ -2244,13 +2283,15 @@
     }
     /* Question : encadré rectangulaire bleu CLAIR (contour fin) + intérieur blanc + coins arrondis */
     .fd-content .fd-q-row-simple {
-      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-      margin-bottom: 12px;
-      padding: 12px 14px;
+      display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap;
+      margin-bottom: 22px;   /* ↑ espacement entre encadrés (était 12px) */
+      padding: 14px 16px;
       background: white;
       border: 1px solid var(--primary-light);
       border-radius: 10px;
     }
+    /* La dernière question d'une section : pas de margin-bottom (évite trou en fin) */
+    .fd-content .fd-section > .fd-q-row-simple:last-child { margin-bottom: 0; }
     /* Variante multi-lignes : plusieurs questions empilées DANS le MÊME encadré, séparées par un trait fin */
     .fd-content .fd-q-row-simple.fd-q-multi {
       flex-direction: column; align-items: stretch; gap: 0;
@@ -8434,7 +8475,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=778"></script>
+<script src="script-data.js?v=779"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
