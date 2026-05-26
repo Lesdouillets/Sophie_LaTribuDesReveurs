@@ -8431,7 +8431,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=775"></script>
+<script src="script-data.js?v=776"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
@@ -8906,14 +8906,16 @@ function fdUpdateVisibility() {
   if (_fdTermeQVisible === null) _fdTermeQVisible = !hasAgeData;
   else if (!_fdTermeQVisible && !hasAgeData) _fdTermeQVisible = true;
   q.style.display = _fdTermeQVisible ? '' : 'none';
-  // ─── TRIO 3 cases d'âge : hasAgeData EN PRIORITÉ.
-  //     Si l'âge corrigé est déjà dans la fiche client → trio caché (peu importe si l'user
-  //     a cliqué "Non" avant). La question et le trio vont de pair : pas de question → pas de trio.
+  // ─── TRIO 3 cases d'âge : choix EXPLICITE "Non, prématuré" EN PRIORITÉ (sticky).
+  //     Une fois que l'user a cliqué "Non", le trio reste visible même quand [il_elle]
+  //     remplit les cases — sinon le trio disparaît avant que l'user ait fini de saisir.
+  //     hasAgeData n'est utilisé QUE pour cacher le trio si l'âge venait d'AILLEURS
+  //     (fiche client) au premier chargement, sans choix utilisateur explicite.
   if (trio) {
-    if (hasAgeData || !_fdTermeQVisible) {
+    if (_fdTrioVisible === true) {
+      trio.style.display = 'block';                  // sticky : user a cliqué "Non, prématuré"
+    } else if (hasAgeData || !_fdTermeQVisible) {
       trio.style.display = 'none';
-    } else if (_fdTrioVisible === true) {
-      trio.style.display = 'block';
     } else {
       trio.style.display = 'none';
     }
