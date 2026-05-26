@@ -2262,6 +2262,9 @@
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line + .fd-q-line {
       border-top: 1px dashed var(--primary-light);
     }
+    /* Slots structurels pour la grille des laits — invisibles, juste pour positionner */
+    .fd-content .fd-lait-slot { width: 100%; }
+    .fd-content .fd-lait-slot:empty { display: none; }
     /* Question "Quel type de lait prend-il ?" — header au-dessus des 8 chips, plein largeur, dashed bleu ciel au-dessus, bullet conservé */
     .fd-content #fd-q-lait {
       width: 100%;
@@ -8431,7 +8434,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=777"></script>
+<script src="script-data.js?v=778"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
@@ -8617,7 +8620,24 @@ function fdUpdateLaitGridVisibility() {
   if (!grid) return;
   // Lecture depuis les NOUVELLES checkboxes data-fd-alim (mirroir de la fiche client)
   const checkedAlim = Array.from(document.querySelectorAll('.fd-content input[data-fd-alim]:checked')).map(cb => cb.dataset.fdAlim);
-  const needsLait = checkedAlim.includes('Biberon lait infantile') || checkedAlim.includes('Allaitement mixte');
+  const needsBiberon = checkedAlim.includes('Biberon lait infantile');
+  const needsMixte = checkedAlim.includes('Allaitement mixte');
+  const needsLait = needsBiberon || needsMixte;
+  // ─── Déplacer dynamiquement fd-q-lait + fd-lait-grid dans le bon slot
+  //     • Biberon lait infantile → slot-a (sous "Mode d'alimentation")
+  //     • Allaitement mixte    → slot-b (à l'intérieur du groupe "Mode d'allaitement")
+  if (needsLait) {
+    const targetSlot = needsMixte
+      ? document.querySelector('.fd-content .fd-lait-slot-b')
+      : document.querySelector('.fd-content .fd-lait-slot-a');
+    if (targetSlot && qLait && qLait.parentNode !== targetSlot) {
+      targetSlot.appendChild(qLait);
+      targetSlot.appendChild(grid);
+    } else if (targetSlot && qLait && grid && qLait.parentNode === targetSlot && grid.parentNode !== targetSlot) {
+      // Cas exceptionnel : qLait déjà dans le bon slot mais grid ailleurs
+      targetSlot.appendChild(grid);
+    }
+  }
   grid.style.display = needsLait ? 'grid' : 'none';
   if (qLait) qLait.style.display = needsLait ? 'block' : 'none';
   // Si la grille devient visible et state.client.typeLait existe, restaurer le chip sélectionné
