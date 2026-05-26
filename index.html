@@ -11110,6 +11110,10 @@ function computeClientFields(triggeredBy) {
   try {
   let dateNaiss = document.getElementById('date-naissance')?.value;
   let dateTerme = document.getElementById('date-terme')?.value;
+  // Capturer l'intention utilisateur AVANT que la logique ageCorrEqReel (juste en dessous)
+  // ne re-remplisse dateTerme à dateNaiss. Si l'utilisateur a explicitement vidé dateTerme,
+  // on veut respecter ce choix même si ageCorrEqReel est coché.
+  const _userClearedDateTerme = (triggeredBy === 'date-terme' && !dateTerme);
   const consultDate = document.getElementById('consult-date')?.value || new Date().toISOString().slice(0,10);
   const taillePere = parseFloat(document.getElementById('taille-pere')?.value);
   const tailleMere = parseFloat(document.getElementById('taille-mere')?.value);
@@ -11158,9 +11162,12 @@ function computeClientFields(triggeredBy) {
   }
   // Symétrique : si l'user supprime date-terme, vider AUSSI age-gestationnel + age-corrige-manuel
   // (ils étaient dérivés de dateTerme → restent incohérents si on les laisse).
-  // Sans ça, la fiche découverte continue de croire qu'on a de l'âge (hasAgeData=true)
-  // et cache la question "né à terme ?" même quand dateTerme a été supprimé.
-  if (triggeredBy === 'date-terme' && !dateTerme) {
+  // Utilise _userClearedDateTerme (capturé EN AMONT de ageCorrEqReel) pour ne PAS être trompé
+  // par un re-remplissage automatique de dateTerme.
+  if (_userClearedDateTerme) {
+    const dt = document.getElementById('date-terme');
+    if (dt) dt.value = '';
+    dateTerme = '';
     const ag = document.getElementById('age-gestationnel');
     if (ag) ag.value = '';
     ageGestationnel = '';
@@ -11174,6 +11181,10 @@ function computeClientFields(triggeredBy) {
       state.client.dateTerme = '';
       state.client.ageGestationnel = '';
       state.client.ageCorrigeManuel = '';
+      // Désactiver ageCorrEqReel sinon il va re-remplir au prochain computeClientFields
+      state.client.ageCorrEqReel = false;
+      const acrEq = document.getElementById('age-corr-eq-reel');
+      if (acrEq && acrEq.checked) acrEq.checked = false;
     }
   }
   // Re-lire les variables locales utilisées plus bas si on vient de vider des champs
