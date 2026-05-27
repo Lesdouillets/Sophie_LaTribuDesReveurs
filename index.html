@@ -8999,13 +8999,21 @@ let _fdTermeQVisible = null; // null = pas encore décidé ; true = sticky visib
 let _fdTrioVisible   = null; // null = laisser l'auto-logique décider ; true/false = user a explicitement choisi
 function fdUpdateVisibility() {
   const q = document.getElementById('fd-q-terme');
+  const trio = document.getElementById('fd-trio-ages');
   if (!q) return;
   const c = (typeof state !== 'undefined' && state && state.client) ? state.client : {};
   const hasAgeData = !!((c.dateTerme && String(c.dateTerme).length) || (c.ageGestationnel && String(c.ageGestationnel).length) || (c.ageCorrigeManuel && String(c.ageCorrigeManuel).length));
-  // ─── Bloc "né à terme ?" (question + chips Oui/Non + 3 cases) : tout DANS le même encadré.
-  //     Visible si pas d'âge. Caché si âge déjà rempli côté fiche client.
+  // ─── Encadré "né à terme ?" : visible si pas d'âge déjà rempli côté fiche client.
   _fdTermeQVisible = !hasAgeData;
-  q.style.display = _fdTermeQVisible ? '' : 'none';
+  // Utiliser 'flex' (pas '') pour ÉCRASER tout display:none CSS éventuel — évite le clignotement
+  // si le bloc se re-render et que la CSS par défaut reste sur display:none entre 2 ticks.
+  q.style.display = _fdTermeQVisible ? 'flex' : 'none';
+  // ─── Les 3 cases (trio) : visibles UNIQUEMENT si user a cliqué "Non, prématuré".
+  //     L'encadré parent doit aussi être visible (sinon trio caché).
+  if (trio) {
+    const showTrio = _fdTermeQVisible && _fdTrioVisible === true;
+    trio.style.display = showTrio ? 'block' : 'none';
+  }
 }
 window.fdUpdateVisibility = fdUpdateVisibility;
 // Re-évaluer à intervalle (lightweight) — couvre tous les cas (chargement initial, modifs venant
