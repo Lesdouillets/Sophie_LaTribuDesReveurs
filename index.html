@@ -2123,6 +2123,15 @@
       color: var(--primary-dark); background: white;
     }
     .fd-content .fd-input-tiny:focus { outline: none; border-color: var(--primary); }
+    /* Input poids (Contexte général) — taille 140px comme dans fiche client > Croissance */
+    .fd-content .fd-input-poids {
+      width: 140px; padding: 6px 10px;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-size: 14px; font-family: inherit;
+      color: var(--primary-dark); background: white;
+    }
+    .fd-content .fd-input-poids:focus { outline: none; border-color: var(--primary); }
+    .fd-content .fd-input-suffix { font-size: 13px; color: #666; font-weight: 500; }
     /* Chips arrangés en lignes explicites (pour Matinée alimentation : sein/biberon, lait infantile/mixte/sevrage indenté, diversifications) */
     .fd-content .fd-chip-row { display: flex; gap: 6px; flex-wrap: wrap; width: 100%; align-items: center; }
     .fd-content .fd-chip.indent { margin-left: 28px; }
@@ -8495,7 +8504,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=780"></script>
+<script src="script-data.js?v=781"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 function fdNav(cat, el) {
@@ -8559,6 +8568,9 @@ function fdRestoreAnswers() {
   if (dtEl && c.dateTerme && !dtEl.value)         dtEl.value = c.dateTerme;
   if (agEl && c.ageGestationnel && !agEl.value)   agEl.value = c.ageGestationnel;
   if (acEl && c.ageCorrigeManuel && !acEl.value)  acEl.value = c.ageCorrigeManuel;
+  // Restaurer le poids depuis state.client.poids (lié à la fiche client onglet "Bébé > Croissance")
+  const poidsEl = document.getElementById('fd-poids');
+  if (poidsEl && c.poids && !poidsEl.value)       poidsEl.value = c.poids;
   // Restaurer le flag "Non, prématuré" depuis fdAnswers (pour que fdUpdateVisibility connaisse le choix user)
   const ans = c.fdAnswers || {};
   if (Array.isArray(ans.terme) && ans.terme.length) {
@@ -8921,6 +8933,7 @@ function fdSyncToBebe(targetId, value) {
     if      (targetId === 'date-terme')          state.client.dateTerme = value;
     else if (targetId === 'age-gestationnel')    state.client.ageGestationnel = value;
     else if (targetId === 'age-corrige-manuel')  state.client.ageCorrigeManuel = value;
+    else if (targetId === 'poids-enfant')        state.client.poids = value;
   }
   // Déclenche le pipeline du site (oninput → computeClientFields → derived fields)
   target.dispatchEvent(new Event('input', { bubbles: true }));
