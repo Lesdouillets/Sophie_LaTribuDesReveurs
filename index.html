@@ -8504,7 +8504,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=782"></script>
+<script src="script-data.js?v=783"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -23523,8 +23523,20 @@ if ('serviceWorker' in navigator) {
 // on resync state.client + on re-déclenche onHoraireSouhaiteChange pour propager
 // à VIII. Plan d'action → Emploi du temps. Aucun rechargement nécessaire.
 // ═══════════════════════════════════════════════════
+// THROTTLE : un onglet zombie (ancienne fiche standalone) peut spammer ce listener.
+// On limite le traitement à 1× toutes les 5 secondes max — évite le flicker visible.
+let _lastLiveSyncTs = 0;
 window.addEventListener('storage', (e) => {
   if (e.key !== 'tdr_active_consultation' || !e.newValue) return;
+  // Throttle : skip si dernier traitement < 5s
+  const now = Date.now();
+  if (now - _lastLiveSyncTs < 5000) return;
+  // Skip si l'utilisateur est actuellement en train de taper (évite reset focus/contenu)
+  const _act = document.activeElement;
+  if (_act && (_act.tagName === 'INPUT' || _act.tagName === 'TEXTAREA' || _act.isContentEditable)) {
+    return; // user typing → ignore complètement, on resync au prochain événement quand champ perdu
+  }
+  _lastLiveSyncTs = now;
   console.log('[live-sync site] storage event reçu depuis la fiche découverte');
   try {
     const snap = JSON.parse(e.newValue);
