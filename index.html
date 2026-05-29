@@ -8507,21 +8507,27 @@
 <script src="script-data.js?v=781"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
-function fdNav(cat, el) {
-  const container = el ? el.closest('.fd-container') : document.getElementById('fd-questionnaire');
-  if (!container) return;
+// Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
+// explicite — pas depuis fdRestoreActiveTab, pour éviter une boucle save→render).
+function _fdApplyTab(cat) {
+  const container = document.getElementById('fd-questionnaire');
+  if (!container) return false;
   container.querySelectorAll('.fd-nav-item').forEach(n => n.classList.toggle('active', n.dataset.cat === cat));
   container.querySelectorAll('.fd-section').forEach(s => s.classList.toggle('active', s.dataset.cat === cat));
-  // Mémoriser l'onglet actif pour le restaurer si le bloc re-render (autoSave, navigation, etc.)
+  return true;
+}
+function fdNav(cat, el) {
+  if (!_fdApplyTab(cat)) return;
+  // Persister UNIQUEMENT sur action explicite de l'utilisateur (clic) — PAS depuis le setInterval.
   if (typeof state !== 'undefined' && state && state.client) {
     state.client.fdActiveTab = cat;
-    if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
+    // Pas d'autoSave ici : le prochain autoSave déclenché par une autre action user
+    // (chip, input...) prendra la nouvelle valeur. Évite spam localStorage.
   }
 }
 window.fdNav = fdNav;
 // Restaure l'onglet actif depuis state.client.fdActiveTab — appelé dans le setInterval.
-// Si le bloc fiche découverte vient d'être re-render (autoSave, sync, etc.), l'onglet actif
-// retombait sur "contexte" (active dans le HTML par défaut). On force la restauration.
+// Manipule UNIQUEMENT les classes CSS (pas d'autoSave) → pas de boucle.
 function fdRestoreActiveTab() {
   if (typeof state === 'undefined' || !state || !state.client) return;
   const wanted = state.client.fdActiveTab;
@@ -8530,8 +8536,7 @@ function fdRestoreActiveTab() {
   if (!container) return;
   const current = container.querySelector('.fd-section.active');
   if (current && current.dataset.cat === wanted) return; // déjà ok
-  // Désynchronisation détectée → re-appliquer
-  fdNav(wanted, null);
+  _fdApplyTab(wanted);   // applique sans déclencher de save
 }
 window.fdRestoreActiveTab = fdRestoreActiveTab;
 // Toggle chip de la fiche découverte. single=true → mutex (un seul sélectionné par groupe).
@@ -9031,7 +9036,12 @@ function fdUpdateVisibility() {
 window.fdUpdateVisibility = fdUpdateVisibility;
 // Re-évaluer à intervalle (lightweight) — couvre tous les cas (chargement initial, modifs venant
 // du modal fiche bébé, navigation entre sections, etc.).
+// GARDE : skip TOUS les calls si fiche découverte n'est pas dans le DOM (= user sur une autre
+// section comme Accueil/Réveil/etc.). Évite tout effet de bord (manipulations DOM, autoSave…)
+// qui pourrait re-déclencher des renders dans les autres sections.
 setInterval(() => {
+  const fdContainer = document.getElementById('fd-questionnaire');
+  if (!fdContainer) return; // pas de fiche découverte visible → rien à faire
   fdUpdateVisibility();
   if (typeof fdRestoreAnswers === 'function') fdRestoreAnswers();
   if (typeof fdRestoreBibCases === 'function') fdRestoreBibCases();
