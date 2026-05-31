@@ -2205,12 +2205,12 @@
       display: none;   /* checkbox masquée — la label sert de pastille cliquable */
     }
     .fd-content .fd-alim-cb-dashed { border-style: dashed; border-color: #b0b0b0; }
-    /* Extras sous "Mode d'alimentation" : 3 cases centrées horizontalement, sans label "Autres" */
+    /* Extras sous "Mode d'alimentation" : 3 cases alignées à gauche, sans label "Autres" */
     .fd-content .fd-alim-extras {
       display: flex; flex-wrap: wrap; gap: 8px;
-      justify-content: center;   /* centré horizontalement */
+      justify-content: flex-start;   /* aligné à gauche */
       padding: 0 4px;
-      margin-top: -8px;          /* coller au row 4-cases au-dessus */
+      margin-top: -8px;              /* coller au row 4-cases au-dessus */
     }
     /* (Retiré : le texte de "Qu'est-ce qu'il prend le matin ?" prend désormais le style standard
        comme les autres questions, conformément au feedback utilisateur.) */
@@ -2274,19 +2274,30 @@
     .fd-bib-banner .fd-bib-line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .fd-bib-banner .fd-bib-line + .fd-bib-line { margin-top: 4px; }
     .fd-bib-banner strong { color: #7c5200; font-weight: 800; }
-    .fd-bib-banner .fd-bib-sep { color: #d4a85a; margin: 0 2px; }
+    .fd-bib-banner .fd-bib-sep { color: #d4a85a; margin: 0; }
     /* Grille 8 types de lait (2 colonnes : Sans anti-reflux / Avec anti-reflux) */
     .fd-content .fd-lait-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+      display: grid; grid-template-columns: minmax(0,160px) minmax(0,160px);
+      column-gap: 6px; row-gap: 6px;
       margin-top: 12px; padding: 12px;
       background: #f5f7fc; border: 1px solid var(--border); border-radius: 8px;
+      justify-content: start;  /* ← aligné à gauche au lieu de stretch */
     }
     .fd-content .fd-lait-col-title {
       font-size: 11px; font-weight: 800; color: var(--primary-dark);
-      text-transform: uppercase; letter-spacing: 0.5px; text-align: center;
+      text-transform: uppercase; letter-spacing: 0.5px; text-align: left;
       padding-bottom: 4px; border-bottom: 1px dashed var(--border);
+      margin-bottom: 6px;   /* ← espace entre titres et 1ère ligne de chips */
     }
-    .fd-content .fd-lait-grid .fd-chip { min-width: 0; text-align: center; justify-content: center; font-size: 12px; }
+    .fd-content .fd-lait-grid .fd-chip {
+      min-width: 0; max-width: 100%;
+      text-align: left; justify-content: flex-start; font-size: 11.5px;
+      padding: 5px 10px;
+    }
+    /* Harmoniser le selected des lait chips avec le selected des chips alim */
+    .fd-content .fd-lait-grid .fd-chip.selected {
+      background: var(--primary); color: white; border-color: var(--primary-dark);
+    }
     .fd-content .fd-info-box {
       padding: 10px 14px; background: #f0f4fa; border-left: 3px solid var(--primary);
       border-radius: 0 8px 8px 0; font-size: 12.5px; line-height: 1.55;
@@ -8486,7 +8497,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=786"></script>
+<script src="script-data.js?v=787"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
