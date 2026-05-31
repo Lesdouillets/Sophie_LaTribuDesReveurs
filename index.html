@@ -2135,18 +2135,21 @@
     /* Chips arrangés en lignes explicites (pour Matinée alimentation : sein/biberon, lait infantile/mixte/sevrage indenté, diversifications) */
     .fd-content .fd-chip-row { display: flex; gap: 6px; flex-wrap: wrap; width: 100%; align-items: center; }
     .fd-content .fd-chip.indent { margin-left: 28px; }
-    /* Inconfort : layout en colonnes groupées (style V. Diagnostic) */
+    /* Inconfort : layout en 4 colonnes fixes (style V. Diagnostic) */
     .fd-content .fd-chips.fd-chips-cols {
-      width: 100%;
+      width: 100%; flex-basis: 100%;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 10px 14px;
+      grid-template-columns: repeat(4, 1fr);   /* ← 4 colonnes fixes */
+      gap: 8px 12px;
       align-items: start;
     }
     .fd-content .fd-chip-col {
       display: flex; flex-direction: column; gap: 5px;
       align-items: flex-start;
+      min-width: 0;
     }
+    /* Petit gap visuel entre 2 sous-groupes dans la même colonne (Régurg sub-items / Selles, etc.) */
+    .fd-content .fd-chip-gap { height: 14px; }
     .fd-content .fd-chip-col-title {
       font-size: 12.5px; font-weight: 700; color: var(--text);
       margin: 0 0 2px 0;
@@ -2162,6 +2165,15 @@
       width: calc(100% - 20px);
       font-size: 11px;
       padding: 4px 9px;
+    }
+    /* Pour que l'encadré inconfort prenne toute la largeur disponible */
+    .fd-content .fd-q-row-simple:has(.fd-chips-cols) {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .fd-content .fd-q-row-simple:has(.fd-chips-cols) > .fd-q-text {
+      width: 100%;
+      margin-bottom: 6px;
     }
     /* Chip POSITIF (vert) — pour "Aucun signe" qui se distingue de la liste des symptômes */
     .fd-content .fd-chip.fd-chip-positive {
@@ -2302,8 +2314,10 @@
       padding: 0;
       background: transparent;
       border: none;
-      margin-top: 12px;   /* espace entre Mode d'allaitement responses et "Quel type de lait" */
+      margin-top: 24px;   /* ← espace plus grand entre Mode d'allaitement et "Quel type de lait" */
     }
+    /* Espace plus large au-dessus du label "Quel type de lait" lui-même (dans slot-a aussi) */
+    .fd-content #fd-q-lait { margin-top: 10px !important; }
     /* Question "Quel type de lait" : texte rouge/marron comme le label "Mode d'allaitement" */
     .fd-content #fd-q-lait {
       width: 100%;
@@ -2318,10 +2332,17 @@
     /* Grille 8 types de lait (2 colonnes : Sans anti-reflux / Avec anti-reflux) */
     .fd-content .fd-lait-grid {
       display: grid; grid-template-columns: minmax(0,140px) minmax(0,140px);
-      column-gap: 6px; row-gap: 14px;   /* ← demi-ligne vide entre rangées */
+      column-gap: 6px; row-gap: 6px;
       margin-top: 4px; padding: 0;
       background: transparent; border: none;
       justify-content: start;  /* ← aligné à gauche */
+    }
+    /* Espace SEULEMENT entre la 1ère ligne de chips (Standard / Standard AR) et la 2ème ligne.
+       Les chips sont children: [col-title × 2] [chip × 8]. Donc Standard = nth-child(3), Standard AR = nth-child(4).
+       On ajoute margin-bottom à ces 2 chips uniquement. */
+    .fd-content .fd-lait-grid > .fd-chip:nth-child(3),
+    .fd-content .fd-lait-grid > .fd-chip:nth-child(4) {
+      margin-bottom: 10px;
     }
     .fd-content .fd-lait-col-title {
       font-size: 10px; font-weight: 800; color: #831843;
@@ -8521,7 +8542,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=789"></script>
+<script src="script-data.js?v=790"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
