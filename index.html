@@ -2275,26 +2275,45 @@
     .fd-bib-banner .fd-bib-line + .fd-bib-line { margin-top: 4px; }
     .fd-bib-banner strong { color: #7c5200; font-weight: 800; }
     .fd-bib-banner .fd-bib-sep { color: #d4a85a; margin: 0; }
+    /* Slot lait (a ou b) avec fd-q-lait dedans : encadré rosé identique au Mode d'allaitement */
+    .fd-content .fd-lait-slot:has(#fd-q-lait[style*="block"]),
+    .fd-content .fd-lait-slot:has(.fd-lait-grid[style*="grid"]) {
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: #fff5f6;
+      border: 1px dashed #fda4af;
+    }
+    /* Question "Quel type de lait" : texte rouge/marron comme le label "Mode d'allaitement" */
+    .fd-content #fd-q-lait {
+      width: 100%;
+      padding: 0 0 4px !important;
+      margin: 0 !important;
+      border-top: none !important;
+      font-size: 12px; font-weight: 600;
+      color: #831843;
+    }
+    .fd-content #fd-q-lait .fd-q-text { color: #831843; font-weight: 600; font-size: 12px; }
+    .fd-content #fd-q-lait .fd-q-text::before { content: none; }   /* pas de bullet */
     /* Grille 8 types de lait (2 colonnes : Sans anti-reflux / Avec anti-reflux) */
     .fd-content .fd-lait-grid {
-      display: grid; grid-template-columns: minmax(0,160px) minmax(0,160px);
+      display: grid; grid-template-columns: minmax(0,140px) minmax(0,140px);
       column-gap: 6px; row-gap: 6px;
-      margin-top: 12px; padding: 12px;
-      background: #f5f7fc; border: 1px solid var(--border); border-radius: 8px;
-      justify-content: start;  /* ← aligné à gauche au lieu de stretch */
+      margin-top: 4px; padding: 0;
+      background: transparent; border: none;
+      justify-content: start;  /* ← aligné à gauche */
     }
     .fd-content .fd-lait-col-title {
-      font-size: 11px; font-weight: 800; color: var(--primary-dark);
-      text-transform: uppercase; letter-spacing: 0.5px; text-align: left;
-      padding-bottom: 4px; border-bottom: 1px dashed var(--border);
-      margin-bottom: 6px;   /* ← espace entre titres et 1ère ligne de chips */
+      font-size: 10px; font-weight: 800; color: #831843;
+      text-transform: uppercase; letter-spacing: 0.4px; text-align: center;
+      padding-bottom: 4px; border-bottom: 1px dashed #fda4af;
+      margin-bottom: 8px;   /* ← espace entre titres et 1ère ligne de chips */
     }
     .fd-content .fd-lait-grid .fd-chip {
       min-width: 0; max-width: 100%;
-      text-align: left; justify-content: flex-start; font-size: 11.5px;
+      text-align: center; justify-content: center;   /* ← chips centrés */
+      font-size: 11.5px;
       padding: 5px 10px;
     }
-    /* Harmoniser le selected des lait chips avec le selected des chips alim */
     .fd-content .fd-lait-grid .fd-chip.selected {
       background: var(--primary); color: white; border-color: var(--primary-dark);
     }
@@ -2328,23 +2347,7 @@
     /* Slots structurels pour la grille des laits — invisibles, juste pour positionner */
     .fd-content .fd-lait-slot { width: 100%; }
     .fd-content .fd-lait-slot:empty { display: none; }
-    /* Question "Quel type de lait prend-il ?" — header au-dessus des 8 chips, plein largeur, dashed bleu ciel au-dessus, bullet conservé */
-    .fd-content #fd-q-lait {
-      width: 100%;
-      padding: 10px 0 6px !important;
-      margin-top: 4px;
-      border-top: 1px dashed var(--primary-light) !important;
-      font-weight: 400;
-      font-size: 14px;
-      color: var(--text);
-    }
-    /* Grille des 8 chips lait : pas de fond, pas de bordure (juste les chips alignés en 2 colonnes), pas de marge top pour coller à la question */
-    .fd-content .fd-lait-grid {
-      background: transparent;
-      border: none;
-      margin-top: 0;
-      padding: 6px 0 0;
-    }
+    /* (Duplicates de #fd-q-lait et .fd-lait-grid supprimés — règles définitives plus haut) */
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line:first-child { padding-top: 0; }
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line:last-child { padding-bottom: 0; }
     .fd-content .fd-q-text {
@@ -8497,7 +8500,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=787"></script>
+<script src="script-data.js?v=788"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
