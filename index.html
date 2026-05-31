@@ -2170,22 +2170,17 @@
       display: flex; flex-direction: column; gap: 16px; width: 100%;
       margin-top: 6px;
     }
-    /* Sous-section interne (Mode d'alim / Mode d'allait / Autres / type lait) — visuellement distincte */
-    .fd-content .fd-alim-block > .fd-alim-section,
-    .fd-content .fd-alim-autres,
+    /* Mode d'allaitement (conditionnel) — simple ligne sous-jacente avec léger fond rosé */
     .fd-content .fd-allait-mode-group {
-      padding: 10px 12px;
+      padding: 8px 10px;
       border-radius: 8px;
-      background: #f8fafc;
-      border-left: 3px solid var(--primary-light);
+      background: #fff5f6;
+      border: 1px dashed #fda4af;
     }
-    /* Header = label de sous-section (Mode d'alimentation, Mode d'allaitement, Autres) */
+    /* Label "Mode d'allaitement" — petit, discret */
     .fd-content .fd-alim-label {
-      font-size: 13.5px; font-weight: 700; color: var(--primary-dark);
-      text-transform: uppercase; letter-spacing: 0.5px;
-      margin-bottom: 8px;
-      display: block;
-      text-decoration: none;
+      font-size: 12px; font-weight: 600; color: #831843;
+      margin-bottom: 6px; display: block;
     }
     .fd-content .fd-alim-hint {
       color: #94a3b8; font-size: 11px; font-weight: 400;
@@ -2194,26 +2189,22 @@
     .fd-content .fd-alim-row {
       display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
     }
+    /* Cases Alim : look identique aux chips standards (pill, primary selected) */
     .fd-content .fd-alim-cb {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 8px 14px; border: 1.5px solid var(--border); border-radius: 8px;
-      background: white; cursor: pointer; font-size: 13px; font-weight: 500;
-      color: var(--text); transition: all 0.15s;
+      padding: 6px 13px; border-radius: 999px; background: white;
+      border: 1.5px solid var(--border); font-size: 12.5px; font-weight: 600;
+      color: var(--text); cursor: pointer; transition: all 0.15s;
+      display: inline-flex; align-items: center; gap: 5px;
+      user-select: none; line-height: 1.2;
     }
-    .fd-content .fd-alim-cb:hover { border-color: var(--primary-light); background: #f0f4fa; }
+    .fd-content .fd-alim-cb:hover { border-color: var(--primary-light); background: #f0f4fa; transform: translateY(-1px); }
     .fd-content .fd-alim-cb:has(input:checked) {
-      background: #dcfce7; border-color: #16a34a; color: #14532d;
+      background: var(--primary); color: white; border-color: var(--primary-dark);
     }
     .fd-content .fd-alim-cb input[type="checkbox"] {
-      width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer;
+      display: none;   /* checkbox masquée — la label sert de pastille cliquable */
     }
     .fd-content .fd-alim-cb-dashed { border-style: dashed; border-color: #b0b0b0; }
-    /* Override : Mode d'allaitement — fond rosé pour signaler que c'est conditionnel */
-    .fd-content .fd-allait-mode-group {
-      background: #fff5f6;
-      border-left: 3px solid #fda4af;
-    }
-    .fd-content .fd-alim-autres { margin-top: 0; }
     /* Extras sous "Mode d'alimentation" : 3 cases centrées horizontalement, sans label "Autres" */
     .fd-content .fd-alim-extras {
       display: flex; flex-wrap: wrap; gap: 8px;
@@ -2221,17 +2212,8 @@
       padding: 0 4px;
       margin-top: -8px;          /* coller au row 4-cases au-dessus */
     }
-    /* Quand un encadré FD contient un fd-alim-block, le texte de la question = TITRE du bloc */
-    .fd-content .fd-q-row-simple:has(.fd-alim-block) > .fd-q-text {
-      width: 100%;
-      font-size: 15px; font-weight: 700; color: var(--primary-dark);
-      padding-bottom: 6px;
-      border-bottom: 1.5px dashed var(--primary-light);
-      margin-bottom: 4px;
-    }
-    .fd-content .fd-q-row-simple:has(.fd-alim-block) > .fd-q-text::before {
-      content: none;   /* pas de bullet quand c'est un titre */
-    }
+    /* (Retiré : le texte de "Qu'est-ce qu'il prend le matin ?" prend désormais le style standard
+       comme les autres questions, conformément au feedback utilisateur.) */
     /* Container des bandeaux (biberon + tétée) — OUTSIDE de la bordure épaisse de fd-content */
     .fd-banners {
       display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px;
@@ -8504,7 +8486,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=785"></script>
+<script src="script-data.js?v=786"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
