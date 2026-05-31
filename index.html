@@ -8504,7 +8504,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=783"></script>
+<script src="script-data.js?v=784"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -9021,15 +9021,19 @@ function fdUpdateVisibility() {
   if (!q) return;
   const c = (typeof state !== 'undefined' && state && state.client) ? state.client : {};
   const hasAgeData = !!((c.dateTerme && String(c.dateTerme).length) || (c.ageGestationnel && String(c.ageGestationnel).length) || (c.ageCorrigeManuel && String(c.ageCorrigeManuel).length));
-  // ─── Encadré "né à terme ?" : visible si pas d'âge déjà rempli côté fiche client.
-  _fdTermeQVisible = !hasAgeData;
-  // Utiliser 'flex' (pas '') pour ÉCRASER tout display:none CSS éventuel — évite le clignotement
-  // si le bloc se re-render et que la CSS par défaut reste sur display:none entre 2 ticks.
+  // ─── Encadré "né à terme ?" :
+  //   • Visible si pas d'âge déjà rempli (pour pouvoir répondre à la question)
+  //   • OU si user a cliqué "Non, prématuré" (sticky : reste visible même quand
+  //     [il_elle] remplit les 3 cases d'âge — sinon ça disparaît avant la fin de la saisie)
+  //   • Caché si âge déjà rempli côté fiche client AVANT toute interaction (pas besoin de demander)
+  const userExplicitlyNon = _fdTrioVisible === true;
+  _fdTermeQVisible = !hasAgeData || userExplicitlyNon;
+  // Utiliser 'flex' (pas '') pour ÉCRASER tout display:none CSS éventuel — évite le clignotement.
   q.style.display = _fdTermeQVisible ? 'flex' : 'none';
   // ─── Les 3 cases (trio) : visibles UNIQUEMENT si user a cliqué "Non, prématuré".
   //     L'encadré parent doit aussi être visible (sinon trio caché).
   if (trio) {
-    const showTrio = _fdTermeQVisible && _fdTrioVisible === true;
+    const showTrio = _fdTermeQVisible && userExplicitlyNon;
     trio.style.display = showTrio ? 'block' : 'none';
   }
 }
@@ -13374,8 +13378,9 @@ window.updateDecouverteCible = updateDecouverteCible;
 function _getParentsDisplay() {
   const c = (state && state.client) || {};
   const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
-  const p1Present = c.parent1Present !== false;
-  const p2Present = c.parent2Present !== false;
+  // Par défaut DÉCOCHÉ — l'utilisateur doit explicitement cocher.
+  const p1Present = c.parent1Present === true;
+  const p2Present = c.parent2Present === true;
   const p1 = p1Present && c.prenomParent1 ? cap(c.prenomParent1) : '';
   const p2 = p2Present && c.prenomParent2 ? cap(c.prenomParent2) : '';
   if (!p1 && !p2) {
@@ -13406,8 +13411,9 @@ function renderAccueilParentsWidget() {
   const p2Name = cap(c.prenomParent2) || '';
   const p1Role = (c.sexeParent1 || '').toLowerCase();
   const p2Role = (c.sexeParent2 || '').toLowerCase();
-  const p1Present = c.parent1Present !== false;
-  const p2Present = c.parent2Present !== false;
+  // Par défaut DÉCOCHÉ — l'utilisateur doit explicitement cocher.
+  const p1Present = c.parent1Present === true;
+  const p2Present = c.parent2Present === true;
 
   const pillHtml = (parentNum, role, label, color, isActive) =>
     `<span class="accueil-role-pill${isActive?' active':''}" style="--apt-pill-color:${color}"
