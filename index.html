@@ -2135,11 +2135,11 @@
     /* Chips arrangés en lignes explicites (pour Matinée alimentation : sein/biberon, lait infantile/mixte/sevrage indenté, diversifications) */
     .fd-content .fd-chip-row { display: flex; gap: 6px; flex-wrap: wrap; width: 100%; align-items: center; }
     .fd-content .fd-chip.indent { margin-left: 28px; }
-    /* Inconfort : layout en 4 colonnes fixes (style V. Diagnostic) */
+    /* Inconfort : layout en 5 colonnes fixes (style V. Diagnostic) */
     .fd-content .fd-chips.fd-chips-cols {
       width: 100%; flex-basis: 100%;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);   /* ← 4 colonnes fixes */
+      grid-template-columns: repeat(5, 1fr);   /* ← 5 colonnes fixes */
       gap: 8px 12px;
       align-items: start;
     }
@@ -2354,9 +2354,11 @@
     .fd-content .fd-lait-grid .fd-chip {
       width: 100%; max-width: 100%;
       text-align: center; justify-content: center;   /* ← chips centrés */
-      /* MÊME taille que les chips alim (Allaitement au sein, etc.) */
-      font-size: 12.5px; font-weight: 600;
-      padding: 6px 13px;
+      /* MÊME taille que les chips alim (Allaitement au sein, etc.) — !important pour ne pas être écrasé */
+      font-size: 12.5px !important;
+      font-weight: 600 !important;
+      padding: 6px 13px !important;
+      line-height: 1.2 !important;
     }
     .fd-content .fd-lait-grid .fd-chip.selected {
       background: var(--primary); color: white; border-color: var(--primary-dark);
@@ -8544,7 +8546,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=791"></script>
+<script src="script-data.js?v=792"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
