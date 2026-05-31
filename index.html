@@ -2329,10 +2329,11 @@
     }
     .fd-content #fd-q-lait .fd-q-text { color: #831843; font-weight: 600; font-size: 12px; }
     .fd-content #fd-q-lait .fd-q-text::before { content: none; }   /* pas de bullet */
-    /* Grille 8 types de lait (2 colonnes : Sans anti-reflux / Avec anti-reflux) */
+    /* Grille 8 types de lait (2 colonnes : Sans anti-reflux / Avec anti-reflux)
+       Colonnes dimensionnées pour matcher la largeur des chips alim ("Allaitement au sein") */
     .fd-content .fd-lait-grid {
-      display: grid; grid-template-columns: minmax(0,140px) minmax(0,140px);
-      column-gap: 6px; row-gap: 6px;
+      display: grid; grid-template-columns: minmax(0,170px) minmax(0,170px);
+      column-gap: 8px; row-gap: 6px;
       margin-top: 4px; padding: 0;
       background: transparent; border: none;
       justify-content: start;  /* ← aligné à gauche */
@@ -2351,10 +2352,11 @@
       margin-bottom: 8px;   /* ← espace entre titres et 1ère ligne de chips */
     }
     .fd-content .fd-lait-grid .fd-chip {
-      min-width: 0; max-width: 100%;
+      width: 100%; max-width: 100%;
       text-align: center; justify-content: center;   /* ← chips centrés */
-      font-size: 11.5px;
-      padding: 5px 10px;
+      /* MÊME taille que les chips alim (Allaitement au sein, etc.) */
+      font-size: 12.5px; font-weight: 600;
+      padding: 6px 13px;
     }
     .fd-content .fd-lait-grid .fd-chip.selected {
       background: var(--primary); color: white; border-color: var(--primary-dark);
@@ -8542,7 +8544,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=790"></script>
+<script src="script-data.js?v=791"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
