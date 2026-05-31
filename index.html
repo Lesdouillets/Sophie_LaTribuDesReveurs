@@ -2135,20 +2135,33 @@
     /* Chips arrangés en lignes explicites (pour Matinée alimentation : sein/biberon, lait infantile/mixte/sevrage indenté, diversifications) */
     .fd-content .fd-chip-row { display: flex; gap: 6px; flex-wrap: wrap; width: 100%; align-items: center; }
     .fd-content .fd-chip.indent { margin-left: 28px; }
-    /* Chips en mode wrap (utilisé pour Inconfort qui a beaucoup de chips) */
-    .fd-content .fd-chips.fd-chips-wrap {
+    /* Inconfort : layout en colonnes groupées (style V. Diagnostic) */
+    .fd-content .fd-chips.fd-chips-cols {
       width: 100%;
-      display: flex; flex-direction: column;   /* COLONNE */
-      align-items: center;                      /* centré horizontalement */
-      gap: 6px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px 14px;
+      align-items: start;
     }
-    .fd-content .fd-chips.fd-chips-wrap .fd-chip {
-      min-width: 280px;          /* largeur uniforme pour alignement vertical */
+    .fd-content .fd-chip-col {
+      display: flex; flex-direction: column; gap: 5px;
+      align-items: flex-start;
+    }
+    .fd-content .fd-chip-col-title {
+      font-size: 12.5px; font-weight: 700; color: var(--text);
+      margin: 0 0 2px 0;
+    }
+    .fd-content .fd-chips-cols .fd-chip {
+      width: 100%; max-width: 100%;
       justify-content: flex-start;
+      box-sizing: border-box;
     }
-    .fd-content .fd-chips.fd-chips-wrap .fd-chip.indent {
-      margin-left: 0;            /* annule le margin-left horizontal */
-      padding-left: 36px;        /* indentation visuelle via padding pour les sub-items */
+    /* Sub-items des régurgitations : indentés + plus petits + ne dépassent pas la chips parente */
+    .fd-content .fd-chips-cols .fd-chip.indent {
+      margin-left: 20px;
+      width: calc(100% - 20px);
+      font-size: 11px;
+      padding: 4px 9px;
     }
     /* Chip POSITIF (vert) — pour "Aucun signe" qui se distingue de la liste des symptômes */
     .fd-content .fd-chip.fd-chip-positive {
@@ -2275,13 +2288,21 @@
     .fd-bib-banner .fd-bib-line + .fd-bib-line { margin-top: 4px; }
     .fd-bib-banner strong { color: #7c5200; font-weight: 800; }
     .fd-bib-banner .fd-bib-sep { color: #d4a85a; margin: 0; }
-    /* Slot lait (a ou b) avec fd-q-lait dedans : encadré rosé identique au Mode d'allaitement */
-    .fd-content .fd-lait-slot:has(#fd-q-lait[style*="block"]),
-    .fd-content .fd-lait-slot:has(.fd-lait-grid[style*="grid"]) {
+    /* Slot-a (seul, en dehors du groupe Mode d'allaitement) : encadré rosé dashed quand lait visible */
+    .fd-content .fd-lait-slot-a:has(#fd-q-lait[style*="block"]),
+    .fd-content .fd-lait-slot-a:has(.fd-lait-grid[style*="grid"]) {
       padding: 8px 10px;
       border-radius: 8px;
       background: #fff5f6;
       border: 1px dashed #fda4af;
+    }
+    /* Slot-b (à l'intérieur du groupe Mode d'allaitement) : pas de border, juste un espace au-dessus */
+    .fd-content .fd-lait-slot-b:has(#fd-q-lait[style*="block"]),
+    .fd-content .fd-lait-slot-b:has(.fd-lait-grid[style*="grid"]) {
+      padding: 0;
+      background: transparent;
+      border: none;
+      margin-top: 12px;   /* espace entre Mode d'allaitement responses et "Quel type de lait" */
     }
     /* Question "Quel type de lait" : texte rouge/marron comme le label "Mode d'allaitement" */
     .fd-content #fd-q-lait {
@@ -2297,7 +2318,7 @@
     /* Grille 8 types de lait (2 colonnes : Sans anti-reflux / Avec anti-reflux) */
     .fd-content .fd-lait-grid {
       display: grid; grid-template-columns: minmax(0,140px) minmax(0,140px);
-      column-gap: 6px; row-gap: 6px;
+      column-gap: 6px; row-gap: 14px;   /* ← demi-ligne vide entre rangées */
       margin-top: 4px; padding: 0;
       background: transparent; border: none;
       justify-content: start;  /* ← aligné à gauche */
@@ -8500,7 +8521,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=788"></script>
+<script src="script-data.js?v=789"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
