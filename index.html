@@ -2157,15 +2157,15 @@
       align-items: stretch !important;
     }
     .fd-content .fd-q-line.fd-q-stacked > .fd-q-text { width: 100%; }
-    /* Liste des chips "symptômes RGO" (photo) : flex wrap, chips plein largeur dispo */
+    /* Liste des chips "symptômes RGO" — toutes alignées sur la largeur de la plus grande */
     .fd-content .fd-rgo-sympt-list {
-      display: flex; flex-direction: column; gap: 6px;
-      width: 100%; align-items: stretch;
+      display: grid;
+      grid-template-columns: max-content;   /* 1 colonne large = largeur de la chip la plus grande */
+      gap: 6px;
       margin-top: 4px;
     }
     .fd-content .fd-rgo-sympt-list .fd-chip {
-      width: auto; align-self: flex-start;
-      max-width: 100%;
+      width: 100%;                /* remplit la cellule de grille = largeur de la plus grande */
       justify-content: flex-start;
     }
     /* Séparation visuelle entre la liste RGO et la grille inconfort qui suit */
@@ -2200,7 +2200,8 @@
     }
     /* 8 chips de la grille — même dimensions que dans III. Alimentation */
     .fd-content .fd-aplv-lait-grid-inner .fd-chip {
-      width: 100%; max-width: 100%;
+      width: auto;                                /* taille = contenu */
+      justify-self: center;                       /* centré dans la cellule */
       text-align: center; justify-content: center;
       font-size: 12.5px !important; font-weight: 400 !important;
       padding: 6px 13px !important; line-height: 1.2 !important;
@@ -2277,12 +2278,12 @@
       display: flex; flex-direction: column; gap: 16px; width: 100%;
       margin-top: 6px;
     }
-    /* Mode d'allaitement (conditionnel) — plus de rosé, juste un espace */
+    /* Mode d'allaitement (conditionnel) — plus de rosé + espacement comme une "vraie" question */
     .fd-content .fd-allait-mode-group {
       padding: 0;
       background: transparent;
       border: none;
-      margin-top: 4px;
+      margin: 14px 0 14px 0;   /* espace au-dessus et en-dessous (au-dessus du bandeau ET sous les chips) */
     }
     .fd-content .fd-alim-hint {
       color: #94a3b8; font-size: 11px; font-weight: 400;
@@ -2404,7 +2405,8 @@
       margin-bottom: 8px;   /* ← espace entre titres et 1ère ligne de chips */
     }
     .fd-content .fd-lait-grid .fd-chip {
-      width: 100%; max-width: 100%;
+      width: auto;                                /* taille = contenu, comme les autres chips */
+      justify-self: center;                       /* centré dans la cellule grille */
       text-align: center; justify-content: center;
       font-size: 12.5px !important;
       font-weight: 400 !important;   /* non-gras comme les autres chips */
@@ -8655,7 +8657,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=802"></script>
+<script src="script-data.js?v=803"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
