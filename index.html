@@ -8896,7 +8896,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=822"></script>
+<script src="script-data.js?v=823"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -12987,6 +12987,12 @@ function _sosOutsideClickHandler(e) {
   // Ne pas refermer si le clic est sur le bouton 🆘 d'ouverture
   const sosBtn = e.target.closest('[onclick*="toggleSosPanel"]') || e.target.closest('#btn-sos-floating');
   if (sosBtn) return;
+  // Ne pas refermer si le clic est sur la mini-toolbar de formatage (Gras/Italique/Souligné/Couleur)
+  // ou sur une palette de couleurs ouverte → sinon le clic sur "G" ferme le panneau et la mise
+  // en gras semble "perdre" l'édition (alors qu'elle est appliquée puis le panneau referme).
+  if (e.target.closest('#format-toolbar')) return;
+  if (e.target.closest('.color-palette-popup')) return;
+  if (e.target.closest('.color-palette-wrap')) return;
   // Sinon, refermer
   panel.classList.remove('open');
   document.removeEventListener('mousedown', _sosOutsideClickHandler, true);
