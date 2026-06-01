@@ -8896,7 +8896,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=823"></script>
+<script src="script-data.js?v=824"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -23440,6 +23440,27 @@ function toggleEditMode() {
   renderCurrentSection();
 }
 
+// ─── Dé-substitution des variables avant save ───
+// Quand un bloc est rendu, substituteVars remplace [prénom_enfant] par un <strong> coloré
+// contenant le nom réel. Si on sauvegarde le HTML tel quel, on fige le nom (ex: "Dounia")
+// dans l'override → bug : ne se met plus à jour quand on change d'enfant.
+// Cette fonction reconvertit les marqueurs stylés en placeholders avant le save.
+function unsubstituteClientVars(html) {
+  return String(html)
+    // [prénom_enfant] : <strong class="var-prenom-enfant" ...>NAME</strong>
+    .replace(/<strong[^>]*class="[^"]*var-prenom-enfant[^"]*"[^>]*>[\s\S]*?<\/strong>/gi, '[prénom_enfant]')
+    // [prénom_parent_1] : <strong class="var-prenom-parent-1" ...>NAME</strong>
+    .replace(/<strong[^>]*class="[^"]*var-prenom-parent-1[^"]*"[^>]*>[\s\S]*?<\/strong>/gi, '[prénom_parent_1]')
+    // [prénom_parent_2] : <span class="var-prenom-parent-2" ...>NAME</span>
+    .replace(/<span[^>]*class="[^"]*var-prenom-parent-2[^"]*"[^>]*>[\s\S]*?<\/span>/gi, '[prénom_parent_2]')
+    // [prénom_parents] : <span data-var="prnts">NAMES</span> (NE PAS confondre avec parent-1 qui a aussi data-var="prnts")
+    // → on traite parent-1 d'abord (ci-dessus), donc ici on capture seulement les <span> restants
+    .replace(/<span[^>]*data-var="prnts"[^>]*>[\s\S]*?<\/span>/gi, '[prénom_parents]')
+    // [age] : <span class="var-age">AGE</span>
+    .replace(/<span[^>]*class="[^"]*var-age[^"]*"[^>]*>[\s\S]*?<\/span>/gi, '[age]');
+}
+window.unsubstituteClientVars = unsubstituteClientVars;
+
 // ─── Sauvegarde des édits INLINE (Ctrl+B, frappe directe dans un .block[contenteditable]) ─
 // Le bouton "Modifier" + popup save déjà via saveEditBlock(). Ici on capture les édits
 // inline qui passent par le contenteditable du bloc lui-même → save automatique sur blur + input.
@@ -23459,8 +23480,10 @@ function saveInlineBlockEdit(blockEl) {
     }
   }
   if (!sectionId || path === '') return;
-  // Convertir HTML → markdown (mêmes règles que saveEditBlock)
-  let newText = blockEl.innerHTML
+  // 1. Dé-substituer les variables client (prénom enfant/parent, age) AVANT toute conversion
+  //    sinon le nom rendu (ex: "Dounia") serait figé dans l'override → bug au changement d'enfant
+  // 2. Puis convertir HTML → markdown (mêmes règles que saveEditBlock)
+  let newText = unsubstituteClientVars(blockEl.innerHTML)
     .replace(/<strong>(.*?)<\/strong>/gi, '**$1**')
     .replace(/<b>(.*?)<\/b>/gi, '**$1**')
     .replace(/<em>(.*?)<\/em>/gi, '*$1*')
@@ -23663,7 +23686,10 @@ function saveEditBlock() {
   if (!b) return;
   const taEl = document.getElementById('edit-block-textarea');
   // Nettoyer le HTML du contenteditable : convertir en markdown pour le stockage
-  let newText = taEl.innerHTML
+  // (1) D'abord, dé-substituer les variables client (prénom enfant/parent, age) pour ne
+  //     pas figer le nom rendu dans l'override
+  // (2) Puis convertir HTML → markdown
+  let newText = (typeof unsubstituteClientVars === 'function' ? unsubstituteClientVars(taEl.innerHTML) : taEl.innerHTML)
     .replace(/<strong>(.*?)<\/strong>/gi, '**$1**')
     .replace(/<b>(.*?)<\/b>/gi, '**$1**')
     .replace(/<em>(.*?)<\/em>/gi, '*$1*')
