@@ -8896,7 +8896,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=820"></script>
+<script src="script-data.js?v=821"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -23420,12 +23420,81 @@ document.getElementById('add-block-modal').addEventListener('click', e => { if(e
 // MODE ÉDITION
 // ═══════════════════════════════════════════════════
 function toggleEditMode() {
+  // Avant tout : flusher l'édition inline en cours (si focus actif sur un bloc contenteditable)
+  // pour ne pas perdre une modif au moment du re-render
+  if (typeof flushInlineBlockEdit === 'function') flushInlineBlockEdit();
   state.editMode = !state.editMode;
   const btn = document.getElementById('btn-edit-mode');
   btn.classList.toggle('active', state.editMode);
   btn.textContent = state.editMode ? '✅ Fin édition' : '✏️ Éditer';
   renderCurrentSection();
 }
+
+// ─── Sauvegarde des édits INLINE (Ctrl+B, frappe directe dans un .block[contenteditable]) ─
+// Le bouton "Modifier" + popup save déjà via saveEditBlock(). Ici on capture les édits
+// inline qui passent par le contenteditable du bloc lui-même → save automatique sur blur.
+function saveInlineBlockEdit(blockEl) {
+  if (!blockEl) return;
+  const wrap = blockEl.closest('.edit-block-wrap');
+  if (!wrap) return;
+  // Extraire sectionId + path depuis le bouton "Modifier" du wrap
+  const editBtn = wrap.querySelector('.ebc-btn.edit');
+  if (!editBtn) return;
+  const m = (editBtn.getAttribute('onclick') || '').match(/openEditBlockModal\('([^']+)','([^']+)'\)/);
+  if (!m) return;
+  const sectionId = m[1];
+  const path = m[2];
+  // Convertir HTML → markdown (mêmes règles que saveEditBlock)
+  let newText = blockEl.innerHTML
+    .replace(/<strong>(.*?)<\/strong>/gi, '**$1**')
+    .replace(/<b>(.*?)<\/b>/gi, '**$1**')
+    .replace(/<em>(.*?)<\/em>/gi, '*$1*')
+    .replace(/<i>(.*?)<\/i>/gi, '*$1*')
+    .replace(/<\/div><div>/gi, '\n')
+    .replace(/<\/?div>/gi, '')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/\n+$/g, '');
+  const sec = state.sections.find(s => s.id === sectionId);
+  if (!sec) return;
+  const ov = ensureOverride(sec);
+  const b = getBlockByPath(ov.blocks, path);
+  if (!b) return;
+  // Pas de changement → ne rien faire (évite save inutile)
+  const currentText = (b.type === 'option') ? b.label : (b.type === 'checklist' ? b.title : b.text);
+  if (currentText === newText) return;
+  if (b.type === 'option') b.label = newText;
+  else if (b.type === 'checklist') b.title = newText;
+  else b.text = newText;
+  // Sync vers section.blocks aussi (cohérence dynamique)
+  const secBlock = getBlockByPath(sec.blocks || [], path);
+  if (secBlock && secBlock !== b) {
+    if (secBlock.type === 'option') secBlock.label = newText;
+    else if (secBlock.type === 'checklist') secBlock.title = newText;
+    else secBlock.text = newText;
+  }
+  saveScriptOverrides();
+}
+window.saveInlineBlockEdit = saveInlineBlockEdit;
+
+// Flush : force le save du bloc actuellement focusé (si édité)
+function flushInlineBlockEdit() {
+  const active = document.activeElement;
+  if (active && active.classList && active.classList.contains('block') && active.getAttribute('contenteditable') === 'true') {
+    saveInlineBlockEdit(active);
+  }
+}
+window.flushInlineBlockEdit = flushInlineBlockEdit;
+
+// Attacher la délégation blur sur #content-area au DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+  const area = document.getElementById('content-area');
+  if (!area) return;
+  area.addEventListener('blur', e => {
+    const blockEl = e.target.closest && e.target.closest('.block[contenteditable="true"]');
+    if (blockEl) saveInlineBlockEdit(blockEl);
+  }, true);  // capture phase (blur ne bubble pas)
+});
 
 // ─── Edit block ───
 let _editRef = null;
