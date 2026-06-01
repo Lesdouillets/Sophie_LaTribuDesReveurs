@@ -2150,6 +2150,39 @@
     }
     /* Petit gap visuel entre 2 sous-groupes dans la même colonne (Régurg sub-items / Selles, etc.) */
     .fd-content .fd-chip-gap { height: 14px; }
+    /* ── Section Santé : RGO ── */
+    /* Q-line "stacked" : permet de mettre 2 listes de chips empilées verticalement sous le texte de question */
+    .fd-content .fd-q-line.fd-q-stacked {
+      flex-direction: column !important;
+      align-items: stretch !important;
+    }
+    .fd-content .fd-q-line.fd-q-stacked > .fd-q-text { width: 100%; }
+    /* Liste des chips "symptômes RGO" (photo) : flex wrap, chips plein largeur dispo */
+    .fd-content .fd-rgo-sympt-list {
+      display: flex; flex-direction: column; gap: 6px;
+      width: 100%; align-items: stretch;
+      margin-top: 4px;
+    }
+    .fd-content .fd-rgo-sympt-list .fd-chip {
+      width: auto; align-self: flex-start;
+      max-width: 100%;
+      justify-content: flex-start;
+    }
+    /* Séparation visuelle entre la liste RGO et la grille inconfort qui suit */
+    .fd-content .fd-rgo-inconfort {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--primary-light);
+    }
+    /* Input "Autre" du traitement RGO */
+    .fd-content .fd-input-text-rgo {
+      width: 100%; max-width: 380px;
+      padding: 7px 11px; margin-top: 8px;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-size: 13px; font-family: inherit;
+      color: var(--primary-dark); background: white;
+    }
+    .fd-content .fd-input-text-rgo:focus { outline: none; border-color: var(--primary); }
     .fd-content .fd-chip-col-title {
       font-size: 12.5px; font-weight: 700; color: var(--text);
       margin: 0 0 2px 0;
@@ -8546,7 +8579,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=792"></script>
+<script src="script-data.js?v=793"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -8628,6 +8661,23 @@ function fdRestoreAnswers() {
   const reveilSouhait = document.getElementById('fd-reveil-souhait');
   if (reveilSouhait && Array.isArray(ans.reveil_convient) && ans.reveil_convient.some(t => t.includes('Non'))) {
     reveilSouhait.style.display = '';
+  }
+  // Restaurer la visibilité des sous-sections RGO si l'user avait répondu "Oui" à RGO
+  if (Array.isArray(ans.rgo_has) && ans.rgo_has.some(t => t.includes('Oui'))) {
+    document.querySelectorAll('.fd-content .fd-rgo-detail').forEach(el => { el.style.display = ''; });
+  }
+  // Si user avait Oui au Traitement → afficher la liste des traitements
+  if (Array.isArray(ans.rgo_traitement_has) && ans.rgo_traitement_has.some(t => t.includes('Oui'))) {
+    const treatments = document.getElementById('fd-rgo-treatments');
+    if (treatments) treatments.style.display = '';
+  }
+  // Si user avait sélectionné "Autre" comme traitement → afficher l'input texte
+  if (Array.isArray(ans.rgo_traitements) && ans.rgo_traitements.some(t => t.includes('Autre'))) {
+    const autreInput = document.getElementById('fd-rgo-autre-text');
+    if (autreInput) {
+      autreInput.style.display = '';
+      if (ans.rgo_traitement_autre && !autreInput.value) autreInput.value = ans.rgo_traitement_autre;
+    }
   }
   // Restaurer chips + inputs avec data-q
   Object.keys(ans).forEach(qKey => {
@@ -8972,6 +9022,52 @@ window.fdOnTermeAnswer = fdOnTermeAnswer;
 // Sync une valeur de la fiche découverte vers l'input correspondant de la fiche bébé.
 // Met à jour state.client + déclenche computeClientFields + force updateHeader + autoSave.
 // Indispensable au "clear" (sinon suppression de date-terme ne propage pas à la pastille / fiche bébé).
+// ─────────────────────────────────────────────────────────────────────────────
+// RGO (Section Santé) — révélations conditionnelles
+// ─────────────────────────────────────────────────────────────────────────────
+function fdOnRgoHas(chip) {
+  const isOui = chip.textContent.includes('Oui');
+  // Reveal/hide TOUS les .fd-rgo-detail (Qui diagnostiqué + Symptômes + Traitement Oui/Non)
+  document.querySelectorAll('.fd-content .fd-rgo-detail').forEach(el => {
+    el.style.display = isOui ? '' : 'none';
+  });
+  // Si Non → cacher aussi le bloc "lequel traitement"
+  if (!isOui) {
+    const treatments = document.getElementById('fd-rgo-treatments');
+    if (treatments) treatments.style.display = 'none';
+    const autreInput = document.getElementById('fd-rgo-autre-text');
+    if (autreInput) autreInput.style.display = 'none';
+  }
+}
+window.fdOnRgoHas = fdOnRgoHas;
+function fdOnRgoTraitement(chip) {
+  const isOui = chip.textContent.includes('Oui');
+  const treatments = document.getElementById('fd-rgo-treatments');
+  if (treatments) treatments.style.display = isOui ? '' : 'none';
+  if (!isOui) {
+    const autreInput = document.getElementById('fd-rgo-autre-text');
+    if (autreInput) autreInput.style.display = 'none';
+  }
+}
+window.fdOnRgoTraitement = fdOnRgoTraitement;
+function fdOnRgoAutreClick(chip) {
+  // Affiche le champ texte si "Autre" est sélectionné, sinon le cache.
+  const isSelected = chip.classList.contains('selected');
+  const autreInput = document.getElementById('fd-rgo-autre-text');
+  if (autreInput) {
+    autreInput.style.display = isSelected ? '' : 'none';
+    if (isSelected) try { autreInput.focus(); } catch(_){}
+  }
+}
+window.fdOnRgoAutreClick = fdOnRgoAutreClick;
+function fdRgoAutreInput(input) {
+  if (typeof state !== 'undefined' && state && state.client) {
+    if (!state.client.fdAnswers) state.client.fdAnswers = {};
+    state.client.fdAnswers.rgo_traitement_autre = input.value;
+    if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
+  }
+}
+window.fdRgoAutreInput = fdRgoAutreInput;
 function fdSyncToBebe(targetId, value) {
   const target = document.getElementById(targetId);
   if (!target) return;
