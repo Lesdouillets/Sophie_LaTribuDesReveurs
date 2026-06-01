@@ -2478,8 +2478,10 @@
       display: flex; flex-direction: column; align-items: stretch; gap: 6px;
       padding: 8px 0;
     }
+    /* Plus de séparateur dashed entre q-lines — espace vide à la place */
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line + .fd-q-line {
-      border-top: 1px dashed var(--primary-light);
+      border-top: none;
+      margin-top: 18px;
     }
     /* Slots structurels pour la grille des laits — invisibles, juste pour positionner */
     .fd-content .fd-lait-slot { width: 100%; }
@@ -2495,29 +2497,37 @@
     }
     /* ═══════════════════════════════════════════════════════
        Bandeau coloré pour le texte de question (Variante B)
+       Le bandeau colle aux bords de l'encadré (négatif margins)
        ═══════════════════════════════════════════════════════ */
-    /* Applique le bandeau quand le .fd-q-text est en TÊTE de questionnaire
-       (= enfant direct d'un .fd-q-row-simple OU d'un .fd-q-line dans multi) */
     .fd-content .fd-q-row-simple > .fd-q-text,
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line > .fd-q-text {
       display: block;
-      width: 100%;
       background: #d6deec;          /* primary-light */
       color: #2d3f5c;               /* primary-dark */
-      padding: 8px 14px;
-      border-radius: 10px;           /* coins arrondis (les 4 coins) */
+      padding: 10px 16px;
+      /* Négatif margins : colle les bords gauche/droite de l'encadré
+         (encadré padding = 14px 16px, donc -16px L/R + -14px top pour toucher les bords) */
+      margin: 0 -16px 10px -16px;
+      border-radius: 10px;           /* coins arrondis (4 coins) */
       font-size: 14.5px;
       font-weight: 700;
       line-height: 1.4;
-      margin: 0 0 6px 0;
       box-sizing: border-box;
     }
-    /* Suppression du bullet '•' quand le texte est stylisé en bandeau */
+    /* Question seule : bandeau touche AUSSI le haut de l'encadré */
+    .fd-content .fd-q-row-simple > .fd-q-text {
+      margin-top: -14px;
+    }
+    /* Première q-line dans un multi : bandeau touche AUSSI le haut */
+    .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line:first-child > .fd-q-text {
+      margin-top: -14px;
+    }
+    /* Bullet '•' supprimé sur les questions stylisées en bandeau */
     .fd-content .fd-q-row-simple > .fd-q-text::before,
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line > .fd-q-text::before {
       content: none;
     }
-    /* Les <strong> dans le texte de la question gardent leur emphase (même couleur) */
+    /* Strong dans la question : un poil plus gras */
     .fd-content .fd-q-row-simple > .fd-q-text strong,
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line > .fd-q-text strong {
       color: #2d3f5c;
@@ -8667,7 +8677,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=799"></script>
+<script src="script-data.js?v=800"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
