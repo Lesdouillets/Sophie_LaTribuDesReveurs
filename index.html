@@ -3595,10 +3595,8 @@
     /* Espace entre 2 groupes <ul> consécutifs dans un même bloc → reproduit les LIGNES VIDES
        du texte source (séparation visuelle entre groupes de bullets dans le même bloc) */
     .sos-block-content > ul + ul { margin-top: 14px; }
-    /* Espacement entre chaque ligne ≈ 1 ligne vide pour aérer la lecture */
-    .sos-block-content li { margin-bottom: 12px; }
-    .sos-block-content li:last-child { margin-bottom: 0; }
-    .sos-block-content ul ul { margin-top: 8px; margin-bottom: 4px; }
+    /* Espacement entre lignes : utiliser le même que partout ailleurs sur le site
+       (= règle parente .sos-section-body li → line-height: 1.75, margin-bottom: 4px). Pas d'override. */
     /* Mobile : empile titre/contenu verticalement */
     @media (max-width: 640px) {
       .sos-block { grid-template-columns: 1fr; }
@@ -8889,7 +8887,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=815"></script>
+<script src="script-data.js?v=816"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
