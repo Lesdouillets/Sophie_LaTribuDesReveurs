@@ -2109,7 +2109,7 @@
     .fd-content .fd-chips { display: flex; flex-wrap: wrap; gap: 6px; }
     .fd-content .fd-chip {
       padding: 6px 13px; border-radius: 999px; background: white;
-      border: 1.5px solid var(--border); font-size: 12.5px; font-weight: 600;
+      border: 1.5px solid var(--border); font-size: 12.5px; font-weight: 400;
       color: var(--text); cursor: pointer; transition: all 0.15s;
       display: inline-flex; align-items: center; gap: 5px;
       user-select: none; line-height: 1.2;
@@ -2174,15 +2174,14 @@
       padding-top: 12px;
       border-top: 1px dashed var(--primary-light);
     }
-    /* ── APLV : "Quel type de lait" — encadré rosé contenant les 8 chips grid + Allaitement maternel ── */
+    /* ── APLV : "Quel type de lait" — grille + Allaitement maternel SANS encadré rosé ── */
     .fd-content .fd-aplv-lait-block {
       display: flex; flex-direction: row;
-      align-items: center;   /* centré verticalement = Allaitement maternel sur la médiane des 8 chips */
+      align-items: center;
       gap: 18px; width: 100%;
       flex-wrap: wrap;
-      /* Encadré rosé enveloppant TOUT (grille + Allaitement maternel) */
-      padding: 12px 14px;
-      background: #fff5f6; border: 1px dashed #fda4af; border-radius: 8px;
+      padding: 0;
+      background: transparent; border: none;
     }
     .fd-content .fd-aplv-lait-grid-inner {
       display: grid;
@@ -2194,9 +2193,9 @@
     }
     /* Titres "Sans Anti-Reflux / Avec Anti-Reflux" */
     .fd-content .fd-aplv-lait-grid-inner .fd-lait-col-title {
-      font-size: 10px; font-weight: 800; color: #831843;
+      font-size: 10px; font-weight: 700; color: var(--primary-dark);
       text-transform: uppercase; letter-spacing: 0.4px; text-align: center;
-      padding-bottom: 4px; border-bottom: 1px dashed #fda4af;
+      padding-bottom: 4px; border-bottom: 1px dashed var(--primary-light);
       margin-bottom: 8px;
     }
     /* 8 chips de la grille — même dimensions que dans III. Alimentation */
@@ -2257,15 +2256,7 @@
       font-size: 11px;
       padding: 4px 9px;
     }
-    /* Pour que l'encadré inconfort prenne toute la largeur disponible */
-    .fd-content .fd-q-row-simple:has(.fd-chips-cols) {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    .fd-content .fd-q-row-simple:has(.fd-chips-cols) > .fd-q-text {
-      width: 100%;
-      margin-bottom: 6px;
-    }
+    /* (Règles :has(.fd-chips-cols) supprimées — le bandeau gère désormais la largeur globalement) */
     /* Chip POSITIF (vert) — pour "Aucun signe" qui se distingue de la liste des symptômes */
     .fd-content .fd-chip.fd-chip-positive {
       border-color: #16a34a; color: #14532d; background: #f0fdf4;
@@ -2286,17 +2277,12 @@
       display: flex; flex-direction: column; gap: 16px; width: 100%;
       margin-top: 6px;
     }
-    /* Mode d'allaitement (conditionnel) — simple ligne sous-jacente avec léger fond rosé */
+    /* Mode d'allaitement (conditionnel) — plus de rosé, juste un espace */
     .fd-content .fd-allait-mode-group {
-      padding: 8px 10px;
-      border-radius: 8px;
-      background: #fff5f6;
-      border: 1px dashed #fda4af;
-    }
-    /* Label "Mode d'allaitement" — petit, discret */
-    .fd-content .fd-alim-label {
-      font-size: 12px; font-weight: 600; color: #831843;
-      margin-bottom: 6px; display: block;
+      padding: 0;
+      background: transparent;
+      border: none;
+      margin-top: 4px;
     }
     .fd-content .fd-alim-hint {
       color: #94a3b8; font-size: 11px; font-weight: 400;
@@ -2308,7 +2294,7 @@
     /* Cases Alim : look identique aux chips standards (pill, primary selected) */
     .fd-content .fd-alim-cb {
       padding: 6px 13px; border-radius: 999px; background: white;
-      border: 1.5px solid var(--border); font-size: 12.5px; font-weight: 600;
+      border: 1.5px solid var(--border); font-size: 12.5px; font-weight: 400;
       color: var(--text); cursor: pointer; transition: all 0.15s;
       display: inline-flex; align-items: center; gap: 5px;
       user-select: none; line-height: 1.2;
@@ -2391,24 +2377,9 @@
     .fd-bib-banner .fd-bib-line + .fd-bib-line { margin-top: 4px; }
     .fd-bib-banner strong { color: #7c5200; font-weight: 800; }
     .fd-bib-banner .fd-bib-sep { color: #d4a85a; margin: 0; }
-    /* Slot-a (seul, en dehors du groupe Mode d'allaitement) : encadré rosé dashed quand lait visible */
-    .fd-content .fd-lait-slot-a:has(#fd-q-lait[style*="block"]),
-    .fd-content .fd-lait-slot-a:has(.fd-lait-grid[style*="grid"]) {
-      padding: 8px 10px;
-      border-radius: 8px;
-      background: #fff5f6;
-      border: 1px dashed #fda4af;
-    }
-    /* Slot-b (à l'intérieur du groupe Mode d'allaitement) : pas de border, juste un espace au-dessus */
-    .fd-content .fd-lait-slot-b:has(#fd-q-lait[style*="block"]),
-    .fd-content .fd-lait-slot-b:has(.fd-lait-grid[style*="grid"]) {
-      padding: 0;
-      background: transparent;
-      border: none;
-      margin-top: 24px;   /* ← espace plus grand entre Mode d'allaitement et "Quel type de lait" */
-    }
-    /* Espace plus large au-dessus du label "Quel type de lait" lui-même (dans slot-a aussi) */
-    .fd-content #fd-q-lait { margin-top: 10px !important; }
+    /* Slots lait (a et b) — plus de rosé, juste un espace au-dessus */
+    .fd-content .fd-lait-slot { padding: 0; background: transparent; border: none; }
+    .fd-content .fd-lait-slot-b { margin-top: 4px; }
     /* Question "Quel type de lait" : texte rouge/marron comme le label "Mode d'allaitement" */
     .fd-content #fd-q-lait {
       width: 100%;
@@ -2437,9 +2408,9 @@
       margin-bottom: 10px;
     }
     .fd-content .fd-lait-col-title {
-      font-size: 10px; font-weight: 800; color: #831843;
+      font-size: 10px; font-weight: 700; color: var(--primary-dark);
       text-transform: uppercase; letter-spacing: 0.4px; text-align: center;
-      padding-bottom: 4px; border-bottom: 1px dashed #fda4af;
+      padding-bottom: 4px; border-bottom: 1px dashed var(--primary-light);
       margin-bottom: 8px;   /* ← espace entre titres et 1ère ligne de chips */
     }
     .fd-content .fd-lait-grid .fd-chip {
@@ -2500,38 +2471,56 @@
        Le bandeau colle aux bords de l'encadré (négatif margins)
        ═══════════════════════════════════════════════════════ */
     .fd-content .fd-q-row-simple > .fd-q-text,
-    .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line > .fd-q-text {
+    .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line > .fd-q-text,
+    .fd-content #fd-q-lait,
+    .fd-content .fd-alim-label {
       display: block;
+      width: auto;                   /* pas de 100% qui contraint */
       background: #d6deec;          /* primary-light */
       color: #2d3f5c;               /* primary-dark */
-      padding: 10px 16px;
-      /* Négatif margins : colle les bords gauche/droite de l'encadré
-         (encadré padding = 14px 16px, donc -16px L/R + -14px top pour toucher les bords) */
-      margin: 0 -16px 10px -16px;
+      padding: 10px 16px !important;
+      margin: 0 -16px 10px -16px !important;
       border-radius: 10px;           /* coins arrondis (4 coins) */
-      font-size: 14.5px;
-      font-weight: 700;
-      line-height: 1.4;
+      font-size: 14.5px !important;
+      font-weight: 400 !important;   /* normal : seuls les <strong> sont gras */
+      line-height: 1.4 !important;
       box-sizing: border-box;
+      text-transform: none !important;
+      letter-spacing: 0 !important;
+      border: none !important;
     }
     /* Question seule : bandeau touche AUSSI le haut de l'encadré */
     .fd-content .fd-q-row-simple > .fd-q-text {
-      margin-top: -14px;
+      margin-top: -14px !important;
     }
     /* Première q-line dans un multi : bandeau touche AUSSI le haut */
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line:first-child > .fd-q-text {
-      margin-top: -14px;
+      margin-top: -14px !important;
     }
     /* Bullet '•' supprimé sur les questions stylisées en bandeau */
     .fd-content .fd-q-row-simple > .fd-q-text::before,
-    .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line > .fd-q-text::before {
-      content: none;
+    .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line > .fd-q-text::before,
+    .fd-content #fd-q-lait .fd-q-text::before,
+    .fd-content .fd-alim-label::before {
+      content: none !important;
     }
-    /* Strong dans la question : un poil plus gras */
+    /* Le span intérieur de #fd-q-lait hérite simplement (pas de double style) */
+    .fd-content #fd-q-lait .fd-q-text {
+      background: transparent; padding: 0; margin: 0; font-size: inherit;
+      font-weight: inherit; color: inherit;
+    }
+    /* Strong dans la question : gras */
     .fd-content .fd-q-row-simple > .fd-q-text strong,
-    .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line > .fd-q-text strong {
+    .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line > .fd-q-text strong,
+    .fd-content #fd-q-lait strong,
+    .fd-content .fd-alim-label strong {
       color: #2d3f5c;
-      font-weight: 800;
+      font-weight: 700;
+    }
+    /* Hint dans le label (ex. "(plusieurs choix possibles)") en petit, italique, peu visible */
+    .fd-content .fd-alim-label .fd-alim-hint {
+      font-size: 11px; font-weight: 400; color: #5e7194;
+      font-style: italic; margin-left: 6px;
     }
     .fd-content .fd-q-text-small {
       font-size: 13px; color: var(--text); margin-bottom: 8px; font-style: italic;
@@ -8677,7 +8666,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=800"></script>
+<script src="script-data.js?v=801"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
