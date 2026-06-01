@@ -2461,8 +2461,8 @@
     }
     /* Question : encadré rectangulaire bleu CLAIR (contour fin) + intérieur blanc + coins arrondis */
     .fd-content .fd-q-row-simple {
-      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-      margin-bottom: 22px;   /* ↑ espacement entre encadrés (était 12px) */
+      display: flex; flex-direction: column; align-items: stretch; gap: 8px;
+      margin-bottom: 22px;   /* ↑ espacement entre encadrés */
       padding: 14px 16px;
       background: white;
       border: 1px solid var(--primary-light);
@@ -2475,7 +2475,7 @@
       flex-direction: column; align-items: stretch; gap: 0;
     }
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line {
-      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      display: flex; flex-direction: column; align-items: stretch; gap: 6px;
       padding: 8px 0;
     }
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line + .fd-q-line {
@@ -2492,6 +2492,36 @@
     }
     .fd-content .fd-q-text::before {
       content: '•'; margin-right: 8px; color: var(--primary-dark); font-weight: 900;
+    }
+    /* ═══════════════════════════════════════════════════════
+       Bandeau coloré pour le texte de question (Variante B)
+       ═══════════════════════════════════════════════════════ */
+    /* Applique le bandeau quand le .fd-q-text est en TÊTE de questionnaire
+       (= enfant direct d'un .fd-q-row-simple OU d'un .fd-q-line dans multi) */
+    .fd-content .fd-q-row-simple > .fd-q-text,
+    .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line > .fd-q-text {
+      display: block;
+      width: 100%;
+      background: #d6deec;          /* primary-light */
+      color: #2d3f5c;               /* primary-dark */
+      padding: 8px 14px;
+      border-radius: 10px;           /* coins arrondis (les 4 coins) */
+      font-size: 14.5px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin: 0 0 6px 0;
+      box-sizing: border-box;
+    }
+    /* Suppression du bullet '•' quand le texte est stylisé en bandeau */
+    .fd-content .fd-q-row-simple > .fd-q-text::before,
+    .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line > .fd-q-text::before {
+      content: none;
+    }
+    /* Les <strong> dans le texte de la question gardent leur emphase (même couleur) */
+    .fd-content .fd-q-row-simple > .fd-q-text strong,
+    .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line > .fd-q-text strong {
+      color: #2d3f5c;
+      font-weight: 800;
     }
     .fd-content .fd-q-text-small {
       font-size: 13px; color: var(--text); margin-bottom: 8px; font-style: italic;
@@ -8637,7 +8667,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=797"></script>
+<script src="script-data.js?v=799"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -8737,6 +8767,11 @@ function fdRestoreAnswers() {
   if (Array.isArray(ans.aplv_reintro) && ans.aplv_reintro.some(t => t.includes('Oui'))) {
     const am = document.getElementById('fd-aplv-ameliorations');
     if (am) am.style.display = '';
+  }
+  // Si Allaitement maternel coché dans APLV → afficher la question "Supplément fer"
+  if (Array.isArray(ans.aplv_allait_maternel) && ans.aplv_allait_maternel.length > 0) {
+    const fer = document.getElementById('fd-aplv-fer');
+    if (fer) fer.style.display = '';
   }
   // Restaurer le texte libre dans toutes les chips éditables (rgo_diag_autre, rgo_traitement_autre…)
   document.querySelectorAll('.fd-content .fd-chip-edit[data-q-text]').forEach(el => {
@@ -9128,6 +9163,13 @@ function fdOnAplvReintro(chip) {
   if (am) am.style.display = isOui ? '' : 'none';
 }
 window.fdOnAplvReintro = fdOnAplvReintro;
+// Allaitement maternel coché → révèle "Avez-vous été supplémentée en fer ?"
+function fdOnAplvAllaitMaternel(chip) {
+  const isSelected = chip.classList.contains('selected');
+  const fer = document.getElementById('fd-aplv-fer');
+  if (fer) fer.style.display = isSelected ? '' : 'none';
+}
+window.fdOnAplvAllaitMaternel = fdOnAplvAllaitMaternel;
 // Texte libre dans une chip "Autre :" — persiste sous le nom déclaré par data-q-text
 function fdRgoFreeText(el) {
   if (typeof state === 'undefined' || !state || !state.client) return;
