@@ -2174,15 +2174,32 @@
       padding-top: 12px;
       border-top: 1px dashed var(--primary-light);
     }
-    /* Input "Autre" du traitement RGO */
-    .fd-content .fd-input-text-rgo {
-      width: 100%; max-width: 380px;
-      padding: 7px 11px; margin-top: 8px;
-      border: 1.5px solid var(--border); border-radius: 8px;
-      font-size: 13px; font-family: inherit;
-      color: var(--primary-dark); background: white;
+    /* Chip avec champ texte éditable intégré (Autre : ___) — la chip grandit avec le texte saisi */
+    .fd-content .fd-chip.fd-chip-with-edit {
+      cursor: pointer;
+      gap: 4px;
     }
-    .fd-content .fd-input-text-rgo:focus { outline: none; border-color: var(--primary); }
+    .fd-content .fd-chip-edit {
+      display: inline-block;
+      min-width: 50px;
+      padding: 0 4px;
+      outline: none;
+      border-bottom: 1px dashed currentColor;
+      font-weight: 500;
+      cursor: text;
+      white-space: nowrap;
+    }
+    /* Placeholder quand vide */
+    .fd-content .fd-chip-edit:empty::before {
+      content: attr(data-placeholder);
+      opacity: 0.55;
+      font-style: italic;
+    }
+    /* Quand la chip est sélectionnée → texte blanc, bordure adaptée */
+    .fd-content .fd-chip.selected .fd-chip-edit {
+      color: white;
+      border-bottom-color: rgba(255,255,255,0.7);
+    }
     .fd-content .fd-chip-col-title {
       font-size: 12.5px; font-weight: 700; color: var(--text);
       margin: 0 0 2px 0;
@@ -8579,7 +8596,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=793"></script>
+<script src="script-data.js?v=794"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -8671,14 +8688,11 @@ function fdRestoreAnswers() {
     const treatments = document.getElementById('fd-rgo-treatments');
     if (treatments) treatments.style.display = '';
   }
-  // Si user avait sélectionné "Autre" comme traitement → afficher l'input texte
-  if (Array.isArray(ans.rgo_traitements) && ans.rgo_traitements.some(t => t.includes('Autre'))) {
-    const autreInput = document.getElementById('fd-rgo-autre-text');
-    if (autreInput) {
-      autreInput.style.display = '';
-      if (ans.rgo_traitement_autre && !autreInput.value) autreInput.value = ans.rgo_traitement_autre;
-    }
-  }
+  // Restaurer le texte libre dans toutes les chips éditables (rgo_diag_autre, rgo_traitement_autre…)
+  document.querySelectorAll('.fd-content .fd-chip-edit[data-q-text]').forEach(el => {
+    const key = el.dataset.qText;
+    if (key && ans[key] && !el.textContent) el.textContent = ans[key];
+  });
   // Restaurer chips + inputs avec data-q
   Object.keys(ans).forEach(qKey => {
     const val = ans[qKey];
@@ -9035,8 +9049,6 @@ function fdOnRgoHas(chip) {
   if (!isOui) {
     const treatments = document.getElementById('fd-rgo-treatments');
     if (treatments) treatments.style.display = 'none';
-    const autreInput = document.getElementById('fd-rgo-autre-text');
-    if (autreInput) autreInput.style.display = 'none';
   }
 }
 window.fdOnRgoHas = fdOnRgoHas;
@@ -9044,30 +9056,17 @@ function fdOnRgoTraitement(chip) {
   const isOui = chip.textContent.includes('Oui');
   const treatments = document.getElementById('fd-rgo-treatments');
   if (treatments) treatments.style.display = isOui ? '' : 'none';
-  if (!isOui) {
-    const autreInput = document.getElementById('fd-rgo-autre-text');
-    if (autreInput) autreInput.style.display = 'none';
-  }
 }
 window.fdOnRgoTraitement = fdOnRgoTraitement;
-function fdOnRgoAutreClick(chip) {
-  // Affiche le champ texte si "Autre" est sélectionné, sinon le cache.
-  const isSelected = chip.classList.contains('selected');
-  const autreInput = document.getElementById('fd-rgo-autre-text');
-  if (autreInput) {
-    autreInput.style.display = isSelected ? '' : 'none';
-    if (isSelected) try { autreInput.focus(); } catch(_){}
-  }
+// Texte libre dans une chip "Autre :" — persiste sous le nom déclaré par data-q-text
+function fdRgoFreeText(el) {
+  if (typeof state === 'undefined' || !state || !state.client) return;
+  if (!el || !el.dataset || !el.dataset.qText) return;
+  if (!state.client.fdAnswers) state.client.fdAnswers = {};
+  state.client.fdAnswers[el.dataset.qText] = el.textContent || '';
+  if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
 }
-window.fdOnRgoAutreClick = fdOnRgoAutreClick;
-function fdRgoAutreInput(input) {
-  if (typeof state !== 'undefined' && state && state.client) {
-    if (!state.client.fdAnswers) state.client.fdAnswers = {};
-    state.client.fdAnswers.rgo_traitement_autre = input.value;
-    if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
-  }
-}
-window.fdRgoAutreInput = fdRgoAutreInput;
+window.fdRgoFreeText = fdRgoFreeText;
 function fdSyncToBebe(targetId, value) {
   const target = document.getElementById(targetId);
   if (!target) return;
