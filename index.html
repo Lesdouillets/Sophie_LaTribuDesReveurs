@@ -7084,28 +7084,29 @@
               <div class="form-group full" id="type-lait-group" style="display:none;margin-top:8px">
                 <label class="label-underlined">Type de lait infantile</label>
                 <input type="hidden" id="type-lait" value="">
+                <input type="hidden" id="type-lait-other" value="">
                 <div class="lait-btns lait-btns-grid">
                   <div class="lait-col-title">Sans Anti-Reflux</div>
                   <div class="lait-col-title">Avec Anti-Reflux</div>
                   <div class="lait-col-title">Autres laits</div>
                   <button type="button" class="lait-btn" data-lait="Lait normal aux PLV" onclick="setTypeLait('Lait normal aux PLV')">Standard</button>
                   <button type="button" class="lait-btn" data-lait="Lait normal aux PLV AR" onclick="setTypeLait('Lait normal aux PLV AR')">Standard AR</button>
-                  <button type="button" class="lait-btn" data-lait="Lait de vache" onclick="setTypeLait('Lait de vache')">Lait de vache</button>
+                  <button type="button" class="lait-btn" data-lait="Lait de vache" data-lait-col="other" onclick="setTypeLait('Lait de vache')">Lait de vache</button>
                   <button type="button" class="lait-btn" data-lait="Lait PLV hydrolysées HA" onclick="setTypeLait('Lait PLV hydrolysées HA')">Hydrolysé HA</button>
                   <button type="button" class="lait-btn" data-lait="Lait PLV hydrolysées HA AR" onclick="setTypeLait('Lait PLV hydrolysées HA AR')">Hydrolysé HA AR</button>
-                  <button type="button" class="lait-btn" data-lait="Lait de chèvre" onclick="setTypeLait('Lait de chèvre')">Lait de chèvre</button>
+                  <button type="button" class="lait-btn" data-lait="Lait de chèvre" data-lait-col="other" onclick="setTypeLait('Lait de chèvre')">Lait de chèvre</button>
                   <button type="button" class="lait-btn" data-lait="Lait acides aminés PLV" onclick="setTypeLait('Lait acides aminés PLV')">Acides aminés</button>
                   <button type="button" class="lait-btn" data-lait="Lait acides aminés PLV AR" onclick="setTypeLait('Lait acides aminés PLV AR')">Acides aminés AR</button>
-                  <button type="button" class="lait-btn" data-lait="Lait de jument" onclick="setTypeLait('Lait de jument')">Lait de jument</button>
+                  <button type="button" class="lait-btn" data-lait="Lait de jument" data-lait-col="other" onclick="setTypeLait('Lait de jument')">Lait de jument</button>
                   <button type="button" class="lait-btn" data-lait="Lait protéines de riz" onclick="setTypeLait('Lait protéines de riz')">Protéines de riz</button>
                   <button type="button" class="lait-btn" data-lait="Lait protéines de riz AR" onclick="setTypeLait('Lait protéines de riz AR')">Protéines de riz AR</button>
-                  <button type="button" class="lait-btn" data-lait="Lait de brebis" onclick="setTypeLait('Lait de brebis')">Lait de brebis</button>
+                  <button type="button" class="lait-btn" data-lait="Lait de brebis" data-lait-col="other" onclick="setTypeLait('Lait de brebis')">Lait de brebis</button>
                   <span></span>
                   <span></span>
-                  <button type="button" class="lait-btn" data-lait="Lait de soja" onclick="setTypeLait('Lait de soja')">Lait de soja</button>
+                  <button type="button" class="lait-btn" data-lait="Lait de soja" data-lait-col="other" onclick="setTypeLait('Lait de soja')">Lait de soja</button>
                   <span></span>
                   <span></span>
-                  <span class="lait-btn lait-btn-with-edit" data-lait="Autre" onclick="setTypeLait('Autre')">Autre :<span contenteditable="true" class="lait-btn-edit" data-placeholder="précisez…" oninput="onLaitAutreInput(this)" onclick="event.stopPropagation()"></span></span>
+                  <span class="lait-btn lait-btn-with-edit" data-lait="Autre" data-lait-col="other" onclick="setTypeLait('Autre')">Autre :<span contenteditable="true" class="lait-btn-edit" data-placeholder="précisez…" oninput="onLaitAutreInput(this)" onclick="event.stopPropagation()"></span></span>
                 </div>
               </div>
               <div style="margin-top:24px">
@@ -8712,7 +8713,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=807"></script>
+<script src="script-data.js?v=808"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -8755,7 +8756,13 @@ function fdToggleChip(el, single) {
   if (single && chips) {
     // Si déjà sélectionnée → désélectionne (toggle off), sinon désélectionne les autres et sélectionne celle-ci
     const wasSelected = el.classList.contains('selected');
-    chips.querySelectorAll('.fd-chip').forEach(c => c.classList.remove('selected'));
+    // Scope du deselect : si la chip appartient à un sous-groupe (data-lait-col),
+    // on ne désélectionne que les chips du MÊME sous-groupe (ex: col "other" indépendante de col 1+2)
+    const laitCol = el.dataset.laitCol;
+    const scopeSel = laitCol
+      ? `.fd-chip[data-lait-col="${laitCol}"]`
+      : '.fd-chip:not([data-lait-col])';
+    chips.querySelectorAll(scopeSel).forEach(c => c.classList.remove('selected'));
     if (!wasSelected) el.classList.add('selected');
   } else {
     el.classList.toggle('selected');
@@ -8977,20 +8984,31 @@ window.fdRestoreBibCases = fdRestoreBibCases;
 // Type de lait infantile : sélection mutex dans la grille 2 colonnes (Sans/Avec anti-reflux)
 function fdSetTypeLait(value, el) {
   const grid = el ? el.closest('.fd-lait-grid') : document.getElementById('fd-lait-grid');
-  if (grid) grid.querySelectorAll('.fd-chip').forEach(c => c.classList.remove('selected'));
-  if (el) el.classList.add('selected');
-  // Sync vers state.client + fiche bébé (input hidden #type-lait + bouton .lait-btn correspondant)
-  if (typeof state !== 'undefined' && state && state.client) {
-    state.client.typeLait = value;
-    if (!state.client.fdAnswers) state.client.fdAnswers = {};
-    state.client.fdAnswers.type_lait = value;
+  // La 3ème colonne (data-lait-col="other") est un groupe mutex INDÉPENDANT des col 1+2
+  const isOther = el ? (el.dataset.laitCol === 'other') : false;
+  if (grid) {
+    const scopeSel = isOther
+      ? '.fd-chip[data-lait-col="other"]'
+      : '.fd-chip:not([data-lait-col])';
+    grid.querySelectorAll(scopeSel).forEach(c => c.classList.remove('selected'));
   }
-  if (typeof setTypeLait === 'function' && value !== state?.client?.typeLait) {
+  if (el) el.classList.add('selected');
+  // Sync vers state.client + fiche bébé : on stocke col 1+2 dans typeLait, col 3 dans typeLaitOther
+  const stateField = isOther ? 'typeLaitOther' : 'typeLait';
+  const fdAnsKey = isOther ? 'type_lait_other' : 'type_lait';
+  if (typeof state !== 'undefined' && state && state.client) {
+    state.client[stateField] = value;
+    if (!state.client.fdAnswers) state.client.fdAnswers = {};
+    state.client.fdAnswers[fdAnsKey] = value;
+  }
+  // Sync vers la fiche client (le setTypeLait route lui-même vers le bon hidden input via data-lait-col)
+  if (typeof setTypeLait === 'function' && value !== state?.client?.[stateField + '_lastSynced']) {
     try { setTypeLait(value); } catch(_){}
   } else {
-    // Sync direct au hidden input + lait-btn highlight côté fiche bébé
-    const hid = document.getElementById('type-lait'); if (hid) hid.value = value;
-    document.querySelectorAll('.lait-btn').forEach(b => b.classList.toggle('selected', b.dataset.lait === value));
+    // Sync direct : trouver le bon hidden input + mettre à jour les lait-btn
+    const hidId = isOther ? 'type-lait-other' : 'type-lait';
+    const hid = document.getElementById(hidId); if (hid) hid.value = value;
+    if (typeof _updateTypeLaitButtons === 'function') _updateTypeLaitButtons();
   }
   if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
 }
@@ -9022,15 +9040,26 @@ function fdUpdateLaitGridVisibility() {
   }
   grid.style.display = needsLait ? 'grid' : 'none';
   if (qLait) qLait.style.display = needsLait ? 'block' : 'none';
-  // Si la grille devient visible et state.client.typeLait existe, restaurer le chip sélectionné
+  // Si la grille devient visible et state.client.typeLait / typeLaitOther existent, restaurer les chips
   if (needsLait) {
     const c = (typeof state !== 'undefined' && state && state.client) ? state.client : {};
     const tl = c.typeLait || (c.fdAnswers && c.fdAnswers.type_lait) || '';
+    const tlOther = c.typeLaitOther || (c.fdAnswers && c.fdAnswers.type_lait_other) || '';
+    // Restaurer col 1+2
     if (tl) {
-      const currentSelected = grid.querySelector('.fd-chip.selected');
-      if (!currentSelected) {
-        grid.querySelectorAll('.fd-chip').forEach(chip => {
+      const currentSelectedMain = grid.querySelector('.fd-chip.selected:not([data-lait-col])');
+      if (!currentSelectedMain) {
+        grid.querySelectorAll('.fd-chip:not([data-lait-col])').forEach(chip => {
           chip.classList.toggle('selected', chip.dataset.lait === tl);
+        });
+      }
+    }
+    // Restaurer col 3 (groupe "other")
+    if (tlOther) {
+      const currentSelectedOther = grid.querySelector('.fd-chip.selected[data-lait-col="other"]');
+      if (!currentSelectedOther) {
+        grid.querySelectorAll('.fd-chip[data-lait-col="other"]').forEach(chip => {
+          chip.classList.toggle('selected', chip.dataset.lait === tlOther);
         });
       }
     }
@@ -9877,10 +9906,16 @@ function _updateSexeParentButtons(parentNum) {
 }
 window._updateSexeParentButtons = _updateSexeParentButtons;
 
-// Type de lait infantile : sélection unique parmi 8 boutons. Re-clic désélectionne.
-// La valeur est stockée dans l'input hidden #type-lait (compat code existant).
+// Type de lait infantile : 2 groupes mutex SÉPARÉS
+//  • col 1+2 (Sans AR / Avec AR)  → input hidden #type-lait
+//  • col 3   (Autres laits)        → input hidden #type-lait-other
+// Le bouton se reconnaît à data-lait-col="other" pour la col 3.
 function setTypeLait(value) {
-  const input = document.getElementById('type-lait');
+  // Détecter le groupe à partir du bouton qui porte data-lait=value
+  const btn = document.querySelector(`.lait-btn[data-lait="${value}"]`);
+  const isOther = btn ? (btn.dataset.laitCol === 'other') : false;
+  const inputId = isOther ? 'type-lait-other' : 'type-lait';
+  const input = document.getElementById(inputId);
   if (!input) return;
   const newValue = (input.value === value) ? '' : value;
   input.value = newValue;
@@ -9890,10 +9925,12 @@ function setTypeLait(value) {
 window.setTypeLait = setTypeLait;
 
 function _updateTypeLaitButtons() {
-  const input = document.getElementById('type-lait');
-  const value = input ? (input.value || '') : '';
+  const v1 = (document.getElementById('type-lait')?.value) || '';
+  const v2 = (document.getElementById('type-lait-other')?.value) || '';
   document.querySelectorAll('.lait-btn').forEach(btn => {
-    btn.classList.toggle('selected', !!value && btn.dataset.lait === value);
+    const isOther = btn.dataset.laitCol === 'other';
+    const v = isOther ? v2 : v1;
+    btn.classList.toggle('selected', !!v && btn.dataset.lait === v);
   });
 }
 window._updateTypeLaitButtons = _updateTypeLaitButtons;
@@ -10796,6 +10833,7 @@ function populateFormFromClient(c) {
   set('sexe-parent2', c.sexeParent2 || 'papa');
   if (typeof _updateSexeParentButtons === 'function') _updateSexeParentButtons();
   set('type-lait', c.typeLait);
+  set('type-lait-other', c.typeLaitOther);
   if (typeof _updateTypeLaitButtons === 'function') _updateTypeLaitButtons();
   set('notes-medicales', c.notesMedicales);
   set('autre-allergie-text', c.autreAllergieText);
@@ -11158,6 +11196,7 @@ function autoSaveFiche() {
     c.taillePere = document.getElementById('taille-pere')?.value || '';
     c.tailleMere = document.getElementById('taille-mere')?.value || '';
     c.typeLait = document.getElementById('type-lait')?.value || '';
+    c.typeLaitOther = document.getElementById('type-lait-other')?.value || '';
     c.alimentation = [...document.querySelectorAll('input[name="alim"]:checked')].map(x => x.value);
     c.allaitementMode = [...document.querySelectorAll('input[name="allaitement_mode"]:checked')].map(x => x.value);
     c.sieste = document.querySelector('input[name="sieste"]:checked')?.value || '';
@@ -11241,6 +11280,7 @@ async function saveFicheOnly() {
     alimentation: [...document.querySelectorAll('input[name="alim"]:checked')].map(c=>c.value),
     allaitementMode: [...document.querySelectorAll('input[name="allaitement_mode"]:checked')].map(c=>c.value),
     typeLait: document.getElementById('type-lait')?.value || '',
+    typeLaitOther: document.getElementById('type-lait-other')?.value || '',
     taillePere: isNaN(taillePere)?'':taillePere,
     tailleMere: isNaN(tailleMere)?'':tailleMere,
     tailleCible: tc || '',
@@ -12058,6 +12098,7 @@ function startConsultation() {
     alimentation: [...document.querySelectorAll('input[name="alim"]:checked')].map(c=>c.value),
     allaitementMode: [...document.querySelectorAll('input[name="allaitement_mode"]:checked')].map(c=>c.value),
     typeLait: document.getElementById('type-lait')?.value || '',
+    typeLaitOther: document.getElementById('type-lait-other')?.value || '',
     taillePere: isNaN(taillePere)?'':taillePere,
     tailleMere: isNaN(tailleMere)?'':tailleMere,
     tailleCible: tc || '',
