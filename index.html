@@ -7980,6 +7980,7 @@
     </div>
     <div class="header-actions">
       <button class="btn-edit-mode" id="btn-edit-mode" onclick="toggleEditMode()">✏️ Éditer</button>
+      <button class="btn-icon" id="btn-export-overrides" title="Exporter mes modifications pour les graver dans le code source (à donner à Claude)" onclick="exportOverridesForClaude()" style="font-size:15px">📥</button>
       <span style="position:relative;display:inline-flex">
         <button class="btn-icon" id="btn-meet-mode" title="Mode visio (réserve un coin pour la PiP de Google Meet)" onclick="toggleMeetMode(event)" style="position:relative;font-size:17px">📹<span id="btn-meet-mode-corner" style="display:none;position:absolute;top:-2px;right:-2px;background:#5e7194;color:#fff;font-size:9px;font-weight:700;border-radius:8px;padding:0 4px;line-height:13px;min-width:14px;text-align:center">↘</span></button>
         <div id="meet-corner-menu" class="meet-corner-menu" onclick="event.stopPropagation()">
@@ -8896,7 +8897,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=824"></script>
+<script src="script-data.js?v=825"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -23439,6 +23440,61 @@ function toggleEditMode() {
   btn.textContent = state.editMode ? '✅ Fin édition' : '✏️ Éditer';
   renderCurrentSection();
 }
+
+// ═══════════════════════════════════════════════════
+// EXPORT DES OVERRIDES POUR CLAUDE (graver dans le code source)
+// ═══════════════════════════════════════════════════
+// Bundle complet : overrides de sections (par bloc/path) + contenu HTML du panneau SOS.
+// Format JSON destiné à être lu par Claude depuis un fichier déposé à la racine du repo.
+// Claude le détecte automatiquement (pattern : tdr-overrides-*.json) et applique les diffs
+// dans script-data.js (texte des blocs) + index.html (contenu SOS).
+function exportOverridesForClaude() {
+  // Flusher tout save inline en attente avant export
+  if (typeof flushInlineBlockEdit === 'function') { try { flushInlineBlockEdit(); } catch(_){} }
+  if (typeof saveSosContent === 'function') { try { saveSosContent(); } catch(_){} }
+  const sosContent = localStorage.getItem('tdr_sos_content_v3') || '';
+  const overrides = (state && state.scriptOverrides) || {};
+  // Filtrer les overrides vides (sections jamais éditées qui auraient un override fantôme)
+  const nonEmptyOverrides = {};
+  for (const [sectionId, ov] of Object.entries(overrides)) {
+    if (ov && Array.isArray(ov.blocks) && ov.blocks.length > 0) {
+      nonEmptyOverrides[sectionId] = ov;
+    }
+  }
+  const payload = {
+    _meta: {
+      exportedAt: new Date().toISOString(),
+      app: 'La Tribu des Rêveurs',
+      user: (typeof currentUser !== 'undefined' && currentUser?.email) || 'unknown',
+      formatVersion: 1,
+      description: 'Overrides UI à graver dans script-data.js + contenu SOS à graver dans index.html. Lire par Claude avec la commande "grave mes modifs".'
+    },
+    scriptOverrides: nonEmptyOverrides,
+    sosContent: sosContent,
+    sosStorageKey: 'tdr_sos_content_v3'
+  };
+  const json = JSON.stringify(payload, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const today = new Date().toISOString().slice(0, 10);
+  const fname = `tdr-overrides-${today}.json`;
+  // Téléchargement
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = fname;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  // Feedback utilisateur
+  const sectionCount = Object.keys(nonEmptyOverrides).length;
+  const sosKb = (sosContent.length / 1024).toFixed(1);
+  alert(`✅ Export téléchargé : ${fname}\n\n` +
+        `📝 ${sectionCount} section(s) avec des modifications\n` +
+        `🆘 Panneau SOS : ${sosKb} Ko\n\n` +
+        `Dépose ce fichier à la RACINE du repo (au même niveau que index.html),\n` +
+        `puis dis à Claude : "grave mes modifs"`);
+}
+window.exportOverridesForClaude = exportOverridesForClaude;
 
 // ─── Dé-substitution des variables avant save ───
 // Quand un bloc est rendu, substituteVars remplace [prénom_enfant] par un <strong> coloré
