@@ -8896,7 +8896,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=821"></script>
+<script src="script-data.js?v=822"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -13786,6 +13786,8 @@ function togglePb(value, checked) {
 // NAVIGATION
 // ═══════════════════════════════════════════════════
 function navigateTo(idx) {
+  // Flusher l'édition inline en cours AVANT changement de section (sinon perte de la modif)
+  if (typeof flushInlineBlockEdit === 'function') flushInlineBlockEdit();
   // Si on quitte I. Accueil et qu'aucun prénom enfant/parent n'est renseigné → alerte
   if (idx !== state.currentIdx) {
     const _curSecAcc = state.sections && state.sections[state.currentIdx];
@@ -16645,7 +16647,9 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     embeddedBlockHtml = `<div class="block-question-inline" contenteditable="false" style="background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0 0;font-weight:400;line-height:1.7"><div style="margin-bottom:10px">❓ ${questionText}</div>${embeddedHtml}</div>`;
   }
   const clearFix = hasTrailing ? '<div style="clear:both"></div>' : '';
-  return `<div class="block ${cls}${extraCls}" contenteditable="true" style="overflow:hidden">${trailingBtnHtml}${text}${embeddedBlockHtml}${clearFix}</div>`;
+  // data-section-id + data-block-path → utilisés par saveInlineBlockEdit (auto-save sur blur/input)
+  const dataAttrs = sectionId ? ` data-section-id="${sectionId}" data-block-path="${path}"` : '';
+  return `<div class="block ${cls}${extraCls}" contenteditable="true"${dataAttrs} style="overflow:hidden">${trailingBtnHtml}${text}${embeddedBlockHtml}${clearFix}</div>`;
 }
 
 // ══════════════════════════════════════════════════════════
@@ -23432,18 +23436,23 @@ function toggleEditMode() {
 
 // ─── Sauvegarde des édits INLINE (Ctrl+B, frappe directe dans un .block[contenteditable]) ─
 // Le bouton "Modifier" + popup save déjà via saveEditBlock(). Ici on capture les édits
-// inline qui passent par le contenteditable du bloc lui-même → save automatique sur blur.
+// inline qui passent par le contenteditable du bloc lui-même → save automatique sur blur + input.
 function saveInlineBlockEdit(blockEl) {
   if (!blockEl) return;
-  const wrap = blockEl.closest('.edit-block-wrap');
-  if (!wrap) return;
-  // Extraire sectionId + path depuis le bouton "Modifier" du wrap
-  const editBtn = wrap.querySelector('.ebc-btn.edit');
-  if (!editBtn) return;
-  const m = (editBtn.getAttribute('onclick') || '').match(/openEditBlockModal\('([^']+)','([^']+)'\)/);
-  if (!m) return;
-  const sectionId = m[1];
-  const path = m[2];
+  // 1. Lire d'abord sectionId + path depuis les data-attributes du bloc (méthode primaire,
+  //    fonctionne même pour les blocs sans bouton "Modifier")
+  let sectionId = blockEl.dataset.sectionId || '';
+  let path = blockEl.dataset.blockPath || '';
+  // 2. Fallback : extraire depuis le bouton "Modifier" du wrap parent
+  if (!sectionId || !path) {
+    const wrap = blockEl.closest('.edit-block-wrap');
+    const editBtn = wrap && wrap.querySelector('.ebc-btn.edit');
+    if (editBtn) {
+      const m = (editBtn.getAttribute('onclick') || '').match(/openEditBlockModal\('([^']+)','([^']+)'\)/);
+      if (m) { sectionId = m[1]; path = m[2]; }
+    }
+  }
+  if (!sectionId || path === '') return;
   // Convertir HTML → markdown (mêmes règles que saveEditBlock)
   let newText = blockEl.innerHTML
     .replace(/<strong>(.*?)<\/strong>/gi, '**$1**')
@@ -23477,23 +23486,44 @@ function saveInlineBlockEdit(blockEl) {
 }
 window.saveInlineBlockEdit = saveInlineBlockEdit;
 
-// Flush : force le save du bloc actuellement focusé (si édité)
+// Flush : force le save du bloc actuellement focusé (si édité) — utilisé avant tout re-render
 function flushInlineBlockEdit() {
   const active = document.activeElement;
   if (active && active.classList && active.classList.contains('block') && active.getAttribute('contenteditable') === 'true') {
     saveInlineBlockEdit(active);
   }
+  // Flush aussi tous les saves debouncés en attente
+  document.querySelectorAll('.block[contenteditable="true"]').forEach(el => {
+    if (el._inputTimer) {
+      clearTimeout(el._inputTimer);
+      el._inputTimer = null;
+      saveInlineBlockEdit(el);
+    }
+  });
 }
 window.flushInlineBlockEdit = flushInlineBlockEdit;
 
-// Attacher la délégation blur sur #content-area au DOMContentLoaded
+// Délégation blur + input sur #content-area au DOMContentLoaded (survit aux re-renders)
 document.addEventListener('DOMContentLoaded', () => {
   const area = document.getElementById('content-area');
   if (!area) return;
+  // Save IMMÉDIAT à la perte de focus
   area.addEventListener('blur', e => {
     const blockEl = e.target.closest && e.target.closest('.block[contenteditable="true"]');
-    if (blockEl) saveInlineBlockEdit(blockEl);
+    if (blockEl) {
+      if (blockEl._inputTimer) { clearTimeout(blockEl._inputTimer); blockEl._inputTimer = null; }
+      saveInlineBlockEdit(blockEl);
+    }
   }, true);  // capture phase (blur ne bubble pas)
+  // Save debouncé à chaque frappe (filet de sécurité en cas de fermeture brutale)
+  area.addEventListener('input', e => {
+    const blockEl = e.target.closest && e.target.closest('.block[contenteditable="true"]');
+    if (!blockEl) return;
+    clearTimeout(blockEl._inputTimer);
+    blockEl._inputTimer = setTimeout(() => { saveInlineBlockEdit(blockEl); blockEl._inputTimer = null; }, 600);
+  });
+  // Avant refresh/fermeture : flusher TOUTES les modifs en attente
+  window.addEventListener('beforeunload', () => { try { flushInlineBlockEdit(); } catch(_){} });
 });
 
 // ─── Edit block ───
