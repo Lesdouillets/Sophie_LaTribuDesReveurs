@@ -8897,7 +8897,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=825"></script>
+<script src="script-data.js?v=826"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -9792,6 +9792,83 @@ async function syncOverridesToSupabase() {
     await db.from('script_overrides').upsert({ user_id: currentUser.id, overrides: state.scriptOverrides, updated_at: new Date().toISOString() });
   } catch(e) {}
 }
+
+// ─── Migration : reconvertir les noms parent/enfant FIGÉS en placeholders ───
+// Appelable depuis la console : repairClientVarsInOverrides() OU repairClientVarsInOverrides(true)
+// pour application sans confirmation. Affiche un aperçu des remplacements avant d'agir.
+function repairClientVarsInOverrides(autoConfirm) {
+  const c = (state && state.client) || {};
+  const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+  const prenomEnfant = cap(c.prenomEnfant || '');
+  const prenomP1 = cap(c.prenomParent1 || '');
+  const prenomP2 = cap(c.prenomParent2 || '');
+  // Pour [prénom_parents] : "Sophie & Marc" — il faut détecter la combinaison
+  const _getParentsDisplayLocal = () => (typeof _getParentsDisplay === 'function') ? _getParentsDisplay() : '';
+  const parentsCombined = _getParentsDisplayLocal();
+
+  const repairs = [];
+  const escapeRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // Regex helpers — détecte `**NAME**` ou simplement `NAME` non précédé/suivi d'une lettre
+  const buildPatterns = (name, placeholder) => {
+    if (!name) return [];
+    const escaped = escapeRe(name);
+    return [
+      { re: new RegExp(`\\*\\*${escaped}\\*\\*`, 'g'), placeholder },  // **Sophie**
+    ];
+  };
+  const allPatterns = [
+    ...buildPatterns(prenomEnfant, '[prénom_enfant]'),
+    ...buildPatterns(prenomP1, '[prénom_parent_1]'),
+    ...buildPatterns(prenomP2, '[prénom_parent_2]'),
+    ...buildPatterns(parentsCombined, '[prénom_parents]'),
+  ];
+  if (allPatterns.length === 0) {
+    alert('❌ Aucun prénom client défini → impossible de réparer. Charge d\'abord une fiche client.');
+    return;
+  }
+
+  for (const [sectionId, ov] of Object.entries(state.scriptOverrides || {})) {
+    if (!ov || !Array.isArray(ov.blocks)) continue;
+    const walkBlocks = (blocks, pathPrefix) => {
+      blocks.forEach((b, i) => {
+        const path = pathPrefix ? `${pathPrefix}.${i}` : `${i}`;
+        const fields = ['text', 'label', 'title'];
+        fields.forEach(field => {
+          if (typeof b[field] !== 'string') return;
+          let original = b[field];
+          let modified = original;
+          allPatterns.forEach(({ re, placeholder }) => {
+            modified = modified.replace(re, placeholder);
+          });
+          if (modified !== original) {
+            repairs.push({ sectionId, path, field, before: original, after: modified, blockRef: b });
+          }
+        });
+        if (Array.isArray(b.blocks)) walkBlocks(b.blocks, path);
+      });
+    };
+    walkBlocks(ov.blocks, '');
+  }
+
+  if (repairs.length === 0) {
+    alert('✅ Aucun nom client figé détecté dans tes overrides — tout est OK.');
+    return;
+  }
+
+  const previewLines = repairs.slice(0, 10).map(r =>
+    `[${r.sectionId} → ${r.path}.${r.field}]\n  AVANT : ${r.before.slice(0, 100)}\n  APRÈS : ${r.after.slice(0, 100)}`
+  ).join('\n\n');
+  const more = repairs.length > 10 ? `\n\n… et ${repairs.length - 10} autre(s)` : '';
+  const msg = `🔧 ${repairs.length} remplacement(s) détecté(s) :\n\n${previewLines}${more}\n\nAppliquer ces corrections ?`;
+
+  if (!autoConfirm && !confirm(msg)) return;
+
+  repairs.forEach(r => { r.blockRef[r.field] = r.after; });
+  saveScriptOverrides();
+  alert(`✅ ${repairs.length} bloc(s) réparé(s). Re-rendu de la page…`);
+  if (typeof renderCurrentSection === 'function') renderCurrentSection();
+}
+window.repairClientVarsInOverrides = repairClientVarsInOverrides;
 
 // ─── Sync sessions ───
 async function syncSessionToSupabase(session) {
