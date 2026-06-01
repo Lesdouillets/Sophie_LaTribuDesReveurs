@@ -414,16 +414,41 @@
       text-align: center; padding: 4px 0 2px;
       text-transform: uppercase; letter-spacing: 0.4px;
     }
+    /* Boutons type de lait — style pill identique à .fd-chip (fiche découverte) */
     .lait-btn {
-      padding: 8px 12px; border-radius: 8px;
-      border: 1.5px solid #cbd5e0; background: #f8fafc; color: #475569;
-      font-size: 13px; font-weight: 600; cursor: pointer;
-      transition: all 0.15s; line-height: 1.25;
+      padding: 6px 13px; border-radius: 999px;
+      border: 1.5px solid var(--border); background: white; color: var(--text);
+      font-size: 12.5px; font-weight: 400; cursor: pointer;
+      transition: all 0.15s; line-height: 1.2;
+      width: 100%; justify-self: stretch;
+      text-align: center;
+      display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+      user-select: none;
+      box-sizing: border-box;
     }
-    .lait-btn:hover:not(.selected) { background: #eef2f7; border-color: #94a3b8; }
+    .lait-btn:hover:not(.selected) { background: #f0f4fa; border-color: var(--primary-light); transform: translateY(-1px); }
     .lait-btn.selected {
-      background: #2563eb; color: #fff; border-color: #1d4ed8;
-      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+      background: var(--primary); color: #fff; border-color: var(--primary-dark);
+    }
+    /* Chip "Autre :" éditable — mêmes règles que .fd-chip-with-edit */
+    .lait-btn.lait-btn-with-edit { cursor: pointer; gap: 4px; }
+    .lait-btn-edit {
+      display: inline-block; min-width: 50px; padding: 0 4px;
+      outline: none; border-bottom: 1px dashed currentColor;
+      font-weight: 500; cursor: text; white-space: nowrap;
+    }
+    .lait-btn-edit:empty::before {
+      content: attr(data-placeholder);
+      opacity: 0.55; font-style: italic;
+    }
+    .lait-btn.selected .lait-btn-edit {
+      color: white; border-bottom-color: rgba(255,255,255,0.7);
+    }
+    /* Espace entre la 1ère ligne (Standard / Standard AR / Lait de vache) et la suite */
+    .lait-btns-grid > *:nth-child(4),
+    .lait-btns-grid > *:nth-child(5),
+    .lait-btns-grid > *:nth-child(6) {
+      margin-bottom: 12px;
     }
 
     .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -2225,10 +2250,17 @@
       font-size: 12.5px !important; font-weight: 400 !important;
       padding: 6px 13px !important; line-height: 1.2 !important;
     }
-    /* Espace UNIQUEMENT entre Standard / Standard AR et la ligne du dessous */
-    .fd-content .fd-aplv-lait-grid-inner > .fd-chip:nth-child(3),
-    .fd-content .fd-aplv-lait-grid-inner > .fd-chip:nth-child(4) {
-      margin-bottom: 10px;
+    /* Espace UNIQUEMENT entre la 1ère ligne (Standard / Standard AR / Lait de vache) et la ligne du dessous */
+    .fd-content .fd-aplv-lait-grid-inner > *:nth-child(4),
+    .fd-content .fd-aplv-lait-grid-inner > *:nth-child(5),
+    .fd-content .fd-aplv-lait-grid-inner > *:nth-child(6) {
+      margin-bottom: 12px;
+    }
+    /* Idem dans la grille de l'Alim FD */
+    .fd-content .fd-lait-grid > *:nth-child(4),
+    .fd-content .fd-lait-grid > *:nth-child(5),
+    .fd-content .fd-lait-grid > *:nth-child(6) {
+      margin-bottom: 12px;
     }
     /* Allaitement maternel — à droite, centré verticalement sur les 8 chips */
     .fd-content .fd-aplv-allait-side {
@@ -2435,8 +2467,8 @@
     }
     /* Question : encadré rectangulaire bleu CLAIR (contour fin) + intérieur blanc + coins arrondis */
     .fd-content .fd-q-row-simple {
-      display: flex; flex-direction: column; align-items: stretch; gap: 8px;
-      margin-bottom: 22px;   /* ↑ espacement entre encadrés */
+      display: flex; flex-direction: column; align-items: stretch; gap: 14px;
+      margin-bottom: 30px;   /* ↑ espacement entre encadrés */
       padding: 14px 16px;
       background: white;
       border: 1px solid var(--primary-light);
@@ -2449,13 +2481,13 @@
       flex-direction: column; align-items: stretch; gap: 0;
     }
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line {
-      display: flex; flex-direction: column; align-items: stretch; gap: 6px;
+      display: flex; flex-direction: column; align-items: stretch; gap: 12px;
       padding: 8px 0;
     }
     /* Plus de séparateur dashed entre q-lines — espace vide à la place */
     .fd-content .fd-q-row-simple.fd-q-multi .fd-q-line + .fd-q-line {
       border-top: none;
-      margin-top: 18px;
+      margin-top: 26px;
     }
     /* Slots structurels pour la grille des laits — invisibles, juste pour positionner */
     .fd-content .fd-lait-slot { width: 100%; }
@@ -7056,21 +7088,24 @@
                   <div class="lait-col-title">Sans Anti-Reflux</div>
                   <div class="lait-col-title">Avec Anti-Reflux</div>
                   <div class="lait-col-title">Autres laits</div>
-                  <button type="button" class="lait-btn" data-lait="Lait normal aux PLV" onclick="setTypeLait('Lait normal aux PLV')">Lait « normal » aux PLV</button>
-                  <button type="button" class="lait-btn" data-lait="Lait normal aux PLV AR" onclick="setTypeLait('Lait normal aux PLV AR')">Lait « normal » aux PLV Anti-Reflux</button>
+                  <button type="button" class="lait-btn" data-lait="Lait normal aux PLV" onclick="setTypeLait('Lait normal aux PLV')">Standard</button>
+                  <button type="button" class="lait-btn" data-lait="Lait normal aux PLV AR" onclick="setTypeLait('Lait normal aux PLV AR')">Standard AR</button>
+                  <button type="button" class="lait-btn" data-lait="Lait de vache" onclick="setTypeLait('Lait de vache')">Lait de vache</button>
+                  <button type="button" class="lait-btn" data-lait="Lait PLV hydrolysées HA" onclick="setTypeLait('Lait PLV hydrolysées HA')">Hydrolysé HA</button>
+                  <button type="button" class="lait-btn" data-lait="Lait PLV hydrolysées HA AR" onclick="setTypeLait('Lait PLV hydrolysées HA AR')">Hydrolysé HA AR</button>
                   <button type="button" class="lait-btn" data-lait="Lait de chèvre" onclick="setTypeLait('Lait de chèvre')">Lait de chèvre</button>
-                  <button type="button" class="lait-btn" data-lait="Lait PLV hydrolysées HA" onclick="setTypeLait('Lait PLV hydrolysées HA')">Lait à base de PLV hydrolysées (HA)</button>
-                  <button type="button" class="lait-btn" data-lait="Lait PLV hydrolysées HA AR" onclick="setTypeLait('Lait PLV hydrolysées HA AR')">Lait à base de PLV hydrolysées (HA) Anti-Reflux</button>
+                  <button type="button" class="lait-btn" data-lait="Lait acides aminés PLV" onclick="setTypeLait('Lait acides aminés PLV')">Acides aminés</button>
+                  <button type="button" class="lait-btn" data-lait="Lait acides aminés PLV AR" onclick="setTypeLait('Lait acides aminés PLV AR')">Acides aminés AR</button>
                   <button type="button" class="lait-btn" data-lait="Lait de jument" onclick="setTypeLait('Lait de jument')">Lait de jument</button>
-                  <button type="button" class="lait-btn" data-lait="Lait acides aminés PLV" onclick="setTypeLait('Lait acides aminés PLV')">Lait à base d'acides aminés de PLV</button>
-                  <button type="button" class="lait-btn" data-lait="Lait acides aminés PLV AR" onclick="setTypeLait('Lait acides aminés PLV AR')">Lait à base d'acides aminés de PLV Anti-Reflux</button>
+                  <button type="button" class="lait-btn" data-lait="Lait protéines de riz" onclick="setTypeLait('Lait protéines de riz')">Protéines de riz</button>
+                  <button type="button" class="lait-btn" data-lait="Lait protéines de riz AR" onclick="setTypeLait('Lait protéines de riz AR')">Protéines de riz AR</button>
                   <button type="button" class="lait-btn" data-lait="Lait de brebis" onclick="setTypeLait('Lait de brebis')">Lait de brebis</button>
-                  <button type="button" class="lait-btn" data-lait="Lait protéines de riz" onclick="setTypeLait('Lait protéines de riz')">Lait aux protéines de riz</button>
-                  <button type="button" class="lait-btn" data-lait="Lait protéines de riz AR" onclick="setTypeLait('Lait protéines de riz AR')">Lait aux protéines de riz Anti-Reflux</button>
+                  <span></span>
+                  <span></span>
                   <button type="button" class="lait-btn" data-lait="Lait de soja" onclick="setTypeLait('Lait de soja')">Lait de soja</button>
                   <span></span>
                   <span></span>
-                  <button type="button" class="lait-btn" data-lait="Autre" onclick="setTypeLait('Autre')">Autre</button>
+                  <span class="lait-btn lait-btn-with-edit" data-lait="Autre" onclick="setTypeLait('Autre')">Autre :<span contenteditable="true" class="lait-btn-edit" data-placeholder="précisez…" oninput="onLaitAutreInput(this)" onclick="event.stopPropagation()"></span></span>
                 </div>
               </div>
               <div style="margin-top:24px">
@@ -8677,7 +8712,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=806"></script>
+<script src="script-data.js?v=807"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -9862,6 +9897,21 @@ function _updateTypeLaitButtons() {
   });
 }
 window._updateTypeLaitButtons = _updateTypeLaitButtons;
+
+// Champ texte "Autre :" éditable côté fiche client — re-sélectionne automatiquement
+// la chip "Autre" pour conserver le focus / la sélection
+function onLaitAutreInput(el) {
+  if (!el) return;
+  const chip = el.closest('.lait-btn');
+  if (!chip) return;
+  const input = document.getElementById('type-lait');
+  if (input && input.value !== 'Autre') {
+    input.value = 'Autre';
+    _updateTypeLaitButtons();
+    if (typeof computeClientFields === 'function') computeClientFields();
+  }
+}
+window.onLaitAutreInput = onLaitAutreInput;
 
 // Helper : retourne la "base" de la problematique (= state.client.problematique avec le
 // suffixe state.client.pbExtraNote retiré). Utilisé au render de pb_intro/pb_question pour
