@@ -2174,6 +2174,44 @@
       padding-top: 12px;
       border-top: 1px dashed var(--primary-light);
     }
+    /* ── APLV : "Quel type de lait" — 8 chips grid à gauche + Allaitement maternel centré verticalement à droite ── */
+    .fd-content .fd-aplv-lait-block {
+      display: flex; flex-direction: row;
+      align-items: center;   /* centré verticalement = Allaitement maternel sur la médiane des 8 chips */
+      gap: 18px; width: 100%;
+      flex-wrap: wrap;
+    }
+    .fd-content .fd-aplv-lait-grid-inner {
+      display: grid;
+      grid-template-columns: minmax(0,170px) minmax(0,170px);
+      column-gap: 8px; row-gap: 6px;
+      padding: 8px 10px;
+      background: #fff5f6; border: 1px dashed #fda4af; border-radius: 8px;
+      justify-content: start;
+    }
+    /* Titres "Sans Anti-Reflux / Avec Anti-Reflux" */
+    .fd-content .fd-aplv-lait-grid-inner .fd-lait-col-title {
+      font-size: 10px; font-weight: 800; color: #831843;
+      text-transform: uppercase; letter-spacing: 0.4px; text-align: center;
+      padding-bottom: 4px; border-bottom: 1px dashed #fda4af;
+      margin-bottom: 8px;
+    }
+    /* 8 chips de la grille — même dimensions que dans III. Alimentation */
+    .fd-content .fd-aplv-lait-grid-inner .fd-chip {
+      width: 100%; max-width: 100%;
+      text-align: center; justify-content: center;
+      font-size: 12.5px !important; font-weight: 600 !important;
+      padding: 6px 13px !important; line-height: 1.2 !important;
+    }
+    /* Espace UNIQUEMENT entre Standard / Standard AR et la ligne du dessous */
+    .fd-content .fd-aplv-lait-grid-inner > .fd-chip:nth-child(3),
+    .fd-content .fd-aplv-lait-grid-inner > .fd-chip:nth-child(4) {
+      margin-bottom: 10px;
+    }
+    /* Allaitement maternel — à droite, centré verticalement sur les 8 chips */
+    .fd-content .fd-aplv-allait-side {
+      display: flex; align-items: center;
+    }
     /* Chip avec champ texte éditable intégré (Autre : ___) — la chip grandit avec le texte saisi */
     .fd-content .fd-chip.fd-chip-with-edit {
       cursor: pointer;
@@ -8596,7 +8634,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=795"></script>
+<script src="script-data.js?v=796"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -8691,6 +8729,11 @@ function fdRestoreAnswers() {
   // Restaurer la visibilité des sous-sections APLV si l'user avait répondu "Oui" à APLV
   if (Array.isArray(ans.aplv_has) && ans.aplv_has.some(t => t.includes('Oui'))) {
     document.querySelectorAll('.fd-content .fd-aplv-detail').forEach(el => { el.style.display = ''; });
+  }
+  // Si réintroduction = Non → afficher la question "Améliorations"
+  if (Array.isArray(ans.aplv_reintro) && ans.aplv_reintro.some(t => t.includes('Non'))) {
+    const am = document.getElementById('fd-aplv-ameliorations');
+    if (am) am.style.display = '';
   }
   // Restaurer le texte libre dans toutes les chips éditables (rgo_diag_autre, rgo_traitement_autre…)
   document.querySelectorAll('.fd-content .fd-chip-edit[data-q-text]').forEach(el => {
@@ -9068,8 +9111,20 @@ function fdOnAplvHas(chip) {
   document.querySelectorAll('.fd-content .fd-aplv-detail').forEach(el => {
     el.style.display = isOui ? '' : 'none';
   });
+  // Si Non → cacher aussi la sous-question "améliorations" qui dépend de "réintroduction = Non"
+  if (!isOui) {
+    const am = document.getElementById('fd-aplv-ameliorations');
+    if (am) am.style.display = 'none';
+  }
 }
 window.fdOnAplvHas = fdOnAplvHas;
+// Réintroduction PLV = Non → révèle la question "Avez-vous vu des améliorations ?"
+function fdOnAplvReintro(chip) {
+  const isNon = chip.textContent.includes('Non');
+  const am = document.getElementById('fd-aplv-ameliorations');
+  if (am) am.style.display = isNon ? '' : 'none';
+}
+window.fdOnAplvReintro = fdOnAplvReintro;
 // Texte libre dans une chip "Autre :" — persiste sous le nom déclaré par data-q-text
 function fdRgoFreeText(el) {
   if (typeof state === 'undefined' || !state || !state.client) return;
