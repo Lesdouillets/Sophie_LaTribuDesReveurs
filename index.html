@@ -2123,6 +2123,25 @@
       color: var(--primary-dark); background: white;
     }
     .fd-content .fd-input-tiny:focus { outline: none; border-color: var(--primary); }
+    /* Input texte standard (utilisé pour vit_d_marque, etc.) */
+    .fd-content .fd-input-text {
+      width: 100%; max-width: 380px;
+      padding: 7px 11px;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-size: 13px; font-family: inherit;
+      color: var(--primary-dark); background: white;
+    }
+    .fd-content .fd-input-text:focus { outline: none; border-color: var(--primary); }
+    /* Textarea standard (utilisé pour autres_antecedents) */
+    .fd-content .fd-textarea {
+      width: 100%; min-height: 70px;
+      padding: 8px 11px;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-size: 13px; font-family: inherit;
+      color: var(--primary-dark); background: white;
+      resize: vertical;
+    }
+    .fd-content .fd-textarea:focus { outline: none; border-color: var(--primary); }
     /* Input poids (Contexte général) — taille 140px comme dans fiche client > Croissance */
     .fd-content .fd-input-poids {
       width: 140px; padding: 6px 10px;
@@ -8657,7 +8676,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=803"></script>
+<script src="script-data.js?v=804"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -8806,6 +8825,11 @@ function fdRestoreAnswers() {
   if (Array.isArray(ans.aplv_allait_maternel) && ans.aplv_allait_maternel.length > 0) {
     const fer = document.getElementById('fd-aplv-fer');
     if (fer) fer.style.display = '';
+  }
+  // Si Vitamine D = Oui → afficher la question "Quelle marque et quel dosage ?"
+  if (Array.isArray(ans.vit_d) && ans.vit_d.some(t => t.includes('Oui'))) {
+    const marque = document.getElementById('fd-vitd-marque');
+    if (marque) marque.style.display = '';
   }
   // Restaurer le texte libre dans toutes les chips éditables (rgo_diag_autre, rgo_traitement_autre…)
   document.querySelectorAll('.fd-content .fd-chip-edit[data-q-text]').forEach(el => {
@@ -9204,6 +9228,22 @@ function fdOnAplvAllaitMaternel(chip) {
   if (fer) fer.style.display = isSelected ? '' : 'none';
 }
 window.fdOnAplvAllaitMaternel = fdOnAplvAllaitMaternel;
+// Vitamine D = Oui → révèle "Quelle marque et quel dosage ?"
+function fdOnVitamineD(chip) {
+  const isOui = chip.textContent.includes('Oui');
+  const marque = document.getElementById('fd-vitd-marque');
+  if (marque) marque.style.display = isOui ? '' : 'none';
+}
+window.fdOnVitamineD = fdOnVitamineD;
+// Handler générique pour input/textarea avec data-q : persiste dans state.client.fdAnswers
+function fdSaveAnswer(el) {
+  if (!el || !el.dataset || !el.dataset.q) return;
+  if (typeof state === 'undefined' || !state || !state.client) return;
+  if (!state.client.fdAnswers) state.client.fdAnswers = {};
+  state.client.fdAnswers[el.dataset.q] = el.value || '';
+  if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
+}
+window.fdSaveAnswer = fdSaveAnswer;
 // Texte libre dans une chip "Autre :" — persiste sous le nom déclaré par data-q-text
 function fdRgoFreeText(el) {
   if (typeof state === 'undefined' || !state || !state.client) return;
