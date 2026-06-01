@@ -8677,7 +8677,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=805"></script>
+<script src="script-data.js?v=806"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -8718,8 +8718,10 @@ window.fdRestoreActiveTab = fdRestoreActiveTab;
 function fdToggleChip(el, single) {
   const chips = el.closest('.fd-chips');
   if (single && chips) {
+    // Si déjà sélectionnée → désélectionne (toggle off), sinon désélectionne les autres et sélectionne celle-ci
+    const wasSelected = el.classList.contains('selected');
     chips.querySelectorAll('.fd-chip').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
+    if (!wasSelected) el.classList.add('selected');
   } else {
     el.classList.toggle('selected');
   }
@@ -8822,11 +8824,8 @@ function fdRestoreAnswers() {
     const am = document.getElementById('fd-aplv-ameliorations');
     if (am) am.style.display = '';
   }
-  // Si Allaitement maternel coché dans APLV → afficher la question "Supplément fer"
-  if (Array.isArray(ans.aplv_allait_maternel) && ans.aplv_allait_maternel.length > 0) {
-    const fer = document.getElementById('fd-aplv-fer');
-    if (fer) fer.style.display = '';
-  }
+  // (Visibilité du calcium gérée par fdUpdateAplvMomChildLait — basé sur state.client.alimentation,
+  //  pas sur la chip APLV "Allaitement maternel".)
   // Si Vitamine D = Oui → afficher la question "Quelle marque et quel dosage ?"
   if (Array.isArray(ans.vit_d) && ans.vit_d.some(t => t.includes('Oui'))) {
     const marque = document.getElementById('fd-vitd-marque');
@@ -9222,12 +9221,9 @@ function fdOnAplvReintro(chip) {
   if (am) am.style.display = isOui ? '' : 'none';
 }
 window.fdOnAplvReintro = fdOnAplvReintro;
-// Allaitement maternel coché → révèle "Avez-vous été supplémentée en fer ?"
-function fdOnAplvAllaitMaternel(chip) {
-  const isSelected = chip.classList.contains('selected');
-  const fer = document.getElementById('fd-aplv-fer');
-  if (fer) fer.style.display = isSelected ? '' : 'none';
-}
+// (fdOnAplvAllaitMaternel : conservé mais NOOP — le calcium est maintenant géré par fdUpdateAplvMomChildLait
+//  via state.client.alimentation, pas par la chip APLV "Allaitement maternel".)
+function fdOnAplvAllaitMaternel(chip) { /* noop */ }
 window.fdOnAplvAllaitMaternel = fdOnAplvAllaitMaternel;
 // APLV : visibilité conditionnelle des questions "Prenez-vous du lait de ?" (maman allaitante)
 // et "Prend-t-il du lait de ?" (enfant diversifié)
@@ -9246,6 +9242,9 @@ function fdUpdateAplvMomChildLait() {
   if (momQ) momQ.style.display = (aplvOui && isMomAllait) ? '' : 'none';
   const childQ = document.querySelector('.fd-content .fd-aplv-child-lait');
   if (childQ) childQ.style.display = (aplvOui && isChildDivers) ? '' : 'none';
+  // Calcium : seulement si APLV = Oui ET maman allaitante (maternel ou mixte)
+  const calciumQ = document.getElementById('fd-aplv-calcium');
+  if (calciumQ) calciumQ.style.display = (aplvOui && isMomAllait) ? '' : 'none';
 }
 window.fdUpdateAplvMomChildLait = fdUpdateAplvMomChildLait;
 // Vitamine D = Oui → révèle "Quelle marque et quel dosage ?"
