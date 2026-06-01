@@ -8897,7 +8897,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=826"></script>
+<script src="script-data.js?v=827"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -23189,14 +23189,15 @@ function _renderAccueilIntakeForm() {
   const prenomEnfantHtml = childRaw
     ? `<strong class="var-prenom-enfant" data-sexe="${isFille?'fille':'garcon'}" style="color:${prenomColor};font-size:1.15em">${escVal(cap(childRaw))}</strong>`
     : `<strong class="var-prenom-enfant var-empty" data-sexe="${isFille?'fille':'garcon'}" style="color:${prenomColor};font-size:1.15em">[prénom]</strong>`;
-  // Nom(s) du/des parents
+  // Nom(s) du/des parents — vert + 1.15em (même convention que [prénom_parent_1] partout sur le site)
+  const parentStyle = 'color:#16a34a;font-size:1.15em';
   let parentNamesHtml = '';
   if (p1Raw && p2Raw) {
-    parentNamesHtml = `<strong>${escVal(p1Cap)}</strong> et <strong>${escVal(p2Cap)}</strong>`;
+    parentNamesHtml = `<strong style="${parentStyle}">${escVal(p1Cap)}</strong> et <strong style="${parentStyle}">${escVal(p2Cap)}</strong>`;
   } else if (p1Raw) {
-    parentNamesHtml = `<strong>${escVal(p1Cap)}</strong>`;
+    parentNamesHtml = `<strong style="${parentStyle}">${escVal(p1Cap)}</strong>`;
   } else if (p2Raw) {
-    parentNamesHtml = `<strong>${escVal(p2Cap)}</strong>`;
+    parentNamesHtml = `<strong style="${parentStyle}">${escVal(p2Cap)}</strong>`;
   }
   // Rôle des parents : "les parents" / "la maman" / "le papa"
   let parentRoleHtml = '';
