@@ -408,7 +408,7 @@
     /* Sélecteur Type de lait infantile : boutons (au lieu d'un select) */
     .lait-btns { display: flex; flex-wrap: wrap; gap: 8px; max-width: 720px; }
     /* Variante 2-colonnes : Sans Anti-Reflux | Avec Anti-Reflux (chaque lait face à son AR) */
-    .lait-btns-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-width: 720px; }
+    .lait-btns-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 920px; }
     .lait-col-title {
       font-size: 12px; font-weight: 700; color: #475569;
       text-align: center; padding: 4px 0 2px;
@@ -2204,11 +2204,11 @@
     }
     .fd-content .fd-aplv-lait-grid-inner {
       display: grid;
-      grid-template-columns: minmax(0,170px) minmax(0,170px);
+      grid-template-columns: repeat(3, 1fr);
       column-gap: 8px; row-gap: 6px;
       padding: 0;
       background: transparent; border: none;
-      justify-content: start;
+      justify-content: stretch;
     }
     /* Titres "Sans Anti-Reflux / Avec Anti-Reflux" */
     .fd-content .fd-aplv-lait-grid-inner .fd-lait-col-title {
@@ -2217,10 +2217,10 @@
       padding-bottom: 4px; border-bottom: 1px dashed var(--primary-light);
       margin-bottom: 8px;
     }
-    /* 8 chips de la grille — même dimensions que dans III. Alimentation */
+    /* Chips de la grille APLV — mêmes dimensions que III. Alimentation, remplissent la cellule */
     .fd-content .fd-aplv-lait-grid-inner .fd-chip {
-      width: auto;                                /* taille = contenu */
-      justify-self: center;                       /* centré dans la cellule */
+      width: 100%;
+      justify-self: stretch;
       text-align: center; justify-content: center;
       font-size: 12.5px !important; font-weight: 400 !important;
       padding: 6px 13px !important; line-height: 1.2 !important;
@@ -2401,21 +2401,14 @@
     .fd-content .fd-lait-slot { padding: 0; background: transparent; border: none; }
     .fd-content .fd-lait-slot-b { margin-top: 4px; }
     /* (Ancienne règle rosé/brun de #fd-q-lait supprimée — bandeau standard appliqué via la règle universelle plus bas) */
-    /* Grille 8 types de lait (2 colonnes : Sans anti-reflux / Avec anti-reflux)
-       Colonnes dimensionnées pour matcher la largeur des chips alim ("Allaitement au sein") */
+    /* Grille types de lait (3 colonnes : Sans AR / Avec AR / Autres laits — chèvre, jument, brebis, soja, Autre)
+       Toutes les chips ont la MÊME largeur (alignées sur la plus grande = "Protéines de riz AR") */
     .fd-content .fd-lait-grid {
-      display: grid; grid-template-columns: minmax(0,170px) minmax(0,170px);
+      display: grid; grid-template-columns: repeat(3, 1fr);
       column-gap: 8px; row-gap: 6px;
       margin-top: 4px; padding: 0;
       background: transparent; border: none;
-      justify-content: start;  /* ← aligné à gauche */
-    }
-    /* Espace SEULEMENT entre la 1ère ligne de chips (Standard / Standard AR) et la 2ème ligne.
-       Les chips sont children: [col-title × 2] [chip × 8]. Donc Standard = nth-child(3), Standard AR = nth-child(4).
-       On ajoute margin-bottom à ces 2 chips uniquement. */
-    .fd-content .fd-lait-grid > .fd-chip:nth-child(3),
-    .fd-content .fd-lait-grid > .fd-chip:nth-child(4) {
-      margin-bottom: 10px;
+      justify-content: stretch;
     }
     .fd-content .fd-lait-col-title {
       font-size: 10px; font-weight: 700; color: var(--primary-dark);
@@ -2424,8 +2417,8 @@
       margin-bottom: 8px;   /* ← espace entre titres et 1ère ligne de chips */
     }
     .fd-content .fd-lait-grid .fd-chip {
-      width: auto;                                /* taille = contenu, comme les autres chips */
-      justify-self: center;                       /* centré dans la cellule grille */
+      width: 100%;                                /* remplit la cellule = même largeur que la plus grande chip */
+      justify-self: stretch;
       text-align: center; justify-content: center;
       font-size: 12.5px !important;
       font-weight: 400 !important;   /* non-gras comme les autres chips */
@@ -7062,14 +7055,22 @@
                 <div class="lait-btns lait-btns-grid">
                   <div class="lait-col-title">Sans Anti-Reflux</div>
                   <div class="lait-col-title">Avec Anti-Reflux</div>
+                  <div class="lait-col-title">Autres laits</div>
                   <button type="button" class="lait-btn" data-lait="Lait normal aux PLV" onclick="setTypeLait('Lait normal aux PLV')">Lait « normal » aux PLV</button>
                   <button type="button" class="lait-btn" data-lait="Lait normal aux PLV AR" onclick="setTypeLait('Lait normal aux PLV AR')">Lait « normal » aux PLV Anti-Reflux</button>
+                  <button type="button" class="lait-btn" data-lait="Lait de chèvre" onclick="setTypeLait('Lait de chèvre')">Lait de chèvre</button>
                   <button type="button" class="lait-btn" data-lait="Lait PLV hydrolysées HA" onclick="setTypeLait('Lait PLV hydrolysées HA')">Lait à base de PLV hydrolysées (HA)</button>
                   <button type="button" class="lait-btn" data-lait="Lait PLV hydrolysées HA AR" onclick="setTypeLait('Lait PLV hydrolysées HA AR')">Lait à base de PLV hydrolysées (HA) Anti-Reflux</button>
+                  <button type="button" class="lait-btn" data-lait="Lait de jument" onclick="setTypeLait('Lait de jument')">Lait de jument</button>
                   <button type="button" class="lait-btn" data-lait="Lait acides aminés PLV" onclick="setTypeLait('Lait acides aminés PLV')">Lait à base d'acides aminés de PLV</button>
                   <button type="button" class="lait-btn" data-lait="Lait acides aminés PLV AR" onclick="setTypeLait('Lait acides aminés PLV AR')">Lait à base d'acides aminés de PLV Anti-Reflux</button>
+                  <button type="button" class="lait-btn" data-lait="Lait de brebis" onclick="setTypeLait('Lait de brebis')">Lait de brebis</button>
                   <button type="button" class="lait-btn" data-lait="Lait protéines de riz" onclick="setTypeLait('Lait protéines de riz')">Lait aux protéines de riz</button>
                   <button type="button" class="lait-btn" data-lait="Lait protéines de riz AR" onclick="setTypeLait('Lait protéines de riz AR')">Lait aux protéines de riz Anti-Reflux</button>
+                  <button type="button" class="lait-btn" data-lait="Lait de soja" onclick="setTypeLait('Lait de soja')">Lait de soja</button>
+                  <span></span>
+                  <span></span>
+                  <button type="button" class="lait-btn" data-lait="Autre" onclick="setTypeLait('Autre')">Autre</button>
                 </div>
               </div>
               <div style="margin-top:24px">
@@ -8676,7 +8677,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=804"></script>
+<script src="script-data.js?v=805"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -9228,6 +9229,25 @@ function fdOnAplvAllaitMaternel(chip) {
   if (fer) fer.style.display = isSelected ? '' : 'none';
 }
 window.fdOnAplvAllaitMaternel = fdOnAplvAllaitMaternel;
+// APLV : visibilité conditionnelle des questions "Prenez-vous du lait de ?" (maman allaitante)
+// et "Prend-t-il du lait de ?" (enfant diversifié)
+function fdUpdateAplvMomChildLait() {
+  if (typeof state === 'undefined' || !state || !state.client) return;
+  const c = state.client;
+  const ans = c.fdAnswers || {};
+  const aplvOui = Array.isArray(ans.aplv_has) && ans.aplv_has.some(t => t.includes('Oui'));
+  // Maman allaitante : "Allaitement maternel" ou "Allaitement mixte" coché dans fiche client (state.client.alimentation)
+  const alim = Array.isArray(c.alimentation) ? c.alimentation : [];
+  const isMomAllait = alim.includes('Allaitement maternel') || alim.includes('Allaitement mixte');
+  // Enfant diversifié
+  const isChildDivers = alim.includes('Diversification');
+  // Visibilité (seulement si APLV = Oui ET condition alim remplie)
+  const momQ = document.querySelector('.fd-content .fd-aplv-mom-lait');
+  if (momQ) momQ.style.display = (aplvOui && isMomAllait) ? '' : 'none';
+  const childQ = document.querySelector('.fd-content .fd-aplv-child-lait');
+  if (childQ) childQ.style.display = (aplvOui && isChildDivers) ? '' : 'none';
+}
+window.fdUpdateAplvMomChildLait = fdUpdateAplvMomChildLait;
 // Vitamine D = Oui → révèle "Quelle marque et quel dosage ?"
 function fdOnVitamineD(chip) {
   const isOui = chip.textContent.includes('Oui');
@@ -9379,6 +9399,7 @@ setInterval(() => {
   if (typeof fdUpdateBannersVisibility === 'function') fdUpdateBannersVisibility();
   if (typeof fdSyncFromFicheClient === 'function') fdSyncFromFicheClient();
   if (typeof fdRestoreActiveTab === 'function') fdRestoreActiveTab();
+  if (typeof fdUpdateAplvMomChildLait === 'function') fdUpdateAplvMomChildLait();
 }, 1000);
 </script>
 <script>
