@@ -3592,6 +3592,9 @@
        sont en BLEU MARINE (pas rouge comme dans les autres sections SOS) */
     .sos-block-content strong { color: #2d3f5c; }
     .sos-block-content li, .sos-block-content p { color: #2d3f5c; }
+    /* Espace entre 2 groupes <ul> consécutifs dans un même bloc → reproduit les LIGNES VIDES
+       du texte source (séparation visuelle entre groupes de bullets dans le même bloc) */
+    .sos-block-content > ul + ul { margin-top: 14px; }
     /* Mobile : empile titre/contenu verticalement */
     @media (max-width: 640px) {
       .sos-block { grid-template-columns: 1fr; }
@@ -8115,17 +8118,19 @@
               <div class="sos-subtitle">Ça va s'arranger</div>
               <div class="sos-block-content">
                 <ul>
-                  <li><span class="sos-parent-display">[Prénom parent 1]</span>, je voudrais vous dire 1 chose :
+                  <li><span class="sos-parent-display">[Prénom parent 1]</span>, je voudrais vous dire <strong>1 chose</strong> :
                     <ul>
-                      <li>Ça va s'arranger</li>
+                      <li><strong>Ça va s'arranger</strong></li>
                     </ul>
                   </li>
-                  <li>À cet âge, les choses bougent <strong>ASSEZ</strong> vite :
+                </ul>
+                <ul>
+                  <li>À cet âge, les choses bougent <strong>ASSEZ vite</strong> :
                     <ul>
-                      <li>Ce qui semble être bloquant aujourd'hui peut changer rapidement</li>
+                      <li>Ce qui semble être <strong>bloquant aujourd'hui</strong> peut <strong>changer rapidement</strong></li>
                     </ul>
                   </li>
-                  <li>Vous n'êtes pas dans une impasse ⇒ à chaque situation, il y a une solution</li>
+                  <li>Vous <strong>n'êtes pas</strong> dans une <strong>impasse</strong> ⇒ à chaque situation, <strong>il y a une solution</strong></li>
                 </ul>
               </div>
             </div>
@@ -8134,15 +8139,17 @@
               <div class="sos-subtitle">VOUS êtes les experts de votre enfant</div>
               <div class="sos-block-content">
                 <ul>
-                  <li>Et, je voudrais aussi vous rappeler 1 chose :
+                  <li>Et, je voudrais aussi vous rappeler <strong>1 chose</strong> :
                     <ul>
-                      <li><strong>VOUS</strong> êtes les experts de votre enfant</li>
-                      <li>Parce que <strong>PERSONNE NE</strong> connaît <strong>MIEUX</strong> <span class="sos-enfant-display">[prénom enfant]</span> <strong>QUE</strong> vous</li>
+                      <li><strong>VOUS</strong> êtes les <strong>experts de votre enfant</strong></li>
+                      <li>Parce que <strong>PERSONNE NE</strong> connaît <strong>MIEUX</strong> <span class="sos-enfant-display">[prénom enfant]</span> <strong>QUE vous</strong></li>
                     </ul>
                     ⇒ Et c'est en partant <strong>DE CE QUE</strong> vous savez de <span class="sos-enfant-display">[prénom enfant]</span><br>
-                    &nbsp;&nbsp;&nbsp;Qu'on construit <strong>CE QUI</strong> va <strong>VRAIMENT</strong> marcher pour <strong>VOTRE</strong> famille
+                    &nbsp;&nbsp;&nbsp;Qu'on construit <strong>CE QUI</strong> va <strong>VRAIMENT marcher</strong> pour <strong>VOTRE famille</strong>
                   </li>
-                  <li>⇒ Vous avez <strong>TOUT</strong> ce qu'il faut pour réussir avec <span class="sos-enfant-display">[prénom enfant]</span></li>
+                </ul>
+                <ul>
+                  <li>⇒ Vous avez <strong>TOUT ce qu'il faut</strong> pour <strong>réussir</strong> avec <span class="sos-enfant-display">[prénom enfant]</span></li>
                 </ul>
               </div>
             </div>
@@ -8151,13 +8158,15 @@
               <div class="sos-subtitle">Timing</div>
               <div class="sos-block-content">
                 <ul>
-                  <li>Dans les 3 premiers jours, vous allez <strong>DEJA VOIR</strong> un début d'<strong>EVOLUTION</strong></li>
-                  <li>Dans 2-3 semaines, on peut s'attendre à une vraie très belle <strong>AMELIORATION</strong></li>
-                  <li>⇒ <span class="sos-parent-display">[Prénom parent 1]</span>, vous n'allez pas rester dans <strong>CETTE</strong> situation</li>
-                  <li>Et vous n'êtes pas seul(e) :
+                  <li>Dans les <strong>3 premiers jours</strong>, vous allez <strong>DEJA VOIR un début d'EVOLUTION</strong></li>
+                  <li>Dans <strong>2-3 semaines</strong>, on peut s'attendre à une vraie très belle <strong>AMELIORATION</strong></li>
+                </ul>
+                <ul>
+                  <li>⇒ <span class="sos-parent-display">[Prénom parent 1]</span>, vous <strong>n'allez pas rester</strong> dans <strong>CETTE situation</strong></li>
+                  <li>Et vous <strong>n'êtes pas seul(e)</strong> :
                     <ul>
-                      <li>Si quelque chose ne va pas, on se reparle</li>
-                      <li>Je serai <strong>LA</strong> si besoin !</li>
+                      <li>Si quelque chose ne va pas, <strong>on se reparle</strong></li>
+                      <li>Je serai <strong>LA si besoin</strong> !</li>
                     </ul>
                   </li>
                 </ul>
@@ -8177,26 +8186,26 @@
               <div class="sos-subtitle">Vous n'auriez pas pu faire autrement</div>
               <div class="sos-block-content">
                 <ul>
-                  <li><span class="sos-parent-display">[Prénom parent 1]</span>, je vois bien que <strong>VOUS VOUS</strong> en <strong>VOULEZ UN PEU</strong></li>
-                  <li>Mais je voudrais vous dire une chose d'importante :
+                  <li><span class="sos-parent-display">[Prénom parent 1]</span>, je vois bien que <strong>VOUS VOUS en VOULEZ UN PEU</strong></li>
+                  <li>Mais je voudrais vous dire une <strong>chose d'importante</strong> :
                     <ul>
-                      <li>Le sommeil des enfants, <strong>PERSONNE</strong> ne <strong>NOUS L'</strong>explique
+                      <li>Le <strong>sommeil des enfants</strong>, <strong>PERSONNE ne NOUS L'explique</strong>
                         <ul>
-                          <li>Ni à la maternité</li>
-                          <li>Ni chez le pédiatre</li>
-                          <li>Ni dans les livres</li>
+                          <li>Ni à la <strong>maternité</strong></li>
+                          <li>Ni chez le <strong>pédiatre</strong></li>
+                          <li>Ni dans les <strong>livres</strong></li>
                         </ul>
                       </li>
                     </ul>
                   </li>
                   <li>⇒ Vous avez fait..
                     <ul>
-                      <li>Avec les informations</li>
-                      <li>Que vous aviez à un moment donné</li>
+                      <li>Avec les <strong>informations</strong></li>
+                      <li>Que vous aviez à un <strong>moment donné</strong></li>
                     </ul>
                   </li>
-                  <li>⇒ Ça a marché</li>
-                  <li>⇒ Et vous avez <strong>TRES BIEN</strong> fait</li>
+                  <li>⇒ <strong>Ça a marché</strong></li>
+                  <li>⇒ Et vous avez <strong>TRES BIEN fait</strong></li>
                 </ul>
               </div>
             </div>
@@ -8205,20 +8214,20 @@
               <div class="sos-subtitle">Ce que vous avez DÉJÀ bien fait</div>
               <div class="sos-block-content">
                 <ul>
-                  <li>Il y a quelque chose <strong>AUSSI</strong> qu'il <strong>NE FAUT PAS</strong> oublier</li>
+                  <li>Il y a quelque chose <strong>AUSSI</strong> qu'il <strong>NE FAUT PAS oublier</strong></li>
                   <li>Au-delà du sommeil, depuis la naissance de <span class="sos-enfant-display">[prénom enfant]</span> :
                     <ul>
-                      <li>Vous êtes <strong>TOUJOURS</strong> là pour lui/elle… jour et nuit</li>
-                      <li><strong>QUAND</strong> vous avez <strong>SENTI</strong> que quelque chose n'allait pas :
+                      <li>Vous êtes <strong>TOUJOURS là</strong> pour lui/elle… jour et nuit</li>
+                      <li><strong>QUAND</strong> vous avez <strong>SENTI</strong> que quelque chose <strong>n'allait pas</strong> :
                         <ul>
-                          <li>Vous <strong>AVEZ</strong> cherché à comprendre</li>
+                          <li>Vous <strong>AVEZ cherché à comprendre</strong></li>
                         </ul>
                       </li>
-                      <li>Vous ne baissez pas les bras, malgré la fatigue</li>
-                      <li>Et aujourd'hui, vous prenez le temps <strong>D'EN</strong> parler avec moi</li>
+                      <li>Vous <strong>ne baissez pas les bras</strong>, malgré la fatigue</li>
+                      <li>Et aujourd'hui, vous prenez le temps <strong>D'EN parler avec moi</strong></li>
                     </ul>
-                    ⇒ Ça, c'est déjà beaucoup<br>
-                    &nbsp;&nbsp;&nbsp;Et on sent que vous aimez votre enfant, <strong>PROFONDEMENT</strong>
+                    ⇒ Ça, c'est <strong>déjà beaucoup</strong><br>
+                    &nbsp;&nbsp;&nbsp;Et on sent que vous <strong>aimez votre enfant</strong>, <strong>PROFONDEMENT</strong>
                   </li>
                 </ul>
               </div>
@@ -8228,33 +8237,35 @@
               <div class="sos-subtitle">Et maintenant, on avance</div>
               <div class="sos-block-content">
                 <ul>
-                  <li>Alors ce qui compte maintenant :
+                  <li>Alors ce qui <strong>compte maintenant</strong> :
                     <ul>
-                      <li><strong>CE N'EST PAS</strong> de penser au passé</li>
-                      <li>Mais c'est d'<strong>AVANCER</strong></li>
-                      <li>Et on <strong>NE VA PAS</strong> repartir de zéro
+                      <li><strong>CE N'EST PAS de penser au passé</strong></li>
+                      <li>Mais c'est <strong>d'AVANCER</strong></li>
+                      <li>Et on <strong>NE VA PAS repartir de zéro</strong>
                         <ul>
-                          <li>Vous avez déjà mis pas mal de choses en place</li>
-                          <li>Et on va s'appuyer dessus</li>
+                          <li>Vous avez déjà mis <strong>pas mal de choses en place</strong></li>
+                          <li>Et on va <strong>s'appuyer dessus</strong></li>
                         </ul>
                       </li>
                     </ul>
                   </li>
+                </ul>
+                <ul>
                   <li>Et <strong>EN PLUS</strong>, à partir d'aujourd'hui, vous <strong>ALLEZ AVOIR</strong> :
                     <ul>
-                      <li>Les clés pour comprendre <span class="sos-enfant-display">[prénom enfant]</span></li>
-                      <li>Et un plan clair :
+                      <li>Les <strong>clés pour comprendre</strong> <span class="sos-enfant-display">[prénom enfant]</span></li>
+                      <li>Et un <strong>plan clair</strong> :
                         <ul>
-                          <li>Étape par étape</li>
-                          <li>Pour vous guider</li>
+                          <li><strong>Étape par étape</strong></li>
+                          <li>Pour vous <strong>guider</strong></li>
                         </ul>
                       </li>
                     </ul>
                   </li>
-                  <li>⇒ Vous avez <strong>TOUT CE QU'IL FAUT POUR QUE</strong> les choses changent :
+                  <li>⇒ Vous avez <strong>TOUT CE QU'IL FAUT POUR QUE les choses changent</strong> :
                     <ul>
                       <li><strong>POSITIVEMENT</strong></li>
-                      <li>Et rapidement</li>
+                      <li>Et <strong>rapidement</strong></li>
                     </ul>
                   </li>
                 </ul>
@@ -8874,7 +8885,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=813"></script>
+<script src="script-data.js?v=814"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
