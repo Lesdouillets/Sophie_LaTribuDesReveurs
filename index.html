@@ -3592,11 +3592,14 @@
        sont en BLEU MARINE (pas rouge comme dans les autres sections SOS) */
     .sos-block-content strong { color: #2d3f5c; }
     .sos-block-content li, .sos-block-content p { color: #2d3f5c; }
-    /* Espace entre 2 groupes <ul> consécutifs dans un même bloc → reproduit les LIGNES VIDES
-       du texte source (séparation visuelle entre groupes de bullets dans le même bloc) */
-    .sos-block-content > ul + ul { margin-top: 14px; }
-    /* Espacement entre lignes : utiliser le même que partout ailleurs sur le site
-       (= règle parente .sos-section-body li → line-height: 1.75, margin-bottom: 4px). Pas d'override. */
+    /* Lignes plus serrées (comme le reste du site) — override de .sos-section-body li (1.75) */
+    .sos-block-content li {
+      line-height: 1.5;
+      margin-bottom: 0;
+    }
+    .sos-block-content ul ul { margin-top: 4px; margin-bottom: 0; }
+    /* Espace entre 2 groupes <ul> consécutifs = vraie LIGNE VIDE visible */
+    .sos-block-content > ul + ul { margin-top: 22px; }
     /* Mobile : empile titre/contenu verticalement */
     @media (max-width: 640px) {
       .sos-block { grid-template-columns: 1fr; }
@@ -8887,7 +8890,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=816"></script>
+<script src="script-data.js?v=817"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
