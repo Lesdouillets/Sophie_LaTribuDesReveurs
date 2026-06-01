@@ -8596,7 +8596,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=794"></script>
+<script src="script-data.js?v=795"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -8687,6 +8687,10 @@ function fdRestoreAnswers() {
   if (Array.isArray(ans.rgo_traitement_has) && ans.rgo_traitement_has.some(t => t.includes('Oui'))) {
     const treatments = document.getElementById('fd-rgo-treatments');
     if (treatments) treatments.style.display = '';
+  }
+  // Restaurer la visibilité des sous-sections APLV si l'user avait répondu "Oui" à APLV
+  if (Array.isArray(ans.aplv_has) && ans.aplv_has.some(t => t.includes('Oui'))) {
+    document.querySelectorAll('.fd-content .fd-aplv-detail').forEach(el => { el.style.display = ''; });
   }
   // Restaurer le texte libre dans toutes les chips éditables (rgo_diag_autre, rgo_traitement_autre…)
   document.querySelectorAll('.fd-content .fd-chip-edit[data-q-text]').forEach(el => {
@@ -9058,6 +9062,14 @@ function fdOnRgoTraitement(chip) {
   if (treatments) treatments.style.display = isOui ? '' : 'none';
 }
 window.fdOnRgoTraitement = fdOnRgoTraitement;
+// APLV — révèle/cache TOUTES les sous-questions APLV (diagnostic, symptômes, éviction, suivi, réintroduction)
+function fdOnAplvHas(chip) {
+  const isOui = chip.textContent.includes('Oui');
+  document.querySelectorAll('.fd-content .fd-aplv-detail').forEach(el => {
+    el.style.display = isOui ? '' : 'none';
+  });
+}
+window.fdOnAplvHas = fdOnAplvHas;
 // Texte libre dans une chip "Autre :" — persiste sous le nom déclaré par data-q-text
 function fdRgoFreeText(el) {
   if (typeof state === 'undefined' || !state || !state.client) return;
