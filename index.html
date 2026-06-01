@@ -2202,7 +2202,7 @@
     .fd-content .fd-aplv-lait-grid-inner .fd-chip {
       width: 100%; max-width: 100%;
       text-align: center; justify-content: center;
-      font-size: 12.5px !important; font-weight: 600 !important;
+      font-size: 12.5px !important; font-weight: 400 !important;
       padding: 6px 13px !important; line-height: 1.2 !important;
     }
     /* Espace UNIQUEMENT entre Standard / Standard AR et la ligne du dessous */
@@ -2380,17 +2380,7 @@
     /* Slots lait (a et b) — plus de rosé, juste un espace au-dessus */
     .fd-content .fd-lait-slot { padding: 0; background: transparent; border: none; }
     .fd-content .fd-lait-slot-b { margin-top: 4px; }
-    /* Question "Quel type de lait" : texte rouge/marron comme le label "Mode d'allaitement" */
-    .fd-content #fd-q-lait {
-      width: 100%;
-      padding: 0 0 4px !important;
-      margin: 0 !important;
-      border-top: none !important;
-      font-size: 12px; font-weight: 600;
-      color: #831843;
-    }
-    .fd-content #fd-q-lait .fd-q-text { color: #831843; font-weight: 600; font-size: 12px; }
-    .fd-content #fd-q-lait .fd-q-text::before { content: none; }   /* pas de bullet */
+    /* (Ancienne règle rosé/brun de #fd-q-lait supprimée — bandeau standard appliqué via la règle universelle plus bas) */
     /* Grille 8 types de lait (2 colonnes : Sans anti-reflux / Avec anti-reflux)
        Colonnes dimensionnées pour matcher la largeur des chips alim ("Allaitement au sein") */
     .fd-content .fd-lait-grid {
@@ -2415,10 +2405,9 @@
     }
     .fd-content .fd-lait-grid .fd-chip {
       width: 100%; max-width: 100%;
-      text-align: center; justify-content: center;   /* ← chips centrés */
-      /* MÊME taille que les chips alim (Allaitement au sein, etc.) — !important pour ne pas être écrasé */
+      text-align: center; justify-content: center;
       font-size: 12.5px !important;
-      font-weight: 600 !important;
+      font-weight: 400 !important;   /* non-gras comme les autres chips */
       padding: 6px 13px !important;
       line-height: 1.2 !important;
     }
@@ -8666,7 +8655,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=801"></script>
+<script src="script-data.js?v=802"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -8721,9 +8710,53 @@ function fdToggleChip(el, single) {
       state.client.fdAnswers[qKey] = selected;
       if (typeof autoSaveActiveConsultation === 'function') { try { autoSaveActiveConsultation(); } catch(_){} }
     }
+    // Sync inconfort/APLV symptômes chips → V. Diagnostic > Confort physique > grouped_checklist syncId="aplv_symptomes"
+    if (chips.dataset.q === 'inconfort_prise' || chips.dataset.q === 'aplv_sympt') {
+      if (typeof fdSyncInconfortToDiag === 'function') fdSyncInconfortToDiag(el);
+    }
   }
 }
 window.fdToggleChip = fdToggleChip;
+// Map du texte de chip → itemId du grouped_checklist V. Diagnostic > Confort physique > APLV
+const FD_INCONFORT_TO_DIAG_MAP = {
+  "🍽 Refus de s'alimenter (+ se cambre)": "refus_alim",
+  "😣 Douleurs": "douleurs",
+  "🧴 Eczéma / peau atopique / psoriasis": "eczema",
+  "🤢 Régurgitations": "regurg",
+  "💦 en jet": "regurg_jet",
+  "⏱ sur tout le temps d'éveil": "regurg_eveil",
+  "🥛 lait caillé": "regurg_caille",
+  "🐲 Respiration sifflante / bruits de dinosaure": "respiration",
+  "😴 Ronflements (amygdales enflammées)": "ronflements",
+  "👄 Dort la bouche ouverte": "bouche_ouverte",
+  "👂 Otites à répétition": "otites",
+  "😷 Toux chronique": "toux",
+  "🦠 Bronchite à répétition": "bronchite",
+  "🤧 Enrhumé très souvent": "enrhume",
+  "💩 Selles diarrhéiques": "selles_diarrhe",
+  "🫧 Selles glaireuses": "selles_glaireuses",
+  "🩸 Selles avec traces de sang": "selles_sang",
+  "👪 Terrain allergique familial": "terrain_familial",
+  "🍼 Compléments de PLV à la naissance": "complements_plv"
+};
+function fdSyncInconfortToDiag(chip) {
+  const text = (chip.textContent || '').trim();
+  const itemId = FD_INCONFORT_TO_DIAG_MAP[text];
+  if (!itemId) return;   // pas de mapping → skip (chips RGO ou autre)
+  const isChecked = chip.classList.contains('selected');
+  if (typeof toggleGclSyncItem === 'function') {
+    try { toggleGclSyncItem('aplv_symptomes', itemId, isChecked); } catch(_){}
+  }
+  // Mettre à jour la case DOM correspondante (si V. Diagnostic est rendu actuellement)
+  document.querySelectorAll(`.block-grouped-checklist[data-sync-id="aplv_symptomes"] .gcl-item[data-item-id="${itemId}"] input[type="checkbox"]`).forEach(cb => {
+    if (cb.checked !== isChecked) {
+      cb.checked = isChecked;
+      const lbl = cb.closest('.gcl-item');
+      if (lbl) lbl.classList.toggle('checked', isChecked);
+    }
+  });
+}
+window.fdSyncInconfortToDiag = fdSyncInconfortToDiag;
 // Restaure chips + inputs de la fiche découverte depuis state.client.fdAnswers et state.client (ages)
 function fdRestoreAnswers() {
   if (typeof state === 'undefined' || !state || !state.client) return;
