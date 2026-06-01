@@ -8896,7 +8896,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=819"></script>
+<script src="script-data.js?v=820"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -12906,6 +12906,8 @@ function toggleSosPanel() {
     }, 0);
   } else {
     document.removeEventListener('mousedown', _sosOutsideClickHandler, true);
+    // À la fermeture, sauvegarder immédiatement les modifs en cours
+    if (typeof saveSosContent === 'function') saveSosContent();
   }
 }
 // Remplit tous les <span class="sos-parent-display"> avec le(s) prénom(s) du/des parent(s)
@@ -12991,24 +12993,39 @@ function _sosOutsideClickHandler(e) {
 }
 
 // ─── SOS auto-save ───
+// Clé versionnée → quand la structure HTML du panneau SOS change (ajout de bloc, refonte),
+// on bumpe le SUFFIXE (v3, v4, …) pour invalider les anciennes sauvegardes et repartir du HTML
+// par défaut. L'ancienne clé 'tdr_sos_content' (sans suffixe) est nettoyée.
+const SOS_STORAGE_KEY = 'tdr_sos_content_v3';
 function saveSosContent() {
   const body = document.getElementById('sos-body');
-  if (body) localStorage.setItem('tdr_sos_content', body.innerHTML);
+  if (!body) return;
+  try { localStorage.setItem(SOS_STORAGE_KEY, body.innerHTML); } catch(e) { console.warn('[SOS save]', e); }
 }
+window.saveSosContent = saveSosContent;
 function loadSosContent() {
-  const saved = localStorage.getItem('tdr_sos_content');
-  if (saved) {
-    const body = document.getElementById('sos-body');
-    if (body) body.innerHTML = saved;
-  }
+  const body = document.getElementById('sos-body');
+  if (!body) return;
+  // Nettoyer toute ancienne clé (versions précédentes du panneau)
+  try { localStorage.removeItem('tdr_sos_content'); localStorage.removeItem('tdr_sos_content_v2'); } catch(_){}
+  const saved = localStorage.getItem(SOS_STORAGE_KEY);
+  if (saved) body.innerHTML = saved;
+  // Repopulate les spans dynamiques après load (prénoms parent/enfant)
+  if (typeof updateSosParentDisplay === 'function') updateSosParentDisplay();
 }
-// Auto-save sur chaque modification dans le SOS
+window.loadSosContent = loadSosContent;
+// Auto-save sur chaque modification dans le SOS + sur blur + avant fermeture/refresh
 document.addEventListener('DOMContentLoaded', () => {
   loadSosContent();
   const body = document.getElementById('sos-body');
   if (body) {
+    // Sauvegarde debounced à chaque frappe
     body.addEventListener('input', () => { clearTimeout(body._saveTimer); body._saveTimer = setTimeout(saveSosContent, 500); });
+    // Sauvegarde immédiate quand on quitte un champ éditable (clic ailleurs, Tab…)
+    body.addEventListener('blur', saveSosContent, true);
   }
+  // Sauvegarde de secours avant refresh/fermeture
+  window.addEventListener('beforeunload', saveSosContent);
   // Tentative de restauration d'une consultation active après hard refresh
   try { if (typeof restoreActiveConsultation === 'function') restoreActiveConsultation(); } catch(e) { console.warn('[restore on load]', e); }
 });
