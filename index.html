@@ -8124,7 +8124,7 @@
               <div class="sos-subtitle">Ça va s'arranger</div>
               <div class="sos-block-content">
                 <ul>
-                  <li><span class="sos-parent-display">[Prénom parent 1]</span>, je voudrais vous dire <strong>1 chose</strong> :
+                  <li><span class="sos-parent-display">[Prénom parent 1]</span>, je voudrais vous <b>dire</b> <strong>1 chose</strong> :
                     <ul>
                       <li><strong>Ça va s'arranger</strong></li>
                     </ul>
@@ -8897,7 +8897,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=831"></script>
+<script src="script-data.js?v=832"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -13080,7 +13080,7 @@ function _sosOutsideClickHandler(e) {
 // Clé versionnée → quand la structure HTML du panneau SOS change (ajout de bloc, refonte),
 // on bumpe le SUFFIXE (v3, v4, …) pour invalider les anciennes sauvegardes et repartir du HTML
 // par défaut. L'ancienne clé 'tdr_sos_content' (sans suffixe) est nettoyée.
-const SOS_STORAGE_KEY = 'tdr_sos_content_v3';
+const SOS_STORAGE_KEY = 'tdr_sos_content_v4';
 function saveSosContent() {
   const body = document.getElementById('sos-body');
   if (!body) return;
@@ -13091,7 +13091,7 @@ function loadSosContent() {
   const body = document.getElementById('sos-body');
   if (!body) return;
   // Nettoyer toute ancienne clé (versions précédentes du panneau)
-  try { localStorage.removeItem('tdr_sos_content'); localStorage.removeItem('tdr_sos_content_v2'); } catch(_){}
+  try { localStorage.removeItem('tdr_sos_content'); localStorage.removeItem('tdr_sos_content_v2'); localStorage.removeItem('tdr_sos_content_v3'); } catch(_){}
   const saved = localStorage.getItem(SOS_STORAGE_KEY);
   if (saved) body.innerHTML = saved;
   // Repopulate les spans dynamiques après load (prénoms parent/enfant)
