@@ -2564,7 +2564,7 @@ const SCRIPT_DATA = {
             {
               type: "option", label: "OPTION Tensions corporelles", emoji: "🦴", style: "purple-btn",
               blocks: [
-                { type: "normal", text: "- Je vous invite à **vérifier** s'il n'y a **pas de tensions corporelles** qui pourraient être à l'**origine du reflux** *(ex : accouchement difficile, bébé qui est dans une position asymétrique, corps en forme banane…)*\n  ⇒ Vous pouvez aller voir un **ostéopathe pédiatrique**" },
+                { type: "normal", text: "- Je vous invite à **vérifier** s'il n'y a **pas de tensions corporelles** qui pourraient être à l'**origine du reflux** *(ex : accouchement difficile, bébé qui est dans une position asymétrique, corps en forme banane…)*\n  ⇒ Vous pouvez aller voir un **ostéopathe pédiatrique**\n\n*(je dois quand même vous prévenir qu'il y a eu une **alerte de la Société Française de Pédiatrie en avril 2025** qui se positionne **contre la pratique de l'ostéopathie sur les bébés jusqu'à 1 an**. Après, vous faites **en fonction de votre envie et besoins** ET avec un **professionnel de la manipulation en qui vous avez confiance** car tous n'ont pas la même formation)*" },
               ]
             },
             {
