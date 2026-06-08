@@ -664,7 +664,7 @@
     }
 
     /* BODY */
-    .app-body { display: flex; flex: 1; overflow: hidden; position: relative; }
+    .app-body { display: flex; flex: 1; overflow: hidden; }
 
     /* SIDEBAR */
     .sidebar {
@@ -1920,15 +1920,7 @@
       border-left: 1.5px solid #fde68a;
       transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    /* OUVERT : sortir du flex flow → position absolue overlay sur la droite du content-area.
-       Évite de "rétrécir" le content (qui sinon laisse une colonne vide à côté du texte
-       dans les sections multi-colonnes type V Diagnostic / Plan d'action). */
-    .info-panel.open {
-      width: 600px;
-      position: absolute; right: 0; top: 0; bottom: 0;
-      z-index: 100;
-      box-shadow: -4px 0 16px rgba(0,0,0,0.08);
-    }
+    .info-panel.open { width: 600px; }
     /* Quand ouvert depuis une bulle flottante (Si Maman en dépression…) : largeur doublée */
     .info-panel.info-panel-blue.open { width: 1200px; }
     /* Largeur doublée explicite (flag _wide:true sur le trailing button) — sans changer le thème jaune */
@@ -8908,7 +8900,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=841"></script>
+<script src="script-data.js?v=842"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
