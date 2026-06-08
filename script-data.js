@@ -736,13 +736,29 @@ const SCRIPT_DATA = {
         {
           type: "normal", _leftTitle: "APLV",
           text: "- **Voilà**. Maintenant qu'on a **TOUT posé sur la table**\n- J'aimerais qu'on **regarde tout ça** avec un oeil **un peu différent**\n\n- Parce que **C'EST LÀ que les pièces du puzzle commencent à parler**\n- **Pris UN PAR UN** :\n  - **CHACUN** de **ces petits signes**\n  - c'est quelque chose qu'on voit **souvent chez les bébés**\n  - **Rien d'alarmant**, pris isolément\n\n- **MAIS**…\n- Dès qu'on peut en **lister au moins 2**\n- Là, moi, ça me **met la puce à l'oreille**\n\n- Et là, chez [prénom_enfant]\n- On en a **bien + que 2 symptômes**\n  ⇒ Ça me dit qu'il y a **peut-être quelque chose derrière**\n  ⇒ quelque chose qu'**on n'a pas encore identifié**\n\n- Et ce que je vois, moi, avec **mon oeil de consultante**\n  ⇒ c'est qu'il **pourrait s'agir d'une allergie**\n  ⇒ Plus précisément, une **allergie aux Protéines de Lait de Vache**. On appelle ça une **APLV**",
-          trailingInfoButton: {
-            label: "Causes du RGO",
-            title: "Causes du RGO",
-            blocks: [
-              { type: "normal", text: "- Il peut y avoir **différentes causes** :\n  - <u>**Mécanique**</u> :\n    - Système digestif immature : **Sphincter Inférieur de l'œsophage (SIO) immature** *(anneau musculaire entre l'œsophage et l'estomac pas assez développé pour se contracter efficacement et maintenir le contenu du bol gastrique dans l'estomac)*\n    - Tensions corporelles\n    - Freins restrictifs\n    - Pb de succion\n  - <u>**Alimentaire**</u> :\n    - Allergie\n    - Œsophage court\n    - Bcp d'horizontalité\n    - Bcp d'alimentation liquide *(ex : bouteille d'eau à l'horizontal)*\n    - Trop d'alimentation\n    - Système digestif immature : microbiote immature" }
-            ]
-          }
+          trailingInfoButtons: [
+            {
+              label: "Causes du RGO",
+              title: "Causes du RGO",
+              blocks: [
+                { type: "normal", text: "- Il peut y avoir **différentes causes** :\n  - <u>**Mécanique**</u> :\n    - Système digestif immature : **Sphincter Inférieur de l'œsophage (SIO) immature** *(anneau musculaire entre l'œsophage et l'estomac pas assez développé pour se contracter efficacement et maintenir le contenu du bol gastrique dans l'estomac)*\n    - Tensions corporelles\n    - Freins restrictifs\n    - Pb de succion\n  - <u>**Alimentaire**</u> :\n    - Allergie\n    - Œsophage court\n    - Bcp d'horizontalité\n    - Bcp d'alimentation liquide *(ex : bouteille d'eau à l'horizontal)*\n    - Trop d'alimentation\n    - Système digestif immature : microbiote immature" }
+              ]
+            },
+            {
+              label: "IPP = + de symptômes",
+              title: "IPP = + de symptômes",
+              blocks: [
+                { type: "normal", text: "- Les **IPP** vont **permettre de diminuer** l'**acidité de l'estomac**\n  - Et donc faciliter les **prises alimentaires**\n- Or, si les **prises augmentent**, alors le **contact avec les PLV augmente** aussi\n  - Les **symptômes de l'allergie** sont alors **majorés**" }
+              ]
+            },
+            {
+              label: "Si moins de prises = moins de symptômes",
+              title: "Si moins de prises = moins de symptômes",
+              blocks: [
+                { type: "normal", text: "- Si votre enfant **prend moins de lait**\n  - Alors c'est **NORMAL** qu'il y ait **moins de symptômes allergiques**" }
+              ]
+            }
+          ]
         },
         {
           type: "normal", _leftTitle: "Allergie difficile à percevoir",
@@ -879,13 +895,29 @@ const SCRIPT_DATA = {
         {
           type: "normal", _leftTitle: "APLV",
           text: "- **Voilà**. Maintenant qu'on a **TOUT posé sur la table**\n- J'aimerais qu'on **regarde tout ça** avec un oeil **un peu différent**\n\n- Parce que **C'EST LÀ que les pièces du puzzle commencent à parler**\n- **Pris UN PAR UN** :\n  - **CHACUN** de **ces petits signes**\n  - c'est quelque chose qu'on voit **souvent chez les bébés**\n  - **Rien d'alarmant**, pris isolément\n\n- **MAIS**…\n- Dès qu'on peut en **lister au moins 2**\n- Là, moi, ça me **met la puce à l'oreille**\n\n- Et là, chez [prénom_enfant]\n- On en a **bien + que 2 symptômes**\n  ⇒ Ça me dit qu'il y a **peut-être quelque chose derrière**\n  ⇒ quelque chose qu'**on n'a pas encore identifié**\n\n- Et ce que je vois, moi, avec **mon oeil de consultante**\n  ⇒ c'est qu'il **pourrait s'agir d'une allergie**\n  ⇒ Plus précisément, une **allergie aux Protéines de Lait de Vache**. On appelle ça une **APLV**",
-          trailingInfoButton: {
-            label: "Causes du RGO",
-            title: "Causes du RGO",
-            blocks: [
-              { type: "normal", text: "- Il peut y avoir **différentes causes** :\n  - <u>**Mécanique**</u> :\n    - Système digestif immature : **Sphincter Inférieur de l'œsophage (SIO) immature** *(anneau musculaire entre l'œsophage et l'estomac pas assez développé pour se contracter efficacement et maintenir le contenu du bol gastrique dans l'estomac)*\n    - Tensions corporelles\n    - Freins restrictifs\n    - Pb de succion\n  - <u>**Alimentaire**</u> :\n    - Allergie\n    - Œsophage court\n    - Bcp d'horizontalité\n    - Bcp d'alimentation liquide *(ex : bouteille d'eau à l'horizontal)*\n    - Trop d'alimentation\n    - Système digestif immature : microbiote immature" }
-            ]
-          }
+          trailingInfoButtons: [
+            {
+              label: "Causes du RGO",
+              title: "Causes du RGO",
+              blocks: [
+                { type: "normal", text: "- Il peut y avoir **différentes causes** :\n  - <u>**Mécanique**</u> :\n    - Système digestif immature : **Sphincter Inférieur de l'œsophage (SIO) immature** *(anneau musculaire entre l'œsophage et l'estomac pas assez développé pour se contracter efficacement et maintenir le contenu du bol gastrique dans l'estomac)*\n    - Tensions corporelles\n    - Freins restrictifs\n    - Pb de succion\n  - <u>**Alimentaire**</u> :\n    - Allergie\n    - Œsophage court\n    - Bcp d'horizontalité\n    - Bcp d'alimentation liquide *(ex : bouteille d'eau à l'horizontal)*\n    - Trop d'alimentation\n    - Système digestif immature : microbiote immature" }
+              ]
+            },
+            {
+              label: "IPP = + de symptômes",
+              title: "IPP = + de symptômes",
+              blocks: [
+                { type: "normal", text: "- Les **IPP** vont **permettre de diminuer** l'**acidité de l'estomac**\n  - Et donc faciliter les **prises alimentaires**\n- Or, si les **prises augmentent**, alors le **contact avec les PLV augmente** aussi\n  - Les **symptômes de l'allergie** sont alors **majorés**" }
+              ]
+            },
+            {
+              label: "Si moins de prises = moins de symptômes",
+              title: "Si moins de prises = moins de symptômes",
+              blocks: [
+                { type: "normal", text: "- Si votre enfant **prend moins de lait**\n  - Alors c'est **NORMAL** qu'il y ait **moins de symptômes allergiques**" }
+              ]
+            }
+          ]
         },
         {
           type: "normal", _leftTitle: "Allergie difficile à percevoir",
