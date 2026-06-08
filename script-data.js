@@ -762,7 +762,14 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "Allergie difficile à percevoir",
-          text: "- Il **faut savoir** que c'est une **allergie** qui est **de + en + fréquente** chez les bébés\n  et qui, encore aujourd'hui, **passe très souvent SOUS les radars**\n\n- MEME chez les **professionnels de santé**\n- **Pas par négligence** :\n  - Simplement parce que **les signes sont éparpillés un peu partout**\n  - En **consultation médicale**, vous savez, c'est **court** : 15, 20 minutes, grand maximum\n    - C'est **très peu** pour :\n      - rassembler **tous les signes**\n      - et **faire un lien**\n    - Et puis, le médecin, quand on va **lui amener un symptôme**\n      - souvent, il **traitera ce symptôme**, SANS forcément toujours aller voir s'il y a **quelque chose de plus gros derrière**\n- Donc si personne n'a fait le lien jusqu'ici\n  ⇒ **C'est NORMAL**\n\n- Moi, je viens par **la porte du sommeil**\n  je **cherche la cause** DERRIÈRE les **symptômes**\n  et je suis amenée à **explorer des choses DIFFÉRENTES** : *la digestion, la peau, la respiration, les selles, les repas…*\n\n- Ce sont **2 angles différents**, mais les **2 sont complémentaires**"
+          text: "- Il **faut savoir** que c'est une **allergie** qui est **de + en + fréquente** chez les bébés\n  et qui, encore aujourd'hui, **passe très souvent SOUS les radars**\n\n- MEME chez les **professionnels de santé**\n- **Pas par négligence** :\n  - Simplement parce que **les signes sont éparpillés un peu partout**\n  - En **consultation médicale**, vous savez, c'est **court** : 15, 20 minutes, grand maximum\n    - C'est **très peu** pour :\n      - rassembler **tous les signes**\n      - et **faire un lien**\n    - Et puis, le médecin, quand on va **lui amener un symptôme**\n      - souvent, il **traitera ce symptôme**, SANS forcément toujours aller voir s'il y a **quelque chose de plus gros derrière**\n- Donc si personne n'a fait le lien jusqu'ici\n  ⇒ **C'est NORMAL**\n\n- Moi, je viens par **la porte du sommeil**\n  je **cherche la cause** DERRIÈRE les **symptômes**\n  et je suis amenée à **explorer des choses DIFFÉRENTES** : *la digestion, la peau, la respiration, les selles, les repas…*\n\n- Ce sont **2 angles différents**, mais les **2 sont complémentaires**",
+          trailingInfoButton: {
+            label: "Pourquoi mon pédiatre m'a dit que tout était OK ?",
+            title: "Pourquoi mon pédiatre m'a dit que tout était OK ?",
+            blocks: [
+              { type: "normal", text: "- Je **ne sais pas**\n- Il a peut-être des **données** que **je n'ai pas**\n- Je vous **conseille** :\n  - D'**en discuter avec lui**\n  - Avec les **données** que **je vais vous transmettre**" }
+            ]
+          }
         },
         {
           type: "normal", _leftTitle: "Pas médecin",
@@ -770,7 +777,14 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "En parler avec votre médecin",
-          text: "- **CE QUE je fais**, c'est **vous partager une piste**\n- Et c'est pour ça que **ça pourrait être intéressant** d'en **parler avec votre médecin**, pour qu'il **explore cette piste avec vous** :\n  - simplement pour **confirmer**\n  - ou pour **écarter cette hypothèse**\n\n- **Concrètement**, **CE QUE je vous propose**, c'est de lui amener, **noir sur blanc**, **tous ces petits signes** qu'on a listés ensemble\n- Comme ça, il aura **tous les éléments** pour explorer cette piste avec vous\n\n- Et **SI**, finalement,\n  - ce **n'est PAS CA**\n  - eh bien, **tant mieux**\n  - on **l'écarte**\n  - et on **cherche ailleurs, ensemble**\n    - On **avance**, **pas à pas**"
+          text: "- **CE QUE je fais**, c'est **vous partager une piste**\n- Et c'est pour ça que **ça pourrait être intéressant** d'en **parler avec votre médecin**, pour qu'il **explore cette piste avec vous** :\n  - simplement pour **confirmer**\n  - ou pour **écarter cette hypothèse**\n\n- **Concrètement**, **CE QUE je vous propose**, c'est de lui amener, **noir sur blanc**, **tous ces petits signes** qu'on a listés ensemble\n- Comme ça, il aura **tous les éléments** pour explorer cette piste avec vous\n\n- Et **SI**, finalement,\n  - ce **n'est PAS CA**\n  - eh bien, **tant mieux**\n  - on **l'écarte**\n  - et on **cherche ailleurs, ensemble**\n    - On **avance**, **pas à pas**",
+          trailingInfoButton: {
+            label: "Pourquoi mon pédiatre m'a dit que tout était OK ?",
+            title: "Pourquoi mon pédiatre m'a dit que tout était OK ?",
+            blocks: [
+              { type: "normal", text: "- Je **ne sais pas**\n- Il a peut-être des **données** que **je n'ai pas**\n- Je vous **conseille** :\n  - D'**en discuter avec lui**\n  - Avec les **données** que **je vais vous transmettre**" }
+            ]
+          }
         },
         {
           type: "normal", _leftTitle: "Si APLV = solutions concrètes",
@@ -921,7 +935,14 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "Allergie difficile à percevoir",
-          text: "- Il **faut savoir** que c'est une **allergie** qui est **de + en + fréquente** chez les bébés\n  et qui, encore aujourd'hui, **passe très souvent SOUS les radars**\n\n- MEME chez les **professionnels de santé**\n- **Pas par négligence** :\n  - Simplement parce que **les signes sont éparpillés un peu partout**\n  - En **consultation médicale**, vous savez, c'est **court** : 15, 20 minutes, grand maximum\n    - C'est **très peu** pour :\n      - rassembler **tous les signes**\n      - et **faire un lien**\n    - Et puis, le médecin, quand on va **lui amener un symptôme**\n      - souvent, il **traitera ce symptôme**, SANS forcément toujours aller voir s'il y a **quelque chose de plus gros derrière**\n- Donc si personne n'a fait le lien jusqu'ici\n  ⇒ **C'est NORMAL**\n\n- Moi, je viens par **la porte du sommeil**\n  je **cherche la cause** DERRIÈRE les **symptômes**\n  et je suis amenée à **explorer des choses DIFFÉRENTES** : *la digestion, la peau, la respiration, les selles, les repas…*\n\n- Ce sont **2 angles différents**, mais les **2 sont complémentaires**"
+          text: "- Il **faut savoir** que c'est une **allergie** qui est **de + en + fréquente** chez les bébés\n  et qui, encore aujourd'hui, **passe très souvent SOUS les radars**\n\n- MEME chez les **professionnels de santé**\n- **Pas par négligence** :\n  - Simplement parce que **les signes sont éparpillés un peu partout**\n  - En **consultation médicale**, vous savez, c'est **court** : 15, 20 minutes, grand maximum\n    - C'est **très peu** pour :\n      - rassembler **tous les signes**\n      - et **faire un lien**\n    - Et puis, le médecin, quand on va **lui amener un symptôme**\n      - souvent, il **traitera ce symptôme**, SANS forcément toujours aller voir s'il y a **quelque chose de plus gros derrière**\n- Donc si personne n'a fait le lien jusqu'ici\n  ⇒ **C'est NORMAL**\n\n- Moi, je viens par **la porte du sommeil**\n  je **cherche la cause** DERRIÈRE les **symptômes**\n  et je suis amenée à **explorer des choses DIFFÉRENTES** : *la digestion, la peau, la respiration, les selles, les repas…*\n\n- Ce sont **2 angles différents**, mais les **2 sont complémentaires**",
+          trailingInfoButton: {
+            label: "Pourquoi mon pédiatre m'a dit que tout était OK ?",
+            title: "Pourquoi mon pédiatre m'a dit que tout était OK ?",
+            blocks: [
+              { type: "normal", text: "- Je **ne sais pas**\n- Il a peut-être des **données** que **je n'ai pas**\n- Je vous **conseille** :\n  - D'**en discuter avec lui**\n  - Avec les **données** que **je vais vous transmettre**" }
+            ]
+          }
         },
         {
           type: "normal", _leftTitle: "Pas médecin",
@@ -929,7 +950,14 @@ const SCRIPT_DATA = {
         },
         {
           type: "normal", _leftTitle: "En parler avec votre médecin",
-          text: "- **CE QUE je fais**, c'est **vous partager une piste**\n- Et c'est pour ça que **ça pourrait être intéressant** d'en **parler avec votre médecin**, pour qu'il **explore cette piste avec vous** :\n  - simplement pour **confirmer**\n  - ou pour **écarter cette hypothèse**\n\n- **Concrètement**, **CE QUE je vous propose**, c'est de lui amener, **noir sur blanc**, **tous ces petits signes** qu'on a listés ensemble\n- Comme ça, il aura **tous les éléments** pour explorer cette piste avec vous\n\n- Et **SI**, finalement,\n  - ce **n'est PAS CA**\n  - eh bien, **tant mieux**\n  - on **l'écarte**\n  - et on **cherche ailleurs, ensemble**\n    - On **avance**, **pas à pas**"
+          text: "- **CE QUE je fais**, c'est **vous partager une piste**\n- Et c'est pour ça que **ça pourrait être intéressant** d'en **parler avec votre médecin**, pour qu'il **explore cette piste avec vous** :\n  - simplement pour **confirmer**\n  - ou pour **écarter cette hypothèse**\n\n- **Concrètement**, **CE QUE je vous propose**, c'est de lui amener, **noir sur blanc**, **tous ces petits signes** qu'on a listés ensemble\n- Comme ça, il aura **tous les éléments** pour explorer cette piste avec vous\n\n- Et **SI**, finalement,\n  - ce **n'est PAS CA**\n  - eh bien, **tant mieux**\n  - on **l'écarte**\n  - et on **cherche ailleurs, ensemble**\n    - On **avance**, **pas à pas**",
+          trailingInfoButton: {
+            label: "Pourquoi mon pédiatre m'a dit que tout était OK ?",
+            title: "Pourquoi mon pédiatre m'a dit que tout était OK ?",
+            blocks: [
+              { type: "normal", text: "- Je **ne sais pas**\n- Il a peut-être des **données** que **je n'ai pas**\n- Je vous **conseille** :\n  - D'**en discuter avec lui**\n  - Avec les **données** que **je vais vous transmettre**" }
+            ]
+          }
         },
         {
           type: "normal", _leftTitle: "Si APLV = solutions concrètes",
