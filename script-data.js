@@ -3435,7 +3435,19 @@ const SCRIPT_DATA = {
                   id: "nutri_div_feculents", emoji: "🍞", label: "Féculents",
                   pb: ["nutri_div_feculents", "nutri_autre_feculents", "nutri_inf_autre_feculents", "nutri_lok_long_autre_feculents", "nutri_lok_court_autre_feculents", "nutri_lok_la_autre_feculents", "nutri_lok_jv_autre_feculents", "nutri_lok_ijn_autre_feculents", "nutri_div_n1_autre_feculents"],
                   blocks: [
-                    { type: "normal", _leftTitle: "Conseils", text: "- Les enfants ont **besoin** de **grossir** pour **pouvoir grandir !**\n- Je vous encourage à **enrichir ses purées de** : [if_age_max:5]**25 % de féculents**[/if_age_max][if_age_min:6]**50 % de féculents**[/if_age_min]" }
+                    {
+                      type: "normal", _leftTitle: "Conseils",
+                      text: "- Les enfants ont **besoin** de **grossir** pour **pouvoir grandir !**\n- Je vous encourage à **enrichir ses purées de** : [if_age_max:5]**25 % de féculents**[/if_age_max][if_age_min:6]**50 % de féculents**[/if_age_min]",
+                      trailingInfoButton: {
+                        label: "Protéines",
+                        title: "Protéines (VPO)",
+                        blocks: [
+                          { type: "normal", _noBorder: true, text: "<table style=\"border-collapse:collapse;width:100%;font-size:13px;line-height:1.4;margin:6px 0 0\"><thead><tr><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:left;width:30%\">Âge</th><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:center;width:35%\">Grammage viande/poisson/œuf</th><th style=\"background:#eef2ff;border:1px solid #94a3b8;padding:8px;color:#1e3a8a;text-align:center;width:35%\">Cuillère à café</th></tr></thead><tbody><tr><td style=\"border:1px solid #94a3b8;padding:8px;font-weight:700\">4-6 mois</td><td style=\"border:1px solid #94a3b8;padding:8px;text-align:center\">5 g</td><td style=\"border:1px solid #94a3b8;padding:8px;text-align:center\">1 cc</td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px;font-weight:700\">6-12 mois</td><td style=\"border:1px solid #94a3b8;padding:8px;text-align:center\">10 g</td><td style=\"border:1px solid #94a3b8;padding:8px;text-align:center\">2 cc ou ¼ d'œuf</td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px;font-weight:700\">1-2 ans</td><td style=\"border:1px solid #94a3b8;padding:8px;text-align:center\">20 g</td><td style=\"border:1px solid #94a3b8;padding:8px;text-align:center\">4 cc ou ½ œuf</td></tr><tr><td style=\"border:1px solid #94a3b8;padding:8px;font-weight:700\">2-3 ans</td><td style=\"border:1px solid #94a3b8;padding:8px;text-align:center\">30 g</td><td style=\"border:1px solid #94a3b8;padding:8px;text-align:center\">6 cc</td></tr></tbody></table>" },
+                          { type: "normal", text: "- ⚠️ Il s'agit de **viande/poisson/œuf (VPO)** et **NON** de **protéines** *(100 g de viande ≃ 27 g de protéines)*" },
+                          { type: "normal", _noBorder: true, text: "<p style=\"margin:6px 0 0;font-size:12.5px;line-height:1.5;color:#475569\"><strong>Source</strong> : AVIS de l'Anses relatif à l'actualisation des repères alimentaires du PNNS — Jeunes enfants (0-3 ans)<br><span contenteditable=\"false\"><a href=\"https://www.anses.fr/system/files/NUT2017SA0145.pdf\" target=\"_blank\" rel=\"noopener\" style=\"color:#1e40af;text-decoration:underline;word-break:break-all\">https://www.anses.fr/system/files/NUT2017SA0145.pdf</a></span></p>" }
+                        ]
+                      }
+                    }
                   ]
                 },
                 {
