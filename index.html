@@ -8922,7 +8922,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=850"></script>
+<script src="script-data.js?v=851"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -16163,7 +16163,7 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     const secondTable = isFeedodo
       ? `<table style="border-collapse:collapse;width:100%"><tr><td style="${hd}">Grimoire Fée Dodo</td><td style="${td}">Accès illimité 2 ans</td><td style="${td}">299 €</td></tr><tr><td style="${hd}">Consultations de groupe</td><td style="${td}">1h/sem. (par âge)</td><td style="${td}">29,99 €/mois — Sans engagement</td></tr></table>`
       : '';
-    const tableHtml = `<div style="overflow-x:auto;font-size:13px"><table style="border-collapse:collapse;margin-bottom:12px;width:100%"><tr><td style="${hd}">Consultation de suivi</td><td style="${td}">20 min</td><td style="${td}">45 €</td></tr><tr><td style="${hd}"></td><td style="${td}">45 min</td><td style="${td}">90 €</td></tr><tr><td style="${hd}">WhatsApp</td><td style="${td}">1 sem.</td><td style="${td}">90 € — Délai rép. 24h</td></tr><tr><td style="${hd}">Semaine de suivi</td><td style="${td}">1 sem.</td><td style="${td}">18 € puis 150 € — 2 RDV 20min + WhatsApp</td></tr>${lectureCourbesRow}</table>${secondTable}</div>`;
+    const tableHtml = `<div style="overflow-x:auto;font-size:13px"><table style="border-collapse:collapse;margin-bottom:12px;width:100%"><tr><td rowspan="2" style="${hd};text-align:center;vertical-align:middle">Consultation de suivi</td><td style="${td}">20 min</td><td style="${td}">45 €</td></tr><tr><td style="${td}">45 min</td><td style="${td}">90 €</td></tr><tr><td style="${hd}">WhatsApp</td><td style="${td}">1 sem.</td><td style="${td}">90 € — Délai rép. 24h</td></tr><tr><td style="${hd}">Semaine de suivi</td><td style="${td}">1 sem.</td><td style="${td}">18 € puis 150 € — 2 RDV 20min + WhatsApp</td></tr>${lectureCourbesRow}</table>${secondTable}</div>`;
     window.__infoButtons = window.__infoButtons || {};
     window.__infoButtons['tarifs-accueil-panel'] = { title: 'Tarifs', content: tableHtml };
     return '';
@@ -16481,8 +16481,8 @@ function renderBlockInner(b, i, sectionId, depth, path) {
     return `<div class="block block-normal" style="padding:8px;overflow-x:auto;font-size:12px;background:transparent;border:none;box-shadow:none">
       <table style="border-collapse:collapse;margin-bottom:10px">
         <col style="width:150px"><col style="width:auto"><col style="width:auto"><col style="width:auto">
-        <tr><td style="${hd}">Consultation de suivi</td><td style="${td}">20min</td><td style="${td}">45€</td><td style="${td}"></td></tr>
-        <tr><td style="${hd}"></td><td style="${td}">45 min</td><td style="${td}">90€</td><td style="${td}"></td></tr>
+        <tr><td rowspan="2" style="${hd};text-align:center;vertical-align:middle">Consultation de suivi</td><td style="${td}">20min</td><td style="${td}">45€</td><td style="${td}"></td></tr>
+        <tr><td style="${td}">45 min</td><td style="${td}">90€</td><td style="${td}"></td></tr>
         <tr><td style="${hd}">WhatsApp</td><td style="${td}">1 sem.</td><td style="${td}">90€</td><td style="${td}">Délai rép. 24h</td></tr>
         <tr><td style="${hd}">Semaine de suivi</td><td style="${td}">1 sem.</td><td style="${td}">18€ puis 150€</td><td style="${td}">2 RDV 20min + WhatsApp</td></tr>
         ${lectureCourbesRow}
