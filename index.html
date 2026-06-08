@@ -8922,7 +8922,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=849"></script>
+<script src="script-data.js?v=850"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -19189,6 +19189,12 @@ function substituteVars(text) {
       // "il peut vraiment" / "il peut **vraiment**" — tournure d'estimation (ex: "il peut vraiment gêner")
       // qui se réfère au reflux/au phénomène, pas à l'enfant
       /il(?:[\s*]+)peut(?:[\s*]+)\*?\*?vraiment\b/gi,
+      // "il **faut**" / "il **faut savoir**" — la regex parente /il fau.../ ne tolère pas
+      // les asterisks markdown entre "il" et "faut" (ex: "Il **faut savoir**")
+      /il(?:[\s*]+)\*?\*?fau(?:t|dra|drait|t-il)\b/gi,
+      // "il pourrait s'agir" / "il peut s'agir" / etc. — tournure impersonnelle de spéculation
+      // (ex: APLV "c'est qu'il pourrait s'agir d'une allergie")
+      /il(?:[\s*]+)(?:pourrait|peut|risque|va)(?:[\s*]+)s['’]agir/gi,
     ];
 
     // Remplacer chaque expression impersonnelle par un placeholder

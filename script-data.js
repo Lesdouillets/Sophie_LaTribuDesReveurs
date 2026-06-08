@@ -767,7 +767,7 @@ const SCRIPT_DATA = {
             label: "Pourquoi mon pédiatre m'a dit que tout était OK ?",
             title: "Pourquoi mon pédiatre m'a dit que tout était OK ?",
             blocks: [
-              { type: "normal", text: "- Je **ne sais pas**\n- Il a peut-être des **données** que **je n'ai pas**\n- Je vous **conseille** :\n  - D'**en discuter avec lui**\n  - Avec les **données** que **je vais vous transmettre**" }
+              { type: "normal", text: "- Je **ne sais pas**\n- Le **pédiatre** a peut-être des **données** que **je n'ai pas**\n- Je vous **conseille** :\n  - D'**en discuter avec lui**\n  - Avec les **données** que **je vais vous transmettre**" }
             ]
           }
         },
@@ -782,7 +782,7 @@ const SCRIPT_DATA = {
             label: "Pourquoi mon pédiatre m'a dit que tout était OK ?",
             title: "Pourquoi mon pédiatre m'a dit que tout était OK ?",
             blocks: [
-              { type: "normal", text: "- Je **ne sais pas**\n- Il a peut-être des **données** que **je n'ai pas**\n- Je vous **conseille** :\n  - D'**en discuter avec lui**\n  - Avec les **données** que **je vais vous transmettre**" }
+              { type: "normal", text: "- Je **ne sais pas**\n- Le **pédiatre** a peut-être des **données** que **je n'ai pas**\n- Je vous **conseille** :\n  - D'**en discuter avec lui**\n  - Avec les **données** que **je vais vous transmettre**" }
             ]
           }
         },
@@ -940,7 +940,7 @@ const SCRIPT_DATA = {
             label: "Pourquoi mon pédiatre m'a dit que tout était OK ?",
             title: "Pourquoi mon pédiatre m'a dit que tout était OK ?",
             blocks: [
-              { type: "normal", text: "- Je **ne sais pas**\n- Il a peut-être des **données** que **je n'ai pas**\n- Je vous **conseille** :\n  - D'**en discuter avec lui**\n  - Avec les **données** que **je vais vous transmettre**" }
+              { type: "normal", text: "- Je **ne sais pas**\n- Le **pédiatre** a peut-être des **données** que **je n'ai pas**\n- Je vous **conseille** :\n  - D'**en discuter avec lui**\n  - Avec les **données** que **je vais vous transmettre**" }
             ]
           }
         },
@@ -955,7 +955,7 @@ const SCRIPT_DATA = {
             label: "Pourquoi mon pédiatre m'a dit que tout était OK ?",
             title: "Pourquoi mon pédiatre m'a dit que tout était OK ?",
             blocks: [
-              { type: "normal", text: "- Je **ne sais pas**\n- Il a peut-être des **données** que **je n'ai pas**\n- Je vous **conseille** :\n  - D'**en discuter avec lui**\n  - Avec les **données** que **je vais vous transmettre**" }
+              { type: "normal", text: "- Je **ne sais pas**\n- Le **pédiatre** a peut-être des **données** que **je n'ai pas**\n- Je vous **conseille** :\n  - D'**en discuter avec lui**\n  - Avec les **données** que **je vais vous transmettre**" }
             ]
           }
         },
