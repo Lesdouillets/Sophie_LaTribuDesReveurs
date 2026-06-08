@@ -3446,6 +3446,12 @@
     body[data-meet-mode="bottom-right"] [data-meet-overlap="1"],
     body[data-meet-mode="top-right"] [data-meet-overlap="1"] {
       margin-right: var(--meet-w) !important;
+    }
+    /* Quand l'info-panel jaune est ouvert sur la droite, il cache déjà la zone meet
+       → on désactive la marge meet pour redonner toute la largeur au texte */
+    body.info-panel-open[data-meet-mode="bottom-right"] [data-meet-overlap="1"],
+    body.info-panel-open[data-meet-mode="top-right"] [data-meet-overlap="1"] {
+      margin-right: 0 !important;
       transition: margin 0.18s ease;
     }
     body[data-meet-mode="bottom-left"] [data-meet-overlap="1"],
@@ -8916,7 +8922,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=844"></script>
+<script src="script-data.js?v=845"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
