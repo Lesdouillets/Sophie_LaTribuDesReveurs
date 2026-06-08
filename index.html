@@ -8922,7 +8922,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=847"></script>
+<script src="script-data.js?v=848"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -9759,7 +9759,7 @@ async function loadSupabaseOverrides() {
       state.scriptOverrides = data.overrides;
       cleanStaleOverrides();
       // Force re-sync sections modifiées dans script-data.js (v2)
-      ['chemins_possibles','objectifs','objectifs_revus','decouverte','problematique','diagnostic'].forEach(id => delete state.scriptOverrides[id]);
+      ['chemins_possibles','objectifs','objectifs_revus','decouverte','problematique','diagnostic','rgo_allergie','allergie_seule','rgo_seul'].forEach(id => delete state.scriptOverrides[id]);
       localStorage.setItem('tdr_script_overrides', JSON.stringify(state.scriptOverrides));
       syncOverridesToSupabase();
     }
@@ -10047,7 +10047,7 @@ window.findSolTargetById = findSolTargetById;
 // Charge les overrides sauvegardés
 state.scriptOverrides = JSON.parse(localStorage.getItem('tdr_script_overrides') || '{}');
 // Force re-sync sections modifiées dans script-data.js (v2)
-['chemins_possibles','objectifs','objectifs_revus','decouverte','problematique','diagnostic'].forEach(id => delete state.scriptOverrides[id]);
+['chemins_possibles','objectifs','objectifs_revus','decouverte','problematique','diagnostic','rgo_allergie','allergie_seule','rgo_seul'].forEach(id => delete state.scriptOverrides[id]);
 localStorage.setItem('tdr_script_overrides', JSON.stringify(state.scriptOverrides));
 
 function saveScriptOverrides() {
