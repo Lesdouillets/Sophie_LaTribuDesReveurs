@@ -2036,6 +2036,11 @@
     .info-btn:active { transform: translateY(1px); }
     /* Bouton trigger masqué quand son panel info est ouvert (click-outside ou ✕ pour le faire réapparaître) */
     .info-btn.info-btn-active-hidden { display: none !important; }
+    /* Quand le bouton trailing est caché (panneau ouvert), masquer aussi son wrap parent
+       (le div 380px float:right) pour que le texte reflowe et occupe toute la largeur */
+    [contenteditable="false"]:has(> .info-btn.info-btn-active-hidden:only-child) { display: none !important; }
+    /* Idem pour les stacks de plusieurs boutons : si TOUS sont cachés, masquer le stack */
+    .info-btns-stack:has(> .info-btn.info-btn-active-hidden):not(:has(> .info-btn:not(.info-btn-active-hidden))) { display: none !important; }
     .info-btn-wrap { display: block; margin: 8px 0; }
     .info-btn-wrap.info-btn-align-right { text-align: right; }
     .info-btn-emoji { font-size: 16px; }
@@ -8897,7 +8902,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=834"></script>
+<script src="script-data.js?v=835"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
