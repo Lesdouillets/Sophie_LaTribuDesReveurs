@@ -8897,7 +8897,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=832"></script>
+<script src="script-data.js?v=833"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -19129,6 +19129,15 @@ function substituteVars(text) {
       // Phrases spécifiques où "il" = médecin sans mention explicite sur la même ligne
       /souvent, il(?:[\s*]+)traitera/gi,
       /Comme ça, il(?:[\s*]+)aura/gi,
+      // "il PEUT ETRE" / "il peut etre" (sans accent — utilisé en majuscules pour l'emphase
+      // dans le source, ex: RGO "parfois, il PEUT ETRE discret"). Tournure impersonnelle.
+      /il(?:[\s*]+)peut(?:[\s*]+)(?:etre|être)\b/gi,
+      // "il **arrive parfois**" / "il arrive parfois" avec asterisks markdown
+      // (ex: RGO "il **arrive parfois** que le reflux reste gênant")
+      /il(?:[\s*]+)\*?\*?arrive(?:[\s*]+)parfois\b/gi,
+      // "il peut vraiment" / "il peut **vraiment**" — tournure d'estimation (ex: "il peut vraiment gêner")
+      // qui se réfère au reflux/au phénomène, pas à l'enfant
+      /il(?:[\s*]+)peut(?:[\s*]+)\*?\*?vraiment\b/gi,
     ];
 
     // Remplacer chaque expression impersonnelle par un placeholder
