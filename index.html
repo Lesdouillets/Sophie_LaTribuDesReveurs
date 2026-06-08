@@ -1927,15 +1927,19 @@
     .info-panel.info-panel-wide.open { width: 1200px; }
     /* Quand l'info-panel est ouvert, forcer le contenu actif des sections V Diagnostic /
        Plan d'action à prendre TOUTE la largeur disponible (évite la colonne vide entre le
-       texte et le panel jaune). On cible les containers de structure des sols/diag. */
+       texte et le panel jaune). On cible les containers de structure des sols/diag avec
+       width:100% pour battre tout flex/inline-block parent qui les rétrécirait. */
+    body.info-panel-open #content-area .diagnostic-sections-wrapper,
+    body.info-panel-open #content-area .diagnostic-sections-grid,
+    body.info-panel-open #content-area .courbe-cards-grid-wrap,
     body.info-panel-open #content-area .sol-active-content,
     body.info-panel-open #content-area .sol-child-content,
     body.info-panel-open #content-area .sol-child-content--single,
-    body.info-panel-open #content-area .diagnostic-sections-grid,
-    body.info-panel-open #content-area .diagnostic-sections-wrapper,
-    body.info-panel-open #content-area .courbe-card-content {
-      width: auto !important;
-      max-width: none !important;
+    body.info-panel-open #content-area .courbe-card-content,
+    body.info-panel-open #content-area .diag-cat-content {
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
     }
 
     /* ═══ SETUP INFO PANEL (même comportement, pour la fiche client) ═══ */
@@ -8912,7 +8916,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=843"></script>
+<script src="script-data.js?v=844"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
