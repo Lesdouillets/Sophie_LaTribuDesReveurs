@@ -1925,6 +1925,18 @@
     .info-panel.info-panel-blue.open { width: 1200px; }
     /* Largeur doublée explicite (flag _wide:true sur le trailing button) — sans changer le thème jaune */
     .info-panel.info-panel-wide.open { width: 1200px; }
+    /* Quand l'info-panel est ouvert, forcer le contenu actif des sections V Diagnostic /
+       Plan d'action à prendre TOUTE la largeur disponible (évite la colonne vide entre le
+       texte et le panel jaune). On cible les containers de structure des sols/diag. */
+    body.info-panel-open #content-area .sol-active-content,
+    body.info-panel-open #content-area .sol-child-content,
+    body.info-panel-open #content-area .sol-child-content--single,
+    body.info-panel-open #content-area .diagnostic-sections-grid,
+    body.info-panel-open #content-area .diagnostic-sections-wrapper,
+    body.info-panel-open #content-area .courbe-card-content {
+      width: auto !important;
+      max-width: none !important;
+    }
 
     /* ═══ SETUP INFO PANEL (même comportement, pour la fiche client) ═══ */
     .setup-info-panel {
@@ -8900,7 +8912,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=842"></script>
+<script src="script-data.js?v=843"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -14305,6 +14317,7 @@ function openInfoPanel(btnId) {
   titleEl.innerHTML = '💡 ' + (data.title || 'Informations');
   bodyEl.innerHTML = data.content || '';
   panel.classList.add('open');
+  document.body.classList.add('info-panel-open');
   // Thème bleu si ouverture depuis un bouton flottant (bulle BD)
   if (btnId && btnId.startsWith('float-')) {
     panel.classList.add('info-panel-blue');
@@ -14372,6 +14385,7 @@ function openInfoPanel(btnId) {
 function closeInfoPanel() {
   const panel = document.getElementById('info-panel');
   if (panel) panel.classList.remove('open');
+  document.body.classList.remove('info-panel-open');
   // Repositionner les bulles BD (re-coller à droite après fermeture)
   if (typeof repositionFloatingBubble === 'function') {
     setTimeout(() => repositionFloatingBubble(), 0);
