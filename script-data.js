@@ -1008,6 +1008,7 @@ const SCRIPT_DATA = {
               trailingInfoButton: {
                 label: "Pourquoi les mesures sont importantes ?",
                 title: "Pourquoi les mesures sont importantes ?",
+                _wide: true,
                 blocks: [
                   { type: "normal", _leftTitle: "Les mesures sont importantes", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- **Faites toujours** **très attention** à **COMMENT** sont **mesurés les enfants**, au niveau de :\n  - La **taille**\n  - Du **poids**\n  - Et du **périmètre crânien**\n- Parce que ça va être **TRÈS important** pour **moi**" },
                   { type: "normal", _leftTitle: "On n'utilise pas ces mesures pour la même chose", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Le **médecin** regarde s'il y a :\n  - Quelque chose d'**alertant**\n  - Une **pathologie**\n  ⇒ Pour ça, des mesures « **à peu près** » vont lui **suffire largement**\n\n- **Moi**, je ne cherche **PAS** une pathologie\n- Je cherche à **comprendre** :\n  - Le **bien-être**\n  - Et l'**équilibre** de [prénom_enfant] sur son **sommeil**\n\n- Or le **sommeil** et la **nutrition** sont **étroitement liés**\n  - Car c'est souvent **là que** :\n    - se **cachent** les **causes** de **beaucoup de troubles du sommeil**\n    - Dans les **1ères années de vie**" },
@@ -1172,6 +1173,7 @@ const SCRIPT_DATA = {
               trailingInfoButton: {
                 label: "Pourquoi les mesures sont importantes ?",
                 title: "Pourquoi les mesures sont importantes ?",
+                _wide: true,
                 blocks: [
                   { type: "normal", _leftTitle: "Les mesures sont importantes", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- **Faites toujours** **très attention** à **COMMENT** sont **mesurés les enfants**, au niveau de :\n  - La **taille**\n  - Du **poids**\n  - Et du **périmètre crânien**\n- Parce que ça va être **TRÈS important** pour **moi**" },
                   { type: "normal", _leftTitle: "On n'utilise pas ces mesures pour la même chose", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Le **médecin** regarde s'il y a :\n  - Quelque chose d'**alertant**\n  - Une **pathologie**\n  ⇒ Pour ça, des mesures « **à peu près** » vont lui **suffire largement**\n\n- **Moi**, je ne cherche **PAS** une pathologie\n- Je cherche à **comprendre** :\n  - Le **bien-être**\n  - Et l'**équilibre** de [prénom_enfant] sur son **sommeil**\n\n- Or le **sommeil** et la **nutrition** sont **étroitement liés**\n  - Car c'est souvent **là que** :\n    - se **cachent** les **causes** de **beaucoup de troubles du sommeil**\n    - Dans les **1ères années de vie**" },
