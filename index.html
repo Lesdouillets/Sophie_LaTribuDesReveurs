@@ -8900,7 +8900,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=836"></script>
+<script src="script-data.js?v=837"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -14334,7 +14334,11 @@ function openInfoPanel(btnId) {
     document.querySelectorAll(`[data-info-btn-id="${window.__activeInfoBtnId}"]`).forEach(b => {
       b.classList.remove('info-btn-active-hidden');
       const w = b.parentElement;
-      if (w) w.classList.remove('info-btn-wrap-collapsed');
+      if (w) {
+        w.classList.remove('info-btn-wrap-collapsed');
+        w.style.display = w.dataset.prevDisplay || '';
+        delete w.dataset.prevDisplay;
+      }
     });
   }
   window.__activeInfoBtnId = btnId;
@@ -14342,10 +14346,12 @@ function openInfoPanel(btnId) {
   document.querySelectorAll(`[data-info-btn-id="${btnId}"]`).forEach(b => {
     b.classList.add('info-btn-active-hidden');
     // Masquer aussi le wrap parent (le div float:right qui réserve 380px à droite du texte)
-    // SI le bouton est seul dans son wrap → laisse le texte reflow sur toute la largeur
+    // SI le bouton est seul dans son wrap → laisse le texte reflow sur toute la largeur.
+    // Style inline pour garantir la priorité (sinon le float:right inline peut surcharger).
     const wrap = b.parentElement;
     if (wrap && wrap.children.length === 1 && wrap.getAttribute('contenteditable') === 'false') {
-      wrap.classList.add('info-btn-wrap-collapsed');
+      wrap.dataset.prevDisplay = wrap.style.display || '';
+      wrap.style.display = 'none';
     }
   });
   // Initialise les widgets dynamiques (labels qui dépendent de state.client)
@@ -14377,7 +14383,11 @@ function closeInfoPanel() {
     if (btn) {
       btn.classList.remove('info-btn-active-hidden');
       const wrap = btn.parentElement;
-      if (wrap) wrap.classList.remove('info-btn-wrap-collapsed');
+      if (wrap) {
+        wrap.classList.remove('info-btn-wrap-collapsed');
+        wrap.style.display = wrap.dataset.prevDisplay || '';
+        delete wrap.dataset.prevDisplay;
+      }
       // Scroll smooth pour ramener le trigger en vue après reflow
       setTimeout(() => {
         const scrollContainer = btn.closest('.sol-active-content') || document.getElementById('content-area') || document.scrollingElement;
