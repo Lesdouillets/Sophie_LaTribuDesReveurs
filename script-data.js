@@ -1004,7 +1004,18 @@ const SCRIPT_DATA = {
         {
           type: "grouped_block",
           blocks: [
-            { type: "normal", text: "- En **tant que consultantes,** on va s'**appuyer** sur des **repères fiables,** comme les **courbes** de poids, la taille, le périmètre crânien\n- D'ailleurs **je vous invite** vivement à **demander** à votre médecin de **prendre les MESURES** à **chaque RDV**\n- On peut **voir les courbes** un peu comme **notre tableau de bord** :\n  elles **nous aident à savoir** si le **corps** reçoit **assez d'énergie** pour **soutenir** un **sommeil de qualité**" },
+            { type: "normal", text: "- En **tant que consultantes,** on va s'**appuyer** sur des **repères fiables,** comme les **courbes** de poids, la taille, le périmètre crânien\n- D'ailleurs **je vous invite** vivement à **demander** à votre médecin de **prendre les MESURES** à **chaque RDV**\n- On peut **voir les courbes** un peu comme **notre tableau de bord** :\n  elles **nous aident à savoir** si le **corps** reçoit **assez d'énergie** pour **soutenir** un **sommeil de qualité**",
+              trailingInfoButton: {
+                label: "Pourquoi les mesures sont importantes ?",
+                title: "Pourquoi les mesures sont importantes ?",
+                blocks: [
+                  { type: "normal", _leftTitle: "Les mesures sont importantes", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Faites toujours **très attention** à **COMMENT** sont mesurés les enfants, au niveau de :\n  - La **taille**\n  - Du **poids**\n  - Et du **périmètre crânien**\n- Parce que ça va être **TRÈS important** pour moi" },
+                  { type: "normal", _leftTitle: "On n'utilise pas ces mesures pour la même chose", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Le médecin regarde s'il y a :\n  - Quelque chose d'**alertant**\n  - Une **pathologie**\n  ⇒ Pour ça, des mesures « **à peu près** » vont lui **suffire largement**\n\n- Moi, je ne cherche **PAS** une pathologie\n- Je cherche à **comprendre** :\n  - Le **bien-être**\n  - Et l'**équilibre** de [prénom_enfant] sur son **sommeil**\n\n- Or le **sommeil** et la **nutrition** sont **étroitement liés**\n  - Car c'est souvent là que :\n    - se cachent **les causes** de **beaucoup de troubles du sommeil**\n    - Dans les **1ères années de vie**" },
+                  { type: "normal", _leftTitle: "Mesures imprécises = peut tout changer", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Alors, une **différence** de **quelques grammes** ou de **quelques millimètres** :\n  - Pour le médecin, **ça ne change rien**\n  - Pour moi, **ça peut tout changer**" },
+                  { type: "normal", _leftTitle: "Dans la pratique", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Et je sais qu'en **pratique**, ce n'est **pas toujours évident** :\n  - Les **bébés gigotent**\n  - C'est **NORMAL** qu'on n'ait pas toujours des mesures parfaites" }
+                ]
+              }
+            },
             { type: "normal", text: "<br><br>\n- 🔥 Donc **quand on a lu les courbes**, on a **pu voir** que [prénom_enfant] est **[ne_nee] autour** du <strong style=\"color:#dc2626\">XX</strong>ᵉ percentile." },
             { type: "normal", _purpleDark: true, text: "- 🔥 <u><em>OPTION</em> : [sil_sielle] a voulu remonter :</u> ET a **même réussi à monter** au <strong style=\"color:#dc2626\">XX</strong>ᵉ percentile" },
             { type: "normal", text: "- 🔥 Puis progressivement, [il_elle] s'est **[stabilise_stabilisee] autour** du <strong style=\"color:#dc2626\">XX</strong>ᵉ percentile.\n  ⇒ **Concrètement**, cela signifie qu'[il_elle] a **perdu <strong style=\"color:#dc2626\">XX</strong> couloirs** depuis <strong style=\"color:#dc2626\">sa naissance / sa tentative de montée</strong>.<br><br>" },
@@ -1157,7 +1168,18 @@ const SCRIPT_DATA = {
         {
           type: "grouped_block",
           blocks: [
-            { type: "normal", text: "- En **tant que consultantes,** on va s'**appuyer** sur des **repères fiables,** comme les **courbes** de poids, la taille, le périmètre crânien\n- D'ailleurs **je vous invite** vivement à **demander** à votre médecin de **prendre les MESURES** à **chaque RDV**\n- On peut **voir les courbes** un peu comme **notre tableau de bord** :\n  elles **nous aident à savoir** si le **corps** reçoit **assez d'énergie** pour **soutenir** un **sommeil de qualité**" },
+            { type: "normal", text: "- En **tant que consultantes,** on va s'**appuyer** sur des **repères fiables,** comme les **courbes** de poids, la taille, le périmètre crânien\n- D'ailleurs **je vous invite** vivement à **demander** à votre médecin de **prendre les MESURES** à **chaque RDV**\n- On peut **voir les courbes** un peu comme **notre tableau de bord** :\n  elles **nous aident à savoir** si le **corps** reçoit **assez d'énergie** pour **soutenir** un **sommeil de qualité**",
+              trailingInfoButton: {
+                label: "Pourquoi les mesures sont importantes ?",
+                title: "Pourquoi les mesures sont importantes ?",
+                blocks: [
+                  { type: "normal", _leftTitle: "Les mesures sont importantes", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Faites toujours **très attention** à **COMMENT** sont mesurés les enfants, au niveau de :\n  - La **taille**\n  - Du **poids**\n  - Et du **périmètre crânien**\n- Parce que ça va être **TRÈS important** pour moi" },
+                  { type: "normal", _leftTitle: "On n'utilise pas ces mesures pour la même chose", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Le médecin regarde s'il y a :\n  - Quelque chose d'**alertant**\n  - Une **pathologie**\n  ⇒ Pour ça, des mesures « **à peu près** » vont lui **suffire largement**\n\n- Moi, je ne cherche **PAS** une pathologie\n- Je cherche à **comprendre** :\n  - Le **bien-être**\n  - Et l'**équilibre** de [prénom_enfant] sur son **sommeil**\n\n- Or le **sommeil** et la **nutrition** sont **étroitement liés**\n  - Car c'est souvent là que :\n    - se cachent **les causes** de **beaucoup de troubles du sommeil**\n    - Dans les **1ères années de vie**" },
+                  { type: "normal", _leftTitle: "Mesures imprécises = peut tout changer", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Alors, une **différence** de **quelques grammes** ou de **quelques millimètres** :\n  - Pour le médecin, **ça ne change rien**\n  - Pour moi, **ça peut tout changer**" },
+                  { type: "normal", _leftTitle: "Dans la pratique", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Et je sais qu'en **pratique**, ce n'est **pas toujours évident** :\n  - Les **bébés gigotent**\n  - C'est **NORMAL** qu'on n'ait pas toujours des mesures parfaites" }
+                ]
+              }
+            },
             { type: "normal", text: "<br><br>\n- Donc **quand on a lu les courbes**, on a **pu voir** que [prénom_enfant] était sur des **couloirs différents** entre le **poids, taille et le périmètre cranien.**\n- Mais que le **POIDS** était sur un **percentile INFERIEUR**\n\n- En général, les 3 courbes :\n  - **évoluent** de **manière** assez **harmonieuses**\n  - et **suivent** à **peu près** le **même percentile**" },
             {
               type: "normal", text: "- **En général**, un enfant **suit plutôt le couloir** dans LEQUEL **il est né**\n  ⇒ c'est son **couloir de référence**\n- Dans **certains cas**, certains enfants **peuvent même DEPASSER** leur **couloir de référence :**\n  - Par exemple, lorsqu'ils ont un **fort potentiel génétique** (si les **parents sont grands**, par exemple),\n  - OU **lorsque les enfants sont nés** un peu en **dessous de leur potentiel.**\n    ⇒ On parle alors de **rattrapage de courbe**.\n- Donc, il est **tout à fait possible** que [prénom_enfant] :\n  - **atteigne un couloir supérieur** à son **couloir de référence**\n  - et fasse ce **rattrapage**,",
