@@ -8900,7 +8900,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=837"></script>
+<script src="script-data.js?v=838"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user
@@ -23650,6 +23650,25 @@ function saveInlineBlockEdit(blockEl) {
     }
   }
   if (!sectionId || path === '') return;
+  // PROTECTION : si le BLOC SOURCE original contient des placeholders dynamiques type
+  // [accueil_intake_form], [tarifs_accueil], etc., on REFUSE l'inline-save. Ces blocs ne
+  // doivent être édités QUE via le popup "Modifier" qui présente la version markdown.
+  // (Sinon le rendu HTML rendu — widget complet figé — écraserait le placeholder source.)
+  const DYNAMIC_PLACEHOLDERS = [
+    '[accueil_intake_form]', '[accueil_parents_widget]', '[tarifs_accueil]',
+    '[cercle_vicieux]', '[besoin_lait_volume]', '[heure_fin]',
+    '{{infobtn:', '{{cercle_vicieux:', '{{if-feedodo}}', '{{if-tribu}}', '{{if-lait-maternel}}',
+    '[if_enseigne:', '[if_client_data', '[if_no_client_data', '[if_pb_count'
+  ];
+  const sec0 = state.sections.find(s => s.id === sectionId);
+  if (sec0) {
+    const srcBlock = (typeof getBlockByPath === 'function') ? getBlockByPath(sec0.blocks || [], path) : null;
+    const srcText = srcBlock ? ((srcBlock.text || srcBlock.label || srcBlock.title || '') + '') : '';
+    if (DYNAMIC_PLACEHOLDERS.some(p => srcText.includes(p))) {
+      // Bloc avec placeholders dynamiques → on ne grave PAS l'inline-edit (corromprait le placeholder)
+      return;
+    }
+  }
   // 1. Dé-substituer les variables client (prénom enfant/parent, age) AVANT toute conversion
   //    sinon le nom rendu (ex: "Dounia") serait figé dans l'override → bug au changement d'enfant
   // 2. Puis convertir HTML → markdown (mêmes règles que saveEditBlock)
