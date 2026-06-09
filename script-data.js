@@ -2731,8 +2731,8 @@ const SCRIPT_DATA = {
                   ]
                 },
                 {
-                  label: "Ostéo pédiatrique",
-                  title: "Ostéo pédiatrique",
+                  label: "Annuaire Ostéo pédiatrique",
+                  title: "Annuaire Ostéo pédiatrique",
                   blocks: [
                     { type: "normal", text: "- 🦴 **Annuaire des ostéopathes certifiés en pédiatrie** :\n\n  → <span contenteditable=\"false\"><a href=\"https://www.osteo-bebe.com/annuaire-des-osteopathes-certifies-en-pediatrie/\" target=\"_blank\" rel=\"noopener\" style=\"color:#7c2d12;font-weight:700;text-decoration:underline;word-break:break-all\">osteo-bebe.com/annuaire-des-osteopathes-certifies-en-pediatrie</a></span>" }
                   ]
