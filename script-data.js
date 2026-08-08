@@ -7141,7 +7141,7 @@ const SCRIPT_DATA = {
                 }}
               ]
             },
-            { type: "question", _leftTitle: "Dernière question", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "Moi, j'ai une **dernière question** pour VOUS qui est **très importante** :<br>⇒ Comment vous **vous sentez LÀ,** à **l'idée de mettre** tout ceci **en place** ?" },
+            { type: "question", _leftTitle: "Dernière question", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "<span style=\"font-size:18px\">❓ Moi, j'ai une **dernière question** pour VOUS qui est **très importante** :<br>⇒ Comment vous **vous sentez LÀ,** à **l'idée de mettre** tout ceci **en place** ?</span>" },
             { type: "normal", _leftTitle: "Plein motivation", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- C'est super ! J'entends **plein de motivation** ! C'est génial !\n- Je vous **envoie** plein d'**énergie positive / bonnes ondes**\n- **J'ESPÈRE** que les **CHOSES VONT VITE** s'**apaiser** pour **[prénom_enfant]**… et **pour vous aussi**\n- Bonne journée !" },
             { type: "fin_consultation", text: "🏁 **FIN DE LA CONSULTATION** 🏁" },
           ]
