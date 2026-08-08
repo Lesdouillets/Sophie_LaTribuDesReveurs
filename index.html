@@ -5197,6 +5197,10 @@
       border: 3px dashed #7c3aed !important;
       border-radius: 14px !important;
     }
+    /* Espace entre le titre et le 1er bloc de texte quand un des 3 encadrés violets est ouvert */
+    .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap > .block-option.purple.open-action:not(.compact-closed) > .option-content {
+      padding-top: 14px;
+    }
     /* Encadré distinct pour celui actuellement sélectionné/ouvert (bordure pleine + ombre,
        au lieu du pointillé des 2 autres) */
     .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap > .block-option.purple.open-action:not(.compact-closed) {
