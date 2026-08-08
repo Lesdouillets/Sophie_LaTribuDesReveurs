@@ -5156,6 +5156,7 @@
     .block-option.action[data-mutex-group="conclusion-obj"] > .option-content:has(> .edit-block-wrap > .block-option.purple:not(.compact-closed)) {
       display: grid !important;
       grid-template-columns: repeat(3, 1fr);
+      grid-auto-flow: row dense;
       gap: 12px;
     }
     .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap:has(> .block-option.purple:not(.compact-closed)) {
@@ -5166,7 +5167,12 @@
     }
     .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap:has(> .block-option.purple.open-action:not(.compact-closed)) {
       grid-column: 1 / -1 !important;
-      order: 1;
+    }
+    /* Les blocs qui NE SONT PAS un des 3 encadrés violets (Merci !, Proposition autre RDV, etc.)
+       doivent occuper toute la largeur de la grille, chacun sur sa propre ligne — sinon ils
+       se retrouveraient eux aussi coincés dans les colonnes de 33%. */
+    .block-option.action[data-mutex-group="conclusion-obj"] > .option-content:has(> .edit-block-wrap > .block-option.purple:not(.compact-closed)) > :not(.edit-block-wrap:has(> .block-option.purple:not(.compact-closed))) {
+      grid-column: 1 / -1 !important;
     }
     .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap > .block-option.purple:not(.compact-closed) {
       width: 100% !important;
