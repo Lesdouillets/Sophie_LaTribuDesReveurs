@@ -5150,13 +5150,23 @@
       background: #f5f0ff !important;
     }
 
-    /* NON (action rouge) du mutex "conclusion-obj" — les 3 purple options en 3 colonnes */
+    /* NON (action rouge) du mutex "conclusion-obj" — les 3 purple options en 3 colonnes.
+       Grid (pas inline-block) pour que celui qui est ouvert puisse passer en pleine largeur
+       (grid-column:1/-1) tout en gardant les 2 autres visibles côte à côte au-dessus. */
+    .block-option.action[data-mutex-group="conclusion-obj"] > .option-content:has(> .edit-block-wrap > .block-option.purple:not(.compact-closed)) {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
     .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap:has(> .block-option.purple:not(.compact-closed)) {
-      display: inline-block !important;
-      width: calc(33.33% - 10px) !important;
-      vertical-align: top;
-      margin-right: 6px;
+      display: block !important;
+      width: auto !important;
+      margin-right: 0 !important;
       box-sizing: border-box;
+    }
+    .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap:has(> .block-option.purple.open-action:not(.compact-closed)) {
+      grid-column: 1 / -1 !important;
+      order: 1;
     }
     .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap > .block-option.purple:not(.compact-closed) {
       width: 100% !important;
@@ -5165,6 +5175,12 @@
       background: #f5f0ff !important;
       border: 3px dashed #7c3aed !important;
       border-radius: 14px !important;
+    }
+    /* Encadré distinct pour celui actuellement sélectionné/ouvert (bordure pleine + ombre,
+       au lieu du pointillé des 2 autres) */
+    .block-option.action[data-mutex-group="conclusion-obj"] > .option-content > .edit-block-wrap > .block-option.purple.open-action:not(.compact-closed) {
+      border: 3px solid #7c3aed !important;
+      box-shadow: 0 6px 20px rgba(124,58,237,0.28) !important;
     }
     /* Forcer le fond violet sur TOUS les .block-option.purple à l'intérieur d'un action ouvert
        (couvre aussi "Si Pas pris de RDV" dans OUI) */
@@ -8922,7 +8938,7 @@
     </div>
   </div>
 </div>
-<script src="script-data.js?v=854"></script>
+<script src="script-data.js?v=855"></script>
 <script>
 // Navigation de la mini-sidebar "Fiche découverte" intégrée dans III. Découverte.
 // Sépare l'application visuelle (toujours OK) de la persistance (uniquement sur action user

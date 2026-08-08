@@ -7151,26 +7151,26 @@ const SCRIPT_DATA = {
           blocks: [
             { type: "normal", _leftTitle: "Merci !", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Ok je **vous entends**\n- Et **merci de me le dire** !" },
             {
-              type: "option", label: "Si pas OK avec les valeurs/objectifs", emoji: "🤔", style: "purple",
+              type: "option", label: "Si pas OK avec les valeurs/objectifs", emoji: "🤔", style: "purple", mutexGroup: "conclusion-non-purple",
               blocks: [
                 { type: "question", text: "Qu'est-CE QUI… **dans ce que j'ai proposé, ne vous ressemble PAS / ne vous parle PAS** ?\nEt à **l'inverse**, qu'est-ce qui serait **+ juste pour vous** ?" }
               ]
             },
             {
-              type: "option", label: "Si c'est TROP ⇒ il faut reprendre", emoji: "😮‍💨", style: "purple",
+              type: "option", label: "Si c'est TROP ⇒ il faut reprendre", emoji: "😮‍💨", style: "purple", mutexGroup: "conclusion-non-purple",
               blocks: [
-                { type: "normal", text: "- OK, on est parti sur **quelque chose d'un peu trop compliqué**\n- **Ce qui compte**, c'est que:\n  - vous vous **sentiez soutenu(e)**,\n  - **PAS sous pression**\n    - ⇒ On **va simplifier**" },
+                { type: "normal", text: "- OK, on est parti sur **quelque chose d'un peu trop compliqué**\n- **Ce qui compte**, c'est que:\n  - vous vous **sentiez soutenu(e)**\n  - **PAS sous pression**\n    - ⇒ On **va simplifier**" },
                 { type: "question", text: "**Là**, qu'est-ce qui vous **semble faisable, même tout petit** ?\nEst-ce qu'il y a **besoin** de **mettre + de progressivité** ?" }
               ]
             },
             {
-              type: "option", label: "Si parent perdu", emoji: "🌀", style: "purple",
+              type: "option", label: "Si parent perdu", emoji: "🌀", style: "purple", mutexGroup: "conclusion-non-purple",
               blocks: [
-                { type: "question", text: "J'ai **l'impression que c'est flou** pour vous là ⇒ est-ce que **je me trompe** ?" },
+                { type: "question", text: "J'ai **l'impression que c'est flou** pour vous là\n⇒ Est-ce que **je me trompe** ?" },
                 { type: "important", text: "- 🔥 Si je devais vous **proposer 1 seule chose** pour commencer, ce serait <strong style=\"color:#C0392B\">XXX</strong>" }
               ]
             },
-            { type: "normal", _leftTitle: "Proposition autre RDV", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Je ne **peux PAS vous laisser** avec quelque chose qui ne vous **convient PAS** OU qui **n'est PAS aidant** pour vous.\n- Mais là, **malheureusement** je dois **arrêter là**\n- <strong style=\"color:#C0392B\"><u>JE</u></strong> n'ai **PAS pris le bon chemin**\n⇒ on va **trouver un autre chemin ensemble** et qui vous **convienne mieux**\n- MAIS **SI vous êtes d'accord**, je vous **propose qu'on se revoie** (gratuitement) :\n  - pour **reprendre tout ça + tranquillement**\n  - **simplifier**,\n  - et **ajuster** vraiment à **VOTRE rythme**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\"><div style=\"display:grid;grid-template-columns:auto auto 1fr;gap:6px 8px;align-items:start\"><span>❓</span><span>•</span><span>Est-ce que <strong>ça vous irait</strong> qu'on <strong>reprogramme un temps ensemble</strong> pour <strong>retravailler les choses + simplement</strong>, à VOTRE rythme ?</span><span></span><span></span><span>[agenda_btn:small]</span><span></span><span>•</span><span>🔥 Écoutez, le <strong style=\"color:#C0392B\">XXX</strong> à <strong style=\"color:#C0392B\">XXX</strong> heures je suis libre, est-ce que <strong>ça vous conviendrait</strong> ?</span></div></div>" },
+            { type: "normal", _leftTitle: "Proposition autre RDV", _leftTitleStyle: "background:#2d3f5c;color:#fff", trailingInfoButton: { label: "Tarifs", emoji: "💰", blocks: [{ type: "tarifs_tableau" }] }, text: "- Je ne **peux PAS vous laisser** avec quelque chose qui ne vous **convient PAS** OU qui **n'est PAS aidant** pour vous\n- Mais là, **malheureusement** je dois **arrêter là**\n- <strong style=\"color:#C0392B\"><u>JE</u></strong> n'ai **PAS pris le bon chemin**\n⇒ on va **trouver un autre chemin ensemble** et qui vous **convienne mieux**\n- MAIS **SI vous êtes d'accord**, je vous **propose qu'on se revoie** (gratuitement) :\n  - pour **reprendre tout ça + tranquillement**\n  - **simplifier**\n  - et **ajuster** vraiment à **VOTRE rythme**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\"><div style=\"display:grid;grid-template-columns:auto auto 1fr;gap:6px 8px;align-items:start\"><span>❓</span><span>•</span><span>Est-ce que <strong>ça vous irait</strong> qu'on <strong>reprogramme un temps ensemble</strong> pour <strong>retravailler les choses + simplement</strong>, à VOTRE rythme ?</span><span></span><span>•</span><span>🔥 Écoutez, le <strong style=\"color:#C0392B\">XXX</strong> à <strong style=\"color:#C0392B\">XXX</strong> heures je suis libre, est-ce que <strong>ça vous conviendrait</strong> ?</span><span></span><span></span><span>[agenda_btn:small]</span></div></div>" },
             { type: "normal", _leftTitle: "Re-parle prochainement", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Ok, donc **on se reparle prochainement**\n- **En attendant**, vous pouvez :\n  - vous **reposer sur ce que l'on s'est dit**,\n  - et on **reprendra notre conversation**\n<div style=\"background:#fdf0f0;border:2.5px solid #e8a0a0;border-radius:10px;padding:14px 18px;margin:12px 0;font-weight:400;line-height:1.7\">❓ Est-ce que c'est <strong>OK pour vous</strong> ?</div>" },
             { type: "normal", _leftTitle: "Bonne journée", _leftTitleStyle: "background:#2d3f5c;color:#fff", text: "- Je vous souhaite une **bonne journée** et à **très bientôt**" },
             { type: "fin_consultation", text: "🏁 **FIN DE LA CONSULTATION** 🏁" }
