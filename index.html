@@ -23704,6 +23704,7 @@ function saveInlineBlockEdit(blockEl) {
   const DYNAMIC_PLACEHOLDERS = [
     '[accueil_intake_form]', '[accueil_parents_widget]', '[tarifs_accueil]',
     '[cercle_vicieux]', '[besoin_lait_volume]', '[heure_fin]',
+    '[solutions_resume]', '[agenda_btn]', '[agenda_btn:small]',
     '{{infobtn:', '{{cercle_vicieux:', '{{if-feedodo}}', '{{if-tribu}}', '{{if-lait-maternel}}',
     '[if_enseigne:', '[if_client_data', '[if_no_client_data', '[if_pb_count'
   ];
@@ -23715,6 +23716,15 @@ function saveInlineBlockEdit(blockEl) {
       // Bloc avec placeholders dynamiques → on ne grave PAS l'inline-edit (corromprait le placeholder)
       return;
     }
+  }
+  // PROTECTION : la conversion HTML → markdown ci-dessous ne sait pas reconvertir les
+  // listes à puces (<ul>/<li>, générées par renderMarkdown depuis "- texte") en syntaxe
+  // "- texte". Si le bloc rendu contient une liste, la sauvegarde inline produirait un
+  // texte cassé (balises orphelines, ré-interprétation buguée au prochain rendu) même
+  // sans modification réelle de l'utilisateur (simple clic + perte de focus). On refuse
+  // la sauvegarde inline dans ce cas ; l'édition doit alors passer par le popup "✏️ Modifier".
+  if (/<ul[\s>]|<ol[\s>]/i.test(blockEl.innerHTML)) {
+    return;
   }
   // 1. Dé-substituer les variables client (prénom enfant/parent, age) AVANT toute conversion
   //    sinon le nom rendu (ex: "Dounia") serait figé dans l'override → bug au changement d'enfant
