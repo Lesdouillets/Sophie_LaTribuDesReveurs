@@ -9696,9 +9696,17 @@ async function checkAuth() {
     if (session?.user) {
       currentUser = session.user;
       showSetup();
-    } else {
-      showLogin();
+      return;
     }
+    // Pas de session valide : le rafraîchissement automatique a pu échouer silencieusement.
+    // On retente une fois avant de conclure à une déconnexion réelle.
+    const { data: refreshed } = await db.auth.refreshSession();
+    if (refreshed?.session?.user) {
+      currentUser = refreshed.session.user;
+      showSetup();
+      return;
+    }
+    showLogin();
   } catch(e) {
     // Hors ligne — vérifie si une session est en cache
     const cached = localStorage.getItem('tdr_offline_user');
@@ -9706,6 +9714,15 @@ async function checkAuth() {
     else { showLogin(); document.getElementById('login-offline').style.display='block'; }
   }
 }
+
+// Garde le compte courant (et son cache hors-ligne) à jour en continu,
+// pour ne jamais perdre la session en cours sans raison réelle.
+db.auth.onAuthStateChange((event, session) => {
+  if (session?.user) {
+    currentUser = session.user;
+    localStorage.setItem('tdr_offline_user', JSON.stringify(session.user));
+  }
+});
 
 function showLogin() {
   document.getElementById('login-screen').style.display = 'flex';
