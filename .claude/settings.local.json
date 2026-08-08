@@ -186,7 +186,9 @@
       "Bash(curl -s -o /dev/null -w \"HTTP_STATUS:%{http_code}\\\\n\" --max-time 10 \"https://supabase.com\")",
       "Bash(curl -s -o /dev/null -w \"HTTP_STATUS:%{http_code}\\\\n\" --max-time 10 \"https://google.com\")",
       "Bash(nslookup rasgpdyxqfyxiwuupcpx.supabase.co)",
-      "Bash(nslookup supabase.co)"
+      "Bash(nslookup supabase.co)",
+      "PowerShell(Get-Command node -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Command npx -ErrorAction SilentlyContinue)"
     ]
   }
 }
