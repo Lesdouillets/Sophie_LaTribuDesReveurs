@@ -188,7 +188,32 @@
       "Bash(nslookup rasgpdyxqfyxiwuupcpx.supabase.co)",
       "Bash(nslookup supabase.co)",
       "PowerShell(Get-Command node -ErrorAction SilentlyContinue)",
-      "PowerShell(Get-Command npx -ErrorAction SilentlyContinue)"
+      "PowerShell(Get-Command npx -ErrorAction SilentlyContinue)",
+      "Bash(pandoc -t markdown \"C:\\\\Users\\\\sophi\\\\OneDrive\\\\Desktop\\\\Memo_laits_standards_allergenes.docx\")",
+      "Bash(pandoc -t markdown \"C:\\\\Users\\\\sophi\\\\OneDrive\\\\Desktop\\\\Memo_APLV_laits_du_commerce_3.docx\")",
+      "PowerShell(Get-Command pandoc -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Command soffice -ErrorAction SilentlyContinue)",
+      "Bash(python3 -c \"import docx; print\\('ok'\\)\")",
+      "Bash(python -c \"import docx; print\\('ok'\\)\")",
+      "Bash(mkdir -p /tmp/docx_extract1 /tmp/docx_extract2)",
+      "Bash(unzip -o -q \"C:\\\\Users\\\\sophi\\\\OneDrive\\\\Desktop\\\\Memo_laits_standards_allergenes.docx\" -d /tmp/docx_extract1)",
+      "Bash(unzip -o -q \"C:\\\\Users\\\\sophi\\\\OneDrive\\\\Desktop\\\\Memo_APLV_laits_du_commerce_3.docx\" -d /tmp/docx_extract2)",
+      "Read(//tmp/docx_extract1/**)",
+      "Read(//tmp/docx_extract1/word/**)",
+      "Read(//tmp/docx_extract2/word/**)",
+      "PowerShell(Get-Command python -ErrorAction SilentlyContinue)",
+      "PowerShell(python --version 2>&1)",
+      "Bash(mkdir -p /c/Users/sophi/AppData/Local/Temp/claude/C--Users-sophi-OneDrive-Documents-GitHub-Sophie-LaTribuDesReveurs/14372869-302f-4688-8843-75e15be7de1d/scratchpad/docx1 /c/Users/sophi/AppData/Local/Temp/claude/C--Users-sophi-OneDrive-Documents-GitHub-Sophie-LaTribuDesReveurs/14372869-302f-4688-8843-75e15be7de1d/scratchpad/docx2)",
+      "Bash(unzip -o -q 'C:\\\\Users\\\\sophi\\\\OneDrive\\\\Desktop\\\\Memo_laits_standards_allergenes.docx' -d /c/Users/sophi/AppData/Local/Temp/claude/C--Users-sophi-OneDrive-Documents-GitHub-Sophie-LaTribuDesReveurs/14372869-302f-4688-8843-75e15be7de1d/scratchpad/docx1)",
+      "Bash(unzip -o -q 'C:\\\\Users\\\\sophi\\\\OneDrive\\\\Desktop\\\\Memo_APLV_laits_du_commerce_3.docx' -d /c/Users/sophi/AppData/Local/Temp/claude/C--Users-sophi-OneDrive-Documents-GitHub-Sophie-LaTribuDesReveurs/14372869-302f-4688-8843-75e15be7de1d/scratchpad/docx2)",
+      "Read(//c/Users/sophi/AppData/Local/Temp/claude/C--Users-sophi-OneDrive-Documents-GitHub-Sophie-LaTribuDesReveurs/14372869-302f-4688-8843-75e15be7de1d/scratchpad/docx1/**)",
+      "Bash(mkdir -p \"/c/Users/sophi/OneDrive/Desktop/Module_Laits_Allergenes\")",
+      "Read(//c/Users/sophi/OneDrive/Desktop//**)",
+      "mcp__claude-in-chrome__tabs_create_mcp",
+      "PowerShell(Start-Process \"C:\\\\Users\\\\sophi\\\\OneDrive\\\\Desktop\\\\Module_Laits_Allergenes\\\\index.html\")",
+      "WebSearch",
+      "WebFetch(domain:www.laits.fr)",
+      "WebFetch(domain:www.vidal.fr)"
     ]
   }
 }
