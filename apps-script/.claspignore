@@ -1,0 +1,10 @@
+**/**
+!appsscript.json
+!Code.gs
+!Config.gs
+!Drive.gs
+!FicheClient.gs
+!Sheet.gs
+!TrelloWebhook.gs
+!MailsPostConsultation.gs
+!Index.html

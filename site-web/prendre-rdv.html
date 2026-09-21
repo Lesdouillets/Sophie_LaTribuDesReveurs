@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prendre rendez-vous | La Tribu des Rêveurs</title>
+<meta name="description" content="Réservez votre consultation du sommeil pour votre bébé ou votre enfant, en visio : première consultation (1h30) ou consultation de suivi (45 min).">
+<link rel="canonical" href="https://latribudesreveurs.fr/prendre-rdv.html">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#FFFFFF">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="La Tribu des Rêveurs">
+<meta property="og:title" content="Prendre rendez-vous | La Tribu des Rêveurs">
+<meta property="og:description" content="Réservez votre consultation du sommeil en visio.">
+<meta property="og:url" content="https://latribudesreveurs.fr/prendre-rdv.html">
+<meta property="og:image" content="https://latribudesreveurs.fr/assets/og-image.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+
+<header class="site-header">
+  <a class="brand" href="index.html" aria-label="La tribu des rêveurs, consultante du sommeil des bébés et des enfants : accueil">
+    <img src="assets/logo-en-tete.png" alt="La tribu des rêveurs, consultante du sommeil des bébés et des enfants" width="1400" height="424">
+  </a>
+  <nav class="main-nav" aria-label="Navigation principale">
+    <a href="index.html">Accueil</a>
+    <a href="ma-pedagogie.html">Ma pédagogie</a>
+    <a href="qui-suis-je.html">Qui <span class="nowrap">suis-je</span>&nbsp;?</a>
+    <a href="mes-tarifs.html">Mes tarifs</a>
+    <a href="mes-tarifs.html" class="nav-cta">Prendre RDV</a>
+  </nav>
+</header>
+
+<main id="contenu">
+
+<section class="page-head">
+  <span class="eyebrow">Consultations en visio</span>
+  <h1>Prendre <span class="nowrap">rendez-vous</span></h1>
+  <p>Choisissez votre consultation, puis le créneau qui vous convient dans le calendrier. Le paiement se fait en ligne, de façon sécurisée, au moment de la réservation.</p>
+
+  <div class="choices" role="group" aria-label="Type de consultation">
+    <button type="button" class="choice" id="btn-initiale" data-cal="sophie-hg9fan/rdv-consultation-initiale" aria-pressed="false">
+      <span class="label">Pour commencer</span>
+      <strong>Première consultation</strong>
+      <span class="meta">1h30 en visio · 99 €</span>
+    </button>
+    <button type="button" class="choice" id="btn-suivi" data-cal="sophie-hg9fan/rdv-consultation-de-suivi-45min" aria-pressed="false">
+      <span class="label">Pour continuer</span>
+      <strong>Consultation de suivi</strong>
+      <span class="meta">45 min en visio · 50 €</span>
+    </button>
+  </div>
+  <p class="lien-tarifs"><a href="mes-tarifs.html" class="link-secondary">Voir le détail de mes tarifs</a></p>
+</section>
+
+<section style="padding-top:0; padding-bottom:20px;">
+  <div class="calendar-zone" id="calendar-zone" aria-live="polite"></div>
+  <p class="calendar-hint" id="calendar-hint">Sélectionnez une consultation <span class="nowrap">ci-dessus</span> pour afficher les disponibilités.</p>
+  <noscript><p class="calendar-hint">Pour réserver sans JavaScript&nbsp;: <a href="https://cal.com/sophie-hg9fan/rdv-consultation-initiale">première consultation</a> · <a href="https://cal.com/sophie-hg9fan/rdv-consultation-de-suivi-45min">consultation de suivi</a></p></noscript>
+</section>
+
+<section style="padding-top:20px;">
+  <ul class="info-list">
+    <li><strong>La consultation de suivi</strong> est réservée aux familles ayant déjà fait une première consultation.</li>
+    <li><strong>Après votre réservation</strong>, vous recevez un <span class="nowrap">e-mail</span> de confirmation avec le lien de la visio, ainsi qu'un questionnaire à remplir avant notre <span class="nowrap">rendez-vous</span> pour que je prépare au mieux notre échange.</li>
+    <li><strong>Une question avant de réserver&nbsp;?</strong> <span class="nowrap">Écrivez-moi</span> à <a href="mailto:contact@latribudesreveurs.fr">contact@latribudesreveurs.fr</a>.</li>
+    <li>Mon accompagnement s'adresse aux enfants en bonne santé, sans trouble du sommeil d'ordre médical. Mes conseils ne se substituent pas à un avis médical.</li>
+  </ul>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <p class="footer-disclaimer">Les informations et conseils que je partage, que ce soit sur ce site ou lors de nos consultations, sont donnés à titre informatif et ne remplacent pas l'avis d'un professionnel de santé.</p>
+  <nav class="footer-links" aria-label="Informations légales">
+    <a href="mentions-legales.html">Mentions légales</a>
+    <a href="cgv.html">CGV</a>
+    <a href="confidentialite.html">Politique de confidentialité</a>
+  </nav>
+  <p class="copyright">© 2026 La Tribu des Rêveurs · Sophie Douesneau, consultante du sommeil des bébés et des enfants</p>
+</footer>
+
+<script>
+  // Le calendrier Cal.com (service tiers) ne se charge qu'après le choix d'une
+  // consultation, jamais automatiquement à l'ouverture de la page.
+  (function () {
+    var zone = document.getElementById('calendar-zone');
+    var hint = document.getElementById('calendar-hint');
+    var buttons = [document.getElementById('btn-initiale'), document.getElementById('btn-suivi')];
+
+    function afficher(btn) {
+      buttons.forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+      var lien = btn.getAttribute('data-cal');
+      var titre = btn.querySelector('strong').textContent;
+      zone.textContent = '';
+      var iframe = document.createElement('iframe');
+      iframe.src = 'https://cal.com/' + lien + '?embed=true&theme=light&layout=month_view';
+      iframe.title = 'Calendrier de réservation : ' + titre;
+      iframe.loading = 'lazy';
+      zone.appendChild(iframe);
+      hint.innerHTML = 'Le calendrier ne s\'affiche pas correctement ? <a href="https://cal.com/' + lien + '" target="_blank" rel="noopener">Ouvrir dans une nouvelle page</a>.';
+    }
+
+    buttons.forEach(function (b) { b.addEventListener('click', function () { afficher(b); }); });
+
+    // Arrivée depuis les cartes de tarifs (prendre-rdv.html#initiale ou #suivi)
+    var h = (location.hash || '').replace('#', '');
+    if (h === 'initiale') afficher(buttons[0]);
+    if (h === 'suivi') afficher(buttons[1]);
+  })();
+</script>
+</body>
+</html>
