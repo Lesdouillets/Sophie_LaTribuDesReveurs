@@ -82,9 +82,9 @@ main:has(.band) + footer.site-footer { margin-top: 0; border-top: 0; }
 @media (min-width: 900px) {
   #pedagogie, .etapes, .raisons { position: relative; }
   #pedagogie::before, .etapes::before, .raisons::before { content: ""; position: absolute; inset: 0; pointer-events: none; }
-  #pedagogie::before { background: var(--etoile) no-repeat 2.5% 5% / 22px, var(--etoile) no-repeat 95% 93% / 20px; }
+  #pedagogie::before { background: var(--etoile) no-repeat 2.5% 5% / 22px, var(--etoile) no-repeat 99% 93% / 20px, var(--etoile) no-repeat 0.8% 46% / 14px; }
   .etapes::before { background: var(--etoile) no-repeat 91% 5% / 21px, var(--etoile) no-repeat 1% 63% / 18px; }
-  .raisons::before { background: var(--etoile) no-repeat 89% 7% / 22px, var(--etoile) no-repeat 2% 88% / 20px; }
+  .raisons::before { background: var(--etoile) no-repeat 89% 7% / 22px, var(--etoile) no-repeat 2% 88% / 20px, var(--etoile) no-repeat 4% 45% / 16px; }
 }
 @media (min-width: 1300px) {
   .hero { position: relative; }
@@ -93,13 +93,14 @@ main:has(.band) + footer.site-footer { margin-top: 0; border-top: 0; }
 
 /* Etoiles decoratives des autres onglets (dans les marges, sans jamais recouvrir le texte) */
 @media (min-width: 900px) {
-  .page-head, .tarifs, .about-page { position: relative; }
-  .page-head::before, .tarifs::before, .about-page::before { content: ""; position: absolute; inset: 0; pointer-events: none; }
+  .page-head, .tarifs, .tarifs-cartes, .about-page { position: relative; }
+  .page-head::before, .tarifs::before, .tarifs-cartes::before, .about-page::before { content: ""; position: absolute; inset: 0; pointer-events: none; }
+  .tarifs-cartes::before { background: var(--etoile) no-repeat 3% 48% / 16px; }
   .page-head::before { background: var(--etoile) no-repeat 1.5% 30% / 20px, var(--etoile) no-repeat 98% 16% / 14px; }
   .tarifs::before { background: var(--etoile) no-repeat 2% 9% / 20px, var(--etoile) no-repeat 99% 40% / 16px; }
 }
 @media (min-width: 900px) {
-  .about-page::before { background: var(--etoile) no-repeat calc(4vw + 40px) 540px / 20px, var(--etoile) no-repeat 98% 90px / 14px; }
+  .about-page::before { background: var(--etoile) no-repeat calc(4vw + 40px) 540px / 20px, var(--etoile) no-repeat 98% 90px / 14px, var(--etoile) no-repeat 98% 55% / 15px; }
 }
 
 /* Page « Mes tarifs » : titre, parcours, puis les 2 cartes de prix */
@@ -158,32 +159,28 @@ main:has(.band) + footer.site-footer { margin-top: 0; border-top: 0; }
 #pedagogie h1, #pedagogie h2 { margin-bottom: 0; color: var(--terracotta); }
 #pedagogie h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); color: var(--marine); } /* meme titre que « Qui suis-je ? » */ /* meme taille que « Vous vous reconnaissez » */
 .ped-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; margin-top: 62px; text-align: left; }
-.ped-card { background: var(--white); border: 1.5px solid var(--terracotta); border-radius: 18px; padding: 28px 28px 30px; }
-.ped-ico { width: 58px; height: 58px; border-radius: 50%; background: var(--terracotta); display: grid; place-items: center; margin-bottom: 16px; }
-.ped-card:nth-child(even) .ped-ico { background: var(--ardoise); }
-@media (min-width: 801px) { /* en damier : terracotta / bleu, puis bleu / terracotta */
-  .ped-card:nth-child(3) .ped-ico { background: var(--ardoise); }
-  .ped-card:nth-child(4) .ped-ico { background: var(--terracotta); }
-}
-.ped-ico svg { width: 29px; height: 29px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.ped-card h3 { font-size: 1.25rem; margin: 0 0 4px; }
-/* les 5 titres de cartes sont soulignés d'un fin trait terracotta */
-.ped-card h3, .ped-pleurs h3 { text-decoration: underline; text-decoration-color: var(--terracotta); text-decoration-thickness: 1.5px; text-underline-offset: 6px; }
+.ped-card, .ped-pleurs { background: var(--white); border: 1.5px solid var(--terracotta); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; text-align: left; }
+.ped-pleurs { border-radius: 26px; grid-column: 1 / -1; }
+/* zone titre : bandeau bleu (bleu du tipi), pastille d'icône puis titre en blanc */
+.ped-tete { background: var(--ardoise); display: flex; align-items: center; gap: 14px; padding: 13px 22px; min-height: 78px; }
+.ped-tete h3 { margin: 0; color: #fff; font-size: 1.2rem; }
+.ped-ico { flex: none; width: 46px; height: 46px; border-radius: 50%; background: var(--terracotta); display: grid; place-items: center; }
+.ped-ico svg { width: 23px; height: 23px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ped-corps { padding: 22px 26px 28px; flex: 1; }
 .ped-card .accroche { font-family: Georgia, "Times New Roman", serif; font-style: italic; color: var(--terracotta); font-size: .85rem; margin: 0 0 22px; }
-.ped-card p:last-child { margin: 0; color: var(--text-soft); font-size: .88rem; text-align: justify; }
+.ped-card .ped-corps > p:last-child, .ped-pleurs .ped-corps > p:last-child { margin: 0; color: var(--text-soft); font-size: .88rem; text-align: justify; }
 .ped-card p strong, .ped-pleurs p strong { color: var(--marine); }
-.ped-pleurs { display: grid; grid-template-columns: 190px 1fr; gap: 34px; align-items: center; background: var(--white); border: 1.5px solid var(--terracotta); border-radius: 26px; padding: 34px 40px; grid-column: 1 / -1; text-align: left; }
-.ped-pleurs img { width: 100%; height: auto; display: block; }
-.ped-pleurs h3 { font-size: 1.35rem; margin: 0 0 12px; }
+.ped-pleurs .ped-corps { display: flex; flex-direction: column; padding-bottom: 0; }
+/* le renard est plus grand, sous le texte, et se pose sur la ligne du bas du cadre */
+.ped-pleurs img { width: 250px; height: auto; display: block; margin: auto auto -1px; padding-top: 24px; }
+.ped-pleurs .ped-corps > p:nth-of-type(2) { margin: 0; color: var(--text-soft); font-size: .88rem; text-align: justify; }
 .ped-pleurs .phrase { font-family: Georgia, "Times New Roman", serif; font-size: .85rem; color: var(--terracotta); margin: 0 0 22px; font-weight: 400; font-style: italic; text-align: left; } /* meme style que les accroches des cartes */
-.ped-pleurs p:last-child { margin: 0; color: var(--text-soft); font-size: .88rem; text-align: justify; }
 /* grand écran : la question des pleurs est à droite des 4 cartes, sur la largeur d'une carte */
 @media (min-width: 1001px) {
   .ped-grid { grid-template-columns: 1fr 1fr 1.4fr; }
   .ped-card:nth-child(odd) { grid-column: 1; }
   .ped-card:nth-child(even) { grid-column: 2; }
-  .ped-pleurs { grid-column: 3; grid-row: 1 / span 2; grid-template-columns: 1fr; gap: 34px; padding: 34px 26px; align-content: center; }
-  .ped-pleurs img { width: 170px; margin: 0 auto; }
+  .ped-pleurs { grid-column: 3; grid-row: 1 / span 2; }
 }
 /* Citation : bande pleine largeur, bords en vague */
 #pedagogie { max-width: 1480px; padding-left: 3vw; padding-right: 3vw; padding-bottom: 50px; }
@@ -209,9 +206,7 @@ main:has(.band) + footer.site-footer { margin-top: 0; border-top: 0; }
 .citation-corps p { margin: 0 auto; max-width: 820px; color: #D5DBE6; font-size: .98rem; text-align: center; }
 @media (max-width: 800px) {
   .ped-grid { grid-template-columns: 1fr; }
-  .ped-pleurs { grid-template-columns: 1fr; gap: 18px; padding: 28px 24px; text-align: center; }
-  .ped-pleurs img { width: 150px; margin: 0 auto; }
-  .ped-pleurs .phrase { text-align: center; }
+  .ped-pleurs img { width: 150px; }
 }
 
 /* Cadre d'illustration / photo (remplaçable par une vraie photo, voir commentaires HTML) */
