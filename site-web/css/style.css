@@ -167,6 +167,8 @@ main:has(.band) + footer.site-footer { margin-top: 0; border-top: 0; }
 }
 .ped-ico svg { width: 29px; height: 29px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .ped-card h3 { font-size: 1.25rem; margin: 0 0 4px; }
+/* les 5 titres de cartes sont soulignés d'un fin trait terracotta */
+.ped-card h3, .ped-pleurs h3 { text-decoration: underline; text-decoration-color: var(--terracotta); text-decoration-thickness: 1.5px; text-underline-offset: 6px; }
 .ped-card .accroche { font-family: Georgia, "Times New Roman", serif; font-style: italic; color: var(--terracotta); font-size: .85rem; margin: 0 0 22px; }
 .ped-card p:last-child { margin: 0; color: var(--text-soft); font-size: .88rem; text-align: justify; }
 .ped-card p strong, .ped-pleurs p strong { color: var(--marine); }
