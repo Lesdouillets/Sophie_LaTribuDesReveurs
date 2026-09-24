@@ -185,15 +185,16 @@ function _oublierRelance_(carteId, etape) {
 function _envoyerRelanceTally_(email, etape, dateTexte, lienTableau, prefixeSujet) {
   const mail = _construireMailRelanceTally_(etape, dateTexte, lienTableau);
   const logo = _logoSignatureMail_();
-  const moi = Session.getEffectiveUser().getEmail();
+  const adresseCopie = 'sophie@latribudesreveurs.fr';
 
   const options = {
     to: email,
     subject: (prefixeSujet || '') + mail.sujet,
     htmlBody: mail.htmlBody + logo.html,
-    name: 'Sophie - La Tribu des Rêveurs'
+    name: 'Sophie - La Tribu des Rêveurs',
+    from: 'sophie@latribudesreveurs.fr'
   };
-  if (email !== moi) options.bcc = moi;
+  if (email !== adresseCopie) options.bcc = adresseCopie;
   if (logo.inlineImages) options.inlineImages = logo.inlineImages;
 
   try {

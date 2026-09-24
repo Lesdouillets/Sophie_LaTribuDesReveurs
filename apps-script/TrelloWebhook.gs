@@ -284,10 +284,11 @@ function _envoyerMailBienvenue_(email, prenomEnfant, payload, lienTableau) {
 
   const mailOptions = {
     to: email,
-    bcc: Session.getActiveUser().getEmail(), // copie cachee pour toi, pour verifier que ça part bien
+    bcc: 'sophie@latribudesreveurs.fr', // copie cachee, pour verifier que ça part bien
     subject: sujet,
     htmlBody: htmlBody + logo.html,
-    name: 'Sophie - La Tribu des Rêveurs'
+    name: 'Sophie - La Tribu des Rêveurs',
+    from: 'sophie@latribudesreveurs.fr'
   };
   if (logo.inlineImages) {
     mailOptions.inlineImages = logo.inlineImages;
@@ -383,10 +384,11 @@ function _envoyerMailSuivi_(email, prenomEnfant, payload, lienTableau) {
 
   const mailOptions = {
     to: email,
-    bcc: Session.getActiveUser().getEmail(),
+    bcc: 'sophie@latribudesreveurs.fr',
     subject: sujet,
     htmlBody: htmlBody + logo.html,
-    name: 'Sophie - La Tribu des Rêveurs'
+    name: 'Sophie - La Tribu des Rêveurs',
+    from: 'sophie@latribudesreveurs.fr'
   };
   if (logo.inlineImages) {
     mailOptions.inlineImages = logo.inlineImages;
