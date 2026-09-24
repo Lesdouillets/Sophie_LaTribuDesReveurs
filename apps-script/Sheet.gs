@@ -190,6 +190,11 @@ function _reponseEstNon_(valeur) {
   return /^non\b/.test(_sansAccentsMinuscules_(valeur));
 }
 
+// Vrai si la reponse commence par "Oui" (ex: "Oui", "Oui, ...").
+function _reponseEstOui_(valeur) {
+  return /^oui\b/.test(_sansAccentsMinuscules_(valeur));
+}
+
 function _sexeCode_(rawValue) {
   const v = String(rawValue || '').toLowerCase();
   if (v.indexOf('fille') !== -1) return 'fille';
@@ -1305,7 +1310,7 @@ function _buildSante_(keys, values) {
       { key: 'sa_positions_inhabituelles', label: 'Dort dans des positions inhabituelles ?', value: v('DORT_POSITIONS_INHABITUELLES') || '—' }
     ]},
     { id: 'nutriments', label: 'Nutriments', rows: [
-      { key: 'sa_regime_grossesse', label: 'Régime/compléments pendant la grossesse ?', value: v('REGIME_GROSSESSE') || '—' },
+      { key: 'sa_regime_grossesse', label: 'Régime/compléments pendant la grossesse ?', value: v('REGIME_GROSSESSE') || '—', autoTick: _reponseEstOui_(v('REGIME_GROSSESSE')) },
       { key: 'sa_fer_verifie', label: 'Taux de fer vérifié par prise de sang ?', value: v('FER_VERIFIE') || '—' },
       // Tick par defaut : allaitement exclusif ET pas complemente en fer.
       { key: 'sa_complement_fer', label: 'Complémenté en fer ?', value: v('COMPLEMENT_FER') || '—', autoTick: _estAllaitementExclusif_(v('TYPE_LAIT')) && _reponseEstNon_(v('COMPLEMENT_FER')) },
@@ -1350,7 +1355,7 @@ function _buildEnvironnementSommeil_(keys, values) {
     { key: 'env_sort_seul_chambre', label: 'Peut sortir seul de sa chambre ?', value: v('SORT_SEUL_CHAMBRE') || '—' },
     { key: 'env_habillage_siestes', label: 'Habillage pour les siestes', value: v('HABILLAGE_SIESTES') || '—' },
     { key: 'env_habillage_nuits', label: 'Habillage pour les nuits', value: v('HABILLAGE_NUITS') || '—' },
-    { key: 'env_veilleuse', label: 'A une veilleuse dans sa chambre ?', value: v('VEILLEUSE') || '—' },
+    { key: 'env_veilleuse', label: 'A une veilleuse dans sa chambre ?', value: v('VEILLEUSE') || '—', autoTick: _reponseEstOui_(v('VEILLEUSE')) },
     { key: 'env_obscurite_siestes', label: 'Note obscurité chambre — siestes (/10)', value: v('NOTE_OBSCURITE_SIESTES') || '—' },
     { key: 'env_obscurite_nuits', label: 'Note obscurité chambre — nuits (/10)', value: v('NOTE_OBSCURITE_NUITS') || '—' },
     { key: 'env_temperature', label: 'Température habituelle de la chambre', value: v('TEMPERATURE_CHAMBRE') || '—' },

@@ -40,7 +40,7 @@ const TEMPLATE_TABLEAU_SUIVI_ID = '1GLdKOPXh2cMIf61rlhAlatdL8ip1y_DX59KSHppOlSA'
 const TALLY_QUESTIONNAIRE_URL = 'https://tally.so/r/zxoyXg';
 
 // Logo (fond transparent) insere dans la signature du mail de bienvenue.
-const LOGO_FILE_ID = '18qkOiuANPFKGENugpBy04de_9bQvuHRp';
+const LOGO_FILE_ID = '1OTAxpic2OPr4qAzrrrEeZLBaoxTddN-a'; // fond blanc (lisible sur thème mail sombre)
 
 // Modele de fiche client (meme modele que celui duplique par l'automatisation
 // Tally "genererFichesClients", cote Sheet). Duplique ici des la reservation
@@ -308,7 +308,7 @@ function _envoyerMailBienvenue_(email, prenomEnfant, payload, lienTableau) {
 // ============================================================
 function _logoSignatureMail_() {
   try {
-    const blob = DriveApp.getFileById(LOGO_FILE_ID).getBlob().setName('La-Tribu-des-Reveurs-logo.png');
+    const blob = DriveApp.getFileById(LOGO_FILE_ID).getBlob().setName('La-Tribu-des-Reveurs-logo.jpg');
     return {
       html: '<img src="cid:logo" alt="La Tribu des Rêveurs" style="width:180px;height:auto;margin-top:10px;">',
       inlineImages: { logo: blob }
