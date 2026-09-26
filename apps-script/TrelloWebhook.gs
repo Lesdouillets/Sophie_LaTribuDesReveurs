@@ -90,14 +90,21 @@ function doPost(e) {
     );
 
     if (trigger === 'BOOKING_CANCELLED') {
+      _debloquerCreneauFeeDodo_(payload);
       annulerCarteTrello_(payload);
       return ContentService.createTextOutput('OK (annulation)');
+    }
+
+    if (trigger === 'BOOKING_RESCHEDULED') {
+      _bloquerCreneauFeeDodo_(payload);
+      return ContentService.createTextOutput('OK (report : blocage Fee Dodo mis a jour)');
     }
 
     if (trigger !== 'BOOKING_PAID') {
       return ContentService.createTextOutput('Ignore (trigger : ' + trigger + ')');
     }
 
+    _bloquerCreneauFeeDodo_(payload);
     creerOuMettreAJourCarteTrello(payload);
     return ContentService.createTextOutput('OK');
   } catch (err) {
